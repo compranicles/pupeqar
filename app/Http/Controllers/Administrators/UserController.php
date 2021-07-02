@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Administrators;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use Symfony\Component\HttpFoundation\Response;
+use App\Models\Invite;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\InviteNotification;
+use Illuminate\Support\Facades\Notification;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -15,6 +20,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         $users = User::all();
@@ -123,5 +129,37 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users.index')->with('success', 'User deleted successfully');
+    }
+
+    public function invite(){
+        return view('admin.users.invite');
+    }
+
+    public function send(Request $request){
+        $request->validate([
+            'email' => ['required', 'email', 'max:255', 'unique:users', 'unique:invites'],
+        ]);
+        do{
+            $token = Str::random(20);
+        } while (Invite::where('token', $token)->first());
+
+        Invite::create([
+            'token' => $token,
+            'email' => $request->input('email')
+        ]);
+
+        $url = URL::temporarySignedRoute(
+            'registration', now()->addMinutes(300), ['token' => $token]
+        );
+        Notification::route('mail', $request->input('email'))->notify(new InviteNotification($url));
+        return redirect()->route('admin.users.index')->with('success', 'User invited successfully');
+    }
+
+    public function registration_view($token){
+        $invite = Invite::where('token', $token)->first();
+        if($invite === null){
+            return redirect()->route('login')->with('error','Link expired or Email Already registered');
+        }
+        return view('auth.register', ['invite' => $invite]);
     }
 }

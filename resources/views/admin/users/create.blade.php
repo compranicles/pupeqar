@@ -6,13 +6,13 @@
     </x-slot>
     <div class="container">
         <div class="row justify-content-center ">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.users.store') }}">
                             @csrf
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('First Name') }}" />
                     
@@ -21,7 +21,7 @@
                                         <x-jet-input-error for="first_name"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Middle Name') }}" />
                     
@@ -30,7 +30,7 @@
                                         <x-jet-input-error for="middle_name"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Last Name') }}" />
                     
@@ -39,7 +39,7 @@
                                         <x-jet-input-error for="last_name"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Suffix') }}" />
                     
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Birth Date') }}" />
                     
@@ -69,7 +69,7 @@
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Email') }}" />
                     
@@ -78,7 +78,7 @@
                                         <x-jet-input-error for="email"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Password') }}" />
                     
@@ -87,13 +87,13 @@
                                         <x-jet-input-error for="password"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Confirm Password') }}" />
                                         <x-jet-input class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Role') }}" />
                     

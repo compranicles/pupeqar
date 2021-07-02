@@ -6,7 +6,7 @@
     </x-slot>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <table class="table">

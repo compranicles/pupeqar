@@ -3,10 +3,11 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Models\Invite;
+use Laravel\Jetstream\Jetstream;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Laravel\Jetstream\Jetstream;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -15,12 +16,15 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array  $input
+     * @param  array  $data
      * @return \App\Models\User
      */
-    public function create(array $input)
+    public function create(array $data)
     {
-        Validator::make($input, [
+        $invite = Invite::where('token', $data['token'])->first();
+        $invite->delete();
+        
+        Validator::make($data, [
             'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -31,14 +35,14 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return User::create([
-            'first_name' => $input['first_name'],
-            'middle_name' => $input['middle_name'],
-            'last_name' => $input['last_name'],
-            'suffix' => $input['suffix'] ?? null,
-            'date_of_birth' => $input['date_of_birth'],
-            'role_id' => $input['role_id'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
+            'first_name' => $data['first_name'],
+            'middle_name' => $data['middle_name'],
+            'last_name' => $data['last_name'],
+            'suffix' => $data['suffix'] ?? null,
+            'date_of_birth' => $data['date_of_birth'],
+            'role_id' => 3,
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
     }
 }

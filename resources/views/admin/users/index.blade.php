@@ -9,12 +9,18 @@
             <div class="col-md-12">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
-                        <p>{{ $message }}</p>
+                        {{ $message }}
                     </div>
                 @endif
                 <div class="mb-3 ml-1">
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-success">Add New User</a>
-                </div>
+                    <div class="d-inline mr-2">
+                        <a href="{{ route('admin.users.create') }}" class="btn btn-success">Add New User</a>
+                    </div>
+    
+                    <div class="d-inline ">
+                        <a href="{{ route('admin.users.invite') }}" class="btn btn-success">Invite a User</a>
+                    </div>
+                </div>  
                 <div class="card">
                     <div class="card-body">
                         

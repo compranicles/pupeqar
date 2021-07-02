@@ -7,9 +7,8 @@
         <x-jet-validation-errors class="mb-3" />
 
         <div class="card-body">
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('accept') }}">
                 @csrf
-
                 <div class="form-group">
                     <x-jet-label value="{{ __('First Name') }}" />
 
@@ -60,7 +59,7 @@
                     <x-jet-label value="{{ __('Email') }}" />
 
                     <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email"
-                                 :value="old('email')" required />
+                                 value="{{ $invite->email }}" required readonly/>
                     <x-jet-input-error for="email"></x-jet-input-error>
                 </div>
 
@@ -77,18 +76,7 @@
 
                     <x-jet-input class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
                 </div>
-
-                <div class="form-group">
-                    <x-jet-label value="{{ __('Role') }}" />
-
-                    <select name="role_id" id="role_id" class="{{ $errors->has('suffix') ? 'is-invalid' : '' }} form-control ">
-                        <option value="1">Admin</option>
-                        <option value="2">HAP</option>
-                        <option value="3">Professor</option>
-                    </select>
-                    <x-jet-input-error for="role_id"></x-jet-input-error>
-                </div>
-
+                <input type="hidden" name="token" value="{{ $invite->token }}"/>
                 @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -105,10 +93,6 @@
 
                 <div class="mb-0">
                     <div class="d-flex justify-content-end align-items-baseline">
-                        <a class="text-muted mr-3 text-decoration-none" href="{{ route('login') }}">
-                            {{ __('Already registered?') }}
-                        </a>
-
                         <x-jet-button>
                             {{ __('Register') }}
                         </x-jet-button>
