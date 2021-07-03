@@ -14,7 +14,7 @@
                         </div>
                     </div>  
                     <hr>
-                    <table class="table">
+                    <table class="table" id="event_type_table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -37,4 +37,12 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+     <script>
+         $(document).ready( function () {
+             $('#event_type_table').DataTable();
+         } );
+     </script>
+     @endpush
 </x-app-layout>

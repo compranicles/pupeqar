@@ -29,6 +29,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Name</th>
+                                    <th>Date Joined</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -37,6 +38,7 @@
                                     <tr>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->first_name." ".$user->middle_name." ".$user->last_name." ".$user->suffix }}</td>
+                                        <td>{{ $user->created_at }}</td>
                                         <td>
                                             <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                 <input type="hidden" name="_method" value="DELETE">
