@@ -19,7 +19,7 @@ class RegisterController extends Controller
 
     public function create(Request $request){
         $invite = Invite::where('token', $request->input('token'))->first();
-        $invite->delete();
+        $invite->update(['status' => 1]);;
         
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
