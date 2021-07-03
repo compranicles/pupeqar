@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Administrators;
 
 use App\Models\EventType;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 
 class EventTypeController extends Controller
@@ -15,7 +16,7 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        $eventtypes = EventType::all();
+        $eventtypes = EventType::where('status', 1)->get();
         return view('admin.events.types.index', compact('eventtypes'));
     }
 
@@ -37,7 +38,18 @@ class EventTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required','string', 'max:255'],
+        ]);
+
+        EventType::create([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'status' => 1,
+        ]);
+
+        return redirect()->route('admin.event_types.index')->with('success','Event Type added successfully');
     }
 
     /**
@@ -57,9 +69,9 @@ class EventTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(EventType $eventType)
     {
-        //
+        return view('admin.events.types.edit', compact('eventType'));
     }
 
     /**
@@ -69,9 +81,19 @@ class EventTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, EventType $eventType)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required','string', 'max:255'],
+        ]);
+
+        $eventType->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+        ]);
+
+        return redirect()->route('admin.event_types.index')->with('success','Event Type updated successfully.');
     }
 
     /**
@@ -80,8 +102,11 @@ class EventTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(EventType $eventType)
     {
-        //
+        $eventType->update([
+            'status' => 0,
+        ]);
+        return redirect()->route('admin.event_types.index')->with('success','Event Type deleted successfully.');
     }
 }

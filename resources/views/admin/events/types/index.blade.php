@@ -6,6 +6,11 @@
     </x-slot>
     <div class="container">
         <div class="col-lg-12">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    {{ $message }}
+                </div>
+            @endif
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3 ml-1">
@@ -14,7 +19,7 @@
                         </div>
                     </div>  
                     <hr>
-                    <table class="table" id="event_type_table">
+                    <table class="table" id="type_table">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -29,6 +34,16 @@
                                 <td>{{ $eventtype->id }}</td>
                                 <td>{{ $eventtype->name }}</td>
                                 <td>{{ $eventtype->description }}</td>
+                                <td>
+                                    <form action="{{ route('admin.event_types.destroy', $eventtype->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ route('admin.event_types.edit', $eventtype->id) }}"  class="btn btn-primary btn-sm">Edit</a>
+                                            <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                        </div>
+                                    </form>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -38,10 +53,11 @@
         </div>
     </div>
     @push('scripts')
-     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
      <script>
          $(document).ready( function () {
-             $('#event_type_table').DataTable();
+             $('#type_table').DataTable();
+
          } );
      </script>
      @endpush
