@@ -24,7 +24,7 @@
                 <div class="card">
                     <div class="card-body">
                         
-                        <table class="table">
+                        <table class="table" id="user_table">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -57,4 +57,12 @@
             </div>
         </div>
      </div>
+     @push('scripts')
+     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+     <script>
+         $(document).ready( function () {
+             $('#user_table').DataTable();
+         } );
+     </script>
+     @endpush
 </x-app-layout>
