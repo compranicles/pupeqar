@@ -6,7 +6,12 @@
     </x-slot>
     <div class="container">
         <div class="row justify-content-center ">
-            <div class="col-lg-4">
+            <div class="col-lg-6">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.users.sendinvite') }}">
@@ -30,6 +35,44 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div> 
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>
+                            Invited Emails
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Email</th>
+                                    <th>Token</th>
+                                    <th>Status</th>
+                                    <th>Date Invited</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($invites as $invite)
+                                <tr>
+                                    <td>{{ $invite->email }}</td>
+                                    <td>{{ $invite->token }}</td>
+                                    <td>@if ($invite->status == 0)
+                                            Not Registered
+                                        @else
+                                            Registered
+                                        @endif
+                                    </td>
+                                    <td>{{ $invite->created_at }}</td>
+                                </tr> 
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

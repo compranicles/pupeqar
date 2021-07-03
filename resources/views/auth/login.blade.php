@@ -6,7 +6,7 @@
 
         <div class="card-body">
 
-            <x-jet-validation-errors class="mb-3 rounded-0" />
+            {{-- <x-jet-validation-errors class="mb-3 rounded-0" /> --}}
 
             @if (session('status'))
                 <div class="alert alert-success mb-3 rounded-0" role="alert">
@@ -18,7 +18,7 @@
                         {{ $message }}
                     </div>
             @endif
-            @if ($message = Session::get('error'))
+            @if ($message = Session::get('register-error'))
                 <div class="alert alert-danger">
                     {{ $message }}
                 </div>

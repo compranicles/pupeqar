@@ -132,7 +132,8 @@ class UserController extends Controller
     }
 
     public function invite(){
-        return view('admin.users.invite');
+        $invites = Invite::all();
+        return view('admin.users.invite', compact('invites'));
     }
 
     public function send(Request $request){
@@ -153,7 +154,7 @@ class UserController extends Controller
             'registration', now()->addMinutes(300), ['token' => $token]
         );
         Notification::route('mail', $request->input('email'))->notify(new InviteNotification($url));
-        return redirect()->route('admin.users.index')->with('success', 'User invited successfully');
+        return redirect()->route('admin.users.invite')->with('success', 'User invited successfully');
     }
 
     public function registration_view($token){
@@ -162,8 +163,9 @@ class UserController extends Controller
             return abort("403");
         }
         elseif($invite->status != 0){
-            return redirect()->route('login')->with('error','Email Already registered');
+            return redirect()->route('login')->with('register-error','Email already registered');
         }
         return view('auth.register', ['invite' => $invite]);
     }
+    
 }
