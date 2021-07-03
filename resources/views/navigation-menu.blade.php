@@ -26,11 +26,16 @@
                         {{ __('Users') }}
                     </x-jet-nav-link>
                 </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('admin.event_types.index') }}" :active="request()->routeIs('admin.event_types.*')">
+                        {{ __('Event Types') }}
+                    </x-jet-nav-link>
+                </li>
                 @endif
 
-                @if (auth()->user()->role_id == 2)
+                @if (auth()->user()->role_id == 3)
                 <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('hap.submissions.index') }}" :active="request()->routeIs('hap.submissions.*')">
+                    <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
                         {{ __('Submissions') }}
                     </x-jet-nav-link>
                 </li>

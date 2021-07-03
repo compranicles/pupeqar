@@ -7,23 +7,23 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success">
-                        {{ $message }}
-                    </div>
-                @endif
-                <div class="mb-3 ml-1">
-                    <div class="d-inline mr-2">
-                        <a href="{{ route('admin.users.create') }}" class="btn btn-success">Add New User</a>
-                    </div>
-    
-                    <div class="d-inline ">
-                        <a href="{{ route('admin.users.invite') }}" class="btn btn-success">Invite a User</a>
-                    </div>
-                </div>  
                 <div class="card">
                     <div class="card-body">
-                        
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                {{ $message }}
+                            </div>
+                        @endif
+                        <div class="mb-3 ml-1">
+                            <div class="d-inline mr-2">
+                                <a href="{{ route('admin.users.create') }}" class="btn btn-success">Add New User</a>
+                            </div>
+            
+                            <div class="d-inline ">
+                                <a href="{{ route('admin.users.invite') }}" class="btn btn-success">Invite a User</a>
+                            </div>
+                        </div>  
+                        <hr>
                         <table class="table" id="user_table">
                             <thead>
                                 <tr>

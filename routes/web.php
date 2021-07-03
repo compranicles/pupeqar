@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
         Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
+        Route::resource('event_types', \App\Http\Controllers\Administrators\EventTypeController::class);
     });
 });
 
