@@ -145,7 +145,8 @@ class UserController extends Controller
 
         Invite::create([
             'token' => $token,
-            'email' => $request->input('email')
+            'email' => $request->input('email'),
+            'status' => 0,
         ]);
 
         $url = URL::temporarySignedRoute(
@@ -158,7 +159,10 @@ class UserController extends Controller
     public function registration_view($token){
         $invite = Invite::where('token', $token)->first();
         if($invite === null){
-            return redirect()->route('login')->with('error','Link expired or Email Already registered');
+            return abort("403");
+        }
+        elseif($invite->status != 0){
+            return redirect()->route('login')->with('error','Email Already registered');
         }
         return view('auth.register', ['invite' => $invite]);
     }

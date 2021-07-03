@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 })->name('home');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
@@ -37,4 +37,4 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 Route::get('/registration/{token}', [\App\Http\Controllers\Administrators\UserController::class, 'registration_view'])->name('registration')->middleware('guest');
-Route::post('/registration', [\App\Http\Controllers\Registration\RegisterController::class, 'create'])->name('accept')->middleware('guest');
+Route::post('/registration/accept', [\App\Http\Controllers\Registration\RegisterController::class, 'create'])->name('accept')->middleware('guest');
