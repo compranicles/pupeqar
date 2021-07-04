@@ -19,10 +19,12 @@ Route::get('/', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+    $announcements = \App\Models\Announcement::where('status', 1)->latest()->take(5)->get();
+    return view('dashboard', compact('announcements'));
 })->name('dashboard');
 
 Route::group(['middleware' => 'auth'], function() {
+    Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
         Route::resource('submissions', \App\Http\Controllers\Hap\SubmissionController::class);
     });
