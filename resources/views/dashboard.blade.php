@@ -11,8 +11,8 @@
                 <div class="card-body bg-white px-5 py-3 border-bottom rounded-top">
                     <div class="mx-3 my-3">
                         <div>
-                            <img src="{{ asset('img/android-chrome-192x192.png') }}" width="100" class="d-inline mr-3">
-                            <h1 class="d-inline align-middle "><b>PUP-Taguig</b> Faculty Quarterly Report System</h1>
+                            <img src="{{ asset('img/android-chrome-192x192.png') }}" width="100" class="d-inline mr-3 mb-3">
+                            <h1 class="d-inline align-middle "><b style="white-space: nowrap;">PUP-Taguig</b> Faculty Quarterly Report System</h1>
                         </div>
     
                         <h3 class="h3 my-4">
