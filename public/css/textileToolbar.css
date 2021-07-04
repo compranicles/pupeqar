@@ -1,0 +1,94 @@
+/*
+ Textile Toolbar jQuery plugin
+
+ Based on Redmine reStructuredText Formatter
+ developed by William Melody
+ https://github.com/alphabetum/redmine_restructuredtext_formatter
+
+ Adapted as generic jQuery plugin by Maurizio Manetti
+
+*/
+
+.textile-toolbar {
+  margin-bottom: 5px;
+}
+
+.textile-toolbar button {
+  margin-right: 4px;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ddd;
+  background-color: #f7f7f7;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+.textile-toolbar button:hover {
+  border-color: #bbb;
+  background-color: #e5e5e5;
+}
+
+.textile-toolbar .tt-spacer {
+  width: 0;
+  font-size: 1px;
+  margin-right: 6px;
+}
+
+.textile-toolbar .tt-strong {
+  background-image: url(../img/bt_strong.png);
+}
+
+.textile-toolbar .tt-em {
+  background-image: url(../img/bt_em.png);
+}
+
+.textile-toolbar .tt-ins {
+  background-image: url(../img/bt_ins.png);
+}
+
+.textile-toolbar .tt-del {
+  background-image: url(../img/bt_del.png);
+}
+
+.textile-toolbar .tt-code {
+  background-image: url(../img/bt_code.png);
+}
+
+.textile-toolbar .tt-h1 {
+  background-image: url(../img/bt_h1.png);
+}
+
+.textile-toolbar .tt-h2 {
+  background-image: url(../img/bt_h2.png);
+}
+
+.textile-toolbar .tt-h3 {
+  background-image: url(../img/bt_h3.png);
+}
+
+.textile-toolbar .tt-ul {
+  background-image: url(../img/bt_ul.png);
+}
+
+.textile-toolbar .tt-ol {
+  background-image: url(../img/bt_ol.png);
+}
+
+.textile-toolbar .tt-pre {
+  background-image: url(../img/bt_pre.png);
+}
+
+.textile-toolbar .tt-link {
+  background-image: url(../img/bt_link.png);
+}
+
+.textile-toolbar .tt-img {
+  background-image: url(../img/bt_img.png);
+}
+
+.textile-toolbar .tt-help {
+  background-image: url(../img/bt_help.png);
+}

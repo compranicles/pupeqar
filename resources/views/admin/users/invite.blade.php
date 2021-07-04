@@ -48,31 +48,33 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        <table class="table" id="invite_table">
-                            <thead>
-                                <tr>
-                                    <th>Email</th>
-                                    <th>Token</th>
-                                    <th>Status</th>
-                                    <th>Date Invited</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($invites as $invite)
-                                <tr>
-                                    <td>{{ $invite->email }}</td>
-                                    <td>{{ $invite->token }}</td>
-                                    <td>@if ($invite->status == 0)
-                                            Not Registered
-                                        @else
-                                            Registered
-                                        @endif
-                                    </td>
-                                    <td>{{ $invite->created_at }}</td>
-                                </tr> 
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table" id="invite_table">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Token</th>
+                                        <th>Status</th>
+                                        <th>Date Invited</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($invites as $invite)
+                                    <tr>
+                                        <td>{{ $invite->email }}</td>
+                                        <td>{{ $invite->token }}</td>
+                                        <td>@if ($invite->status == 0)
+                                                Not Registered
+                                            @else
+                                                Registered
+                                            @endif
+                                        </td>
+                                        <td>{{ $invite->created_at }}</td>
+                                    </tr> 
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
