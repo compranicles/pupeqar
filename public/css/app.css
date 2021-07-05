@@ -10307,3 +10307,11 @@ h3 {
 .small {
   font-size: 0.875rem !important;
 }
+
+.reset {
+  margin-right: 10px;
+}
+
+.cancel {
+  margin-right: 10px;
+}
