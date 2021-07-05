@@ -1,11 +1,7 @@
-<div class="container">
-    <div class="row justify-content-center my-5">
-        <div class="col-sm-12 col-md-8 col-lg-5 my-4">
-            <div>
-                {{ $logo }}
-            </div>
-
-            <div class="card shadow-sm px-1 mx-4">
+<div class="container-fluid m-0 overflow-hidden">
+    <div class="row justify-content-end">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="card rounded-0 vh-100 mx-n3 " id="cardlogin">
                 {{ $slot }}
             </div>
         </div>
