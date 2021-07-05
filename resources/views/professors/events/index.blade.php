@@ -38,7 +38,9 @@
                                     <tr>
                                         <td>{{ $event->id }}</td>
                                         <td>{{ $event->name }}</td>
-                                        <td>@foreach ($event_types as $event_type){{ $event_type->name }} @endforeach</td>
+                                        <td>@foreach ($event_types as $event_type)
+                                            {{ ($event->event_type_id == $event_type->id) ? $event_type->name : '' }} 
+                                            @endforeach</td>
                                         <td>{{ $event->start_date }}</td>
                                         <td>{{ $event->end_date }}</td>
                                         <td>
