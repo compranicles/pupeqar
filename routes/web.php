@@ -27,6 +27,7 @@ Route::group(['middleware' => 'auth'], function() {
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
         Route::resource('submissions', \App\Http\Controllers\Professors\SubmissionController::class);
+        Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
     });
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
