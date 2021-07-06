@@ -16,7 +16,7 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        $eventtypes = EventType::where('status', 1)->get();
+        $eventtypes = EventType::all();
         return view('admin.events.types.index', compact('eventtypes'));
     }
 
@@ -104,9 +104,7 @@ class EventTypeController extends Controller
      */
     public function destroy(EventType $eventType)
     {
-        $eventType->update([
-            'status' => 0,
-        ]);
+        $eventType->delete();
         return redirect()->route('admin.event_types.index')->with('success','Event Type deleted successfully.');
     }
 }

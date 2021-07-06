@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\EventType;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
-    use HasFactory;
+    use HasFactory, Searchable;
+    use SoftDeletes;
+    
+    const SEARCHABLE_FIELDS = ['id', 'name', 'organizer', 'start_date', 'end_date'];
 
     //protected $table = 'events';
 
@@ -27,5 +33,9 @@ class Event extends Model
 
     public function eventType() {
         return $this->hasOne(EventType::class);
+    }
+
+    public function toSearchableArray(){
+
     }
 }

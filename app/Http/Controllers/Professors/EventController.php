@@ -16,9 +16,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::where('status', '=', 0)
-                ->get();
-        $event_types = EventType::where('status', 1)->get();
+        $events = Event::all();
+        $event_types = EventType::all();
         return view('professors.events.index', [
             'events' => $events,
             'event_types' => $event_types
@@ -32,8 +31,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        $event_types = EventType::where('status', '=', 1)
-                        ->get();
+        $event_types = EventType::all();
         return view('professors.events.create')->with('event_types', $event_types);
     }
 
@@ -95,8 +93,7 @@ class EventController extends Controller
                     $query->where('id', '=', 'event_type_id');
         });
         */
-        $event_types = EventType::where('status', '=', 1)
-                        ->get();
+        $event_types = EventType::all();
         return view('professors.events.edit', [
             'event' => $event,
             'event_types' => $event_types
@@ -145,6 +142,6 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
