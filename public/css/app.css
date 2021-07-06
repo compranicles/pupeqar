@@ -10308,6 +10308,28 @@ h3 {
   font-size: 0.875rem !important;
 }
 
+#cardlogin {
+  background-color: rgba(255, 255, 255, 0.904);
+  overflow-y: scroll;
+}
+
+
+#bodyhome {
+    background: url(/img/pupt01.jpg) no-repeat;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-size: cover;
+}
+
+#textHome{
+  font-family: Montserrat, sans-serif;
+}
+
+#pupTaguig{
+  font-weight: 900;
+}
+
 .reset {
   margin-right: 10px;
 }
@@ -10315,3 +10337,4 @@ h3 {
 .cancel {
   margin-right: 10px;
 }
+

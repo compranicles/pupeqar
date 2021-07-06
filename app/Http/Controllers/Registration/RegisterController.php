@@ -18,8 +18,6 @@ class RegisterController extends Controller
     use PasswordValidationRules;
 
     public function create(Request $request){
-        $invite = Invite::where('token', $request->input('token'))->first();
-        $invite->update(['status' => 1]);;
         
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -40,6 +38,9 @@ class RegisterController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
+
+        $invite = Invite::where('token', $request->input('token'))->first();
+        $invite->update(['status' => 1]);
 
         return redirect()->route('login')->with('success', 'Account Creation Successful. Please Login to continue.');
     }
