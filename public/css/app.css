@@ -10310,20 +10310,19 @@ h3 {
 
 #cardlogin {
   background-color: rgba(255, 255, 255, 0.904);
-  backdrop-filter: blur(3px);
+  overflow-y: scroll;
 }
+
 
 #bodyhome {
     background: url(/img/pupt01.jpg) no-repeat;
-    /* Full height */
-    height: 100%;
 
     /* Center and scale the image nicely */
     background-position: center;
     background-size: cover;
 }
 
-#pupTextHome{
+#textHome{
   font-family: Montserrat, sans-serif;
 }
 
