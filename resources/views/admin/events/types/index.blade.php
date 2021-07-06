@@ -32,7 +32,7 @@
                             <tbody>
                                 @foreach ($eventtypes as $eventtype)
                                 <tr>
-                                    <td>{{ $eventtype->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $eventtype->name }}</td>
                                     <td>{{ $eventtype->description }}</td>
                                     <td>

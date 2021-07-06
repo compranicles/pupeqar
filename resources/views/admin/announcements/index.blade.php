@@ -34,7 +34,7 @@
                             <tbody>
                                 @foreach ($announcements as $announcement)
                                 <tr>
-                                    <td>{{ $announcement->id }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $announcement->title }}</td>
                                     <td>{{ $announcement->subject }}</td>
                                     <td>{{ $announcement->created_at }}</td>
@@ -69,9 +69,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
      <script>
          $(document).ready( function () {
-             $('#announcement_table').DataTable({ 
-                 "order": [[3, 'desc']]
-             });
+             $('#announcement_table').DataTable();
          } );
      </script>
      @endpush
