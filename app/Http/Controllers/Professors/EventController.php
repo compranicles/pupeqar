@@ -16,11 +16,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $events = Event::take(20)->orderByDesc('id')->get(); 
         $event_types = EventType::all();
+        $eventview = "Recent Events";
         return view('professors.events.index', [
             'events' => $events,
-            'event_types' => $event_types
+            'event_types' => $event_types,
+            'eventview' => $eventview,
         ]);
     }
 
@@ -143,5 +145,24 @@ class EventController extends Controller
     public function destroy($id)
     {
         
+    }
+
+    public function search(Request $request){
+        $search = $request->input('search');
+        $events = Event::query()
+        ->where('name', 'LIKE', "%{$search}%")
+        ->orderByDesc('id')
+        ->get();
+        $event_types = EventType::all();
+        if($search === null){
+            return redirect()->route('professor.events.index');
+        }
+        $eventview = "Search Result for: ".$search."";
+        return view('professors.events.index', [
+            'events' => $events,
+            'event_types' => $event_types,
+            'eventview' => $eventview,
+            'search' => $search,
+        ]);
     }
 }

@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('submissions', \App\Http\Controllers\Hap\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
+        Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         Route::resource('submissions', \App\Http\Controllers\Professors\SubmissionController::class);
         Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
     });

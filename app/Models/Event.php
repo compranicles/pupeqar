@@ -10,10 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
     use SoftDeletes;
-    
-    const SEARCHABLE_FIELDS = ['id', 'name', 'organizer', 'start_date', 'end_date'];
 
     //protected $table = 'events';
 
@@ -35,7 +33,5 @@ class Event extends Model
         return $this->hasOne(EventType::class);
     }
 
-    public function toSearchableArray(){
-
-    }
 }
+

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Events Attended') }}
+            {{ __('Events') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -14,70 +14,77 @@
                                 {{ $message }}
                             </div>
                         @endif
-                        <div class="mb-3 ml-1">
-                            <div class="d-inline mr-2">
-                                <a href="{{ route('professor.events.create') }}" class="btn btn-success">Add New Events</a>
-                            </div>
-            
-                        </div>  
-                        <hr>
-                        <table class="table" id="user_table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($events as $event)
-                                    <tr>
-                                        <td>{{ $event->id }}</td>
-                                        <td>{{ $event->name }}</td>
-                                        <td>@foreach ($event_types as $event_type)
-                                            {{ ($event->event_type_id == $event_type->id) ? $event_type->name : '' }} 
-                                            @endforeach</td>
-                                        <td>{{ $event->start_date }}</td>
-                                        <td>{{ $event->end_date }}</td>
-                                        <td>
-                                            @if ($event->status == 0)
-                                              <p class="badge badge-warning text-wrap m-0"><i>Pending</i></p>
-                                            @elseif($event->status == 1)
-                                              <p class="badge badge-success text-wrap m-0"><i>Accepted</i> </p>
-                                            @elseif($event->status == 2)
-                                              <p class="badge badge-danger text-wrap m-0"><i>Rejected</i></p>
-                                            @elseif($event->status == 3)
-                                              <p class="badge badge-dark text-wrap m-0"><i>Closed</i></p>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('admin.users.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('professor.events.edit', $event->id) }}"  class="btn btn-primary btn-sm">Edit</a>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <form action="{{ route('professor.events.search') }}" method="GET">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-lg-8 mb-3">
+                                                <div class="d-flex flex-column">
+                                                    <x-jet-input class="{{ $errors->has('search') ? 'is-invalid' : '' }} form-control-lg" placeholder="Search event name ..."  value="{{ (isset($search) ? $search : '' ) }}" type="text" name="search" autofocus autocomplete="search" />
                                                 </div>
-                                            </form>
+                                            </div>
+                                            <div class="col-lg-2 mb-3">
+                                                <div class="d-flex flex-column">
+                                                    <x-jet-button class="btn-lg">{{ __('Search') }}</x-jet-button>
+                                                </div>
+                                            </div>
                                             
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                            <div class="col-lg-2 ">
+                                                <div class="d-flex flex-column text-center">
+                                                    <a href="{{ route('professor.events.create') }}" class="btn btn-outline-dark btn-lg ml-2">Can't find it?</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-bold" id="textHome" style="color:maroon">{{ $eventview }}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @foreach ($events as $event)
+                            <div class="col-md-6">
+                                <div class="card border border-maroon rounded-left mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-lg-9">
+                                                <h5>
+                                                    <a href="" class="text-dark">{{ $event->name }}</a>
+                                                </h5>
+                                                
+                                                <p class="mb-n2">
+                                                    {{  date('F j, Y', strtotime($event->start_date)) }} - {{ date('F j, Y', strtotime($event->end_date)) }} <br>
+                                                    @foreach ($event_types as $event_type)
+                                                        {{ ($event->event_type_id == $event_type->id) ? $event_type->name : '' }} 
+                                                    @endforeach</td>
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <p>
+                                                    @if ($event->status == 0)
+                                                        <h6 class="btn btn-warning btn-sm btn-disabled text-dark">Pending</h6>
+                                                    @elseif($event->status == 1)
+                                                        <h6 class="badge badge-success text-wrap m-0">Accepted</h6>
+                                                    @elseif($event->status == 2)
+                                                        <h6 class="badge badge-danger text-wrap m-0">Rejected</h6>
+                                                    @elseif($event->status == 3)
+                                                        <h6 class="badge badge-dark text-wrap m-0">Closed</h6>
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
      </div>
-     @push('scripts')
-     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
-     <script>
-         $(document).ready( function () {
-             $('#user_table').DataTable();
-         } );
-     </script>
-     @endpush
 </x-app-layout>
