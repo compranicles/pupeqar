@@ -6260,6 +6260,10 @@ button.bg-dark:focus {
   border-color: #343a40 !important;
 }
 
+.border-maroon {
+  border-color: #800000 !important;
+}
+
 .border-white {
   border-color: #fff !important;
 }

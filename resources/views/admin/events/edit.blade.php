@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Events Attended') }}
+            {{ __('Edit Event') }}
         </h2>
     </x-slot>
   
@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('professor.events.update', $event->id) }}" method="POST">
+                        <form action="{{ route('admin.events.update', $event->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -100,7 +100,7 @@
                             </div>  
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
-                                  <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
+                                  <a href="{{ route('admin.events.index') }}" class="btn btn-outline-danger mr-2">
                                     CANCEL
                                   </a>
                                   <x-jet-button>

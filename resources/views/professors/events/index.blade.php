@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Events Attended') }}
+            {{ __('Events') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -14,70 +14,110 @@
                                 {{ $message }}
                             </div>
                         @endif
-                        <div class="mb-3 ml-1">
-                            <div class="d-inline mr-2">
-                                <a href="{{ route('professor.events.create') }}" class="btn btn-success">Add New Events</a>
-                            </div>
-            
-                        </div>  
-                        <hr>
-                        <table class="table" id="user_table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($events as $event)
-                                    <tr>
-                                        <td>{{ $event->id }}</td>
-                                        <td>{{ $event->name }}</td>
-                                        <td>@foreach ($event_types as $event_type)
-                                            {{ ($event->event_type_id == $event_type->id) ? $event_type->name : '' }} 
-                                            @endforeach</td>
-                                        <td>{{ $event->start_date }}</td>
-                                        <td>{{ $event->end_date }}</td>
-                                        <td>
-                                            @if ($event->status == 0)
-                                              <p class="badge badge-warning text-wrap m-0"><i>Pending</i></p>
-                                            @elseif($event->status == 1)
-                                              <p class="badge badge-success text-wrap m-0"><i>Accepted</i> </p>
-                                            @elseif($event->status == 2)
-                                              <p class="badge badge-danger text-wrap m-0"><i>Rejected</i></p>
-                                            @elseif($event->status == 3)
-                                              <p class="badge badge-dark text-wrap m-0"><i>Closed</i></p>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <form action="{{ route('admin.users.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <div class="btn-group" role="group">
-                                                    <a href="{{ route('professor.events.edit', $event->id) }}"  class="btn btn-primary btn-sm">Edit</a>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <form action="{{ route('professor.events.search') }}" id="search" method="GET">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-lg-8 mb-3">
+                                                <div class="d-flex flex-column">
+                                                    <x-jet-input class="{{ $errors->has('search') ? 'is-invalid' : '' }} form-control-lg" placeholder="Search event name ..."  value="{{ (isset($search) ? $search : '' ) }}" type="text" name="search" autofocus autocomplete="search" />
                                                 </div>
-                                            </form>
+                                            </div>
+                                            <div class="col-lg-2 mb-3">
+                                                <div class="d-flex flex-column">
+                                                    <x-jet-button class="btn-lg">{{ __('Search') }}</x-jet-button>
+                                                </div>
+                                            </div>
                                             
-                                        </td>
-                                    </tr>
+                                            <div class="col-lg-2 ">
+                                                <div class="d-flex flex-column text-center">
+                                                    <a href="{{ route('professor.events.create') }}" class="btn btn-outline-dark btn-lg">Add Event</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <h4 class="font-weight-bold" id="textHome" style="color:maroon">{{ $eventview }}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            @if(count($events) > 0)
+                                @foreach ($events as $event)
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="card border border-maroon rounded-left mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-xl-11 col-lg-10 col-md-10 col-sm-10 col-10">
+                                                    <h5>
+                                                        <a href="" class="text-dark"><strong>{{ $event->name }}</strong></a>
+                                                    </h5>
+                                                    
+                                                    <p class="mb-1">
+                                                        {{  date('F j, Y', strtotime($event->start_date)) }} - {{ date('F j, Y', strtotime($event->end_date)) }} <br>
+                                                        @foreach ($event_types as $event_type)
+                                                            {{ ($event->event_type_id == $event_type->id) ? $event_type->name : '' }} 
+                                                        @endforeach</td>
+                                                    </p>
+                                                    <p class="mb-1">
+                                                        <i>Created by: {{ $event->first_name." ".$event->last_name }}</i>
+                                                    </p>
+                                                    <p class="mb-2">
+                                                        @if ($event->status == 0)
+                                                            <a class="btn btn-warning btn-sm btn-disabled text-dark">Pending</a>
+                                                        @elseif($event->status == 1)
+                                                            <a class="btn btn-sm btn-success btn-disabled">Accepted</a>
+                                                        @elseif($event->status == 2)
+                                                            <a class="btn btn-sm btn-danger btn-disabled">Rejected</a>
+                                                        @elseif($event->status == 3)
+                                                            <a class="btn btn-sm btn-dark btn-disabled">Closed</a>
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                                <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-2">
+                                                    <div class="dropdown">
+                                                        <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="fas fa-ellipsis-v"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                            <form action="{{  route('professor.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                <a href="{{ route('professor.events.edit', $event->id) }}"  class="dropdown-item">Edit</a>
+                                                                <div class="dropdown-divider"></div>
+                                                                <input type="submit" class="dropdown-item text-danger" value="Delete">
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 @endforeach
-                            </tbody>
-                        </table>
+                            @else
+                                <div class="col-md-12">
+                                    <div class="card border border-maroon rounded-left">
+                                        <div class="card-body">
+                                            <div class="row text-center">
+                                                <div class="col-lg-12">
+                                                    <h3>Seems Empty...</h3>
+                                                    <h5>Add New Event <a href="{{ route('professor.events.create') }}" style="color:maroon">here...</a></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
      </div>
-     @push('scripts')
-     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
-     <script>
-         $(document).ready( function () {
-             $('#user_table').DataTable();
-         } );
-     </script>
-     @endpush
 </x-app-layout>

@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('professor.events.store') }}" method="POST">
+                        <form action="{{ route('admin.events.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-8">
@@ -104,7 +104,7 @@
                                   <button type="reset" class="reset btn btn-outline-dark">
                                       RESET
                                   </button>
-                                  <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
+                                  <a href="{{ route('admin.events.index') }}" class="btn btn-outline-danger mr-2">
                                       CANCEL
                                   </a>
                                   <x-jet-button>

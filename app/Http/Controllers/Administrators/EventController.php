@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Professors;
+namespace App\Http\Controllers\Administrators;
 
 use App\Models\Event;
 use App\Models\EventType;
@@ -22,13 +22,11 @@ class EventController extends Controller
         ->select('events.*', 'users.first_name', 'users.last_name')
         ->orderByDesc('id')->get(); 
         $event_types = EventType::all();
-        $eventview = "Recent Events";
-        return view('professors.events.index', [
+
+        return view('admin.events.index', [
             'events' => $events,
             'event_types' => $event_types,
-            'eventview' => $eventview,
         ]);
-        
     }
 
     /**
@@ -39,7 +37,7 @@ class EventController extends Controller
     public function create()
     {
         $event_types = EventType::all();
-        return view('professors.events.create')->with('event_types', $event_types);
+        return view('admin.events.create')->with('event_types', $event_types);
     }
 
     /**
@@ -72,7 +70,7 @@ class EventController extends Controller
             'created_by' => Auth::id() ?? null
         ]);
         
-        return redirect()->route('professor.events.index')->with('success_event', 'Event added successfully.');
+        return redirect()->route('admin.events.index')->with('success_event', 'Event added successfully.');
     }
 
     /**
@@ -94,14 +92,8 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-
-        /*$event_type = Event::with("eventType")
-                ->whereHas('eventType', function($query){
-                    $query->where('id', '=', 'event_type_id');
-        });
-        */
         $event_types = EventType::all();
-        return view('professors.events.edit', [
+        return view('admin.events.edit', [
             'event' => $event,
             'event_types' => $event_types
         ]);
@@ -136,7 +128,7 @@ class EventController extends Controller
             'status' => 0,
             'modified_by' => Auth::id()
         ]);
-        return redirect()->route('professor.events.index')->with('success_event', 'Event updated successfully.');
+        return redirect()->route('admin.events.index')->with('success_event', 'Event updated successfully.');
     }
 
     /**
@@ -149,25 +141,30 @@ class EventController extends Controller
     {
         $event->delete();
 
-        return redirect()->route('professor.events.index')->with('success_event', 'Event deleted successfully');
+        return redirect()->route('admin.events.index')->with('success_event', 'Event deleted successfully');
     }
 
-    public function search(Request $request){
-        $search = $request->input('search');
-        $events = Event::query()
-        ->where('name', 'LIKE', "%{$search}%")
-        ->orderByDesc('id')
-        ->get();
-        $event_types = EventType::all();
-        if($search === null){
-            return redirect()->route('professor.events.index');
-        }
-        $eventview = "Search Result for: ".$search."";
-        return view('professors.events.index', [
-            'events' => $events,
-            'event_types' => $event_types,
-            'eventview' => $eventview,
-            'search' => $search,
+    public function accept(Event $event){
+        $event->update([
+            'status' => 1
         ]);
+        return redirect()->route('admin.events.index')->with('success_event', 'Event accepted successfully');
+
+    }
+
+    public function reject(Event $event){
+        $event->update([
+            'status' => 2
+        ]);
+        return redirect()->route('admin.events.index')->with('success_event', 'Event rejected successfully');
+
+    }
+    
+    public function close(Event $event){
+        $event->update([
+            'status' => 3
+        ]);
+        return redirect()->route('admin.events.index')->with('success_event', 'Event closed successfully');
+
     }
 }

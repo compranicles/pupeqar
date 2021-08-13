@@ -29,6 +29,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('submissions', \App\Http\Controllers\Hap\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
+        Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         Route::resource('submissions', \App\Http\Controllers\Professors\SubmissionController::class);
         Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
     });
@@ -36,9 +37,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
         Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\Administrators\AnnouncementController::class, 'hide'])->name('announcements.hide');
         Route::get('/announcements/activate/{announcement}', [\App\Http\Controllers\Administrators\AnnouncementController::class, 'activate'])->name('announcements.activate');
+        Route::get('/events/accept/{event}', [\App\Http\Controllers\Administrators\EventController::class, 'accept'])->name('events.accept');
+        Route::get('/events/reject/{event}', [\App\Http\Controllers\Administrators\EventController::class, 'reject'])->name('events.reject');
+        Route::get('/events/close/{event}', [\App\Http\Controllers\Administrators\EventController::class, 'close'])->name('events.close');
         Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
         Route::resource('announcements', \App\Http\Controllers\Administrators\AnnouncementController::class);
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
+        Route::resource('events', \App\Http\Controllers\Administrators\EventController::class);
         Route::resource('event_types', \App\Http\Controllers\Administrators\EventTypeController::class);
     });
 });

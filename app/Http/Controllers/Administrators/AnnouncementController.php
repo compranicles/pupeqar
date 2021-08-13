@@ -15,7 +15,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::where('status', 1)->orWhere('status', 2)->orderByDesc('created_at')->get();
+        $announcements = Announcement::orderByDesc('created_at')->get();
         return view('admin.announcements.index', compact('announcements'));
     }
 
@@ -110,9 +110,7 @@ class AnnouncementController extends Controller
      */
     public function destroy(Announcement $announcement)
     {
-        $announcement->update([
-            'status' => 0,
-        ]);
+        $announcement->delete();
         return redirect()->route('admin.announcements.index')->with('success','Announcement deleted successfully.');
     }
 
