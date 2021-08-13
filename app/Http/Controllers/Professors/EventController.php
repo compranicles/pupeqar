@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Professors;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\EventType;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -24,6 +25,7 @@ class EventController extends Controller
             'event_types' => $event_types,
             'eventview' => $eventview,
         ]);
+        
     }
 
     /**
@@ -48,9 +50,6 @@ class EventController extends Controller
         $request->validate([
             'event_type' => ['required'],
             'event_name' => ['required'],
-            'description' => ['required'],
-            'organizer' => ['required'],
-            'sponsor' => ['required'],
             'date_started' => ['required'],
             'date_ended' => ['required'],
             'location' => ['required']
@@ -65,8 +64,11 @@ class EventController extends Controller
             'start_date' => $request->input('date_started'),
             'end_date' => $request->input('date_ended'),
             'location' => $request->input('location'),
-            'status' => 0
+            'status' => 0,
+            'modified_by' => Auth::id() ?? null,
+            'created_by' => Auth::id() ?? null
         ]);
+        
         return redirect()->route('professor.events.index')->with('success_event', 'Event added successfully.');
     }
 
@@ -114,9 +116,6 @@ class EventController extends Controller
         $request->validate([
             'event_type' => ['required'],
             'event_name' => ['required'],
-            'description' => ['required'],
-            'organizer' => ['required'],
-            'sponsor' => ['required'],
             'date_started' => ['required'],
             'date_ended' => ['required'],
             'location' => ['required']
@@ -131,7 +130,8 @@ class EventController extends Controller
             'start_date' => $request->input('date_started'),
             'end_date' => $request->input('date_ended'),
             'location' => $request->input('location'),
-            'status' => 0
+            'status' => 0,
+            'modified_by' => Auth::id()
         ]);
         return redirect()->route('professor.events.index')->with('success_event', 'Event updated successfully.');
     }
@@ -142,9 +142,11 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
-        
+        $event->delete();
+
+        return redirect()->route('professor.events.index')->with('success', 'Event deleted successfully');
     }
 
     public function search(Request $request){

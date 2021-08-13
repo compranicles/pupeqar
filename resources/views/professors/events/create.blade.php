@@ -17,7 +17,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Event Name') }}" />
 
-                                        <x-jet-input class="{{ $errors->has('event_name') ? 'is-invalid' : '' }}" type="text" name="event_name" autofocus required autocomplete="event_name" />
+                                        <x-jet-input :value="old('event_name')" class="{{ $errors->has('event_name') ? 'is-invalid' : '' }}" type="text" name="event_name" autofocus autocomplete="event_name" />
 
                                         <x-jet-input-error for="event_name"></x-jet-input-error>
                                     </div>
@@ -26,12 +26,14 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Event Type') }}" />
 
-                                        <select name="event_type" id="event_type" class="form-control {{ $errors->has('event_type') ? 'is-invalid' : '' }}" required autofocus autocomplete="event_type">
+                                        <select name="event_type" id="event_type" class="form-control {{ $errors->has('event_type') ? 'is-invalid' : '' }}" autofocus autocomplete="event_type">
                                             <option value="" selected disabled>Select Event Type</option>
                                             @foreach($event_types as $event_type)
-                                            <option value="{{ $event_type->id }}">{{ $event_type->name }}</option>    
+                                            <option value="{{ $event_type->id }}" {{ ((old('event_type') == $event_type->id) ? 'selected' : '' )}}>{{ $event_type->name }}</option>    
                                             @endforeach
                                         </select>
+
+                                        <x-jet-input-error for="event_type"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
@@ -40,7 +42,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Description') }}" />
 
-                                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" cols="30" rows="5" autofocus autocomplete="description"></textarea>
+                                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" cols="30" rows="5" autofocus autocomplete="description">{{ old('description') }}</textarea>
 
                                         <x-jet-input-error for="description"></x-jet-input-error>
                                     </div>
@@ -49,7 +51,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Organizer') }}" />
 
-                                        <textarea class="form-control {{ $errors->has('organizer') ? 'is-invalid' : '' }}" name="organizer" cols="30" rows="5" autofocus autocomplete="organizer"></textarea>
+                                        <textarea class="form-control {{ $errors->has('organizer') ? 'is-invalid' : '' }}" name="organizer" cols="30" rows="5" autofocus autocomplete="organizer">{{ old('organizer') }}</textarea>
 
                                         <x-jet-input-error for="organizer"></x-jet-input-error>
                                     </div>
@@ -58,7 +60,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Sponsor') }}" />
 
-                                        <textarea class="form-control {{ $errors->has('sponsor') ? 'is-invalid' : '' }}" name="sponsor" cols="30" rows="5" autofocus autocomplete="sponsor"></textarea>
+                                        <textarea class="form-control {{ $errors->has('sponsor') ? 'is-invalid' : '' }}" name="sponsor" cols="30" rows="5" autofocus autocomplete="sponsor">{{ old('sponsor') }}</textarea>
 
                                         <x-jet-input-error for="sponsor"></x-jet-input-error>
                                     </div>
@@ -69,7 +71,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Date Started') }}" />
 
-                                        <x-jet-input class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" required autofocus autocomplete="date_started" />
+                                        <x-jet-input :value="old('date_started')" class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" autofocus autocomplete="date_started" />
 
                                         <x-jet-input-error for="date_started"></x-jet-input-error>
                                     </div>
@@ -78,16 +80,16 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Date Ended') }}" />
 
-                                        <x-jet-input class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" required autofocus autocomplete="date_ended" />
+                                        <x-jet-input :value="old('date_ended')" class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" autofocus autocomplete="date_ended" />
 
-                                        <x-jet-input-error for="date_started"></x-jet-input-error>
+                                        <x-jet-input-error for="date_ended"></x-jet-input-error>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Venue') }}" />
 
-                                        <x-jet-input class="{{ $errors->has('location') ? 'is-invalid' : '' }}" type="text" name="location" required autofocus autocomplete="location" />
+                                        <x-jet-input :value="old('location')" class="{{ $errors->has('location') ? 'is-invalid' : '' }}" type="text" name="location" autofocus autocomplete="location" />
 
                                         <x-jet-input-error for="location"></x-jet-input-error>
                                     </div>
@@ -100,8 +102,11 @@
                             <div class="mb-0">
                               <div class="d-flex justify-content-end align-items-baseline">
                                   <button type="reset" class="reset btn btn-outline-dark">
-                                      Reset
+                                      RESET
                                   </button>
+                                  <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
+                                      CANCEL
+                                  </a>
                                   <x-jet-button>
                                       {{ __('Create') }}
                                   </x-jet-button>

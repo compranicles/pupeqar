@@ -26,7 +26,9 @@ class Event extends Model
         'end_date',
         'location',
         'status',
-        'event_type_id'
+        'event_type_id',
+        'created_by',
+        'modified_by'
     ];
 
     public function eventType() {
