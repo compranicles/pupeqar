@@ -70,7 +70,7 @@
                                                         @if ($event->status == 0)
                                                             <a class="btn btn-warning btn-sm btn-disabled text-dark">Pending</a>
                                                         @elseif($event->status == 1)
-                                                            <a class="btn btn-sm btn-success btn-disabled text-dark">Accepted</a>
+                                                            <a class="btn btn-sm btn-success btn-disabled">Accepted</a>
                                                         @elseif($event->status == 2)
                                                             <a class="btn btn-sm btn-danger btn-disabled">Rejected</a>
                                                         @elseif($event->status == 3)

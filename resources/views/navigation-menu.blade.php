@@ -32,6 +32,11 @@
                     </x-jet-nav-link>
                 </li>
                 <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('admin.events.index') }}" :active="request()->routeIs('admin.events.*')">
+                        {{ __('Events') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('admin.event_types.index') }}" :active="request()->routeIs('admin.event_types.*')">
                         {{ __('Event Types') }}
                     </x-jet-nav-link>
