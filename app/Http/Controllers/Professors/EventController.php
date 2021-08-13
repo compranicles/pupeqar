@@ -17,7 +17,10 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::take(20)->orderByDesc('id')->get(); 
+        $events = Event::query()
+        ->join('users', 'users.id', '=','events.created_by')
+        ->select('events.*', 'users.first_name', 'users.last_name')
+        ->orderByDesc('id')->get(); 
         $event_types = EventType::all();
         $eventview = "Recent Events";
         return view('professors.events.index', [
@@ -146,7 +149,7 @@ class EventController extends Controller
     {
         $event->delete();
 
-        return redirect()->route('professor.events.index')->with('success', 'Event deleted successfully');
+        return redirect()->route('professor.events.index')->with('success_event', 'Event deleted successfully');
     }
 
     public function search(Request $request){

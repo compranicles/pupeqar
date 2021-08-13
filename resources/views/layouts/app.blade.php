@@ -18,6 +18,7 @@
         @livewireStyles
 
         <!-- Scripts -->
+        <script src="https://kit.fontawesome.com/b22b0c1d67.js" crossorigin="anonymous"></script>
         <script src="{{ mix('js/app.js') }}"></script>
     </head>
     <body class="font-sans antialiased bg-light">

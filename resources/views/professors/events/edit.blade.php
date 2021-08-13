@@ -100,8 +100,8 @@
                             </div>  
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
-                                  <a href="" class="btn btn-outline-dark mr-2">
-                                    Cancel
+                                  <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
+                                    CANCEL
                                   </a>
                                   <x-jet-button>
                                       {{ __('Edit') }}
