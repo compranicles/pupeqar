@@ -26,13 +26,13 @@
                                             </div>
                                             <div class="col-lg-2 mb-3">
                                                 <div class="d-flex flex-column">
-                                                    <x-jet-button class="btn-lg">{{ __('Search') }}</x-jet-button>
+                                                    <x-jet-button class="btn-lg"><i class="fas fa-search"></i> {{ __('Search') }}</x-jet-button>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-lg-2 ">
                                                 <div class="d-flex flex-column text-center">
-                                                    <a href="{{ route('professor.events.create') }}" class="btn btn-outline-dark btn-lg">Add Event</a>
+                                                    <a href="{{ route('professor.events.create') }}" class="btn btn-success btn-lg"><i class="fas fa-plus"></i> Add Event</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,9 +52,9 @@
                                     <div class="card border border-maroon rounded-left mb-3">
                                         <div class="card-body">
                                             <div class="row">
-                                                <div class="col-xl-11 col-lg-10 col-md-10 col-sm-10 col-10">
+                                                <div class="col-12">
                                                     <h5>
-                                                        <a href="" class="text-dark"><strong>{{ $event->name }}</strong></a>
+                                                        <a href="{{ route('professor.events.submissions.index', $event->id) }}" class="text-dark"><strong>{{ $event->name }}</strong></a>
                                                     </h5>
                                                     
                                                     <p class="mb-1">
@@ -68,7 +68,7 @@
                                                     </p>
                                                     <p class="mb-2">
                                                         @if ($event->status == 0)
-                                                            <a class="btn btn-warning btn-sm btn-disabled text-dark">Pending</a>
+                                                            <a class="btn btn-warning btn-sm btn-disabled text-dark">Not Reviewed</a>
                                                         @elseif($event->status == 1)
                                                             <a class="btn btn-sm btn-success btn-disabled">Accepted</a>
                                                         @elseif($event->status == 2)
@@ -77,22 +77,6 @@
                                                             <a class="btn btn-sm btn-dark btn-disabled">Closed</a>
                                                         @endif
                                                     </p>
-                                                </div>
-                                                <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-2">
-                                                    <div class="dropdown">
-                                                        <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                            <form action="{{  route('professor.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                <a href="{{ route('professor.events.edit', $event->id) }}"  class="dropdown-item">Edit</a>
-                                                                <div class="dropdown-divider"></div>
-                                                                <input type="submit" class="dropdown-item text-danger" value="Delete">
-                                                            </form>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,4 +104,13 @@
             </div>
         </div>
      </div>
+     @push('scripts')
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
+        </script>
+    @endpush
 </x-app-layout>

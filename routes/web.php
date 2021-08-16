@@ -23,6 +23,13 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard', compact('announcements'));
 })->name('dashboard');
 
+Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
+Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
+// Route::delete('removeimage', [\App\Http\Controllers\UploadController::class, 'destroyImage']);
+
+Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
+Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
@@ -30,8 +37,9 @@ Route::group(['middleware' => 'auth'], function() {
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
         Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
-        Route::resource('submissions', \App\Http\Controllers\Professors\SubmissionController::class);
+        Route::post('submissions/delete/{event}', [\App\Http\Controllers\Professors\SubmissionController::class, 'deleteFile'])->name('file.delete');
         Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
+        Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
