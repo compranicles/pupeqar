@@ -77,6 +77,6 @@
         $(document).ready(function() {
             $('#message').markdownToolbar();
         });
-        </script>
+    </script>
     @endpush
 </x-app-layout>

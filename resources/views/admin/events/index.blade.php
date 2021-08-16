@@ -46,7 +46,7 @@
                                     <td>{{ $event->created_at }}</td>
                                     <td>
                                         @if ($event->status == 0)
-                                            <a class="btn btn-warning btn-sm btn-disabled text-dark">Pending</a>
+                                            <a class="btn btn-warning btn-sm btn-disabled text-dark">Not Reviewed</a>
                                         @elseif($event->status == 1)
                                             <a class="btn btn-sm btn-success btn-disabled">Accepted</a>
                                         @elseif($event->status == 2)

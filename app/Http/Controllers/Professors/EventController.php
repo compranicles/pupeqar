@@ -81,7 +81,7 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Event $event)
     {
         //
     }
@@ -136,7 +136,7 @@ class EventController extends Controller
             'status' => 0,
             'modified_by' => Auth::id()
         ]);
-        return redirect()->route('professor.events.index')->with('success_event', 'Event updated successfully.');
+        return redirect()->route('professor.events.submissions.index', $event)->with('success_event', 'Event updated successfully.');
     }
 
     /**
