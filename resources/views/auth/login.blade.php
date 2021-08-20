@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center">
                         <h1 class="text-center" id="textHome">
-                            <span id="pupTaguig">PUP-Taguig</span><br><span class="h2">Faculty Quarterly Report System</span>
+                            <span id="pupTaguig">PUP-Taguig</span><br><span class="h2">Quarterly Accomplishment Report System</span>
                         </h1>
                     </div>
                 </div>

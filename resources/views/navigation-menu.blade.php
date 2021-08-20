@@ -3,7 +3,7 @@
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="/dashboard" style="color:maroon">
             <img src="{{ asset('img/android-chrome-192x192.png') }}" width="36" class="mr-1">
-            PUPT-FQRS
+            PUPT-QARS
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -27,6 +27,11 @@
                     </x-jet-nav-link>
                 </li>
                 <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('admin.maintenances.index') }}" :active="request()->routeIs('admin.maintenances.*')">
+                        {{ __('Maintenances') }}
+                    </x-jet-nav-link>
+                </li>
+                {{-- <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('admin.announcements.index') }}" :active="request()->routeIs('admin.announcements.*')">
                         {{ __('Announcements') }}
                     </x-jet-nav-link>
@@ -40,7 +45,7 @@
                     <x-jet-nav-link href="{{ route('admin.event_types.index') }}" :active="request()->routeIs('admin.event_types.*')">
                         {{ __('Event Types') }}
                     </x-jet-nav-link>
-                </li>
+                </li> --}}
                 @endif
 
                 @if (auth()->user()->role_id == 3)

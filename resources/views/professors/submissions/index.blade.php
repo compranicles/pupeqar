@@ -74,22 +74,24 @@
                                     </tbody>
                                 </table>        
                             </div>
-                            <div class="col-1 ml-n3 mt-n2">
-                                <div class="dropdown">
-                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                        <form action="{{  route('professor.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('professor.events.edit', $event->id) }}"  class="dropdown-item"><i class="far fa-edit"></i> Edit</a>
-                                            <div class="dropdown-divider"></div>
-                                            <button type="submit" class="dropdown-item text-danger"><i class="far fa-trash-alt"></i> Delete</button>
-                                        </form>
+                            @if (\Auth::id() == $event->created_by)
+                                <div class="col-1 ml-n3 mt-n2">
+                                    <div class="dropdown">
+                                        <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                            <form action="{{  route('professor.events.destroy', $event->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <a href="{{ route('professor.events.edit', $event->id) }}"  class="dropdown-item"><i class="far fa-edit"></i> Edit</a>
+                                                <div class="dropdown-divider"></div>
+                                                <button type="submit" class="dropdown-item text-danger"><i class="far fa-trash-alt"></i> Delete</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

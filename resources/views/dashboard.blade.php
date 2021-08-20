@@ -12,22 +12,22 @@
                     <div class="mx-3 my-3">
                         <div>
                             <img src="{{ asset('img/android-chrome-192x192.png') }}" width="100" class="d-inline mr-3 mb-3">
-                            <h1 class="d-inline align-middle "><b style="white-space: nowrap;">PUP-Taguig</b> Faculty Quarterly Report System</h1>
+                            <h1 class="d-inline align-middle "><b style="white-space: nowrap;">PUP-Taguig</b> Quarterly Accomplishment Report System</h1>
                         </div>
     
                         <h3 class="h3 my-4">
-                            Welcome to PUPT-FQRS!
+                            Welcome to PUPT-QARS!
                         </h3>
 
                         <div class="text-muted">
-                            The PUP-Taguig Faculty Quarterly Report System aims to meet the end users’ requirements which are 
+                            The PUP-Taguig Quarterly Accomplishment Report System aims to meet the end users’ requirements which are 
                             (1) to automate and ease the manual process of storing event-related and accomplishment documents of the faculty, 
                             (2) to compile and combine the reports of each faculty, and (3) to generate the overall quarterly faculty reports 
                             for the PUPT head of academic programs (HAP). 
                         </div>
                     </div>
                 </div>
-                <div class="row g-0">
+                {{-- <div class="row g-0">
                     <div class="col-md-12">
                         <div class="card rounded-0 bg-light border-top">
                             <div class="card-header">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

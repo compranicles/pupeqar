@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>PUPT-QARS</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -17,12 +17,12 @@
         <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
         <link href="{{ asset('lightbox2/dist/css/lightbox.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <style>
             .filepond--item {
                 width: calc(33% - 0.5em);
             }
-        </style>
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+            </style>
 
         @livewireStyles
 
