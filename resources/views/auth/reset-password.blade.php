@@ -7,7 +7,7 @@
                     <a href="{{ route('home') }}" class="text-decoration-none">
                         <div class="d-flex flex-row">
                             <img src="{{ asset('img/logo.png') }}" alt="PUPTlogo" width="50" class="mr-2">
-                            <h3 style="color:maroon" class="mt-2" id="textHome">PUPT-FQRS</h3>
+                            <h3 style="color:maroon" class="mt-2" id="textHome">PUPT-QARS</h3>
                         </div>
                     </a>
                     <hr>

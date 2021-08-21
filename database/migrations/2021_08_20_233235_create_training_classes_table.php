@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDocumentsTable extends Migration
+class CreateTrainingClassesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('training_classes', function (Blueprint $table) {
             $table->id();
-            $table->string('filename');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('event_id')->constrained();
-            $table->integer('status');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +28,6 @@ class CreateDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('training_classes');
     }
 }
