@@ -173,6 +173,142 @@ Route::group(['middleware' => 'auth'], function() {
             'update' => 'maintenances.researchlevel.update',
             'destroy' => 'maintenances.researchlevel.destroy'
         ]);
+        Route::resource('index-platforms', \App\Http\Controllers\Maintenances\IndexPlatformController::class)->names([
+            'index' => 'maintenances.indexplatform',
+            'create' => 'maintenances.indexplatform.create',
+            'store' => 'maintenances.indexplatform.store',
+            'edit' => 'maintenances.indexplatform.edit',
+            'update' => 'maintenances.indexplatform.update',
+            'destroy' => 'maintenances.indexplatform.destroy'
+        ]);
+        Route::resource('invention-classifications', \App\Http\Controllers\Maintenances\InventionClassController::class)->names([
+            'index' => 'maintenances.inventionclass',
+            'create' => 'maintenances.inventionclass.create',
+            'store' => 'maintenances.inventionclass.store',
+            'edit' => 'maintenances.inventionclass.edit',
+            'update' => 'maintenances.inventionclass.update',
+            'destroy' => 'maintenances.inventionclass.destroy'
+        ]);
+        Route::resource('invention-status', \App\Http\Controllers\Maintenances\InventionStatusController::class)->names([
+            'index' => 'maintenances.inventionstatus',
+            'create' => 'maintenances.inventionstatus.create',
+            'store' => 'maintenances.inventionstatus.store',
+            'edit' => 'maintenances.inventionstatus.edit',
+            'update' => 'maintenances.inventionstatus.update',
+            'destroy' => 'maintenances.inventionstatus.destroy'
+        ]);
+        Route::resource('service-consultant', \App\Http\Controllers\Maintenances\ServiceConsultantController::class)->names([
+            'index' => 'maintenances.serviceconsultant',
+            'create' => 'maintenances.serviceconsultant.create',
+            'store' => 'maintenances.serviceconsultant.store',
+            'edit' => 'maintenances.serviceconsultant.edit',
+            'update' => 'maintenances.serviceconsultant.update',
+            'destroy' => 'maintenances.serviceconsultant.destroy'
+        ]);
+        Route::resource('service-conference', \App\Http\Controllers\Maintenances\ServiceConferenceController::class)->names([
+            'index' => 'maintenances.serviceconference',
+            'create' => 'maintenances.serviceconference.create',
+            'store' => 'maintenances.serviceconference.store',
+            'edit' => 'maintenances.serviceconference.edit',
+            'update' => 'maintenances.serviceconference.update',
+            'destroy' => 'maintenances.serviceconference.destroy'
+        ]);
+        Route::resource('service-journal', \App\Http\Controllers\Maintenances\ServiceJournalController::class)->names([
+            'index' => 'maintenances.servicejournal',
+            'create' => 'maintenances.servicejournal.create',
+            'store' => 'maintenances.servicejournal.store',
+            'edit' => 'maintenances.servicejournal.edit',
+            'update' => 'maintenances.servicejournal.update',
+            'destroy' => 'maintenances.servicejournal.destroy'
+        ]);
+        Route::resource('service-nature', \App\Http\Controllers\Maintenances\ServiceNatureController::class)->names([
+            'index' => 'maintenances.servicenature',
+            'create' => 'maintenances.servicenature.create',
+            'store' => 'maintenances.servicenature.store',
+            'edit' => 'maintenances.servicenature.edit',
+            'update' => 'maintenances.servicenature.update',
+            'destroy' => 'maintenances.servicenature.destroy'
+        ]);
+        Route::resource('extension-nature', \App\Http\Controllers\Maintenances\ExtensionNatureController::class)->names([
+            'index' => 'maintenances.extensionnature',
+            'create' => 'maintenances.extensionnature.create',
+            'store' => 'maintenances.extensionnature.store',
+            'edit' => 'maintenances.extensionnature.edit',
+            'update' => 'maintenances.extensionnature.update',
+            'destroy' => 'maintenances.extensionnature.destroy'
+        ]);
+        Route::resource('extension-classifications', \App\Http\Controllers\Maintenances\ExtensionClassController::class)->names([
+            'index' => 'maintenances.extensionclass',
+            'create' => 'maintenances.extensionclass.create',
+            'store' => 'maintenances.extensionclass.store',
+            'edit' => 'maintenances.extensionclass.edit',
+            'update' => 'maintenances.extensionclass.update',
+            'destroy' => 'maintenances.extensionclass.destroy'
+        ]);
+        Route::resource('extension-status', \App\Http\Controllers\Maintenances\ExtensionStatusController::class)->names([
+            'index' => 'maintenances.extensionstatus',
+            'create' => 'maintenances.extensionstatus.create',
+            'store' => 'maintenances.extensionstatus.store',
+            'edit' => 'maintenances.extensionstatus.edit',
+            'update' => 'maintenances.extensionstatus.update',
+            'destroy' => 'maintenances.extensionstatus.destroy'
+        ]);
+        Route::resource('partner-types', \App\Http\Controllers\Maintenances\PartnerTypeController::class)->names([
+            'index' => 'maintenances.partnertype',
+            'create' => 'maintenances.partnertype.create',
+            'store' => 'maintenances.partnertype.store',
+            'edit' => 'maintenances.partnertype.edit',
+            'update' => 'maintenances.partnertype.update',
+            'destroy' => 'maintenances.partnertype.destroy'
+        ]);
+        Route::resource('partner-types', \App\Http\Controllers\Maintenances\PartnerTypeController::class)->names([
+            'index' => 'maintenances.partnertype',
+            'create' => 'maintenances.partnertype.create',
+            'store' => 'maintenances.partnertype.store',
+            'edit' => 'maintenances.partnertype.edit',
+            'update' => 'maintenances.partnertype.update',
+            'destroy' => 'maintenances.partnertype.destroy'
+        ]);
+        Route::resource('collaboration-nature', \App\Http\Controllers\Maintenances\CollabNatureController::class)->names([
+            'index' => 'maintenances.collabnature',
+            'create' => 'maintenances.collabnature.create',
+            'store' => 'maintenances.collabnature.store',
+            'edit' => 'maintenances.collabnature.edit',
+            'update' => 'maintenances.collabnature.update',
+            'destroy' => 'maintenances.collabnature.destroy'
+        ]);
+        Route::resource('collaboration-deliverable', \App\Http\Controllers\Maintenances\CollabDeliverController::class)->names([
+            'index' => 'maintenances.collabdeliver',
+            'create' => 'maintenances.collabdeliver.create',
+            'store' => 'maintenances.collabdeliver.store',
+            'edit' => 'maintenances.collabdeliver.edit',
+            'update' => 'maintenances.collabdeliver.update',
+            'destroy' => 'maintenances.collabdeliver.destroy'
+        ]);
+        Route::resource('target-beneficiaries', \App\Http\Controllers\Maintenances\TargetBeneficiaryController::class)->names([
+            'index' => 'maintenances.targetbeneficiary',
+            'create' => 'maintenances.targetbeneficiary.create',
+            'store' => 'maintenances.targetbeneficiary.store',
+            'edit' => 'maintenances.targetbeneficiary.edit',
+            'update' => 'maintenances.targetbeneficiary.update',
+            'destroy' => 'maintenances.targetbeneficiary.destroy'
+        ]);
+        Route::resource('engagement-nature', \App\Http\Controllers\Maintenances\EngageNatureController::class)->names([
+            'index' => 'maintenances.engagenature',
+            'create' => 'maintenances.engagenature.create',
+            'store' => 'maintenances.engagenature.store',
+            'edit' => 'maintenances.engagenature.edit',
+            'update' => 'maintenances.engagenature.update',
+            'destroy' => 'maintenances.engagenature.destroy'
+        ]);
+        Route::resource('faculty-involvement', \App\Http\Controllers\Maintenances\FacultyInvolveController::class)->names([
+            'index' => 'maintenances.facultyinvolve',
+            'create' => 'maintenances.facultyinvolve.create',
+            'store' => 'maintenances.facultyinvolve.store',
+            'edit' => 'maintenances.facultyinvolve.edit',
+            'update' => 'maintenances.facultyinvolve.update',
+            'destroy' => 'maintenances.facultyinvolve.destroy'
+        ]);
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
         // Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\Administrators\AnnouncementController::class, 'hide'])->name('announcements.hide');
         // Route::get('/announcements/activate/{announcement}', [\App\Http\Controllers\Administrators\AnnouncementController::class, 'activate'])->name('announcements.activate');
