@@ -53,12 +53,12 @@
                     <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
                         {{ __('Submissions') }}
                     </x-jet-nav-link>
-                </li> --}}
+                </li>
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('professor.events.index') }}" :active="request()->routeIs('professor.events.*')">
                         {{ __('Events') }}
                     </x-jet-nav-link>
-                </li>
+                </li> --}}
                 @endif
             </ul>
             
