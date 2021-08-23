@@ -49,6 +49,11 @@
                 @endif
 
                 @if (auth()->user()->role_id == 3)
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
+                        {{ __('Submissions') }}
+                    </x-jet-nav-link>
+                </li>
                 {{-- <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
                         {{ __('Submissions') }}

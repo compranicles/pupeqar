@@ -9,6 +9,12 @@
             <div class="col-lg-6 mb-3 text-center">
                 <div class="card">
                     
+                        <a href="{{ route('admin.maintenances.department') }}" class="btn  btn-outline-dark">Departments</a>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-3 text-center">
+                <div class="card">
+                    
                         <a href="{{ route('admin.maintenances.accrelevel') }}" class="btn  btn-outline-dark">Program Accreditation Level...</a>
                 </div>
             </div>

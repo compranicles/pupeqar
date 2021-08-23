@@ -18,11 +18,6 @@
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
         <link href="{{ asset('lightbox2/dist/css/lightbox.css') }}" rel="stylesheet" />
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-        <style>
-            .filepond--item {
-                width: calc(33% - 0.5em);
-            }
-            </style>
 
         @livewireStyles
 

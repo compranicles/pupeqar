@@ -36,15 +36,34 @@ Route::group(['middleware' => 'auth'], function() {
         // Route::resource('submissions', \App\Http\Controllers\Hap\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
-        Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
-        Route::post('submissions/delete/{event}', [\App\Http\Controllers\Professors\SubmissionController::class, 'deleteFile'])->name('file.delete');
-        Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
-        Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);
+        Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('submissions.index');
+        Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('submissions.select');
+        Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
+            'index' => 'submissions.ongoingadvanced',
+            'create' => 'submissions.ongoingadvanced.create',
+            'store' => 'submissions.ongoingadvanced.store',
+            'show' => 'submissions.ongoingadvanced.show',
+            'edit' => 'submissions.ongoingadvanced.edit',
+            'update' => 'submissions.ongoingadvanced.update',
+            'destroy' => 'submissions.ongoingadvanced.destroy'
+        ]);
+        // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
+        // Route::post('submissions/delete/{event}', [\App\Http\Controllers\Professors\SubmissionController::class, 'deleteFile'])->name('file.delete');
+        // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
+        // Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::view('/maintenances', 'admin.maintenances.index')->name('maintenances.index');
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
         Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
+        Route::resource('departments', \App\Http\Controllers\Maintenances\DepartmentController::class)->names([
+            'index' => 'maintenances.department',
+            'create' => 'maintenances.department.create',
+            'store' => 'maintenances.department.store',
+            'edit' => 'maintenances.department.edit',
+            'update' => 'maintenances.department.update',
+            'destroy' => 'maintenances.department.destroy'
+        ]);
         Route::resource('accreditation-levels', \App\Http\Controllers\Maintenances\AccreLevelController::class)->names([
             'index' => 'maintenances.accrelevel',
             'create' => 'maintenances.accrelevel.create',

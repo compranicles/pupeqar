@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Document extends Model
+class Submission extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $primaryKey = 'id';
-    
+
     protected $fillable = [
-        'filename',
-        'submission_id'
+        'user_id',
+        'form_id',
+        'form_name',
+        'status'
     ];
- 
 }
