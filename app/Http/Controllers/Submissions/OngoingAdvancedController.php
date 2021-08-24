@@ -25,7 +25,7 @@ class OngoingAdvancedController extends Controller
      */
     public function index()
     {
-        return redirect()->route('professor.submissions.ongoingadvanced.create');
+        
     }
 
     /**

@@ -21,9 +21,9 @@
                                                 <option value="ongoingadvanced" {{ ((old('form_type') == 'ongoingadvanced') ? 'selected' : '' )}}>
                                                     A. Ongoing Advanced/Professional Study
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="facultyaward" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
                                                     B.1. Faculty Outstanding Achievements/Awards
-                                                </option>   
+                                                </option>
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
                                                     B.2. Officership/Membership in Professional Organization/s
                                                 </option>   
@@ -145,6 +145,11 @@
                                                                     Ongoing Advanced/Professional Study
                                                                 </a>
                                                                 @break
+                                                            @case('facultyaward')
+                                                                <a href="{{ route('professor.submissions.facultyaward.show', $submission->form_id) }}">
+                                                                    Faculty Outstanding Achievements/Awards
+                                                                </a>
+                                                            @break
                                                             @default
                                                         @endswitch
                                                     </td>

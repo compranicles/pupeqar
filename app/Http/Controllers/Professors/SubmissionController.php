@@ -24,7 +24,10 @@ class SubmissionController extends Controller
         switch($request->input('form_type')){
             case 'ongoingadvanced': 
                     return redirect()->route('professor.submissions.ongoingadvanced.create');
-            break;
+                break;
+            case 'facultyaward':
+                    return redirect()->route('professor.submissions.facultyaward.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

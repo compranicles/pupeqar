@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('submissions.index');
         Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('submissions.select');
         Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
+        Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -48,6 +49,15 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.ongoingadvanced.edit',
             'update' => 'submissions.ongoingadvanced.update',
             'destroy' => 'submissions.ongoingadvanced.destroy'
+        ]);
+        Route::resource('facultyaward', \App\Http\Controllers\Submissions\FacultyAwardController::class)->names([
+            'index' => 'submissions.facultyaward',
+            'create' => 'submissions.facultyaward.create',
+            'store' => 'submissions.facultyaward.store',
+            'show' => 'submissions.facultyaward.show',
+            'edit' => 'submissions.facultyaward.edit',
+            'update' => 'submissions.facultyaward.update',
+            'destroy' => 'submissions.facultyaward.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
