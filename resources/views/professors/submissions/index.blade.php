@@ -9,11 +9,6 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        @if ($message = Session::get('success_submission'))
-                            <div class="alert alert-success">
-                                {{ $message }}
-                            </div>
-                        @endif
                         <form action="{{ route('professor.submissions.select') }}" method="POST">
                             @csrf
                             <div class="row mb-n1">
@@ -109,7 +104,7 @@
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="d-flex flex-column">
-                                        <button class="btn btn-lg btn-outline-success" type="submit"><i class="fas fa-plus mr-2"></i>Create Submission</button>
+                                        <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-plus mr-2"></i>Create Submission</button>
                                     </div>   
                                 </div>
                             </div>
@@ -122,8 +117,13 @@
             <div class="col-lg-12 mb-3">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row"> 
                             <div class="col-lg-12">
+                                @if ($message = Session::get('success_submission'))
+                                    <div class="alert alert-success">
+                                        {{ $message }}
+                                    </div>
+                                @endif
                                 <div class="table-responsive">
                                     <table class="table " id="submission_table">
                                         <thead>
@@ -132,7 +132,6 @@
                                                 <th>Form Submitted</th>
                                                 <th>Date Submitted</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -167,9 +166,6 @@
                                                                 @break
                                                             @default
                                                         @endswitch
-                                                    </td>
-                                                    <td>
-                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach

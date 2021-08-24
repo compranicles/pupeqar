@@ -274,7 +274,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                {{-- <div class="d-flex justify-content-between">
                                                                     <div class="d-flex justify-content-around">
                                                                         <div class="text-truncate" style="max-width: 150px; width: 150px"></div>
                                                                         <div class="text-truncate" style="max-width: 150px; width: 150px"></div>

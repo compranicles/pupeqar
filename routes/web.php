@@ -29,6 +29,7 @@ Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy
 
 Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
 Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
+Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
@@ -38,6 +39,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
         Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('submissions.index');
         Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('submissions.select');
+        Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -48,7 +50,6 @@ Route::group(['middleware' => 'auth'], function() {
             'destroy' => 'submissions.ongoingadvanced.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
-        // Route::post('submissions/delete/{event}', [\App\Http\Controllers\Professors\SubmissionController::class, 'deleteFile'])->name('file.delete');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
         // Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);
     });

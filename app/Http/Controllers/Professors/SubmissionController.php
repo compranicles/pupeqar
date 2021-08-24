@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class SubmissionController extends Controller
-{
+{ 
     public function index()
     {
         $submissions = Submission::orderBy('created_at', 'desc')->where('deleted_at', NULL)->get();
@@ -29,4 +29,5 @@ class SubmissionController extends Controller
 
         return redirect()->route('professor.submissions.index');
     }
+
 }

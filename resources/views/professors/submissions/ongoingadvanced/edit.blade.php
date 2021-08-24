@@ -1,22 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('A. Ongoing Advanced/Professional Study Form > Create') }}
+            {{ __('A. Ongoing Advanced/Professional Study Form > Edit') }}
         </h2>
     </x-slot>
     <div class="container">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                                <a href="{{ route('professor.submissions.ongoingadvanced.show', $ongoingadvanced->id) }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
                             </div>
                         </div>
                         <hr>
-                        <form action="{{ route('professor.submissions.ongoingadvanced.store') }}" method="POST">
+                        <form action="{{ route('professor.submissions.ongoingadvanced.update', $ongoingadvanced->id) }}" method="POST">
                             @csrf
+                            @method('PUT')
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
@@ -25,7 +26,7 @@
                                         <select name="department" id="department" class="form-control custom-select {{ $errors->has('department') ? 'is-invalid' : '' }}" autofocus autocomplete="department">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" {{ ((old('department') == $department->id) ? 'selected' : '' )}}>{{ $department->name }}</option>    
+                                            <option value="{{ $department->id }}" {{ ((old('department', $ongoingadvanced->department_id) == $department->id) ? 'selected' : '' )}}>{{ $department->name }}</option>    
                                             @endforeach
                                         </select>
 
@@ -36,7 +37,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Degree/Program') }}" />
 
-                                        <x-jet-input :value="old('degree')" class="{{ $errors->has('degree') ? 'is-invalid' : '' }}" type="text" name="degree" autofocus autocomplete="degree" />
+                                        <x-jet-input :value="old('degree',  $ongoingadvanced->degree)" class="{{ $errors->has('degree') ? 'is-invalid' : '' }}" type="text" name="degree" autofocus autocomplete="degree" />
 
                                         <x-jet-input-error for="degree"></x-jet-input-error>
                                     </div>
@@ -51,7 +52,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Name of School') }}" />
 
-                                        <x-jet-input :value="old('school')" class="{{ $errors->has('school') ? 'is-invalid' : '' }}" type="text" name="school" autofocus autocomplete="school" />
+                                        <x-jet-input :value="old('school', $ongoingadvanced->school)" class="{{ $errors->has('school') ? 'is-invalid' : '' }}" type="text" name="school" autofocus autocomplete="school" />
 
                                         <x-jet-input-error for="school"></x-jet-input-error>
                                     </div>
@@ -63,7 +64,7 @@
                                         <select name="accrelevel" id="accrelevel" class="form-control custom-select {{ $errors->has('accrelevel') ? 'is-invalid' : '' }}" autofocus autocomplete="accrelevel">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($accrelevels as $accrelevel)
-                                            <option value="{{ $accrelevel->id }}" {{ ((old('accrelevel') == $accrelevel->id) ? 'selected' : '' )}}>{{ $accrelevel->name }}</option>    
+                                            <option value="{{ $accrelevel->id }}" {{ ((old('accrelevel', $ongoingadvanced->accre_level_id) == $accrelevel->id) ? 'selected' : '' )}}>{{ $accrelevel->name }}</option>    
                                             @endforeach
                                         </select>
 
@@ -83,7 +84,7 @@
                                         <select name="supporttype" id="supporttype" class="form-control custom-select {{ $errors->has('supporttype') ? 'is-invalid' : '' }}" autofocus autocomplete="supporttype">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($supporttypes as $supporttype)
-                                            <option value="{{ $supporttype->id }}" {{ ((old('supporttype') == $supporttype->id) ? 'selected' : '' )}}>{{ $supporttype->name }}</option>    
+                                            <option value="{{ $supporttype->id }}" {{ ((old('supporttype', $ongoingadvanced->support_type_id) == $supporttype->id) ? 'selected' : '' )}}>{{ $supporttype->name }}</option>    
                                             @endforeach
                                         </select>
 
@@ -94,7 +95,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Name of Sponsor/Agency/Organization') }}" />
 
-                                        <x-jet-input :value="old('sponsor')" class="{{ $errors->has('sponsor') ? 'is-invalid' : '' }}" type="text" name="sponsor" autofocus autocomplete="sponsor" />
+                                        <x-jet-input :value="old('sponsor',  $ongoingadvanced->sponsor)" class="{{ $errors->has('sponsor') ? 'is-invalid' : '' }}" type="text" name="sponsor" autofocus autocomplete="sponsor" />
 
                                         <x-jet-input-error for="sponsor"></x-jet-input-error>
                                     </div>
@@ -103,7 +104,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Amount') }}" />
 
-                                        <x-jet-input :value="old('amount')" class="{{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" autofocus autocomplete="amount" />
+                                        <x-jet-input :value="old('amount',  $ongoingadvanced->amount)" class="{{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" autofocus autocomplete="amount" />
 
                                         <x-jet-input-error for="amount"></x-jet-input-error>
                                     </div>
@@ -118,7 +119,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('From ') }}" />
 
-                                        <x-jet-input :value="old('date_started')" class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" autofocus autocomplete="date_started" />
+                                        <x-jet-input :value="old('date_started', $ongoingadvanced->date_started)" class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" autofocus autocomplete="date_started" />
 
                                         <x-jet-input-error for="date_started"></x-jet-input-error>
                                     </div>
@@ -127,14 +128,14 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('To') }}" />
 
-                                        <x-jet-input :value="old('date_ended')" class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" autofocus autocomplete="date_ended" />
+                                        <x-jet-input value="{{ old('date_ended', $ongoingadvanced->date_ended) == '' ? date('Y-m-d') : old('date_ended', $ongoingadvanced->date_ended) }}" class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" autofocus autocomplete="date_ended" />
 
                                         <x-jet-input-error for="date_ended"></x-jet-input-error>
 
                                     </div>
                                     <div class="form-check">
                                         
-                                        <x-jet-checkbox :value="old('present')" class="{{ $errors->has('present') ? 'is-invalid' : '' }}" id="present" name="present" autofocus autocomplete="present" />
+                                        <input class="{{ $errors->has('present') ? 'is-invalid' : '' }} form-check-input" id="present" name="present" type="checkbox" autofocus {{  $ongoingadvanced->present == 'on' ? 'checked' : '' }} autocomplete="present" />
                                             
                                         <x-jet-label value="{{ __('Present') }}" class="form-check-label"/>
 
@@ -151,7 +152,7 @@
                                         <select name="studystatus" id="studystatus" class="form-control custom-select {{ $errors->has('studystatus') ? 'is-invalid' : '' }}" autofocus autocomplete="studystatus">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($studystatuses as $studystatus)
-                                            <option value="{{ $studystatus->id }}" {{ ((old('studystatus') == $studystatus->id) ? 'selected' : '' )}}>{{ $studystatus->name }}</option>    
+                                            <option value="{{ $studystatus->id }}" {{ ((old('studystatus', $ongoingadvanced->study_status_id) == $studystatus->id) ? 'selected' : '' )}}>{{ $studystatus->name }}</option>    
                                             @endforeach
                                         </select>
 
@@ -162,7 +163,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Number of Units Earned') }}" />
 
-                                        <x-jet-input :value="old('unitsearned')" class="{{ $errors->has('unitsearned') ? 'is-invalid' : '' }}" type="text" name="unitsearned" autofocus autocomplete="unitsearned" />
+                                        <x-jet-input :value="old('unitsearned', $ongoingadvanced->units_earned)" class="{{ $errors->has('unitsearned') ? 'is-invalid' : '' }}" type="text" name="unitsearned" autofocus autocomplete="unitsearned" />
 
                                         <x-jet-input-error for="unitsearned"></x-jet-input-error>
                                     </div>
@@ -171,7 +172,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Number of Units Currently Enrolled') }}" />
 
-                                        <x-jet-input :value="old('unitsenrolled')" class="{{ $errors->has('unitsenrolled') ? 'is-invalid' : '' }}" type="text" name="unitsenrolled" autofocus autocomplete="unitsenrolled" />
+                                        <x-jet-input :value="old('unitsenrolled', $ongoingadvanced->units_enrolled)" class="{{ $errors->has('unitsenrolled') ? 'is-invalid' : '' }}" type="text" name="unitsenrolled" autofocus autocomplete="unitsenrolled" />
 
                                         <x-jet-input-error for="unitsenrolled"></x-jet-input-error>
                                     </div>
@@ -201,7 +202,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Description of Supporting Documents') }}" />
 
-                                        <textarea class="form-control {{ $errors->has('documentdescription') ? 'is-invalid' : '' }}" name="documentdescription" cols="30" rows="5" autofocus autocomplete="documentdescription">{{ old('documentdescription') }}</textarea>
+                                        <textarea class="form-control {{ $errors->has('documentdescription') ? 'is-invalid' : '' }}" name="documentdescription" cols="30" rows="5" autofocus autocomplete="documentdescription">{{ old('documentdescription', $ongoingadvanced->document_description) }}</textarea>
 
                                         <x-jet-input-error for="documentdescription"></x-jet-input-error>
                                     </div>
@@ -210,7 +211,7 @@
                             <hr>
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
-                                    <a href="{{ route('professor.submissions.index') }}" class="btn btn-outline-danger mr-2">
+                                    <a href="{{ route('professor.submissions.ongoingadvanced.show', $ongoingadvanced->id) }}" class="btn btn-outline-danger mr-2">
                                         CANCEL
                                     </a>
                                     <x-jet-button>
@@ -223,14 +224,102 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h5 id="textHome" style="color:maroon">Supporting Documents</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 style="color:maroon"><i class="far fa-file-alt mr-2"></i>Documents</h6>
+                                <div class="row">
+                                    @if (count($documents) > 0)
+                                        @foreach ($documents as $document)
+                                            @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document->filename)))
+                                                <div class="col-md-12 mb-3">
+                                                    <div class="card bg-light border border-maroon rounded-lg">
+                                                        <div class="card-body">
+                                                            <div class="row mb-3">
+                                                                <div class="col-md-12">
+                                                                    <div class="embed-responsive embed-responsive-1by1">
+                                                                        <iframe  src="{{ route('document.view', $document->filename) }}" width="100%" height="500px"></iframe>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <form action="{{   route('professor.ongoingadvanced.file.delete', $document->submission_id)  }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                        @csrf
+                                                                        <input type="hidden" name="filename" value="{{ $document->filename }}">
+                                                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div class="col-md-4 offset-md-4">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
+                                <div class="row">
+                                    @if(count($documents) > 0)
+                                        @foreach ($documents as $document)
+                                            @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document->filename)))
+                                                <div class="col-md-6 mb-3">
+                                                    <div class="card bg-light border border-maroon rounded-lg">
+                                                        <a href="{{ route('document.display', $document->filename) }}" data-lightbox="gallery" data-title="{{ $document->filename }}">
+                                                            <img src="{{ route('document.display', $document->filename) }}" class="card-img-top img-resize"/>
+                                                        </a>
+                                                        <div class="card-body">
+                                                            <table class="table table-sm my-n3 text-center">
+                                                                <tr>
+                                                                    <th>
+                                                                        <a href="{{ route('document.download', $document->filename) }}"  class="btn btn-success btn-sm"><i class="far fa-arrow-alt-circle-down mr-2"></i> Download</a>                                                                                    
+                                                                    </th>
+                                                                    <th>
+                                                                        <form action="{{  route('professor.ongoingadvanced.file.delete', $document->submission_id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                            @csrf
+                                                                            <input type="hidden" name="filename" value="{{ $document->filename }}">
+                                                                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt mr-2"></i> Remove</button>
+                                                                        </form>
+                                                                    </th>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <div class="col-md-4 offset-md-4">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     @push('scripts')
         <script src="{{ asset('js/litepicker.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/plugins/mobilefriendly.js"></script>
         <script>
           
-            const today = new Date();
-
             const picker = new Litepicker ({
                 element: document.getElementById('date-start'),
                 elementEnd: document.getElementById('date-end'),
@@ -253,6 +342,13 @@
             });
 
             // picker.setDateRange(today, today, false);
+        </script>
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
         </script>
         <script>
             /*
@@ -314,8 +410,16 @@
 
         </script>
         <script>
+
+            
+
             var present = document.getElementById('present');
             var toinput = document.getElementById('date-end');
+
+            if(document.getElementById("present").checked){
+                toinput.disabled = true;
+            }
+
             // when unchecked or checked, run the function
             present.onchange = function(){
                 if(this.checked){
@@ -324,6 +428,9 @@
                     toinput.disabled = false;
                 }
             }
+
+            
         </script>
+        <script src="{{ asset('lightbox2/dist/js/lightbox-plus-jquery.js') }}"></script>
     @endpush
 </x-app-layout>
