@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('submissions.select');
         Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
         Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
+        Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');
+        Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('attendanceconference.file.delete');
+        Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -58,6 +61,33 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.facultyaward.edit',
             'update' => 'submissions.facultyaward.update',
             'destroy' => 'submissions.facultyaward.destroy'
+        ]);
+        Route::resource('officership', \App\Http\Controllers\Submissions\OfficershipController::class)->names([
+            'index' => 'submissions.officership',
+            'create' => 'submissions.officership.create',
+            'store' => 'submissions.officership.store',
+            'show' => 'submissions.officership.show',
+            'edit' => 'submissions.officership.edit',
+            'update' => 'submissions.officership.update',
+            'destroy' => 'submissions.officership.destroy'
+        ]);
+        Route::resource('attendanceconference', \App\Http\Controllers\Submissions\AttendanceConferenceController::class)->names([
+            'index' => 'submissions.attendanceconference',
+            'create' => 'submissions.attendanceconference.create',
+            'store' => 'submissions.attendanceconference.store',
+            'show' => 'submissions.attendanceconference.show',
+            'edit' => 'submissions.attendanceconference.edit',
+            'update' => 'submissions.attendanceconference.update',
+            'destroy' => 'submissions.attendanceconference.destroy'
+        ]);
+        Route::resource('attendancetraining', \App\Http\Controllers\Submissions\AttendanceTrainingController::class)->names([
+            'index' => 'submissions.attendancetraining',
+            'create' => 'submissions.attendancetraining.create',
+            'store' => 'submissions.attendancetraining.store',
+            'show' => 'submissions.attendancetraining.show',
+            'edit' => 'submissions.attendancetraining.edit',
+            'update' => 'submissions.attendancetraining.update',
+            'destroy' => 'submissions.attendancetraining.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);

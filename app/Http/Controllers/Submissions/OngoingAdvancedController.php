@@ -112,6 +112,7 @@ class OngoingAdvancedController extends Controller
                     Document::create([
                         'filename' => $fileName,
                         'submission_id' => $formId,
+                        'submission_type' => 'ongoingadvanced'
                     ]);
                 }
             }
@@ -140,7 +141,9 @@ class OngoingAdvancedController extends Controller
         $accrelevel = AccreLevel::find($ongoingadvanced->accre_level_id);
         $supporttype = SupportType::find($ongoingadvanced->support_type_id);
         $studystatus = StudyStatus::find($ongoingadvanced->study_status_id);
-        $documents = Document::where('submission_id' ,$ongoingadvanced->id)->where('deleted_at', NULL)->get();
+        $documents = Document::where('submission_id' ,$ongoingadvanced->id)
+                        ->where('submission_type', 'ongoingadvanced')
+                        ->where('deleted_at', NULL)->get();
 
         return view('professors.submissions.ongoingadvanced.show', [
             'ongoingadvanced' => $ongoingadvanced,
@@ -164,7 +167,9 @@ class OngoingAdvancedController extends Controller
         $accrelevels = AccreLevel::all();
         $supporttypes = SupportType::all();
         $studystatuses = StudyStatus::all();
-        $documents = Document::where('submission_id' ,$ongoingadvanced->id)->where('deleted_at', NULL)->get();
+        $documents = Document::where('submission_id' ,$ongoingadvanced->id)
+                        ->where('submission_type', 'ongoingadvanced')
+                        ->where('deleted_at', NULL)->get();
         return view('professors.submissions.ongoingadvanced.edit', [
             'ongoingadvanced' => $ongoingadvanced,
             'departments' => $departments,
@@ -241,6 +246,7 @@ class OngoingAdvancedController extends Controller
                     Document::create([
                         'filename' => $fileName,
                         'submission_id' => $ongoingadvanced->id,
+                        'submission_type' => 'ongoingadvanced'
                     ]);
                 }
             }
@@ -257,6 +263,9 @@ class OngoingAdvancedController extends Controller
      */
     public function destroy(OngoingAdvanced $ongoingadvanced)
     {
+        Document::where('submission_id' ,$ongoingadvanced->id)
+                ->where('submission_type', 'ongoingadvanced')
+                ->where('deleted_at', NULL)->delete();
         Submission::where('form_id', $ongoingadvanced->id)->delete();
         $ongoingadvanced->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');

@@ -6,16 +6,16 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
-use App\Models\FacultyAward;
+use App\Models\Officership;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\FacultyAchievement;
+use App\Models\FacultyOfficer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class FacultyAwardController extends Controller
+class OfficershipController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class FacultyAwardController extends Controller
      */
     public function index()
     {
-        
+  
     }
 
     /**
@@ -33,14 +33,13 @@ class FacultyAwardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {   
         $departments = Department::orderBy('name')->get();
-        $facultyawards = FacultyAward::all();
+        $facultyofficers = FacultyOfficer::all();
         $levels = Level::all();
-
-        return view('professors.submissions.facultyaward.create', [
+        return view('professors.submissions.officership.create', [
             'departments' => $departments,
-            'facultyawards' => $facultyawards,
+            'facultyofficers' => $facultyofficers,
             'levels' => $levels
         ]);
     }
@@ -53,30 +52,35 @@ class FacultyAwardController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
-            'department' => 'required', 
-            'awardreceived' => 'required',
-            'awardclass' => 'required',
-            'awardbody' => 'required',
+            'department' => 'required',
+            'organization' => 'required',
+            'facultyofficer' => 'required',
+            'position' => 'required',
             'level' => 'required',
-            'venue' => 'required',
+            'organizationaddress'=> 'required',
             'date_started' => 'required',
-            'date_ended' => 'required',
             'document' => 'required',
             'documentdescription' => 'required'
         ]);
 
-        $formId = DB::table('faculty_achievements')->insertGetId([
+        if(!$request->has('present')){
+            $request->validate([
+                'date_ended' => ['required'],
+            ]);
+        }
+
+        $formId = DB::table('officerships')->insertGetId([
             'department_id' => $request->input('department'), 
-            'award_received' => $request->input('awardreceived'),
-            'faculty_award_id' => $request->input('awardclass'),
-            'award_body' => $request->input('awardbody'),
-            'level' => $request->input('level'),
-            'venue' => $request->input('venue'),
+            'organization' => $request->input('organization'),
+            'faculty_officer_id' => $request->input('facultyofficer'),
+            'position' => $request->input('position'),
+            'level_id' => $request->input('level'),
+            'organization_address' => $request->input('organizationaddress'),
             'date_started' => $request->input('date_started'),
-            'date_ended' => $request->input('date_ended'),
-            'document_description' => $request->input('documentdescription')
+            'date_ended' => $request->input('date_ended') ?? null,
+            'present' => $request->input('present') ?? null,
+            'documentdescription' => $request->input('documentdescription'),
         ]);
 
         if($request->has('document')){
@@ -95,7 +99,7 @@ class FacultyAwardController extends Controller
                     Document::create([
                         'filename' => $fileName,
                         'submission_id' => $formId,
-                        'submission_type' => 'facultyaward'
+                        'submission_type' => 'officership'
                     ]);
                 }
             }
@@ -104,7 +108,7 @@ class FacultyAwardController extends Controller
         Submission::create([
             'user_id' => Auth::id(),
             'form_id' => $formId,
-            'form_name' => 'facultyaward',
+            'form_name' => 'officership',
             'status' => 1
         ]);
 
@@ -117,19 +121,19 @@ class FacultyAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(FacultyAchievement $facultyaward)
+    public function show(Officership $officership)
     {
-        $department = Department::find($facultyaward->department_id);
-        $awardclass = FacultyAward::find($facultyaward->faculty_award_id);
-        $level = Level::find($facultyaward->level);
-        $documents = Document::where('submission_id' ,$facultyaward->id)
-                        ->where('submission_type', 'facultyaward')
+        $department = Department::find($officership->department_id);
+        $facultyofficer = FacultyOfficer::find($officership->faculty_officer_id);
+        $level = Level::find($officership->level_id);
+        $documents = Document::where('submission_id' ,$officership->id)
+                        ->where('submission_type', 'officership')
                         ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.facultyaward.show', [
-            'facultyaward' => $facultyaward,
+        return view('professors.submissions.officership.show', [
+            'officership' => $officership,
             'department' => $department,
-            'awardclass' => $awardclass,
+            'facultyofficer' => $facultyofficer,
             'level' => $level,
             'documents' => $documents,
         ]);
@@ -141,21 +145,21 @@ class FacultyAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(FacultyAchievement $facultyaward)
+    public function edit(Officership $officership)
     {
         $departments = Department::orderBy('name')->get();
-        $awardclasses = FacultyAward::all();
+        $facultyofficers = FacultyOfficer::all();
         $levels = Level::all();
-        $documents = Document::where('submission_id' ,$facultyaward->id)
-                        ->where('submission_type', 'facultyaward')
+        $documents = Document::where('submission_id' ,$officership->id)
+                        ->where('submission_type', 'officership')
                         ->where('deleted_at', NULL)->get();
-        
-        return view('professors.submissions.facultyaward.edit', [
-            'facultyaward' => $facultyaward,
+
+        return view('professors.submissions.officership.edit', [
+            'officership' => $officership,
             'departments' => $departments,
-            'awardclasses' => $awardclasses,
+            'facultyofficers' => $facultyofficers,
             'levels' => $levels,
-            'documents' => $documents,
+            'documents' => $documents
         ]);
     }
 
@@ -166,32 +170,37 @@ class FacultyAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FacultyAchievement $facultyaward)
+    public function update(Request $request, Officership $officership)
     {
         $request->validate([
-            'department' => 'required', 
-            'awardreceived' => 'required',
-            'awardclass' => 'required',
-            'awardbody' => 'required',
+            'department' => 'required',
+            'organization' => 'required',
+            'facultyofficer' => 'required',
+            'position' => 'required',
             'level' => 'required',
-            'venue' => 'required',
+            'organizationaddress'=> 'required',
             'date_started' => 'required',
-            'date_ended' => 'required',
             'document' => 'required',
             'documentdescription' => 'required'
         ]);
 
-        //Update the row
-        $facultyaward->update([
+        if(!$request->has('present')){
+            $request->validate([
+                'date_ended' => ['required'],
+            ]);
+        }
+
+        $officership->update([
             'department_id' => $request->input('department'), 
-            'award_received' => $request->input('awardreceived'),
-            'faculty_award_id' => $request->input('awardclass'),
-            'award_body' => $request->input('awardbody'),
-            'level' => $request->input('level'),
-            'venue' => $request->input('venue'),
+            'organization' => $request->input('organization'),
+            'faculty_officer_id' => $request->input('facultyofficer'),
+            'position' => $request->input('position'),
+            'level_id' => $request->input('level'),
+            'organization_address' => $request->input('organizationaddress'),
             'date_started' => $request->input('date_started'),
-            'date_ended' => $request->input('date_ended'),
-            'document_description' => $request->input('documentdescription')
+            'date_ended' => $request->input('date_ended') ?? null,
+            'present' => $request->input('present') ?? null,
+            'documentdescription' => $request->input('documentdescription'),
         ]);
 
         if($request->has('document')){
@@ -209,15 +218,14 @@ class FacultyAwardController extends Controller
 
                     Document::create([
                         'filename' => $fileName,
-                        'submission_id' => $facultyaward->id,
-                        'submission_type' => 'facultyaward'
+                        'submission_id' => $officership->id,
+                        'submission_type' => 'officership'
                     ]);
                 }
             }
         }
 
-        return redirect()->route('professor.submissions.facultyaward.show', $facultyaward->id)->with('success', 'Form updated successfully.');
-
+        return redirect()->route('professor.submissions.officership.show', $officership->id)->with('success', 'Form updated successfully.');
     }
 
     /**
@@ -226,19 +234,19 @@ class FacultyAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FacultyAchievement $facultyaward)
+    public function destroy(Officership $officership)
     {
-       Document::where('submission_id' ,$facultyaward->id)
-                ->where('submission_type', 'facultyaward')
+        Document::where('submission_id' ,$officership->id)
+                ->where('submission_type', 'officership')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $facultyaward->id)->delete();
-        $facultyaward->delete();
+        Submission::where('form_id', $officership->id)->delete();
+        $officership->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }
 
-    public function removeFileInEdit(FacultyAchievement $facultyaward, Request $request){
+    public function removeFileInEdit(Officership $officership, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
-        return redirect()->route('professor.submissions.facultyaward.edit', $facultyaward)->with('success', 'Document deleted successfully.');
+        return redirect()->route('professor.submissions.officership.edit', $officership)->with('success', 'Document deleted successfully.');
     }
 }

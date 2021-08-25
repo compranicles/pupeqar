@@ -28,6 +28,15 @@ class SubmissionController extends Controller
             case 'facultyaward':
                     return redirect()->route('professor.submissions.facultyaward.create');
                 break;
+            case 'officership':
+                    return redirect()->route('professor.submissions.officership.create');
+                break;
+            case 'attendanceconference':
+                    return redirect()->route('professor.submissions.attendanceconference.create');
+                break;
+            case 'attendancetraining':
+                    return redirect()->route('professor.submissions.attendancetraining.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

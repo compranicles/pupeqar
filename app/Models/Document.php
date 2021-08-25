@@ -15,7 +15,8 @@ class Document extends Model
     
     protected $fillable = [
         'filename',
-        'submission_id'
+        'submission_id',
+        'submission_type'
     ];
  
 }

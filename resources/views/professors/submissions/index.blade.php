@@ -21,16 +21,16 @@
                                                 <option value="ongoingadvanced" {{ ((old('form_type') == 'ongoingadvanced') ? 'selected' : '' )}}>
                                                     A. Ongoing Advanced/Professional Study
                                                 </option>   
-                                                <option value="facultyaward" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="facultyaward" {{ ((old('form_type') == "facultyaward") ? 'selected' : '' )}}>
                                                     B.1. Faculty Outstanding Achievements/Awards
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="officership" {{ ((old('form_type') == "officership") ? 'selected' : '' )}}>
                                                     B.2. Officership/Membership in Professional Organization/s
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="attendanceconference" {{ ((old('form_type') == "attendanceconference") ? 'selected' : '' )}}>
                                                     B.3.1 Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences) 
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="attendancetraining" {{ ((old('form_type') == "attendancetraining") ? 'selected' : '' )}}>
                                                     B.3.2. Attendance in Training/s
                                                 </option>   
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -150,6 +150,21 @@
                                                                     Faculty Outstanding Achievements/Awards
                                                                 </a>
                                                             @break
+                                                            @case('officership')
+                                                                <a href="{{ route('professor.submissions.officership.show', $submission->form_id) }}">
+                                                                    Officership/Membership in Professional Organization/s
+                                                                </a>
+                                                            @break
+                                                            @case('attendanceconference')
+                                                                <a href="{{ route('professor.submissions.attendanceconference.show', $submission->form_id) }}">
+                                                                    Attendance in Relevant Faculty Development Program
+                                                                </a>
+                                                            @break  
+                                                            @case('attendancetraining')
+                                                                <a href="{{ route('professor.submissions.attendancetraining.show', $submission->form_id) }}">
+                                                                    Attendance in Training/s
+                                                                </a>
+                                                            @break                                                            
                                                             @default
                                                         @endswitch
                                                     </td>

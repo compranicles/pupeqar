@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('A. Ongoing Advanced/Professional Study Form > Create') }}
+            {{ __($header) }}
         </h2>
     </x-slot>
     <div class="container">
@@ -15,7 +15,7 @@
                             </div>
                         </div>
                         <hr>
-                        <form action="{{ route('professor.submissions.ongoingadvanced.store') }}" method="POST">
+                        <form action="{{ route('professor.submissions.'.$controller.'.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-lg-4">
@@ -34,87 +34,106 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Degree/Program') }}" />
+                                        <x-jet-label value="{{ __('Title') }}" />
 
-                                        <x-jet-input :value="old('degree')" class="{{ $errors->has('degree') ? 'is-invalid' : '' }}" type="text" name="degree" autofocus autocomplete="degree" />
+                                        <x-jet-input :value="old('title')" class="{{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" autofocus autocomplete="title" />
 
-                                        <x-jet-input-error for="degree"></x-jet-input-error>
+                                        <x-jet-input-error for="title"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <h5 id=textHome style="color: maroon"><b>School</b></h5>
-                                </div>
-                                <div class="col-lg-7">
+                                <div class="col-lg-3">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Name of School') }}" />
+                                        <x-jet-label value="{{ __('Classification') }}" />
 
-                                        <x-jet-input :value="old('school')" class="{{ $errors->has('school') ? 'is-invalid' : '' }}" type="text" name="school" autofocus autocomplete="school" />
-
-                                        <x-jet-input-error for="school"></x-jet-input-error>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5">
-                                    <div class="form-group">
-                                        <x-jet-label value="{{ __('Program Accreditation Level/World Ranking/COE or COD') }}" />
-
-                                        <select name="accrelevel" id="accrelevel" class="form-control custom-select {{ $errors->has('accrelevel') ? 'is-invalid' : '' }}" autofocus autocomplete="accrelevel">
+                                        <select name="developclass" id="developclass" class="form-control custom-select {{ $errors->has('developclass') ? 'is-invalid' : '' }}" autofocus autocomplete="developclass">
                                             <option value="" selected disabled>Choose...</option>
-                                            @foreach($accrelevels as $accrelevel)
-                                            <option value="{{ $accrelevel->id }}" {{ ((old('accrelevel') == $accrelevel->id) ? 'selected' : '' )}}>{{ $accrelevel->name }}</option>    
+                                            @foreach($developclasses as $developclass)
+                                            <option value="{{ $developclass->id }}" {{ ((old('developclass') == $developclass->id) ? 'selected' : '' )}}>{{ $developclass->name }}</option>    
                                             @endforeach
                                         </select>
 
-                                        <x-jet-input-error for="accrelevel"></x-jet-input-error>
+                                        <x-jet-input-error for="developclass"></x-jet-input-error>
                                     </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <h5 id=textHome style="color: maroon"><b>Means of Educational Support</b></h5>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Type of Support') }}" />
+                                        <x-jet-label value="{{ __('Nature') }}" />
 
-                                        <select name="supporttype" id="supporttype" class="form-control custom-select {{ $errors->has('supporttype') ? 'is-invalid' : '' }}" autofocus autocomplete="supporttype">
+                                        <select name="developnature" id="developnature" class="form-control custom-select {{ $errors->has('developnature') ? 'is-invalid' : '' }}" autofocus autocomplete="developnature">
                                             <option value="" selected disabled>Choose...</option>
-                                            @foreach($supporttypes as $supporttype)
-                                            <option value="{{ $supporttype->id }}" {{ ((old('supporttype') == $supporttype->id) ? 'selected' : '' )}}>{{ $supporttype->name }}</option>    
+                                            @foreach($developnatures as $developnature)
+                                            <option value="{{ $developnature->id }}" {{ ((old('developnature') == $developnature->id) ? 'selected' : '' )}}>{{ $developnature->name }}</option>    
                                             @endforeach
                                         </select>
 
-                                        <x-jet-input-error for="supporttype"></x-jet-input-error>
+                                        <x-jet-input-error for="developnature"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-lg-7">
+                                <div class="col-lg-3">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Name of Sponsor/Agency/Organization') }}" />
+                                        <x-jet-label value="{{ __('Budget (In PhP)') }}" />
 
-                                        <x-jet-input :value="old('sponsor')" class="{{ $errors->has('sponsor') ? 'is-invalid' : '' }}" type="text" name="sponsor" autofocus autocomplete="sponsor" />
+                                        <x-jet-input :value="old('budget')" class="{{ $errors->has('budget') ? 'is-invalid' : '' }}" type="text" name="budget" autofocus autocomplete="budget" />
 
-                                        <x-jet-input-error for="sponsor"></x-jet-input-error>
+                                        <x-jet-input-error for="budget"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-3">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Amount') }}" />
+                                        <x-jet-label value="{{ __('Source of Fund') }}" />
 
-                                        <x-jet-input :value="old('amount')" class="{{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" autofocus autocomplete="amount" />
+                                        <select name="fundingtype" id="fundingtype" class="form-control custom-select {{ $errors->has('fundingtype') ? 'is-invalid' : '' }}" autofocus autocomplete="fundingtype">
+                                            <option value="" selected disabled>Choose...</option>
+                                            @foreach($fundingtypes as $fundingtype)
+                                            <option value="{{ $fundingtype->id }}" {{ ((old('fundingtype') == $fundingtype->id) ? 'selected' : '' )}}>{{ $fundingtype->name }}</option>    
+                                            @endforeach
+                                        </select>
 
-                                        <x-jet-input-error for="amount"></x-jet-input-error>
+                                        <x-jet-input-error for="level"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="row">
-                                <div class="col-lg-12">
-                                    <h5 id=textHome style="color: maroon"><b>Duration</b></h5>
+                                <div class="col-lg-9">
+                                    <div class="form-group">
+                                        <x-jet-label value="{{ __('Organizer') }}" />
+
+                                        <x-jet-input :value="old('organizer')" class="{{ $errors->has('organizer') ? 'is-invalid' : '' }}" type="text" name="organizer" autofocus autocomplete="organizer" />
+
+                                        <x-jet-input-error for="organizer"></x-jet-input-error>
+                                    </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <x-jet-label value="{{ __('Level') }}" />
+
+                                        <select name="level" id="level" class="form-control custom-select {{ $errors->has('level') ? 'is-invalid' : '' }}" autofocus autocomplete="level">
+                                            <option value="" selected disabled>Choose...</option>
+                                            @foreach($levels as $level)
+                                            <option value="{{ $level->id }}" {{ ((old('level') == $level->id) ? 'selected' : '' )}}>{{ $level->name }}</option>    
+                                            @endforeach
+                                        </select>
+
+                                        <x-jet-input-error for="level"></x-jet-input-error>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <x-jet-label value="{{ __('Venue') }}" />
+
+                                        <x-jet-input :value="old('venue')" class="{{ $errors->has('venue') ? 'is-invalid' : '' }}" type="text" name="venue" autofocus autocomplete="venue" />
+
+                                        <x-jet-input-error for="venue"></x-jet-input-error>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('From ') }}" />
 
@@ -123,7 +142,7 @@
                                         <x-jet-input-error for="date_started"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 ">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('To') }}" />
 
@@ -132,48 +151,14 @@
                                         <x-jet-input-error for="date_ended"></x-jet-input-error>
 
                                     </div>
-                                    <div class="form-check">
-                                        
-                                        <x-jet-checkbox :value="old('present')" class="{{ $errors->has('present') ? 'is-invalid' : '' }}" id="present" name="present" autofocus autocomplete="present" />
-                                            
-                                        <x-jet-label value="{{ __('Present') }}" class="form-check-label"/>
-
-                                        <x-jet-input-error for="present"></x-jet-input-error>
-                                    </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Status') }}" />
+                                        <x-jet-label value="{{ __('Total No. of Hours') }}" />
 
-                                        <select name="studystatus" id="studystatus" class="form-control custom-select {{ $errors->has('studystatus') ? 'is-invalid' : '' }}" autofocus autocomplete="studystatus">
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach($studystatuses as $studystatus)
-                                            <option value="{{ $studystatus->id }}" {{ ((old('studystatus') == $studystatus->id) ? 'selected' : '' )}}>{{ $studystatus->name }}</option>    
-                                            @endforeach
-                                        </select>
+                                        <x-jet-input :value="old('totalhours')" class="{{ $errors->has('totalhours') ? 'is-invalid' : '' }}" type="text" name="totalhours" autofocus autocomplete="totalhours" />
 
-                                        <x-jet-input-error for="studystatus"></x-jet-input-error>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <x-jet-label value="{{ __('Number of Units Earned') }}" />
-
-                                        <x-jet-input :value="old('unitsearned')" class="{{ $errors->has('unitsearned') ? 'is-invalid' : '' }}" type="text" name="unitsearned" autofocus autocomplete="unitsearned" />
-
-                                        <x-jet-input-error for="unitsearned"></x-jet-input-error>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3">
-                                    <div class="form-group">
-                                        <x-jet-label value="{{ __('Number of Units Currently Enrolled') }}" />
-
-                                        <x-jet-input :value="old('unitsenrolled')" class="{{ $errors->has('unitsenrolled') ? 'is-invalid' : '' }}" type="text" name="unitsenrolled" autofocus autocomplete="unitsenrolled" />
-
-                                        <x-jet-input-error for="unitsenrolled"></x-jet-input-error>
+                                        <x-jet-input-error for="totalhours"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
@@ -316,7 +301,7 @@
         <script>
             var present = document.getElementById('present');
             var toinput = document.getElementById('date-end');
-
+            
             if(document.getElementById("present").checked){
                 toinput.disabled = true;
             }

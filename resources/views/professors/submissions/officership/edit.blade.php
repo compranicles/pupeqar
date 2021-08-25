@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('B.1. Faculty Outstanding Achievements/Awards > Edit') }}
+            {{ __('B.2. Officership/Membership in Professional Organization/s > Edit') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -11,11 +11,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('professor.submissions.facultyaward.show', $facultyaward->id) }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                                <a href="{{ route('professor.submissions.officership.show', $officership->id) }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
                             </div>
                         </div>
                         <hr>
-                        <form action="{{ route('professor.submissions.facultyaward.update', $facultyaward->id) }}" method="POST">
+                        <form action="{{ route('professor.submissions.officership.update', $officership->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -26,7 +26,7 @@
                                         <select name="department" id="department" class="form-control custom-select {{ $errors->has('department') ? 'is-invalid' : '' }}" autofocus autocomplete="department">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($departments as $department)
-                                            <option value="{{ $department->id }}" {{ ((old('department', $facultyaward->department_id) == $department->id) ? 'selected' : '' )}}>{{ $department->name }}</option>    
+                                            <option value="{{ $department->id }}" {{ ((old('department', $officership->department_id) == $department->id) ? 'selected' : '' )}}>{{ $department->name }}</option>    
                                             @endforeach
                                         </select>
 
@@ -35,37 +35,11 @@
                                 </div>
                                 <div class="col-lg-8">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Awards of Distinction Received') }}" />
+                                        <x-jet-label value="{{ __('Name of Organization') }}" />
 
-                                        <x-jet-input :value="old('awardreceived',  $facultyaward->award_received)" class="{{ $errors->has('awardreceived') ? 'is-invalid' : '' }}" type="text" name="awardreceived" autofocus autocomplete="awardreceived" />
+                                        <x-jet-input :value="old('organization', $officership->organization)" class="{{ $errors->has('organization') ? 'is-invalid' : '' }}" type="text" name="organization" autofocus autocomplete="organization" />
 
-                                        <x-jet-input-error for="awardreceived"></x-jet-input-error>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <x-jet-label value="{{ __('Classification') }}" />
-
-                                        <select name="awardclass" id="awardclass" class="form-control custom-select {{ $errors->has('awardclass') ? 'is-invalid' : '' }}" autofocus autocomplete="awardclass">
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach($awardclasses as $awardclass)
-                                            <option value="{{ $awardclass->id }}" {{ ((old('awardclass', $facultyaward->faculty_award_id) == $awardclass->id) ? 'selected' : '' )}}>{{ $awardclass->name }}</option>    
-                                            @endforeach
-                                        </select>
-
-                                        <x-jet-input-error for="awardclass"></x-jet-input-error>
-                                    </div>
-                                </div>
-                                <div class="col-lg-8">
-                                    <div class="form-group">
-                                        <x-jet-label value="{{ __('Award Giving Body') }}" />
-
-                                        <x-jet-input :value="old('awardbody', $facultyaward->award_body)" class="{{ $errors->has('awardbody') ? 'is-invalid' : '' }}" type="text" name="awardbody" autofocus autocomplete="awardbody" />
-
-                                        <x-jet-input-error for="awardbody"></x-jet-input-error>
+                                        <x-jet-input-error for="organization"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
@@ -73,33 +47,58 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="form-group">
+                                        <x-jet-label value="{{ __('Classification') }}" />
+
+                                        <select name="facultyofficer" id="facultyofficer" class="form-control custom-select {{ $errors->has('facultyofficer') ? 'is-invalid' : '' }}" autofocus autocomplete="facultyofficer">
+                                            <option value="" selected disabled>Choose...</option>
+                                            @foreach($facultyofficers as $facultyofficer)
+                                            <option value="{{ $facultyofficer->id }}" {{ ((old('facultyofficer', $officership->faculty_officer_id) == $facultyofficer->id) ? 'selected' : '' )}}>{{ $facultyofficer->name }}</option>    
+                                            @endforeach
+                                        </select>
+
+                                        <x-jet-input-error for="facultyofficer"></x-jet-input-error>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <x-jet-label value="{{ __('Position') }}" />
+
+                                        <x-jet-input :value="old('position', $officership->position)" class="{{ $errors->has('position') ? 'is-invalid' : '' }}" type="text" name="position" autofocus autocomplete="position" />
+
+                                        <x-jet-input-error for="position"></x-jet-input-error>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
                                         <x-jet-label value="{{ __('Level') }}" />
 
                                         <select name="level" id="level" class="form-control custom-select {{ $errors->has('level') ? 'is-invalid' : '' }}" autofocus autocomplete="level">
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach($levels as $level)
-                                            <option value="{{ $level->id }}" {{ ((old('level', $facultyaward->level) == $level->id) ? 'selected' : '' )}}>{{ $level->name }}</option>    
+                                            <option value="{{ $level->id }}" {{ ((old('level', $officership->level_id) == $level->id) ? 'selected' : '' )}}>{{ $level->name }}</option>    
                                             @endforeach
                                         </select>
 
                                         <x-jet-input-error for="level"></x-jet-input-error>
                                     </div>
                                 </div>
-                                <div class="col-lg-5">
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-8">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Venue') }}" />
+                                        <x-jet-label value="{{ __('Organization Address') }}" />
 
-                                        <x-jet-input :value="old('venue', $facultyaward->venue)" class="{{ $errors->has('venue') ? 'is-invalid' : '' }}" type="text" name="venue" autofocus autocomplete="venue" />
+                                        <x-jet-input :value="old('organizationaddress', $officership->organization_address)" class="{{ $errors->has('organizationaddress') ? 'is-invalid' : '' }}" type="text" name="organizationaddress" autofocus autocomplete="organizationaddress" />
 
-                                        <x-jet-input-error for="venue"></x-jet-input-error>
+                                        <x-jet-input-error for="organizationaddress"></x-jet-input-error>
                                     </div>
                                 </div>
-                                
                                 <div class="col-lg-2">
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('From ') }}" />
 
-                                        <x-jet-input :value="old('date_started', $facultyaward->date_started)" class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" autofocus autocomplete="date_started" />
+                                        <x-jet-input :value="old('date_started', $officership->date_started)" class="{{ $errors->has('date_started') ? 'is-invalid' : '' }}" type="text" id="date-start" name="date_started" autofocus autocomplete="date_started" />
 
                                         <x-jet-input-error for="date_started"></x-jet-input-error>
                                     </div>
@@ -108,10 +107,18 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('To') }}" />
 
-                                        <x-jet-input :value="old('date_ended', $facultyaward->date_ended)" class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" autofocus autocomplete="date_ended" />
+                                        <x-jet-input value="{{ old('date_ended', $officership->date_ended) == '' ? date('Y-m-d') : old('date_ended', $officership->date_ended) }}" class="{{ $errors->has('date_ended') ? 'is-invalid' : '' }}" type="text" id="date-end" name="date_ended" autofocus autocomplete="date_ended" />
 
                                         <x-jet-input-error for="date_ended"></x-jet-input-error>
 
+                                    </div>
+                                    <div class="form-check">
+                                        
+                                        <input class="{{ $errors->has('present') ? 'is-invalid' : '' }}" id="present" name="present" type="checkbox" autofocus {{  $officership->present == 'on' ? 'checked' : '' }} autocomplete="present" />
+                                            
+                                        <x-jet-label value="{{ __('Present') }}" class="form-check-label"/>
+
+                                        <x-jet-input-error for="present"></x-jet-input-error>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +146,7 @@
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Description of Supporting Documents') }}" />
 
-                                        <textarea class="form-control {{ $errors->has('documentdescription') ? 'is-invalid' : '' }}" name="documentdescription" cols="30" rows="5" autofocus autocomplete="documentdescription">{{ old('documentdescription', $facultyaward->document_description) }}</textarea>
+                                        <textarea class="form-control {{ $errors->has('documentdescription') ? 'is-invalid' : '' }}" name="documentdescription" cols="30" rows="5" autofocus autocomplete="documentdescription">{{ old('documentdescription', $officership->documentdescription) }}</textarea>
 
                                         <x-jet-input-error for="documentdescription"></x-jet-input-error>
                                     </div>
@@ -189,7 +196,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <form action="{{   route('professor.facultyaward.file.delete', $document->submission_id)  }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                    <form action="{{   route('professor.officership.file.delete', $document->submission_id)  }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                                         @csrf
                                                                         <input type="hidden" name="filename" value="{{ $document->filename }}">
                                                                         <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>
@@ -211,7 +218,7 @@
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
                                 <div class="row">
-                                    @if (count($documents) > 0)
+                                    @if(count($documents) > 0)
                                         @foreach ($documents as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document->filename)))
                                                 <div class="col-md-6 mb-3">
@@ -223,7 +230,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <form action="{{  route('professor.facultyaward.file.delete', $document->submission_id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                                        <form action="{{  route('professor.officership.file.delete', $document->submission_id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                                             @csrf
                                                                             <input type="hidden" name="filename" value="{{ $document->filename }}">
                                                                             <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt mr-2"></i> Remove</button>
@@ -238,7 +245,7 @@
                                         @endforeach
                                     @else
                                         <div class="col-md-4 offset-md-4">
-                                            <h6 class="text-center">No Images Attached</h6>
+                                            <h6 class="text-center">No Documents Attached</h6>
                                         </div>
                                     @endif
                                 </div>
@@ -337,6 +344,23 @@
             // });
 
 
+        </script>
+        <script>
+            var present = document.getElementById('present');
+            var toinput = document.getElementById('date-end');
+            
+            if(document.getElementById("present").checked){
+                toinput.disabled = true;
+            }
+
+            // when unchecked or checked, run the function
+            present.onchange = function(){
+                if(this.checked){
+                    toinput.disabled = true;
+                } else {
+                    toinput.disabled = false;
+                }
+            }
         </script>
     @endpush
 </x-app-layout>
