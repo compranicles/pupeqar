@@ -44,6 +44,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');
         Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('attendanceconference.file.delete');
         Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
+        Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+        Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('researchpublication.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -88,6 +90,24 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.attendancetraining.edit',
             'update' => 'submissions.attendancetraining.update',
             'destroy' => 'submissions.attendancetraining.destroy'
+        ]);
+        Route::resource('research', \App\Http\Controllers\Submissions\ResearchController::class)->names([
+            'index' => 'submissions.research',
+            'create' => 'submissions.research.create',
+            'store' => 'submissions.research.store',
+            'show' => 'submissions.research.show',
+            'edit' => 'submissions.research.edit',
+            'update' => 'submissions.research.update',
+            'destroy' => 'submissions.research.destroy'
+        ]);
+        Route::resource('researchpublication', \App\Http\Controllers\Submissions\ResearchPublicationController::class)->names([
+            'index' => 'submissions.researchpublication',
+            'create' => 'submissions.researchpublication.create',
+            'store' => 'submissions.researchpublication.store',
+            'show' => 'submissions.researchpublication.show',
+            'edit' => 'submissions.researchpublication.edit',
+            'update' => 'submissions.researchpublication.update',
+            'destroy' => 'submissions.researchpublication.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);

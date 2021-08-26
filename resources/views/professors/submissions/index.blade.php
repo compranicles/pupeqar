@@ -33,10 +33,10 @@
                                                 <option value="attendancetraining" {{ ((old('form_type') == "attendancetraining") ? 'selected' : '' )}}>
                                                     B.3.2. Attendance in Training/s
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
-                                                    C.1. Research Ongoing /Completed
+                                                <option value="research" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                    C.1. Research Ongoing/Completed
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchpublication" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
                                                     C.2. Research Publication
                                                 </option>   
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -142,29 +142,39 @@
                                                         @switch($submission->form_name)
                                                             @case('ongoingadvanced')
                                                                 <a href="{{ route('professor.submissions.ongoingadvanced.show', $submission->form_id) }}">
-                                                                    Ongoing Advanced/Professional Study
+                                                                    A. Ongoing Advanced/Professional Study
                                                                 </a>
                                                                 @break
                                                             @case('facultyaward')
                                                                 <a href="{{ route('professor.submissions.facultyaward.show', $submission->form_id) }}">
-                                                                    Faculty Outstanding Achievements/Awards
+                                                                    B.1. Faculty Outstanding Achievements/Awards
                                                                 </a>
                                                             @break
                                                             @case('officership')
                                                                 <a href="{{ route('professor.submissions.officership.show', $submission->form_id) }}">
-                                                                    Officership/Membership in Professional Organization/s
+                                                                    B.2 Officership/Membership in Professional Organization/s
                                                                 </a>
                                                             @break
                                                             @case('attendanceconference')
                                                                 <a href="{{ route('professor.submissions.attendanceconference.show', $submission->form_id) }}">
-                                                                    Attendance in Relevant Faculty Development Program
+                                                                    B.3.1. Attendance in Relevant Faculty Development Program
                                                                 </a>
                                                             @break  
                                                             @case('attendancetraining')
                                                                 <a href="{{ route('professor.submissions.attendancetraining.show', $submission->form_id) }}">
-                                                                    Attendance in Training/s
+                                                                    B.3.2. Attendance in Training/s
                                                                 </a>
-                                                            @break                                                            
+                                                            @break
+                                                            @case('research')
+                                                                <a href="{{ route('professor.submissions.research.show', $submission->form_id) }}">
+                                                                    C.1. Research Ongoing/Completed
+                                                                </a>
+                                                            @break
+                                                            @case('researchpublication')
+                                                                <a href="{{ route('professor.submissions.researchpublication.show', $submission->form_id) }}">
+                                                                    C.2. Research Publication
+                                                                </a>
+                                                            @break 
                                                             @default
                                                         @endswitch
                                                     </td>
