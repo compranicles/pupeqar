@@ -9,17 +9,18 @@ use App\Models\FundingType;
 use App\Models\ResearchType;
 use Illuminate\Http\Request;
 use App\Models\ResearchClass;
+use App\Models\ResearchLevel;
 use App\Models\TemporaryFile;
 use App\Models\ResearchAgenda;
 use App\Models\ResearchInvolve;
 use App\Models\ResearchCategory;
 use Illuminate\Support\Facades\DB;
-use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-class ResearchPublicationController extends Controller
+class ResearchPresentationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +29,7 @@ class ResearchPublicationController extends Controller
      */
     public function index()
     {
-        
+        //
     }
 
     /**
@@ -45,8 +46,9 @@ class ResearchPublicationController extends Controller
         $researchinvolves = ResearchInvolve::all();
         $researchtypes = ResearchType::all();
         $fundingtypes = FundingType::all();
+        $researchlevels = ResearchLevel::all();
 
-        return view('professors.submissions.researchpublication.create', [
+        return view('professors.submissions.researchpresentation.create', [
             'departments' => $departments,
             'researchclasses' => $researchclasses,
             'researchcategories' => $researchcategories,
@@ -54,6 +56,7 @@ class ResearchPublicationController extends Controller
             'researchinvolves' => $researchinvolves,
             'researchtypes' => $researchtypes,
             'fundingtypes' => $fundingtypes,
+            'researchlevels' => $researchlevels
         ]);
     }
 
@@ -81,12 +84,12 @@ class ResearchPublicationController extends Controller
             'datestarted' => 'required',
             'datetargeted' => 'required',
             'datecompleted' => 'required',
-            'journalname' => 'required',
-            'document' => 'required',
+            'document' => 'required', 
+            'researchlevel' => 'required',
             'documentdescription' => 'required',
         ]);
 
-        $formId = DB::table('research_publications')->insertGetId([
+        $formId = DB::table('research_presentations')->insertGetId([
             'department_id' => $request->input('department'),
             'research_class_id' => $request->input('researchclass'),
             'research_category_id' => $request->input('researchcategory'),
@@ -102,16 +105,11 @@ class ResearchPublicationController extends Controller
             'date_started' => $request->input('datestarted'),
             'date_targeted' => $request->input('datetargeted'),
             'date_completed' => $request->input('datecompleted') ?? null,
-            'journal_name'  => $request->input('journalname') ?? null,
-            'page' => $request->input('page') ?? null,
-            'volume' => $request->input('volume') ?? null,
-            'issue' => $request->input('issue') ?? null,
-            'indexing_platform' => $request->input('indexingplatform') ?? null,
-            'date_published' => $request->input('datepublished') ?? null,
-            'publisher' => $request->input('publisher') ?? null,
-            'editor' => $request->input('editor') ?? null,
-            'isbn' => $request->input('isbn') ?? null,
-            'level' => $request->input('level') ?? null,
+            'conference_title' => $request->input('conferencetitle') ?? null,
+            'organizer' => $request->input('organizer') ?? null,
+            'venue' => $request->input('venue') ?? null,
+            'date_presented' => $request->input('datepresented') ?? null,
+            'research_level_id' => $request->input('researchlevel'),
             'document_description' => $request->input('documentdescription'),
         ]);
 
@@ -131,16 +129,16 @@ class ResearchPublicationController extends Controller
                     Document::create([
                         'filename' => $fileName,
                         'submission_id' => $formId,
-                        'submission_type' => 'researchpublication'
+                        'submission_type' => 'researchpresentation'
                     ]);
                 }
             }
         }
-        
+
         Submission::create([
             'user_id' => Auth::id(),
             'form_id' => $formId,
-            'form_name' => 'researchpublication',
+            'form_name' => 'researchpresentation',
             'status' => 1
         ]);
 
@@ -153,21 +151,22 @@ class ResearchPublicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ResearchPublication $researchpublication)
+    public function show(ResearchPresentation $researchpresentation)
     {
-        $department = Department::find($researchpublication->department_id);
-        $researchclass = ResearchClass::find($researchpublication->research_class_id);
-        $researchcategory = ResearchCategory::find($researchpublication->research_category_id);
-        $researchagenda = ResearchAgenda::find($researchpublication->research_agenda_id);
-        $researchinvolve = ResearchInvolve::find($researchpublication->research_involve_id);
-        $researchtype = ResearchType::find($researchpublication->research_type_id);
-        $fundingtype = FundingType::find($researchpublication->funding_type_id);
-        $documents = Document::where('submission_id' ,$researchpublication->id)
-                        ->where('submission_type', 'researchpublication')
+        $department = Department::find($researchpresentation->department_id);
+        $researchclass = ResearchClass::find($researchpresentation->research_class_id);
+        $researchcategory = ResearchCategory::find($researchpresentation->research_category_id);
+        $researchagenda = ResearchAgenda::find($researchpresentation->research_agenda_id);
+        $researchinvolve = ResearchInvolve::find($researchpresentation->research_involve_id);
+        $researchtype = ResearchType::find($researchpresentation->research_type_id);
+        $fundingtype = FundingType::find($researchpresentation->funding_type_id);
+        $researchlevel = ResearchLevel::find($researchpresentation->research_level_id);
+        $documents = Document::where('submission_id' ,$researchpresentation->id)
+                        ->where('submission_type', 'researchpresentation')
                         ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.researchpublication.show', [
-            'research' => $researchpublication,
+        return view('professors.submissions.researchpresentation.show', [
+            'research' => $researchpresentation,
             'department' => $department,
             'researchclass' => $researchclass,
             'researchcategory' => $researchcategory,
@@ -175,6 +174,7 @@ class ResearchPublicationController extends Controller
             'researchinvolve' => $researchinvolve,
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
+            'researchlevel' => $researchlevel,
             'documents' => $documents
         ]);
     }
@@ -185,7 +185,7 @@ class ResearchPublicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ResearchPublication $researchpublication)
+    public function edit(ResearchPresentation $researchpresentation)
     {
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
@@ -194,12 +194,13 @@ class ResearchPublicationController extends Controller
         $researchinvolves = ResearchInvolve::all();
         $researchtypes = ResearchType::all();
         $fundingtypes = FundingType::all();
-        $documents = Document::where('submission_id' ,$researchpublication->id)
-                ->where('submission_type', 'researchpublication')
-                ->where('deleted_at', NULL)->get();
+        $researchlevels = ResearchLevel::all();
+        $documents = Document::where('submission_id' ,$researchpresentation->id)
+                        ->where('submission_type', 'researchpresentation')
+                        ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.researchpublication.edit', [
-            'researchpublication' => $researchpublication,
+        return view('professors.submissions.researchpresentation.edit', [
+            'researchpresentation' => $researchpresentation,
             'departments' => $departments,
             'researchclasses' => $researchclasses,
             'researchcategories' => $researchcategories,
@@ -207,6 +208,7 @@ class ResearchPublicationController extends Controller
             'researchinvolves' => $researchinvolves,
             'researchtypes' => $researchtypes,
             'fundingtypes' => $fundingtypes,
+            'researchlevels' => $researchlevels,
             'documents' => $documents
         ]);
     }
@@ -218,7 +220,7 @@ class ResearchPublicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ResearchPublication $researchpublication)
+    public function update(Request $request, ResearchPresentation $researchpresentation)
     {
         $request->validate([
             'department' => 'required',
@@ -236,12 +238,12 @@ class ResearchPublicationController extends Controller
             'datestarted' => 'required',
             'datetargeted' => 'required',
             'datecompleted' => 'required',
-            'journalname' => 'required',
-            'document' => 'required',
+            'document' => 'required', 
+            'researchlevel' => 'required',
             'documentdescription' => 'required',
         ]);
 
-        $researchpublication->update([
+        $researchpresentation->update([
             'department_id' => $request->input('department'),
             'research_class_id' => $request->input('researchclass'),
             'research_category_id' => $request->input('researchcategory'),
@@ -257,16 +259,11 @@ class ResearchPublicationController extends Controller
             'date_started' => $request->input('datestarted'),
             'date_targeted' => $request->input('datetargeted'),
             'date_completed' => $request->input('datecompleted') ?? null,
-            'journal_name'  => $request->input('journalname') ?? null,
-            'page' => $request->input('page') ?? null,
-            'volume' => $request->input('volume') ?? null,
-            'issue' => $request->input('issue') ?? null,
-            'indexing_platform' => $request->input('indexingplatform') ?? null,
-            'date_published' => $request->input('datepublished') ?? null,
-            'publisher' => $request->input('publisher') ?? null,
-            'editor' => $request->input('editor') ?? null,
-            'isbn' => $request->input('isbn') ?? null,
-            'level' => $request->input('level') ?? null,
+            'conference_title' => $request->input('conferencetitle') ?? null,
+            'organizer' => $request->input('organizer') ?? null,
+            'venue' => $request->input('venue') ?? null,
+            'date_presented' => $request->input('datepresented') ?? null,
+            'research_level_id' => $request->input('researchlevel'),
             'document_description' => $request->input('documentdescription'),
         ]);
 
@@ -285,15 +282,14 @@ class ResearchPublicationController extends Controller
 
                     Document::create([
                         'filename' => $fileName,
-                        'submission_id' => $researchpublication->id,
-                        'submission_type' => 'researchpublication'
+                        'submission_id' => $formId,
+                        'submission_type' => 'researchpresentation'
                     ]);
                 }
             }
         }
 
-        return redirect()->route('professor.submissions.researchpublication.show', $researchpublication->id)->with('success', 'Form updated successfully.');
-
+        return redirect()->route('professor.submissions.researchpresentation.show', $researchpresentation->id)->with('success', 'Form updated successfully.');
     }
 
     /**
@@ -302,19 +298,19 @@ class ResearchPublicationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ResearchPublication $researchpublication)
+    public function destroy(ResearchPresentation $researchpresentation)
     {
-        Document::where('submission_id' ,$researchpublication->id)
-                ->where('submission_type', 'researchpublication')
+        Document::where('submission_id' ,$researchpresentation->id)
+                ->where('submission_type', 'researchpresentation')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $researchpublication->id)->where('form_name', 'researchpublication')->delete();
-        $researchpublication->delete();
+        Submission::where('form_id', $researchpresentation->id)->where('form_name', 'researchpresentation')->delete();
+        $researchpresentation->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }
 
-    public function removeFileInEdit(ResearchPublication $researchpublication, Request $request){
+    public function removeFileInEdit(ResearchPresentation $researchpresentation, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
-        return redirect()->route('professor.submissions.researchpublication.edit', $researchpublication)->with('success', 'Document deleted successfully.');
+        return redirect()->route('professor.submissions.researchpresentation.edit', $researchpresentation)->with('success', 'Document deleted successfully.');
     }
 }

@@ -239,7 +239,7 @@ class OfficershipController extends Controller
         Document::where('submission_id' ,$officership->id)
                 ->where('submission_type', 'officership')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $officership->id)->delete();
+        Submission::where('form_id', $officership->id)->where('form_name', 'officership')->delete();
         $officership->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }

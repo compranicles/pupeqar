@@ -289,7 +289,7 @@ class ResearchController extends Controller
         Document::where('submission_id' ,$research->id)
                 ->where('submission_type', 'research')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $research->id)->delete();
+        Submission::where('form_id', $research->id)->where('form_name', 'research')->delete();
         $research->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }

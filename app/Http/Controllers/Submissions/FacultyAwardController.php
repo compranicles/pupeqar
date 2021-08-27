@@ -231,7 +231,7 @@ class FacultyAwardController extends Controller
        Document::where('submission_id' ,$facultyaward->id)
                 ->where('submission_type', 'facultyaward')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $facultyaward->id)->delete();
+        Submission::where('form_id', $facultyaward->id)->where('form_name', 'facultyaward')->delete();
         $facultyaward->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }

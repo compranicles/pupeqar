@@ -46,6 +46,10 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
         Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
         Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('researchpublication.file.delete');
+        Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'removeFileInEdit'])->name('researchpresentation.file.delete');
+        Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('researchcitation.file.delete');
+        Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
+        Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -108,6 +112,42 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.researchpublication.edit',
             'update' => 'submissions.researchpublication.update',
             'destroy' => 'submissions.researchpublication.destroy'
+        ]);
+        Route::resource('researchpresentation', \App\Http\Controllers\Submissions\ResearchPresentationController::class)->names([
+            'index' => 'submissions.researchpresentation',
+            'create' => 'submissions.researchpresentation.create',
+            'store' => 'submissions.researchpresentation.store',
+            'show' => 'submissions.researchpresentation.show',
+            'edit' => 'submissions.researchpresentation.edit',
+            'update' => 'submissions.researchpresentation.update',
+            'destroy' => 'submissions.researchpresentation.destroy'
+        ]);
+        Route::resource('researchcitation', \App\Http\Controllers\Submissions\ResearchCitationController::class)->names([
+            'index' => 'submissions.researchcitation',
+            'create' => 'submissions.researchcitation.create',
+            'store' => 'submissions.researchcitation.store',
+            'show' => 'submissions.researchcitation.show',
+            'edit' => 'submissions.researchcitation.edit',
+            'update' => 'submissions.researchcitation.update',
+            'destroy' => 'submissions.researchcitation.destroy'
+        ]);
+        Route::resource('researchutilization', \App\Http\Controllers\Submissions\ResearchUtilizationController::class)->names([
+            'index' => 'submissions.researchutilization',
+            'create' => 'submissions.researchutilization.create',
+            'store' => 'submissions.researchutilization.store',
+            'show' => 'submissions.researchutilization.show',
+            'edit' => 'submissions.researchutilization.edit',
+            'update' => 'submissions.researchutilization.update',
+            'destroy' => 'submissions.researchutilization.destroy'
+        ]);
+        Route::resource('researchcopyright', \App\Http\Controllers\Submissions\ResearchCopyrightController::class)->names([
+            'index' => 'submissions.researchcopyright',
+            'create' => 'submissions.researchcopyright.create',
+            'store' => 'submissions.researchcopyright.store',
+            'show' => 'submissions.researchcopyright.show',
+            'edit' => 'submissions.researchcopyright.edit',
+            'update' => 'submissions.researchcopyright.update',
+            'destroy' => 'submissions.researchcopyright.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);

@@ -272,7 +272,7 @@ class AttendanceConferenceController extends Controller
         Document::where('submission_id' ,$attendanceconference->id)
                 ->where('submission_type', 'attendanceconference')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $attendanceconference->id)->delete();
+        Submission::where('form_id', $attendanceconference->id)->where('form_name', 'attendanceconference')->delete();
         $attendanceconference->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }

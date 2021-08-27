@@ -33,22 +33,22 @@
                                                 <option value="attendancetraining" {{ ((old('form_type') == "attendancetraining") ? 'selected' : '' )}}>
                                                     B.3.2. Attendance in Training/s
                                                 </option>   
-                                                <option value="research" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="research" {{ ((old('form_type') == "research") ? 'selected' : '' )}}>
                                                     C.1. Research Ongoing/Completed
                                                 </option>   
-                                                <option value="researchpublication" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchpublication" {{ ((old('form_type') == "researchpublication") ? 'selected' : '' )}}>
                                                     C.2. Research Publication
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchpresentation" {{ ((old('form_type') == "researchpresentation") ? 'selected' : '' )}}>
                                                     C.3. Research Presentation
                                                 </option>   
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchcitation" {{ ((old('form_type') == "researchcitation") ? 'selected' : '' )}}>
                                                     C.4. Research Citation
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchutilization" {{ ((old('form_type') == "researchutilization") ? 'selected' : '' )}}>
                                                     C.5. Research Utilization
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="researchcopyright" {{ ((old('form_type') == "researchcopyright") ? 'selected' : '' )}}>
                                                     C.6.  Copyrighted Research Output
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -173,6 +173,26 @@
                                                             @case('researchpublication')
                                                                 <a href="{{ route('professor.submissions.researchpublication.show', $submission->form_id) }}">
                                                                     C.2. Research Publication
+                                                                </a>
+                                                            @break 
+                                                            @case('researchpresentation')
+                                                                <a href="{{ route('professor.submissions.researchpresentation.show', $submission->form_id) }}">
+                                                                    C.3. Research Presentation
+                                                                </a>
+                                                            @break 
+                                                            @case('researchcitation')
+                                                                <a href="{{ route('professor.submissions.researchcitation.show', $submission->form_id) }}">
+                                                                    C.4. Research Citation
+                                                                </a>
+                                                            @break 
+                                                            @case('researchutilization')
+                                                                <a href="{{ route('professor.submissions.researchutilization.show', $submission->form_id) }}">
+                                                                    C.5. Research Utilization
+                                                                </a>
+                                                            @break 
+                                                            @case('researchcopyright')
+                                                                <a href="{{ route('professor.submissions.researchcopyright.show', $submission->form_id) }}">
+                                                                    C.6.  Copyrighted Research Output
                                                                 </a>
                                                             @break 
                                                             @default

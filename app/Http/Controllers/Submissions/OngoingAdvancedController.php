@@ -266,7 +266,7 @@ class OngoingAdvancedController extends Controller
         Document::where('submission_id' ,$ongoingadvanced->id)
                 ->where('submission_type', 'ongoingadvanced')
                 ->where('deleted_at', NULL)->delete();
-        Submission::where('form_id', $ongoingadvanced->id)->delete();
+        Submission::where('form_id', $ongoingadvanced->id)->where('form_name', 'ongoingadvanced')->delete();
         $ongoingadvanced->delete();
         return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
     }
