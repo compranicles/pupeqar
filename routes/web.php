@@ -50,6 +50,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('researchcitation.file.delete');
         Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
         Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
+        Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'removeFileInEdit'])->name('invention.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -148,6 +149,15 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.researchcopyright.edit',
             'update' => 'submissions.researchcopyright.update',
             'destroy' => 'submissions.researchcopyright.destroy'
+        ]);
+        Route::resource('invention', \App\Http\Controllers\Submissions\InventionController::class)->names([
+            'index' => 'submissions.invention',
+            'create' => 'submissions.invention.create',
+            'store' => 'submissions.invention.store',
+            'show' => 'submissions.invention.show',
+            'edit' => 'submissions.invention.edit',
+            'update' => 'submissions.invention.update',
+            'destroy' => 'submissions.invention.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);

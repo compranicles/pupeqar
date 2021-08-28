@@ -51,7 +51,7 @@
                                                 <option value="researchcopyright" {{ ((old('form_type') == "researchcopyright") ? 'selected' : '' )}}>
                                                     C.6.  Copyrighted Research Output
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="invention" {{ ((old('form_type') == "invention") ? 'selected' : '' )}}>
                                                     D.1. Faculty Invention, Innovation and Creative Works Commitment
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -193,6 +193,11 @@
                                                             @case('researchcopyright')
                                                                 <a href="{{ route('professor.submissions.researchcopyright.show', $submission->form_id) }}">
                                                                     C.6.  Copyrighted Research Output
+                                                                </a>
+                                                            @break 
+                                                            @case('invention')
+                                                                <a href="{{ route('professor.submissions.invention.show', $submission->form_id) }}">
+                                                                    D.1. Faculty Invention, Innovation and Creative Works Commitment
                                                                 </a>
                                                             @break 
                                                             @default

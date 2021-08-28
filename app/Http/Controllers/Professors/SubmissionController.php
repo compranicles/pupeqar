@@ -55,6 +55,9 @@ class SubmissionController extends Controller
             case 'researchcopyright': 
                     return redirect()->route('professor.submissions.researchcopyright.create');
                 break;
+            case 'invention':
+                    return redirect()->route('professor.submissions.invention.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');
