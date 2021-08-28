@@ -12,11 +12,11 @@ class Document extends Model
     use SoftDeletes;
 
     protected $primaryKey = 'id';
+    
     protected $fillable = [
         'filename',
-        'user_id',
-        'event_id',
-        'status'
+        'submission_id',
+        'submission_type'
     ];
-
+ 
 }

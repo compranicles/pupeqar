@@ -100,18 +100,18 @@
                                 
                                 
                             <div class="mb-0">
-                              <div class="d-flex justify-content-end align-items-baseline">
-                                  <button type="reset" class="reset btn btn-outline-dark">
-                                      RESET
-                                  </button>
-                                  <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
-                                      CANCEL
-                                  </a>
-                                  <x-jet-button>
-                                      {{ __('Create') }}
-                                  </x-jet-button>
-                              </div>
-                          </div>
+                                <div class="d-flex justify-content-end align-items-baseline">
+                                    <button type="reset" class="reset btn btn-outline-dark">
+                                        RESET
+                                    </button>
+                                    <a href="{{ route('professor.events.index') }}" class="btn btn-outline-danger mr-2">
+                                        CANCEL
+                                    </a>
+                                    <x-jet-button>
+                                        {{ __('Create') }}
+                                    </x-jet-button>
+                                </div>
+                            </div>
                             
                         </form>
                     </div>

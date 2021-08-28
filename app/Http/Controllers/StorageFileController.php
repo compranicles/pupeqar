@@ -39,4 +39,13 @@ class StorageFileController extends Controller
         $headers = ['Content-Type: '.$type];
         return response()->download($path, $filename, $headers);
     }
+
+    public function viewFile($filename){
+        $path = storage_path('app/documents/'.$filename);
+        $file = File::get($path);
+        $type = File::mimeType($path);
+        $headers = ['Content-Type: '.$type];
+
+        return response()->file($path, $headers);
+    }
 }
