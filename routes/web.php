@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
         Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
         Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'removeFileInEdit'])->name('invention.file.delete');
+        Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'removeFileInEdit'])->name('expertconsultant.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -158,6 +159,15 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.invention.edit',
             'update' => 'submissions.invention.update',
             'destroy' => 'submissions.invention.destroy'
+        ]);
+        Route::resource('expertconsultant', \App\Http\Controllers\Submissions\ExpertConsultantController::class)->names([
+            'index' => 'submissions.expertconsultant',
+            'create' => 'submissions.expertconsultant.create',
+            'store' => 'submissions.expertconsultant.store',
+            'show' => 'submissions.expertconsultant.show',
+            'edit' => 'submissions.expertconsultant.edit',
+            'update' => 'submissions.expertconsultant.update',
+            'destroy' => 'submissions.expertconsultant.destroy'
         ]);
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);

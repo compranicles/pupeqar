@@ -54,7 +54,7 @@
                                                 <option value="invention" {{ ((old('form_type') == "invention") ? 'selected' : '' )}}>
                                                     D.1. Faculty Invention, Innovation and Creative Works Commitment
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="expertconsultant" {{ ((old('form_type') == "expertconsultant") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - as a Consultant/Expert
                                                 </option>
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -198,6 +198,11 @@
                                                             @case('invention')
                                                                 <a href="{{ route('professor.submissions.invention.show', $submission->form_id) }}">
                                                                     D.1. Faculty Invention, Innovation and Creative Works Commitment
+                                                                </a>
+                                                            @break 
+                                                            @case('expertconsultant')
+                                                                <a href="{{ route('professor.submissions.expertconsultant.show', $submission->form_id) }}">
+                                                                    E.1. Expert Service Rendered - as a Consultant/Expert
                                                                 </a>
                                                             @break 
                                                             @default
