@@ -57,7 +57,7 @@
                                                 <option value="expertconsultant" {{ ((old('form_type') == "expertconsultant") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - as a Consultant/Expert
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="expertconference" {{ ((old('form_type') == "expertconference") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - in Conferences
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -203,6 +203,11 @@
                                                             @case('expertconsultant')
                                                                 <a href="{{ route('professor.submissions.expertconsultant.show', $submission->form_id) }}">
                                                                     E.1. Expert Service Rendered - as a Consultant/Expert
+                                                                </a>
+                                                            @break 
+                                                            @case('expertconference')
+                                                                <a href="{{ route('professor.submissions.expertconference.show', $submission->form_id) }}">
+                                                                    E.1. Expert Service Rendered - in Conferences
                                                                 </a>
                                                             @break 
                                                             @default

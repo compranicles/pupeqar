@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ExpertConsultant extends Model
+class ExpertConference extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -14,9 +14,8 @@ class ExpertConsultant extends Model
 
     protected $fillable = [
         'department_id',
-        'service_consultant_id',
-        'service_title',
-        'service_category',
+        'service_conference_id',
+        'conference_title',
         'partner_agency',
         'venue',
         'date_started',
