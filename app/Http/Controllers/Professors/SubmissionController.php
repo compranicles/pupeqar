@@ -64,6 +64,9 @@ class SubmissionController extends Controller
             case 'expertconference':
                     return redirect()->route('professor.submissions.expertconference.create');
                 break;
+            case 'expertjournal':
+                    return redirect()->route('professor.submissions.expertjournal.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

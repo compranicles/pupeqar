@@ -53,6 +53,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'removeFileInEdit'])->name('invention.file.delete');
         Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'removeFileInEdit'])->name('expertconsultant.file.delete');
         Route::post('expertconference/deletefileonedit/{expertconference}', [\App\Http\Controllers\Submissions\ExpertConferenceController::class, 'removeFileInEdit'])->name('expertconference.file.delete');
+        Route::post('expertjournal/deletefileonedit/{expertjournal}', [\App\Http\Controllers\Submissions\ExpertJournalController::class, 'removeFileInEdit'])->name('expertjournal.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -178,6 +179,15 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.expertconference.edit',
             'update' => 'submissions.expertconference.update',
             'destroy' => 'submissions.expertconference.destroy'
+        ]);
+        Route::resource('expertjournal', \App\Http\Controllers\Submissions\ExpertJournalController::class)->names([
+            'index' => 'submissions.expertjournal',
+            'create' => 'submissions.expertjournal.create',
+            'store' => 'submissions.expertjournal.store',
+            'show' => 'submissions.expertjournal.show',
+            'edit' => 'submissions.expertjournal.edit',
+            'update' => 'submissions.expertjournal.update',
+            'destroy' => 'submissions.expertjournal.destroy'
         ]);
         
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
