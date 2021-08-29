@@ -63,13 +63,13 @@
                                                 <option value="expertjournal" {{ ((old('form_type') == "expertjournal") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - in Academic Journals
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="extensionprogram" {{ ((old('form_type') == 'extensionprogram') ? 'selected' : '' )}}>
                                                     E.2. Extension Program, Project and Activity (Ongoing and Completed)
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
                                                     E.3. Partnership/Linkages/Network
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="facultyintercountry" {{ ((old('form_type') == "facultyintercountry") ? 'selected' : '' )}}>
                                                     E.4. Faculty Involvement in Inter-Country Mobility
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -213,6 +213,21 @@
                                                             @case('expertjournal')
                                                                 <a href="{{ route('professor.submissions.expertjournal.show', $submission->form_id) }}">
                                                                     E.1. Expert Service Rendered - in Academic Journals
+                                                                </a>
+                                                            @break 
+                                                            @case('extensionprogram')
+                                                                <a href="{{ route('professor.submissions.extensionprogram.show', $submission->form_id) }}">
+                                                                    E.2. Extension Program, Project and Activity (Ongoing and Completed)
+                                                                </a>
+                                                            @break 
+                                                            {{-- @case('extensionprogram')
+                                                            <a href="{{ route('professor.submissions.extensionprogram.show', $submission->form_id) }}">
+                                                                E.2. Extension Program, Project and Activity (Ongoing and Completed)
+                                                            </a>
+                                                            @break  --}}
+                                                            @case('facultyintercountry')
+                                                                <a href="{{ route('professor.submissions.facultyintercountry.show', $submission->form_id) }}">
+                                                                    E.4. Faculty Involvement in Inter-Country Mobility
                                                                 </a>
                                                             @break 
                                                             @default

@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'removeFileInEdit'])->name('expertconsultant.file.delete');
         Route::post('expertconference/deletefileonedit/{expertconference}', [\App\Http\Controllers\Submissions\ExpertConferenceController::class, 'removeFileInEdit'])->name('expertconference.file.delete');
         Route::post('expertjournal/deletefileonedit/{expertjournal}', [\App\Http\Controllers\Submissions\ExpertJournalController::class, 'removeFileInEdit'])->name('expertjournal.file.delete');
+        Route::post('extensionprogram/deletefileonedit/{extensionprogram}', [\App\Http\Controllers\Submissions\ExtensionProgramController::class, 'removeFileInEdit'])->name('extensionprogram.file.delete');
+        Route::post('facultyintercountry/deletefileonedit/{facultyintercountry}', [\App\Http\Controllers\Submissions\FacultyInterCountryController::class, 'removeFileInEdit'])->name('facultyintercountry.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -189,6 +191,25 @@ Route::group(['middleware' => 'auth'], function() {
             'update' => 'submissions.expertjournal.update',
             'destroy' => 'submissions.expertjournal.destroy'
         ]);
+        Route::resource('extensionprogram', \App\Http\Controllers\Submissions\ExtensionProgramController::class)->names([
+            'index' => 'submissions.extensionprogram',
+            'create' => 'submissions.extensionprogram.create',
+            'store' => 'submissions.extensionprogram.store',
+            'show' => 'submissions.extensionprogram.show',
+            'edit' => 'submissions.extensionprogram.edit',
+            'update' => 'submissions.extensionprogram.update',
+            'destroy' => 'submissions.extensionprogram.destroy'
+        ]);
+        Route::resource('facultyintercountry', \App\Http\Controllers\Submissions\FacultyInterCountryController::class)->names([
+            'index' => 'submissions.facultyintercountry',
+            'create' => 'submissions.facultyintercountry.create',
+            'store' => 'submissions.facultyintercountry.store',
+            'show' => 'submissions.facultyintercountry.show',
+            'edit' => 'submissions.facultyintercountry.edit',
+            'update' => 'submissions.facultyintercountry.update',
+            'destroy' => 'submissions.facultyintercountry.destroy'
+        ]);
+
         
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
