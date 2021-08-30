@@ -79,6 +79,9 @@ class SubmissionController extends Controller
             case 'material':
                     return redirect()->route('professor.submissions.material.create');
                 break;
+            case 'syllabus':
+                    return redirect()->route('professor.submissions.syllabus.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

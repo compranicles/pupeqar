@@ -16,11 +16,11 @@
                         @endif
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ route('professor.submissions.material.destroy', $material->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                <form action="{{ route('professor.submissions.syllabus.destroy', $syllabus->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                                    <a href="{{ route('professor.submissions.material.edit', $material->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
+                                    <a href="{{ route('professor.submissions.syllabus.edit', $syllabus->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
                                     <button type="submit" class="btn btn-danger mb-2 mr-2"><i class="far fa-trash-alt"></i> Delete</button>
                                 </form>
                             </div>
@@ -28,7 +28,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
-                                <h3 id="textHome" class="font-weight-bold text-center" style="color:maroon">Instructional Material, Reference/Text Book, Module, Monographs</h3>
+                                <h3 id="textHome" class="font-weight-bold text-center" style="color:maroon">Course Syllabus/Guide Developed/Revised/Enhanced</h3>
                             </div>
                         </div>
                         <hr>
@@ -42,58 +42,16 @@
                                                 <span class="d-block ml-4">{{ $department->name }}</span>
                                             </div>
                                             <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Category: </span>
-                                                <span class="d-block ml-4">{{ $material->category }}</span>
+                                                <span class="d-block font-weight-bold">Course Title: </span>
+                                                <span class="d-block ml-4">{{ $syllabus->title }}</span>
                                             </div>
                                             <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Level: </span>
-                                                <span class="d-block ml-4">{{ $level->name }}</span>
+                                                <span class="d-block font-weight-bold">Date Developed/Revised/Reviewed/Enhanced: </span>
+                                                <span class="d-block ml-4">{{ date("F j, Y" , strtotime( $syllabus->date)) }}</span>
                                             </div>
                                             <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Title: </span>
-                                                <span class="d-block ml-4">{{ $material->title }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Author/s/Compiler/s: </span>
-                                                <span class="d-block ml-4">{{ $material->author }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            
-                                            <div class="col-md-12">
-                                                <span class="d-block font-weight-bold">Editors/Referees : </span>
-                                                <span class="d-block ml-4"><b>Name: </b> {{ $material->editor_name }}</span>
-                                                <span class="d-block ml-4"><b>Profession: </b> {{ $material->editor_profession }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Volume No: </span>
-                                                <span class="d-block ml-4">{{ $material->volume }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Issue No: </span>
-                                                <span class="d-block ml-4">{{ $material->issue }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Date of Publication: </span>
-                                                <span class="d-block ml-4">{{ ( $material->date_publication == '' ) ? '' : date("F j, Y" , strtotime( $material->date_publication)) }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Copyright Registration No: </span>
-                                                <span class="d-block ml-4">{{ $material->copyright }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Date Started: </span>
-                                                <span class="d-block ml-4">{{ date("F j, Y" , strtotime( $material->date_started)) }}</span>
-                                            </div>
-                                            <div class="col-md-12 mb-1">
-                                                <span class="d-block font-weight-bold">Date Completed: </span>
-                                                <span class="d-block ml-4">{{ date("F j, Y" , strtotime( $material->date_completed)) }}</span>
+                                                <span class="d-block font-weight-bold">Assigned Task: </span>
+                                                <span class="d-block ml-4">{{ $syllabus->assign_task }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -104,7 +62,7 @@
                         <div class="row">
                             <div class="col-md-12 mb-2">
                                 <span class="d-block font-weight-bold">Description of Supporting Documents: </span>
-                                <span class="d-block ml-4">{{ $material->document_description }}</span>
+                                <span class="d-block ml-4">{{ $syllabus->document_description }}</span>
                             </div>
                         </div>
                     </div>

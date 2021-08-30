@@ -75,7 +75,7 @@
                                                 <option value="material" {{ ((old('form_type') == "material") ? 'selected' : '' )}}>
                                                     F.1.  Material, Reference/Text Book, Module, Monographs
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="syllabus" {{ ((old('form_type') == "syllabus") ? 'selected' : '' )}}>
                                                     F.2. Course Syllabus/Guide Developed/Revised/Enhanced
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -233,6 +233,12 @@
                                                             @case('material')
                                                                 <a href="{{ route('professor.submissions.material.show', $submission->form_id) }}">
                                                                     F.1. Instructional Material, Reference/Text Book, Module, Monographs
+                                                                </a>
+                                                            @break 
+                                                            @case('syllabus')
+                                                                <a href="{{ route('professor.submissions.syllabus.show', $submission->form_id) }}">
+                                                                    F.2. Course Syllabus/Guide Developed/Revised/Enhanced
+
                                                                 </a>
                                                             @break 
                                                             @default

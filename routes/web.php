@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('facultyintercountry/deletefileonedit/{facultyintercountry}', [\App\Http\Controllers\Submissions\FacultyInterCountryController::class, 'removeFileInEdit'])->name('facultyintercountry.file.delete');
         Route::post('partnership/deletefileonedit/{partnership}', [\App\Http\Controllers\Submissions\PartnershipController::class, 'removeFileInEdit'])->name('partnership.file.delete');
         Route::post('material/deletefileonedit/{material}', [\App\Http\Controllers\Submissions\MaterialController::class, 'removeFileInEdit'])->name('material.file.delete');
+        Route::post('syllabus/deletefileonedit/{syllabu}', [\App\Http\Controllers\Submissions\SyllabusController::class, 'removeFileInEdit'])->name('syllabus.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -228,6 +229,15 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.material.edit',
             'update' => 'submissions.material.update',
             'destroy' => 'submissions.material.destroy'
+        ]);
+        Route::resource('syllabus', \App\Http\Controllers\Submissions\SyllabusController::class)->names([
+            'index' => 'submissions.syllabus',
+            'create' => 'submissions.syllabus.create',
+            'store' => 'submissions.syllabus.store',
+            'show' => 'submissions.syllabus.show',
+            'edit' => 'submissions.syllabus.edit',
+            'update' => 'submissions.syllabus.update',
+            'destroy' => 'submissions.syllabus.destroy'
         ]);
         
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
