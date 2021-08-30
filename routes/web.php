@@ -59,6 +59,9 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('partnership/deletefileonedit/{partnership}', [\App\Http\Controllers\Submissions\PartnershipController::class, 'removeFileInEdit'])->name('partnership.file.delete');
         Route::post('material/deletefileonedit/{material}', [\App\Http\Controllers\Submissions\MaterialController::class, 'removeFileInEdit'])->name('material.file.delete');
         Route::post('syllabus/deletefileonedit/{syllabu}', [\App\Http\Controllers\Submissions\SyllabusController::class, 'removeFileInEdit'])->name('syllabus.file.delete');
+        Route::post('specialtask/deletefileonedit/{specialtask}', [\App\Http\Controllers\Submissions\SpecialTaskController::class, 'removeFileInEdit'])->name('specialtask.file.delete');
+        Route::post('specialtaskefficiency/deletefileonedit/{specialtaskefficiency}', [\App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class, 'removeFileInEdit'])->name('specialtaskefficiency.file.delete');
+        Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('specialtasktimeliness.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -239,7 +242,34 @@ Route::group(['middleware' => 'auth'], function() {
             'update' => 'submissions.syllabus.update',
             'destroy' => 'submissions.syllabus.destroy'
         ]);
-        
+        Route::resource('specialtask', \App\Http\Controllers\Submissions\SpecialTaskController::class)->names([
+            'index' => 'submissions.specialtask',
+            'create' => 'submissions.specialtask.create',
+            'store' => 'submissions.specialtask.store',
+            'show' => 'submissions.specialtask.show',
+            'edit' => 'submissions.specialtask.edit',
+            'update' => 'submissions.specialtask.update',
+            'destroy' => 'submissions.specialtask.destroy'
+        ]);
+        Route::resource('specialtaskefficiency', \App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class)->names([
+            'index' => 'submissions.specialtaskefficiency',
+            'create' => 'submissions.specialtaskefficiency.create',
+            'store' => 'submissions.specialtaskefficiency.store',
+            'show' => 'submissions.specialtaskefficiency.show',
+            'edit' => 'submissions.specialtaskefficiency.edit',
+            'update' => 'submissions.specialtaskefficiency.update',
+            'destroy' => 'submissions.specialtaskefficiency.destroy'
+        ]);
+        Route::resource('specialtasktimeliness', \App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class)->names([
+            'index' => 'submissions.specialtasktimeliness',
+            'create' => 'submissions.specialtasktimeliness.create',
+            'store' => 'submissions.specialtasktimeliness.store',
+            'show' => 'submissions.specialtasktimeliness.show',
+            'edit' => 'submissions.specialtasktimeliness.edit',
+            'update' => 'submissions.specialtasktimeliness.update',
+            'destroy' => 'submissions.specialtasktimeliness.destroy'
+        ]);
+
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
         // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
         // Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);

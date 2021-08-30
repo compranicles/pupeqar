@@ -82,6 +82,15 @@ class SubmissionController extends Controller
             case 'syllabus':
                     return redirect()->route('professor.submissions.syllabus.create');
                 break;
+            case 'specialtask':
+                    return redirect()->route('professor.submissions.specialtask.create');
+                break;
+            case 'specialtaskefficiency':
+                    return redirect()->route('professor.submissions.specialtaskefficiency.create');
+                break;
+            case 'specialtasktimeliness':
+                    return redirect()->route('professor.submissions.specialtasktimeliness.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

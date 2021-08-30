@@ -78,13 +78,13 @@
                                                 <option value="syllabus" {{ ((old('form_type') == "syllabus") ? 'selected' : '' )}}>
                                                     F.2. Course Syllabus/Guide Developed/Revised/Enhanced
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtask" {{ ((old('form_type') == "specialtask") ? 'selected' : '' )}}>
                                                     III. Special Tasks
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtaskefficiency" {{ ((old('form_type') == "specialtaskefficiency") ? 'selected' : '' )}}>
                                                     III. Special Tasks - Commitment Measurable by Efficiency
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtasktimeliness" {{ ((old('form_type') == "specialtasktimeliness") ? 'selected' : '' )}}>
                                                     III. Special Tasks - Commitment Measurable by Timeliness
                                                 </option>  
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -238,7 +238,21 @@
                                                             @case('syllabus')
                                                                 <a href="{{ route('professor.submissions.syllabus.show', $submission->form_id) }}">
                                                                     F.2. Course Syllabus/Guide Developed/Revised/Enhanced
-
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtask')
+                                                                <a href="{{ route('professor.submissions.specialtask.show', $submission->form_id) }}">
+                                                                    III. Special Tasks
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtaskefficiency')
+                                                                <a href="{{ route('professor.submissions.specialtaskefficiency.show', $submission->form_id) }}">
+                                                                    III. Special Tasks - Commitment Measurable by Efficiency
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtasktimeliness')
+                                                                <a href="{{ route('professor.submissions.specialtasktimeliness.show', $submission->form_id) }}">
+                                                                    III. Special Tasks - Commitment Measurable by Timeliness
                                                                 </a>
                                                             @break 
                                                             @default
