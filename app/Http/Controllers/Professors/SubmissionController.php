@@ -70,11 +70,14 @@ class SubmissionController extends Controller
             case 'extensionprogram':
                     return redirect()->route('professor.submissions.extensionprogram.create');
                 break;
-            // case 'extensionprogram':
-            //         return redirect()->route('professor.submissions.extensionprogram.create');
-            //     break;
+            case 'partnership':
+                    return redirect()->route('professor.submissions.partnership.create');
+                break;
             case 'facultyintercountry':
                     return redirect()->route('professor.submissions.facultyintercountry.create');
+                break;
+            case 'material':
+                    return redirect()->route('professor.submissions.material.create');
                 break;
         }
 

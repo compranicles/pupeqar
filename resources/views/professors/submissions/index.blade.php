@@ -66,13 +66,13 @@
                                                 <option value="extensionprogram" {{ ((old('form_type') == 'extensionprogram') ? 'selected' : '' )}}>
                                                     E.2. Extension Program, Project and Activity (Ongoing and Completed)
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="partnership" {{ ((old('form_type') == "partnership") ? 'selected' : '' )}}>
                                                     E.3. Partnership/Linkages/Network
                                                 </option>  
                                                 <option value="facultyintercountry" {{ ((old('form_type') == "facultyintercountry") ? 'selected' : '' )}}>
                                                     E.4. Faculty Involvement in Inter-Country Mobility
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="material" {{ ((old('form_type') == "material") ? 'selected' : '' )}}>
                                                     F.1.  Material, Reference/Text Book, Module, Monographs
                                                 </option>
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -220,14 +220,19 @@
                                                                     E.2. Extension Program, Project and Activity (Ongoing and Completed)
                                                                 </a>
                                                             @break 
-                                                            {{-- @case('extensionprogram')
-                                                            <a href="{{ route('professor.submissions.extensionprogram.show', $submission->form_id) }}">
-                                                                E.2. Extension Program, Project and Activity (Ongoing and Completed)
+                                                            @case('partnership')
+                                                            <a href="{{ route('professor.submissions.partnership.show', $submission->form_id) }}">
+                                                                    E.3. Partnership/Linkages/Network
                                                             </a>
-                                                            @break  --}}
+                                                            @break 
                                                             @case('facultyintercountry')
                                                                 <a href="{{ route('professor.submissions.facultyintercountry.show', $submission->form_id) }}">
                                                                     E.4. Faculty Involvement in Inter-Country Mobility
+                                                                </a>
+                                                            @break 
+                                                            @case('material')
+                                                                <a href="{{ route('professor.submissions.material.show', $submission->form_id) }}">
+                                                                    F.1. Instructional Material, Reference/Text Book, Module, Monographs
                                                                 </a>
                                                             @break 
                                                             @default
