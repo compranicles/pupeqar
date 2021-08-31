@@ -87,10 +87,10 @@
                                                 <option value="specialtasktimeliness" {{ ((old('form_type') == "specialtasktimeliness") ? 'selected' : '' )}}>
                                                     III. Special Tasks - Commitment Measurable by Timeliness
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="attendancefunction" {{ ((old('form_type') == "attendancefunction") ? 'selected' : '' )}}>
                                                     IV. Attendance in University Function
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="viableproject" {{ ((old('form_type') == "viableproject") ? 'selected' : '' )}}>
                                                     V. Viable Demonstration Projects
                                                 </option>
                                                 <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
@@ -253,6 +253,16 @@
                                                             @case('specialtasktimeliness')
                                                                 <a href="{{ route('professor.submissions.specialtasktimeliness.show', $submission->form_id) }}">
                                                                     III. Special Tasks - Commitment Measurable by Timeliness
+                                                                </a>
+                                                            @break 
+                                                            @case('attendancefunction')
+                                                                <a href="{{ route('professor.submissions.attendancefunction.show', $submission->form_id) }}">
+                                                                    IV. Attendance in University Function
+                                                                </a>
+                                                            @break 
+                                                            @case('viableproject')
+                                                                <a href="{{ route('professor.submissions.viableproject.show', $submission->form_id) }}">
+                                                                    V. Viable Demonstration Projects
                                                                 </a>
                                                             @break 
                                                             @default

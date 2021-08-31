@@ -62,6 +62,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('specialtask/deletefileonedit/{specialtask}', [\App\Http\Controllers\Submissions\SpecialTaskController::class, 'removeFileInEdit'])->name('specialtask.file.delete');
         Route::post('specialtaskefficiency/deletefileonedit/{specialtaskefficiency}', [\App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class, 'removeFileInEdit'])->name('specialtaskefficiency.file.delete');
         Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('specialtasktimeliness.file.delete');
+        Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'removeFileInEdit'])->name('attendancefunction.file.delete');
+        Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'removeFileInEdit'])->name('viableproject.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -268,6 +270,24 @@ Route::group(['middleware' => 'auth'], function() {
             'edit' => 'submissions.specialtasktimeliness.edit',
             'update' => 'submissions.specialtasktimeliness.update',
             'destroy' => 'submissions.specialtasktimeliness.destroy'
+        ]);
+        Route::resource('attendancefunction', \App\Http\Controllers\Submissions\AttendanceFunctionController::class)->names([
+            'index' => 'submissions.attendancefunction',
+            'create' => 'submissions.attendancefunction.create',
+            'store' => 'submissions.attendancefunction.store',
+            'show' => 'submissions.attendancefunction.show',
+            'edit' => 'submissions.attendancefunction.edit',
+            'update' => 'submissions.attendancefunction.update',
+            'destroy' => 'submissions.attendancefunction.destroy'
+        ]);
+        Route::resource('viableproject', \App\Http\Controllers\Submissions\ViableProjectController::class)->names([
+            'index' => 'submissions.viableproject',
+            'create' => 'submissions.viableproject.create',
+            'store' => 'submissions.viableproject.store',
+            'show' => 'submissions.viableproject.show',
+            'edit' => 'submissions.viableproject.edit',
+            'update' => 'submissions.viableproject.update',
+            'destroy' => 'submissions.viableproject.destroy'
         ]);
 
         // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
