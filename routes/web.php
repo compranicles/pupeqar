@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('specialtasktimeliness.file.delete');
         Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'removeFileInEdit'])->name('attendancefunction.file.delete');
         Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'removeFileInEdit'])->name('viableproject.file.delete');
+        Route::post('branchaward/deletefileonedit/{branchaward}', [\App\Http\Controllers\Submissions\BranchAwardController::class, 'removeFileInEdit'])->name('branchaward.file.delete');
         Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
             'index' => 'submissions.ongoingadvanced',
             'create' => 'submissions.ongoingadvanced.create',
@@ -289,10 +290,15 @@ Route::group(['middleware' => 'auth'], function() {
             'update' => 'submissions.viableproject.update',
             'destroy' => 'submissions.viableproject.destroy'
         ]);
-
-        // Route::get('search', [\App\Http\Controllers\Professors\EventController::class, 'search'])->name('events.search');
-        // Route::resource('events', \App\Http\Controllers\Professors\EventController::class);
-        // Route::resource('events.submissions', \App\Http\Controllers\Professors\SubmissionController::class);
+        Route::resource('branchaward', \App\Http\Controllers\Submissions\BranchAwardController::class)->names([
+            'index' => 'submissions.branchaward',
+            'create' => 'submissions.branchaward.create',
+            'store' => 'submissions.branchaward.store',
+            'show' => 'submissions.branchaward.show',
+            'edit' => 'submissions.branchaward.edit',
+            'update' => 'submissions.branchaward.update',
+            'destroy' => 'submissions.branchaward.destroy'
+        ]);
     });
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::view('/maintenances', 'admin.maintenances.index')->name('maintenances.index');

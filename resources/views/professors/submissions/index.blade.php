@@ -93,7 +93,7 @@
                                                 <option value="viableproject" {{ ((old('form_type') == "viableproject") ? 'selected' : '' )}}>
                                                     V. Viable Demonstration Projects
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="branchaward" {{ ((old('form_type') == "branchaward") ? 'selected' : '' )}}>
                                                     VI.  Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations																								
                                                 </option>  
                                             </select>
@@ -263,6 +263,11 @@
                                                             @case('viableproject')
                                                                 <a href="{{ route('professor.submissions.viableproject.show', $submission->form_id) }}">
                                                                     V. Viable Demonstration Projects
+                                                                </a>
+                                                            @break 
+                                                            @case('branchaward')
+                                                                <a href="{{ route('professor.submissions.branchaward.show', $submission->form_id) }}">
+                                                                    VI.  Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations																								
                                                                 </a>
                                                             @break 
                                                             @default

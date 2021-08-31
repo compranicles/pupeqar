@@ -97,6 +97,9 @@ class SubmissionController extends Controller
             case 'viableproject':
                     return redirect()->route('professor.submissions.viableproject.create');
                 break;
+            case 'branchaward':
+                    return redirect()->route('professor.submissions.branchaward.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');
