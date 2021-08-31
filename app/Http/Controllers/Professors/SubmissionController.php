@@ -58,6 +58,48 @@ class SubmissionController extends Controller
             case 'invention':
                     return redirect()->route('professor.submissions.invention.create');
                 break;
+            case 'expertconsultant':
+                    return redirect()->route('professor.submissions.expertconsultant.create');
+                break;
+            case 'expertconference':
+                    return redirect()->route('professor.submissions.expertconference.create');
+                break;
+            case 'expertjournal':
+                    return redirect()->route('professor.submissions.expertjournal.create');
+                break;
+            case 'extensionprogram':
+                    return redirect()->route('professor.submissions.extensionprogram.create');
+                break;
+            case 'partnership':
+                    return redirect()->route('professor.submissions.partnership.create');
+                break;
+            case 'facultyintercountry':
+                    return redirect()->route('professor.submissions.facultyintercountry.create');
+                break;
+            case 'material':
+                    return redirect()->route('professor.submissions.material.create');
+                break;
+            case 'syllabus':
+                    return redirect()->route('professor.submissions.syllabus.create');
+                break;
+            case 'specialtask':
+                    return redirect()->route('professor.submissions.specialtask.create');
+                break;
+            case 'specialtaskefficiency':
+                    return redirect()->route('professor.submissions.specialtaskefficiency.create');
+                break;
+            case 'specialtasktimeliness':
+                    return redirect()->route('professor.submissions.specialtasktimeliness.create');
+                break;
+            case 'attendancefunction':
+                    return redirect()->route('professor.submissions.attendancefunction.create');
+                break;
+            case 'viableproject':
+                    return redirect()->route('professor.submissions.viableproject.create');
+                break;
+            case 'branchaward':
+                    return redirect()->route('professor.submissions.branchaward.create');
+                break;
         }
 
         return redirect()->route('professor.submissions.index');

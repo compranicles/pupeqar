@@ -54,46 +54,46 @@
                                                 <option value="invention" {{ ((old('form_type') == "invention") ? 'selected' : '' )}}>
                                                     D.1. Faculty Invention, Innovation and Creative Works Commitment
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="expertconsultant" {{ ((old('form_type') == "expertconsultant") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - as a Consultant/Expert
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="expertconference" {{ ((old('form_type') == "expertconference") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - in Conferences
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="expertjournal" {{ ((old('form_type') == "expertjournal") ? 'selected' : '' )}}>
                                                     E.1. Expert Service Rendered - in Academic Journals
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="extensionprogram" {{ ((old('form_type') == 'extensionprogram') ? 'selected' : '' )}}>
                                                     E.2. Extension Program, Project and Activity (Ongoing and Completed)
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="partnership" {{ ((old('form_type') == "partnership") ? 'selected' : '' )}}>
                                                     E.3. Partnership/Linkages/Network
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="facultyintercountry" {{ ((old('form_type') == "facultyintercountry") ? 'selected' : '' )}}>
                                                     E.4. Faculty Involvement in Inter-Country Mobility
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="material" {{ ((old('form_type') == "material") ? 'selected' : '' )}}>
                                                     F.1.  Material, Reference/Text Book, Module, Monographs
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="syllabus" {{ ((old('form_type') == "syllabus") ? 'selected' : '' )}}>
                                                     F.2. Course Syllabus/Guide Developed/Revised/Enhanced
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtask" {{ ((old('form_type') == "specialtask") ? 'selected' : '' )}}>
                                                     III. Special Tasks
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtaskefficiency" {{ ((old('form_type') == "specialtaskefficiency") ? 'selected' : '' )}}>
                                                     III. Special Tasks - Commitment Measurable by Efficiency
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="specialtasktimeliness" {{ ((old('form_type') == "specialtasktimeliness") ? 'selected' : '' )}}>
                                                     III. Special Tasks - Commitment Measurable by Timeliness
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="attendancefunction" {{ ((old('form_type') == "attendancefunction") ? 'selected' : '' )}}>
                                                     IV. Attendance in University Function
                                                 </option>  
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="viableproject" {{ ((old('form_type') == "viableproject") ? 'selected' : '' )}}>
                                                     V. Viable Demonstration Projects
                                                 </option>
-                                                <option value="" {{ ((old('form_type') == 1) ? 'selected' : '' )}}>
+                                                <option value="branchaward" {{ ((old('form_type') == "branchaward") ? 'selected' : '' )}}>
                                                     VI.  Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations																								
                                                 </option>  
                                             </select>
@@ -198,6 +198,76 @@
                                                             @case('invention')
                                                                 <a href="{{ route('professor.submissions.invention.show', $submission->form_id) }}">
                                                                     D.1. Faculty Invention, Innovation and Creative Works Commitment
+                                                                </a>
+                                                            @break 
+                                                            @case('expertconsultant')
+                                                                <a href="{{ route('professor.submissions.expertconsultant.show', $submission->form_id) }}">
+                                                                    E.1. Expert Service Rendered - as a Consultant/Expert
+                                                                </a>
+                                                            @break 
+                                                            @case('expertconference')
+                                                                <a href="{{ route('professor.submissions.expertconference.show', $submission->form_id) }}">
+                                                                    E.1. Expert Service Rendered - in Conferences
+                                                                </a>
+                                                            @break 
+                                                            @case('expertjournal')
+                                                                <a href="{{ route('professor.submissions.expertjournal.show', $submission->form_id) }}">
+                                                                    E.1. Expert Service Rendered - in Academic Journals
+                                                                </a>
+                                                            @break 
+                                                            @case('extensionprogram')
+                                                                <a href="{{ route('professor.submissions.extensionprogram.show', $submission->form_id) }}">
+                                                                    E.2. Extension Program, Project and Activity (Ongoing and Completed)
+                                                                </a>
+                                                            @break 
+                                                            @case('partnership')
+                                                            <a href="{{ route('professor.submissions.partnership.show', $submission->form_id) }}">
+                                                                    E.3. Partnership/Linkages/Network
+                                                            </a>
+                                                            @break 
+                                                            @case('facultyintercountry')
+                                                                <a href="{{ route('professor.submissions.facultyintercountry.show', $submission->form_id) }}">
+                                                                    E.4. Faculty Involvement in Inter-Country Mobility
+                                                                </a>
+                                                            @break 
+                                                            @case('material')
+                                                                <a href="{{ route('professor.submissions.material.show', $submission->form_id) }}">
+                                                                    F.1. Instructional Material, Reference/Text Book, Module, Monographs
+                                                                </a>
+                                                            @break 
+                                                            @case('syllabus')
+                                                                <a href="{{ route('professor.submissions.syllabus.show', $submission->form_id) }}">
+                                                                    F.2. Course Syllabus/Guide Developed/Revised/Enhanced
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtask')
+                                                                <a href="{{ route('professor.submissions.specialtask.show', $submission->form_id) }}">
+                                                                    III. Special Tasks
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtaskefficiency')
+                                                                <a href="{{ route('professor.submissions.specialtaskefficiency.show', $submission->form_id) }}">
+                                                                    III. Special Tasks - Commitment Measurable by Efficiency
+                                                                </a>
+                                                            @break 
+                                                            @case('specialtasktimeliness')
+                                                                <a href="{{ route('professor.submissions.specialtasktimeliness.show', $submission->form_id) }}">
+                                                                    III. Special Tasks - Commitment Measurable by Timeliness
+                                                                </a>
+                                                            @break 
+                                                            @case('attendancefunction')
+                                                                <a href="{{ route('professor.submissions.attendancefunction.show', $submission->form_id) }}">
+                                                                    IV. Attendance in University Function
+                                                                </a>
+                                                            @break 
+                                                            @case('viableproject')
+                                                                <a href="{{ route('professor.submissions.viableproject.show', $submission->form_id) }}">
+                                                                    V. Viable Demonstration Projects
+                                                                </a>
+                                                            @break 
+                                                            @case('branchaward')
+                                                                <a href="{{ route('professor.submissions.branchaward.show', $submission->form_id) }}">
+                                                                    VI.  Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations																								
                                                                 </a>
                                                             @break 
                                                             @default
