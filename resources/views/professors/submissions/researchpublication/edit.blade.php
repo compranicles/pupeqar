@@ -344,7 +344,7 @@
                             <hr>
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
-                                    <a href="{{ route('professor.submissions.index') }}" class="btn btn-outline-danger mr-2">
+                                    <a href="{{ route('professor.submissions.researchpublication.show', $researchpublication->id) }}" class="btn btn-outline-danger mr-2">
                                         CANCEL
                                     </a>
                                     <x-jet-button>
