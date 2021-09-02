@@ -340,22 +340,5 @@
 
 
         </script>
-        <script>
-            var present = document.getElementById('present');
-            var toinput = document.getElementById('date-end');
-            
-            if(document.getElementById("present").checked){
-                toinput.disabled = true;
-            }
-
-            // when unchecked or checked, run the function
-            present.onchange = function(){
-                if(this.checked){
-                    toinput.disabled = true;
-                } else {
-                    toinput.disabled = false;
-                }
-            }
-        </script>
     @endpush
 </x-app-layout>

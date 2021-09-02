@@ -235,35 +235,6 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('js/litepicker.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/plugins/mobilefriendly.js"></script>
-        <script>
-          
-            const today = new Date();
-
-            const picker = new Litepicker ({
-                element: document.getElementById('date-start'),
-                elementEnd: document.getElementById('date-end'),
-                singleMode: false,
-                // allowRepick: true,
-                resetButton: true,
-                // numberOfColumns: 2,
-                // numberOfMonths: 2,
-                dropdowns: {
-                    "minYear":2020,
-                    "maxYear":null,
-                    "months":true,
-                    "years":true,
-                },
-                // firstDay : 0,
-                plugins: ['mobilefriendly'],
-                mobilefriendly: {
-                  breakpoint: 480,
-                },
-            });
-
-            // picker.setDateRange(today, today, false);
-        </script>
         <script>
             /*
             We want to preview images, so we need to register the Image Preview plugin
