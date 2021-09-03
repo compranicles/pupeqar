@@ -177,6 +177,11 @@ class BranchAwardController extends Controller
                 }
             }
         }
+
+        Submission::where('form_name', 'branchaward')
+                ->where('form_id', $branchaward->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.branchaward.show', $branchaward)->with('success', 'Form updated successfully.');
 
     }

@@ -210,7 +210,11 @@ class FacultyInterCountryController extends Controller
             }
         }
 
-        
+        Submission::where('form_name', 'facultyintercountry')
+                ->where('form_id', $facultyintercountry->id)
+                ->update(['status' => 1]);
+
+
         return redirect()->route('professor.submissions.facultyintercountry.show', $facultyintercountry->id)->with('success', 'Form updated successfully.');
 
     }

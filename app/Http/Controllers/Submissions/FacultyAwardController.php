@@ -216,6 +216,10 @@ class FacultyAwardController extends Controller
             }
         }
 
+        Submission::where('form_name', 'facultyaward')
+                ->where('form_id', $facultyaward->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.facultyaward.show', $facultyaward->id)->with('success', 'Form updated successfully.');
 
     }

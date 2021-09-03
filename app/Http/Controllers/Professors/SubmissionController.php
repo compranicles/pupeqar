@@ -10,7 +10,7 @@ class SubmissionController extends Controller
 { 
     public function index()
     {
-        $submissions = Submission::orderBy('created_at', 'desc')->where('deleted_at', NULL)->get();
+        $submissions = Submission::orderBy('updated_at', 'desc')->where('deleted_at', NULL)->get();
 
         return view('professors.submissions.index', compact('submissions'));
     }

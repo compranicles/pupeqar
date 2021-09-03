@@ -225,6 +225,10 @@ class ExpertConsultantController extends Controller
                 }
             }
         }
+
+        Submission::where('form_name', 'expertconsultant')
+                ->where('form_id', $expertconsultant->id)
+                ->update(['status' => 1]);
         
         return redirect()->route('professor.submissions.expertconsultant.show', $expertconsultant->id)->with('success', 'Form updated successfully.');
 

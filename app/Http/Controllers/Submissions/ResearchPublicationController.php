@@ -292,6 +292,10 @@ class ResearchPublicationController extends Controller
             }
         }
 
+        Submission::where('form_name', 'researchpublication')
+                ->where('form_id', $researchpublication->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.researchpublication.show', $researchpublication->id)->with('success', 'Form updated successfully.');
 
     }

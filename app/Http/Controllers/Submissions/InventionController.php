@@ -242,6 +242,10 @@ class InventionController extends Controller
             }
         }
 
+        Submission::where('form_name', 'invention')
+                ->where('form_id', $invention->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.invention.show', $invention->id)->with('success', 'Form updated successfully.');
 
     }

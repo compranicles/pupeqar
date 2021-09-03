@@ -225,6 +225,10 @@ class OfficershipController extends Controller
             }
         }
 
+        Submission::where('form_name', 'officership')
+                ->where('form_id', $officership->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.officership.show', $officership->id)->with('success', 'Form updated successfully.');
     }
 

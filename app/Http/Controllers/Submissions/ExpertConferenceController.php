@@ -220,6 +220,10 @@ class ExpertConferenceController extends Controller
             }
         }
 
+        Submission::where('form_name', 'expertconference')
+                ->where('form_id', $expertconference->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.expertconference.show', $expertconference->id)->with('success', 'Form updated successfully.');
 
     }

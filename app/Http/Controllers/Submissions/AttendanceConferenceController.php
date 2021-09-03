@@ -257,6 +257,10 @@ class AttendanceConferenceController extends Controller
             }
         }
 
+        Submission::where('form_name', 'attendanceconference')
+                ->where('form_id', $attendanceconference->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.attendanceconference.show', $attendanceconference)->with('success', 'Form updated successfully.');
 
     }

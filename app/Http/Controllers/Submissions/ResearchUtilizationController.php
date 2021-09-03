@@ -288,6 +288,10 @@ class ResearchUtilizationController extends Controller
             }
         }
 
+        Submission::where('form_name', 'researchutilization')
+                ->where('form_id', $researchutilization->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.researchutilization.show', $researchutilization->id)->with('success', 'Form updated successfully.');
     }
 

@@ -288,6 +288,13 @@ class ExtensionProgramController extends Controller
                 }
             }
         }
+
+
+        Submission::where('form_name', 'extensionprogram')
+                ->where('form_id', $extensionprogram->id)
+                ->update(['status' => 1]);
+
+
         return redirect()->route('professor.submissions.extensionprogram.show', $extensionprogram->id)->with('success', 'Form updated successfully.');
 
 

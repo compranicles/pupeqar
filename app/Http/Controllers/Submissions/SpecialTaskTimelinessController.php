@@ -201,6 +201,10 @@ class SpecialTaskTimelinessController extends Controller
             }
         }
 
+        Submission::where('form_name', 'specialtasktimeliness')
+                ->where('form_id', $specialtasktimeliness->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.specialtasktimeliness.show', $specialtasktimeliness)->with('success', 'Form updated successfully.');
     }
 

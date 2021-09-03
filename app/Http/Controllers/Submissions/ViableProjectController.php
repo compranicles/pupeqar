@@ -177,6 +177,10 @@ class ViableProjectController extends Controller
             }
         }
 
+        Submission::where('form_name', 'viableproject')
+                ->where('form_id', $viableproject->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.viableproject.show', $viableproject->id)->with('success', 'Form updated successfully.');
 
     }

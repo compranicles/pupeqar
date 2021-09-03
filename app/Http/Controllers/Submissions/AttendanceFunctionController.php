@@ -184,6 +184,10 @@ class AttendanceFunctionController extends Controller
             }
         }
         
+        Submission::where('form_name', 'attendancefunction')
+                ->where('form_id', $attendancefunction->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.attendancefunction.show', $attendancefunction->id)->with('success', 'Form updated successfully.');
 
     }
