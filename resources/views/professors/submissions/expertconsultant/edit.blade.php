@@ -9,6 +9,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                {{ $message }}
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('professor.submissions.expertconsultant.show', $expertconsultant->id) }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
