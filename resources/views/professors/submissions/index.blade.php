@@ -131,6 +131,7 @@
                                                 <th>#</th>
                                                 <th>Form Submitted</th>
                                                 <th>Date Submitted</th>
+                                                <th>Date Modified</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -138,7 +139,7 @@
                                             @foreach ($submissions as $submission)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>
+                                                    <td class="text-wrap" style="width: 30rem">
                                                         @switch($submission->form_name)
                                                             @case('ongoingadvanced')
                                                                 <a href="{{ route('professor.submissions.ongoingadvanced.show', $submission->form_id) }}">
@@ -273,7 +274,8 @@
                                                             @default
                                                         @endswitch
                                                     </td>
-                                                    <td>{{ date("F j, Y, g:i a" , strtotime($submission->created_at)) }}</td>
+                                                    <td>{{ date("M j, Y, g:i a" , strtotime($submission->created_at)) }}</td>
+                                                    <td>{{ date("M j, Y, g:i a" , strtotime($submission->updated_at)) }}</td>
                                                     <td>
                                                         @switch($submission->status)
                                                             @case(1)

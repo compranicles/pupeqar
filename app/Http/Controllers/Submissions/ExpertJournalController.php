@@ -220,6 +220,10 @@ class ExpertJournalController extends Controller
             }
         }
 
+        Submission::where('form_name', 'expertjournal')
+                ->where('form_id', $expertjournal->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.expertjournal.show', $expertjournal->id)->with('success', 'Form updated successfully.');
 
     }

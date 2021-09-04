@@ -33,273 +33,277 @@ Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileControl
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
+
+    Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('professor.submissions.index');
+    Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('professor.submissions.select');
+    Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('professor.ongoingadvanced.file.delete');
+    Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'removeFileInEdit'])->name('professor.facultyaward.file.delete');
+    Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('professor.officership.file.delete');
+    Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('professor.attendanceconference.file.delete');
+    Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('professor.attendancetraining.file.delete');
+    Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+    Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('professor.researchpublication.file.delete');
+    Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'removeFileInEdit'])->name('professor.researchpresentation.file.delete');
+    Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('professor.researchcitation.file.delete');
+    Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'removeFileInEdit'])->name('professor.researchutilization.file.delete');
+    Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'removeFileInEdit'])->name('professor.researchcopyright.file.delete');
+    Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'removeFileInEdit'])->name('professor.invention.file.delete');
+    Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'removeFileInEdit'])->name('professor.expertconsultant.file.delete');
+    Route::post('expertconference/deletefileonedit/{expertconference}', [\App\Http\Controllers\Submissions\ExpertConferenceController::class, 'removeFileInEdit'])->name('professor.expertconference.file.delete');
+    Route::post('expertjournal/deletefileonedit/{expertjournal}', [\App\Http\Controllers\Submissions\ExpertJournalController::class, 'removeFileInEdit'])->name('professor.expertjournal.file.delete');
+    Route::post('extensionprogram/deletefileonedit/{extensionprogram}', [\App\Http\Controllers\Submissions\ExtensionProgramController::class, 'removeFileInEdit'])->name('professor.extensionprogram.file.delete');
+    Route::post('facultyintercountry/deletefileonedit/{facultyintercountry}', [\App\Http\Controllers\Submissions\FacultyInterCountryController::class, 'removeFileInEdit'])->name('professor.facultyintercountry.file.delete');
+    Route::post('partnership/deletefileonedit/{partnership}', [\App\Http\Controllers\Submissions\PartnershipController::class, 'removeFileInEdit'])->name('professor.partnership.file.delete');
+    Route::post('material/deletefileonedit/{material}', [\App\Http\Controllers\Submissions\MaterialController::class, 'removeFileInEdit'])->name('professor.material.file.delete');
+    Route::post('syllabus/deletefileonedit/{syllabu}', [\App\Http\Controllers\Submissions\SyllabusController::class, 'removeFileInEdit'])->name('professor.syllabus.file.delete');
+    Route::post('specialtask/deletefileonedit/{specialtask}', [\App\Http\Controllers\Submissions\SpecialTaskController::class, 'removeFileInEdit'])->name('professor.specialtask.file.delete');
+    Route::post('specialtaskefficiency/deletefileonedit/{specialtaskefficiency}', [\App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class, 'removeFileInEdit'])->name('professor.specialtaskefficiency.file.delete');
+    Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('professor.specialtasktimeliness.file.delete');
+    Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'removeFileInEdit'])->name('professor.attendancefunction.file.delete');
+    Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'removeFileInEdit'])->name('professor.viableproject.file.delete');
+    Route::post('branchaward/deletefileonedit/{branchaward}', [\App\Http\Controllers\Submissions\BranchAwardController::class, 'removeFileInEdit'])->name('professor.branchaward.file.delete');
+    Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
+        'index' => 'professor.submissions.ongoingadvanced',
+        'create' => 'professor.submissions.ongoingadvanced.create',
+        'store' => 'professor.submissions.ongoingadvanced.store',
+        'show' => 'professor.submissions.ongoingadvanced.show',
+        'edit' => 'professor.submissions.ongoingadvanced.edit',
+        'update' => 'professor.submissions.ongoingadvanced.update',
+        'destroy' => 'professor.submissions.ongoingadvanced.destroy'
+    ]);
+    Route::resource('facultyaward', \App\Http\Controllers\Submissions\FacultyAwardController::class)->names([
+        'index' => 'professor.submissions.facultyaward',
+        'create' => 'professor.submissions.facultyaward.create',
+        'store' => 'professor.submissions.facultyaward.store',
+        'show' => 'professor.submissions.facultyaward.show',
+        'edit' => 'professor.submissions.facultyaward.edit',
+        'update' => 'professor.submissions.facultyaward.update',
+        'destroy' => 'professor.submissions.facultyaward.destroy'
+    ]);
+    Route::resource('officership', \App\Http\Controllers\Submissions\OfficershipController::class)->names([
+        'index' => 'professor.submissions.officership',
+        'create' => 'professor.submissions.officership.create',
+        'store' => 'professor.submissions.officership.store',
+        'show' => 'professor.submissions.officership.show',
+        'edit' => 'professor.submissions.officership.edit',
+        'update' => 'professor.submissions.officership.update',
+        'destroy' => 'professor.submissions.officership.destroy'
+    ]);
+    Route::resource('attendanceconference', \App\Http\Controllers\Submissions\AttendanceConferenceController::class)->names([
+        'index' => 'professor.submissions.attendanceconference',
+        'create' => 'professor.submissions.attendanceconference.create',
+        'store' => 'professor.submissions.attendanceconference.store',
+        'show' => 'professor.submissions.attendanceconference.show',
+        'edit' => 'professor.submissions.attendanceconference.edit',
+        'update' => 'professor.submissions.attendanceconference.update',
+        'destroy' => 'professor.submissions.attendanceconference.destroy'
+    ]);
+    Route::resource('attendancetraining', \App\Http\Controllers\Submissions\AttendanceTrainingController::class)->names([
+        'index' => 'professor.submissions.attendancetraining',
+        'create' => 'professor.submissions.attendancetraining.create',
+        'store' => 'professor.submissions.attendancetraining.store',
+        'show' => 'professor.submissions.attendancetraining.show',
+        'edit' => 'professor.submissions.attendancetraining.edit',
+        'update' => 'professor.submissions.attendancetraining.update',
+        'destroy' => 'professor.submissions.attendancetraining.destroy'
+    ]);
+    Route::resource('research', \App\Http\Controllers\Submissions\ResearchController::class)->names([
+        'index' => 'professor.submissions.research',
+        'create' => 'professor.submissions.research.create',
+        'store' => 'professor.submissions.research.store',
+        'show' => 'professor.submissions.research.show',
+        'edit' => 'professor.submissions.research.edit',
+        'update' => 'professor.submissions.research.update',
+        'destroy' => 'professor.submissions.research.destroy'
+    ]);
+    Route::resource('researchpublication', \App\Http\Controllers\Submissions\ResearchPublicationController::class)->names([
+        'index' => 'professor.submissions.researchpublication',
+        'create' => 'professor.submissions.researchpublication.create',
+        'store' => 'professor.submissions.researchpublication.store',
+        'show' => 'professor.submissions.researchpublication.show',
+        'edit' => 'professor.submissions.researchpublication.edit',
+        'update' => 'professor.submissions.researchpublication.update',
+        'destroy' => 'professor.submissions.researchpublication.destroy'
+    ]);
+    Route::resource('researchpresentation', \App\Http\Controllers\Submissions\ResearchPresentationController::class)->names([
+        'index' => 'professor.submissions.researchpresentation',
+        'create' => 'professor.submissions.researchpresentation.create',
+        'store' => 'professor.submissions.researchpresentation.store',
+        'show' => 'professor.submissions.researchpresentation.show',
+        'edit' => 'professor.submissions.researchpresentation.edit',
+        'update' => 'professor.submissions.researchpresentation.update',
+        'destroy' => 'professor.submissions.researchpresentation.destroy'
+    ]);
+    Route::resource('researchcitation', \App\Http\Controllers\Submissions\ResearchCitationController::class)->names([
+        'index' => 'professor.submissions.researchcitation',
+        'create' => 'professor.submissions.researchcitation.create',
+        'store' => 'professor.submissions.researchcitation.store',
+        'show' => 'professor.submissions.researchcitation.show',
+        'edit' => 'professor.submissions.researchcitation.edit',
+        'update' => 'professor.submissions.researchcitation.update',
+        'destroy' => 'professor.submissions.researchcitation.destroy'
+    ]);
+    Route::resource('researchutilization', \App\Http\Controllers\Submissions\ResearchUtilizationController::class)->names([
+        'index' => 'professor.submissions.researchutilization',
+        'create' => 'professor.submissions.researchutilization.create',
+        'store' => 'professor.submissions.researchutilization.store',
+        'show' => 'professor.submissions.researchutilization.show',
+        'edit' => 'professor.submissions.researchutilization.edit',
+        'update' => 'professor.submissions.researchutilization.update',
+        'destroy' => 'professor.submissions.researchutilization.destroy'
+    ]);
+    Route::resource('researchcopyright', \App\Http\Controllers\Submissions\ResearchCopyrightController::class)->names([
+        'index' => 'professor.submissions.researchcopyright',
+        'create' => 'professor.submissions.researchcopyright.create',
+        'store' => 'professor.submissions.researchcopyright.store',
+        'show' => 'professor.submissions.researchcopyright.show',
+        'edit' => 'professor.submissions.researchcopyright.edit',
+        'update' => 'professor.submissions.researchcopyright.update',
+        'destroy' => 'professor.submissions.researchcopyright.destroy'
+    ]);
+    Route::resource('invention', \App\Http\Controllers\Submissions\InventionController::class)->names([
+        'index' => 'professor.submissions.invention',
+        'create' => 'professor.submissions.invention.create',
+        'store' => 'professor.submissions.invention.store',
+        'show' => 'professor.submissions.invention.show',
+        'edit' => 'professor.submissions.invention.edit',
+        'update' => 'professor.submissions.invention.update',
+        'destroy' => 'professor.submissions.invention.destroy'
+    ]);
+    Route::resource('expertconsultant', \App\Http\Controllers\Submissions\ExpertConsultantController::class)->names([
+        'index' => 'professor.submissions.expertconsultant',
+        'create' => 'professor.submissions.expertconsultant.create',
+        'store' => 'professor.submissions.expertconsultant.store',
+        'show' => 'professor.submissions.expertconsultant.show',
+        'edit' => 'professor.submissions.expertconsultant.edit',
+        'update' => 'professor.submissions.expertconsultant.update',
+        'destroy' => 'professor.submissions.expertconsultant.destroy'
+    ]);
+    Route::resource('expertconference', \App\Http\Controllers\Submissions\ExpertConferenceController::class)->names([
+        'index' => 'professor.submissions.expertconference',
+        'create' => 'professor.submissions.expertconference.create',
+        'store' => 'professor.submissions.expertconference.store',
+        'show' => 'professor.submissions.expertconference.show',
+        'edit' => 'professor.submissions.expertconference.edit',
+        'update' => 'professor.submissions.expertconference.update',
+        'destroy' => 'professor.submissions.expertconference.destroy'
+    ]);
+    Route::resource('expertjournal', \App\Http\Controllers\Submissions\ExpertJournalController::class)->names([
+        'index' => 'professor.submissions.expertjournal',
+        'create' => 'professor.submissions.expertjournal.create',
+        'store' => 'professor.submissions.expertjournal.store',
+        'show' => 'professor.submissions.expertjournal.show',
+        'edit' => 'professor.submissions.expertjournal.edit',
+        'update' => 'professor.submissions.expertjournal.update',
+        'destroy' => 'professor.submissions.expertjournal.destroy'
+    ]);
+    Route::resource('extensionprogram', \App\Http\Controllers\Submissions\ExtensionProgramController::class)->names([
+        'index' => 'professor.submissions.extensionprogram',
+        'create' => 'professor.submissions.extensionprogram.create',
+        'store' => 'professor.submissions.extensionprogram.store',
+        'show' => 'professor.submissions.extensionprogram.show',
+        'edit' => 'professor.submissions.extensionprogram.edit',
+        'update' => 'professor.submissions.extensionprogram.update',
+        'destroy' => 'professor.submissions.extensionprogram.destroy'
+    ]);
+    Route::resource('partnership', \App\Http\Controllers\Submissions\PartnershipController::class)->names([
+        'index' => 'professor.submissions.partnership',
+        'create' => 'professor.submissions.partnership.create',
+        'store' => 'professor.submissions.partnership.store',
+        'show' => 'professor.submissions.partnership.show',
+        'edit' => 'professor.submissions.partnership.edit',
+        'update' => 'professor.submissions.partnership.update',
+        'destroy' => 'professor.submissions.partnership.destroy'
+    ]);
+    Route::resource('facultyintercountry', \App\Http\Controllers\Submissions\FacultyInterCountryController::class)->names([
+        'index' => 'professor.submissions.facultyintercountry',
+        'create' => 'professor.submissions.facultyintercountry.create',
+        'store' => 'professor.submissions.facultyintercountry.store',
+        'show' => 'professor.submissions.facultyintercountry.show',
+        'edit' => 'professor.submissions.facultyintercountry.edit',
+        'update' => 'professor.submissions.facultyintercountry.update',
+        'destroy' => 'professor.submissions.facultyintercountry.destroy'
+    ]);
+    Route::resource('material', \App\Http\Controllers\Submissions\MaterialController::class)->names([
+        'index' => 'professor.submissions.material',
+        'create' => 'professor.submissions.material.create',
+        'store' => 'professor.submissions.material.store',
+        'show' => 'professor.submissions.material.show',
+        'edit' => 'professor.submissions.material.edit',
+        'update' => 'professor.submissions.material.update',
+        'destroy' => 'professor.submissions.material.destroy'
+    ]);
+    Route::resource('syllabus', \App\Http\Controllers\Submissions\SyllabusController::class)->names([
+        'index' => 'professor.submissions.syllabus',
+        'create' => 'professor.submissions.syllabus.create',
+        'store' => 'professor.submissions.syllabus.store',
+        'show' => 'professor.submissions.syllabus.show',
+        'edit' => 'professor.submissions.syllabus.edit',
+        'update' => 'professor.submissions.syllabus.update',
+        'destroy' => 'professor.submissions.syllabus.destroy'
+    ]);
+    Route::resource('specialtask', \App\Http\Controllers\Submissions\SpecialTaskController::class)->names([
+        'index' => 'professor.submissions.specialtask',
+        'create' => 'professor.submissions.specialtask.create',
+        'store' => 'professor.submissions.specialtask.store',
+        'show' => 'professor.submissions.specialtask.show',
+        'edit' => 'professor.submissions.specialtask.edit',
+        'update' => 'professor.submissions.specialtask.update',
+        'destroy' => 'professor.submissions.specialtask.destroy'
+    ]);
+    Route::resource('specialtaskefficiency', \App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class)->names([
+        'index' => 'professor.submissions.specialtaskefficiency',
+        'create' => 'professor.submissions.specialtaskefficiency.create',
+        'store' => 'professor.submissions.specialtaskefficiency.store',
+        'show' => 'professor.submissions.specialtaskefficiency.show',
+        'edit' => 'professor.submissions.specialtaskefficiency.edit',
+        'update' => 'professor.submissions.specialtaskefficiency.update',
+        'destroy' => 'professor.submissions.specialtaskefficiency.destroy'
+    ]);
+    Route::resource('specialtasktimeliness', \App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class)->names([
+        'index' => 'professor.submissions.specialtasktimeliness',
+        'create' => 'professor.submissions.specialtasktimeliness.create',
+        'store' => 'professor.submissions.specialtasktimeliness.store',
+        'show' => 'professor.submissions.specialtasktimeliness.show',
+        'edit' => 'professor.submissions.specialtasktimeliness.edit',
+        'update' => 'professor.submissions.specialtasktimeliness.update',
+        'destroy' => 'professor.submissions.specialtasktimeliness.destroy'
+    ]);
+    Route::resource('attendancefunction', \App\Http\Controllers\Submissions\AttendanceFunctionController::class)->names([
+        'index' => 'professor.submissions.attendancefunction',
+        'create' => 'professor.submissions.attendancefunction.create',
+        'store' => 'professor.submissions.attendancefunction.store',
+        'show' => 'professor.submissions.attendancefunction.show',
+        'edit' => 'professor.submissions.attendancefunction.edit',
+        'update' => 'professor.submissions.attendancefunction.update',
+        'destroy' => 'professor.submissions.attendancefunction.destroy'
+    ]);
+    Route::resource('viableproject', \App\Http\Controllers\Submissions\ViableProjectController::class)->names([
+        'index' => 'professor.submissions.viableproject',
+        'create' => 'professor.submissions.viableproject.create',
+        'store' => 'professor.submissions.viableproject.store',
+        'show' => 'professor.submissions.viableproject.show',
+        'edit' => 'professor.submissions.viableproject.edit',
+        'update' => 'professor.submissions.viableproject.update',
+        'destroy' => 'professor.submissions.viableproject.destroy'
+    ]);
+    Route::resource('branchaward', \App\Http\Controllers\Submissions\BranchAwardController::class)->names([
+        'index' => 'professor.submissions.branchaward',
+        'create' => 'professor.submissions.branchaward.create',
+        'store' => 'professor.submissions.branchaward.store',
+        'show' => 'professor.submissions.branchaward.show',
+        'edit' => 'professor.submissions.branchaward.edit',
+        'update' => 'professor.submissions.branchaward.update',
+        'destroy' => 'professor.submissions.branchaward.destroy'
+    ]);
+
+
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
-        // Route::resource('submissions', \App\Http\Controllers\Hap\SubmissionController::class);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
-        Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('submissions.index');
-        Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('submissions.select');
-        Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
-        Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
-        Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');
-        Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('attendanceconference.file.delete');
-        Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
-        Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
-        Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('researchpublication.file.delete');
-        Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'removeFileInEdit'])->name('researchpresentation.file.delete');
-        Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('researchcitation.file.delete');
-        Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
-        Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
-        Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'removeFileInEdit'])->name('invention.file.delete');
-        Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'removeFileInEdit'])->name('expertconsultant.file.delete');
-        Route::post('expertconference/deletefileonedit/{expertconference}', [\App\Http\Controllers\Submissions\ExpertConferenceController::class, 'removeFileInEdit'])->name('expertconference.file.delete');
-        Route::post('expertjournal/deletefileonedit/{expertjournal}', [\App\Http\Controllers\Submissions\ExpertJournalController::class, 'removeFileInEdit'])->name('expertjournal.file.delete');
-        Route::post('extensionprogram/deletefileonedit/{extensionprogram}', [\App\Http\Controllers\Submissions\ExtensionProgramController::class, 'removeFileInEdit'])->name('extensionprogram.file.delete');
-        Route::post('facultyintercountry/deletefileonedit/{facultyintercountry}', [\App\Http\Controllers\Submissions\FacultyInterCountryController::class, 'removeFileInEdit'])->name('facultyintercountry.file.delete');
-        Route::post('partnership/deletefileonedit/{partnership}', [\App\Http\Controllers\Submissions\PartnershipController::class, 'removeFileInEdit'])->name('partnership.file.delete');
-        Route::post('material/deletefileonedit/{material}', [\App\Http\Controllers\Submissions\MaterialController::class, 'removeFileInEdit'])->name('material.file.delete');
-        Route::post('syllabus/deletefileonedit/{syllabu}', [\App\Http\Controllers\Submissions\SyllabusController::class, 'removeFileInEdit'])->name('syllabus.file.delete');
-        Route::post('specialtask/deletefileonedit/{specialtask}', [\App\Http\Controllers\Submissions\SpecialTaskController::class, 'removeFileInEdit'])->name('specialtask.file.delete');
-        Route::post('specialtaskefficiency/deletefileonedit/{specialtaskefficiency}', [\App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class, 'removeFileInEdit'])->name('specialtaskefficiency.file.delete');
-        Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('specialtasktimeliness.file.delete');
-        Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'removeFileInEdit'])->name('attendancefunction.file.delete');
-        Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'removeFileInEdit'])->name('viableproject.file.delete');
-        Route::post('branchaward/deletefileonedit/{branchaward}', [\App\Http\Controllers\Submissions\BranchAwardController::class, 'removeFileInEdit'])->name('branchaward.file.delete');
-        Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
-            'index' => 'submissions.ongoingadvanced',
-            'create' => 'submissions.ongoingadvanced.create',
-            'store' => 'submissions.ongoingadvanced.store',
-            'show' => 'submissions.ongoingadvanced.show',
-            'edit' => 'submissions.ongoingadvanced.edit',
-            'update' => 'submissions.ongoingadvanced.update',
-            'destroy' => 'submissions.ongoingadvanced.destroy'
-        ]);
-        Route::resource('facultyaward', \App\Http\Controllers\Submissions\FacultyAwardController::class)->names([
-            'index' => 'submissions.facultyaward',
-            'create' => 'submissions.facultyaward.create',
-            'store' => 'submissions.facultyaward.store',
-            'show' => 'submissions.facultyaward.show',
-            'edit' => 'submissions.facultyaward.edit',
-            'update' => 'submissions.facultyaward.update',
-            'destroy' => 'submissions.facultyaward.destroy'
-        ]);
-        Route::resource('officership', \App\Http\Controllers\Submissions\OfficershipController::class)->names([
-            'index' => 'submissions.officership',
-            'create' => 'submissions.officership.create',
-            'store' => 'submissions.officership.store',
-            'show' => 'submissions.officership.show',
-            'edit' => 'submissions.officership.edit',
-            'update' => 'submissions.officership.update',
-            'destroy' => 'submissions.officership.destroy'
-        ]);
-        Route::resource('attendanceconference', \App\Http\Controllers\Submissions\AttendanceConferenceController::class)->names([
-            'index' => 'submissions.attendanceconference',
-            'create' => 'submissions.attendanceconference.create',
-            'store' => 'submissions.attendanceconference.store',
-            'show' => 'submissions.attendanceconference.show',
-            'edit' => 'submissions.attendanceconference.edit',
-            'update' => 'submissions.attendanceconference.update',
-            'destroy' => 'submissions.attendanceconference.destroy'
-        ]);
-        Route::resource('attendancetraining', \App\Http\Controllers\Submissions\AttendanceTrainingController::class)->names([
-            'index' => 'submissions.attendancetraining',
-            'create' => 'submissions.attendancetraining.create',
-            'store' => 'submissions.attendancetraining.store',
-            'show' => 'submissions.attendancetraining.show',
-            'edit' => 'submissions.attendancetraining.edit',
-            'update' => 'submissions.attendancetraining.update',
-            'destroy' => 'submissions.attendancetraining.destroy'
-        ]);
-        Route::resource('research', \App\Http\Controllers\Submissions\ResearchController::class)->names([
-            'index' => 'submissions.research',
-            'create' => 'submissions.research.create',
-            'store' => 'submissions.research.store',
-            'show' => 'submissions.research.show',
-            'edit' => 'submissions.research.edit',
-            'update' => 'submissions.research.update',
-            'destroy' => 'submissions.research.destroy'
-        ]);
-        Route::resource('researchpublication', \App\Http\Controllers\Submissions\ResearchPublicationController::class)->names([
-            'index' => 'submissions.researchpublication',
-            'create' => 'submissions.researchpublication.create',
-            'store' => 'submissions.researchpublication.store',
-            'show' => 'submissions.researchpublication.show',
-            'edit' => 'submissions.researchpublication.edit',
-            'update' => 'submissions.researchpublication.update',
-            'destroy' => 'submissions.researchpublication.destroy'
-        ]);
-        Route::resource('researchpresentation', \App\Http\Controllers\Submissions\ResearchPresentationController::class)->names([
-            'index' => 'submissions.researchpresentation',
-            'create' => 'submissions.researchpresentation.create',
-            'store' => 'submissions.researchpresentation.store',
-            'show' => 'submissions.researchpresentation.show',
-            'edit' => 'submissions.researchpresentation.edit',
-            'update' => 'submissions.researchpresentation.update',
-            'destroy' => 'submissions.researchpresentation.destroy'
-        ]);
-        Route::resource('researchcitation', \App\Http\Controllers\Submissions\ResearchCitationController::class)->names([
-            'index' => 'submissions.researchcitation',
-            'create' => 'submissions.researchcitation.create',
-            'store' => 'submissions.researchcitation.store',
-            'show' => 'submissions.researchcitation.show',
-            'edit' => 'submissions.researchcitation.edit',
-            'update' => 'submissions.researchcitation.update',
-            'destroy' => 'submissions.researchcitation.destroy'
-        ]);
-        Route::resource('researchutilization', \App\Http\Controllers\Submissions\ResearchUtilizationController::class)->names([
-            'index' => 'submissions.researchutilization',
-            'create' => 'submissions.researchutilization.create',
-            'store' => 'submissions.researchutilization.store',
-            'show' => 'submissions.researchutilization.show',
-            'edit' => 'submissions.researchutilization.edit',
-            'update' => 'submissions.researchutilization.update',
-            'destroy' => 'submissions.researchutilization.destroy'
-        ]);
-        Route::resource('researchcopyright', \App\Http\Controllers\Submissions\ResearchCopyrightController::class)->names([
-            'index' => 'submissions.researchcopyright',
-            'create' => 'submissions.researchcopyright.create',
-            'store' => 'submissions.researchcopyright.store',
-            'show' => 'submissions.researchcopyright.show',
-            'edit' => 'submissions.researchcopyright.edit',
-            'update' => 'submissions.researchcopyright.update',
-            'destroy' => 'submissions.researchcopyright.destroy'
-        ]);
-        Route::resource('invention', \App\Http\Controllers\Submissions\InventionController::class)->names([
-            'index' => 'submissions.invention',
-            'create' => 'submissions.invention.create',
-            'store' => 'submissions.invention.store',
-            'show' => 'submissions.invention.show',
-            'edit' => 'submissions.invention.edit',
-            'update' => 'submissions.invention.update',
-            'destroy' => 'submissions.invention.destroy'
-        ]);
-        Route::resource('expertconsultant', \App\Http\Controllers\Submissions\ExpertConsultantController::class)->names([
-            'index' => 'submissions.expertconsultant',
-            'create' => 'submissions.expertconsultant.create',
-            'store' => 'submissions.expertconsultant.store',
-            'show' => 'submissions.expertconsultant.show',
-            'edit' => 'submissions.expertconsultant.edit',
-            'update' => 'submissions.expertconsultant.update',
-            'destroy' => 'submissions.expertconsultant.destroy'
-        ]);
-        Route::resource('expertconference', \App\Http\Controllers\Submissions\ExpertConferenceController::class)->names([
-            'index' => 'submissions.expertconference',
-            'create' => 'submissions.expertconference.create',
-            'store' => 'submissions.expertconference.store',
-            'show' => 'submissions.expertconference.show',
-            'edit' => 'submissions.expertconference.edit',
-            'update' => 'submissions.expertconference.update',
-            'destroy' => 'submissions.expertconference.destroy'
-        ]);
-        Route::resource('expertjournal', \App\Http\Controllers\Submissions\ExpertJournalController::class)->names([
-            'index' => 'submissions.expertjournal',
-            'create' => 'submissions.expertjournal.create',
-            'store' => 'submissions.expertjournal.store',
-            'show' => 'submissions.expertjournal.show',
-            'edit' => 'submissions.expertjournal.edit',
-            'update' => 'submissions.expertjournal.update',
-            'destroy' => 'submissions.expertjournal.destroy'
-        ]);
-        Route::resource('extensionprogram', \App\Http\Controllers\Submissions\ExtensionProgramController::class)->names([
-            'index' => 'submissions.extensionprogram',
-            'create' => 'submissions.extensionprogram.create',
-            'store' => 'submissions.extensionprogram.store',
-            'show' => 'submissions.extensionprogram.show',
-            'edit' => 'submissions.extensionprogram.edit',
-            'update' => 'submissions.extensionprogram.update',
-            'destroy' => 'submissions.extensionprogram.destroy'
-        ]);
-        Route::resource('partnership', \App\Http\Controllers\Submissions\PartnershipController::class)->names([
-            'index' => 'submissions.partnership',
-            'create' => 'submissions.partnership.create',
-            'store' => 'submissions.partnership.store',
-            'show' => 'submissions.partnership.show',
-            'edit' => 'submissions.partnership.edit',
-            'update' => 'submissions.partnership.update',
-            'destroy' => 'submissions.partnership.destroy'
-        ]);
-        Route::resource('facultyintercountry', \App\Http\Controllers\Submissions\FacultyInterCountryController::class)->names([
-            'index' => 'submissions.facultyintercountry',
-            'create' => 'submissions.facultyintercountry.create',
-            'store' => 'submissions.facultyintercountry.store',
-            'show' => 'submissions.facultyintercountry.show',
-            'edit' => 'submissions.facultyintercountry.edit',
-            'update' => 'submissions.facultyintercountry.update',
-            'destroy' => 'submissions.facultyintercountry.destroy'
-        ]);
-        Route::resource('material', \App\Http\Controllers\Submissions\MaterialController::class)->names([
-            'index' => 'submissions.material',
-            'create' => 'submissions.material.create',
-            'store' => 'submissions.material.store',
-            'show' => 'submissions.material.show',
-            'edit' => 'submissions.material.edit',
-            'update' => 'submissions.material.update',
-            'destroy' => 'submissions.material.destroy'
-        ]);
-        Route::resource('syllabus', \App\Http\Controllers\Submissions\SyllabusController::class)->names([
-            'index' => 'submissions.syllabus',
-            'create' => 'submissions.syllabus.create',
-            'store' => 'submissions.syllabus.store',
-            'show' => 'submissions.syllabus.show',
-            'edit' => 'submissions.syllabus.edit',
-            'update' => 'submissions.syllabus.update',
-            'destroy' => 'submissions.syllabus.destroy'
-        ]);
-        Route::resource('specialtask', \App\Http\Controllers\Submissions\SpecialTaskController::class)->names([
-            'index' => 'submissions.specialtask',
-            'create' => 'submissions.specialtask.create',
-            'store' => 'submissions.specialtask.store',
-            'show' => 'submissions.specialtask.show',
-            'edit' => 'submissions.specialtask.edit',
-            'update' => 'submissions.specialtask.update',
-            'destroy' => 'submissions.specialtask.destroy'
-        ]);
-        Route::resource('specialtaskefficiency', \App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class)->names([
-            'index' => 'submissions.specialtaskefficiency',
-            'create' => 'submissions.specialtaskefficiency.create',
-            'store' => 'submissions.specialtaskefficiency.store',
-            'show' => 'submissions.specialtaskefficiency.show',
-            'edit' => 'submissions.specialtaskefficiency.edit',
-            'update' => 'submissions.specialtaskefficiency.update',
-            'destroy' => 'submissions.specialtaskefficiency.destroy'
-        ]);
-        Route::resource('specialtasktimeliness', \App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class)->names([
-            'index' => 'submissions.specialtasktimeliness',
-            'create' => 'submissions.specialtasktimeliness.create',
-            'store' => 'submissions.specialtasktimeliness.store',
-            'show' => 'submissions.specialtasktimeliness.show',
-            'edit' => 'submissions.specialtasktimeliness.edit',
-            'update' => 'submissions.specialtasktimeliness.update',
-            'destroy' => 'submissions.specialtasktimeliness.destroy'
-        ]);
-        Route::resource('attendancefunction', \App\Http\Controllers\Submissions\AttendanceFunctionController::class)->names([
-            'index' => 'submissions.attendancefunction',
-            'create' => 'submissions.attendancefunction.create',
-            'store' => 'submissions.attendancefunction.store',
-            'show' => 'submissions.attendancefunction.show',
-            'edit' => 'submissions.attendancefunction.edit',
-            'update' => 'submissions.attendancefunction.update',
-            'destroy' => 'submissions.attendancefunction.destroy'
-        ]);
-        Route::resource('viableproject', \App\Http\Controllers\Submissions\ViableProjectController::class)->names([
-            'index' => 'submissions.viableproject',
-            'create' => 'submissions.viableproject.create',
-            'store' => 'submissions.viableproject.store',
-            'show' => 'submissions.viableproject.show',
-            'edit' => 'submissions.viableproject.edit',
-            'update' => 'submissions.viableproject.update',
-            'destroy' => 'submissions.viableproject.destroy'
-        ]);
-        Route::resource('branchaward', \App\Http\Controllers\Submissions\BranchAwardController::class)->names([
-            'index' => 'submissions.branchaward',
-            'create' => 'submissions.branchaward.create',
-            'store' => 'submissions.branchaward.store',
-            'show' => 'submissions.branchaward.show',
-            'edit' => 'submissions.branchaward.edit',
-            'update' => 'submissions.branchaward.update',
-            'destroy' => 'submissions.branchaward.destroy'
-        ]);
+    
     });
+    
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::view('/maintenances', 'admin.maintenances.index')->name('maintenances.index');
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');

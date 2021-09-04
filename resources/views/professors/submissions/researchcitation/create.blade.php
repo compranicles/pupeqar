@@ -330,7 +330,7 @@
                                                     <strong>{{ $message }}</strong>
                                                 </small>
                                             @enderror
-                                        <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 15.</small></p>
+                                        <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 10.</small></p>
                                         <p class="mt-n4"><small>Accepts PDF, JPEG, and PNG file formats.</small></p>
                                     </div>
                                 </div>
@@ -481,23 +481,6 @@
             // });
 
 
-        </script>
-        <script>
-            var present = document.getElementById('present');
-            var toinput = document.getElementById('date-end');
-            
-            if(document.getElementById("present").checked){
-                toinput.disabled = true;
-            }
-
-            // when unchecked or checked, run the function
-            present.onchange = function(){
-                if(this.checked){
-                    toinput.disabled = true;
-                } else {
-                    toinput.disabled = false;
-                }
-            }
         </script>
     @endpush
 </x-app-layout>

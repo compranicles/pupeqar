@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Professors;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SubmissionController extends Controller
 { 
     public function index()
     {
-        $submissions = Submission::orderBy('created_at', 'desc')->where('deleted_at', NULL)->get();
+        $submissions = Submission::orderBy('updated_at', 'desc')->where('deleted_at', NULL)->where('user_id', Auth::id())->get();
 
         return view('professors.submissions.index', compact('submissions'));
     }

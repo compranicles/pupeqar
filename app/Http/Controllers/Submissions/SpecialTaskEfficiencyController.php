@@ -201,6 +201,10 @@ class SpecialTaskEfficiencyController extends Controller
             }
         }
 
+        Submission::where('form_name', 'specialtaskefficiency')
+                ->where('form_id', $specialtaskefficiency->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.specialtaskefficiency.show', $specialtaskefficiency)->with('success', 'Form updated successfully.');
     }
 

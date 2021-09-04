@@ -208,6 +208,10 @@ class MaterialController extends Controller
             }
         }
 
+        Submission::where('form_name', 'material')
+                ->where('form_id', $material->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.material.show', $material->id)->with('success', 'Form updated successfully.');
 
     }

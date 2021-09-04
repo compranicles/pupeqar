@@ -260,6 +260,10 @@ class PartnershipController extends Controller
             }
         }
 
+        Submission::where('form_name', 'partnership')
+                ->where('form_id', $partnership->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.partnership.show', $partnership->id)->with('success', 'Form updated successfully.');
 
     }

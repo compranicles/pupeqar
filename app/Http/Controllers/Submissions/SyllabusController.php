@@ -181,8 +181,12 @@ class SyllabusController extends Controller
                 }
             }
         }
-        return redirect()->route('professor.submissions.syllabus.show', $syllabu->id)->with('success', 'Form updated successfully.');
 
+        Submission::where('form_name', 'syllabu')
+                ->where('form_id', $syllabu->id)
+                ->update(['status' => 1]);
+
+        return redirect()->route('professor.submissions.syllabus.show', $syllabu->id)->with('success', 'Form updated successfully.');
 
     }
 

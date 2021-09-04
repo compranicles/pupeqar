@@ -252,6 +252,10 @@ class OngoingAdvancedController extends Controller
             }
         }
 
+        Submission::where('form_name', 'ongoingadvanced')
+                ->where('form_id', $ongoingadvanced->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.ongoingadvanced.show', $ongoingadvanced->id)->with('success', 'Form updated successfully.');
     }
 

@@ -9,6 +9,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
+                        @if ($message = Session::get('success'))
+                            <div class="alert alert-success">
+                                {{ $message }}
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('professor.submissions.researchpublication.show', $researchpublication->id) }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
@@ -327,7 +332,7 @@
                                                     <strong>{{ $message }}</strong>
                                                 </small>
                                             @enderror
-                                        <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 15.</small></p>
+                                        <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 10.</small></p>
                                         <p class="mt-n4"><small>Accepts PDF, JPEG, and PNG file formats.</small></p>
                                     </div>
                                 </div>
@@ -344,7 +349,7 @@
                             <hr>
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
-                                    <a href="{{ route('professor.submissions.index') }}" class="btn btn-outline-danger mr-2">
+                                    <a href="{{ route('professor.submissions.researchpublication.show', $researchpublication->id) }}" class="btn btn-outline-danger mr-2">
                                         CANCEL
                                     </a>
                                     <x-jet-button>
@@ -565,23 +570,6 @@
             // });
 
 
-        </script>
-        <script>
-            var present = document.getElementById('present');
-            var toinput = document.getElementById('date-end');
-            
-            if(document.getElementById("present").checked){
-                toinput.disabled = true;
-            }
-
-            // when unchecked or checked, run the function
-            present.onchange = function(){
-                if(this.checked){
-                    toinput.disabled = true;
-                } else {
-                    toinput.disabled = false;
-                }
-            }
         </script>
     @endpush
 </x-app-layout>

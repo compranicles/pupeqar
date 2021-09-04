@@ -293,6 +293,10 @@ class ResearchCopyrightController extends Controller
             }
         }
 
+        Submission::where('form_name', 'researchcopyright')
+                ->where('form_id', $researchcopyright->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.researchcopyright.show', $researchcopyright->id)->with('success', 'Form updated successfully.');
     }
 

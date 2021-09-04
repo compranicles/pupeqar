@@ -31,6 +31,7 @@
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
+                
                 {{-- <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('admin.announcements.index') }}" :active="request()->routeIs('admin.announcements.*')">
                         {{ __('Announcements') }}
@@ -48,7 +49,7 @@
                 </li> --}}
                 @endif
 
-                @if (auth()->user()->role_id == 3)
+                @if (auth()->user()->role_id == 3 || auth()->user()->role_id == 2)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
                         {{ __('Submissions') }}

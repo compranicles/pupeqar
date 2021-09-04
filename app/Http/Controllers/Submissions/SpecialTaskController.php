@@ -201,6 +201,10 @@ class SpecialTaskController extends Controller
             }
         }
 
+        Submission::where('form_name', 'specialtask')
+                ->where('form_id', $specialtask->id)
+                ->update(['status' => 1]);
+
         return redirect()->route('professor.submissions.specialtask.show', $specialtask)->with('success', 'Form updated successfully.');
     }
 
