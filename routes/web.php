@@ -299,6 +299,7 @@ Route::group(['middleware' => 'auth'], function() {
 
 
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
+        Route::get('/review', [\App\Http\Controllers\Hap\ReviewController::class, 'index'])->name('review.index');
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
     

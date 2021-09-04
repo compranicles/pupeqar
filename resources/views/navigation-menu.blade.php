@@ -49,6 +49,14 @@
                 </li> --}}
                 @endif
 
+                @if (auth()->user()->role_id == 2)
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('hap.review.index') }}" :active="request()->routeIs('hap.review.*')">
+                        {{ __('Review') }}
+                    </x-jet-nav-link>
+                </li>
+                @endif
+
                 @if (auth()->user()->role_id == 3 || auth()->user()->role_id == 2)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">

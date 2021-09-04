@@ -129,8 +129,8 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Form Submitted</th>
-                                                <th>Date Submitted</th>
+                                                <th>Accomplishment</th>
+                                                <th>Date Created</th>
                                                 <th>Date Modified</th>
                                                 <th>Status</th>
                                             </tr>
