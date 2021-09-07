@@ -282,7 +282,7 @@ class ResearchPresentationController extends Controller
 
                     Document::create([
                         'filename' => $fileName,
-                        'submission_id' => $formId,
+                        'submission_id' => $researchpresentation->id,
                         'submission_type' => 'researchpresentation'
                     ]);
                 }

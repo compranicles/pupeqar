@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('professor.officership.file.delete');
     Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('professor.attendanceconference.file.delete');
     Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('professor.attendancetraining.file.delete');
-    Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+    Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('professor.research.file.delete');
     Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('professor.researchpublication.file.delete');
     Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'removeFileInEdit'])->name('professor.researchpresentation.file.delete');
     Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('professor.researchcitation.file.delete');
@@ -300,6 +300,85 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
         Route::get('/review', [\App\Http\Controllers\Hap\ReviewController::class, 'index'])->name('review.index');
+        Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Hap\Reviews\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
+        Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Hap\Reviews\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
+        Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Hap\Reviews\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');
+        Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Hap\Reviews\AttendanceConferenceController::class, 'removeFileInEdit'])->name('attendanceconference.file.delete');
+        Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Hap\Reviews\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
+        Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Hap\Reviews\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+        Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Hap\Reviews\ResearchPublicationController::class, 'removeFileInEdit'])->name('researchpublication.file.delete');
+        Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Hap\Reviews\ResearchPresentationController::class, 'removeFileInEdit'])->name('researchpresentation.file.delete');
+        Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Hap\Reviews\ResearchCitationController::class, 'removeFileInEdit'])->name('researchcitation.file.delete');
+        Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Hap\Reviews\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
+        Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Hap\Reviews\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
+        
+
+        Route::resource('ongoingadvanced', \App\Http\Controllers\Hap\Reviews\OngoingAdvancedController::class)->names([
+            'show' => 'review.ongoingadvanced.show',
+            'edit' => 'review.ongoingadvanced.edit',
+            'update' => 'review.ongoingadvanced.update',
+            'destroy' => 'review.ongoingadvanced.destroy'
+        ]);
+        Route::resource('facultyaward', \App\Http\Controllers\Hap\Reviews\FacultyAwardController::class)->names([
+            'show' => 'review.facultyaward.show',
+            'edit' => 'review.facultyaward.edit',
+            'update' => 'review.facultyaward.update',
+            'destroy' => 'review.facultyaward.destroy'
+        ]);
+        Route::resource('officership', \App\Http\Controllers\Hap\Reviews\OfficershipController::class)->names([
+            'show' => 'review.officership.show',
+            'edit' => 'review.officership.edit',
+            'update' => 'review.officership.update',
+            'destroy' => 'review.officership.destroy'
+        ]);
+        Route::resource('attendanceconference', \App\Http\Controllers\Hap\Reviews\AttendanceConferenceController::class)->names([
+            'show' => 'review.attendanceconference.show',
+            'edit' => 'review.attendanceconference.edit',
+            'update' => 'review.attendanceconference.update',
+            'destroy' => 'review.attendanceconference.destroy'
+        ]);
+        Route::resource('attendancetraining', \App\Http\Controllers\Hap\Reviews\AttendanceTrainingController::class)->names([
+            'show' => 'review.attendancetraining.show',
+            'edit' => 'review.attendancetraining.edit',
+            'update' => 'review.attendancetraining.update',
+            'destroy' => 'review.attendancetraining.destroy'
+        ]);
+        Route::resource('research', \App\Http\Controllers\Hap\Reviews\ResearchController::class)->names([
+            'show' => 'review.research.show',
+            'edit' => 'review.research.edit',
+            'update' => 'review.research.update',
+            'destroy' => 'review.research.destroy'
+        ]);
+        Route::resource('researchpublication', \App\Http\Controllers\Hap\Reviews\ResearchPublicationController::class)->names([
+            'show' => 'review.researchpublication.show',
+            'edit' => 'review.researchpublication.edit',
+            'update' => 'review.researchpublication.update',
+            'destroy' => 'review.researchpublication.destroy'
+        ]);
+        Route::resource('researchpresentation', \App\Http\Controllers\Hap\Reviews\ResearchPresentationController::class)->names([
+            'show' => 'review.researchpresentation.show',
+            'edit' => 'review.researchpresentation.edit',
+            'update' => 'review.researchpresentation.update',
+            'destroy' => 'review.researchpresentation.destroy'
+        ]);
+        Route::resource('researchcitation', \App\Http\Controllers\Hap\Reviews\ResearchCitationController::class)->names([
+            'show' => 'review.researchcitation.show',
+            'edit' => 'review.researchcitation.edit',
+            'update' => 'review.researchcitation.update',
+            'destroy' => 'review.researchcitation.destroy'
+        ]);
+        Route::resource('researchutilization', \App\Http\Controllers\Hap\Reviews\ResearchUtilizationController::class)->names([
+            'show' => 'review.researchutilization.show',
+            'edit' => 'review.researchutilization.edit',
+            'update' => 'review.researchutilization.update',
+            'destroy' => 'review.researchutilization.destroy'
+        ]);
+        Route::resource('researchcopyright', \App\Http\Controllers\Hap\Reviews\ResearchCopyrightController::class)->names([
+            'show' => 'review.researchcopyright.show',
+            'edit' => 'review.researchcopyright.edit',
+            'update' => 'review.researchcopyright.update',
+            'destroy' => 'review.researchcopyright.destroy'
+        ]);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
     
