@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Submissions;
+namespace App\Http\Controllers\Hap\Reviews;
 
 use App\Models\Document;
 use App\Models\Submission;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ViableProject;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ViableProjectController extends Controller
@@ -31,7 +29,7 @@ class ViableProjectController extends Controller
      */
     public function create()
     {
-        return view('professors.submissions.viableproject.create');
+        //
     }
 
     /**
@@ -42,54 +40,7 @@ class ViableProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'revenue' => ['required', 'numeric'],
-            'cost' => ['required', 'numeric'],
-            'datestarted' => 'required',
-            'rate' => ['required', 'numeric'],
-            'documentdescription' => 'required'
-        ]);
-
-        $formId = DB::table('viable_projects')->insertGetId([
-            'name' => $request->input('name'),
-            'revenue' => $request->input('revenue'),
-            'cost' => $request->input('cost'),
-            'date_started' => $request->input('datestarted'),
-            'rate'  => $request->input('rate'),
-            'document_description'  => $request->input('documentdescription')
-        ]);
-        
-        if($request->has('document')){
-            
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $newPath = "documents/".$temporaryFile->filename;
-                    $fileName = $temporaryFile->filename;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    Document::create([
-                        'filename' => $fileName,
-                        'submission_id' => $formId,
-                        'submission_type' => 'viableproject'
-                    ]);
-                }
-            }
-        }
-
-        Submission::create([
-            'user_id' => Auth::id(),
-            'form_id' => $formId,
-            'form_name' => 'viableproject',
-            'status' => 1
-        ]);
-
-        return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission added successfully.');
+        //
     }
 
     /**
@@ -104,7 +55,7 @@ class ViableProjectController extends Controller
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.viableproject.show', [
+        return view('hap.review.viableproject.show', [
             'documents' => $documents,
             'viableproject' => $viableproject
         ]);
@@ -122,7 +73,7 @@ class ViableProjectController extends Controller
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.viableproject.edit', [
+        return view('hap.review.viableproject.edit', [
             'documents' => $documents,
             'viableproject' => $viableproject
         ]);
@@ -181,7 +132,7 @@ class ViableProjectController extends Controller
                 ->where('form_id', $viableproject->id)
                 ->update(['status' => 1]);
 
-        return redirect()->route('professor.submissions.viableproject.show', $viableproject->id)->with('success', 'Form updated successfully.');
+        return redirect()->route('hap.review.viableproject.show', $viableproject->id)->with('success', 'Form updated successfully.');
 
     }
 
@@ -198,12 +149,12 @@ class ViableProjectController extends Controller
                 ->where('deleted_at', NULL)->delete();
         Submission::where('form_id', $viableproject->id)->where('form_name', 'viableproject')->delete();
         $viableproject->delete();
-        return redirect()->route('professor.submissions.index')->with('success_submission', 'Submission deleted successfully.');
+        return redirect()->route('hap.review.index')->with('success_submission', 'Submission deleted successfully.');
     }
 
     public function removeFileInEdit(ViableProject $viableproject, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
-        return redirect()->route('professor.submissions.viableproject.edit', $viableproject)->with('success', 'Document deleted successfully.');
+        return redirect()->route('hap.review.viableproject.edit', $viableproject)->with('success', 'Document deleted successfully.');
     }
 }

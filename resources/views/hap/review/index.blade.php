@@ -97,7 +97,7 @@
                                                                 C.6.  Copyrighted Research Output
                                                             </a>
                                                         @break 
-                                                        {{--@case('invention')
+                                                        @case('invention')
                                                             <a href="{{ route('hap.review.invention.show', $submission->form_id) }}">
                                                                 D.1. Faculty Invention, Innovation and Creative Works Commitment
                                                             </a>
@@ -171,7 +171,7 @@
                                                             <a href="{{ route('hap.review.branchaward.show', $submission->form_id) }}">
                                                                 VI.  Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations																								
                                                             </a>
-                                                        @break  --}}
+                                                        @break 
                                                         @default
                                                     @endswitch
                                                 </td>
