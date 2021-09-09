@@ -20,6 +20,12 @@
                             </div>
                         </div>
                         <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="font-weight-bold h5">NAME: </span><span class="h5">{{ strtoupper($submission->last_name.', '.$submission->first_name.' '.$submission->middle_name) }}</span>
+                            </div>
+                        </div>
+                        <hr>
                         <form action="{{ route('hap.review.syllabus.update', $syllabus->id) }}" method="POST">
                             @csrf
                             @method('put')

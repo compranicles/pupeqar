@@ -54,6 +54,10 @@ class ExpertConsultantController extends Controller
      */
     public function show(ExpertConsultant $expertconsultant)
     {
+        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
+                    ->where('submissions.form_name', 'expertconsultant')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($expertconsultant->department_id);
         $serviceconsultant = ServiceConsultant::find($expertconsultant->service_consultant_id);
         $level = Level::find($expertconsultant->level_id);
@@ -62,6 +66,7 @@ class ExpertConsultantController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertconsultant.show', [
+            'submission' => $submission[0],
             'expertconsultant' => $expertconsultant,
             'department' => $department,
             'serviceconsultant' => $serviceconsultant,
@@ -78,6 +83,10 @@ class ExpertConsultantController extends Controller
      */
     public function edit(ExpertConsultant $expertconsultant)
     {
+        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
+                    ->where('submissions.form_name', 'expertconsultant')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $serviceconsultants = ServiceConsultant::all();
         $levels = Level::all();
@@ -86,6 +95,7 @@ class ExpertConsultantController extends Controller
                 ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertconsultant.edit', [
+            'submission' => $submission[0],
             'expertconsultant' => $expertconsultant,
             'departments' => $departments,
             'serviceconsultants' => $serviceconsultants,

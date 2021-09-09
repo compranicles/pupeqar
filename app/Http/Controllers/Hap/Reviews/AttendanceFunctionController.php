@@ -52,12 +52,17 @@ class AttendanceFunctionController extends Controller
      */
     public function show(AttendanceFunction $attendancefunction)
     {
+        $submission = Submission::where('submissions.form_id', $attendancefunction->id)
+        ->where('submissions.form_name', 'attendancefunction')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($attendancefunction->department_id);
         $documents = Document::where('submission_id', $attendancefunction->id)
         ->where('submission_type', 'attendancefunction')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.attendancefunction.show', [
+            'submission' => $submission[0],
             'documents' => $documents,
             'department' => $department,
             'attendancefunction' => $attendancefunction
@@ -72,12 +77,17 @@ class AttendanceFunctionController extends Controller
      */
     public function edit(AttendanceFunction $attendancefunction)
     {
+        $submission = Submission::where('submissions.form_id', $attendancefunction->id)
+        ->where('submissions.form_name', 'attendancefunction')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::all();
         $documents = Document::where('submission_id', $attendancefunction->id)
         ->where('submission_type', 'attendancefunction')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.attendancefunction.edit', [
+            'submission' => $submission[0],
             'departments' => $departments,
             'documents' => $documents,
             'attendancefunction' => $attendancefunction

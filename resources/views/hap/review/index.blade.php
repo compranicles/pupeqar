@@ -32,6 +32,7 @@
                                     <table class="table table-hover" id="review_table">
                                         <thead class="thead-light">
                                             <tr>
+                                                <th>#</th>
                                                 <th>Accomplishment</th>
                                                 <th>Submitted by</th>
                                                 <th>Date Submitted</th>
@@ -40,6 +41,7 @@
                                         <tbody>
                                             @foreach ($submissions as $submission)
                                             <tr>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td class="text-wrap" style="width: 30rem">
                                                     @switch($submission->form_name)
                                                         @case('ongoingadvanced')

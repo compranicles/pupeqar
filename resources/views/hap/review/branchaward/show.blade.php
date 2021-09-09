@@ -16,12 +16,16 @@
                         @endif
                         <div class="row">
                             <div class="col-md-6">
+                                @if ($submission->status == 1)
                                 <a href="{{ route('hap.review.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
                                 <a href="{{ route('hap.review.branchaward.edit', $branchaward->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
-                                {{-- <button type="button" class="btn btn-danger mb-2 mr-2" data-toggle="modal" data-target="#deleteModal">
-                                    <i class="far fa-trash-alt"></i> Delete
-                                </button> --}}
+                                @elseif ($submission->status == 2)
+                                <a href="{{ route('hap.review.index', 'status=accepted') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                                @elseif ($submission->status == 3)
+                                <a href="{{ route('hap.review.index', 'status=rejected') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                                @endif
                             </div>
+                            @if ($submission->status == 1)
                             <div class="col-md-6 text-md-right">
                                 <button type="button" class="btn btn-outline-success mb-2 mr-2" data-toggle="modal" data-target="#acceptModal">
                                     <i class="fas fa-check"></i> Accept
@@ -30,11 +34,18 @@
                                     <i class="fas fa-times"></i> Reject
                                 </button>
                             </div>
+                            @endif
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
                                 <h3 id="textHome" class="font-weight-bold text-center" style="color:maroon">Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations	</h3>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="font-weight-bold h5">NAME: </span><span class="h5">{{ strtoupper($submission->last_name.', '.$submission->first_name.' '.$submission->middle_name) }}</span>
                             </div>
                         </div>
                         <hr>
@@ -194,20 +205,58 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="acceptModalLabel">Delete Submission</h5>
+                    <h5 class="modal-title" id="acceptModalLabel">Accepting Submission</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h5 class="text-center">Are you sure you want to delete this submission?</h5>
-                <form action="" method="POST">
+                    <h5 class="text-center">Are you sure you want to <span class="text-success font-weight-bold" id="textHome">ACCEPT</span> this submission?</h5>
+                    <hr>
+                    <form action="{{ route('hap.review.accept') }}" method="POST">
                     @csrf
-                {{-- Replace with something in the future --}}
+                    <input type="hidden" name="formId" value="{{ $branchaward->id }}">
+                    <input type="hidden" name="formname" value="{{ 'branchaward' }}">
+                    <div class="form-group">
+                        <x-jet-label value="{{ __('Comment:') }}" />
+                        <textarea class="form-control" name="comment" cols="30" rows="2" autofocus autocomplete="comment">Your submission was accepted.</textarea>
+                    </div>
+                    <small>Note: You won't be able to EDIT the form once you accept it.</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success mb-2 mr-2">Accept</button>
+                    <button type="submit" class="btn btn-success mb-2 mr-2">ACCEPT</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- reject Modal --}}
+    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectModalLabel">Rejecting Submission</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to <span class="text-danger font-weight-bold" id="textHome">REJECT</span> this submission?</h5>
+                    <hr>
+                    <form action="{{ route('hap.review.reject') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="formId" value="{{ $branchaward->id }}">
+                    <input type="hidden" name="formname" value="{{ 'branchaward' }}">
+                    <div class="form-group">
+                        <x-jet-label value="{{ __('Comment/Reason:') }}" />
+                        <textarea class="form-control" name="comment" cols="30" rows="2" autofocus autocomplete="comment">Your submission was rejected.</textarea>
+                    </div>
+                    <small>Note: You won't be able to EDIT the form once you reject it.</small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger mb-2 mr-2">Reject</button>
                 </form>
                 </div>
             </div>

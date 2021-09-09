@@ -54,6 +54,10 @@ class ExpertConferenceController extends Controller
      */
     public function show(ExpertConference $expertconference)
     {
+        $submission = Submission::where('submissions.form_id', $expertconference->id)
+                    ->where('submissions.form_name', 'expertconference')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($expertconference->department_id);
         $serviceconference = ServiceConference::find($expertconference->service_conference_id);
         $level = Level::find($expertconference->level_id);
@@ -62,6 +66,7 @@ class ExpertConferenceController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertconference.show', [
+            'submission' => $submission[0],
             'expertconference' => $expertconference,
             'department' => $department,
             'serviceconference' => $serviceconference,
@@ -78,6 +83,10 @@ class ExpertConferenceController extends Controller
      */
     public function edit(ExpertConference $expertconference)
     {
+        $submission = Submission::where('submissions.form_id', $expertconference->id)
+                    ->where('submissions.form_name', 'expertconference')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $serviceconferences = ServiceConference::all();
         $levels = Level::all();
@@ -86,6 +95,7 @@ class ExpertConferenceController extends Controller
                 ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertconference.edit', [
+            'submission' => $submission[0],
             'expertconference' => $expertconference,
             'departments' => $departments,
             'serviceconferences' => $serviceconferences,

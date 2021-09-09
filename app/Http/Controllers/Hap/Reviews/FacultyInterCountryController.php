@@ -54,6 +54,10 @@ class FacultyInterCountryController extends Controller
      */
     public function show(FacultyInterCountry $facultyintercountry)
     {
+        $submission = Submission::where('submissions.form_id', $facultyintercountry->id)
+                    ->where('submissions.form_name', 'facultyintercountry')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($facultyintercountry->department_id);
         $engagementnature = EngageNature::find($facultyintercountry->engagement_nature_id);
         $facultyinvolvement = FacultyInvolve::find($facultyintercountry->faculty_involvement_id);
@@ -62,6 +66,7 @@ class FacultyInterCountryController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.facultyintercountry.show', [
+            'submission' => $submission[0],
             'facultyintercountry' => $facultyintercountry,
             'department' => $department,
             'engagementnature' => $engagementnature,
@@ -78,6 +83,10 @@ class FacultyInterCountryController extends Controller
      */
     public function edit(FacultyInterCountry $facultyintercountry)
     {
+        $submission = Submission::where('submissions.form_id', $facultyintercountry->id)
+                    ->where('submissions.form_name', 'facultyintercountry')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $engagementnatures = EngageNature::all();
         $facultyinvolvements = FacultyInvolve::all();
@@ -86,6 +95,7 @@ class FacultyInterCountryController extends Controller
             ->where('deleted_at', NULL)->get();
 
         return view('hap.review.facultyintercountry.edit', [
+            'submission' => $submission[0],
             'facultyintercountry' => $facultyintercountry,
             'departments' => $departments,
             'engagementnatures' => $engagementnatures,

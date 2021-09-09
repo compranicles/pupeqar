@@ -52,11 +52,16 @@ class SyllabusController extends Controller
      */
     public function show(Syllabus $syllabu)
     {
+        $submission = Submission::where('submissions.form_id', $syllabu->id)
+                    ->where('submissions.form_name', 'syllabus')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($syllabu->department_id);
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')
                         ->where('deleted_at', NULL)->get();
         return view('hap.review.syllabus.show', [
+            'submission' => $submission[0],
             'syllabus' => $syllabu,  
             'department' => $department,
             'documents' => $documents
@@ -71,12 +76,17 @@ class SyllabusController extends Controller
      */
     public function edit(Syllabus $syllabu)
     {
+        $submission = Submission::where('submissions.form_id', $syllabu->id)
+                    ->where('submissions.form_name', 'syllabus')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::all();
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.syllabus.edit', [
+            'submission' => $submission[0],
             'syllabus' => $syllabu,
             'departments' => $departments,
             'documents' => $documents

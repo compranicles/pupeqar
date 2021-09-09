@@ -57,6 +57,10 @@ class ExtensionProgramController extends Controller
      */
     public function show(ExtensionProgram $extensionprogram)
     {
+        $submission = Submission::where('submissions.form_id', $extensionprogram->id)
+                    ->where('submissions.form_name', 'extensionprogram')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($extensionprogram->department_id);
         $extensionnature = ExtensionNature::find($extensionprogram->extension_nature_id);
         $fundingtype = FundingType::find($extensionprogram->funding_type_id);
@@ -68,6 +72,7 @@ class ExtensionProgramController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.extensionprogram.show', [
+            'submission' => $submission[0],
             'extensionprogram' => $extensionprogram,
             'department' => $department,
             'extensionnature' => $extensionnature,
@@ -87,6 +92,10 @@ class ExtensionProgramController extends Controller
      */
     public function edit(ExtensionProgram $extensionprogram)
     {
+        $submission = Submission::where('submissions.form_id', $extensionprogram->id)
+                    ->where('submissions.form_name', 'extensionprogram')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $extensionnatures = ExtensionNature::all();
         $fundingtypes = FundingType::all();
@@ -98,6 +107,7 @@ class ExtensionProgramController extends Controller
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.extensionprogram.edit', [
+            'submission' => $submission[0],
             'extensionprogram' => $extensionprogram,
             'departments' => $departments,
             'extensionnatures' => $extensionnatures,

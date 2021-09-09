@@ -59,6 +59,10 @@ class ResearchUtilizationController extends Controller
      */
     public function show(ResearchUtilization $researchutilization)
     {
+        $submission = Submission::where('submissions.form_id', $researchutilization->id)
+                    ->where('submissions.form_name', 'researchutilization')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($researchutilization->department_id);
         $researchclass = ResearchClass::find($researchutilization->research_class_id);
         $researchcategory = ResearchCategory::find($researchutilization->research_category_id);
@@ -73,6 +77,7 @@ class ResearchUtilizationController extends Controller
 
 
         return view('hap.review.researchutilization.show', [
+            'submission' => $submission[0],
             'research' => $researchutilization,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -94,6 +99,10 @@ class ResearchUtilizationController extends Controller
      */
     public function edit(ResearchUtilization $researchutilization)
     {
+        $submission = Submission::where('submissions.form_id', $researchutilization->id)
+                    ->where('submissions.form_name', 'researchutilization')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -107,6 +116,7 @@ class ResearchUtilizationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchutilization.edit', [
+            'submission' => $submission[0],
             'researchutilization' => $researchutilization,
             'departments' => $departments,
             'researchclasses' => $researchclasses,

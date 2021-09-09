@@ -56,6 +56,10 @@ class ExpertJournalController extends Controller
      */
     public function show(ExpertJournal $expertjournal)
     {
+        $submission = Submission::where('submissions.form_id', $expertjournal->id)
+                    ->where('submissions.form_name', 'expertjournal')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($expertjournal->department_id);
         $servicejournal = ServiceJournal::find($expertjournal->service_journal_id);
         $servicenature = ServiceNature::find($expertjournal->service_nature_id);
@@ -66,6 +70,7 @@ class ExpertJournalController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertjournal.show', [
+            'submission' => $submission[0],
             'expertjournal' => $expertjournal,
             'department' => $department,
             'servicejournal' => $servicejournal,
@@ -84,6 +89,10 @@ class ExpertJournalController extends Controller
      */
     public function edit(ExpertJournal $expertjournal)
     {
+        $submission = Submission::where('submissions.form_id', $expertjournal->id)
+                    ->where('submissions.form_name', 'expertjournal')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $servicejournals = ServiceJournal::all();
         $servicenatures = ServiceNature::all();
@@ -94,6 +103,7 @@ class ExpertJournalController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.expertjournal.edit', [
+            'submission' => $submission[0],
             'expertjournal' => $expertjournal,
             'departments' => $departments,
             'servicejournals' => $servicejournals,

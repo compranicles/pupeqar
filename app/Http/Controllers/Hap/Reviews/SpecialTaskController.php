@@ -52,6 +52,10 @@ class SpecialTaskController extends Controller
      */
     public function show(SpecialTask $specialtask)
     {
+        $submission = Submission::where('submissions.form_id', $specialtask->id)
+                    ->where('submissions.form_name', 'specialtask')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'Special Tasks';
         $route = 'specialtask';
         $department = Department::find($specialtask->department_id);
@@ -60,6 +64,7 @@ class SpecialTaskController extends Controller
                         ->where('deleted_at', NULL)
                         ->get();
         return view('hap.review.specialtask.show', [
+            'submission' => $submission[0],
             'specialtask' => $specialtask,
             'header' => $header,
             'route' => $route,
@@ -76,6 +81,10 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $specialtask)
     {
+        $submission = Submission::where('submissions.form_id', $specialtask->id)
+                    ->where('submissions.form_name', 'specialtask')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'III. Special Tasks > Edit';
         $route = 'specialtask';
         $departments = Department::all();
@@ -85,6 +94,7 @@ class SpecialTaskController extends Controller
                         ->get();
 
         return view('hap.review.specialtask.edit', [
+            'submission' => $submission[0],
             'specialtask' => $specialtask,
             'header' => $header,
             'route' => $route,

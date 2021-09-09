@@ -59,6 +59,10 @@ class ResearchCopyrightController extends Controller
      */
     public function show(ResearchCopyright $researchcopyright)
     {
+        $submission = Submission::where('submissions.form_id', $researchcopyright->id)
+                    ->where('submissions.form_name', 'researchcopyright')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($researchcopyright->department_id);
         $researchclass = ResearchClass::find($researchcopyright->research_class_id);
         $researchcategory = ResearchCategory::find($researchcopyright->research_category_id);
@@ -72,6 +76,7 @@ class ResearchCopyrightController extends Controller
                         ->where('deleted_at', NULL)->get();
         
         return view('hap.review.researchcopyright.show', [
+            'submission' => $submission[0],
             'research' => $researchcopyright,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -93,6 +98,10 @@ class ResearchCopyrightController extends Controller
      */
     public function edit(ResearchCopyright $researchcopyright)
     {
+        $submission = Submission::where('submissions.form_id', $researchcopyright->id)
+                    ->where('submissions.form_name', 'researchcopyright')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -106,6 +115,7 @@ class ResearchCopyrightController extends Controller
                         ->where('deleted_at', NULL)->get();
         
         return view('hap.review.researchcopyright.edit', [
+            'submission' => $submission[0],
             'researchcopyright' => $researchcopyright,
             'departments' => $departments,
             'researchclasses' => $researchclasses,

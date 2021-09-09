@@ -53,6 +53,10 @@ class OngoingAdvancedController extends Controller
      */
     public function show(OngoingAdvanced $ongoingadvanced)
     {
+        $submission = Submission::where('submissions.form_id', $ongoingadvanced->id)
+                    ->where('submissions.form_name', 'ongoingadvanced')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($ongoingadvanced->department_id);
         $accrelevel = AccreLevel::find($ongoingadvanced->accre_level_id);
         $supporttype = SupportType::find($ongoingadvanced->support_type_id);
@@ -62,6 +66,7 @@ class OngoingAdvancedController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.ongoingadvanced.show', [
+            'submission' => $submission[0],
             'ongoingadvanced' => $ongoingadvanced,
             'department' => $department,
             'accrelevel' => $accrelevel,
@@ -79,6 +84,10 @@ class OngoingAdvancedController extends Controller
      */
     public function edit(OngoingAdvanced $ongoingadvanced)
     {
+        $submission = Submission::where('submissions.form_id', $ongoingadvanced->id)
+                    ->where('submissions.form_name', 'ongoingadvanced')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $accrelevels = AccreLevel::all();
         $supporttypes = SupportType::all();
@@ -87,6 +96,7 @@ class OngoingAdvancedController extends Controller
                         ->where('submission_type', 'ongoingadvanced')
                         ->where('deleted_at', NULL)->get();
         return view('hap.review.ongoingadvanced.edit', [
+            'submission' => $submission[0],
             'ongoingadvanced' => $ongoingadvanced,
             'departments' => $departments,
             'accrelevels' => $accrelevels,

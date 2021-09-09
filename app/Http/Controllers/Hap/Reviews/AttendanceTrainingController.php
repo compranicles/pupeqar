@@ -56,6 +56,10 @@ class AttendanceTrainingController extends Controller
      */
     public function show(AttendanceTraining $attendancetraining)
     {
+        $submission = Submission::where('submissions.form_id', $attendancetraining->id)
+                    ->where('submissions.form_name', 'attendancetraining')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'Attendance in Training/s';
         $department = Department::find($attendancetraining->department_id);
         $developclass = TrainingClass::find($attendancetraining->develop_class_id);
@@ -68,6 +72,7 @@ class AttendanceTrainingController extends Controller
                         ->get();
 
         return view('hap.review.attendance.show',[
+            'submission' => $submission[0],
             'header' => $header,
             'controller' => 'attendancetraining',
             'attendance' => $attendancetraining,
@@ -89,6 +94,10 @@ class AttendanceTrainingController extends Controller
      */
     public function edit(AttendanceTraining $attendancetraining)
     {
+        $submission = Submission::where('submissions.form_id', $attendancetraining->id)
+                    ->where('submissions.form_name', 'attendancetraining')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'B.3.2. Attendance in Training/s > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = TrainingClass::all();
@@ -101,6 +110,7 @@ class AttendanceTrainingController extends Controller
                         ->get();
 
         return view('hap.review.attendance.edit',[
+            'submission' => $submission[0],
             'header' => $header,
             'controller' => 'attendancetraining',
             'attendance' => $attendancetraining,

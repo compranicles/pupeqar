@@ -52,6 +52,10 @@ class SpecialTaskTimelinessController extends Controller
      */
     public function show(SpecialTaskTimeliness $specialtasktimeliness)
     {
+        $submission = Submission::where('submissions.form_id', $specialtasktimeliness->id)
+                    ->where('submissions.form_name', 'specialtasktimeliness')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'Special Tasks';
         $route = 'specialtasktimeliness';
         $department = Department::find($specialtasktimeliness->department_id);
@@ -60,6 +64,7 @@ class SpecialTaskTimelinessController extends Controller
                         ->where('deleted_at', NULL)
                         ->get();
         return view('hap.review.specialtask.show', [
+            'submission' => $submission[0],
             'specialtask' => $specialtasktimeliness,
             'header' => $header,
             'route' => $route,
@@ -76,6 +81,10 @@ class SpecialTaskTimelinessController extends Controller
      */
     public function edit(SpecialTaskTimeliness $specialtasktimeliness)
     {
+        $submission = Submission::where('submissions.form_id', $specialtasktimeliness->id)
+                    ->where('submissions.form_name', 'specialtasktimeliness')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'III. Special Tasks - Commitment Measurable by Timeliness > Edit';
         $route = 'specialtasktimeliness';
         $departments = Department::all();
@@ -85,6 +94,7 @@ class SpecialTaskTimelinessController extends Controller
                         ->get();
 
         return view('hap.review.specialtask.edit', [
+            'submission' => $submission[0],
             'specialtask' => $specialtasktimeliness,
             'header' => $header,
             'route' => $route,

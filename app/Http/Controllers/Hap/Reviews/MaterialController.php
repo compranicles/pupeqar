@@ -42,12 +42,17 @@ class MaterialController extends Controller
      */
     public function show(Material $material)
     {
+        $submission = Submission::where('submissions.form_id', $material->id)
+                    ->where('submissions.form_name', 'material')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($material->department_id);
         $level = Level::find($material->level_id);
         $documents = Document::where('submission_id', $material->id)
                         ->where('submission_type', 'material')
                         ->where('deleted_at', NULL)->get();
         return view('hap.review.material.show', [
+            'submission' => $submission[0],
             'material' => $material,
             'department' => $department,
             'level' => $level,
@@ -63,6 +68,10 @@ class MaterialController extends Controller
      */
     public function edit(Material $material)
     {
+        $submission = Submission::where('submissions.form_id', $material->id)
+                    ->where('submissions.form_name', 'material')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::all();
         $levels = Level::all();
         $documents = Document::where('submission_id', $material->id)
@@ -70,6 +79,7 @@ class MaterialController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.material.edit', [
+            'submission' => $submission[0],
             'material' => $material,
             'departments' => $departments,
             'levels' => $levels,

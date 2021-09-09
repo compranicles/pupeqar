@@ -54,6 +54,10 @@ class OfficershipController extends Controller
      */
     public function show(Officership $officership)
     {
+        $submission = Submission::where('submissions.form_id', $officership->id)
+                    ->where('submissions.form_name', 'officership')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($officership->department_id);
         $facultyofficer = FacultyOfficer::find($officership->faculty_officer_id);
         $level = Level::find($officership->level_id);
@@ -62,6 +66,7 @@ class OfficershipController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.officership.show', [
+            'submission' => $submission[0],
             'officership' => $officership,
             'department' => $department,
             'facultyofficer' => $facultyofficer,
@@ -78,6 +83,10 @@ class OfficershipController extends Controller
      */
     public function edit(Officership $officership)
     {
+        $submission = Submission::where('submissions.form_id', $officership->id)
+                    ->where('submissions.form_name', 'officership')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $facultyofficers = FacultyOfficer::all();
         $levels = Level::all();
@@ -86,6 +95,7 @@ class OfficershipController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.officership.edit', [
+            'submission' => $submission[0],
             'officership' => $officership,
             'departments' => $departments,
             'facultyofficers' => $facultyofficers,

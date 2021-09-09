@@ -300,6 +300,11 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
         Route::get('/review', [\App\Http\Controllers\Hap\ReviewController::class, 'index'])->name('review.index');
+        Route::post('/review/accept', [\App\Http\Controllers\Hap\ReviewController::class, 'accept'])->name('review.accept');
+        Route::post('/review/reject', [\App\Http\Controllers\Hap\ReviewController::class, 'reject'])->name('review.reject');
+
+
+
         Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Hap\Reviews\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
         Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Hap\Reviews\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
         Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Hap\Reviews\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');

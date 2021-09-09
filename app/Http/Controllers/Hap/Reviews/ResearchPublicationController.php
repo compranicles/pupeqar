@@ -58,6 +58,10 @@ class ResearchPublicationController extends Controller
      */
     public function show(ResearchPublication $researchpublication)
     {
+        $submission = Submission::where('submissions.form_id', $researchpublication->id)
+        ->where('submissions.form_name', 'researchpublication')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($researchpublication->department_id);
         $researchclass = ResearchClass::find($researchpublication->research_class_id);
         $researchcategory = ResearchCategory::find($researchpublication->research_category_id);
@@ -70,6 +74,7 @@ class ResearchPublicationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchpublication.show', [
+            'submission' => $submission[0],
             'research' => $researchpublication,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -90,6 +95,10 @@ class ResearchPublicationController extends Controller
      */
     public function edit(ResearchPublication $researchpublication)
     {
+        $submission = Submission::where('submissions.form_id', $researchpublication->id)
+        ->where('submissions.form_name', 'researchpublication')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -102,6 +111,7 @@ class ResearchPublicationController extends Controller
                 ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchpublication.edit', [
+            'submission' => $submission[0],
             'researchpublication' => $researchpublication,
             'departments' => $departments,
             'researchclasses' => $researchclasses,

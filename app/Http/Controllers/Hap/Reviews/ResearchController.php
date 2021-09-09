@@ -58,6 +58,10 @@ class ResearchController extends Controller
      */
     public function show(Research $research)
     {
+        $submission = Submission::where('submissions.form_id', $research->id)
+                    ->where('submissions.form_name', 'research')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($research->department_id);
         $researchclass = ResearchClass::find($research->research_class_id);
         $researchcategory = ResearchCategory::find($research->research_category_id);
@@ -70,6 +74,7 @@ class ResearchController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.research.show', [
+            'submission' => $submission[0],
             'research' => $research,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -90,6 +95,10 @@ class ResearchController extends Controller
      */
     public function edit(Research $research)
     {
+        $submission = Submission::where('submissions.form_id', $research->id)
+                    ->where('submissions.form_name', 'research')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -102,6 +111,7 @@ class ResearchController extends Controller
                     ->where('deleted_at', NULL)->get();
 
         return view('hap.review.research.edit', [
+            'submission' => $submission[0],
             'departments' => $departments,
             'researchclasses' => $researchclasses,
             'researchcategories' => $researchcategories,

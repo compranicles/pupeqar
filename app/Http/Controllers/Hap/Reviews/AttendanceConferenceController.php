@@ -56,6 +56,10 @@ class AttendanceConferenceController extends Controller
      */
     public function show(AttendanceConference $attendanceconference)
     {
+        $submission = Submission::where('submissions.form_id', $attendanceconference->id)
+                    ->where('submissions.form_name', 'attendanceconference')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences)';
         $department = Department::find($attendanceconference->department_id);
         $developclass = DevelopClass::find($attendanceconference->develop_class_id);
@@ -68,6 +72,7 @@ class AttendanceConferenceController extends Controller
                         ->get();
 
         return view('hap.review.attendance.show',[
+            'submission' => $submission[0],
             'header' => $header,
             'controller' => 'attendanceconference',
             'attendance' => $attendanceconference,
@@ -89,6 +94,10 @@ class AttendanceConferenceController extends Controller
      */
     public function edit(AttendanceConference $attendanceconference)
     {
+        $submission = Submission::where('submissions.form_id', $attendanceconference->id)
+                    ->where('submissions.form_name', 'attendanceconference')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $header = 'B.3.1. Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences) > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = DevelopClass::all();
@@ -101,6 +110,7 @@ class AttendanceConferenceController extends Controller
                         ->get();
 
         return view('hap.review.attendance.edit',[
+            'submission' => $submission[0],
             'header' => $header,
             'controller' => 'attendanceconference',
             'attendance' => $attendanceconference,

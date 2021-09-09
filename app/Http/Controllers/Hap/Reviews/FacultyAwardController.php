@@ -53,7 +53,11 @@ class FacultyAwardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(FacultyAchievement $facultyaward)
-    {
+    {   
+        $submission = Submission::where('submissions.form_id', $facultyaward->id)
+        ->where('submissions.form_name', 'facultyaward')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($facultyaward->department_id);
         $awardclass = FacultyAward::find($facultyaward->faculty_award_id);
         $level = Level::find($facultyaward->level);
@@ -62,6 +66,7 @@ class FacultyAwardController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.facultyaward.show', [
+            'submission' => $submission[0],
             'facultyaward' => $facultyaward,
             'department' => $department,
             'awardclass' => $awardclass,
@@ -77,7 +82,11 @@ class FacultyAwardController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(FacultyAchievement $facultyaward)
-    {
+    {   
+        $submission = Submission::where('submissions.form_id', $facultyaward->id)
+        ->where('submissions.form_name', 'facultyaward')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $awardclasses = FacultyAward::all();
         $levels = Level::all();
@@ -86,6 +95,7 @@ class FacultyAwardController extends Controller
                         ->where('deleted_at', NULL)->get();
         
         return view('hap.review.facultyaward.edit', [
+            'submission' => $submission[0],
             'facultyaward' => $facultyaward,
             'departments' => $departments,
             'awardclasses' => $awardclasses,

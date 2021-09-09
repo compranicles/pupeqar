@@ -59,6 +59,10 @@ class ResearchCitationController extends Controller
      */
     public function show(ResearchCitation $researchcitation)
     {
+        $submission = Submission::where('submissions.form_id', $researchcitation->id)
+                    ->where('submissions.form_name', 'researchcitation')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($researchcitation->department_id);
         $researchclass = ResearchClass::find($researchcitation->research_class_id);
         $researchcategory = ResearchCategory::find($researchcitation->research_category_id);
@@ -72,6 +76,7 @@ class ResearchCitationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchcitation.show', [
+            'submission' => $submission[0],
             'research' => $researchcitation,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -93,6 +98,10 @@ class ResearchCitationController extends Controller
      */
     public function edit(ResearchCitation $researchcitation)
     {
+        $submission = Submission::where('submissions.form_id', $researchcitation->id)
+                    ->where('submissions.form_name', 'researchcitation')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -106,6 +115,7 @@ class ResearchCitationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchcitation.edit', [
+            'submission' => $submission[0],
             'researchcitation' => $researchcitation,
             'departments' => $departments,
             'researchclasses' => $researchclasses,

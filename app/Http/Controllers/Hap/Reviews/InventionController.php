@@ -55,6 +55,10 @@ class InventionController extends Controller
      */
     public function show(Invention $invention)
     {
+        $submission = Submission::where('submissions.form_id', $invention->id)
+                    ->where('submissions.form_name', 'invention')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($invention->department_id);
         $inventionclass = InventionClass::find($invention->invention_class_id);
         $inventionstatus = InventionStatus::find($invention->invention_status_id);
@@ -64,6 +68,7 @@ class InventionController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.invention.show', [
+            'submission' => $submission[0],
             'invention' => $invention,
             'department' => $department,
             'inventionclass' => $inventionclass,
@@ -81,6 +86,10 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention)
     {
+        $submission = Submission::where('submissions.form_id', $invention->id)
+                    ->where('submissions.form_name', 'invention')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $inventionclasses = InventionClass::all();
         $inventionstatuses = InventionStatus::all();
@@ -90,6 +99,7 @@ class InventionController extends Controller
                         ->where('deleted_at', NULL)->get();
                         
         return view('hap.review.invention.edit', [
+            'submission' => $submission[0],
             'invention' => $invention,
             'departments' => $departments,
             'inventionclasses' => $inventionclasses,

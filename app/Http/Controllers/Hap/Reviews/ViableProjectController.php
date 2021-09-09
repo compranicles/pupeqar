@@ -51,11 +51,16 @@ class ViableProjectController extends Controller
      */
     public function show(ViableProject $viableproject)
     {
+        $submission = Submission::where('submissions.form_id', $viableproject->id)
+        ->where('submissions.form_name', 'viableproject')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $documents = Document::where('submission_id', $viableproject->id)
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.viableproject.show', [
+            'submission' => $submission[0],
             'documents' => $documents,
             'viableproject' => $viableproject
         ]);
@@ -69,11 +74,16 @@ class ViableProjectController extends Controller
      */
     public function edit(ViableProject $viableproject)
     {
+        $submission = Submission::where('submissions.form_id', $viableproject->id)
+        ->where('submissions.form_name', 'viableproject')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $documents = Document::where('submission_id', $viableproject->id)
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.viableproject.edit', [
+            'submission' => $submission[0],
             'documents' => $documents,
             'viableproject' => $viableproject
         ]);

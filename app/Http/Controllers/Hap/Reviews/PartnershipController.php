@@ -57,6 +57,10 @@ class PartnershipController extends Controller
      */
     public function show(Partnership $partnership)
     {
+        $submission = Submission::where('submissions.form_id', $partnership->id)
+                    ->where('submissions.form_name', 'partnership')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($partnership->department_id);
         $partnertype = PartnerType::find($partnership->partner_type_id);
         $collabnature = CollabNature::find($partnership->collab_nature_id);
@@ -68,6 +72,7 @@ class PartnershipController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.partnership.show', [
+            'submission' => $submission[0],
             'partnership' => $partnership,
             'department' => $department,
             'partnertype' => $partnertype,
@@ -87,6 +92,10 @@ class PartnershipController extends Controller
      */
     public function edit(Partnership $partnership)
     {
+        $submission = Submission::where('submissions.form_id', $partnership->id)
+                    ->where('submissions.form_name', 'partnership')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $partnertypes = PartnerType::all();
         $collabnatures = CollabNature::all();
@@ -98,6 +107,7 @@ class PartnershipController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.partnership.edit', [
+            'submission' => $submission[0],
             'partnership' => $partnership,
             'departments' => $departments,
             'partnertypes' => $partnertypes,

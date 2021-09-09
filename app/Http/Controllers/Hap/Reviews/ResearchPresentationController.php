@@ -59,6 +59,10 @@ class ResearchPresentationController extends Controller
      */
     public function show(ResearchPresentation $researchpresentation)
     {
+        $submission = Submission::where('submissions.form_id', $researchpresentation->id)
+                    ->where('submissions.form_name', 'researchpresentation')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $department = Department::find($researchpresentation->department_id);
         $researchclass = ResearchClass::find($researchpresentation->research_class_id);
         $researchcategory = ResearchCategory::find($researchpresentation->research_category_id);
@@ -72,6 +76,7 @@ class ResearchPresentationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchpresentation.show', [
+            'submission' => $submission[0],
             'research' => $researchpresentation,
             'department' => $department,
             'researchclass' => $researchclass,
@@ -93,6 +98,10 @@ class ResearchPresentationController extends Controller
      */
     public function edit(ResearchPresentation $researchpresentation)
     {
+        $submission = Submission::where('submissions.form_id', $researchpresentation->id)
+                    ->where('submissions.form_name', 'researchpresentation')
+                    ->join('users', 'users.id', '=', 'submissions.user_id')
+                    ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
@@ -106,6 +115,7 @@ class ResearchPresentationController extends Controller
                         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.researchpresentation.edit', [
+            'submission' => $submission[0],
             'researchpresentation' => $researchpresentation,
             'departments' => $departments,
             'researchclasses' => $researchclasses,

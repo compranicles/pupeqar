@@ -51,11 +51,16 @@ class BranchAwardController extends Controller
      */
     public function show(BranchAward $branchaward)
     {
+        $submission = Submission::where('submissions.form_id', $branchaward->id)
+        ->where('submissions.form_name', 'branchaward')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $documents = Document::where('submission_id', $branchaward->id)
         ->where('submission_type', 'branchaward')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.branchaward.show', [
+            'submission' => $submission[0],
             'documents' => $documents,
             'branchaward' => $branchaward
         ]);
@@ -69,11 +74,16 @@ class BranchAwardController extends Controller
      */
     public function edit(BranchAward $branchaward)
     {
+        $submission = Submission::where('submissions.form_id', $branchaward->id)
+        ->where('submissions.form_name', 'branchaward')
+        ->join('users', 'users.id', '=', 'submissions.user_id')
+        ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
         $documents = Document::where('submission_id', $branchaward->id)
         ->where('submission_type', 'branchaward')
         ->where('deleted_at', NULL)->get();
 
         return view('hap.review.branchaward.edit', [
+            'submission' => $submission[0],
             'documents' => $documents,
             'branchaward' => $branchaward
         ]);
