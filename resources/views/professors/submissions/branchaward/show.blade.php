@@ -14,15 +14,18 @@
                                 {{ $message }}
                             </div>
                         @endif
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-danger">
+                                {{ $message }}
+                            </div>
+                        @endif      
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="{{ route('professor.submissions.branchaward.destroy', $branchaward->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                                    <a href="{{ route('professor.submissions.branchaward.edit', $branchaward->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
-                                    <button type="submit" class="btn btn-danger mb-2 mr-2"><i class="far fa-trash-alt"></i> Delete</button>
-                                </form>
+                                <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
+                                <a href="{{ route('professor.submissions.branchaward.edit', $branchaward->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
+                                <button type="button" class="btn btn-danger mb-2 mr-2" data-toggle="modal" data-target="#deleteModal">
+                                    <i class="far fa-trash-alt"></i> Delete
+                                </button>
                             </div>
                         </div>
                         <hr>
@@ -150,6 +153,35 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    {{-- Delete Modal --}}
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Submission</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this submission?</h5>
+                    <form action="{{ route('professor.submissions.branchaward.destroy', $branchaward->id) }}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
+                </form>
                 </div>
             </div>
         </div>

@@ -170,7 +170,7 @@ class ViableProjectController extends Controller
 
                     Document::create([
                         'filename' => $fileName,
-                        'submission_id' => $formId,
+                        'submission_id' => $viableproject->id,
                         'submission_type' => 'viableproject'
                     ]);
                 }

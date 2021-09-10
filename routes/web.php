@@ -41,7 +41,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'removeFileInEdit'])->name('professor.officership.file.delete');
     Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'removeFileInEdit'])->name('professor.attendanceconference.file.delete');
     Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'removeFileInEdit'])->name('professor.attendancetraining.file.delete');
-    Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+    Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'removeFileInEdit'])->name('professor.research.file.delete');
     Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'removeFileInEdit'])->name('professor.researchpublication.file.delete');
     Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'removeFileInEdit'])->name('professor.researchpresentation.file.delete');
     Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'removeFileInEdit'])->name('professor.researchcitation.file.delete');
@@ -299,6 +299,196 @@ Route::group(['middleware' => 'auth'], function() {
 
 
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
+        Route::get('/review', [\App\Http\Controllers\Hap\ReviewController::class, 'index'])->name('review.index');
+        Route::post('/review/accept', [\App\Http\Controllers\Hap\ReviewController::class, 'accept'])->name('review.accept');
+        Route::post('/review/reject', [\App\Http\Controllers\Hap\ReviewController::class, 'reject'])->name('review.reject');
+
+
+
+        Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Hap\Reviews\OngoingAdvancedController::class, 'removeFileInEdit'])->name('ongoingadvanced.file.delete');
+        Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Hap\Reviews\FacultyAwardController::class, 'removeFileInEdit'])->name('facultyaward.file.delete');
+        Route::post('officership/deletefileonedit/{officership}', [\App\Http\Controllers\Hap\Reviews\OfficershipController::class, 'removeFileInEdit'])->name('officership.file.delete');
+        Route::post('attendanceconference/deletefileonedit/{attendanceconference}', [\App\Http\Controllers\Hap\Reviews\AttendanceConferenceController::class, 'removeFileInEdit'])->name('attendanceconference.file.delete');
+        Route::post('attendancetraining/deletefileonedit/{attendancetraining}', [\App\Http\Controllers\Hap\Reviews\AttendanceTrainingController::class, 'removeFileInEdit'])->name('attendancetraining.file.delete');
+        Route::post('research/deletefileonedit/{research}', [\App\Http\Controllers\Hap\Reviews\ResearchController::class, 'removeFileInEdit'])->name('research.file.delete');
+        Route::post('researchpublication/deletefileonedit/{researchpublication}', [\App\Http\Controllers\Hap\Reviews\ResearchPublicationController::class, 'removeFileInEdit'])->name('researchpublication.file.delete');
+        Route::post('researchpresentation/deletefileonedit/{researchpresentation}', [\App\Http\Controllers\Hap\Reviews\ResearchPresentationController::class, 'removeFileInEdit'])->name('researchpresentation.file.delete');
+        Route::post('researchcitation/deletefileonedit/{researchcitation}', [\App\Http\Controllers\Hap\Reviews\ResearchCitationController::class, 'removeFileInEdit'])->name('researchcitation.file.delete');
+        Route::post('researchutilization/deletefileonedit/{researchutilization}', [\App\Http\Controllers\Hap\Reviews\ResearchUtilizationController::class, 'removeFileInEdit'])->name('researchutilization.file.delete');
+        Route::post('researchcopyright/deletefileonedit/{researchcopyright}', [\App\Http\Controllers\Hap\Reviews\ResearchCopyrightController::class, 'removeFileInEdit'])->name('researchcopyright.file.delete');
+        Route::post('invention/deletefileonedit/{invention}', [\App\Http\Controllers\Hap\Reviews\InventionController::class, 'removeFileInEdit'])->name('invention.file.delete');
+        Route::post('expertconsultant/deletefileonedit/{expertconsultant}', [\App\Http\Controllers\Hap\Reviews\ExpertConsultantController::class, 'removeFileInEdit'])->name('expertconsultant.file.delete');
+        Route::post('expertconference/deletefileonedit/{expertconference}', [\App\Http\Controllers\Hap\Reviews\ExpertConferenceController::class, 'removeFileInEdit'])->name('expertconference.file.delete');
+        Route::post('expertjournal/deletefileonedit/{expertjournal}', [\App\Http\Controllers\Hap\Reviews\ExpertJournalController::class, 'removeFileInEdit'])->name('expertjournal.file.delete');
+        Route::post('extensionprogram/deletefileonedit/{extensionprogram}', [\App\Http\Controllers\Hap\Reviews\ExtensionProgramController::class, 'removeFileInEdit'])->name('extensionprogram.file.delete');
+        Route::post('partnership/deletefileonedit/{partnership}', [\App\Http\Controllers\Hap\Reviews\PartnershipController::class, 'removeFileInEdit'])->name('partnership.file.delete');
+        Route::post('facultyintercountry/deletefileonedit/{facultyintercountry}', [\App\Http\Controllers\Hap\Reviews\FacultyInterCountryController::class, 'removeFileInEdit'])->name('facultyintercountry.file.delete');
+        Route::post('material/deletefileonedit/{material}', [\App\Http\Controllers\Hap\Reviews\MaterialController::class, 'removeFileInEdit'])->name('material.file.delete');
+        Route::post('syllabus/deletefileonedit/{syllabu}', [\App\Http\Controllers\Hap\Reviews\SyllabusController::class, 'removeFileInEdit'])->name('syllabus.file.delete');
+        Route::post('specialtask/deletefileonedit/{specialtask}', [\App\Http\Controllers\Hap\Reviews\SpecialTaskController::class, 'removeFileInEdit'])->name('specialtask.file.delete');
+        Route::post('specialtaskefficiency/deletefileonedit/{specialtaskefficiency}', [\App\Http\Controllers\Hap\Reviews\SpecialTaskEfficiencyController::class, 'removeFileInEdit'])->name('specialtaskefficiency.file.delete');
+        Route::post('specialtasktimeliness/deletefileonedit/{specialtasktimeliness}', [\App\Http\Controllers\Hap\Reviews\SpecialTaskTimelinessController::class, 'removeFileInEdit'])->name('specialtasktimeliness.file.delete');
+        Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Hap\Reviews\AttendanceFunctionController::class, 'removeFileInEdit'])->name('attendancefunction.file.delete');
+        Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Hap\Reviews\ViableProjectController::class, 'removeFileInEdit'])->name('viableproject.file.delete');
+        Route::post('branchaward/deletefileonedit/{branchaward}', [\App\Http\Controllers\Hap\Reviews\BranchAwardController::class, 'removeFileInEdit'])->name('branchaward.file.delete');
+        
+
+        Route::resource('ongoingadvanced', \App\Http\Controllers\Hap\Reviews\OngoingAdvancedController::class)->names([
+            'show' => 'review.ongoingadvanced.show',
+            'edit' => 'review.ongoingadvanced.edit',
+            'update' => 'review.ongoingadvanced.update',
+            'destroy' => 'review.ongoingadvanced.destroy'
+        ]);
+        Route::resource('facultyaward', \App\Http\Controllers\Hap\Reviews\FacultyAwardController::class)->names([
+            'show' => 'review.facultyaward.show',
+            'edit' => 'review.facultyaward.edit',
+            'update' => 'review.facultyaward.update',
+            'destroy' => 'review.facultyaward.destroy'
+        ]);
+        Route::resource('officership', \App\Http\Controllers\Hap\Reviews\OfficershipController::class)->names([
+            'show' => 'review.officership.show',
+            'edit' => 'review.officership.edit',
+            'update' => 'review.officership.update',
+            'destroy' => 'review.officership.destroy'
+        ]);
+        Route::resource('attendanceconference', \App\Http\Controllers\Hap\Reviews\AttendanceConferenceController::class)->names([
+            'show' => 'review.attendanceconference.show',
+            'edit' => 'review.attendanceconference.edit',
+            'update' => 'review.attendanceconference.update',
+            'destroy' => 'review.attendanceconference.destroy'
+        ]);
+        Route::resource('attendancetraining', \App\Http\Controllers\Hap\Reviews\AttendanceTrainingController::class)->names([
+            'show' => 'review.attendancetraining.show',
+            'edit' => 'review.attendancetraining.edit',
+            'update' => 'review.attendancetraining.update',
+            'destroy' => 'review.attendancetraining.destroy'
+        ]);
+        Route::resource('research', \App\Http\Controllers\Hap\Reviews\ResearchController::class)->names([
+            'show' => 'review.research.show',
+            'edit' => 'review.research.edit',
+            'update' => 'review.research.update',
+            'destroy' => 'review.research.destroy'
+        ]);
+        Route::resource('researchpublication', \App\Http\Controllers\Hap\Reviews\ResearchPublicationController::class)->names([
+            'show' => 'review.researchpublication.show',
+            'edit' => 'review.researchpublication.edit',
+            'update' => 'review.researchpublication.update',
+            'destroy' => 'review.researchpublication.destroy'
+        ]);
+        Route::resource('researchpresentation', \App\Http\Controllers\Hap\Reviews\ResearchPresentationController::class)->names([
+            'show' => 'review.researchpresentation.show',
+            'edit' => 'review.researchpresentation.edit',
+            'update' => 'review.researchpresentation.update',
+            'destroy' => 'review.researchpresentation.destroy'
+        ]);
+        Route::resource('researchcitation', \App\Http\Controllers\Hap\Reviews\ResearchCitationController::class)->names([
+            'show' => 'review.researchcitation.show',
+            'edit' => 'review.researchcitation.edit',
+            'update' => 'review.researchcitation.update',
+            'destroy' => 'review.researchcitation.destroy'
+        ]);
+        Route::resource('researchutilization', \App\Http\Controllers\Hap\Reviews\ResearchUtilizationController::class)->names([
+            'show' => 'review.researchutilization.show',
+            'edit' => 'review.researchutilization.edit',
+            'update' => 'review.researchutilization.update',
+            'destroy' => 'review.researchutilization.destroy'
+        ]);
+        Route::resource('researchcopyright', \App\Http\Controllers\Hap\Reviews\ResearchCopyrightController::class)->names([
+            'show' => 'review.researchcopyright.show',
+            'edit' => 'review.researchcopyright.edit',
+            'update' => 'review.researchcopyright.update',
+            'destroy' => 'review.researchcopyright.destroy'
+        ]);
+        Route::resource('invention', \App\Http\Controllers\Hap\Reviews\InventionController::class)->names([
+            'show' => 'review.invention.show',
+            'edit' => 'review.invention.edit',
+            'update' => 'review.invention.update',
+            'destroy' => 'review.invention.destroy'
+        ]);
+        Route::resource('expertconsultant', \App\Http\Controllers\Hap\Reviews\ExpertConsultantController::class)->names([
+            'show' => 'review.expertconsultant.show',
+            'edit' => 'review.expertconsultant.edit',
+            'update' => 'review.expertconsultant.update',
+            'destroy' => 'review.expertconsultant.destroy'
+        ]);
+        Route::resource('expertconference', \App\Http\Controllers\Hap\Reviews\ExpertConferenceController::class)->names([
+            'show' => 'review.expertconference.show',
+            'edit' => 'review.expertconference.edit',
+            'update' => 'review.expertconference.update',
+            'destroy' => 'review.expertconference.destroy'
+        ]);
+        Route::resource('expertjournal', \App\Http\Controllers\Hap\Reviews\ExpertJournalController::class)->names([
+            'show' => 'review.expertjournal.show',
+            'edit' => 'review.expertjournal.edit',
+            'update' => 'review.expertjournal.update',
+            'destroy' => 'review.expertjournal.destroy'
+        ]);
+        Route::resource('extensionprogram', \App\Http\Controllers\Hap\Reviews\ExtensionProgramController::class)->names([
+            'show' => 'review.extensionprogram.show',
+            'edit' => 'review.extensionprogram.edit',
+            'update' => 'review.extensionprogram.update',
+            'destroy' => 'review.extensionprogram.destroy'
+        ]);
+        Route::resource('partnership', \App\Http\Controllers\Hap\Reviews\PartnershipController::class)->names([
+            'show' => 'review.partnership.show',
+            'edit' => 'review.partnership.edit',
+            'update' => 'review.partnership.update',
+            'destroy' => 'review.partnership.destroy'
+        ]);
+        Route::resource('facultyintercountry', \App\Http\Controllers\Hap\Reviews\FacultyInterCountryController::class)->names([
+            'show' => 'review.facultyintercountry.show',
+            'edit' => 'review.facultyintercountry.edit',
+            'update' => 'review.facultyintercountry.update',
+            'destroy' => 'review.facultyintercountry.destroy'
+        ]);
+        Route::resource('material', \App\Http\Controllers\Hap\Reviews\MaterialController::class)->names([
+            'show' => 'review.material.show',
+            'edit' => 'review.material.edit',
+            'update' => 'review.material.update',
+            'destroy' => 'review.material.destroy'
+        ]);
+        Route::resource('syllabus', \App\Http\Controllers\Hap\Reviews\SyllabusController::class)->names([
+            'show' => 'review.syllabus.show',
+            'edit' => 'review.syllabus.edit',
+            'update' => 'review.syllabus.update',
+            'destroy' => 'review.syllabus.destroy'
+        ]);
+        Route::resource('specialtask', \App\Http\Controllers\Hap\Reviews\SpecialTaskController::class)->names([
+            'show' => 'review.specialtask.show',
+            'edit' => 'review.specialtask.edit',
+            'update' => 'review.specialtask.update',
+            'destroy' => 'review.specialtask.destroy'
+        ]);
+        Route::resource('specialtaskefficiency', \App\Http\Controllers\Hap\Reviews\SpecialTaskEfficiencyController::class)->names([
+            'show' => 'review.specialtaskefficiency.show',
+            'edit' => 'review.specialtaskefficiency.edit',
+            'update' => 'review.specialtaskefficiency.update',
+            'destroy' => 'review.specialtaskefficiency.destroy'
+        ]);
+        Route::resource('specialtasktimeliness', \App\Http\Controllers\Hap\Reviews\SpecialTaskTimelinessController::class)->names([
+            'show' => 'review.specialtasktimeliness.show',
+            'edit' => 'review.specialtasktimeliness.edit',
+            'update' => 'review.specialtasktimeliness.update',
+            'destroy' => 'review.specialtasktimeliness.destroy'
+        ]);
+        Route::resource('attendancefunction', \App\Http\Controllers\Hap\Reviews\AttendanceFunctionController::class)->names([
+            'show' => 'review.attendancefunction.show',
+            'edit' => 'review.attendancefunction.edit',
+            'update' => 'review.attendancefunction.update',
+            'destroy' => 'review.attendancefunction.destroy'
+        ]);
+        Route::resource('viableproject', \App\Http\Controllers\Hap\Reviews\ViableProjectController::class)->names([
+            'show' => 'review.viableproject.show',
+            'edit' => 'review.viableproject.edit',
+            'update' => 'review.viableproject.update',
+            'destroy' => 'review.viableproject.destroy'
+        ]);
+        Route::resource('branchaward', \App\Http\Controllers\Hap\Reviews\BranchAwardController::class)->names([
+            'show' => 'review.branchaward.show',
+            'edit' => 'review.branchaward.edit',
+            'update' => 'review.branchaward.update',
+            'destroy' => 'review.branchaward.destroy'
+        ]);
     });
     Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
     
