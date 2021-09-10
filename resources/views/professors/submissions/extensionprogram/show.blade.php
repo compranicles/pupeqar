@@ -14,6 +14,11 @@
                                 {{ $message }}
                             </div>
                         @endif
+                        @if ($message = Session::get('error'))
+                            <div class="alert alert-success">
+                                {{ $message }}
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
