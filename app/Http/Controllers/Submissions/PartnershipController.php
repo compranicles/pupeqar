@@ -149,6 +149,11 @@ class PartnershipController extends Controller
         $documents = Document::where('submission_id', $partnership->id)
                         ->where('submission_type', 'partnership')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $partnership->id)
+                        ->where('submissions.form_name', 'partnership')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
 
         return view('professors.submissions.partnership.show', [
             'partnership' => $partnership,
@@ -158,7 +163,8 @@ class PartnershipController extends Controller
             'collabdeliver' => $collabdeliver,
             'targetbeneficiary' => $targetbeneficiary,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

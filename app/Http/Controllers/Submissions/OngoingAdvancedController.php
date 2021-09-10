@@ -144,6 +144,10 @@ class OngoingAdvancedController extends Controller
         $documents = Document::where('submission_id' ,$ongoingadvanced->id)
                         ->where('submission_type', 'ongoingadvanced')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $ongoingadvanced->id)
+                        ->where('submissions.form_name', 'ongoingadvanced')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.ongoingadvanced.show', [
             'ongoingadvanced' => $ongoingadvanced,
@@ -151,7 +155,8 @@ class OngoingAdvancedController extends Controller
             'accrelevel' => $accrelevel,
             'supporttype' => $supporttype,
             'studystatus' => $studystatus,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     } 
 

@@ -108,10 +108,16 @@ class SyllabusController extends Controller
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $syllabu->id)
+                        ->where('submissions.form_name', 'syllabus')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+                    
         return view('professors.submissions.syllabus.show', [
             'syllabus' => $syllabu,  
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

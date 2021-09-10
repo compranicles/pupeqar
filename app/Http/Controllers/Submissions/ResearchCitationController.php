@@ -171,6 +171,11 @@ class ResearchCitationController extends Controller
         $documents = Document::where('submission_id' ,$researchcitation->id)
                         ->where('submission_type', 'researchcitation')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $researchcitation->id)
+                        ->where('submissions.form_name', 'researchcitation')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
 
         return view('professors.submissions.researchcitation.show', [
             'research' => $researchcitation,
@@ -182,7 +187,8 @@ class ResearchCitationController extends Controller
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
             'indexplatform' => $indexplatform,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

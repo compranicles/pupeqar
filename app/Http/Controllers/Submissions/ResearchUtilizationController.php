@@ -164,6 +164,10 @@ class ResearchUtilizationController extends Controller
         $documents = Document::where('submission_id' ,$researchutilization->id)
                         ->where('submission_type', 'researchutilization')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $researchutilization->id)
+                        ->where('submissions.form_name', 'researchutilization')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
 
         return view('professors.submissions.researchutilization.show', [
@@ -176,7 +180,8 @@ class ResearchUtilizationController extends Controller
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
             'indexplatform' => $indexplatform,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

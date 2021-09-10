@@ -164,6 +164,10 @@ class ResearchPresentationController extends Controller
         $documents = Document::where('submission_id' ,$researchpresentation->id)
                         ->where('submission_type', 'researchpresentation')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $researchpresentation->id)
+                        ->where('submissions.form_name', 'researchpresentation')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.researchpresentation.show', [
             'research' => $researchpresentation,
@@ -175,7 +179,8 @@ class ResearchPresentationController extends Controller
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
             'researchlevel' => $researchlevel,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

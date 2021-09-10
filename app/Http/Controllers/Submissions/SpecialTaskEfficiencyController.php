@@ -117,12 +117,18 @@ class SpecialTaskEfficiencyController extends Controller
                         ->where('submission_type', 'specialtaskefficiency')
                         ->where('deleted_at', NULL)
                         ->get();
+        $submission = Submission::where('submissions.form_id', $specialtaskefficiency->id)
+                        ->where('submissions.form_name', 'specialtaskefficiency')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
         return view('professors.submissions.specialtask.show', [
             'specialtask' => $specialtaskefficiency,
             'header' => $header,
             'route' => $route,
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

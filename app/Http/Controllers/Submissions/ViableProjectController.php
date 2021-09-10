@@ -101,12 +101,17 @@ class ViableProjectController extends Controller
     public function show(ViableProject $viableproject)
     {
         $documents = Document::where('submission_id', $viableproject->id)
-        ->where('submission_type', 'viableproject')
-        ->where('deleted_at', NULL)->get();
+                            ->where('submission_type', 'viableproject')
+                            ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $viableproject->id)
+                            ->where('submissions.form_name', 'viableproject')
+                            ->join('users', 'users.id', '=', 'submissions.user_id')
+                            ->select('submissions.status')->get();
 
         return view('professors.submissions.viableproject.show', [
             'documents' => $documents,
-            'viableproject' => $viableproject
+            'viableproject' => $viableproject,
+            'submission' => $submission[0]
         ]);
     }
 

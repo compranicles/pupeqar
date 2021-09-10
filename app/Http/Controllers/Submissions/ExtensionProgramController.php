@@ -163,6 +163,11 @@ class ExtensionProgramController extends Controller
         $documents = Document::where('submission_id', $extensionprogram->id)
                         ->where('submission_type', 'extensionprogram')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $extensionprogram->id)
+                        ->where('submissions.form_name', 'extensionprogram')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
 
         return view('professors.submissions.extensionprogram.show', [
             'extensionprogram' => $extensionprogram,
@@ -173,6 +178,7 @@ class ExtensionProgramController extends Controller
             'level' => $level,
             'status' => $status,
             'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

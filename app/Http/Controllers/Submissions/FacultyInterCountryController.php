@@ -122,13 +122,19 @@ class FacultyInterCountryController extends Controller
         $documents = Document::where('submission_id', $facultyintercountry->id)
                         ->where('submission_type', 'facultyintercountry')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $facultyintercountry->id)
+                        ->where('submissions.form_name', 'facultyintercountry')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
 
         return view('professors.submissions.facultyintercountry.show', [
             'facultyintercountry' => $facultyintercountry,
             'department' => $department,
             'engagementnature' => $engagementnature,
             'facultyinvolvement' => $facultyinvolvement,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

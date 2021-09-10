@@ -102,12 +102,17 @@ class BranchAwardController extends Controller
     public function show(BranchAward $branchaward)
     {
         $documents = Document::where('submission_id', $branchaward->id)
-        ->where('submission_type', 'branchaward')
-        ->where('deleted_at', NULL)->get();
+                            ->where('submission_type', 'branchaward')
+                            ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $branchaward->id)
+                            ->where('submissions.form_name', 'branchaward')
+                            ->join('users', 'users.id', '=', 'submissions.user_id')
+                            ->select('submissions.status')->get();
 
         return view('professors.submissions.branchaward.show', [
             'documents' => $documents,
-            'branchaward' => $branchaward
+            'branchaward' => $branchaward,
+            'submission' => $submission[0]
         ]);
     }
 

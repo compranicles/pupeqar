@@ -129,6 +129,10 @@ class OfficershipController extends Controller
         $documents = Document::where('submission_id' ,$officership->id)
                         ->where('submission_type', 'officership')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $officership->id)
+                        ->where('submissions.form_name', 'officership')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.officership.show', [
             'officership' => $officership,
@@ -136,6 +140,7 @@ class OfficershipController extends Controller
             'facultyofficer' => $facultyofficer,
             'level' => $level,
             'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

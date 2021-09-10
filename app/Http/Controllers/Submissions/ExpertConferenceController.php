@@ -127,13 +127,18 @@ class ExpertConferenceController extends Controller
         $documents = Document::where('submission_id', $expertconference->id)
                         ->where('submission_type', 'expertconference')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $expertconference->id)
+                        ->where('submissions.form_name', 'expertconference')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.expertconference.show', [
             'expertconference' => $expertconference,
             'department' => $department,
             'serviceconference' => $serviceconference,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

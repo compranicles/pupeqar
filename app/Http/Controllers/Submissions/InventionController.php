@@ -165,6 +165,10 @@ class InventionController extends Controller
         $documents = Document::where('submission_id', $invention->id)
                         ->where('submission_type', 'invention')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $invention->id)
+                        ->where('submissions.form_name', 'invention')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
                         
         return view('professors.submissions.invention.edit', [
             'invention' => $invention,
@@ -172,7 +176,8 @@ class InventionController extends Controller
             'inventionclasses' => $inventionclasses,
             'inventionstatuses' => $inventionstatuses,
             'fundingtypes' => $fundingtypes,
-            'documents' => $documents
+            'documents' => $documents,
+            
         ]);
 
     }
