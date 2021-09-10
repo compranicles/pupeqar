@@ -285,11 +285,7 @@
                     @csrf
                     <input type="hidden" name="formId" value="{{ $research->id }}">
                     <input type="hidden" name="formname" value="{{ 'researchpresentation' }}">
-                    <div class="form-group">
-                        <x-jet-label value="{{ __('Comment:') }}" />
-                        <textarea class="form-control" name="comment" cols="30" rows="2" autofocus autocomplete="comment">Your submission was accepted.</textarea>
-                    </div>
-                    <small>Note: You won't be able to EDIT the form once you accept it.</small>
+                    <small>Note: You won't be able to EDIT the form once you reject it.</small>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -312,13 +308,16 @@
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to <span class="text-danger font-weight-bold" id="textHome">REJECT</span> this submission?</h5>
                     <hr>
-                    <form action="{{ route('hap.review.reject') }}" method="POST">
+                    <form action="{{ route('hap.review.reject') }}" method="POST"  class="needs-validation" novalidate>
                     @csrf
                     <input type="hidden" name="formId" value="{{ $research->id }}">
                     <input type="hidden" name="formname" value="{{ 'researchpresentation' }}">
                     <div class="form-group">
                         <x-jet-label value="{{ __('Comment/Reason:') }}" />
-                        <textarea class="form-control" name="comment" cols="30" rows="2" autofocus autocomplete="comment">Your submission was rejected.</textarea>
+                        <textarea class="form-control" name="comment" cols="30" rows="2" autofocus autocomplete="comment" required></textarea>
+                        <div class="invalid-feedback">
+                            Please provide a reason.
+                        </div>
                     </div>
                     <small>Note: You won't be able to EDIT the form once you reject it.</small>
                 </div>
@@ -338,6 +337,26 @@
                     $(this).remove(); 
                 });
             }, 4000);
+        </script>
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                    }, false);
+                });
+                }, false);
+            })();
         </script>
     @endpush
 </x-app-layout>
