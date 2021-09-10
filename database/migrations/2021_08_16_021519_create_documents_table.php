@@ -16,8 +16,8 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('filename');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('event_id')->constrained();
+            $table->foreignId('user_id'); //should be constrained
+            $table->foreignId('event_id'); //should be constrained
             $table->integer('status');
             $table->timestamps();
             $table->softDeletes();

@@ -16,7 +16,8 @@ class RenameColumnsFromDocumentsTable extends Migration
         Schema::table('documents', function (Blueprint $table) {
             $table->dropColumn('status');
             // $table->dropforeign('documents_user_id_foreign');
-            $table->renameColumn('event_id', 'submission_id');
+            $table->dropColumn('event_id');
+            $table->foreignId('submission_id');
         });
     }
 
