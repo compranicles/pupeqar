@@ -84,6 +84,11 @@ class SpecialTaskEfficiencyController extends Controller
                     ->where('submissions.form_name', 'specialtaskefficiency')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.specialtaskefficiency.show', $specialtaskefficiency->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $header = 'III. Special Tasks - Commitment Measurable by Efficiency > Edit';
         $route = 'specialtaskefficiency';
         $departments = Department::all();

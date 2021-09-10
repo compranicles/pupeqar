@@ -78,6 +78,11 @@ class ViableProjectController extends Controller
         ->where('submissions.form_name', 'viableproject')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.viableproject.show', $viableproject->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+        
         $documents = Document::where('submission_id', $viableproject->id)
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();

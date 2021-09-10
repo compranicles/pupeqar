@@ -78,6 +78,11 @@ class BranchAwardController extends Controller
         ->where('submissions.form_name', 'branchaward')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.branchaward.show', $branchaward->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $documents = Document::where('submission_id', $branchaward->id)
         ->where('submission_type', 'branchaward')
         ->where('deleted_at', NULL)->get();

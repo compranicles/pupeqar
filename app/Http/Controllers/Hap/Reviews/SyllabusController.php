@@ -80,6 +80,11 @@ class SyllabusController extends Controller
                     ->where('submissions.form_name', 'syllabus')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.syllabus.show', $syllabus->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+        
         $departments = Department::all();
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')

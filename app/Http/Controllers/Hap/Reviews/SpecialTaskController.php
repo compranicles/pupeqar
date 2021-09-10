@@ -85,6 +85,11 @@ class SpecialTaskController extends Controller
                     ->where('submissions.form_name', 'specialtask')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.specialtask.show', $specialtask->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $header = 'III. Special Tasks > Edit';
         $route = 'specialtask';
         $departments = Department::all();

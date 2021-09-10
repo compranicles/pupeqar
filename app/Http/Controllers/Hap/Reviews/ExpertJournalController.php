@@ -60,6 +60,11 @@ class ExpertJournalController extends Controller
                     ->where('submissions.form_name', 'expertjournal')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $department = Department::find($expertjournal->department_id);
         $servicejournal = ServiceJournal::find($expertjournal->service_journal_id);
         $servicenature = ServiceNature::find($expertjournal->service_nature_id);

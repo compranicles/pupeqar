@@ -99,6 +99,11 @@ class ResearchPublicationController extends Controller
         ->where('submissions.form_name', 'researchpublication')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.researchpublication.show', $researchpublication->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();

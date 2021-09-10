@@ -81,6 +81,11 @@ class AttendanceFunctionController extends Controller
         ->where('submissions.form_name', 'attendancefunction')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.attendancefunction.show', $attendancefunction->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::all();
         $documents = Document::where('submission_id', $attendancefunction->id)
         ->where('submission_type', 'attendancefunction')

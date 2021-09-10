@@ -96,6 +96,11 @@ class PartnershipController extends Controller
                     ->where('submissions.form_name', 'partnership')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.partnership.show', $partnership->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+        
         $departments = Department::orderBy('name')->get();
         $partnertypes = PartnerType::all();
         $collabnatures = CollabNature::all();

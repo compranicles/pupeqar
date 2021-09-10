@@ -98,6 +98,11 @@ class AttendanceTrainingController extends Controller
                     ->where('submissions.form_name', 'attendancetraining')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.attendancetraining.show', $attendancetraining->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $header = 'B.3.2. Attendance in Training/s > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = TrainingClass::all();
