@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hap\Reviews;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
@@ -56,6 +57,18 @@ class SpecialTaskTimelinessController extends Controller
                     ->where('submissions.form_name', 'specialtasktimeliness')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $specialtasktimeliness->id)
+                    ->where('form_name', 'specialtasktimeliness')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $header = 'Special Tasks';
         $route = 'specialtasktimeliness';
         $department = Department::find($specialtasktimeliness->department_id);
@@ -69,7 +82,8 @@ class SpecialTaskTimelinessController extends Controller
             'header' => $header,
             'route' => $route,
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 

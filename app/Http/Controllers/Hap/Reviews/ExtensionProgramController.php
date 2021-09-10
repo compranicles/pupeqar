@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExtensionClass;
@@ -61,6 +62,18 @@ class ExtensionProgramController extends Controller
                     ->where('submissions.form_name', 'extensionprogram')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $extensionprogram->id)
+                    ->where('form_name', 'extensionprogram')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+        
         $department = Department::find($extensionprogram->department_id);
         $extensionnature = ExtensionNature::find($extensionprogram->extension_nature_id);
         $fundingtype = FundingType::find($extensionprogram->funding_type_id);
@@ -81,6 +94,7 @@ class ExtensionProgramController extends Controller
             'level' => $level,
             'status' => $status,
             'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 

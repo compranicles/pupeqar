@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\ExpertJournal;
 use App\Models\IndexPlatform;
@@ -61,9 +62,17 @@ class ExpertJournalController extends Controller
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
 
-        if($submission[0]->status != 1){
-            return redirect()->route('hap.review.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
-        }
+
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $expertjournal->id)
+                     ->where('form_name', 'expertjournal')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
 
         $department = Department::find($expertjournal->department_id);
         $servicejournal = ServiceJournal::find($expertjournal->service_journal_id);
@@ -82,7 +91,8 @@ class ExpertJournalController extends Controller
             'servicenature' => $servicenature,
             'indexplatform' => $indexplatform,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 
@@ -98,6 +108,11 @@ class ExpertJournalController extends Controller
                     ->where('submissions.form_name', 'expertjournal')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $servicejournals = ServiceJournal::all();
         $servicenatures = ServiceNature::all();

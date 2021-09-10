@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hap;
 
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -48,10 +49,17 @@ class ReviewController extends Controller
     public function reject(Request $request){
         $form_id = $request->input('formId');
         $form_name = $request->input('formname');
+        $comment = $request->input('comment');
 
         Submission::where('form_name', $form_name)
                     ->where('form_id', $form_id)
                     ->update(['status' => 3]);
+
+        RejectReason::create([
+           'form_id' => $form_id,
+           'form_name' => $form_name,
+           'reason' => $comment
+        ]);
         return redirect()->route('hap.review.'.$form_name.'.show', $form_id)->with('success', 'Submission rejected successfully');
     }
 }

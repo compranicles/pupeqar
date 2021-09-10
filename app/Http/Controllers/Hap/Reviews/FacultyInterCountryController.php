@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\EngageNature;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\FacultyInvolve;
@@ -58,6 +59,18 @@ class FacultyInterCountryController extends Controller
                     ->where('submissions.form_name', 'facultyintercountry')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $facultyintercountry->id)
+                    ->where('form_name', 'facultyintercountry')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $department = Department::find($facultyintercountry->department_id);
         $engagementnature = EngageNature::find($facultyintercountry->engagement_nature_id);
         $facultyinvolvement = FacultyInvolve::find($facultyintercountry->faculty_involvement_id);
@@ -71,7 +84,8 @@ class FacultyInterCountryController extends Controller
             'department' => $department,
             'engagementnature' => $engagementnature,
             'facultyinvolvement' => $facultyinvolvement,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 

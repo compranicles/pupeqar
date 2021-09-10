@@ -41,6 +41,22 @@
                             </div>
                             @endif
                         </div>
+
+                        {{-- Showing Reason --}}
+                        @if ($submission->status == 3)
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card text-white bg-danger">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Reason for Rejection:</h5>
+                                        <p class="card-text">{{ (is_string($reason)) ? $reason : $reason->reason }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+
                         <hr>
                         <div class="row">
                             <div class="col-md-12">

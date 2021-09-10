@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hap\Reviews;
 
 use App\Models\Document;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ViableProject;
@@ -55,6 +56,18 @@ class ViableProjectController extends Controller
         ->where('submissions.form_name', 'viableproject')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $viableproject->id)
+                    ->where('form_name', 'viableproject')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $documents = Document::where('submission_id', $viableproject->id)
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();
@@ -62,7 +75,8 @@ class ViableProjectController extends Controller
         return view('hap.review.viableproject.show', [
             'submission' => $submission[0],
             'documents' => $documents,
-            'viableproject' => $viableproject
+            'viableproject' => $viableproject,
+            'reason' => $reason,
         ]);
     }
 

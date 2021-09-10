@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\SpecialTask;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
@@ -56,6 +57,18 @@ class SpecialTaskController extends Controller
                     ->where('submissions.form_name', 'specialtask')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $specialtask->id)
+                    ->where('form_name', 'specialtask')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $header = 'Special Tasks';
         $route = 'specialtask';
         $department = Department::find($specialtask->department_id);
@@ -69,7 +82,8 @@ class SpecialTaskController extends Controller
             'header' => $header,
             'route' => $route,
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 

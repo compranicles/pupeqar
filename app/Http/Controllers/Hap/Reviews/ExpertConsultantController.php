@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExpertConsultant;
@@ -58,6 +59,18 @@ class ExpertConsultantController extends Controller
                     ->where('submissions.form_name', 'expertconsultant')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+        
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $expertconsultant->id)
+                     ->where('form_name', 'expertconsultant')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
+        
         $department = Department::find($expertconsultant->department_id);
         $serviceconsultant = ServiceConsultant::find($expertconsultant->service_consultant_id);
         $level = Level::find($expertconsultant->level_id);
@@ -71,7 +84,8 @@ class ExpertConsultantController extends Controller
             'department' => $department,
             'serviceconsultant' => $serviceconsultant,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 

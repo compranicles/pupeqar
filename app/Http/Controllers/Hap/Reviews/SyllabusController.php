@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Syllabus;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
@@ -56,6 +57,18 @@ class SyllabusController extends Controller
                     ->where('submissions.form_name', 'syllabus')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $syllabu->id)
+                    ->where('form_name', 'syllabus')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $department = Department::find($syllabu->department_id);
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')
@@ -64,7 +77,8 @@ class SyllabusController extends Controller
             'submission' => $submission[0],
             'syllabus' => $syllabu,  
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 

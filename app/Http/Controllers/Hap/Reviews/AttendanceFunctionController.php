@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hap\Reviews;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\AttendanceFunction;
@@ -56,6 +57,18 @@ class AttendanceFunctionController extends Controller
         ->where('submissions.form_name', 'attendancefunction')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $attendancefunction->id)
+                     ->where('form_name', 'attendancefunction')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
+
         $department = Department::find($attendancefunction->department_id);
         $documents = Document::where('submission_id', $attendancefunction->id)
         ->where('submission_type', 'attendancefunction')
@@ -65,7 +78,8 @@ class AttendanceFunctionController extends Controller
             'submission' => $submission[0],
             'documents' => $documents,
             'department' => $department,
-            'attendancefunction' => $attendancefunction
+            'attendancefunction' => $attendancefunction,
+            'reason' => $reason
         ]);
     }
 

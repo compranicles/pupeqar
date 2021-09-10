@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hap\Reviews;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Http\Controllers\Controller;
@@ -55,6 +56,18 @@ class SpecialTaskEfficiencyController extends Controller
         ->where('submissions.form_name', 'specialtaskefficiency')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $specialtaskefficiency->id)
+                    ->where('form_name', 'specialtaskefficiency')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $header = 'Special Tasks';
         $route = 'specialtaskefficiency';
         $department = Department::find($specialtaskefficiency->department_id);
@@ -68,7 +81,8 @@ class SpecialTaskEfficiencyController extends Controller
             'header' => $header,
             'route' => $route,
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 
