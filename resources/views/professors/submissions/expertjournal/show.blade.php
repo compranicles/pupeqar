@@ -21,25 +21,21 @@
                             @endif
                         <div class="row">
                             <div class="col-md-12 d-flex">
-                                @if ($submission->status == 1)
-                                <div class="p-2">
+                                <div>
                                     <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                                    <a href="{{ route('professor.submissions.expertjournal.edit', $expertjournal->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
-                                    <button type="button" class="btn btn-danger mb-2 mr-2" data-toggle="modal" data-target="#deleteModal">
-                                        <i class="far fa-trash-alt"></i> Delete
-                                    </button>
+                                    @if ($submission->status == 1)
+                                        <a href="{{ route('professor.submissions.expertjournal.edit', $expertjournal->id) }}"  class="btn btn-primary mb-2 mr-2"><i class="far fa-edit"></i> Edit</a>
+                                        <button type="button" class="btn btn-danger mb-2 mr-2" data-toggle="modal" data-target="#deleteModal">
+                                            <i class="far fa-trash-alt"></i> Delete
+                                        </button>
+                                    @endif
                                 </div>
-                                <div class="ml-auto mt-2"><h5>Not Reviewed</h5></div>
+                                @if ($submission->status == 1)
+                                <div class="ml-auto py-2"><h5>Not Reviewed</h5></div>
                                 @elseif ($submission->status == 2)
-                                <div class="p-2">
-                                  <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                                </div>
-                                <div class="ml-auto mt-2"><h5>Accepted</h5></div>
+                                <div class="ml-auto py-2"><h5>Accepted</h5></div>
                                 @elseif ($submission->status == 3)
-                                <div class="p-2">
-                                  <a href="{{ route('professor.submissions.index') }}" class="btn btn-secondary mb-2 mr-2"><i class="fas fa-arrow-left mr-2"></i> Back</a>
-                                </div>
-                                <div class="ml-auto mt-2"><h5>Rejected</h5></div>
+                                <div class="ml-auto py-2"><h5>Rejected</h5></div>
                                 @endif
                             </div>
                         </div>
