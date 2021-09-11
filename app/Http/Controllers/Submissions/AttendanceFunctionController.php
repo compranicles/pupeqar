@@ -106,13 +106,18 @@ class AttendanceFunctionController extends Controller
     {
         $department = Department::find($attendancefunction->department_id);
         $documents = Document::where('submission_id', $attendancefunction->id)
-        ->where('submission_type', 'attendancefunction')
-        ->where('deleted_at', NULL)->get();
+                                ->where('submission_type', 'attendancefunction')
+                                ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $attendancefunction->id)
+                                ->where('submissions.form_name', 'attendancefunction')
+                                ->join('users', 'users.id', '=', 'submissions.user_id')
+                                ->select('submissions.status')->get();
 
         return view('professors.submissions.attendancefunction.show', [
             'documents' => $documents,
             'department' => $department,
-            'attendancefunction' => $attendancefunction
+            'attendancefunction' => $attendancefunction,
+            'submission' => $submission[0]
         ]);
     }
 

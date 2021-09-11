@@ -121,11 +121,17 @@ class MaterialController extends Controller
         $documents = Document::where('submission_id', $material->id)
                         ->where('submission_type', 'material')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $material->id)
+                        ->where('submissions.form_name', 'material')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+            
         return view('professors.submissions.material.show', [
             'material' => $material,
             'department' => $department,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

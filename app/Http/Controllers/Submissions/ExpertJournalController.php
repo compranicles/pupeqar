@@ -128,6 +128,11 @@ class ExpertJournalController extends Controller
         $documents = Document::where('submission_id', $expertjournal->id)
                         ->where('submission_type', 'expertjournal')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $expertjournal->id)
+                        ->where('submissions.form_name', 'expertjournal')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
 
         return view('professors.submissions.expertjournal.show', [
             'expertjournal' => $expertjournal,
@@ -136,7 +141,8 @@ class ExpertJournalController extends Controller
             'servicenature' => $servicenature,
             'indexplatform' => $indexplatform,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' > $submission[0]
         ]);
     }
 

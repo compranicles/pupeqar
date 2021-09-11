@@ -166,6 +166,10 @@ class ResearchCopyrightController extends Controller
         $documents = Document::where('submission_id' ,$researchcopyright->id)
                         ->where('submission_type', 'researchcopyright')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $researchcopyright->id)
+                        ->where('submissions.form_name', 'researchcopyright')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
         
         return view('professors.submissions.researchcopyright.show', [
             'research' => $researchcopyright,
@@ -177,7 +181,8 @@ class ResearchCopyrightController extends Controller
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
             'indexplatform' => $indexplatform,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

@@ -117,12 +117,18 @@ class SpecialTaskTimelinessController extends Controller
                         ->where('submission_type', 'specialtasktimeliness')
                         ->where('deleted_at', NULL)
                         ->get();
+        $submission = Submission::where('submissions.form_id', $specialtasktimeliness->id)
+                        ->where('submissions.form_name', 'specialtasktimeliness')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
         return view('professors.submissions.specialtask.show', [
             'specialtask' => $specialtasktimeliness,
             'header' => $header,
             'route' => $route,
             'department' => $department,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

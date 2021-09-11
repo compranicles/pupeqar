@@ -130,13 +130,18 @@ class ExpertConsultantController extends Controller
         $documents = Document::where('submission_id', $expertconsultant->id)
                         ->where('submission_type', 'expertconsultant')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
+                        ->where('submissions.form_name', 'expertconsultant')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.expertconsultant.show', [
             'expertconsultant' => $expertconsultant,
             'department' => $department,
             'serviceconsultant' => $serviceconsultant,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

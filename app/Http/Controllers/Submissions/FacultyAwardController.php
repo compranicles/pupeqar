@@ -125,6 +125,10 @@ class FacultyAwardController extends Controller
         $documents = Document::where('submission_id' ,$facultyaward->id)
                         ->where('submission_type', 'facultyaward')
                         ->where('deleted_at', NULL)->get();
+        $submission = Submission::where('submissions.form_id', $facultyaward->id)
+                        ->where('submissions.form_name', 'facultyaward')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
 
         return view('professors.submissions.facultyaward.show', [
             'facultyaward' => $facultyaward,
@@ -132,6 +136,7 @@ class FacultyAwardController extends Controller
             'awardclass' => $awardclass,
             'level' => $level,
             'documents' => $documents,
+            'submission' => $submission[0]
         ]);
     }
 

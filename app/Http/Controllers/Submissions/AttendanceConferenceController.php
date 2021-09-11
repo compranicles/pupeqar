@@ -146,7 +146,11 @@ class AttendanceConferenceController extends Controller
                         ->where('submission_type', 'attendanceconference')
                         ->where('deleted_at', NULL)
                         ->get();
-
+        $submission = Submission::where('submissions.form_id', $attendanceconference->id)
+                        ->where('submissions.form_name', 'attendanceconference')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+                
         return view('professors.submissions.attendance.show',[
             'header' => $header,
             'controller' => 'attendanceconference',
@@ -157,6 +161,7 @@ class AttendanceConferenceController extends Controller
             'fundingtype' => $fundingtype,
             'level' => $level,
             'documents' => $documents,
+            'submission' => $submission[0]
         ]);
         
     }
