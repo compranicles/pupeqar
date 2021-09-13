@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Submissions;
 
 use App\Models\Document;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ViableProject;
@@ -107,11 +108,25 @@ class ViableProjectController extends Controller
                             ->where('submissions.form_name', 'viableproject')
                             ->join('users', 'users.id', '=', 'submissions.user_id')
                             ->select('submissions.status')->get();
+        
+        
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $viableproject->id)
+                    ->where('form_name', 'viableproject')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
 
         return view('professors.submissions.viableproject.show', [
             'documents' => $documents,
             'viableproject' => $viableproject,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
     }
 
@@ -123,6 +138,14 @@ class ViableProjectController extends Controller
      */
     public function edit(ViableProject $viableproject)
     {
+        $submission = Submission::where('submissions.form_id', $viableproject->id)
+        ->where('submissions.form_name', 'viableproject')
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.viableproject.show', $viableproject->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+        
         $documents = Document::where('submission_id', $viableproject->id)
         ->where('submission_type', 'viableproject')
         ->where('deleted_at', NULL)->get();

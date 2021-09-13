@@ -9,6 +9,7 @@ use App\Models\Submission;
 use App\Models\Partnership;
 use App\Models\PartnerType;
 use App\Models\CollabNature;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\CollabDeliver;
 use App\Models\TemporaryFile;
@@ -153,7 +154,16 @@ class PartnershipController extends Controller
                         ->where('submissions.form_name', 'partnership')
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
-
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $partnership->id)
+                    ->where('form_name', 'partnership')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
 
         return view('professors.submissions.partnership.show', [
             'partnership' => $partnership,
@@ -164,7 +174,8 @@ class PartnershipController extends Controller
             'targetbeneficiary' => $targetbeneficiary,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -176,6 +187,14 @@ class PartnershipController extends Controller
      */
     public function edit(Partnership $partnership)
     {
+        $submission = Submission::where('submissions.form_id', $partnership->id)
+        ->where('submissions.form_name', 'partnership')
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.partnership.show', $partnership->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $partnertypes = PartnerType::all();
         $collabnatures = CollabNature::all();

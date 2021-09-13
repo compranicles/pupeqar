@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Submissions;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
@@ -122,13 +123,25 @@ class SpecialTaskTimelinessController extends Controller
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
 
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $specialtasktimeliness->id)
+                    ->where('form_name', 'specialtasktimeliness')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         return view('professors.submissions.specialtask.show', [
             'specialtask' => $specialtasktimeliness,
             'header' => $header,
             'route' => $route,
             'department' => $department,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
     }
 
@@ -140,6 +153,12 @@ class SpecialTaskTimelinessController extends Controller
      */
     public function edit(SpecialTaskTimeliness $specialtasktimeliness)
     {
+        $submission = Submission::where('submissions.form_id', $specialtasktimeliness->id)
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.specialtasktimeliness.show', $specialtasktimeliness->id)->with('error', 'Edit Submission cannot be accessed');
+        }
         $header = 'III. Special Tasks - Commitment Measurable by Timeliness > Edit';
         $route = 'specialtasktimeliness';
         $departments = Department::all();

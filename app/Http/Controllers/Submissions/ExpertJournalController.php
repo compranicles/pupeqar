@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\ExpertJournal;
 use App\Models\IndexPlatform;
@@ -120,6 +121,23 @@ class ExpertJournalController extends Controller
      */
     public function show(ExpertJournal $expertjournal)
     {
+        $submission = Submission::where('submissions.form_id', $expertjournal->id)
+                        ->where('submissions.form_name', 'expertjournal')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $expertjournal->id)
+                    ->where('form_name', 'expertjournal')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
+
         $department = Department::find($expertjournal->department_id);
         $servicejournal = ServiceJournal::find($expertjournal->service_journal_id);
         $servicenature = ServiceNature::find($expertjournal->service_nature_id);
@@ -128,10 +146,6 @@ class ExpertJournalController extends Controller
         $documents = Document::where('submission_id', $expertjournal->id)
                         ->where('submission_type', 'expertjournal')
                         ->where('deleted_at', NULL)->get();
-        $submission = Submission::where('submissions.form_id', $expertjournal->id)
-                        ->where('submissions.form_name', 'expertjournal')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
 
 
         return view('professors.submissions.expertjournal.show', [
@@ -142,7 +156,8 @@ class ExpertJournalController extends Controller
             'indexplatform' => $indexplatform,
             'level' => $level,
             'documents' => $documents,
-            'submission' > $submission[0]
+            'submission' > $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -154,6 +169,15 @@ class ExpertJournalController extends Controller
      */
     public function edit(ExpertJournal $expertjournal)
     {
+        $submission = Submission::where('submissions.form_id', $expertjournal->id)
+                    ->where('submissions.form_name', 'expertjournal')
+                    ->get();
+
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $servicejournals = ServiceJournal::all();
         $servicenatures = ServiceNature::all();

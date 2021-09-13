@@ -7,6 +7,7 @@ use App\Models\Invention;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\InventionClass;
@@ -132,6 +133,23 @@ class InventionController extends Controller
      */
     public function show(Invention $invention)
     {
+        $submission = Submission::where('submissions.form_id', $invention->id)
+                        ->where('submissions.form_name', 'invention')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+                        
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $invention->id)
+                     ->where('form_name', 'invention')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
+ 
+
         $department = Department::find($invention->department_id);
         $inventionclass = InventionClass::find($invention->invention_class_id);
         $inventionstatus = InventionStatus::find($invention->invention_status_id);
@@ -146,7 +164,9 @@ class InventionController extends Controller
             'inventionclass' => $inventionclass,
             'inventionstatus' => $inventionstatus,
             'fundingtype' => $fundingtype,
-            'documents' => $documents
+            'documents' => $documents,
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -158,6 +178,16 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention)
     {
+
+        $submission = Submission::where('submissions.form_id', $invention->id)
+                    ->where('submissions.form_name', 'invention')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.invention.show', $invention->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
+
         $departments = Department::orderBy('name')->get();
         $inventionclasses = InventionClass::all();
         $inventionstatuses = InventionStatus::all();
@@ -165,11 +195,7 @@ class InventionController extends Controller
         $documents = Document::where('submission_id', $invention->id)
                         ->where('submission_type', 'invention')
                         ->where('deleted_at', NULL)->get();
-        $submission = Submission::where('submissions.form_id', $invention->id)
-                        ->where('submissions.form_name', 'invention')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
-                        
+        
         return view('professors.submissions.invention.edit', [
             'invention' => $invention,
             'departments' => $departments,
@@ -177,7 +203,6 @@ class InventionController extends Controller
             'inventionstatuses' => $inventionstatuses,
             'fundingtypes' => $fundingtypes,
             'documents' => $documents,
-            
         ]);
 
     }

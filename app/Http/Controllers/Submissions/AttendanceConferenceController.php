@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
 use App\Models\DevelopClass;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\DevelopNature;
 use App\Models\TemporaryFile;
@@ -136,6 +137,22 @@ class AttendanceConferenceController extends Controller
      */
     public function show(AttendanceConference $attendanceconference)
     {
+        $submission = Submission::where('submissions.form_id', $attendanceconference->id)
+                        ->where('submissions.form_name', 'attendanceconference')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $attendanceconference->id)
+                    ->where('form_name', 'attendanceconference')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $header = 'Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences)';
         $department = Department::find($attendanceconference->department_id);
         $developclass = DevelopClass::find($attendanceconference->develop_class_id);
@@ -146,10 +163,6 @@ class AttendanceConferenceController extends Controller
                         ->where('submission_type', 'attendanceconference')
                         ->where('deleted_at', NULL)
                         ->get();
-        $submission = Submission::where('submissions.form_id', $attendanceconference->id)
-                        ->where('submissions.form_name', 'attendanceconference')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
                 
         return view('professors.submissions.attendance.show',[
             'header' => $header,
@@ -161,7 +174,8 @@ class AttendanceConferenceController extends Controller
             'fundingtype' => $fundingtype,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
         
     }
@@ -174,6 +188,10 @@ class AttendanceConferenceController extends Controller
      */
     public function edit(AttendanceConference $attendanceconference)
     {
+        $submission = Submission::where('form_id', $attendanceconference->id)
+                    ->where('form_name', 'attendanceconference')
+                    ->get();
+                    
         $header = 'B.3.1. Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences) > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = DevelopClass::all();
@@ -184,6 +202,10 @@ class AttendanceConferenceController extends Controller
                         ->where('submission_type', 'attendanceconference')
                         ->where('deleted_at', NULL)
                         ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.attendanceconference.show', $attendanceconference->id)->with('error', 'Edit Submission cannot be accessed');
+        }
 
         return view('professors.submissions.attendance.edit',[
             'header' => $header,

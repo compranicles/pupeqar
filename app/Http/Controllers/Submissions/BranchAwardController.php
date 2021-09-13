@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Submissions;
 use App\Models\Document;
 use App\Models\Submission;
 use App\Models\BranchAward;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
@@ -101,18 +102,29 @@ class BranchAwardController extends Controller
      */
     public function show(BranchAward $branchaward)
     {
-        $documents = Document::where('submission_id', $branchaward->id)
-                            ->where('submission_type', 'branchaward')
-                            ->where('deleted_at', NULL)->get();
         $submission = Submission::where('submissions.form_id', $branchaward->id)
                             ->where('submissions.form_name', 'branchaward')
                             ->join('users', 'users.id', '=', 'submissions.user_id')
                             ->select('submissions.status')->get();
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $branchaward->id)
+                    ->where('form_name', 'branchaward')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+        $documents = Document::where('submission_id', $branchaward->id)
+                            ->where('submission_type', 'branchaward')
+                            ->where('deleted_at', NULL)->get();
 
         return view('professors.submissions.branchaward.show', [
             'documents' => $documents,
             'branchaward' => $branchaward,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -124,6 +136,14 @@ class BranchAwardController extends Controller
      */
     public function edit(BranchAward $branchaward)
     {
+        $submission = Submission::where('form_id', $branchaward->id)
+        ->where('form_name', 'branchaward')
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.branchaward.show', $branchaward->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $documents = Document::where('submission_id', $branchaward->id)
         ->where('submission_type', 'branchaward')
         ->where('deleted_at', NULL)->get();

@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Syllabus;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
@@ -112,12 +113,24 @@ class SyllabusController extends Controller
                         ->where('submissions.form_name', 'syllabus')
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
-                    
+        
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $syllabu->id)
+                    ->where('form_name', 'syllabus')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }                
+                        
         return view('professors.submissions.syllabus.show', [
             'syllabus' => $syllabu,  
             'department' => $department,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
     }
 
@@ -128,7 +141,14 @@ class SyllabusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Syllabus $syllabu)
-    {
+    {   
+        $submission = Submission::where('submissions.form_id', $syllabu->id)
+                    ->where('submissions.form_name', 'syllabus')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.syllabus.show', $syllabus->id)->with('error', 'Edit Submission cannot be accessed');
+        }
         $departments = Department::all();
         $documents = Document::where('submission_id', $syllabu->id)
                         ->where('submission_type', 'syllabus')

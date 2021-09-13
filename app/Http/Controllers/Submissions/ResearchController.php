@@ -7,6 +7,7 @@ use App\Models\Research;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use App\Models\ResearchType;
 use Illuminate\Http\Request;
 use App\Models\ResearchClass;
@@ -161,6 +162,16 @@ class ResearchController extends Controller
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
 
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $research->id)
+                    ->where('form_name', 'research')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
         return view('professors.submissions.research.show', [
             'research' => $research,
             'department' => $department,
@@ -171,7 +182,8 @@ class ResearchController extends Controller
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -183,6 +195,14 @@ class ResearchController extends Controller
      */
     public function edit(Research $research)
     {
+        $submission = Submission::where('submissions.form_id', $research->id)
+                    ->where('submissions.form_name', 'research')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.research.show', $research->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();

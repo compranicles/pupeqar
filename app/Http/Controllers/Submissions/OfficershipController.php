@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\Officership;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\FacultyOfficer;
@@ -123,6 +124,23 @@ class OfficershipController extends Controller
      */
     public function show(Officership $officership)
     {
+        $submission = Submission::where('submissions.form_id', $officership->id)
+                        ->where('submissions.form_name', 'officership')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $officership->id)
+                    ->where('form_name', 'officership')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
+
         $department = Department::find($officership->department_id);
         $facultyofficer = FacultyOfficer::find($officership->faculty_officer_id);
         $level = Level::find($officership->level_id);
@@ -140,7 +158,8 @@ class OfficershipController extends Controller
             'facultyofficer' => $facultyofficer,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -152,6 +171,14 @@ class OfficershipController extends Controller
      */
     public function edit(Officership $officership)
     {
+        $submission = Submission::where('submissions.form_id', $officership->id)
+                    ->where('submissions.form_name', 'officership')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.officership.show', $officership->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $facultyofficers = FacultyOfficer::all();
         $levels = Level::all();

@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Material;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
@@ -116,22 +117,35 @@ class MaterialController extends Controller
      */
     public function show(Material $material)
     {
+        $submission = Submission::where('submissions.form_id', $material->id)
+                        ->where('submissions.form_name', 'material')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+        
+         //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $material->id)
+                    ->where('form_name', 'material')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }               
+
         $department = Department::find($material->department_id);
         $level = Level::find($material->level_id);
         $documents = Document::where('submission_id', $material->id)
                         ->where('submission_type', 'material')
                         ->where('deleted_at', NULL)->get();
-        $submission = Submission::where('submissions.form_id', $material->id)
-                        ->where('submissions.form_name', 'material')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
             
         return view('professors.submissions.material.show', [
             'material' => $material,
             'department' => $department,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -143,6 +157,15 @@ class MaterialController extends Controller
      */
     public function edit(Material $material)
     {
+        $submission = Submission::where('submissions.form_id', $material->id)
+                    ->where('submissions.form_name', 'material')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.material.show', $material->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+            
+
         $departments = Department::all();
         $levels = Level::all();
         $documents = Document::where('submission_id', $material->id)

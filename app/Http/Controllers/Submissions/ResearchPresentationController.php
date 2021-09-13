@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use App\Models\ResearchType;
 use Illuminate\Http\Request;
 use App\Models\ResearchClass;
@@ -169,6 +170,18 @@ class ResearchPresentationController extends Controller
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
 
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $researchpresentation->id)
+                    ->where('form_name', 'researchpresentation')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
+
         return view('professors.submissions.researchpresentation.show', [
             'research' => $researchpresentation,
             'department' => $department,
@@ -180,7 +193,8 @@ class ResearchPresentationController extends Controller
             'fundingtype' => $fundingtype,
             'researchlevel' => $researchlevel,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -192,6 +206,16 @@ class ResearchPresentationController extends Controller
      */
     public function edit(ResearchPresentation $researchpresentation)
     {
+
+        $submission = Submission::where('submissions.form_id', $researchpresentation->id)
+                    ->where('submissions.form_name', 'researchpresentation')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.researchpresentation.show', $researchpresentation->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
+
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();

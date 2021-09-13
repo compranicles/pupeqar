@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExpertConference;
@@ -121,16 +122,27 @@ class ExpertConferenceController extends Controller
      */
     public function show(ExpertConference $expertconference)
     {
+        $submission = Submission::where('submissions.form_id', $expertconference->id)
+                        ->where('submissions.form_name', 'expertconference')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $expertconference->id)
+                    ->where('form_name', 'expertconference')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+        
         $department = Department::find($expertconference->department_id);
         $serviceconference = ServiceConference::find($expertconference->service_conference_id);
         $level = Level::find($expertconference->level_id);
         $documents = Document::where('submission_id', $expertconference->id)
                         ->where('submission_type', 'expertconference')
                         ->where('deleted_at', NULL)->get();
-        $submission = Submission::where('submissions.form_id', $expertconference->id)
-                        ->where('submissions.form_name', 'expertconference')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
 
         return view('professors.submissions.expertconference.show', [
             'expertconference' => $expertconference,
@@ -138,7 +150,8 @@ class ExpertConferenceController extends Controller
             'serviceconference' => $serviceconference,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -150,6 +163,14 @@ class ExpertConferenceController extends Controller
      */
     public function edit(ExpertConference $expertconference)
     {
+        $submission = Submission::where('form_id', $expertconference->id)
+        ->where('form_name', 'expertconference')
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.expertconference.show', $expertconference->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $serviceconferences = ServiceConference::all();
         $levels = Level::all();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Submissions;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\AttendanceFunction;
@@ -104,20 +105,33 @@ class AttendanceFunctionController extends Controller
      */
     public function show(AttendanceFunction $attendancefunction)
     {
-        $department = Department::find($attendancefunction->department_id);
-        $documents = Document::where('submission_id', $attendancefunction->id)
-                                ->where('submission_type', 'attendancefunction')
-                                ->where('deleted_at', NULL)->get();
         $submission = Submission::where('submissions.form_id', $attendancefunction->id)
                                 ->where('submissions.form_name', 'attendancefunction')
                                 ->join('users', 'users.id', '=', 'submissions.user_id')
                                 ->select('submissions.status')->get();
 
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $attendancefunction->id)
+                    ->where('form_name', 'attendancefunction')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
+        $department = Department::find($attendancefunction->department_id);
+        $documents = Document::where('submission_id', $attendancefunction->id)
+                                ->where('submission_type', 'attendancefunction')
+                                ->where('deleted_at', NULL)->get();
+
         return view('professors.submissions.attendancefunction.show', [
             'documents' => $documents,
             'department' => $department,
             'attendancefunction' => $attendancefunction,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -129,6 +143,14 @@ class AttendanceFunctionController extends Controller
      */
     public function edit(AttendanceFunction $attendancefunction)
     {
+        $submission = Submission::where('form_id', $attendancefunction->id)
+        ->where('form_name', 'attendancefunction')
+        ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.attendancefunction.show', $attendancefunction->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::all();
         $documents = Document::where('submission_id', $attendancefunction->id)
         ->where('submission_type', 'attendancefunction')

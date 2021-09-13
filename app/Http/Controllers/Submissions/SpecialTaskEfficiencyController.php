@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Submissions;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
@@ -121,6 +122,16 @@ class SpecialTaskEfficiencyController extends Controller
                         ->where('submissions.form_name', 'specialtaskefficiency')
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $specialtaskefficiency->id)
+                    ->where('form_name', 'specialtaskefficiency')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
 
         return view('professors.submissions.specialtask.show', [
             'specialtask' => $specialtaskefficiency,
@@ -128,7 +139,8 @@ class SpecialTaskEfficiencyController extends Controller
             'route' => $route,
             'department' => $department,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
     }
 
@@ -139,7 +151,15 @@ class SpecialTaskEfficiencyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(SpecialTaskEfficiency $specialtaskefficiency)
-    {
+    {   
+        $submission = Submission::where('submissions.form_id', $specialtaskefficiency->id)
+                    ->where('submissions.form_name', 'specialtaskefficiency')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.specialtaskefficiency.show', $specialtaskefficiency->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $header = 'III. Special Tasks - Commitment Measurable by Efficiency > Edit';
         $route = 'specialtaskefficiency';
         $departments = Department::all();

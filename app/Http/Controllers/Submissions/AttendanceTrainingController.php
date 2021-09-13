@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\DevelopNature;
 use App\Models\TemporaryFile;
@@ -136,6 +137,11 @@ class AttendanceTrainingController extends Controller
      */
     public function show(AttendanceTraining $attendancetraining)
     {
+        $submission = Submission::where('submissions.form_id', $attendancetraining->id)
+                        ->where('submissions.form_name', 'attendancetraining')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
         $header = 'Attendance in Training/s';
         $department = Department::find($attendancetraining->department_id);
         $developclass = TrainingClass::find($attendancetraining->develop_class_id);
@@ -146,11 +152,17 @@ class AttendanceTrainingController extends Controller
                         ->where('submission_type', 'attendancetraining')
                         ->where('deleted_at', NULL)
                         ->get();
-        $submission = Submission::where('submissions.form_id', $attendancetraining->id)
-                        ->where('submissions.form_name', 'attendancetraining')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
-
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $attendancetraining->id)
+                    ->where('form_name', 'attendancetraining')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+        
         return view('professors.submissions.attendance.show',[
             'header' => $header,
             'controller' => 'attendancetraining',
@@ -161,7 +173,8 @@ class AttendanceTrainingController extends Controller
             'fundingtype' => $fundingtype,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
 
     }
@@ -174,6 +187,14 @@ class AttendanceTrainingController extends Controller
      */
     public function edit(AttendanceTraining $attendancetraining)
     {
+        $submission = Submission::where('form_id', $attendancetraining->id)
+                    ->where('form_name', 'attendancetraining')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.attendancetraining.show', $attendancetraining->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $header = 'B.3.2. Attendance in Training/s > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = TrainingClass::all();

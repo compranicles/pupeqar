@@ -52,7 +52,8 @@ class SpecialTaskEfficiencyController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(SpecialTaskEfficiency $specialtaskefficiency)
-    {$submission = Submission::where('submissions.form_id', $specialtaskefficiency->id)
+    {
+        $submission = Submission::where('submissions.form_id', $specialtaskefficiency->id)
         ->where('submissions.form_name', 'specialtaskefficiency')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();

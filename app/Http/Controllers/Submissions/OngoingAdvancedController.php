@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Submission;
 use App\Models\StudyStatus;
 use App\Models\SupportType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\OngoingAdvanced;
@@ -148,6 +149,17 @@ class OngoingAdvancedController extends Controller
                         ->where('submissions.form_name', 'ongoingadvanced')
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
+        
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $ongoingadvanced->id)
+                    ->where('form_name', 'ongoingadvanced')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
 
         return view('professors.submissions.ongoingadvanced.show', [
             'ongoingadvanced' => $ongoingadvanced,
@@ -156,7 +168,8 @@ class OngoingAdvancedController extends Controller
             'supporttype' => $supporttype,
             'studystatus' => $studystatus,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     } 
 
@@ -168,6 +181,14 @@ class OngoingAdvancedController extends Controller
      */
     public function edit(OngoingAdvanced $ongoingadvanced)
     {
+        $submission = Submission::where('submissions.form_id', $ongoingadvanced->id)
+                    ->where('submissions.form_name', 'ongoingadvanced')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.ongoingadvanced.show', $ongoingadvanced->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $accrelevels = AccreLevel::all();
         $supporttypes = SupportType::all();

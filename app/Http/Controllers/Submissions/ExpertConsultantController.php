@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExpertConsultant;
@@ -124,16 +125,27 @@ class ExpertConsultantController extends Controller
      */
     public function show(ExpertConsultant $expertconsultant)
     {
+        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
+                        ->where('submissions.form_name', 'expertconsultant')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->select('submissions.status')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $expertconsultant->id)
+                    ->where('form_name', 'expertconsultant')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
         $department = Department::find($expertconsultant->department_id);
         $serviceconsultant = ServiceConsultant::find($expertconsultant->service_consultant_id);
         $level = Level::find($expertconsultant->level_id);
         $documents = Document::where('submission_id', $expertconsultant->id)
                         ->where('submission_type', 'expertconsultant')
                         ->where('deleted_at', NULL)->get();
-        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
-                        ->where('submissions.form_name', 'expertconsultant')
-                        ->join('users', 'users.id', '=', 'submissions.user_id')
-                        ->select('submissions.status')->get();
 
         return view('professors.submissions.expertconsultant.show', [
             'expertconsultant' => $expertconsultant,
@@ -141,7 +153,8 @@ class ExpertConsultantController extends Controller
             'serviceconsultant' => $serviceconsultant,
             'level' => $level,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason,
         ]);
     }
 
@@ -153,6 +166,13 @@ class ExpertConsultantController extends Controller
      */
     public function edit(ExpertConsultant $expertconsultant)
     {
+        $submission = Submission::where('submissions.form_id', $expertconsultant->id)
+                    ->where('submissions.form_name', 'expertconsultant')
+                    ->get();
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.expertconsultant.show', $expertconsultant->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $serviceconsultants = ServiceConsultant::all();
         $levels = Level::all();

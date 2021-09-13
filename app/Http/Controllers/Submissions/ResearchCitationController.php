@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use App\Models\ResearchType;
 use Illuminate\Http\Request;
 use App\Models\IndexPlatform;
@@ -176,6 +177,16 @@ class ResearchCitationController extends Controller
                         ->join('users', 'users.id', '=', 'submissions.user_id')
                         ->select('submissions.status')->get();
 
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $researchcitation->id)
+                    ->where('form_name', 'researchcitation')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
 
         return view('professors.submissions.researchcitation.show', [
             'research' => $researchcitation,
@@ -188,7 +199,8 @@ class ResearchCitationController extends Controller
             'fundingtype' => $fundingtype,
             'indexplatform' => $indexplatform,
             'documents' => $documents,
-            'submission' => $submission[0]
+            'submission' => $submission[0],
+            'reason' => $reason
         ]);
     }
 
@@ -200,6 +212,14 @@ class ResearchCitationController extends Controller
      */
     public function edit(ResearchCitation $researchcitation)
     {
+        $submission = Submission::where('submissions.form_id', $researchcitation->id)
+                    ->where('submissions.form_name', 'researchcitation')
+                    ->get();
+
+        if($submission[0]->status != 1){
+            return redirect()->route('hap.review.researchcitation.show', $researchcitation->id)->with('error', 'Edit Submission cannot be accessed');
+        }
+
         $departments = Department::orderBy('name')->get();
         $researchclasses = ResearchClass::all();
         $researchcategories = ResearchCategory::all();
