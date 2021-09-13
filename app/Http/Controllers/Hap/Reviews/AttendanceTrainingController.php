@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\DevelopNature;
 use App\Models\TemporaryFile;
@@ -60,6 +61,18 @@ class AttendanceTrainingController extends Controller
                     ->where('submissions.form_name', 'attendancetraining')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $attendancetraining->id)
+                     ->where('form_name', 'attendancetraining')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
+
         $header = 'Attendance in Training/s';
         $department = Department::find($attendancetraining->department_id);
         $developclass = TrainingClass::find($attendancetraining->develop_class_id);
@@ -82,6 +95,7 @@ class AttendanceTrainingController extends Controller
             'fundingtype' => $fundingtype,
             'level' => $level,
             'documents' => $documents,
+            'reason' => $reason
         ]);
 
     }

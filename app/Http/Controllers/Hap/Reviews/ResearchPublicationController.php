@@ -6,6 +6,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\FundingType;
+use App\Models\RejectReason;
 use App\Models\ResearchType;
 use Illuminate\Http\Request;
 use App\Models\ResearchClass;
@@ -62,6 +63,18 @@ class ResearchPublicationController extends Controller
         ->where('submissions.form_name', 'researchpublication')
         ->join('users', 'users.id', '=', 'submissions.user_id')
         ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $researchpublication->id)
+                    ->where('form_name', 'researchpublication')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $department = Department::find($researchpublication->department_id);
         $researchclass = ResearchClass::find($researchpublication->research_class_id);
         $researchcategory = ResearchCategory::find($researchpublication->research_category_id);
@@ -83,7 +96,8 @@ class ResearchPublicationController extends Controller
             'researchinvolve' => $researchinvolve,
             'researchtype' => $researchtype,
             'fundingtype' => $fundingtype,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason,
         ]);
     }
 

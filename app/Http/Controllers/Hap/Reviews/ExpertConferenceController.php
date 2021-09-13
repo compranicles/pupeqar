@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExpertConference;
@@ -58,6 +59,18 @@ class ExpertConferenceController extends Controller
                     ->where('submissions.form_name', 'expertconference')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+         //getting reason
+         $reason = 'reason';
+         if($submission[0]->status == 3){
+             $reason = RejectReason::where('form_id', $expertconference->id)
+                     ->where('form_name', 'expertconference')->first();
+             
+             if(is_null($reason)){
+                 $reason = 'Your submission was rejected';
+             }
+         }
+
         $department = Department::find($expertconference->department_id);
         $serviceconference = ServiceConference::find($expertconference->service_conference_id);
         $level = Level::find($expertconference->level_id);
@@ -71,7 +84,8 @@ class ExpertConferenceController extends Controller
             'department' => $department,
             'serviceconference' => $serviceconference,
             'level' => $level,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 

@@ -8,9 +8,12 @@ use App\Models\Department;
 use App\Models\Submission;
 use App\Models\StudyStatus;
 use App\Models\SupportType;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
 use App\Models\OngoingAdvanced;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class OngoingAdvancedController extends Controller
 {
@@ -57,6 +60,18 @@ class OngoingAdvancedController extends Controller
                     ->where('submissions.form_name', 'ongoingadvanced')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $ongoingadvanced->id)
+                    ->where('form_name', 'ongoingadvanced')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+        
         $department = Department::find($ongoingadvanced->department_id);
         $accrelevel = AccreLevel::find($ongoingadvanced->accre_level_id);
         $supporttype = SupportType::find($ongoingadvanced->support_type_id);
@@ -72,7 +87,8 @@ class OngoingAdvancedController extends Controller
             'accrelevel' => $accrelevel,
             'supporttype' => $supporttype,
             'studystatus' => $studystatus,
-            'documents' => $documents
+            'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 

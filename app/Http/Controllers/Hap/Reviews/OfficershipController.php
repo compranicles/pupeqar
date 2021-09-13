@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\Department;
 use App\Models\Submission;
 use App\Models\Officership;
+use App\Models\RejectReason;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\FacultyOfficer;
@@ -58,6 +59,18 @@ class OfficershipController extends Controller
                     ->where('submissions.form_name', 'officership')
                     ->join('users', 'users.id', '=', 'submissions.user_id')
                     ->select('submissions.status', 'users.first_name', 'users.last_name', 'users.middle_name')->get();
+
+        //getting reason
+        $reason = 'reason';
+        if($submission[0]->status == 3){
+            $reason = RejectReason::where('form_id', $officership->id)
+                    ->where('form_name', 'officership')->first();
+            
+            if(is_null($reason)){
+                $reason = 'Your submission was rejected';
+            }
+        }
+
         $department = Department::find($officership->department_id);
         $facultyofficer = FacultyOfficer::find($officership->faculty_officer_id);
         $level = Level::find($officership->level_id);
@@ -72,6 +85,7 @@ class OfficershipController extends Controller
             'facultyofficer' => $facultyofficer,
             'level' => $level,
             'documents' => $documents,
+            'reason' => $reason
         ]);
     }
 
