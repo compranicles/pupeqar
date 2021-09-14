@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row g-0">
+                <div class="row g-0">
                     <div class="col-md-12">
                         <div class="card rounded-0 bg-light border-top">
                             <div class="card-header">
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>
