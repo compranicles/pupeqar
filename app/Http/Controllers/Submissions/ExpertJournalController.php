@@ -130,7 +130,7 @@ class ExpertJournalController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $expertjournal->id)
-                    ->where('form_name', 'expertjournal')->first();
+                    ->where('form_name', 'expertjournal')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -175,7 +175,7 @@ class ExpertJournalController extends Controller
 
         
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.expertjournal.show', $expertjournal->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -278,5 +278,26 @@ class ExpertJournalController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.expertjournal.edit', $expertjournal)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ExpertJournal $expertjournal){
+        $departments = Department::orderBy('name')->get();
+        $servicejournals = ServiceJournal::all();
+        $servicenatures = ServiceNature::all();
+        $indexplatforms = IndexPlatform::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $expertjournal->id)
+                        ->where('submission_type', 'expertjournal')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.expertjournal.edit', [
+            'expertjournal' => $expertjournal,
+            'departments' => $departments,
+            'servicejournals' => $servicejournals,
+            'servicenatures' => $servicenatures,
+            'indexplatforms' => $indexplatforms,
+            'levels' => $levels,
+            'documents' => $documents,
+        ]);
     }
 }

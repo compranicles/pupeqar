@@ -130,7 +130,7 @@ class ExpertConferenceController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $expertconference->id)
-                    ->where('form_name', 'expertconference')->first();
+                    ->where('form_name', 'expertconference')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -168,7 +168,7 @@ class ExpertConferenceController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.expertconference.show', $expertconference->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.expertconference.show', $expertconference->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -274,5 +274,22 @@ class ExpertConferenceController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.expertconference.edit', $expertconference)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ExpertConference $expertconference){
+        $departments = Department::orderBy('name')->get();
+        $serviceconferences = ServiceConference::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $expertconference->id)
+                ->where('submission_type', 'expertconference')
+                ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.expertconference.edit', [
+            'expertconference' => $expertconference,
+            'departments' => $departments,
+            'serviceconferences' => $serviceconferences,
+            'levels' => $levels,
+            'documents' => $documents
+        ]);
     }
 }

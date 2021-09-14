@@ -164,7 +164,7 @@ class ExtensionProgramController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $extensionprogram->id)
-                    ->where('form_name', 'extensionprogram')->first();
+                    ->where('form_name', 'extensionprogram')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -209,7 +209,7 @@ class ExtensionProgramController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.extensionprogram.show', $extensionprogram->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.extensionprogram.show', $extensionprogram->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -348,5 +348,28 @@ class ExtensionProgramController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.extensionprogram.edit', $extensionprogram)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ExtensionProgram $extensionprogram){
+        $departments = Department::orderBy('name')->get();
+        $extensionnatures = ExtensionNature::all();
+        $fundingtypes = FundingType::all();
+        $extensionclasses = ExtensionClass::all();
+        $levels = Level::all();
+        $statuses = ExtensionStatus::all();
+        $documents = Document::where('submission_id', $extensionprogram->id)
+        ->where('submission_type', 'extensionprogram')
+        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.extensionprogram.edit', [
+            'extensionprogram' => $extensionprogram,
+            'departments' => $departments,
+            'extensionnatures' => $extensionnatures,
+            'fundingtypes' => $fundingtypes,
+            'extensionclasses' => $extensionclasses,
+            'levels' => $levels,
+            'statuses' => $statuses,
+            'documents' => $documents
+        ]);
     }
 }

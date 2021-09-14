@@ -154,7 +154,7 @@ class OngoingAdvancedController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $ongoingadvanced->id)
-                    ->where('form_name', 'ongoingadvanced')->first();
+                    ->where('form_name', 'ongoingadvanced')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -186,7 +186,7 @@ class OngoingAdvancedController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.ongoingadvanced.show', $ongoingadvanced->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.ongoingadvanced.show', $ongoingadvanced->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -305,5 +305,23 @@ class OngoingAdvancedController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.ongoingadvanced.edit', $ongoingadvanced)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(OngoingAdvanced $ongoingadvanced){
+        $departments = Department::orderBy('name')->get();
+        $accrelevels = AccreLevel::all();
+        $supporttypes = SupportType::all();
+        $studystatuses = StudyStatus::all();
+        $documents = Document::where('submission_id' ,$ongoingadvanced->id)
+                        ->where('submission_type', 'ongoingadvanced')
+                        ->where('deleted_at', NULL)->get();
+        return view('professors.submissions.ongoingadvanced.edit', [
+            'ongoingadvanced' => $ongoingadvanced,
+            'departments' => $departments,
+            'accrelevels' => $accrelevels,
+            'supporttypes' => $supporttypes,
+            'studystatuses' => $studystatuses,
+            'documents' => $documents
+        ]);
     }
 }

@@ -127,7 +127,7 @@ class SpecialTaskTimelinessController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $specialtasktimeliness->id)
-                    ->where('form_name', 'specialtasktimeliness')->first();
+                    ->where('form_name', 'specialtasktimeliness')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -157,7 +157,7 @@ class SpecialTaskTimelinessController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.specialtasktimeliness.show', $specialtasktimeliness->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.specialtasktimeliness.show', $specialtasktimeliness->id)->with('error', 'Edit Submission cannot be accessed');
         }
         $header = 'III. Special Tasks - Commitment Measurable by Timeliness > Edit';
         $route = 'specialtasktimeliness';
@@ -253,5 +253,23 @@ class SpecialTaskTimelinessController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.specialtasktimeliness.edit', $specialtasktimeliness)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(SpecialTaskTimeliness $specialtasktimeliness){
+        $header = 'III. Special Tasks - Commitment Measurable by Timeliness > Edit';
+        $route = 'specialtasktimeliness';
+        $departments = Department::all();
+        $documents = Document::where('submission_id', $specialtasktimeliness->id)
+                        ->where('submission_type', 'specialtasktimeliness')
+                        ->where('deleted_at', NULL)
+                        ->get();
+
+        return view('professors.submissions.specialtask.edit', [
+            'specialtask' => $specialtasktimeliness,
+            'header' => $header,
+            'route' => $route,
+            'departments' => $departments,
+            'documents' => $documents
+        ]);
     }
 }

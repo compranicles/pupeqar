@@ -146,7 +146,7 @@ class AttendanceConferenceController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $attendanceconference->id)
-                    ->where('form_name', 'attendanceconference')->first();
+                    ->where('form_name', 'attendanceconference')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -204,7 +204,7 @@ class AttendanceConferenceController extends Controller
                         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.attendanceconference.show', $attendanceconference->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.attendanceconference.show', $attendanceconference->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         return view('professors.submissions.attendance.edit',[
@@ -312,5 +312,30 @@ class AttendanceConferenceController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.attendanceconference.edit', $attendanceconference)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(AttendanceConference $attendanceconference){
+        $header = 'B.3.1. Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences) > Resubmission';
+        $departments = Department::orderBy('name')->get();
+        $developclasses = DevelopClass::all();
+        $developnatures = DevelopNature::all();
+        $fundingtypes = FundingType::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $attendanceconference->id)
+                        ->where('submission_type', 'attendanceconference')
+                        ->where('deleted_at', NULL)
+                        ->get();
+
+        return view('professors.submissions.attendance.edit',[
+            'header' => $header,
+            'controller' => 'attendanceconference',
+            'attendance' => $attendanceconference,
+            'departments' => $departments,
+            'developclasses' => $developclasses,
+            'developnatures' => $developnatures,
+            'fundingtypes' => $fundingtypes,
+            'levels' => $levels,
+            'documents' => $documents,
+        ]);
     }
 }

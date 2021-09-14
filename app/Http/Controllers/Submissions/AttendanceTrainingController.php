@@ -156,7 +156,7 @@ class AttendanceTrainingController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $attendancetraining->id)
-                    ->where('form_name', 'attendancetraining')->first();
+                    ->where('form_name', 'attendancetraining')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -192,7 +192,7 @@ class AttendanceTrainingController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.attendancetraining.show', $attendancetraining->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.attendancetraining.show', $attendancetraining->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $header = 'B.3.2. Attendance in Training/s > Edit';
@@ -311,5 +311,30 @@ class AttendanceTrainingController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.attendancetraining.edit', $attendancetraining)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(AttendanceTraining $attendancetraining){
+        $header = 'B.3.2. Attendance in Training/s > Resubmission';
+        $departments = Department::orderBy('name')->get();
+        $developclasses = TrainingClass::all();
+        $developnatures = DevelopNature::all();
+        $fundingtypes = FundingType::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $attendancetraining->id)
+                        ->where('submission_type', 'attendancetraining')
+                        ->where('deleted_at', NULL)
+                        ->get();
+
+        return view('professors.submissions.attendance.edit',[
+            'header' => $header,
+            'controller' => 'attendancetraining',
+            'attendance' => $attendancetraining,
+            'departments' => $departments,
+            'developclasses' => $developclasses,
+            'developnatures' => $developnatures,
+            'fundingtypes' => $fundingtypes,
+            'levels' => $levels,
+            'documents' => $documents,
+        ]);
     }
 }

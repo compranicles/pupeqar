@@ -127,7 +127,7 @@ class SpecialTaskController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $specialtask->id)
-                    ->where('form_name', 'specialtask')->first();
+                    ->where('form_name', 'specialtask')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -159,7 +159,7 @@ class SpecialTaskController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.specialtask.show', $specialtask->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.specialtask.show', $specialtask->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $header = 'III. Special Tasks > Edit';
@@ -256,5 +256,23 @@ class SpecialTaskController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.specialtask.edit', $specialtask)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(SpecialTask $specialtask){
+        $header = 'III. Special Tasks > Edit';
+        $route = 'specialtask';
+        $departments = Department::all();
+        $documents = Document::where('submission_id', $specialtask->id)
+                        ->where('submission_type', 'specialtask')
+                        ->where('deleted_at', NULL)
+                        ->get();
+
+        return view('professors.submissions.specialtask.edit', [
+            'specialtask' => $specialtask,
+            'header' => $header,
+            'route' => $route,
+            'departments' => $departments,
+            'documents' => $documents
+        ]);
     }
 }

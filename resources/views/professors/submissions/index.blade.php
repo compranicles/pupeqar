@@ -9,6 +9,15 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if ($message = Session::get('error_submission'))
+                                    <div class="alert alert-error">
+                                        {{ $message }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                         <form action="{{ route('professor.submissions.select') }}" method="POST">
                             @csrf
                             <div class="row mb-n1">

@@ -114,7 +114,7 @@ class AttendanceFunctionController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $attendancefunction->id)
-                    ->where('form_name', 'attendancefunction')->first();
+                    ->where('form_name', 'attendancefunction')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -126,7 +126,7 @@ class AttendanceFunctionController extends Controller
                                 ->where('submission_type', 'attendancefunction')
                                 ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.attendancefunction.show', [
+        return view('professors.submissions.attendancefunction.edit', [
             'documents' => $documents,
             'department' => $department,
             'attendancefunction' => $attendancefunction,
@@ -148,7 +148,7 @@ class AttendanceFunctionController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.attendancefunction.show', $attendancefunction->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.attendancefunction.show', $attendancefunction->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::all();
@@ -239,5 +239,18 @@ class AttendanceFunctionController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.attendancefunction.edit', $attendancefunction)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(AttendanceFunction $attendancefunction){
+        $departments = Department::all();
+        $documents = Document::where('submission_id', $attendancefunction->id)
+        ->where('submission_type', 'attendancefunction')
+        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.attendancefunction.resubmit', [
+            'departments' => $departments,
+            'documents' => $documents,
+            'attendancefunction' => $attendancefunction
+        ]);
     }
 }

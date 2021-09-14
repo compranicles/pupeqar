@@ -176,7 +176,7 @@ class ResearchCopyrightController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $researchcopyright->id)
-                    ->where('form_name', 'researchcopyright')->first();
+                    ->where('form_name', 'researchcopyright')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -211,7 +211,7 @@ class ResearchCopyrightController extends Controller
                 ->where('submissions.form_name', 'researchcopyright')->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.researchcopyright.show', $researchcopyright->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.researchcopyright.show', $researchcopyright->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -345,5 +345,33 @@ class ResearchCopyrightController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.researchcopyright.edit', $researchcopyright)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ResearchCopyright $researchcopyright){
+        
+        $departments = Department::orderBy('name')->get();
+        $researchclasses = ResearchClass::all();
+        $researchcategories = ResearchCategory::all();
+        $researchagendas = ResearchAgenda::all();
+        $researchinvolves = ResearchInvolve::all();
+        $researchtypes = ResearchType::all();
+        $fundingtypes = FundingType::all();
+        $indexplatforms = IndexPlatform::all();
+        $documents = Document::where('submission_id' ,$researchcopyright->id)
+                        ->where('submission_type', 'researchcopyright')
+                        ->where('deleted_at', NULL)->get();
+        
+        return view('professors.submissions.researchcopyright.edit', [
+            'researchcopyright' => $researchcopyright,
+            'departments' => $departments,
+            'researchclasses' => $researchclasses,
+            'researchcategories' => $researchcategories,
+            'researchagendas' => $researchagendas,
+            'researchinvolves' => $researchinvolves,
+            'researchtypes' => $researchtypes,
+            'fundingtypes' => $fundingtypes,
+            'indexplatforms' => $indexplatforms,
+            'documents' => $documents
+        ]);
     }
 }

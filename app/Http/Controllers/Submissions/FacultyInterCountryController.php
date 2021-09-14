@@ -125,7 +125,7 @@ class FacultyInterCountryController extends Controller
          $reason = 'reason';
          if($submission[0]->status == 3){
              $reason = RejectReason::where('form_id', $facultyintercountry->id)
-                     ->where('form_name', 'facultyintercountry')->first();
+                     ->where('form_name', 'facultyintercountry')->latest()->first();
              
              if(is_null($reason)){
                  $reason = 'Your submission was rejected';
@@ -163,7 +163,7 @@ class FacultyInterCountryController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.facultyintercountry.show', $facultyintercountry->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.facultyintercountry.show', $facultyintercountry->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -265,5 +265,22 @@ class FacultyInterCountryController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.facultyintercountry.edit', $facultyintercountry)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(FacultyInterCountry $facultyintercountry){
+        $departments = Department::orderBy('name')->get();
+        $engagementnatures = EngageNature::all();
+        $facultyinvolvements = FacultyInvolve::all();
+        $documents = Document::where('submission_id', $facultyintercountry->id)
+            ->where('submission_type', 'facultyintercountry')
+            ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.facultyintercountry.edit', [
+            'facultyintercountry' => $facultyintercountry,
+            'departments' => $departments,
+            'engagementnatures' => $engagementnatures,
+            'facultyinvolvements' => $facultyinvolvements,
+            'documents' => $documents
+        ]);
     }
 }

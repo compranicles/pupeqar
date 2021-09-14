@@ -44,13 +44,11 @@
                         @if ($submission->status == 3)
                         <hr>
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="card text-white bg-danger">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Reason for Rejection:</h5>
-                                        <p class="card-text">{{ (is_string($reason)) ? $reason : $reason->reason }}</p>
-                                    </div>
-                                </div>
+                            <div class="col-md-12 text-center">
+                                <span class="font-weight-bold text-danger h5">Reason for Rejection:</span>
+                                <span class="h5">{{ (is_string($reason)) ? $reason : $reason->reason }}</span>
+                                <br>
+                                <a href="{{ route('professor.researchcitation.resubmit', $researchcitation->id) }}" class=" mt-3 btn btn-success h5">Re-Submit</a>
                             </div>
                         </div>
                         @endif

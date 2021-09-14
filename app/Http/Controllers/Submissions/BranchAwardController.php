@@ -110,7 +110,7 @@ class BranchAwardController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $branchaward->id)
-                    ->where('form_name', 'branchaward')->first();
+                    ->where('form_name', 'branchaward')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -141,7 +141,7 @@ class BranchAwardController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.branchaward.show', $branchaward->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.branchaward.show', $branchaward->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $documents = Document::where('submission_id', $branchaward->id)
@@ -233,4 +233,14 @@ class BranchAwardController extends Controller
         return redirect()->route('professor.submissions.branchaward.edit', $branchaward)->with('success', 'Document deleted successfully.');
     }
 
+    public function resubmit(BranchAward $branchaward){
+        $documents = Document::where('submission_id', $branchaward->id)
+        ->where('submission_type', 'branchaward')
+        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.branchaward.edit', [
+            'documents' => $documents,
+            'branchaward' => $branchaward
+        ]);
+    }
 }

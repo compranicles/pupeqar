@@ -158,7 +158,7 @@ class PartnershipController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $partnership->id)
-                    ->where('form_name', 'partnership')->first();
+                    ->where('form_name', 'partnership')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -192,7 +192,7 @@ class PartnershipController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.partnership.show', $partnership->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.partnership.show', $partnership->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -313,5 +313,28 @@ class PartnershipController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.partnership.edit', $partnership)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Partnership $partnership){
+        $departments = Department::orderBy('name')->get();
+        $partnertypes = PartnerType::all();
+        $collabnatures = CollabNature::all();
+        $collabdelivers = CollabDeliver::all();
+        $targetbeneficiaries = TargetBeneficiary::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $partnership->id)
+                        ->where('submission_type', 'partnership')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.partnership.edit', [
+            'partnership' => $partnership,
+            'departments' => $departments,
+            'partnertypes' => $partnertypes,
+            'collabnatures' => $collabnatures,
+            'collabdelivers' => $collabdelivers,
+            'targetbeneficiaries' => $targetbeneficiaries,
+            'levels' => $levels,
+            'documents' => $documents
+        ]);
     }
 }

@@ -114,7 +114,7 @@ class ViableProjectController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $viableproject->id)
-                    ->where('form_name', 'viableproject')->first();
+                    ->where('form_name', 'viableproject')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -143,7 +143,7 @@ class ViableProjectController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.viableproject.show', $viableproject->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.viableproject.show', $viableproject->id)->with('error', 'Edit Submission cannot be accessed');
         }
         
         $documents = Document::where('submission_id', $viableproject->id)
@@ -233,5 +233,16 @@ class ViableProjectController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.viableproject.edit', $viableproject)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ViableProject $viableproject){
+        $documents = Document::where('submission_id', $viableproject->id)
+        ->where('submission_type', 'viableproject')
+        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.viableproject.edit', [
+            'documents' => $documents,
+            'viableproject' => $viableproject
+        ]);
     }
 }

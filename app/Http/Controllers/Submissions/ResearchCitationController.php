@@ -181,7 +181,7 @@ class ResearchCitationController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $researchcitation->id)
-                    ->where('form_name', 'researchcitation')->first();
+                    ->where('form_name', 'researchcitation')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -217,7 +217,7 @@ class ResearchCitationController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.researchcitation.show', $researchcitation->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.researchcitation.show', $researchcitation->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -356,5 +356,32 @@ class ResearchCitationController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.researchcitation.edit', $researchcitation)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ResearchCitation $researchcitation){
+        $departments = Department::orderBy('name')->get();
+        $researchclasses = ResearchClass::all();
+        $researchcategories = ResearchCategory::all();
+        $researchagendas = ResearchAgenda::all();
+        $researchinvolves = ResearchInvolve::all();
+        $researchtypes = ResearchType::all();
+        $fundingtypes = FundingType::all();
+        $indexplatforms = IndexPlatform::all();
+        $documents = Document::where('submission_id' ,$researchcitation->id)
+                        ->where('submission_type', 'researchcitation')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.researchcitation.edit', [
+            'researchcitation' => $researchcitation,
+            'departments' => $departments,
+            'researchclasses' => $researchclasses,
+            'researchcategories' => $researchcategories,
+            'researchagendas' => $researchagendas,
+            'researchinvolves' => $researchinvolves,
+            'researchtypes' => $researchtypes,
+            'fundingtypes' => $fundingtypes,
+            'indexplatforms' => $indexplatforms,
+            'documents' => $documents
+        ]);
     }
 }

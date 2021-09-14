@@ -35,6 +35,34 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
 
     Route::get('/submissions', [\App\Http\Controllers\Professors\SubmissionController::class, 'index'])->name('professor.submissions.index');
+    Route::get('attendanceconference/resubmit/{attendanceconference}', [\App\Http\Controllers\Submissions\AttendanceConferenceController::class, 'resubmit'])->name('professor.attendanceconference.resubmit');
+    Route::get('attendancefunction/resubmit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'resubmit'])->name('professor.attendancefunction.resubmit');
+    Route::get('attendancetraining/resubmit/{attendancetraining}', [\App\Http\Controllers\Submissions\AttendanceTrainingController::class, 'resubmit'])->name('professor.attendancetraining.resubmit');
+    Route::get('branchaward/resubmit/{branchaward}', [\App\Http\Controllers\Submissions\BranchAwardController::class, 'resubmit'])->name('professor.branchaward.resubmit');
+    Route::get('expertconference/resubmit/{expertconference}', [\App\Http\Controllers\Submissions\ExpertConferenceController::class, 'resubmit'])->name('professor.expertconference.resubmit');
+    Route::get('expertconsultant/resubmit/{expertconsultant}', [\App\Http\Controllers\Submissions\ExpertConsultantController::class, 'resubmit'])->name('professor.expertconsultant.resubmit');
+    Route::get('expertjournal/resubmit/{expertjournal}', [\App\Http\Controllers\Submissions\ExpertJournalController::class, 'resubmit'])->name('professor.expertjournal.resubmit');
+    Route::get('extensionprogram/resubmit/{extensionprogram}', [\App\Http\Controllers\Submissions\ExtensionProgramController::class, 'resubmit'])->name('professor.extensionprogram.resubmit');
+    Route::get('facultyaward/resubmit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'resubmit'])->name('professor.facultyaward.resubmit');
+    Route::get('facultyintercountry/resubmit/{facultyintercountry}', [\App\Http\Controllers\Submissions\FacultyInterCountryController::class, 'resubmit'])->name('professor.facultyintercountry.resubmit');
+    Route::get('invention/resubmit/{invention}', [\App\Http\Controllers\Submissions\InventionController::class, 'resubmit'])->name('professor.invention.resubmit');
+    Route::get('material/resubmit/{material}', [\App\Http\Controllers\Submissions\MaterialController::class, 'material'])->name('professor.material.resubmit');
+    Route::get('officership/resubmit/{officership}', [\App\Http\Controllers\Submissions\OfficershipController::class, 'officership'])->name('professor.officership.resubmit');
+    Route::get('ongoingadvanced/resubmit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'resubmit'])->name('professor.ongoingadvanced.resubmit');
+    Route::get('partnership/resubmit/{partnership}', [\App\Http\Controllers\Submissions\PartnershipController::class, 'resubmit'])->name('professor.partnership.resubmit');
+    Route::get('researchcitation/resubmit/{researchcitation}', [\App\Http\Controllers\Submissions\ResearchCitationController::class, 'resubmit'])->name('professor.researchcitation.resubmit');
+    Route::get('research/resubmit/{research}', [\App\Http\Controllers\Submissions\ResearchController::class, 'resubmit'])->name('professor.research.resubmit');
+    Route::get('researchcopyright/resubmit/{researchcopyright}', [\App\Http\Controllers\Submissions\ResearchCopyrightController::class, 'resubmit'])->name('professor.researchcopyright.resubmit');
+    Route::get('researchpresentation/resubmit/{researchpresentation}', [\App\Http\Controllers\Submissions\ResearchPresentationController::class, 'resubmit'])->name('professor.researchpresentation.resubmit');
+    Route::get('researchpublication/resubmit/{researchpublication}', [\App\Http\Controllers\Submissions\ResearchPublicationController::class, 'resubmit'])->name('professor.researchpublication.resubmit');
+    Route::get('researchutilization/resubmit/{researchutilization}', [\App\Http\Controllers\Submissions\ResearchUtilizationController::class, 'resubmit'])->name('professor.researchutilization.resubmit');
+    Route::get('specialtask/resubmit/{specialtask}', [\App\Http\Controllers\Submissions\SpecialTaskController::class, 'resubmit'])->name('professor.specialtask.resubmit');
+    Route::get('specialtaskefficiency/resubmit/{specialtaskefficiency}', [\App\Http\Controllers\Submissions\SpecialTaskEfficiencyController::class, 'resubmit'])->name('professor.specialtaskefficiency.resubmit');
+    Route::get('specialtasktimeliness/resubmit/{specialtasktimeliness}', [\App\Http\Controllers\Submissions\SpecialTaskTimelinessController::class, 'resubmit'])->name('professor.specialtasktimeliness.resubmit');
+    Route::get('syllabus/resubmit/{syllabu}', [\App\Http\Controllers\Submissions\SyllabusController::class, 'resubmit'])->name('professor.syllabus.resubmit');
+    Route::get('viableproject/resubmit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'resubmit'])->name('professor.viableproject.resubmit');
+
+
     Route::post('/submissions/select', [\App\Http\Controllers\Professors\SubmissionController::class, 'formselect'])->name('professor.submissions.select');
     Route::post('ongoingadvanced/deletefileonedit/{ongoingadvanced}', [\App\Http\Controllers\Submissions\OngoingAdvancedController::class, 'removeFileInEdit'])->name('professor.ongoingadvanced.file.delete');
     Route::post('facultyaward/deletefileonedit/{facultyaward}', [\App\Http\Controllers\Submissions\FacultyAwardController::class, 'removeFileInEdit'])->name('professor.facultyaward.file.delete');
@@ -62,6 +90,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('attendancefunction/deletefileonedit/{attendancefunction}', [\App\Http\Controllers\Submissions\AttendanceFunctionController::class, 'removeFileInEdit'])->name('professor.attendancefunction.file.delete');
     Route::post('viableproject/deletefileonedit/{viableproject}', [\App\Http\Controllers\Submissions\ViableProjectController::class, 'removeFileInEdit'])->name('professor.viableproject.file.delete');
     Route::post('branchaward/deletefileonedit/{branchaward}', [\App\Http\Controllers\Submissions\BranchAwardController::class, 'removeFileInEdit'])->name('professor.branchaward.file.delete');
+    
     Route::resource('ongoingadvanced', \App\Http\Controllers\Submissions\OngoingAdvancedController::class)->names([
         'index' => 'professor.submissions.ongoingadvanced',
         'create' => 'professor.submissions.ongoingadvanced.create',

@@ -126,7 +126,7 @@ class SpecialTaskEfficiencyController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $specialtaskefficiency->id)
-                    ->where('form_name', 'specialtaskefficiency')->first();
+                    ->where('form_name', 'specialtaskefficiency')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -157,7 +157,7 @@ class SpecialTaskEfficiencyController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.specialtaskefficiency.show', $specialtaskefficiency->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.specialtaskefficiency.show', $specialtaskefficiency->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $header = 'III. Special Tasks - Commitment Measurable by Efficiency > Edit';
@@ -254,5 +254,23 @@ class SpecialTaskEfficiencyController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.specialtaskefficiency.edit', $specialtaskefficiency)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(SpecialTaskEfficiency $specialtaskefficiency){
+        $header = 'III. Special Tasks - Commitment Measurable by Efficiency > Edit';
+        $route = 'specialtaskefficiency';
+        $departments = Department::all();
+        $documents = Document::where('submission_id', $specialtaskefficiency->id)
+                        ->where('submission_type', 'specialtaskefficiency')
+                        ->where('deleted_at', NULL)
+                        ->get();
+
+        return view('professors.submissions.specialtask.edit', [
+            'specialtask' => $specialtaskefficiency,
+            'header' => $header,
+            'route' => $route,
+            'departments' => $departments,
+            'documents' => $documents
+        ]);
     }
 }

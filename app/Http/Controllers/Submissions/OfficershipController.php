@@ -133,7 +133,7 @@ class OfficershipController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $officership->id)
-                    ->where('form_name', 'officership')->first();
+                    ->where('form_name', 'officership')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -176,7 +176,7 @@ class OfficershipController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.officership.show', $officership->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.officership.show', $officership->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -284,5 +284,22 @@ class OfficershipController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.officership.edit', $officership)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Officership $officership){
+        $departments = Department::orderBy('name')->get();
+        $facultyofficers = FacultyOfficer::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id' ,$officership->id)
+                        ->where('submission_type', 'officership')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.officership.edit', [
+            'officership' => $officership,
+            'departments' => $departments,
+            'facultyofficers' => $facultyofficers,
+            'levels' => $levels,
+            'documents' => $documents
+        ]);
     }
 }

@@ -126,7 +126,7 @@ class MaterialController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $material->id)
-                    ->where('form_name', 'material')->first();
+                    ->where('form_name', 'material')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -162,7 +162,7 @@ class MaterialController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.material.show', $material->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.material.show', $material->id)->with('error', 'Edit Submission cannot be accessed');
         }
             
 
@@ -265,5 +265,20 @@ class MaterialController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.material.edit', $material)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Material $material){
+        $departments = Department::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $material->id)
+                        ->where('submission_type', 'material')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.material.edit', [
+            'material' => $material,
+            'departments' => $departments,
+            'levels' => $levels,
+            'documents' => $documents
+        ]);
     }
 }

@@ -118,7 +118,7 @@ class SyllabusController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $syllabu->id)
-                    ->where('form_name', 'syllabus')->first();
+                    ->where('form_name', 'syllabus')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -147,7 +147,7 @@ class SyllabusController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.syllabus.show', $syllabus->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.syllabus.show', $syllabus->id)->with('error', 'Edit Submission cannot be accessed');
         }
         $departments = Department::all();
         $documents = Document::where('submission_id', $syllabu->id)
@@ -236,5 +236,18 @@ class SyllabusController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.syllabus.edit', $syllabu)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Syllabus $syllabu){
+        $departments = Department::all();
+        $documents = Document::where('submission_id', $syllabu->id)
+                        ->where('submission_type', 'syllabus')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.syllabus.edit', [
+            'syllabus' => $syllabu,
+            'departments' => $departments,
+            'documents' => $documents
+        ]);
     }
 }

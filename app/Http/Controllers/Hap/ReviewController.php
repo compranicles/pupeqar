@@ -15,19 +15,22 @@ class ReviewController extends Controller
         if($keyword == ''){
             $submissions = Submission::where('status', 1)
                 ->join('users', 'submissions.user_id', '=', 'users.id')
-                ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')    
+                ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')   
+                ->orderBy('submissions.updated_at', 'asc') 
                 ->get();
         }
         elseif($keyword == "accepted"){
             $submissions = Submission::where('status', 2)
             ->join('users', 'submissions.user_id', '=', 'users.id')
-            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')    
+            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')
+            ->orderBy('submissions.updated_at', 'asc') 
             ->get();
         }
         elseif($keyword == "rejected"){
             $submissions = Submission::where('status', 3)
             ->join('users', 'submissions.user_id', '=', 'users.id')
-            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')    
+            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')
+            ->orderBy('submissions.updated_at', 'asc') 
             ->get();
         }
         return view('hap.review.index', [

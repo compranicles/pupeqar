@@ -166,7 +166,7 @@ class ResearchController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $research->id)
-                    ->where('form_name', 'research')->first();
+                    ->where('form_name', 'research')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -200,7 +200,7 @@ class ResearchController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.research.show', $research->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.research.show', $research->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -327,5 +327,30 @@ class ResearchController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.research.edit', $research)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Research $research){
+        $departments = Department::orderBy('name')->get();
+        $researchclasses = ResearchClass::all();
+        $researchcategories = ResearchCategory::all();
+        $researchagendas = ResearchAgenda::all();
+        $researchinvolves = ResearchInvolve::all();
+        $researchtypes = ResearchType::all();
+        $fundingtypes = FundingType::all();
+        $documents = Document::where('submission_id' ,$research->id)
+                    ->where('submission_type', 'research')
+                    ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.research.edit', [
+            'departments' => $departments,
+            'researchclasses' => $researchclasses,
+            'researchcategories' => $researchcategories,
+            'researchagendas' => $researchagendas,
+            'researchinvolves' => $researchinvolves,
+            'researchtypes' => $researchtypes,
+            'fundingtypes' => $fundingtypes,
+            'documents' => $documents,
+            'research' => $research
+        ]);
     }
 }

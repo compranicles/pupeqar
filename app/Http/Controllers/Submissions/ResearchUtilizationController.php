@@ -174,7 +174,7 @@ class ResearchUtilizationController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $researchutilization->id)
-                    ->where('form_name', 'researchutilization')->first();
+                    ->where('form_name', 'researchutilization')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -210,7 +210,7 @@ class ResearchUtilizationController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.researchutilization.show', $researchutilization->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.researchutilization.show', $researchutilization->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -340,5 +340,33 @@ class ResearchUtilizationController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.researchutilization.edit', $researchutilization)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ResearchUtilization $researchutilization){
+        
+        $departments = Department::orderBy('name')->get();
+        $researchclasses = ResearchClass::all();
+        $researchcategories = ResearchCategory::all();
+        $researchagendas = ResearchAgenda::all();
+        $researchinvolves = ResearchInvolve::all();
+        $researchtypes = ResearchType::all();
+        $fundingtypes = FundingType::all();
+        $indexplatforms = IndexPlatform::all();
+        $documents = Document::where('submission_id' ,$researchutilization->id)
+                        ->where('submission_type', 'researchutilization')
+                        ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.researchutilization.edit', [
+            'researchutilization' => $researchutilization,
+            'departments' => $departments,
+            'researchclasses' => $researchclasses,
+            'researchcategories' => $researchcategories,
+            'researchagendas' => $researchagendas,
+            'researchinvolves' => $researchinvolves,
+            'researchtypes' => $researchtypes,
+            'fundingtypes' => $fundingtypes,
+            'indexplatforms' => $indexplatforms,
+            'documents' => $documents
+        ]);
     }
 }

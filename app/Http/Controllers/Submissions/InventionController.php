@@ -142,7 +142,7 @@ class InventionController extends Controller
          $reason = 'reason';
          if($submission[0]->status == 3){
              $reason = RejectReason::where('form_id', $invention->id)
-                     ->where('form_name', 'invention')->first();
+                     ->where('form_name', 'invention')->latest()->first();
              
              if(is_null($reason)){
                  $reason = 'Your submission was rejected';
@@ -184,7 +184,7 @@ class InventionController extends Controller
                     ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.invention.show', $invention->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.invention.show', $invention->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
 
@@ -300,5 +300,24 @@ class InventionController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.invention.edit', $invention)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(Invention $invention){
+        $departments = Department::orderBy('name')->get();
+        $inventionclasses = InventionClass::all();
+        $inventionstatuses = InventionStatus::all();
+        $fundingtypes = FundingType::all();
+        $documents = Document::where('submission_id', $invention->id)
+                        ->where('submission_type', 'invention')
+                        ->where('deleted_at', NULL)->get();
+        
+        return view('professors.submissions.invention.edit', [
+            'invention' => $invention,
+            'departments' => $departments,
+            'inventionclasses' => $inventionclasses,
+            'inventionstatuses' => $inventionstatuses,
+            'fundingtypes' => $fundingtypes,
+            'documents' => $documents,
+        ]);
     }
 }

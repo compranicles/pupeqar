@@ -129,7 +129,7 @@ class FacultyAwardController extends Controller
           $reason = 'reason';
           if($submission[0]->status == 3){
               $reason = RejectReason::where('form_id', $facultyaward->id)
-                      ->where('form_name', 'facultyaward')->first();
+                      ->where('form_name', 'facultyaward')->latest()->first();
               
               if(is_null($reason)){
                   $reason = 'Your submission was rejected';
@@ -168,7 +168,7 @@ class FacultyAwardController extends Controller
         ->get();
 
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.facultyaward.show', $facultyaward->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.facultyaward.show', $facultyaward->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -272,5 +272,22 @@ class FacultyAwardController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.facultyaward.edit', $facultyaward)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(FacultyAchievement $facultyaward){
+        $departments = Department::orderBy('name')->get();
+        $awardclasses = FacultyAward::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id' ,$facultyaward->id)
+                        ->where('submission_type', 'facultyaward')
+                        ->where('deleted_at', NULL)->get();
+                
+        return view('professors.submissions.facultyaward.resubmit', [
+            'facultyaward' => $facultyaward,
+            'departments' => $departments,
+            'awardclasses' => $awardclasses,
+            'levels' => $levels,
+            'documents' => $documents,
+        ]);
     }
 }

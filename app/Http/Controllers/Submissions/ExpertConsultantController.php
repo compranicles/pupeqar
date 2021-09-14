@@ -134,7 +134,7 @@ class ExpertConsultantController extends Controller
         $reason = 'reason';
         if($submission[0]->status == 3){
             $reason = RejectReason::where('form_id', $expertconsultant->id)
-                    ->where('form_name', 'expertconsultant')->first();
+                    ->where('form_name', 'expertconsultant')->latest()->first();
             
             if(is_null($reason)){
                 $reason = 'Your submission was rejected';
@@ -170,7 +170,7 @@ class ExpertConsultantController extends Controller
                     ->where('submissions.form_name', 'expertconsultant')
                     ->get();
         if($submission[0]->status != 1){
-            return redirect()->route('hap.review.expertconsultant.show', $expertconsultant->id)->with('error', 'Edit Submission cannot be accessed');
+            return redirect()->route('professor.submissions.expertconsultant.show', $expertconsultant->id)->with('error', 'Edit Submission cannot be accessed');
         }
 
         $departments = Department::orderBy('name')->get();
@@ -279,5 +279,22 @@ class ExpertConsultantController extends Controller
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
         return redirect()->route('professor.submissions.expertconsultant.edit', $expertconsultant)->with('success', 'Document deleted successfully.');
+    }
+
+    public function resubmit(ExpertConsultant $expertconsultant){
+        $departments = Department::orderBy('name')->get();
+        $serviceconsultants = ServiceConsultant::all();
+        $levels = Level::all();
+        $documents = Document::where('submission_id', $expertconsultant->id)
+                ->where('submission_type', 'expertconsultant')
+                ->where('deleted_at', NULL)->get();
+
+        return view('professors.submissions.expertconsultant.edit', [
+            'expertconsultant' => $expertconsultant,
+            'departments' => $departments,
+            'serviceconsultants' => $serviceconsultants,
+            'levels' => $levels,
+            'documents' => $documents
+        ]);
     }
 }
