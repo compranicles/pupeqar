@@ -344,6 +344,15 @@ class ResearchPresentationController extends Controller
     public function removeFileInEdit(ResearchPresentation $researchpresentation, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $researchpresentation->id)
+        ->where('form_name', 'researchpresentation')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.researchpresentation.resubmit', $researchpresentation->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.researchpresentation.edit', $researchpresentation)->with('success', 'Document deleted successfully.');
     }
 

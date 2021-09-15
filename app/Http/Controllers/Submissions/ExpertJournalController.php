@@ -277,6 +277,16 @@ class ExpertJournalController extends Controller
     public function removeFileInEdit(ExpertJournal $expertjournal, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $expertjournal->id)
+        ->where('form_name', 'expertjournal')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.expertjournal.resubmit', $expertjournal->id)->with('success', 'Document deleted successfully.');
+        }
+
+
         return redirect()->route('professor.submissions.expertjournal.edit', $expertjournal)->with('success', 'Document deleted successfully.');
     }
 

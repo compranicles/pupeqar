@@ -312,6 +312,15 @@ class PartnershipController extends Controller
     public function removeFileInEdit(Partnership $partnership, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $partnership->id)
+        ->where('form_name', 'partnership')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.partnership.resubmit', $partnership->id)->with('success', 'Document deleted successfully.');
+        }
+        
         return redirect()->route('professor.submissions.partnership.edit', $partnership)->with('success', 'Document deleted successfully.');
     }
 

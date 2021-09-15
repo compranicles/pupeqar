@@ -264,6 +264,16 @@ class FacultyInterCountryController extends Controller
     public function removeFileInEdit(FacultyInterCountry $facultyintercountry, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $facultyintercountry->id)
+        ->where('form_name', 'facultyintercountry')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.facultyintercountry.resubmit', $facultyintercountry->id)->with('success', 'Document deleted successfully.');
+        }
+
+
         return redirect()->route('professor.submissions.facultyintercountry.edit', $facultyintercountry)->with('success', 'Document deleted successfully.');
     }
 

@@ -273,6 +273,14 @@ class ExpertConferenceController extends Controller
     public function removeFileInEdit(ExpertConference $expertconference, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        $submission = Submission::where('form_id', $expertconference->id)
+        ->where('form_name', 'expertconference')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.expertconference.resubmit', $expertconference->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.expertconference.edit', $expertconference)->with('success', 'Document deleted successfully.');
     }
 

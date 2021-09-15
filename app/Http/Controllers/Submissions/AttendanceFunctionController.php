@@ -126,7 +126,7 @@ class AttendanceFunctionController extends Controller
                                 ->where('submission_type', 'attendancefunction')
                                 ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.attendancefunction.edit', [
+        return view('professors.submissions.attendancefunction.show', [
             'documents' => $documents,
             'department' => $department,
             'attendancefunction' => $attendancefunction,
@@ -238,6 +238,16 @@ class AttendanceFunctionController extends Controller
     public function removeFileInEdit(AttendanceFunction $attendancefunction, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        
+        $submission = Submission::where('form_id', $attendancefunction->id)
+        ->where('form_name', 'attendancefunction')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.attendancefunction.resubmit', $attendancefunction->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.attendancefunction.edit', $attendancefunction)->with('success', 'Document deleted successfully.');
     }
 
@@ -247,7 +257,7 @@ class AttendanceFunctionController extends Controller
         ->where('submission_type', 'attendancefunction')
         ->where('deleted_at', NULL)->get();
 
-        return view('professors.submissions.attendancefunction.resubmit', [
+        return view('professors.submissions.attendancefunction.edit', [
             'departments' => $departments,
             'documents' => $documents,
             'attendancefunction' => $attendancefunction

@@ -299,6 +299,16 @@ class InventionController extends Controller
     public function removeFileInEdit(Invention $invention, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $invention->id)
+        ->where('form_name', 'invention')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.invention.resubmit', $invention->id)->with('success', 'Document deleted successfully.');
+        }
+
+
         return redirect()->route('professor.submissions.invention.edit', $invention)->with('success', 'Document deleted successfully.');
     }
 

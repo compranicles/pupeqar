@@ -278,6 +278,16 @@ class ExpertConsultantController extends Controller
     public function removeFileInEdit(ExpertConsultant $expertconsultant, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $expertconsultant->id)
+        ->where('form_name', 'expertconsultant')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.expertconsultant.resubmit', $expertconsultant->id)->with('success', 'Document deleted successfully.');
+        }
+
+
         return redirect()->route('professor.submissions.expertconsultant.edit', $expertconsultant)->with('success', 'Document deleted successfully.');
     }
 

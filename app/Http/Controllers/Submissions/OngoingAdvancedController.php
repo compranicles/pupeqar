@@ -304,6 +304,13 @@ class OngoingAdvancedController extends Controller
     public function removeFileInEdit(OngoingAdvanced $ongoingadvanced, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        $submission = Submission::where('form_id', $ongoingadvanced->id)
+        ->where('form_name', 'ongoingadvanced')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.ongoingadvanced.resubmit', $ongoingadvanced->id)->with('success', 'Document deleted successfully.');
+        }
         return redirect()->route('professor.submissions.ongoingadvanced.edit', $ongoingadvanced)->with('success', 'Document deleted successfully.');
     }
 

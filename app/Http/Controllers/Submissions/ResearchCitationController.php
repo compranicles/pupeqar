@@ -355,6 +355,13 @@ class ResearchCitationController extends Controller
     public function removeFileInEdit(ResearchCitation $researchcitation, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        $submission = Submission::where('form_id', $researchcitation->id)
+        ->where('form_name', 'researchcitation')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.researchcitation.resubmit', $researchcitation->id)->with('success', 'Document deleted successfully.');
+        }
         return redirect()->route('professor.submissions.researchcitation.edit', $researchcitation)->with('success', 'Document deleted successfully.');
     }
 

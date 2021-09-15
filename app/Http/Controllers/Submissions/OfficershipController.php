@@ -283,6 +283,16 @@ class OfficershipController extends Controller
     public function removeFileInEdit(Officership $officership, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $officership->id)
+        ->where('form_name', 'officership')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.officership.resubmit', $officership->id)->with('success', 'Document deleted successfully.');
+        }
+
+
         return redirect()->route('professor.submissions.officership.edit', $officership)->with('success', 'Document deleted successfully.');
     }
 

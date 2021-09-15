@@ -232,6 +232,13 @@ class ViableProjectController extends Controller
     public function removeFileInEdit(ViableProject $viableproject, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        $submission = Submission::where('form_id', $viableproject->id)
+        ->where('form_name', 'viableproject')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.viableproject.resubmit', $viableproject->id)->with('success', 'Document deleted successfully.');
+        }
         return redirect()->route('professor.submissions.viableproject.edit', $viableproject)->with('success', 'Document deleted successfully.');
     }
 

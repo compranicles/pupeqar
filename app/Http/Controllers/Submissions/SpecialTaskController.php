@@ -255,6 +255,13 @@ class SpecialTaskController extends Controller
     public function removeFileInEdit(SpecialTask $specialtask, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        $submission = Submission::where('form_id', $specialtask->id)
+        ->where('form_name', 'specialtask')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.specialtask.resubmit', $specialtask->id)->with('success', 'Document deleted successfully.');
+        }
         return redirect()->route('professor.submissions.specialtask.edit', $specialtask)->with('success', 'Document deleted successfully.');
     }
 

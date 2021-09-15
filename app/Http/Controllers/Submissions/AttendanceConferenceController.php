@@ -192,6 +192,9 @@ class AttendanceConferenceController extends Controller
                     ->where('form_name', 'attendanceconference')
                     ->get();
                     
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.submissions.attendanceconference.show', $attendanceconference->id)->with('error', 'Edit Submission cannot be accessed');
+        }
         $header = 'B.3.1. Attendance in Relevant Faculty Development Program (Seminars/Webinars, Fora/Conferences) > Edit';
         $departments = Department::orderBy('name')->get();
         $developclasses = DevelopClass::all();
@@ -203,9 +206,6 @@ class AttendanceConferenceController extends Controller
                         ->where('deleted_at', NULL)
                         ->get();
 
-        if($submission[0]->status != 1){
-            return redirect()->route('professor.submissions.attendanceconference.show', $attendanceconference->id)->with('error', 'Edit Submission cannot be accessed');
-        }
 
         return view('professors.submissions.attendance.edit',[
             'header' => $header,
@@ -311,6 +311,15 @@ class AttendanceConferenceController extends Controller
     public function removeFileInEdit(AttendanceConference $attendanceconference, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $attendanceconference->id)
+                    ->where('form_name', 'attendanceconference')
+                    ->get();
+                    
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.attendanceconference.resubmit', $attendanceconference->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.attendanceconference.edit', $attendanceconference)->with('success', 'Document deleted successfully.');
     }
 

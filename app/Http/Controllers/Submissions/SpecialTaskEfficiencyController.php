@@ -253,6 +253,15 @@ class SpecialTaskEfficiencyController extends Controller
     public function removeFileInEdit(SpecialTaskEfficiency $specialtaskefficiency, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $specialtaskefficiency->id)
+        ->where('form_name', 'specialtaskefficiency')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.specialtaskefficiency.resubmit', $specialtaskefficiency->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.specialtaskefficiency.edit', $specialtaskefficiency)->with('success', 'Document deleted successfully.');
     }
 

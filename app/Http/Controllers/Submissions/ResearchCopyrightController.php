@@ -344,6 +344,15 @@ class ResearchCopyrightController extends Controller
     public function removeFileInEdit(ResearchCopyright $researchcopyright, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $researchcopyright->id)
+        ->where('form_name', 'researchcopyright')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.researchcopyright.resubmit', $researchcopyright->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.researchcopyright.edit', $researchcopyright)->with('success', 'Document deleted successfully.');
     }
 

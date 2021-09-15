@@ -347,6 +347,15 @@ class ExtensionProgramController extends Controller
     public function removeFileInEdit(ExtensionProgram $extensionprogram, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+        
+        $submission = Submission::where('form_id', $extensionprogram->id)
+        ->where('form_name', 'extensionprogram')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.extensionprogram.resubmit', $extensionprogram->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.extensionprogram.edit', $extensionprogram)->with('success', 'Document deleted successfully.');
     }
 

@@ -235,6 +235,15 @@ class SyllabusController extends Controller
     public function removeFileInEdit(Syllabus $syllabu, Request $request){
         Document::where('filename', $request->input('filename'))->delete();
         Storage::delete('documents/'.$request->input('filename'));
+
+        $submission = Submission::where('form_id', $syllabu->id)
+        ->where('form_name', 'syllabus')
+        ->get();
+        
+        if($submission[0]->status != 1){
+            return redirect()->route('professor.syllabus.resubmit', $syllabu->id)->with('success', 'Document deleted successfully.');
+        }
+
         return redirect()->route('professor.submissions.syllabus.edit', $syllabu)->with('success', 'Document deleted successfully.');
     }
 
