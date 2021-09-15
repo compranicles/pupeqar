@@ -9,11 +9,32 @@ use Illuminate\Support\Facades\Auth;
 
 class SubmissionController extends Controller
 { 
-    public function index()
+    public function index(Request $request)
     {
-        $submissions = Submission::orderBy('updated_at', 'desc')->where('deleted_at', NULL)->where('user_id', Auth::id())->get();
+        $keyword = $request->input('status');
+        $submissions = [];
 
-        return view('professors.submissions.index', compact('submissions'));
+        if($keyword == ''){
+            $submissions = Submission::orderBy('updated_at', 'desc')
+                        ->where('status', 1)
+                        ->where('user_id', Auth::id())->get();
+        }
+        elseif($keyword == 'accepted'){
+            $submissions = Submission::orderBy('updated_at', 'desc')
+                        ->where('status', 2)
+                        ->where('user_id', Auth::id())->get();
+        }
+        elseif($keyword == 'rejected'){
+            $submissions = Submission::orderBy('updated_at', 'desc')
+                        ->where('status', 3)
+                        ->where('user_id', Auth::id())->get();
+        }
+        
+
+        return view('professors.submissions.index', [
+            'keyword' => $keyword,
+            'submissions' => $submissions
+        ]);
     }
     
     public function formselect(Request $request)

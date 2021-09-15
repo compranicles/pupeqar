@@ -126,6 +126,22 @@
             <div class="col-lg-12 mb-3">
                 <div class="card">
                     <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item pill-1">
+                                      <a class="nav-link {{ ($keyword == '') ? 'active' : '' }}" href="{{ route('professor.submissions.index') }}">Not Reviewed</a>
+                                    </li>
+                                    <li class="nav-item pill-1">
+                                      <a class="nav-link {{ ($keyword == 'accepted') ? 'active' : '' }}" href="{{ route('professor.submissions.index', 'status=accepted') }}">Accepted</a>
+                                    </li>
+                                    <li class="nav-item pill-1">
+                                      <a class="nav-link {{ ($keyword == 'rejected') ? 'active' : '' }}" href="{{ route('professor.submissions.index', 'status=rejected') }}">Rejected</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="row"> 
                             <div class="col-lg-12">
                                 @if ($message = Session::get('success_submission'))
