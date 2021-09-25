@@ -18,61 +18,34 @@
                     </x-jet-nav-link>
                 </li>
                 
-           
-
                 @if (auth()->user()->role_id == 1)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*')">
                         {{ __('Users') }}
                     </x-jet-nav-link>
                 </li>
+               
                 <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('admin.maintenances.index') }}" :active="request()->routeIs('admin.maintenances.*')">
-                        {{ __('Maintenances') }}
-                    </x-jet-nav-link>
+                    <x-jet-dropdown :active="request()->routeIs('admin.announcements.*') || request()->routeIs('admin.forms.*') || request()->routeIs('admin.fields.*') || request()->routeIs('admin.dropdowns.*') ">
+                        <x-slot name="trigger">
+                            Contents
+                            <svg  width="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-jet-dropdown-link href="{{ route('admin.announcements.index') }}" :active="request()->routeIs('admin.announcements.*')">
+                                {{ __('Announcements') }}
+                            </x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="{{ route('admin.forms.index') }}" :active="request()->routeIs('admin.forms.*')">
+                                {{ __('Forms') }}
+                            </x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="{{ route('admin.dropdowns.index') }}" :active="request()->routeIs('admin.dropdowns.*')">
+                                {{ __('Dropdowns') }}
+                            </x-jet-dropdown-link>
+                        </x-slot>
+                    </x-jet-dropdown>
                 </li>
-                
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('admin.announcements.index') }}" :active="request()->routeIs('admin.announcements.*')">
-                        {{ __('Announcements') }}
-                    </x-jet-nav-link>
-                </li>
-                {{-- <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('admin.events.index') }}" :active="request()->routeIs('admin.events.*')">
-                        {{ __('Events') }}
-                    </x-jet-nav-link>
-                </li>
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('admin.event_types.index') }}" :active="request()->routeIs('admin.event_types.*')">
-                        {{ __('Event Types') }}
-                    </x-jet-nav-link>
-                </li> --}}
-                @endif
-
-                @if (auth()->user()->role_id == 2)
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('hap.review.index') }}" :active="request()->routeIs('hap.review.*')">
-                        {{ __('Review') }}
-                    </x-jet-nav-link>
-                </li>
-                @endif
-
-                @if (auth()->user()->role_id == 3 || auth()->user()->role_id == 2)
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
-                        {{ __('Submissions') }}
-                    </x-jet-nav-link>
-                </li>
-                {{-- <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('professor.submissions.index') }}" :active="request()->routeIs('professor.submissions.*')">
-                        {{ __('Submissions') }}
-                    </x-jet-nav-link>
-                </li>
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('professor.events.index') }}" :active="request()->routeIs('professor.events.*')">
-                        {{ __('Events') }}
-                    </x-jet-nav-link>
-                </li> --}}
                 @endif
             </ul>
             

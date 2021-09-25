@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Hap;
 
+use App\Models\User;
 use App\Models\Submission;
 use App\Models\RejectReason;
 use Illuminate\Http\Request;
@@ -10,59 +11,44 @@ use App\Http\Controllers\Controller;
 class ReviewController extends Controller
 {
     public function index(Request $request){
-        $keyword = $request->input('status');
-        $submissions = [];
-        if($keyword == ''){
-            $submissions = Submission::where('status', 1)
-                ->join('users', 'submissions.user_id', '=', 'users.id')
-                ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')   
-                ->orderBy('submissions.updated_at', 'asc') 
-                ->get();
-        }
-        elseif($keyword == "accepted"){
-            $submissions = Submission::where('status', 2)
-            ->join('users', 'submissions.user_id', '=', 'users.id')
-            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')
-            ->orderBy('submissions.updated_at', 'asc') 
-            ->get();
-        }
-        elseif($keyword == "rejected"){
-            $submissions = Submission::where('status', 3)
-            ->join('users', 'submissions.user_id', '=', 'users.id')
-            ->select('submissions.*', 'users.first_name', 'users.middle_name', 'users.last_name')
-            ->orderBy('submissions.updated_at', 'asc') 
-            ->get();
-        }
+        $users = User::where('role_id', '!=', 1)->orderBy('last_name', 'asc')->get();
+        $ongoingstudies = Submission::where('submissions.form_name', 'ongoingadvanced')
+                        ->join('users', 'users.id', '=', 'submissions.user_id')
+                        ->join('ongoing_advanceds', 'submissions.form_id', '=', 'ongoing_advanceds.id')
+                        ->join('departments', 'departments.id', '=', 'ongoing_advanceds.department_id')
+                        ->select('users.last_name', 'users.first_name', 'users.last_name', 'ongoing_advanceds.*', 'submissions.*')
+                        ->get();
+        
         return view('hap.review.index', [
-            'keyword' => $keyword,
-            'submissions' => $submissions
+            'users' => $users,
+            'ongoingstudies' => $ongoingstudies,
         ]);
     }
 
-    public function accept(Request $request){
-        $form_id = $request->input('formId');
-        $form_name = $request->input('formname');
+    // public function accept(Request $request){
+    //     $form_id = $request->input('formId');
+    //     $form_name = $request->input('formname');
 
-        Submission::where('form_name', $form_name)
-                    ->where('form_id', $form_id)
-                    ->update(['status' => 2]);
-        return redirect()->route('hap.review.'.$form_name.'.show', $form_id)->with('success', 'Submission accepted successfully');
-    }
+    //     Submission::where('form_name', $form_name)
+    //                 ->where('form_id', $form_id)
+    //                 ->update(['status' => 2]);
+    //     return redirect()->route('hap.review.'.$form_name.'.show', $form_id)->with('success', 'Submission accepted successfully');
+    // }
 
-    public function reject(Request $request){
-        $form_id = $request->input('formId');
-        $form_name = $request->input('formname');
-        $comment = $request->input('comment');
+    // public function reject(Request $request){
+    //     $form_id = $request->input('formId');
+    //     $form_name = $request->input('formname');
+    //     $comment = $request->input('comment');
 
-        Submission::where('form_name', $form_name)
-                    ->where('form_id', $form_id)
-                    ->update(['status' => 3]);
+    //     Submission::where('form_name', $form_name)
+    //                 ->where('form_id', $form_id)
+    //                 ->update(['status' => 3]);
 
-        RejectReason::create([
-           'form_id' => $form_id,
-           'form_name' => $form_name,
-           'reason' => $comment
-        ]);
-        return redirect()->route('hap.review.'.$form_name.'.show', $form_id)->with('success', 'Submission rejected successfully');
-    }
+    //     RejectReason::create([
+    //        'form_id' => $form_id,
+    //        'form_name' => $form_name,
+    //        'reason' => $comment
+    //     ]);
+    //     return redirect()->route('hap.review.'.$form_name.'.show', $form_id)->with('success', 'Submission rejected successfully');
+    // }
 }
