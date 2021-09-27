@@ -105,35 +105,25 @@ class FormController extends Controller
     }
     
     /**
-     * saves the arrangement of QAR Forms
+     * saves the arrangement of QAR and Non Qar Forms
      */
-    public function qarArrange(Request $request){
+    public function arrange(Request $request){
         // delete all existing records
         QarForm::truncate();
+        NonQarForm::truncate();
     
         //insert the new records sent from ajax request
-        $data = json_decode($request->data, true);
-        for($i = 0; $i < count($data); $i++){
+        $qar = json_decode($request->qar, true);
+        $nonqar = json_decode($request->nonqar, true);
+        for($i = 0; $i < count($qar); $i++){
             QarForm::insert([
-                'form_id' => (int) $data[$i]['form_id']
+                'form_id' => (int) $qar[$i]['form_id']
             ]);
         }
-        return true;
-    }
 
-        
-    /**
-     * saves the arrangement of NON QAR Forms
-     */
-    public function nonQarArrange(Request $request){
-        // delete all existing records
-        NonQarForm::truncate();
-
-        //insert the new records sent from ajax request
-        $data = json_decode($request->data, true);
-        for($i = 0; $i < count($data); $i++){
+        for($i = 0; $i < count($nonqar); $i++){
             NonQarForm::insert([
-                'form_id' => (int) $data[$i]['form_id']
+                'form_id' => (int) $nonqar[$i]['form_id']
             ]);
         }
         return true;

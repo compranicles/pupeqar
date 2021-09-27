@@ -93,28 +93,16 @@
 
                                             <div class="col-md-12">
                                                 <div class="mx-3">
-                                                    <div id="qar_message"></div>
-                                                    <div id="nonqar_message"></div>
+                                                    <div id="alert_message"></div>
                                                 </div>
                                             </div>
 
-                                            {{-- Save button --}}
-                                            <div class="col-md-12">
-                                                <div class="mx-3 mb-3">
-                                                    <div class="mb-0">
-                                                        <div class="d-flex justify-content-end align-items-baseline">
-                                                            <x-jet-button id="save_arrange" data-qar="{{ route('admin.forms.qar') }}" data-nonqar="{{ route('admin.forms.nonqar') }}">
-                                                                {{ __('Save Arrangement') }}
-                                                            </x-jet-button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                           
 
                                             {{-- Divide the row to 3 parts for 3 tables --}}
                                             {{-- Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3">
+                                                <div class="mx-3 overflow-auto" id="table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="all_table" class="table table-bordered p-2">
                                                             <tbody class="connectedSortable">
@@ -134,7 +122,7 @@
 
                                             {{-- QAR Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3">
+                                                <div class="mx-3 overflow-auto" id="table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="qar_table" class="table table-bordered">
                                                             <tbody class="connectedSortable">
@@ -156,7 +144,7 @@
 
                                             {{-- Non-QAR Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3">
+                                                <div class="mx-3 overflow-auto" id="table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="nonqar_table" class="table table-bordered">
                                                             <tbody class="connectedSortable">
@@ -172,6 +160,19 @@
                                                             @endforeach
                                                             </tbody>
                                                         </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                             {{-- Save button --}}
+                                            <div class="col-md-12">
+                                                <div class="mx-3 mb-3">
+                                                    <div class="mb-0">
+                                                        <div class="d-flex justify-content-end align-items-baseline">
+                                                            <x-jet-button id="save_arrange" data-save="{{ route('admin.forms.arrange') }}" >
+                                                                {{ __('Save Arrangement') }}
+                                                            </x-jet-button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

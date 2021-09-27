@@ -64,8 +64,7 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('dropdowns', \App\Http\Controllers\FormBuilder\DropdownController::class);
 
         // forms
-        Route::post('forms/qar', [\App\Http\Controllers\FormBuilder\FormController::class, 'qarArrange'])->name('forms.qar');
-        Route::post('forms/nonqar', [\App\Http\Controllers\FormBuilder\FormController::class, 'nonQarArrange'])->name('forms.nonqar');
+        Route::post('forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
         Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
         
         // form's fields

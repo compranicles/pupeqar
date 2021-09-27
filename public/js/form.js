@@ -88,10 +88,7 @@ $(document).ready( function () {
 
     // saving the new arrangements using click
     $('#save_arrange').click(function () {
-        var routeqar = $(this).data('qar');
-        var routenonqar = $(this).data('nonqar');
-        var qartbl = document.getElementById('qar_table');
-        var nonqartbl = document.getElementById('nonqar_table');
+        var route = $(this).data('save');
         var dataqar = [];
         var rowIdqar;
         var datanonqar = [];
@@ -114,50 +111,25 @@ $(document).ready( function () {
         });
         
 
-        //submit to qar table
-        submitToQar(dataqar, routeqar);
-
-        // submit to non qar table
-        submitToNonQar(datanonqar, routenonqar);
+        //submit to table
+        submit(dataqar, datanonqar, route);
      });
 
-    //submit to qar table
-     function submitToQar(formData, routeqar){
-        var requestData = JSON.stringify(formData);
+    //submit to forms.arrange using
+     function submit(qar, nonqar, route){
+        var data1 = JSON.stringify(qar);
+        var data2 = JSON.stringify(nonqar);
         $.ajax({
             type: 'POST',
-            data: {data: requestData},
-            dataType: 'json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: routeqar,
-            success: function () {
-                $("#qar_message").html('<div id="message_qar" class="alert alert-success alert-show"></div>');
-                $("#message_qar").html("QAR updated successfully.")
-                    setTimeout(function() {
-                        $('.alert-show').fadeTo(500, 0).slideUp(500, function(){
-                            $('.alert-show').remove(); 
-                        });
-                    }, 4000);
-            }
-        });
-     }
-
-    // submit to non qar table
-     function submitToNonQar(formData, route){
-        var requestData = JSON.stringify(formData);
-        $.ajax({
-            type: 'POST',
-            data: {data: requestData},
+            data: {qar: data1, nonqar: data2},
             dataType: 'json',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             url: route,
             success: function () {
-                $("#nonqar_message").html('<div id="message_nonqar" class="alert alert-success alert-show"></div>');
-                $("#message_nonqar").html("Non QAR updated successfully.")
+                $("#alert_message").html('<div id="message" class="alert alert-success alert-show"></div>');
+                $("#message").html("Form arrangements updated successfully.")
                     setTimeout(function() {
                         $('.alert-show').fadeTo(500, 0).slideUp(500, function(){
                             $('.alert-show').remove(); 
