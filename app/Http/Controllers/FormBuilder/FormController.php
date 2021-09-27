@@ -4,7 +4,9 @@ namespace App\Http\Controllers\FormBuilder;
 
 use Illuminate\Http\Request;
 use App\Models\FormBuilder\Form;
+use App\Models\FormBuilder\QarForm;
 use App\Http\Controllers\Controller;
+use App\Models\FormBuilder\NonQarForm;
 
 class FormController extends Controller
 {
@@ -13,8 +15,15 @@ class FormController extends Controller
      */
     public function index()
     {
+        //get all forms
         $forms = Form::all();
-        return view('formbuilder.forms.index', compact('forms'));
+
+        // get forms that are not assign using the ids from the other 2 tables
+        $qarFormsId = QarForm::pluck('form_id')->all();
+        $nonQarFormsId = NonQarForm::pluck('form_id')->all();
+        $notAssignedForms = Form::whereNotIn('id', $qarFormsId)->whereNotIn('id',$nonQarFormsId)->get();
+        
+        return view('formbuilder.forms.index', compact('forms', 'notAssignedForms', 'qarFormsId', 'nonQarFormsId'));
     }
 
     /**
@@ -93,5 +102,40 @@ class FormController extends Controller
         $form->delete();
 
         return redirect()->route('admin.forms.index')->with('success', 'Form deleted successfully.');
+    }
+    
+    /**
+     * saves the arrangement of QAR Forms
+     */
+    public function qarArrange(Request $request){
+        // delete all existing records
+        QarForm::truncate();
+    
+        //insert the new records sent from ajax request
+        $data = json_decode($request->data, true);
+        for($i = 0; $i < count($data); $i++){
+            QarForm::insert([
+                'form_id' => (int) $data[$i]['form_id']
+            ]);
+        }
+        return true;
+    }
+
+        
+    /**
+     * saves the arrangement of NON QAR Forms
+     */
+    public function nonQarArrange(Request $request){
+        // delete all existing records
+        NonQarForm::truncate();
+
+        //insert the new records sent from ajax request
+        $data = json_decode($request->data, true);
+        for($i = 0; $i < count($data); $i++){
+            NonQarForm::insert([
+                'form_id' => (int) $data[$i]['form_id']
+            ]);
+        }
+        return true;
     }
 }

@@ -16,7 +16,7 @@
                     @method('delete')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
             </form>
             </div>
