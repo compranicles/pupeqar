@@ -10397,6 +10397,6 @@ h3 {
   display: block;
  }
 
-#table_container {
-  height: 35rem;
+.table_container {
+  max-height: 35rem;
 }

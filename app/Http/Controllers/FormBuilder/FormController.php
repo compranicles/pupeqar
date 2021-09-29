@@ -4,8 +4,11 @@ namespace App\Http\Controllers\FormBuilder;
 
 use Illuminate\Http\Request;
 use App\Models\FormBuilder\Form;
+use App\Models\FormBuilder\Field;
 use App\Models\FormBuilder\QarForm;
 use App\Http\Controllers\Controller;
+use App\Models\FormBuilder\Dropdown;
+use App\Models\FormBuilder\FieldType;
 use App\Models\FormBuilder\NonQarForm;
 
 class FormController extends Controller
@@ -61,7 +64,10 @@ class FormController extends Controller
      */
     public function show(Form $form)
     {
-        return view('formbuilder.forms.show', compact('form'));
+        $fieldtypes = FieldType::all();
+        $dropdowns = Dropdown::all();
+        $fields = Field::where('form_id', $form->id)->orderBy('order')->get();
+        return view('formbuilder.forms.show', compact('form', 'fieldtypes', 'dropdowns', 'fields'));
     }
 
     /**

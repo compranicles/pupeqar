@@ -41,7 +41,7 @@
                                             <div class="col-md-12">
                                                 <div class="mx-3 mb-3">
                                                     {{-- View/Edit Form Details --}}
-                                                    <form id="form_form" data-route="{{ route('admin.forms.update', $form->id) }}" class="needs-validation" method="post" novalidate>
+                                                    <form id="form_form" data-route="{{ route('admin.forms.update', $form->id) }}" class="needs-validation" method="post">
                                                         @csrf
                                                         @method('put')
 
@@ -107,14 +107,13 @@
                                     </div>
                                     {{-- Field Tab Pane --}}
                                     <div class="tab-pane fade" id="nav-fields" role="tabpanel" aria-labelledby="nav-fields-tab">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="m-3">
-                                                    <h4>Fields</h4>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                        </div>
+                                        {{-- including field index --}}
+                                        @include('formbuilder.fields.index', [
+                                            'form_id' => $form->id, 
+                                            'fieldtypes' => $fieldtypes,
+                                            'dropdowns' => $dropdowns,
+                                            'fields' => $fields
+                                        ])
                                     </div>
                                 </div>
                             </div>
@@ -129,6 +128,8 @@
     @include('formbuilder.forms.delete')
 
     @push('scripts')
+        <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
         <script src="{{ asset('js/form.js') }}"></script>
+        <script src="{{ asset('js/field.js') }}"></script>
     @endpush
 </x-app-layout>

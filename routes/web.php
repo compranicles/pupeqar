@@ -59,15 +59,17 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('announcements', \App\Http\Controllers\Administrators\AnnouncementController::class);
 
         // dropdowns
-        Route::get('dropdowns/modal/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'dropdowndata']);
-        Route::get('dropdowns/options/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'options']);
+        Route::get('/dropdowns/modal/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'dropdowndata']);
+        Route::get('/dropdowns/options/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'options']);
         Route::resource('dropdowns', \App\Http\Controllers\FormBuilder\DropdownController::class);
 
         // forms
-        Route::post('forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
+        Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
         Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
         
         // form's fields
+        Route::get('forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
+        Route::post('forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
         Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
 
         //users
@@ -77,3 +79,4 @@ Route::group(['middleware' => 'auth'], function() {
     });
 });
 
+Route::get('/fieldtypes', [\App\Http\Controllers\FieldTypeController::class, 'index']);

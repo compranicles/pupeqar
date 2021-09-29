@@ -102,7 +102,7 @@
                                             {{-- Divide the row to 3 parts for 3 tables --}}
                                             {{-- Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3 overflow-auto" id="table_container">
+                                                <div class="mx-3 overflow-auto table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="all_table" class="table table-bordered p-2">
                                                             <tbody class="connectedSortable">
@@ -122,7 +122,7 @@
 
                                             {{-- QAR Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3 overflow-auto" id="table_container">
+                                                <div class="mx-3  overflow-auto table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="qar_table" class="table table-bordered">
                                                             <tbody class="connectedSortable">
@@ -144,7 +144,7 @@
 
                                             {{-- Non-QAR Forms Table --}}
                                             <div class="col-md-4">
-                                                <div class="mx-3 overflow-auto" id="table_container">
+                                                <div class="mx-3  overflow-auto table_container">
                                                     <div class="table-responsive text-center">
                                                         <table id="nonqar_table" class="table table-bordered">
                                                             <tbody class="connectedSortable">
