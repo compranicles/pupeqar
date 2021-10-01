@@ -1,4 +1,4 @@
-{{-- Add Modal --}}
+{{-- Edit Modal --}}
 <div class="modal fade" id="editFieldModal" data-backdrop="static" tabindex="-1" aria-labelledby="editFieldModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">

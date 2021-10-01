@@ -25,7 +25,7 @@
     <div class="col-md-6">
         <div class="mx-3 mb-3  overflow-auto table_container">
             <div class="table-responsive">
-                <table id="hidden_fields_table" class="table table-bordered">
+                <table id="hidden_fields_table" class="table table-sm table-bordered">
                     <tbody class="fieldsortable">
                         <tr>
                             <th colspan="2">
@@ -37,8 +37,8 @@
                         <tr data-id="{{ $field->id }}">
                             <td>{{ $field->label }}</td>
                             <td>
-                                <button class="btn btn-warning edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="{{ $field->form_id }}" data-id="{{ $field->id }}">Edit</button>
-                                <button class="btn btn-danger delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="{{ $field->id }}"  data-name="{{ $field->label }}">Delete</button>
+                                <button class="btn btn-warning btn-sm edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="{{ $field->form_id }}" data-id="{{ $field->id }}">Edit</button>
+                                <button class="btn btn-danger btn-sm delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="{{ $field->id }}"  data-name="{{ $field->label }}">Delete</button>
                             </td>
                         </tr>
                         @endif
@@ -54,7 +54,7 @@
     <div class="col-md-6">
         <div class="mx-3 mb-3  overflow-auto table_container">
             <div class="table-responsive">
-                <table id="shown_fields_table" class="table table-bordered">
+                <table id="shown_fields_table" class="table table-sm table-bordered">
                     <tbody class="fieldsortable">
                         <tr>
                             <th colspan="2">
@@ -66,8 +66,8 @@
                         <tr data-id="{{ $field->id }}">
                             <td>{{ $field->label }}</td>
                             <td>
-                                <button class="btn btn-warning edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="{{ $field->form_id }}" data-id="{{ $field->id }}">Edit</button>
-                                <button class="btn btn-danger delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="{{ $field->id }}" data-name="{{ $field->label }}">Delete</button>
+                                <button class="btn btn-warning btn-sm edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="{{ $field->form_id }}" data-id="{{ $field->id }}">Edit</button>
+                                <button class="btn btn-danger btn-sm delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="{{ $field->id }}" data-name="{{ $field->label }}">Delete</button>
                             </td>
                         </tr>
                         @endif

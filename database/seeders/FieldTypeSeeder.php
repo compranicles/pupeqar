@@ -23,7 +23,7 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->insert(['name' => 'dropdown']);
         DB::table('field_types')->insert(['name' => 'radio']);
         DB::table('field_types')->insert(['name' => 'multi-select']);
-        DB::table('field_types')->insert(['name' => 'search-select']);
+        DB::table('field_types')->insert(['name' => 'datalist']);
         DB::table('field_types')->insert(['name' => 'file-upload']);
         DB::table('field_types')->insert(['name' => 'reset']);
         DB::table('field_types')->insert(['name' => 'submit']);
@@ -32,5 +32,6 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->insert(['name' => 'search']);
         DB::table('field_types')->insert(['name' => 'email']);
         DB::table('field_types')->insert(['name' => 'mobile']);
+        DB::table('field_types')->insert(['name' => 'date-range']);
     }
 }

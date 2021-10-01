@@ -42,6 +42,18 @@ Route::group(['middleware' => 'auth'], function() {
     //announcement view route
     Route::get('announcement/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
 
+    // submissions
+    Route::get('/submissions', [\App\Http\Controllers\Submissions\SubmissionController::class, 'index'])->name('submissions.index');
+    Route::post('/submissions/select', [\App\Http\Controllers\Submissions\SubmissionController::class, 'select'])->name('submissions.select');
+    Route::get('/submissions/create/{slug}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'create'])->name('submissions.create');
+    Route::post('/submssions/store/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'store'])->name('submissions.store');
+    Route::get('/submssions/edit/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'edit'])->name('submissions.edit');
+    Route::post('/submssions/update/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'update'])->name('submissions.update');
+    Route::post('/submssions/destroy/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'destroy'])->name('submissions.destroy');
+
+    // get dropdown options
+    Route::get('dropdowns/options/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'options'])->name('dropdown.options');
+
     // HAP routes
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
     });
@@ -68,8 +80,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
         
         // form's fields
-        Route::get('forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
-        Route::post('forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
+        Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
+        Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
         Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
 
         //users

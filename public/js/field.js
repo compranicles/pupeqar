@@ -52,8 +52,8 @@ $('#field_form').on('submit', function (e) {
                 $('#hidden_fields_table').append('<tr data-id="'+data['id']+'">'+
                 '<td>'+label+'</td>'+
                 '<td>'+
-                    '<button class="btn btn-warning edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="'+data['form_id']+'" data-id="'+data['id']+'">Edit</button> '+
-                    '<button class="btn btn-danger delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="'+data['id']+'"  data-name="'+label+'">Delete</button>'+
+                    '<button class="btn btn-warning btn-sm edit-field" data-toggle="modal" data-target="#editFieldModal" data-form="'+data['form_id']+'" data-id="'+data['id']+'">Edit</button> '+
+                    '<button class="btn btn-danger btn-sm delete-field" data-target="#deleteFieldModal" data-toggle="modal" data-id="'+data['id']+'"  data-name="'+label+'">Delete</button>'+
                 '</td>'+
                 '</tr>');
                 $('tbody.fieldsortable').sortable('refresh');
