@@ -27,7 +27,7 @@
         "tailwindcss": "^2.2.2"
     },
     "dependencies": {
-        "datatables.net": "^1.10.25",
+        "datatables.net": "^1.11.3",
         "datatables.net-bs4": "^3.2.2"
     }
 }
