@@ -3,13 +3,8 @@
 <div class="{{ $fieldInfo->size }}">
     <div class="row">
         <div class="col">
-            <h6>{{ $fieldInfo->label }}</h6>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
             <div class="form-group">
-                <label>From</label>
+                <label>{{ $fieldInfo->label }} - From</label>
         
                 <input type="date" name="{{ $fieldInfo->name }}[]" id="{{ $fieldInfo->name }}_from" value="{{ (isset($value[0]))? $value[0]: '' }}" class="form-control" {{ $fieldInfo->required }}>
         

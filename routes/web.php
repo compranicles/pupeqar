@@ -51,6 +51,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submssions/update/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'update'])->name('submissions.update');
     Route::post('/submssions/destroy/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'destroy'])->name('submissions.destroy');
 
+    // reports
+    Route::get('/reports', [\App\Http\Controllers\Reports\ReportController::class, 'index'])->name('reports.index');
+
     // get dropdown options
     Route::get('dropdowns/options/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'options'])->name('dropdown.options');
 
@@ -90,5 +93,3 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
     });
 });
-
-Route::get('/fieldtypes', [\App\Http\Controllers\FieldTypeController::class, 'index']);

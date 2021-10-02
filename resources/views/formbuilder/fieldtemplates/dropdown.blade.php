@@ -5,7 +5,7 @@
         <label>{{ $fieldInfo->label }}</label>
 
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="form-control custom-select" {{ $fieldInfo->required }}>
-            <option value="" selected>Choose...</option>
+            <option value="" selected disabled>Choose...</option>
             
         </select>
     </div>

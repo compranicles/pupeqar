@@ -20,14 +20,30 @@ class SubmissionController extends Controller
      */
     public function index()
     {
-        $qarforms = QarForm::pluck('form_id')->all();
-        $forms = Form::whereIn('id', $qarforms)->get();
-        $submissions = Submission::join('forms', 'forms.id', 'submissions.form_id')->
-            whereIn('submissions.form_id', $qarforms)->
-            where('submissions.user_id', auth()->id())->
-            orderBy('submissions.created_at', 'desc')->
-            select('submissions.*', 'forms.name as form_name')->get();
-        return view('submissions.index', compact('forms','submissions'));
+        $forms = QarForm::join('forms', 'forms.id', 'qar_forms.form_id')->select('forms.*')->get();
+        $submissionExisting = Submission::groupBy('form_id')->pluck('form_id')->all();
+        $formsHasSubmission = QarForm::join('forms', 'forms.id', 'qar_forms.form_id')->join('submissions', 'submissions.form_id', 'qar_forms.form_id')
+                    ->whereIn('forms.id', $submissionExisting)
+                    ->where('submissions.user_id', auth()->id())->select('forms.*')->get();
+        $submissionsPerForm = [];
+        $fieldsPerForm = [];
+
+        foreach ($formsHasSubmission as $form){
+            $fields = Field::where('form_id', $form->id)->where('status', 'shown')->orderBy('order')->get();
+            $submissions = Submission::join('forms', 'forms.id', 'submissions.form_id')->where('submissions.form_id', $form->id)
+                        ->where('submissions.user_id', auth()->id())->select('forms.name as form_name', 'submissions.*')->get();
+            array_push($submissionsPerForm, (object)[
+                    $form->id => json_decode(json_encode($submissions), true)
+            ]);
+            array_push($fieldsPerForm, (object)[
+                $form->id => $fields
+            ]);
+        }
+        $submissionsPerForm = json_decode(json_encode($submissionsPerForm), true);
+        $fieldsPerForm = json_decode(json_encode($fieldsPerForm), true);
+
+        // dd($submissionsPerForm);
+        return view('submissions.index', compact('forms', 'formsHasSubmission','fieldsPerForm', 'submissionsPerForm'));
     }
     
     /**
