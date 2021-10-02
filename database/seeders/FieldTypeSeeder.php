@@ -14,6 +14,7 @@ class FieldTypeSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('field_types')->truncate();
         DB::table('field_types')->insert(['name' => 'text']);
         DB::table('field_types')->insert(['name' => 'textarea']);
         DB::table('field_types')->insert(['name' => 'number']);

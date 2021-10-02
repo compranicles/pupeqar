@@ -22,11 +22,14 @@ class FormController extends Controller
         $forms = Form::all();
 
         // get forms that are not assign using the ids from the other 2 tables
+        $qarForms = QarForm::join('forms', 'forms.id', 'qar_forms.form_id')->select('forms.*')->get();
+        $nonQarForms = NonQarForm::join('forms', 'forms.id', 'non_qar_forms.form_id')->select('forms.*')->get();
+
         $qarFormsId = QarForm::pluck('form_id')->all();
         $nonQarFormsId = NonQarForm::pluck('form_id')->all();
         $notAssignedForms = Form::whereNotIn('id', $qarFormsId)->whereNotIn('id',$nonQarFormsId)->get();
         
-        return view('formbuilder.forms.index', compact('forms', 'notAssignedForms', 'qarFormsId', 'nonQarFormsId'));
+        return view('formbuilder.forms.index', compact('forms', 'notAssignedForms', 'qarForms', 'nonQarForms'));
     }
 
     /**

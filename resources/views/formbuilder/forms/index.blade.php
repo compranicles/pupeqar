@@ -129,12 +129,10 @@
                                                                 <tr>
                                                                     <th><h5>QAR Forms</h5></th>
                                                                 </tr>
-                                                                @foreach ($forms as $form )
-                                                                @if (in_array($form->id, $qarFormsId, true))
+                                                                @foreach ($qarForms as $form )
                                                                 <tr data-id="{{ $form->id }}">
                                                                     <td>{{ $form->name }}</td>
                                                                 </tr>    
-                                                                @endif
                                                                 @endforeach
                                                             </tbody>
                                                         </table>
@@ -151,12 +149,10 @@
                                                                 <tr>
                                                                     <th><h5>Non-QAR Forms</h5></th>
                                                                 </tr>
-                                                                @foreach ($forms as $form )
-                                                                @if (in_array($form->id, $nonQarFormsId, true))
+                                                                @foreach ($nonQarForms as $form )
                                                                 <tr data-id="{{ $form->id }}">
                                                                     <td>{{ $form->name }}</td>
                                                                 </tr>    
-                                                                @endif
                                                             @endforeach
                                                             </tbody>
                                                         </table>

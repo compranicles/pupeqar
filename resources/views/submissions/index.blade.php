@@ -51,33 +51,64 @@
                         
                         <div class="col-md-12">
                             {{-- table display --}}
-                            <div class="table-responsive">
-                                <table id="submission_table" class="table table-hover table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Submission Name</th>
-                                            <th>Date Submitted</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($submissions as $submission)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $submission->form_name }}</td>
-                                            <td>{{ $submission->created_at }}</td>
-                                            <td>
-                                                <a href="{{ route('submissions.edit', $submission->id) }}" class="btn btn-warning btn-sm">View/Edit</a>
-                                                <button class="btn btn-danger btn-sm deletebutton" data-toggle="modal" 
-                                                                                data-target="#deleteModal" 
-                                                                                data-id="{{ $submission->id }}"
-                                                                                data-name="{{ $submission->form_name }}">Delete</button>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="table-responsive text-center">
+                                @php
+                                    $count = 0;
+                                @endphp
+                                @forelse ($formsHasSubmission as $form)
+                                    <h5>
+                                        {{ $form->name }}
+                                    </h5>
+                                    <table class="table table-hover table-bordered table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                @foreach ($fieldsPerForm[$count][$form->id] as $field)
+                                                <th>{{ $field['label'] }}</th>
+                                                @endforeach
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($submissionsPerForm[$count][$form->id] as $submission)
+                                                <tr>
+                                                    <td><input type="checkbox" name="" id=""></td>
+                                                    @php
+                                                        $data = json_decode($submission['data']);
+                                                    @endphp
+                                                    @foreach ($data as $line)
+                                                    <td>
+                                                        @php
+                                                            if(is_array($line)){
+                                                                foreach ($line as $item) {
+                                                                    echo '<div>'.date('m/d/Y',strtotime($item)).'</div>';
+                                                                }
+                                                            }else{
+                                                                echo $line;
+                                                            }
+                                                        @endphp   
+                                                    </td> 
+                                                    @endforeach
+                                                    <td class="text-nowrap"> 
+                                                        <a href="{{ route('submissions.edit', $submission['id']) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                        <button class="btn btn-danger btn-sm deletebutton" data-toggle="modal" 
+                                                                                        data-target="#deleteModal" 
+                                                                                        data-id="{{ $submission['id'] }}"
+                                                                                        data-name="{{ $submission['form_name'] }}"><i class="far fa-trash-alt"></i></button>
+                                                    </td>                                                       
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <hr>
+                                    @php
+                                        $count++;
+                                    @endphp
+                                @empty
+                                    <h5>No Submissions Yet</h5>
+                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -91,8 +122,6 @@
 @include('submissions.delete')
 
 @push('scripts')
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         // auto hide alert
         window.setTimeout(function() {
@@ -111,10 +140,6 @@
             document.getElementById('submission_delete').action = url;
             document.getElementById('sdisplay').innerHTML = name;
         });
-
-        $(document).ready( function ($){
-            $('#submission_table').DataTable();
-        })
     </script>
 @endpush
 </x-app-layout>
