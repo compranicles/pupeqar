@@ -1,11 +1,6 @@
 {{-- fieldInfo --}}
 
 <div class="{{ $fieldInfo->size }}">
-    {{-- <div class="row">
-        <div class="col">
-            <h6>{{ $fieldInfo->label }}</h6>
-        </div>
-    </div> --}}
     <div class="row">
         <div class="col">
             <div class="form-group">
