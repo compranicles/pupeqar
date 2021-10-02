@@ -112,6 +112,10 @@ $(document).ready(function (){
         document.getElementById('form_delete').action = url;
         document.getElementById('dropdown_name').innerHTML = dropdownName;
     })
+
+    // initializing datatable
+    $('#dropdown_table').DataTable({
+    });
 });
 
 // starter JavaScript for disabling form submissions if there are invalid fields

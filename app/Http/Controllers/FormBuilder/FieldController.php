@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\FormBuilder;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\FormBuilder\Form;
+use App\Models\FormBuilder\Field;
+use App\Http\Controllers\Controller;
 
 class FieldController extends Controller
 {
@@ -33,9 +35,23 @@ class FieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Form $form)
     {
-        //
+        $fieldId = Field::insertGetId([
+            'form_id' => $form->id,
+            'label' => $request->label,
+            'name' => $request->field_name,
+            'size' => $request->size,
+            'field_type_id' => $request->field_type,
+            'dropdown_id' => $request->dropdown ?? null,
+            'required' => $request->required ?? null,
+            'order' => 0,
+            'status' => 'hidden',
+        ]);
+        return response()->json([
+            'id' => $fieldId,
+            'form_id' => $form->id
+        ]);
     }
 
     /**
@@ -67,9 +83,21 @@ class FieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Form $form, Field $field)
     {
-        //
+        $field->update([
+            'form_id' => $form->id,
+            'label' => $request->label,
+            'name' => $request->field_name,
+            'size' => $request->size,
+            'field_type_id' => $request->field_type,
+            'dropdown_id' => $request->dropdown ?? null,
+            'required' => $request->required ?? null,
+        ]);
+
+        return response()->json([
+            'form_id' => $form->id
+        ]);
     }
 
     /**
@@ -78,8 +106,33 @@ class FieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Form $form, Field $field)
     {
-        //
+        $field->delete();
+    }
+
+    public function getInfo($id){
+        return Field::find($id);
+    }
+
+    public function arrange(Request $request, $id){
+        //update the status and order received from ajax request
+        $hidden = json_decode($request->hidden, true);
+        $shown = json_decode($request->shown, true);
+
+        for($i = 0; $i < count($hidden); $i++){
+            Field::find($hidden[$i]['id'])->update([
+                'order' => 0,
+                'status' => 'hidden'
+            ]);
+        }
+
+        for($i = 0; $i < count($shown); $i++){
+            Field::find($shown[$i]['id'])->update([
+                'order' => $i+1,
+                'status' => 'shown'
+            ]);
+        }
+        return true;
     }
 }

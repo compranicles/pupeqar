@@ -46,6 +46,12 @@
                         </x-slot>
                     </x-jet-dropdown>
                 </li>
+
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('submissions.index') }}" :active="request()->routeIs('submissions.*')">
+                        {{ __('Submissions') }}
+                    </x-jet-nav-link>
+                </li>
                 @endif
             </ul>
             

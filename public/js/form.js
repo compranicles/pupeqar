@@ -70,3 +70,72 @@ window.setTimeout(function() {
         $(this).remove(); 
     });
 }, 4000);
+
+$(document).ready( function () {
+
+    //initializing data table for form_table
+    $('#form_table').DataTable({
+    });
+
+    // connecting tables in arrange tab using jquery sortable widget
+    $( "tbody.connectedSortable" ).sortable({
+        connectWith: ".connectedSortable",
+        helper: "clone",
+        cursor: "move",
+        zIndex: 99999,
+        items: "> tr:not(:first)",
+    }); 
+
+    // saving the new arrangements using click
+    $('#save_arrange').click(function () {
+        var route = $(this).data('save');
+        var dataqar = [];
+        var rowIdqar;
+        var datanonqar = [];
+        var rowIdnonqar;
+        
+        // getting id per row in #qar_table
+        $('#qar_table').find('tbody').find('tr:not(:has(th))').each(function () {
+            rowIdqar = $(this).data('id');
+            dataqar.push({
+                form_id : rowIdqar
+            });
+        });
+
+        // getting id per row in #nonqar_table
+        $('#nonqar_table').find('tbody').find('tr:not(:has(th))').each(function () {
+            rowIdnonqar = $(this).data('id');
+            datanonqar.push({
+                form_id : rowIdnonqar
+            });
+        });
+        
+
+        //submit to table
+        submit(dataqar, datanonqar, route);
+     });
+
+    //submit to forms.arrange using
+     function submit(qar, nonqar, route){
+        var data1 = JSON.stringify(qar);
+        var data2 = JSON.stringify(nonqar);
+        $.ajax({
+            type: 'POST',
+            data: {qar: data1, nonqar: data2},
+            dataType: 'json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: route,
+            success: function () {
+                $("#alert_message").html('<div id="message" class="alert alert-success alert-show"></div>');
+                $("#message").html("Form arrangements updated successfully.")
+                    setTimeout(function() {
+                        $('.alert-show').fadeTo(500, 0).slideUp(500, function(){
+                            $('.alert-show').remove(); 
+                        });
+                    }, 4000);
+            }
+        });
+     }
+} );

@@ -1,6 +1,6 @@
 {{-- Add Modal --}}
 <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addModalLabel">Add Form</h5>
@@ -36,7 +36,7 @@
 
                 </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
                 <button type="submit" class="btn btn-success mb-2 mr-2">Add</button>
                 </form>
             </div>
