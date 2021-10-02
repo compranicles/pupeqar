@@ -14,7 +14,7 @@
                     <form action="{{ route('submissions.select') }}" method="POST">
                         @csrf
                         <div class="row mb-n1">
-                            <div class="col-lg-9">
+                            <div class="col-lg-10">
                                 <div class="d-flex flex-column mt-1 mb-1">
                                     <div class="form-group">
                                         <select name="form" class="form-control-lg custom-select" id="form" required>
@@ -26,9 +26,9 @@
                                     </div>  
                                 </div>
                             </div>
-                            <div class="col-lg-3">
+                            <div class="col-lg-2">
                                 <div class="d-flex flex-column">
-                                    <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-plus mr-2"></i>Create Submission</button>
+                                    <button class="btn btn-lg btn-success" type="submit"><i class="fas fa-plus mr-2"></i>Create</button>
                                 </div>   
                             </div>
                         </div>
