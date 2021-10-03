@@ -220,13 +220,18 @@ $(document).on('click', '#field_save_arrange', function (){
     
  });
 
+
+$(document).on('click', '#previewButton', function(){
+    var iframe = document.getElementById("previewFrame"); 
+    iframe.src = iframe.src;
+});
+
+
 $(document).ready(function (){
     //  hide dropdown field
     $("#dropdown_field").hide();
     $("#dropdown_field_edit").hide();
-
     
-
     // show dropdown field on select
     $("#field_type").on('change', function(){
         $(this).find("option:selected").each(function(){

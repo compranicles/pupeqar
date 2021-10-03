@@ -23,15 +23,13 @@
                         </div>
                     </div>
                     <form action="{{ route('submissions.update', $submission->id) }}" method="post">
-                        <div class="row">
-                            @csrf
-                            {{-- including form --}}
-                            @include('submissions.form', ['formFields' => $formFields, 'value' => $values])
-                            <div class="col-md-12">
-                                <div class="mb-0">
-                                    <div class="d-flex justify-content-end align-items-baseline">
-                                        <button type="submit" id="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                        @csrf
+                        {{-- including form --}}
+                        @include('submissions.form', ['formFields' => $formFields, 'value' => $values])
+                        <div class="col-md-12">
+                            <div class="mb-0">
+                                <div class="d-flex justify-content-end align-items-baseline">
+                                    <button type="submit" id="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>
                         </div>

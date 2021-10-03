@@ -159,6 +159,8 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('dist/selectize.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('dist/selectize.bootstrap4.css') }}" />
+    <script type="text/javascript" src="{{ asset('dist/selectize-plugin-clear.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset("dist/selectize-plugin-clear.css") }}" />
     <script>
         jQuery(document).ready(function($){
             let dateDropdown = document.getElementById('yearFilter'); 
@@ -174,8 +176,13 @@
             }
             dateDropdown.value = "{{ $filter['year'] }}";
 
+            $("#formFilter").selectize({
+                sortField: "text",
+                plugins: ["clear_button"]
+            });
             $("#facultyFilter").selectize({
                 sortField: "text",
+                plugins: ["clear_button"]
             });
         });
     </script>

@@ -85,6 +85,7 @@ Route::group(['middleware' => 'auth'], function() {
         // form's fields
         Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
         Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
+        Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
         Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
 
         //users

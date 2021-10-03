@@ -26,19 +26,17 @@
                         @csrf
                         <input type="hidden" name="quarter" value="{{ $quarter }}">
                         <input type="hidden" name="year" value="{{ $year }}">
-                        <div class="row">
-                            {{-- including form --}}
-                            @include('submissions.form', ['formFields' => $formFields])
-                            @if(count($formFields) != 0)
-                            <div class="col-md-12">
-                                <div class="mb-0">
-                                    <div class="d-flex justify-content-end align-items-baseline">
-                                        <button type="submit" id="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                        {{-- including form --}}
+                        @include('submissions.form', ['formFields' => $formFields])
+                        @if(count($formFields) != 0)
+                        <div class="col-md-12">
+                            <div class="mb-0">
+                                <div class="d-flex justify-content-end align-items-baseline">
+                                    <button type="submit" id="submit" class="btn btn-success">Submit</button>
                                 </div>
                             </div>
-                            @endif
                         </div>
+                        @endif
                     </form>
                 </div>
             </div>

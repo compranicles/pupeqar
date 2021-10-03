@@ -97,6 +97,18 @@
                                                 </div>
                                             </div>
 
+                                            {{-- Save button --}}
+                                            <div class="col-md-12">
+                                                <div class="mx-3 mb-3">
+                                                    <div class="mb-0">
+                                                        <div class="d-flex justify-content-end align-items-baseline">
+                                                            <x-jet-button id="save_arrange" data-save="{{ route('admin.forms.arrange') }}" >
+                                                                {{ __('Save') }}
+                                                            </x-jet-button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                            
 
                                             {{-- Divide the row to 3 parts for 3 tables --}}
@@ -160,18 +172,7 @@
                                                 </div>
                                             </div>
 
-                                             {{-- Save button --}}
-                                            <div class="col-md-12">
-                                                <div class="mx-3 mb-3">
-                                                    <div class="mb-0">
-                                                        <div class="d-flex justify-content-end align-items-baseline">
-                                                            <x-jet-button id="save_arrange" data-save="{{ route('admin.forms.arrange') }}" >
-                                                                {{ __('Save Arrangement') }}
-                                                            </x-jet-button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                             
                                         </div>
                                     </div>
                                 </div>
