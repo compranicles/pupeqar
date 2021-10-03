@@ -18,6 +18,8 @@ class CreateSubmissionsTable extends Migration
             $table->foreignId('user_id');
             $table->foreignId('form_id');
             $table->text('data');
+            $table->string('quarter');
+            $table->string('year');
             $table->timestamps();
             $table->softDeletes();
         });
