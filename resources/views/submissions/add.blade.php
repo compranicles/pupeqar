@@ -24,6 +24,8 @@
                     </div>
                     <form action="{{ route('submissions.store', $formDetails->id) }}" method="post">
                         @csrf
+                        <input type="hidden" name="quarter" value="{{ $quarter }}">
+                        <input type="hidden" name="year" value="{{ $year }}">
                         <div class="row">
                             {{-- including form --}}
                             @include('submissions.form', ['formFields' => $formFields])

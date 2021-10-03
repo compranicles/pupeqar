@@ -15,6 +15,8 @@ class Submission extends Model
     protected $fillable = [
         'user_id',
         'form_id',
-        'data'  
+        'data',
+        'quarter',
+        'year'
     ];
 }
