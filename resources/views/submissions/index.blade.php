@@ -148,20 +148,21 @@
                                                 <tr>
                                                     <td><input type="checkbox" name="" id=""></td>
                                                     @php
-                                                        $data = json_decode($submission['data']);
+                                                        $data = json_decode($submission['data'], true);
                                                     @endphp
-                                                    @foreach ($data as $line)
+                                                    @foreach ($fieldsPerForm[$count][$form->id] as $field)
                                                     <td>
-                                                        @php
-                                                            if(is_array($line)){
-                                                                foreach ($line as $item) {
-                                                                    echo '<div>'.date('m/d/Y',strtotime($item)).'</div>';
-                                                                }
-                                                            }else{
-                                                                echo $line;
-                                                            }
-                                                        @endphp   
-                                                    </td> 
+
+                                                            @if(!array_key_exists($field['name'], $data) || $data[$field['name']] == '')
+                                                                {{ '-' }}
+                                                            @elseif(is_array($data[$field['name']]))
+                                                                @foreach ($data[$field['name']] as $item)
+                                                                    {{ date('m/d/Y',strtotime($item)) }}
+                                                                @endforeach
+                                                            @else
+                                                                {{ $data[$field['name']] }}
+                                                            @endif 
+                                                        </td>
                                                     @endforeach
                                                     <td class="text-nowrap"> 
                                                         <a href="{{ route('submissions.edit', $submission['id']) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>

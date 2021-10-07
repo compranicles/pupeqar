@@ -7,6 +7,9 @@
             @case("number")
                 @include('formbuilder.fieldtemplates.number', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("date")
+                @include('formbuilder.fieldtemplates.date', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
             @case("date-range")
                 @include('formbuilder.fieldtemplates.daterange', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break

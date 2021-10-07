@@ -16,7 +16,7 @@
     <div class="col-md-12">
         <div class="mx-3 mb-3">
             <button class="btn btn-success" data-toggle="modal" data-target="#addFieldModal">
-                Add Field
+                Add
             </button>
         </div>
     </div>
