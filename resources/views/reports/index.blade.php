@@ -121,21 +121,21 @@
                                                     <td><input type="checkbox" name="" id=""></td>
                                                     <td class="text-nowrap">{{ $submission['last_name'].", ".$submission['first_name']." ".$submission['middle_name'].' ' }} {{ ($submission['suffix'] == '') ? '' : $submission['suffix'] }}</td>
                                                     @php
-                                                        $data = json_decode($submission['data']);
+                                                        $data = json_decode($submission['data'], true);
                                                     @endphp
-                                                    @foreach ($data as $line)
-                                                    <td>
-                                                        @php
-                                                            if(is_array($line)){
-                                                                foreach ($line as $item) {
-                                                                    echo '<div>'.date('m/d/Y',strtotime($item)).'</div>';
-                                                                }
-                                                            }else{
-                                                                echo $line;
-                                                            }
-                                                        @endphp   
-                                                    </td> 
-                                                    @endforeach
+                                                     @foreach ($fieldsPerForm[$count][$form->id] as $field)
+                                                     <td>
+                                                        @if(!array_key_exists($field['name'], $data) || $data[$field['name']] == '')
+                                                            {{ '-' }}   
+                                                        @elseif(is_array($data[$field['name']]))
+                                                            @foreach ($data[$field['name']] as $item) {
+                                                                {{ date('m/d/Y',strtotime($item)) }}
+                                                            @endforeach
+                                                        @else
+                                                            {{ $data[$field['name']] }}
+                                                        @endif 
+                                                     </td>
+                                                     @endforeach
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -159,6 +159,8 @@
 @push('scripts')
     <script type="text/javascript" src="{{ asset('dist/selectize.min.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('dist/selectize.bootstrap4.css') }}" />
+    <script type="text/javascript" src="{{ asset('dist/selectize-plugin-clear.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset("dist/selectize-plugin-clear.css") }}" />
     <script>
         jQuery(document).ready(function($){
             let dateDropdown = document.getElementById('yearFilter'); 
@@ -174,8 +176,13 @@
             }
             dateDropdown.value = "{{ $filter['year'] }}";
 
+            $("#formFilter").selectize({
+                sortField: "text",
+                plugins: ["clear_button"]
+            });
             $("#facultyFilter").selectize({
                 sortField: "text",
+                plugins: ["clear_button"]
             });
         });
     </script>

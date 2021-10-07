@@ -6,7 +6,7 @@
             <div class="row mt-5 mb-3">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center">
-                        <img src="{{ asset('img/logo.png') }}" alt="PUPTLogo" width="100">
+                        <img src="{{ asset('img/logo.png') }}" alt="PUPLogo" width="100">
                     </div>
                 </div>
             </div>
@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <div class="d-flex justify-content-center">
                         <h1 class="text-center" id="textHome">
-                            <span id="pupTaguig">PUP-Taguig</span><br><span class="h2">Quarterly Accomplishment Report System</span>
+                            <span id="e-QAR">PUP</span><br><span class="h2">E-Quarterly Accomplishment Report</span>
                         </h1>
                     </div>
                 </div>

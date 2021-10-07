@@ -46,12 +46,14 @@ class SubmissionController extends Controller
         
         if($formFilter == 'All'){
             $submissionExisting = Submission::where('quarter', $quarterFilter)
+            ->where('user_id', auth()->id())
             ->where('year', $yearFilter)->groupBy('form_id')->pluck('form_id')->all();
         }
         else{
             $submissionExisting = Submission::where('form_id', $formFilter)
                         ->where('quarter', $quarterFilter)
                         ->where('year', $yearFilter)
+                        ->where('user_id', auth()->id())
                         ->groupBy('form_id')->pluck('form_id')->all();
         }
 

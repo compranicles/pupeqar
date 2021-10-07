@@ -135,4 +135,15 @@ class FieldController extends Controller
         }
         return true;
     }
+
+    public function preview($id){
+
+        $formDetails = Form::where('id', $id)->first();
+        $formFields = Field::where('fields.form_id', $formDetails->id)->where('status', 'shown')
+                        ->join('field_types', 'field_types.id', 'fields.field_type_id')
+                        ->select('fields.*', 'field_types.name as field_type_name')
+                        ->orderBy('order')->get();
+
+        return view('formbuilder.fields.fieldsview', compact('formFields'));
+    }
 }
