@@ -92,5 +92,13 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
         Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
+
+        //maintenances
+        Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
+        //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
+
+        Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
+        //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
+    
     });
 });
