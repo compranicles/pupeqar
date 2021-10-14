@@ -41,13 +41,13 @@ $( "#form_form" ).on( "submit", function(e) {
         url: routeUrl,
         data: dataString,
         success: function () {
-        $("#form_message").html('<div id="message" class="alert alert-success alert-show"></div>');
-        $("#message").html("Updated successfully.")
-            setTimeout(function() {
-                $('.alert-show').fadeTo(500, 0).slideUp(500, function(){
-                    $('.alert-show').remove(); 
-                });
-            }, 4000);
+            $("#form_message").html('<div id="message" class="alert alert-success alert-show"></div>');
+            $("#message").html("Updated successfully.")
+                setTimeout(function() {
+                    $('.alert-show').fadeTo(500, 0).slideUp(500, function(){
+                        $('.alert-show').remove(); 
+                    });
+                }, 4000);
         }
     });
 
