@@ -67,7 +67,7 @@
         $(document).ready( function() {
             $(".announce").click(function (e){
                 let currID = $(this).data("id");
-                $.get("announcement/"+ currID, function(data){
+                $.get("announcements/view/"+ currID, function(data){
                     const date = new Date(data.created_at);
                     document.getElementById('viewMessageLabel').innerHTML = data.title;
                     document.getElementById('viewSubject').innerHTML = "<b>Subject: </b>"+data.subject;

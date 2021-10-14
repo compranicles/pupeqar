@@ -17,9 +17,16 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            FormTypeSeeder::class,
-            CollegeSeeder::class,
-            DepartmentSeeder::class,
+            FieldTypeSeeder::class,
+            ResearchDropdownSeeder::class,
+            ResearchFormSeeder::class,
+            ResearchRegistrationFormSeeder::class,
+            ResearchCompletedFormSeeder::class,
+            ResearchPublicationFormSeeder::class,
+            ResearchPresentationFormSeeder::class,
+            ResearchCitationFormSeeder::class,
+            ResearchUtilizationFormSeeder::class,
+            ResearchCopyrightedFormSeeder::class,
         ]);
     }
 }
