@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Maintenances;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Maintenance\Department;
+use App\Models\Maintenance\College;
 
 class DepartmentController extends Controller
 {
@@ -26,7 +27,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('maintenances.departments.create');
+        $colleges = College::get();
+        return view('maintenances.departments.create', compact('colleges'));
     }
 
     /**
@@ -39,10 +41,12 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name' => 'required|max:300',
+            'college' => 'required'
         ]);
 
         $department = Department::create([
-            'name' => $request->input('name')
+            'name' => $request->input('name'),
+            'college_id' => $request->input('college')
         ]);
 
         return redirect()->route('admin.departments.create')->with('add_department_success', 'Added department has been saved successfully.');
@@ -67,7 +71,9 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        return view('maintenances.departments.edit', compact('department'));
+        $collegeOfDept = $department->college->id;
+        $colleges = College::get();
+        return view('maintenances.departments.edit', compact('department', 'colleges', 'collegeOfDept'));
     }
 
     /**
@@ -82,7 +88,15 @@ class DepartmentController extends Controller
         //
         $request->validate([
             'name' => 'required|max:300',
+            'college' => 'required',
         ]);
+
+        $department->update([
+            'name' => $request->input('name'),
+            'college_id' => $request->input('college')
+        ]);
+
+        return redirect()->route('admin.departments.index')->with('edit_department_success', 'Edit in department has been saved.');
     }
 
     /**

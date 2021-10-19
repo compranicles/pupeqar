@@ -13,4 +13,8 @@ class College extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function department() {
+        return $this->hasOne(\App\Models\Maintenance\Department::class);
+    }
 }

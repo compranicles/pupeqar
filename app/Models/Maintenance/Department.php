@@ -12,5 +12,10 @@ class Department extends Model
 
     protected $fillable = [
         'name',
+        'college_id'
     ];
+
+    public function college() {
+        return $this->belongsTo(\App\Models\Maintenance\College::class);
+    }
 }

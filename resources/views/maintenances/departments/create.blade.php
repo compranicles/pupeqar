@@ -37,11 +37,21 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                          <x-jet-label value="{{ __('Name') }}" />
-                          <x-jet-input class="{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
-                                      :value="old('name')" required autofocus autocomplete="name" />
-                          <x-jet-input-error for="name"></x-jet-input-error>
-                      </div>     
+                        <x-jet-label value="{{ __('Name') }}" />
+                        <x-jet-input class="{{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
+                                    :value="old('name')" required autofocus autocomplete="name" />
+                        <x-jet-input-error for="name"></x-jet-input-error>
+                      </div>  
+                      <div class="form-group">
+                        <x-jet-label value="{{ __('College') }}" />
+                        <select class="{{ $errors->has('college') ? 'is-invalid': '' }} form-control custom-select" name="college" required>
+                          <option value="" selected disabled>Select college...</option>
+                          @foreach ($colleges as $college)
+                            <option value="{{ $college->id }}">{{ $college->name }}</option>
+                          @endforeach
+                        </select>
+                        <x-jet-input-error for="college"></x-jet-input-error>
+                      </div>
                     </div>
                   </div>
               </div>

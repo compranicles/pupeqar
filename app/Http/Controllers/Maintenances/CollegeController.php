@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Maintenances;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Department;
 
 class CollegeController extends Controller
 {
@@ -69,7 +70,10 @@ class CollegeController extends Controller
     public function edit(College $college)
     {
         //
-        return view('maintenances.colleges.edit', compact('college'));
+        $departments = Department::select('name')->where('college_id', $college->id)->get();
+        // dd($departments);
+
+        return view('maintenances.colleges.edit', compact('college', 'departments'));
         
     }
 

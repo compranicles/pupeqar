@@ -31,6 +31,21 @@
                                     :value="old('name', $college->name)" required autocomplete="name" />
                         <x-jet-input-error for="name"></x-jet-input-error>
                       </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <label>Departments</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                      @foreach ($departments as $department)
+                        <div class="col-md-4 ml-3">
+                        <label for="{{ $department->id }}">
+                          <input type="checkbox" checked disabled>
+                          {{ $department->name }}
+                        </label>
+                        </div>
+                      @endforeach
+                      </div>
                     </div>
                   </div>  
               </div>
