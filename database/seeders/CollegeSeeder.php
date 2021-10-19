@@ -14,20 +14,20 @@ class CollegeSeeder extends Seeder
      */
     public function run()
     {
-        //
-        College::create(['name' => 'Accountancy and Finance (CAF)']);
-        College::create(['name' => 'Architecture, Design and the Built Environment (CADBE)']);
-        College::create(['name' => 'Arts and Letters (CAL)']);
-        College::create(['name' => 'Business Administration (CBA)']);
-        College::create(['name' => 'Communication (COC)']);
-        College::create(['name' => 'Computer and Information Sciences (CCIS)']);
-        College::create(['name' => 'Education (COED)']);
-        College::create(['name' => 'Engineering (CE)']);
-        College::create(['name' => 'Human Kinetics (CHK)']);
-        College::create(['name' => 'Law (CL)']);
-        College::create(['name' => 'Political Science and Public Administration (CPSPA)']);
-        College::create(['name' => 'Social Sciences and Development (CSSD)']);
-        College::create(['name' => 'Science (CS)']);
-        College::create(['name' => 'Tourism, Hospitality and Transportation Management (CTHTM)']);
+        College::truncate();
+        College::create(['name' => 'College of Accountancy and Finance']);
+        College::create(['name' => 'College of Architecture, Design and the Built Environment']);
+        College::create(['name' => 'College of Arts and Letters']);
+        College::create(['name' => 'College of Business Administration']);
+        College::create(['name' => 'College of Communication']);
+        College::create(['name' => 'College of Computer and Information Sciences']);
+        College::create(['name' => 'College of Education']);
+        College::create(['name' => 'College of Engineering']);
+        College::create(['name' => 'College of Human Kinetics']);
+        College::create(['name' => 'College of Law']);
+        College::create(['name' => 'College of Political Science and Public Administration']);
+        College::create(['name' => 'College of Social Sciences and Development']);
+        College::create(['name' => 'College of Science']);
+        College::create(['name' => 'College of Tourism, Hospitality and Transportation Management']);
     }
 }

@@ -8,9 +8,11 @@ use App\Models\TemporaryFile;
 use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
+use App\Models\Maintenance\College;
 use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
 use App\Models\ResearchPresentation;
+use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
@@ -41,7 +43,9 @@ class ResearchController extends Controller
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
         // dd($researchfields);
-        return view('research.create', compact('researchFields'));
+        $departments = Department::all();
+        $colleges = College::all();
+        return view('research.create', compact('researchFields', 'departments', 'colleges'));
     }
 
     /**
@@ -52,9 +56,11 @@ class ResearchController extends Controller
      */
     public function store(Request $request)
     {
+        $departmentIni = '';
         $classIni = '';
         $catIni = '';
         $resIni = '';
+        
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
         $input = $request->except(['_token', 'document']);

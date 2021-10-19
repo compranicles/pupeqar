@@ -8,6 +8,17 @@
                             {{ __('Announcements') }}
                         </x-jet-nav-link>
                     </li>
+
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('admin.colleges.index') }}" :active="request()->routeIs('admin.colleges.*')">
+                            {{ __('Colleges') }}
+                        </x-jet-nav-link>
+                    </li>
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('admin.departments.index') }}" :active="request()->routeIs('admin.forms.*')">
+                            {{ __('Departments') }}
+                        </x-jet-nav-link>
+                    </li>
                     
                     <li class="nav-item">
                         <x-jet-nav-link href="{{ route('dropdowns.index') }}" class="text-dark" :active="request()->routeIs('dropdowns.*')">

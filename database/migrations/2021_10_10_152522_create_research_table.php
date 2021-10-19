@@ -15,6 +15,8 @@ class CreateResearchTable extends Migration
     {
         Schema::create('research', function (Blueprint $table) {
             $table->string('research_code')->unique();
+            $table->foreignId('college_id');
+            $table->foreignId('department_id');
             $table->foreignId('classification');
             $table->foreignId('category');
             $table->foreignId('agenda');
