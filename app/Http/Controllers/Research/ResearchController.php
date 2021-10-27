@@ -224,9 +224,11 @@ class ResearchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Research $research)
     {
-        //
+        $research->delete();
+
+        return redirect()->route('research.index')->with('success', 'Research Deleted Successfully');
     }
 
     public function complete($complete){
@@ -257,5 +259,10 @@ class ResearchController extends Controller
             return redirect()->route('research.copyrighted.edit', ['research' => $copyright, 'copyrighted' =>  $researchCopyrightId]);
         else
             return redirect()->route('research.copyrighted.create', $copyright);
+    }
+    public function removeDoc($filename){
+        ResearchDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
     }
 }

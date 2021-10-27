@@ -15,6 +15,7 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         //
+        Department::truncate();
         Department::create(['name' => 'Accountancy', 'college_id' => 1]);
         Department::create(['name' => 'Architecture', 'college_id' => 2]);
         Department::create(['name' => 'Philosophy', 'college_id' => 3]);

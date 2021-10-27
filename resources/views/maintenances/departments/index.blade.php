@@ -7,6 +7,10 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
+          @include('maintenances.navigation-bar')
+        </div>
+
+        <div class="col-md-12">
         <!--<div class="col-md-10 float-none m-0 m-auto"> -->
           <h2 class="mb-2">Departments</h2>
 

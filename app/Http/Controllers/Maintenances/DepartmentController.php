@@ -111,4 +111,8 @@ class DepartmentController extends Controller
         $department->delete();
         return redirect()->route('admin.departments.index')->with('edit_department_success', 'Department has been deleted.');
     }
+
+    public function options($id){
+        return Department::where('college_id', $id)->get();  
+    }
 }

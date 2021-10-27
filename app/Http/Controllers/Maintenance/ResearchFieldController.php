@@ -37,9 +37,9 @@ class ResearchFieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ResearchForm $research_form, Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

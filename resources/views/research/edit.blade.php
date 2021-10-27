@@ -47,7 +47,7 @@
                                     @if (count($researchDocuments) > 0)
                                         @foreach ($researchDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-12 mb-3">
+                                                <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
@@ -59,7 +59,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                     <button class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i> Delete</button>
+                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -80,7 +80,7 @@
                                     @if(count($researchDocuments) > 0)
                                         @foreach ($researchDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3">
+                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
@@ -89,7 +89,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt mr-2"></i> Remove</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -111,7 +111,43 @@
             </div>
         </div>
     </div>
-
+    {{-- Delete doc Modal --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this document?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger mb-2 mr-2" id="deletedoc">Delete</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @push('scripts')
+        <script>
+            var url = '';
+            var docId = '';
+            $('.remove-doc').on('click', function(){
+                url = $(this).data('link');   
+                docId = $(this).data('id');
+                console.log(docId);
+            });
+            $('#deletedoc').on('click', function(){
+                $.get(url, function (data){
+                    console.log(data);
+                    $('#deleteModal .close').click();
+                    $('#'+docId).remove();
+                });
+            });
+        </script>
     @endpush
 </x-app-layout>

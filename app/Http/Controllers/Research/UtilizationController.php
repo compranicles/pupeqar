@@ -180,8 +180,9 @@ class UtilizationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Research $research, ResearchUtilization $utilization)
     {
-        //
+        $utilization->delete();
+        return redirect()->route('research.utilization.index', $research->research_code)->with('success', 'Research Utilization Deleted Successfully');
     }
 }

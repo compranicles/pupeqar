@@ -33,9 +33,6 @@
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
-                                        @foreach ($departments as $department)
-                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -56,5 +53,17 @@
     </div>
 
     @push('scripts')
+        <script>
+            $('#college').on('change', function(){
+                var collegeId = $('#college').val();
+                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+                $.get('/departments/options/'+collegeId, function (data){
+
+                    data.forEach(function (item){
+                        $("#department").append(new Option(item.name, item.id));
+                    });
+                });
+            });
+        </script>
     @endpush
 </x-app-layout>

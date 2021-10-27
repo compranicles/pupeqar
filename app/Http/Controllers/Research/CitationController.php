@@ -181,8 +181,10 @@ class CitationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Research $research, ResearchCitation $citation)
     {
-        //
+        $citation->delete();
+
+        return redirect()->route('research.citation.index', $research->research_code)->with('success', 'Research Citation Deleted Successfully');
     }
 }

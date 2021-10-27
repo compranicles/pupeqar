@@ -88,6 +88,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/research/publication/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');
     Route::get('/research/presentation/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'presentation'])->name('research.presentation');
     Route::get('/research/copyright/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'copyright'])->name('research.copyright');
+    Route::get('/research/remove-document/{filename}', [\App\Http\Controllers\Research\ResearchController::class, 'removeDoc'])->name('research.removedoc');
+    
 
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
@@ -102,7 +104,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
     Route::resource('users', \App\Http\Controllers\UserController::class);
 
+    Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);
      
+
     // HAP routes
     Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
     });
@@ -132,7 +136,7 @@ Route::group(['middleware' => 'auth'], function() {
         //maintenances
         Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
         //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
-
+        
         Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
         //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
     

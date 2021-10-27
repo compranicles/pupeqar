@@ -4,18 +4,18 @@
             <div class="col-md-12">
                 <ul class="nav justify-content-center m-n3">
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('announcements.index') }}" class="text-dark" :active="request()->routeIs('announcements.*')">
+                        <x-jet-nav-link href="{{ route('announcements.index') }}" class="text-dark"  class="text-dark" :active="request()->routeIs('announcements.*')">
                             {{ __('Announcements') }}
                         </x-jet-nav-link>
                     </li>
 
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('admin.colleges.index') }}" :active="request()->routeIs('admin.colleges.*')">
+                        <x-jet-nav-link href="{{ route('admin.colleges.index') }}" class="text-dark"  :active="request()->routeIs('admin.colleges.*')">
                             {{ __('Colleges') }}
                         </x-jet-nav-link>
                     </li>
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('admin.departments.index') }}" :active="request()->routeIs('admin.forms.*')">
+                        <x-jet-nav-link href="{{ route('admin.departments.index') }}" class="text-dark"  :active="request()->routeIs('admin.departments.*')">
                             {{ __('Departments') }}
                         </x-jet-nav-link>
                     </li>

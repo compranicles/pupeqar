@@ -19,6 +19,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <a href="{{ route('research.utilization.edit', [$research->research_code, $values['id']]) }}" class="btn btn-warning">Update</a>
+                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
                             </div>
                         </div>
                         <hr>
@@ -93,6 +94,31 @@
                                 </div>
                             </div>
                         </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     {{-- Delete Form Modal --}}
+     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this utilization?</h5>
+                    <form action="{{ route('research.utilization.destroy', [$research->research_code, $values['id']]) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
+                </form>
                 </div>
             </div>
         </div>
