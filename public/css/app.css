@@ -12768,3 +12768,46 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
       overflow: visible;
   }
 }
+
+/* ------Mega Menu-------- */
+.mega-box {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  visibility: hidden;
+  display: block;
+}
+
+.navbar-nav ~ li:hover + .mega-box{
+  top: 65px;
+  visibility: visible;
+  opacity: 1;
+  /* background-color: red; */
+}
+
+.mega-menu-col {
+  padding: 25px 50px 20px 25px;
+}
+.mega-menu-header {
+  padding-top: 20px;
+}
+
+.mega-menu-col li a {
+  color: var(--gray-dark);
+  text-decoration: none;
+  padding-bottom: 8px;
+  display: inline-block;
+}
+
+.mega-menu-col h6 {
+  font-weight: bold;
+  color: #800000;
+}
+
+.mega-box li a:hover {
+  transition-timing-function: linear;
+  transition-duration: 0.25s;
+  padding-left: 3px;
+}

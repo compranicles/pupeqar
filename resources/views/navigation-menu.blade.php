@@ -36,6 +36,12 @@
                         {{ __('Research') }}
                     </x-jet-nav-link>
                 </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="">
+                        {{ __('Accomplishments') }}
+                    </x-jet-nav-link>
+                    @include('mega-menu')
+                </li>
                 @endif
 
             </ul>

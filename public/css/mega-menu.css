@@ -1,0 +1,14 @@
+.mega-box {
+    position: absolute;
+    top: 65px;
+    left: 0;
+    width: 100%;
+    background-color: white;
+}
+
+.mega-box .content {
+    /* padding: 25px 20px; */
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+}
