@@ -14,7 +14,8 @@ class DropdownOption extends Model
 
     protected $fillable = [
         'dropdown_id',
-        'label',
-        'value',
+        'name',
+        'order',
+        'is_active',
     ];
 }
