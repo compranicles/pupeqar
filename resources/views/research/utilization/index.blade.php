@@ -31,7 +31,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
                                     @switch($research->status_name)
-                                            @case('New Commitment') @case('Ongoing')
+                                            @case('Ongoing')
                                                 <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
@@ -153,12 +153,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
-            $('#status').attr('disabled', true);
-        });
     </script>
 @endpush
 </x-app-layout>

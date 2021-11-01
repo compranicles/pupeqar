@@ -167,5 +167,50 @@
             $('#completion_date').prop("min", "{{ $research['start_date'] }}");
         });
     </script>
+
+    <script>
+        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
+            $(".research-tabs").remove();
+        }
+        else if ({{ $research->status }} == 28) {
+
+            $("#link-to-publish").remove();
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+            $("#link-to-cite").remove();
+        }
+        else if ({{ $research->status }} == 29) {
+            $("#link-to-publish").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 30) {
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 31) {
+            $("#link-to-copyright").remove();
+        } 
+    </script>
+    <script>
+        function hide_dates() {
+            $('.start_date').hide();
+            $('.target_date').hide();
+        }
+
+        $(function() {
+            hide_dates();
+        });
+
+    </script>
+    <script>
+        
+        var statusId = $('#status').val();
+        if (statusId == 26) {
+            hide_dates();
+
+            $('#start_date').prop("required", false);
+            $('#target_date').prop("required", false);
+        }
+    </script>
 @endpush
 </x-app-layout>

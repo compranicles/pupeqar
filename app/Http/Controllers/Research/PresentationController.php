@@ -42,8 +42,8 @@ class PresentationController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.presentation.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
+        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.presentation.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
     /**
