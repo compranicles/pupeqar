@@ -77,5 +77,8 @@
             });
         }, 4000);
     </script>
+    <script>
+
+    </script>
 @endpush
 </x-app-layout>

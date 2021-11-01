@@ -17,4 +17,8 @@ class Research extends Model
     protected $keyType = 'string';
 
     protected $guarded = [];
+
+    public function department() {
+        return $this->belongsTo(\App\Models\Maintenance\Department::class);
+    }
 }

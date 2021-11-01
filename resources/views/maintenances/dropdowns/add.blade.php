@@ -31,7 +31,7 @@
                                 <td>
                                     <input class="form-control" type="text" id="addlabel" value="" name="label[]" required>
                                     <div class="invalid-feedback">
-                                        This is  required. 
+                                        This is required. 
                                     </div>
                                 </td>
                                 <td>

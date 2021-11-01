@@ -18,7 +18,7 @@
                         <form action="{{ route('research.publication.update', [$research['research_code'], $research['id']]) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('research.form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -154,6 +154,17 @@
                 $(this).remove(); 
             });
         }, 4000);
+    </script>
+    <script>
+        $(function() {
+            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').attr('disabled', true);
+        });
+    </script>
+    <script>
+        $('#publish_date').on('click', function(){
+            $('#publish_date').prop("min", "{{ $research->completion_date }}");
+        });
     </script>
 @endpush
 </x-app-layout>

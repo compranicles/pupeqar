@@ -26,39 +26,39 @@
                                         Options
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
-                                        @switch($research->status_name)
+                                    @switch($research->status_name)
                                             @case('New Commitment') @case('Ongoing')
-                                                <a class="dropdown-item" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
+                                                <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 @break
                                             @case('Completed')
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                <a class="dropdown-item" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
+                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
+                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Complete Research</a>
+                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 @break
-                                            @case('Completed & Published')
-                                                <a class="dropdown-item" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                            @case('Published')
+                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
+                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
                                                 <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
                                                 @break
-                                            @case('Completed & Presented')
+                                            @case('Presented')
                                                 
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
+                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
                                                 <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Presentation</a>
                                                 @break
-                                            @case('Completed, Presented, Published')
+                                            @case('Presented & Published')
                                                 <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
                                                 <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
@@ -72,15 +72,15 @@
                                             @default
                                                 
                                         @endswitch
-                                        <a class="dropdown-item" href="{{ route('research.edit', $research->research_code) }}">Update Research Info</a>
-                                        <a class="dropdown-item text-danger " href="#">Delete</a>
+                                        <a class="dropdown-item" href="{{ route('research.edit', $research->research_code) }}">Edit Research Info</a>
+                                        <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr>
                         <fieldset id="research">
-                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $values,])
+                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $value,])
                         </fieldset>
                     </div>
                 </div>
@@ -169,6 +169,12 @@
                 $(this).remove(); 
             });
         }, 4000);
+    </script>
+    <script>
+        $(function() {
+            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').attr('disabled', true);
+        });
     </script>
 @endpush
 

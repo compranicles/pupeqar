@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             FieldTypeSeeder::class,
             ResearchDropdownSeeder::class,
             ResearchFormSeeder::class,
+            CollegeSeeder::class,
+            DepartmentSeeder::class,
             ResearchRegistrationFormSeeder::class,
             ResearchCompletedFormSeeder::class,
             ResearchPublicationFormSeeder::class,

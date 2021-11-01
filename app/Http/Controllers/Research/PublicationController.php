@@ -10,6 +10,7 @@ use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\DropdownOption;
 
 class PublicationController extends Controller
 {
@@ -33,9 +34,17 @@ class PublicationController extends Controller
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
-        $values = array_merge($research->toArray(), $values->toArray());
+        // $values = array_merge($research->toArray(), $values->toArray());
         // dd($values);
-        return view('research.publication.index', compact('research', 'researchFields', 'values', 'researchDocuments'));
+
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.publication.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
     }
 
     /**
@@ -52,8 +61,15 @@ class PublicationController extends Controller
         // $research = $research->first()->except('description');
         // $research = except($research['description']);
             // dd($research);
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
 
-        return view('research.publication.create', compact('researchFields', 'research'));
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 30)->first();
+
+        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value'));
     }
 
     /**
@@ -127,7 +143,13 @@ class PublicationController extends Controller
         $research = array_merge($research->toArray(), $publication->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 3)->get()->toArray();
 
-        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments'));
+        $value = $research;
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
+        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
     }
 
     /**

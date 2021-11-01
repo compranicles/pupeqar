@@ -46,5 +46,11 @@
             });
         }, 4000);
     </script>
+    <script>
+        $("#link-to-publish").hide();
+        $("#link-to-present").hide();
+        $("#link-to-copyright").hide();
+        $("#link-to-cite").hide();
+    </script>
 @endpush
 </x-app-layout>

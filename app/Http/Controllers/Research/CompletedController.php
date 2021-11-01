@@ -10,6 +10,8 @@ use App\Models\ResearchDocument;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\DropdownOption;
+use Illuminate\Support\Arr;
 
 class CompletedController extends Controller
 {
@@ -29,16 +31,27 @@ class CompletedController extends Controller
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
-        $values = ResearchComplete::where('research_code', $research->research_code)->first();
-
+        $values = ResearchComplete::where('research_code', $research->research_code)->first()->toArray();
+        // dd($values);
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
-        $values = array_merge($research->toArray(), $values->toArray());
+        // $values = array_merge($research->toArray(), $values->toArray());
+        $values = collect($values);
+        $values = $values->except(['research_code']);
+        $values = $values->toArray();
 
-
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+        
+        $value = array_merge($value, $values);
+        // dd($value);
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         // dd($values);
-        return view('research.completed.index', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
     }
 
     /**
@@ -52,8 +65,16 @@ class CompletedController extends Controller
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
         ->orderBy('order')->get();
-        $research->get()->except('description');
-        return view('research.completed.create', compact('research', 'researchFields'));
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+        // $research->get()->toArray();
+        // $research = (object) $research;
+        //  dd($research);
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 28)->first();
+        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value'));
     }
 
     /**
@@ -65,7 +86,7 @@ class CompletedController extends Controller
     public function store(Request $request, Research $research)
     {
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
-
+        $input = Arr::add($input, 'status', 28);
         $research->update($input);
 
 
@@ -127,8 +148,17 @@ class CompletedController extends Controller
         
         $research = array_merge($research->toArray(), $completed->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 2)->get()->toArray();
+        
+        $value = $research;
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+        // $research->get()->toArray();
+        // $research = (object) $research;
+        //  dd($research);
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
 
-        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments'));
+        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
     }
 
     /**

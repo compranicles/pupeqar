@@ -11,13 +11,14 @@
                 @include('research.navigation-bar', ['research_code' => $research->research_code])
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.completed.store', $research->research_code) }}" method="post">
                             @csrf
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('research.form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -45,6 +46,17 @@
                 $(this).remove(); 
             });
         }, 4000);
+    </script>
+    <script>
+        $(function() {
+            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').attr('disabled', true);
+        });
+    </script>
+    <script>
+        $('#completion_date').on('click', function(){
+            $('#completion_date').prop("min", "{{ $research->start_date }}");
+        });
     </script>
 @endpush
 </x-app-layout>

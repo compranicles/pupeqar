@@ -18,4 +18,8 @@ class Department extends Model
     public function college() {
         return $this->belongsTo(\App\Models\Maintenance\College::class);
     }
+
+    public function research() {
+        return $this->hasOne(\App\Models\Research::class);
+    }
 }

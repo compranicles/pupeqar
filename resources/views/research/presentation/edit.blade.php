@@ -156,5 +156,16 @@
             });
         }, 4000);
     </script>
+    <script>
+        $(function() {
+            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').attr('disabled', true);
+        });
+    </script>
+    <script>
+        $('#date_presented').on('click', function(){
+            $('#date_presented').prop("min", "{{ $research->completion_date }}");
+        });
+    </script>
 @endpush
 </x-app-layout>

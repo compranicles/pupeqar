@@ -43,6 +43,7 @@ class ResearchController extends Controller
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
         // dd($researchfields);
+
         $departments = Department::all();
         $colleges = College::all();
         return view('research.create', compact('researchFields', 'departments', 'colleges'));
@@ -63,7 +64,7 @@ class ResearchController extends Controller
         
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
-        $input = $request->except(['_token', 'document']);
+        $input = $request->except(['_token', 'document', 'college_id']);
 
         if($request->has('classification')){
             $classificationName = DropdownOption::where('id', $input['classification'])->pluck('name')->first();
@@ -84,10 +85,12 @@ class ResearchController extends Controller
             $result = implode('', $matches[0]);
             $resIni = strtoupper($result).'-';
         }
-        $lastID = Research::where('classification', $input['classification'] ?? null)->where('category', $input['category'] ?? null)
-            ->whereYear('created_at', '=', date("Y"))
-            ->pluck('research_code')->last();
-
+        // $lastID = Research::where('classification', $input['classification'] ?? null)->where('category', $input['category'] ?? null)
+        //     ->whereYear('created_at', '=', date("Y"))
+        //     ->pluck('research_code')->last();
+        $researchCodeIni = $classIni.$catIni.$resIni.$year;
+        $lastID = Research::where('research_code', 'like', '%'.$researchCodeIni.'%')
+                            ->pluck('research_code')->last();
         if($lastID == null){
             $researchCode = $classIni.$catIni.$resIni.$year.'01';
         }
@@ -155,8 +158,19 @@ class ResearchController extends Controller
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
-        $values = Research::where('research_code', $research->research_code)->first()->toArray();
-        return view('research.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        //$values = Research::where('research_code', $research->research_code)->first()->toArray();
+
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['status']);
+        $value = $value->toArray();
+        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
+                                ->join('colleges', 'colleges.id', 'departments.college_id')
+                                ->select('colleges.name AS college_name', 'departments.name AS department_name')
+                                ->first();
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value', 'researchStatus'));
     }
 
     /**
@@ -173,8 +187,13 @@ class ResearchController extends Controller
                 ->orderBy('order')->get();
         $values = Research::where('research_code', $research->research_code)->first()->toArray();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
-
-        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        $colleges = College::all();
+        $departments = Department::all();
+        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
+                                ->join('colleges', 'colleges.id', 'departments.college_id')
+                                ->select('colleges.id AS college_id', 'colleges.name AS college_name', 'departments.id AS department_id', 'departments.name AS department_name')
+                                ->first();
+        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'departments', 'collegeAndDepartment'));
     }
 
     /**

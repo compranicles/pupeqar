@@ -1,6 +1,6 @@
-<div class="{{ $fieldInfo->size }}">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label>
+        <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label>
 
         <input type="date" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ $value }}" class="form-control" 
                 {{ ($fieldInfo->required == 1) ? 'required' : '' }}

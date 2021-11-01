@@ -18,6 +18,29 @@
                         <form action="{{ route('research.update', $research->research_code) }}" method="post">
                             @csrf
                             @method('put')
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Colleges/Campus/Branch</label>
+    
+                                        <select name="college_id" id="college" class="form-control custom-select"  required>
+                                            <option value="" selected disabled>Choose...</option>
+                                            @foreach ($colleges as $college)
+                                            <option value="{{ $college->id }}" {{ $collegeAndDepartment->college_id == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
+                                            @endforeach
+                                           
+                                        </select>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Department</label>
+
+                                    <select name="department_id" id="department" class="form-control custom-select" required>
+                                        <option value="" selected disabled>Choose...</option>
+                                    </select>
+                                </div>
+                            </div>
                             @include('research.form', ['formFields' => $researchFields, 'value' => $values])
                             <div class="col-md-12">
                                 <div class="mb-0">
@@ -148,6 +171,73 @@
                     $('#'+docId).remove();
                 });
             });
+
+            $('#college').on('change', function(){
+                var collegeId = $('#college').val();
+                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+                $.get('/departments/options/'+collegeId, function (data){
+
+                    data.forEach(function (item){
+                        $("#department").append(new Option(item.name, item.id));
+                        
+                    });
+
+                });
+            });
+
+            // var collegeId = $('#college').val();
+            //     $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+            //     $.get('/departments/options/'+collegeId, function (data){
+
+            //         data.forEach(function (item){
+            //             $("#department").append(new Option(item.name, item.id));
+            //             if ($('#department').val() == {!! json_encode($collegeAndDepartment->department_id) !!}) {
+            //                 $('#birth_month option[value="'+item.id+'"]').prop('selected', true);
+            // }
+            //         });
+
+        
+        </script>
+        <script>
+            function hide_dates() {
+                $('.start_date').hide();
+                $('.target_date').hide();
+            }
+
+            $(function() {
+                if ({{$research->status}} == 26) {
+                    hide_dates();
+                }
+                else if ({{$research->status}} == 27) {
+                    $('.start_date').show();
+                    $('.target_date').show();
+                }
+            });
+
+            $('#status').on('change', function(){
+                var statusId = $('#status').val();
+                if (statusId == 26) {
+                    hide_dates();
+                }
+                else if (statusId == 27) {
+                    $('.start_date').show();
+                    $('.target_date').show();
+                }
+            });
+        </script>
+        <script>
+           
+        </script>
+        <script>
+           $('#target_date').on('click', function(){
+            var date = new Date($('#start_date').val());
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            // alert([day, month, year].join('-'));
+            // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+            $('#target_date').prop("min", [year, month, day].join('-'));
+          });
         </script>
     @endpush
 </x-app-layout>

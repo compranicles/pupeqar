@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label>
+        <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label>
 
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="form-control custom-select" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             @switch($fieldInfo->visibility)
@@ -32,7 +32,11 @@
                 data.forEach(function (item){
                     $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id));
                 });
-                document.getElementById("{{ $fieldInfo->name }}").value = "{{ $value }}";
+                var value = "{{ $value }}";
+                console.log(value);
+                if (value != ''){
+                    document.getElementById("{{ $fieldInfo->name }}").value = "{{ $value }}";
+                }
             });
         });
     </script>

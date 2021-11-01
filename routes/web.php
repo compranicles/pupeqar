@@ -90,7 +90,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/research/copyright/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'copyright'])->name('research.copyright');
     Route::get('/research/remove-document/{filename}', [\App\Http\Controllers\Research\ResearchController::class, 'removeDoc'])->name('research.removedoc');
     
-
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
     Route::resource('research.publication', \App\Http\Controllers\Research\PublicationController::class);

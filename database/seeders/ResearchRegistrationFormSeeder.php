@@ -188,19 +188,19 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
-            'research_form_id' => 1,
-            'label' => 'Date Completed',
-            'name' => 'completion_date',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 4,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
+        // ResearchField::create([
+        //     'research_form_id' => 1,
+        //     'label' => 'Date Completed',
+        //     'name' => 'completion_date',
+        //     'placeholder' => null,
+        //     'size' => 'col-md-3',
+        //     'field_type_id' => 4,
+        //     'dropdown_id' => null, 
+        //     'required' => 0,
+        //     'visibility' => 1,
+        //     'order' => 1,
+        //     'is_active' => 1,
+        // ]);
         ResearchField::create([
             'research_form_id' => 1,
             'label' => 'Status',

@@ -6,7 +6,6 @@
     </x-slot>
 
     <div class="container">
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -54,7 +53,7 @@
 
     @push('scripts')
         <script>
-            $('#college').on('change', function(){
+            $('#college').on('blur', function(){
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
                 $.get('/departments/options/'+collegeId, function (data){
@@ -64,6 +63,43 @@
                     });
                 });
             });
+        </script>
+        <script>
+            function hide_dates() {
+                $('.start_date').hide();
+                $('.target_date').hide();
+            }
+
+            $(function() {
+                hide_dates();
+            });
+
+        </script>
+        <script>
+            $('#status').on('change', function(){
+                var statusId = $('#status').val();
+                if (statusId == 26) {
+                    hide_dates();
+
+                    $('#start_date').prop("required", false);
+                    $('#target_date').prop("required", false);
+                }
+                else if (statusId == 27) {
+                    $('.start_date').show();
+                    $('.target_date').show();
+                }
+            });
+        </script>
+        <script>
+           $('#target_date').on('click', function(){
+            var date = new Date($('#start_date').val());
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            // alert([day, month, year].join('-'));
+            // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+            $('#target_date').prop("min", [year, month, day].join('-'));
+          });
         </script>
     @endpush
 </x-app-layout>
