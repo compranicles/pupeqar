@@ -34,7 +34,6 @@
                             {{ __('Copyrighted') }}
                         </x-jet-nav-link>
                     </li>
-
                     <li class="nav-item">
                         <x-jet-nav-link id="link-to-cite" href="{{ route('research.citation.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.citation.*')">
                             {{ __('Citation') }}
