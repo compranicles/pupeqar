@@ -15,10 +15,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.presentation.update', [$research['research_code'], $research['id']]) }}" method="post">
+                        <form action="{{ route('research.presentation.update', [$research['research_code'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('research.form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

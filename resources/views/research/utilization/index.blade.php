@@ -141,6 +141,11 @@
     <script>
         $(function() {
             $("#researchc_table").DataTable();
+            var rowCount = $('#researchc_table tbody tr').length;
+            console.log(rowCount);
+            if(rowCount == 1){
+                
+            }
             $('#researchc_table').on('click', 'tbody td', function(){
                 window.location = $(this).closest('tr').find('td:eq(1) a').attr('href');
             });
@@ -153,12 +158,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
-            $('#status').attr('disabled', true);
-        });
     </script>
 @endpush
 </x-app-layout>

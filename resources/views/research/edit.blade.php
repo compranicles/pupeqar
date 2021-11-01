@@ -26,7 +26,7 @@
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ $collegeAndDepartment->college_id == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
+                                            <option value="{{ $college->id }}" {{ ($research->college_id == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
                                             @endforeach
                                            
                                         </select>
@@ -172,7 +172,7 @@
                 });
             });
 
-            $('#college').on('change', function(){
+            $('#college').on('input', function(){
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
                 $.get('/departments/options/'+collegeId, function (data){
@@ -184,19 +184,14 @@
 
                 });
             });
-
-            // var collegeId = $('#college').val();
-            //     $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            //     $.get('/departments/options/'+collegeId, function (data){
-
-            //         data.forEach(function (item){
-            //             $("#department").append(new Option(item.name, item.id));
-            //             if ($('#department').val() == {!! json_encode($collegeAndDepartment->department_id) !!}) {
-            //                 $('#birth_month option[value="'+item.id+'"]').prop('selected', true);
-            // }
-            //         });
-
         
+        </script>
+
+        <script>
+            $(function() {
+                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+                $('#status').attr('disabled', true);
+            });
         </script>
         <script>
             function hide_dates() {
@@ -212,6 +207,17 @@
                     $('.start_date').show();
                     $('.target_date').show();
                 }
+
+                var collegeId = $('#college').val();
+                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+                $.get('/departments/options/'+collegeId, function (data){
+
+                    data.forEach(function (item){
+                        $("#department").append(new Option(item.name, item.id));
+                        
+                    });
+                    document.getElementById("department").value = "{{ $research->department_id }}";
+                });
             });
 
             $('#status').on('change', function(){
@@ -229,15 +235,16 @@
            
         </script>
         <script>
-           $('#target_date').on('click', function(){
-            var date = new Date($('#start_date').val());
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            // alert([day, month, year].join('-'));
-            // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-            $('#target_date').prop("min", [year, month, day].join('-'));
-          });
+           $('#start_date').on('input', function(){
+                var date = new Date($('#start_date').val());
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
         </script>
     @endpush
 </x-app-layout>

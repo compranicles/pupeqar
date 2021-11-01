@@ -27,7 +27,7 @@ class ResearchController extends Controller
     public function index()
     {   $researchStatus = DropdownOption::where('dropdown_id', 7)->where('is_active', 1)->get();
         $researches = Research::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                ->select('research.*', 'dropdown_options.name as status_name')->get();
+                ->select('research.*', 'dropdown_options.name as status_name')->orderBy('research.updated_at', 'desc')->get();
         return view('research.index', compact('researches', 'researchStatus'));
     }
 
@@ -64,7 +64,7 @@ class ResearchController extends Controller
         
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
-        $input = $request->except(['_token', 'document', 'college_id']);
+        $input = $request->except(['_token', 'document',]);
 
         if($request->has('classification')){
             $classificationName = DropdownOption::where('id', $input['classification'])->pluck('name')->first();
@@ -169,7 +169,7 @@ class ResearchController extends Controller
                                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value', 'researchStatus'));
+        return view('research.show', compact('research', 'researchFields', 'researchDocuments', 'collegeAndDepartment', 'value', 'researchStatus'));
     }
 
     /**
@@ -187,12 +187,9 @@ class ResearchController extends Controller
         $values = Research::where('research_code', $research->research_code)->first()->toArray();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
-        $departments = Department::all();
-        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
-                                ->join('colleges', 'colleges.id', 'departments.college_id')
-                                ->select('colleges.id AS college_id', 'colleges.name AS college_name', 'departments.id AS department_id', 'departments.name AS department_name')
-                                ->first();
-        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'departments', 'collegeAndDepartment'));
+        // dd($research);
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus'));
     }
 
     /**

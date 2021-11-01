@@ -249,19 +249,21 @@
         }
 
         $(function() {
-            hide_dates();
+            // hide_dates();
         });
 
     </script>
     <script>
         
         var statusId = $('#status').val();
-        if (statusId == 26) {
-            hide_dates();
+        $('#status').on('change', function (){
+            if (statusId == 26) {
+                hide_dates();
 
-            $('#start_date').prop("required", false);
-            $('#target_date').prop("required", false);
-        }
+                $('#start_date').prop("required", false);
+                $('#target_date').prop("required", false);
+            }
+        });
     </script>
 
 @endpush

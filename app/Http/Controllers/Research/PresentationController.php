@@ -6,6 +6,7 @@ use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ResearchDocument;
+use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
 use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
@@ -26,7 +27,7 @@ class PresentationController extends Controller
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 4)->get()->toArray();
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research = Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 // dd($research);    
@@ -36,11 +37,18 @@ class PresentationController extends Controller
         }
         // $values = array_merge($research->toArray(), $values->toArray());
         
+        $values = collect($values);
+        $values = $values->except(['research_code']);
+        $values = $values->toArray();
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
+
+        $value = array_merge($value, $values);
+
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         return view('research.presentation.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
@@ -66,7 +74,14 @@ class PresentationController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 29)->first();
+        $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
+        
+        if($publicationChecker == null){
+            $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 29)->first();
+        }
+        else{
+            $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
+        }
 
         return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value'));
     }
@@ -81,8 +96,16 @@ class PresentationController extends Controller
     {
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
+        $presentationChecker = ResearchPresentation::where('research_code', $research->research_code)->first();
+
+        if($presentationChecker == null){
+            $researchStatus = 29;
+        }
+        else{
+            $researchStatus = 31;
+        }
         $research->update([
-            'status' => $request->input('status')
+            'status' => $researchStatus
         ]);
         // dd($input);
 
@@ -139,15 +162,25 @@ class PresentationController extends Controller
         ->select('research_fields.*', 'field_types.name as field_type_name')
         ->orderBy('order')->get();
     
-        $research = array_merge($research->toArray(), $presentation->toArray());
+        // $research = array_merge($research->toArray(), $presentation->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 4)->get()->toArray();
 
         $value = $research;
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
+        $value = array_merge($value, $presentation->toArray());
 
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
+
+        $presentationChecker = ResearchPresentation::where('research_code', $research->research_code)->first();
+
+        if($presentationChecker == null){
+            $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 29)->first();
+        }
+        else{
+            $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
+        }
+
         return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
     }
 

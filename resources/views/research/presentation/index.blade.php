@@ -80,7 +80,7 @@
                         </div>
                         <hr>
                         <fieldset id="research">
-                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $values,])
+                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $value,])
                         </fieldset>
                     </div>
                 </div>

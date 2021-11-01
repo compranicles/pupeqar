@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.completed.update', [$research['research_code'], $research['id']]) }}" method="post">
+                        <form action="{{ route('research.completed.update', [$research['research_code'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
                             @include('research.form', ['formFields' => $researchFields, 'value' => $value])
