@@ -27,6 +27,7 @@
         "tailwindcss": "^2.2.16"
     },
     "dependencies": {
+        "bootstrap-darkmode": "^0.9.1",
         "datatables.net": "^1.11.3",
         "datatables.net-bs4": "^3.2.2"
     }
