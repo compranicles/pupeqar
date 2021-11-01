@@ -9,6 +9,7 @@ use App\Models\FormBuilder\FieldType;
 use Illuminate\Support\Facades\Schema;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
+use Illuminate\Database\Schema\Blueprint;
 
 class ResearchFieldController extends Controller
 {
@@ -39,7 +40,12 @@ class ResearchFieldController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(ResearchForm $research_form, Request $request)
-    {
+    {   
+        $required = 1;
+        $field_name = $request->field_name;
+        if($request->required == null){
+            $required = 0;
+        }
         ResearchField::create([
             'research_form_id' => $research_form->id,
             'label' => $request->label,
@@ -48,7 +54,7 @@ class ResearchFieldController extends Controller
             'size' => $request->size,
             'field_type_id' => $request->field_type,
             'dropdown_id' => $request->dropdown, 
-            'required' => $request->required,
+            'required' => $required,
             'visibility' => $request->visibility,
             'order' => 99,
             'is_active' => 1,
@@ -56,33 +62,33 @@ class ResearchFieldController extends Controller
 
         switch($request->field_type){
             case 1: //text
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->string($request->field_name)->nullable();
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                    $table->string($field_name)->nullable();
                 });
             break;
             case 2: // number
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->integer($request->field_name)->nullable();
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                    $table->integer($field_name)->nullable();
                 });
             break;
             case 3: // decimal
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->decimal($request->field_name, 9, 2)->nullable();
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
+                    $table->decimal($field_name, 9, 2)->nullable();
                 });
             break; 
             case 4: // date
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->date($request->field_name)->nullable();
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                    $table->date($field_name)->nullable();
                 });
             break; 
             case 5: // dropdown
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->foreignId($request->field_name)->nullable();
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                    $table->foreignId($field_name)->nullable();
                 });
             break; 
-            case 8: // dropdown
-                Schema::table($research_form->table_name, function (Blueprint $table) {
-                    $table->foreignId($request->field_name)->nullable();
+            case 8: // textarea
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
+                    $table->foreignId($field_name)->nullable();
                 });
             break; 
             default: 

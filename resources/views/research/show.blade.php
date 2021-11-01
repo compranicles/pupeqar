@@ -82,14 +82,7 @@
                         <fieldset id="research">
                             @include('research.form-view', ['formFields' => $researchFields, 'value' => $values,])
                         </fieldset>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
+                        <hr>
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <h5 id="textHome" style="color:maroon">Supporting Documents</h5>
@@ -105,14 +98,16 @@
                                                 <div class="col-md-12 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
-                                                            <div class="row mb-3">
-                                                                <div class="col-md-12">
-                                                                    <div class="embed-responsive embed-responsive-1by1">
-                                                                        <iframe  src="{{ route('document.view', $document['filename']) }}" width="100%" height="500px"></iframe>
-                                                                    </div>
+                                                            <div class="row">
+                                                                <div class="col-md-10">
+                                                                    <h6 class="mt-2">
+                                                                        {{ $document['filename'] }}
+                                                                    </h6>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <a href="{{ route('document.download', $document['filename']) }}" class="btn btn-success"><i class="fas fa-download"></i></a>
                                                                 </div>
                                                             </div>
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -150,6 +145,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

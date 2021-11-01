@@ -25,10 +25,10 @@ class ResearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {   $researchStatus = DropdownOption::where('dropdown_id', 7)->where('is_active', 1)->get();
         $researches = Research::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->get();
-        return view('research.index', compact('researches'));
+        return view('research.index', compact('researches', 'researchStatus'));
     }
 
     /**
@@ -84,10 +84,11 @@ class ResearchController extends Controller
             $result = implode('', $matches[0]);
             $resIni = strtoupper($result).'-';
         }
-        $lastID = Research::where('classification', $input['classification'] ?? null)->where('category', $input['category'] ?? null)
-            ->whereYear('created_at', '=', date("Y"))
-            ->pluck('research_code')->last();
 
+        $researchCodeIni = $classIni.$catIni.$resIni.$year;
+        $lastID = Research::where('research_code', 'like', '%'.$researchCodeIni.'%')
+        ->pluck('research_code')->last();
+        
         if($lastID == null){
             $researchCode = $classIni.$catIni.$resIni.$year.'01';
         }
