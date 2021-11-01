@@ -47,10 +47,8 @@ class PublicationController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        $value = array_merge($value, $values);
-        
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.publication.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
+        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.publication.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
     /**

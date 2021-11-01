@@ -58,5 +58,11 @@
             $('#completion_date').prop("min", "{{ $research->start_date }}");
         });
     </script>
+
+<script>
+        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
+            $(".research-tabs").remove();
+        }
+    </script>
 @endpush
 </x-app-layout>

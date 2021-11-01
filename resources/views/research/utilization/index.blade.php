@@ -31,7 +31,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
                                     @switch($research->status_name)
-                                            @case('New Commitment') @case('Ongoing')
+                                            @case('Ongoing')
                                                 <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>

@@ -168,8 +168,8 @@ class ResearchController extends Controller
                                 ->join('colleges', 'colleges.id', 'departments.college_id')
                                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.show', compact('research', 'researchFields', 'researchDocuments', 'collegeAndDepartment', 'value', 'researchStatus'));
+        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value'));
     }
 
     /**

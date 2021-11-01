@@ -47,10 +47,45 @@
         }, 4000);
     </script>
     <script>
-        $("#link-to-publish").hide();
-        $("#link-to-present").hide();
-        $("#link-to-copyright").hide();
-        $("#link-to-cite").hide();
+        if ({{ $research->status }} == 28) {
+
+            $("#link-to-publish").remove();
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+            $("#link-to-cite").remove();
+        }
+        else if ({{ $research->status }} == 29) {
+            $("#link-to-publish").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 30) {
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 31) {
+            $("#link-to-copyright").remove();
+        } 
+    </script>
+    <script>
+        function hide_dates() {
+            $('.start_date').hide();
+            $('.target_date').hide();
+        }
+
+        $(function() {
+            hide_dates();
+        });
+
+    </script>
+    <script>
+        
+        var statusId = $('#status').val();
+        if (statusId == 26) {
+            hide_dates();
+
+            $('#start_date').prop("required", false);
+            $('#target_date').prop("required", false);
+        }
     </script>
 @endpush
 </x-app-layout>

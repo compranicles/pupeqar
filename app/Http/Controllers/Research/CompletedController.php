@@ -47,8 +47,10 @@ class CompletedController extends Controller
         $value = $value->toArray();
         
         $value = array_merge($value, $values);
-        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'researchStatus'));
+        // dd($value);
+        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        // dd($values);
+        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
     /**
