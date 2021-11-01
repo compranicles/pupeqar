@@ -33,7 +33,6 @@
                     $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id));
                 });
                 var value = "{{ $value }}";
-                console.log(value);
                 if (value != ''){
                     document.getElementById("{{ $fieldInfo->name }}").value = "{{ $value }}";
                 }

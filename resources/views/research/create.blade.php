@@ -91,15 +91,16 @@
             });
         </script>
         <script>
-           $('#target_date').on('click', function(){
-            var date = new Date($('#start_date').val());
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            // alert([day, month, year].join('-'));
-            // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-            $('#target_date').prop("min", [year, month, day].join('-'));
-          });
+            $('#start_date').on('input', function(){
+                var date = new Date($('#start_date').val());
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
         </script>
     @endpush
 </x-app-layout>

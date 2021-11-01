@@ -27,7 +27,7 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
                                     @switch($research->status_name)
-                                            @case('New Commitment') @case('Ongoing')
+                                            @case('Ongoing')
                                                 <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
@@ -172,9 +172,54 @@
     </script>
     <script>
         $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').empty().append('<option selected="selected" value="{{ $research->status }}">{{ $research->status_name}}</option>');
             $('#status').attr('disabled', true);
         });
+    </script>
+
+    <script>
+        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
+            $(".research-tabs").remove();
+        }
+        else if ({{ $research->status }} == 28) {
+
+            $("#link-to-publish").remove();
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+            $("#link-to-cite").remove();
+        }
+        else if ({{ $research->status }} == 29) {
+            $("#link-to-publish").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 30) {
+            $("#link-to-present").remove();
+            $("#link-to-copyright").remove();
+        }
+        else if ({{ $research->status }} == 31) {
+            $("#link-to-copyright").remove();
+        } 
+    </script>
+    <script>
+        function hide_dates() {
+            $('.start_date').hide();
+            $('.target_date').hide();
+        }
+
+        $(function() {
+            hide_dates();
+        });
+
+    </script>
+    <script>
+        
+        var statusId = $('#status').val();
+        if (statusId == 26) {
+            hide_dates();
+
+            $('#start_date').prop("required", false);
+            $('#target_date').prop("required", false);
+        }
     </script>
 @endpush
 
