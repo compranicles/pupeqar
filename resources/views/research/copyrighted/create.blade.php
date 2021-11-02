@@ -46,25 +46,100 @@
             });
         }, 4000);
     </script>
-    <script>
-        if ({{ $research->status }} == 28) {
+        <script>
+        $(function() {
+            $('#link-to-register').show();
+            $('#link-to-utilize').show();
 
-            $("#link-to-publish").remove();
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
+            $('#link-to-complete').show();
+            $("#link-to-publish").show();
+            $("#link-to-present").show();
+            $("#link-to-copyright").show();
+            $("#link-to-cite").show();
+        });
+
+        if ( {{$research->status}} ==26 ){
+            $('.research-tabs').remove();
+        }
+
+        else if ({{ $research->status }} == 27) {
+            if ({{ $utilized }} == 0) {
+                // $('#link-to-register').show();
+                // $('#link-to-utilize').show();
+                $('#link-to-utilize').remove();
+            }
+            else {
+                $('.research-tabs').remove();
+            }
+        }
+
+        else if ({{ $research->status }} == 28) {
             $("#link-to-cite").remove();
+
+            if ({{ $published }} == 0) {
+                $("#link-to-publish").remove();
+            }
+
+            if ({{ $presented }} == 0) {
+                $("#link-to-present").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
         }
+
         else if ({{ $research->status }} == 29) {
-            $("#link-to-publish").remove();
-            $("#link-to-copyright").remove();
+            $("#link-to-cite").remove();
+
+            if ({{ $published }} == 0) {
+                $("#link-to-publish").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
         }
+
         else if ({{ $research->status }} == 30) {
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
+            if ({{ $presented }} == 0) {
+                $("#link-to-present").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $cited }} == 0) {
+                $("#link-to-cite").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-present").remove();
+            }
         }
-        else if ({{ $research->status }} == 31) {
-            $("#link-to-copyright").remove();
-        } 
+
+        else if ({{$research->status}} == 31) {
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $cited }} == 0) {
+                $("#link-to-cite").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-present").remove();
+            }
+        }
     </script>
     <script>
         function hide_dates() {

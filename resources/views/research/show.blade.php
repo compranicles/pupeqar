@@ -26,7 +26,7 @@
                                         Options
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
-                                        @switch($research->status_name)
+                                    @switch($research->status_name)
                                             @case('Ongoing')
                                                 <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
@@ -35,37 +35,57 @@
                                             @case('Completed')
                                                 <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
                                                 <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @if ($copyrighted == 0)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @endif
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
+                                                @if ($copyrighted == 1)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
+                                                @endif
                                                 @break
                                             @case('Published')
                                                 <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @if ($copyrighted == 0)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @endif
                                                 <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
+                                                @if ($copyrighted == 1)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
+                                                @endif
                                                 @break
                                             @case('Presented')
                                                 
                                                 <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @if ($copyrighted == 0)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @endif
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Presentation</a>
+                                                @if ($copyrighted == 1)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
+                                                @endif
                                                 @break
                                             @case('Presented & Published')
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @if ($copyrighted == 0)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
+                                                @endif
                                                 <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
                                                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
                                                 <div class="dropdown-divider"></div>
                                                 <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
                                                 <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
                                                 <a class="dropdown-item" href="{{ route('research.presentation', $research->research_code) }}">Edit Presentation</a>
+                                                @if ($copyrighted == 1)
+                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
+                                                @endif
                                                 @break
                                             @case('Deferred')
                                                 @break
@@ -216,52 +236,100 @@
             $('#status').attr('disabled', true);
         });
     </script>
-
-    <script>
-        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
-            $(".research-tabs").remove();
-        }
-        else if ({{ $research->status }} == 28) {
-
-            $("#link-to-publish").remove();
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-            $("#link-to-cite").remove();
-        }
-        else if ({{ $research->status }} == 29) {
-            $("#link-to-publish").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 30) {
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 31) {
-            $("#link-to-copyright").remove();
-        } 
-    </script>
-    <script>
-        function hide_dates() {
-            $('.start_date').hide();
-            $('.target_date').hide();
-        }
-
+            <script>
         $(function() {
-            // hide_dates();
+            $('#link-to-register').show();
+            $('#link-to-utilize').show();
+
+            $('#link-to-complete').show();
+            $("#link-to-publish").show();
+            $("#link-to-present").show();
+            $("#link-to-copyright").show();
+            $("#link-to-cite").show();
         });
 
-    </script>
-    <script>
-        
-        var statusId = $('#status').val();
-        $('#status').on('change', function (){
-            if (statusId == 26) {
-                hide_dates();
+        if ( {{$research->status}} ==26 ){
+            $('.research-tabs').remove();
+        }
 
-                $('#start_date').prop("required", false);
-                $('#target_date').prop("required", false);
+        else if ({{ $research->status }} == 27) {
+            if ({{ $utilized }} == 0) {
+                // $('#link-to-register').show();
+                // $('#link-to-utilize').show();
+                $('#link-to-utilize').remove();
             }
-        });
+            else {
+                $('.research-tabs').remove();
+            }
+        }
+
+        else if ({{ $research->status }} == 28) {
+            $("#link-to-cite").remove();
+
+            if ({{ $published }} == 0) {
+                $("#link-to-publish").remove();
+            }
+
+            if ({{ $presented }} == 0) {
+                $("#link-to-present").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
+        }
+
+        else if ({{ $research->status }} == 29) {
+            $("#link-to-cite").remove();
+
+            if ({{ $published }} == 0) {
+                $("#link-to-publish").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
+        }
+
+        else if ({{ $research->status }} == 30) {
+            if ({{ $presented }} == 0) {
+                $("#link-to-present").remove();
+            }
+
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $cited }} == 0) {
+                $("#link-to-cite").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
+        }
+
+        else if ({{$research->status}} == 31) {
+            if ({{ $copyrighted }} == 0) {
+                $("#link-to-copyright").remove();
+            }
+
+            if ({{ $cited }} == 0) {
+                $("#link-to-cite").remove();
+            }
+
+            if ({{ $utilized }} == 0) {
+                $("#link-to-utilize").remove();
+            }
+        }
     </script>
 
 @endpush

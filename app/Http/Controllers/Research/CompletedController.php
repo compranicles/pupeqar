@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
 use Illuminate\Support\Arr;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class CompletedController extends Controller
 {
@@ -50,7 +55,62 @@ class CompletedController extends Controller
         // dd($value);
         // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         // dd($values);
-        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
+
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -74,7 +134,62 @@ class CompletedController extends Controller
         // $research = (object) $research;
         //  dd($research);
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 28)->first();
-        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value'));
+
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -157,7 +272,61 @@ class CompletedController extends Controller
         
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
 
-        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**

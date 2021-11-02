@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
-use App\Models\ResearchCopyright;
 use App\Models\Maintenance\College;
-use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class ResearchController extends Controller
 {
@@ -25,7 +27,7 @@ class ResearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   $researchStatus = DropdownOption::where('dropdown_id', 7)->where('is_active', 1)->get();
+    {   $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
         $researches = Research::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->orderBy('research.updated_at', 'desc')->get();
         return view('research.index', compact('researches', 'researchStatus'));
@@ -64,7 +66,7 @@ class ResearchController extends Controller
         
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
-        $input = $request->except(['_token', 'document',]);
+        $input = $request->except(['_token', 'document', 'college_id']);
 
         if($request->has('classification')){
             $classificationName = DropdownOption::where('id', $input['classification'])->pluck('name')->first();
@@ -111,6 +113,7 @@ class ResearchController extends Controller
         Research::create(
             ['research_code' => $researchCode, 'user_id' => auth()->id()]
         );
+
         Research::where('research_code', $researchCode)->update($input);
 
         if($request->has('document')){
@@ -168,8 +171,65 @@ class ResearchController extends Controller
                                 ->join('colleges', 'colleges.id', 'departments.college_id')
                                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
+
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+
+        // dd($utilized);
         // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value'));
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -187,9 +247,70 @@ class ResearchController extends Controller
         $values = Research::where('research_code', $research->research_code)->first()->toArray();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
-        // dd($research);
+        // dd($values);
+        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
+                                ->join('colleges', 'colleges.id', 'departments.college_id')
+                                ->select('colleges.id AS college_id', 'departments.name AS department_name')
+                                ->first();
+        // dd($collegeAndDepartment);
+
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus'));
+        return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -201,7 +322,7 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
-        $input = $request->except(['_token', '_method', 'description', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $research->update($input);
         

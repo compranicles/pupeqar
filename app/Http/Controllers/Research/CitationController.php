@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchCitation;
 use App\Models\ResearchDocument;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class CitationController extends Controller
 {
@@ -25,8 +30,61 @@ class CitationController extends Controller
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
-
-        return view('research.citation.index', compact('research', 'researchcitations'));
+                $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+                $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+                $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+                $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+                $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+                $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+                $utilized = 0;
+                $completed = 0;
+                $presented = 0;
+                $published = 0;
+                $cited = 0;
+                $copyrighted = 0;
+        
+                if ($has_utilization) {
+                    $utilized = 1;
+                }
+                else {
+                    $utilized = 0;
+                }
+        
+                if ($has_completion) {
+                    $completed = 1;
+                }
+                else {
+                    $completed = 0;
+                }
+        
+                if ($has_presentation) {
+                    $presented = 1;
+                }
+                else {
+                    $presented = 0;
+                }
+        
+                if ($has_publication) {
+                    $published = 1;
+                }
+                else {
+                    $published = 0;
+                }
+        
+                if ($has_copyright) {
+                    $copyrighted = 1;
+                }
+                else {
+                    $copyrighted = 0;
+                }
+        
+                if ($has_citation) {
+                    $cited = 1;
+                }
+                else {
+                    $cited= 0;
+                }
+        return view('research.citation.index', compact('research', 'researchcitations', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -41,7 +99,61 @@ class CitationController extends Controller
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
 
-        return view('research.citation.create', compact('researchFields', 'research'));
+            $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+            $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+            $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+            $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+            $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+            $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+            $utilized = 0;
+            $completed = 0;
+            $presented = 0;
+            $published = 0;
+            $cited = 0;
+            $copyrighted = 0;
+    
+            if ($has_utilization) {
+                $utilized = 1;
+            }
+            else {
+                $utilized = 0;
+            }
+    
+            if ($has_completion) {
+                $completed = 1;
+            }
+            else {
+                $completed = 0;
+            }
+    
+            if ($has_presentation) {
+                $presented = 1;
+            }
+            else {
+                $presented = 0;
+            }
+    
+            if ($has_publication) {
+                $published = 1;
+            }
+            else {
+                $published = 0;
+            }
+    
+            if ($has_copyright) {
+                $copyrighted = 1;
+            }
+            else {
+                $copyrighted = 0;
+            }
+    
+            if ($has_citation) {
+                $cited = 1;
+            }
+            else {
+                $cited= 0;
+            }
+        return view('research.citation.create', compact('researchFields', 'research', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -105,7 +217,62 @@ class CitationController extends Controller
         $values = ResearchCitation::find($citation->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
-        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
     }
 
     /**
@@ -130,7 +297,62 @@ class CitationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
+        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
+        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
+        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
+        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
+        $utilized = 0;
+        $completed = 0;
+        $presented = 0;
+        $published = 0;
+        $cited = 0;
+        $copyrighted = 0;
+
+        if ($has_utilization) {
+            $utilized = 1;
+        }
+        else {
+            $utilized = 0;
+        }
+
+        if ($has_completion) {
+            $completed = 1;
+        }
+        else {
+            $completed = 0;
+        }
+
+        if ($has_presentation) {
+            $presented = 1;
+        }
+        else {
+            $presented = 0;
+        }
+
+        if ($has_publication) {
+            $published = 1;
+        }
+        else {
+            $published = 0;
+        }
+
+        if ($has_copyright) {
+            $copyrighted = 1;
+        }
+        else {
+            $copyrighted = 0;
+        }
+
+        if ($has_citation) {
+            $cited = 1;
+        }
+        else {
+            $cited= 0;
+        }
+
+        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
 
     }
 

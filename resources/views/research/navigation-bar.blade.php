@@ -5,7 +5,7 @@
                 <ul class="nav justify-content-center m-n3">
 
                     <li class="nav-item">
-                        <x-jet-nav-link  id="link-to-complete" href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
+                        <x-jet-nav-link  id="link-to-register" href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                             {{ __('Registration') }}
                         </x-jet-nav-link>
                     </li>
