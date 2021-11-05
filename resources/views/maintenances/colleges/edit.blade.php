@@ -16,14 +16,14 @@
             <h2 class="mr-3">Colleges</h2>
             <p class="mt-2 mr-3">Edit College.</p>
             <p class="mt-2">
-              <a class="back_link" href="{{ route('admin.colleges.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Colleges</a>
+              <a class="back_link" href="{{ route('colleges.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Colleges</a>
             </p>
           </div>
 
 
             <div class="card">
               <div class="card-body">
-                <form method="POST" action="{{ route('admin.colleges.update', $college->id) }}">
+                <form method="POST" action="{{ route('colleges.update', $college->id) }}">
                   @csrf
                   @method('PUT')
                   <div class="row">
@@ -57,7 +57,7 @@
             <div class="row">
               <div class="mb-0 mt-3 ml-auto mr-2 p-2">
                 <div class="d-flex">
-                  <a href="{{ route('admin.colleges.index') }}" class="btn btn-light mr-3" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
+                  <a href="{{ route('colleges.index') }}" class="btn btn-light mr-3" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
                   <button type="submit" class="btn btn-success"><i class="bi bi-save mr-2"></i>Save</button>
                 </div>
               </div>

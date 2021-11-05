@@ -5,11 +5,15 @@ namespace App\Models\FormBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class NonQarForm extends Model
+class InventionForm extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+
     protected $fillable = [
-        'form_id',
+        'label',
+        'table_name',
+        'is_active',
     ];
 }

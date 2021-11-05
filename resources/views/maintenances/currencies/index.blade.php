@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Departments') }}
+            {{ __('Colleges') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -12,13 +12,13 @@
 
         <div class="col-md-12">
         <!--<div class="col-md-10 float-none m-0 m-auto"> -->
-          <h2 class="mb-2">Departments</h2>
+          <h2 class="mb-2">Colleges</h2>
 
           <p class="mb-3">
-            <a href="{{ route('departments.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add Department</a>
+            <a href="{{ route('currencies.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add College</a>
           </p>
           
-          @if ($message = Session::get('edit_department_success'))
+          @if ($message = Session::get('edit_currency_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
               <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -36,7 +36,7 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-12">
-                  <table id="department_table" class="table table-hover">
+                  <table id="currency_table" class="table table-hover">
                       <thead>
                           <tr>
                               <th>Name</th>
@@ -44,13 +44,13 @@
                           </tr>
                       </thead>
                       <tbody>
-                        @foreach ($departments as $department)
+                        @foreach ($currencies as $currency)
                           <tr>
-                            <td>{{ $department->name }}</td>
+                            <td>{{ $currency->name }}</td>
                             <td>
                               <div role="group">
-                                  <a href="{{ route('departments.edit', $department->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
-                                  <button type="button" value="{{ $department->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
+                                  <a href="{{ route('currencies.edit', $currency->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
+                                  <button type="button" value="{{ $currency->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-currency="{{ $currency->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
                               </div>
                             </td>
                           </tr>
@@ -72,7 +72,7 @@
     </div>
 
     {{-- Delete Modal --}}
-      @include('maintenances.departments.delete')
+      @include('maintenances.currencies.delete')
 
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -85,7 +85,7 @@
         }, 4000);
 
         $(document).ready(function() {
-          $('#department_table').DataTable({
+          $('#currency_table').DataTable({
             'aoColumnDefs': [{
                   'bSortable': false,
                   'aTargets': [-1], /* 1st one, start by the right */
@@ -94,25 +94,25 @@
           });
         } );
 
-        $('#department_table thead th.filter').each(function() {
+        $('#currency_table thead th.filter').each(function() {
           var title = $(this).text();
             if (title == 'Action') {
               return NULL;     
             }
         });
-
+        
         //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget
           var id = button.getAttribute('value')
-          var departmentName = button.getAttribute('data-bs-department')
+          var currencyName = button.getAttribute('data-bs-currency')
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
-          itemToDelete.textContent = departmentName
+          itemToDelete.textContent = currencyName
 
-          var url = '{{ route("departments.destroy", ":id") }}';
+          var url = '{{ route("currencies.destroy", ":id") }}';
           url = url.replace(':id', id);
-          document.getElementById('department_delete').action = url;
+          document.getElementById('currency_delete').action = url;
           
         });
 

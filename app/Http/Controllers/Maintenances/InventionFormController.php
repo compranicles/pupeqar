@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Maintenance;
+namespace App\Http\Controllers\Maintenances;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\Dropdown;
 use App\Models\FormBuilder\FieldType;
 use Illuminate\Support\Facades\Schema;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\InventionForm;
 use Illuminate\Database\Schema\Blueprint;
+use App\Models\FormBuilder\InventionField;
 
-class ResearchFieldController extends Controller
+class InventionFormController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,8 @@ class ResearchFieldController extends Controller
      */
     public function index()
     {
-        //
+        $inventionforms = InventionForm::all();
+        return view('maintenances.invention.index', compact('inventionforms'));
     }
 
     /**
@@ -39,15 +40,15 @@ class ResearchFieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ResearchForm $research_form, Request $request)
+    public function store(InventionForm $invention_form, Request $request)
     {   
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
             $required = 0;
         }
-        ResearchField::create([
-            'research_form_id' => $research_form->id,
+        InventionField::create([
+            'invention_form_id' => $invention_form->id,
             'label' => $request->label,
             'name' => $request->field_name,
             'placeholder' => $request->placeholder,
@@ -62,38 +63,38 @@ class ResearchFieldController extends Controller
 
         switch($request->field_type){
             case 1: //text
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->string($field_name)->nullable();
                 });
             break;
             case 2: // number
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->integer($field_name)->nullable();
                 });
             break;
             case 3: // decimal
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name){
                     $table->decimal($field_name, 9, 2)->nullable();
                 });
             break; 
             case 4: // date
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->date($field_name)->nullable();
                 });
             break; 
             case 5: // dropdown
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->foreignId($field_name)->nullable();
                 });
             break; 
             case 8: // textarea
-                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
+                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name){
                     $table->foreignId($field_name)->nullable();
                 });
             break; 
             default: 
         }
-        return redirect()->route('research-forms.show', $research_form->id)->with('sucess', 'Research field added sucessfully.');
+        return redirect()->route('invention-forms.show', $invention_form->id)->with('sucess', 'Invention field added sucessfully.');
     }
 
     /**
@@ -102,9 +103,15 @@ class ResearchFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(InventionForm $invention_form)
     {
-        //
+        $invention_fields = InventionField::where('invention_fields.invention_form_id', $invention_form->id)->orderBy('invention_fields.order')
+        ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
+        ->select('invention_fields.*', 'field_types.name as field_type_name')->get();
+
+        $field_types = FieldType::all();
+        $dropdowns = Dropdown::all();
+        return view('maintenances.invention.show', compact('invention_form', 'invention_fields', 'field_types', 'dropdowns'));
     }
 
     /**
@@ -113,11 +120,9 @@ class ResearchFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ResearchForm $research_form, ResearchField $research_field)
+    public function edit($id)
     {
-        $fieldtypes = FieldType::all();
-        $dropdowns = Dropdown::all();
-        return view('maintenances.research.edit', compact('research_form', 'research_field', 'fieldtypes', 'dropdowns'));
+        //
     }
 
     /**
@@ -127,12 +132,9 @@ class ResearchFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ResearchForm $research_form, ResearchField $research_field)
+    public function update(Request $request, $id)
     {
-        $input = $request->except(['_token', '_method']);
-
-        ResearchField::where('research_form_id', $research_form->id)->where('id', $research_field->id)->update($input);
-        return redirect()->route('research-forms.show', $research_form->id)->with('sucess', 'Research field updated sucessfully.');
+        //
     }
 
     /**
@@ -145,9 +147,9 @@ class ResearchFieldController extends Controller
     {
         //
     }
-
+    
     public function activate($id){
-        ResearchField::where('id', $id)->update([
+        InventionForm::where('id', $id)->update([
             'is_active' => 1
         ]);
 
@@ -155,23 +157,10 @@ class ResearchFieldController extends Controller
     }
 
     public function inactivate($id){
-        ResearchField::where('id', $id)->update([
+        InventionForm::where('id', $id)->update([
             'is_active' => 0
         ]);
         
-        return true;
-    }
-
-    public function arrange(Request $request){
-
-        $options = json_decode($request->data, true);
-        
-        for($i = 0; $i < count($options); $i++){
-            ResearchField::where('id', $options[$i])->update([
-                'order' => $i+1
-            ]);
-        }
-
         return true;
     }
 }

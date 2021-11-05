@@ -29,6 +29,9 @@ class DatabaseSeeder extends Seeder
             ResearchCitationFormSeeder::class,
             ResearchUtilizationFormSeeder::class,
             ResearchCopyrightedFormSeeder::class,
+            InventionDropdownSeeder::class,
+            InventionFormSeeder::class,
+            InventionSeeder::class,
         ]);
     }
 }

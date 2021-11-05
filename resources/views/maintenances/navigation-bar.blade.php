@@ -10,12 +10,12 @@
                     </li>
 
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('admin.colleges.index') }}" class="text-dark"  :active="request()->routeIs('admin.colleges.*')">
+                        <x-jet-nav-link href="{{ route('colleges.index') }}" class="text-dark"  :active="request()->routeIs('colleges.*')">
                             {{ __('Colleges') }}
                         </x-jet-nav-link>
                     </li>
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('admin.departments.index') }}" class="text-dark"  :active="request()->routeIs('admin.departments.*')">
+                        <x-jet-nav-link href="{{ route('departments.index') }}" class="text-dark"  :active="request()->routeIs('departments.*')">
                             {{ __('Departments') }}
                         </x-jet-nav-link>
                     </li>
@@ -31,7 +31,12 @@
                             {{ __('Research') }}
                         </x-jet-nav-link>
                     </li>
-        
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('invention-forms.index') }}" class="text-dark" :active="request()->routeIs('invention-forms.*')">
+                            {{ __('Invention') }}
+                        </x-jet-nav-link>
+                    </li>
+                    
                 </ul>
             </div>
         </div>

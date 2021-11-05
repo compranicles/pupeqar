@@ -37,6 +37,11 @@
                         {{ __('Research') }}
                     </x-jet-nav-link>
                 </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
+                        {{ __('Inventions') }}
+                    </x-jet-nav-link>
+                </li>
                 @endif
 
             </ul>

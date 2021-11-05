@@ -8,7 +8,7 @@
         <div class="modal-body">
                 <h5 class="text-center">Are you sure you want to delete this form?</h5>
                 <p id="itemToDelete" class="text-center h4"></p>
-                <form action="{{ route('admin.colleges.destroy', ':id') }}" id="college_delete" method="POST">
+                <form action="{{ route('colleges.destroy', ':id') }}" id="college_delete" method="POST">
                     @csrf
                     @method('delete')
             </div>

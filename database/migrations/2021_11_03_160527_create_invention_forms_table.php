@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDepartmentidInResearch extends Migration
+class CreateInventionFormsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddDepartmentidInResearch extends Migration
      */
     public function up()
     {
-        Schema::table('research', function (Blueprint $table) {
-            $table->foreignId('department_id');
+        Schema::create('invention_forms', function (Blueprint $table) {
+            $table->id();
+            $table->string('label');
+            $table->string('table_name');
+            $table->integer('is_active');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddDepartmentidInResearch extends Migration
      */
     public function down()
     {
-        Schema::table('research', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('invention_forms');
     }
 }

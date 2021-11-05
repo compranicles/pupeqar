@@ -45,43 +45,36 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/announcements/activate/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'activate'])->name('announcements.activate');
     Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class);
 
-    // submissions
-    Route::get('/submissions', [\App\Http\Controllers\Submissions\SubmissionController::class, 'index'])->name('submissions.index');
-    Route::post('/submissions/select', [\App\Http\Controllers\Submissions\SubmissionController::class, 'select'])->name('submissions.select');
-    Route::get('/submissions/create/{slug}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'create'])->name('submissions.create');
-    Route::post('/submssions/store/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'store'])->name('submissions.store');
-    Route::get('/submssions/edit/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'edit'])->name('submissions.edit');
-    Route::post('/submssions/update/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'update'])->name('submissions.update');
-    Route::post('/submssions/destroy/{id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'destroy'])->name('submissions.destroy');
-
-    // reports
-    Route::get('/reports', [\App\Http\Controllers\Reports\ReportController::class, 'index'])->name('reports.index');
-
-    // get dropdown options
-    Route::get('/dropdowns/options/{id}', [\App\Http\Controllers\FormBuilder\DropdownController::class, 'options'])->name('dropdown.options');
-
-
     // maintenances
-    Route::get('/maintenances', [\App\Http\Controllers\Maintenance\MaintenanceController::class, 'index'])->name('maintenances.index');
+    Route::get('/maintenances', [\App\Http\Controllers\Maintenances\MaintenanceController::class, 'index'])->name('maintenances.index');
+
+    // Colleges and Departments
+    Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
+    //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
+    Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
+    //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
+
+    //Currency
+    Route::resource('/maintenances/currencies', \App\Http\Controllers\Maintenances\CurrencyController::class);
 
     // dropdowns
-    Route::get('/dropdowns/options/{id}', [\App\Http\Controllers\Maintenance\DropdownController::class, 'options'])->name('dropdowns.options');
-    Route::post('/dropdowns/options/add/{id}', [\App\Http\Controllers\Maintenance\DropdownController::class, 'addOptions'])->name('dropdowns.options.add');
-    Route::post('/dropdowns/options/arrange', [\App\Http\Controllers\Maintenance\DropdownController::class, 'arrangeOptions']);
-    Route::get('/dropdowns/options/activate/{id}', [\App\Http\Controllers\Maintenance\DropdownController::class, 'activate']);
-    Route::get('/dropdowns/options/inactivate/{id}', [\App\Http\Controllers\Maintenance\DropdownController::class, 'inactivate']);
-    Route::resource('dropdowns', \App\Http\Controllers\Maintenance\DropdownController::class);
+    Route::get('/dropdowns/options/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'options'])->name('dropdowns.options');
+    Route::post('/dropdowns/options/add/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'addOptions'])->name('dropdowns.options.add');
+    Route::post('/dropdowns/options/arrange', [\App\Http\Controllers\Maintenances\DropdownController::class, 'arrangeOptions']);
+    Route::get('/dropdowns/options/activate/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'activate']);
+    Route::get('/dropdowns/options/inactivate/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'inactivate']);
+    Route::resource('dropdowns', \App\Http\Controllers\Maintenances\DropdownController::class);
 
     //researchForms
-    Route::get('/research-forms/activate/{id}', [\App\Http\Controllers\Maintenance\ResearchFormController::class, 'activate']);
-    Route::get('/research-forms/inactivate/{id}', [\App\Http\Controllers\Maintenance\ResearchFormController::class, 'inactivate']);
-    Route::resource('research-forms', \App\Http\Controllers\Maintenance\ResearchFormController::class);    
+    Route::get('/research-forms/activate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'activate']);
+    Route::get('/research-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'inactivate']);
+    Route::resource('research-forms', \App\Http\Controllers\Maintenances\ResearchFormController::class);    
 
     //researchFields
-    Route::get('/research-fields/activate/{id}', [\App\Http\Controllers\Maintenance\ResearchFieldController::class, 'activate']);
-    Route::get('/research-fields/inactivate/{id}', [\App\Http\Controllers\Maintenance\ResearchFieldController::class, 'inactivate']);
-    Route::post('/research-fields/arrange', [\App\Http\Controllers\Maintenance\ResearchFieldController::class, 'arrange']);
-    Route::resource('research-forms.research-fields', \App\Http\Controllers\Maintenance\ResearchFieldController::class);
+    Route::get('/research-fields/activate/{id}', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'activate']);
+    Route::get('/research-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'inactivate']);
+    Route::post('/research-fields/arrange', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'arrange']);
+    Route::resource('research-forms.research-fields', \App\Http\Controllers\Maintenances\ResearchFieldController::class);
 
     //researchSubmissions
     Route::get('/research/complete/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
@@ -97,6 +90,20 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research.citation', \App\Http\Controllers\Research\CitationController::class);
     Route::resource('research.utilization', \App\Http\Controllers\Research\UtilizationController::class);
     Route::resource('research.copyrighted', \App\Http\Controllers\Research\CopyrightedController::class);
+
+    //inventionForms
+    Route::get('/invention-forms/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'activate']);
+    Route::get('/invention-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'inactivate']);
+    Route::resource('invention-forms', \App\Http\Controllers\Maintenances\InventionFormController::class);
+
+    //inventionFields
+    Route::get('/invention-fields/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'activate']);
+    Route::get('/invention-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'inactivate']);
+    Route::post('/invention-fields/arrange', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'arrange']);
+    Route::resource('invention-forms.invention-fields', \App\Http\Controllers\Maintenances\InventionFieldController::class);
+
+    //invention
+    Route::resource('inventions', \App\Http\Controllers\Inventions\InventionController::class);
 
     //users
     Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
@@ -117,28 +124,9 @@ Route::group(['middleware' => 'auth'], function() {
     // admin routes
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
 
-        // forms
-        Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
-        Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
-        
-        // form's fields
-        Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
-        Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
-        Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
-        Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
-
         //users
         Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
         Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
         Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
-
-        //maintenances
-        Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
-        //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
-        
-        Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
-        //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
-    
-        
     });
 });

@@ -15,7 +15,7 @@
           <h2 class="mb-2">Colleges</h2>
 
           <p class="mb-3">
-            <a href="{{ route('admin.colleges.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add College</a>
+            <a href="{{ route('colleges.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add College</a>
           </p>
           
           @if ($message = Session::get('edit_college_success'))
@@ -49,7 +49,7 @@
                             <td>{{ $college->name }}</td>
                             <td>
                               <div role="group">
-                                  <a href="{{ route('admin.colleges.edit', $college->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
+                                  <a href="{{ route('colleges.edit', $college->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
                                   <button type="button" value="{{ $college->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-college="{{ $college->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
                               </div>
                             </td>
@@ -110,7 +110,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = collegeName
 
-          var url = '{{ route("admin.colleges.destroy", ":id") }}';
+          var url = '{{ route("colleges.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('college_delete').action = url;
           
