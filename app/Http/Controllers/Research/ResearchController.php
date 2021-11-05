@@ -66,7 +66,7 @@ class ResearchController extends Controller
         
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
-        $input = $request->except(['_token', 'document', 'college_id']);
+        $input = $request->except(['_token', 'document']);
 
         if($request->has('classification')){
             $classificationName = DropdownOption::where('id', $input['classification'])->pluck('name')->first();
@@ -167,8 +167,8 @@ class ResearchController extends Controller
         $value = collect($research);
         $value = $value->except(['status']);
         $value = $value->toArray();
-        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
-                                ->join('colleges', 'colleges.id', 'departments.college_id')
+        $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
+                                ->where('colleges.id', $research->college_id)
                                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
 
@@ -248,9 +248,9 @@ class ResearchController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
         // dd($values);
-        $collegeAndDepartment = $research->join('departments', 'departments.id', 'research.department_id')
-                                ->join('colleges', 'colleges.id', 'departments.college_id')
-                                ->select('colleges.id AS college_id', 'departments.name AS department_name')
+        $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
+                                ->where('colleges.id', $research->college_id)
+                                ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
         // dd($collegeAndDepartment);
 

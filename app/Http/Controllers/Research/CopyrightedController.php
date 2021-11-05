@@ -36,7 +36,7 @@ class CopyrightedController extends Controller
                 
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
         if($values == null){
-            return redirect()->route('research.show', $research->research_code);
+            return redirect()->route('research.copyrighted.create', $research->research_code);
         }
         $values = array_merge($research->toArray(), $values->toArray());
         // dd($values);

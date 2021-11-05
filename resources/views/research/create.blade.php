@@ -63,8 +63,7 @@
                     });
                 });
             });
-        </script>
-        <script>
+
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
@@ -74,23 +73,34 @@
                 hide_dates();
             });
 
-        </script>
-        <script>
+            $('#nature_of_involvement').on('change', function (){
+                $('#nature_of_involvement option[value=11]').attr('selected','selected');
+                // console.log(11);
+                $('#nature_of_involvement').attr('readonly', true); 
+            });
+
+            $(function () {
+                $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
+                $('#researchers').attr('readonly', true);
+            });
+
             $('#status').on('change', function(){
                 var statusId = $('#status').val();
                 if (statusId == 26) {
                     hide_dates();
-
-                    $('#start_date').prop("required", false);
-                    $('#target_date').prop("required", false);
+                    $('#start_date').removeAttr('required');
+                    $('#target_date').removeAttr('required');
+                    
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
+                    
+                    $('#start_date').attr("required", true);
+                    $('#target_date').attr("required", true);
                 }
             });
-        </script>
-        <script>
+
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();

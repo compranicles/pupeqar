@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->research_code, 'research_status' => $research->status])
             </div>
         </div>
         <div class="row">
@@ -26,7 +26,7 @@
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($collegeAndDepartment->college_id == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
+                                            <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
                                             @endforeach
                                            
                                         </select>
@@ -190,18 +190,20 @@
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
+                $('#start_date').attr('disabled', true);
+                $('#target_date').attr('disabled', true);
             }
 
             $(function() {
                 if ({{$research->status}} == 26) {
                     hide_dates();
+                    
                 }
                 else if ({{$research->status}} == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
                     $('#status').attr('disabled', true);
                 }
-
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
                 $.get('/departments/options/'+collegeId, function (data){
@@ -210,7 +212,7 @@
                         $("#department").append(new Option(item.name, item.id));
                         
                     });
-                    document.getElementById("department").value = "{{ $research->department_id }}";
+                    document.getElementById("department").value = "{{ $values['department_id'] }}";
                 });
             });
 
@@ -218,15 +220,19 @@
                 var statusId = $('#status').val();
                 if (statusId == 26) {
                     hide_dates();
+                    $('#start_date').removeAttr('required');
+                    $('#target_date').removeAttr('required');
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
+                    $('#start_date').attr("required", true);
+                    $('#target_date').attr("required", true);;
                 }
             });
         </script>
         <script>
-           $('#start_date').on('input', function(){
+             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();
                 var month = date.getMonth() + 1;

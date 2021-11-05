@@ -26,7 +26,7 @@ class CurrencyController extends Controller
      */
     public function create()
     {
-        //
+        return view('maintenances.currencies.create');
     }
 
     /**
@@ -37,7 +37,19 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:200',
+            'code' => 'required|max:200',
+            'symbol' => 'required|max:5',
+        ]);
+
+        Currency::create([
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'symbol' => $request->input('symbol')
+        ]);
+
+        return redirect()->route('currencies.create')->with('add_currency_success', 'Added currency has been saved.');
     }
 
     /**
@@ -57,9 +69,9 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Currency $currency)
     {
-        //
+        return view('maintenances.currencies.edit', compact('currency'));
     }
 
     /**
@@ -69,9 +81,21 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Currency $currency)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:200',
+            'code' => 'required|max:200',
+            'symbol' => 'required|max:5',
+        ]);
+
+        $currency->update([
+            'name' => $request->input('name'),
+            'code' => $request->input('code'),
+            'symbol' => $request->input('symbol'),
+        ]);
+
+        return redirect()->route('currencies.index')->with('edit_currency_success', 'Edit in currency has been saved.');
     }
 
     /**
@@ -80,8 +104,16 @@ class CurrencyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Currency $currency)
     {
         //
+        $currency->delete();
+
+        return redirect()->route('currencies.index')->with('edit_currency_success', 'Currency has been deleted.');
+    }
+
+    public function list(){
+        $list = Currency::orderBy('code')->get();
+        return $list;
     }
 }

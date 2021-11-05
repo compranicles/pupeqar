@@ -17,7 +17,7 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->truncate();
         DB::table('field_types')->insert(['name' => 'text']);
         DB::table('field_types')->insert(['name' => 'number']);
-        DB::table('field_types')->insert(['name' => 'decimal']);
+        DB::table('field_types')->insert(['name' => 'currency-decimal']);
         DB::table('field_types')->insert(['name' => 'date']);
         DB::table('field_types')->insert(['name' => 'dropdown']);
         DB::table('field_types')->insert(['name' => 'date-range']);

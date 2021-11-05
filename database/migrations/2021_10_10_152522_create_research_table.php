@@ -26,10 +26,11 @@ class CreateResearchTable extends Migration
             $table->foreignId('nature_of_involvement');
             $table->foreignId('research_type');
             $table->foreignId('funding_type');
+            $table->foreignId('currency');
             $table->decimal('funding_amount', 9, 2);
             $table->string('funding_agency');
-            $table->date('start_date');
-            $table->date('target_date');
+            $table->date('start_date')->nullable();
+            $table->date('target_date')->nullable();
             $table->date('completion_date')->nullable();
             $table->foreignId('status');
             $table->text('description');

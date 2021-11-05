@@ -51,8 +51,8 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Research Code</th>
                                                 <th>Research Title</th>
-                                                <th>Date Modified</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -60,8 +60,8 @@
                                             @foreach ($researches as $research)
                                                 <tr role="button">
                                                     <td><a href="{{ route('research.show', $research->research_code) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
+                                                    <td>{{ $research->research_code }}</td>
                                                     <td>{{ $research->title }}</td>
-                                                    <td>{{ $research->updated_at }}</td>
                                                     <td>{{ $research->status_name }}</td>
                                                 </tr>
                                             @endforeach

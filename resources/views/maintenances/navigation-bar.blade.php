@@ -19,6 +19,11 @@
                             {{ __('Departments') }}
                         </x-jet-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('currencies.index') }}" class="text-dark"  :active="request()->routeIs('currencies.*')">
+                            {{ __('Currencies') }}
+                        </x-jet-nav-link>
+                    </li>
                     
                     <li class="nav-item">
                         <x-jet-nav-link href="{{ route('dropdowns.index') }}" class="text-dark" :active="request()->routeIs('dropdowns.*')">

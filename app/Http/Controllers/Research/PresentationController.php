@@ -35,13 +35,13 @@ class PresentationController extends Controller
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 // dd($research);    
-        $values = ResearchPresentation::where('research_code', $research->research_code)->first()->toArray();
+        $values = ResearchPresentation::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
         // $values = array_merge($research->toArray(), $values->toArray());
         
-        $values = collect($values);
+        $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
 

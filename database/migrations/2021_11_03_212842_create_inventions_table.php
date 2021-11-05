@@ -22,6 +22,7 @@ class CreateInventionsTable extends Migration
             $table->string('title');
             $table->string('collaborator');
             $table->string('funding_agency');
+            $table->foreignId('currency');
             $table->decimal('funding_amount', 9, 2);
             $table->foreignId('funding_type');
             $table->foreignId('status');

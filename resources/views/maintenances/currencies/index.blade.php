@@ -12,10 +12,10 @@
 
         <div class="col-md-12">
         <!--<div class="col-md-10 float-none m-0 m-auto"> -->
-          <h2 class="mb-2">Colleges</h2>
+          <h2 class="mb-2">Currencies</h2>
 
           <p class="mb-3">
-            <a href="{{ route('currencies.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add College</a>
+            <a href="{{ route('currencies.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add Currency</a>
           </p>
           
           @if ($message = Session::get('edit_currency_success'))
@@ -39,14 +39,18 @@
                   <table id="currency_table" class="table table-hover">
                       <thead>
                           <tr>
+                              <th>Code</th>
                               <th>Name</th>
+                              <th>Symbol</th>
                               <th>Actions</th>
                           </tr>
                       </thead>
                       <tbody>
                         @foreach ($currencies as $currency)
                           <tr>
+                            <td>{{ $currency->code }}</td>
                             <td>{{ $currency->name }}</td>
+                            <td>{{ $currency->symbol }}</td>
                             <td>
                               <div role="group">
                                   <a href="{{ route('currencies.edit', $currency->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
@@ -58,7 +62,9 @@
                       </tbody>
                       <tfoot>
                         <tr>
+                          <th>Code</th>
                           <th>Name</th>
+                          <th>Symbol</th>
                           <th>Actions</th>
                       </tr>
                       </tfoot>

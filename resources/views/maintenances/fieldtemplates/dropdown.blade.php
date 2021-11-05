@@ -30,11 +30,11 @@
         $('#{{ $fieldInfo->name }}').ready(function (){
             $.get("{{ route('dropdowns.options', $fieldInfo->dropdown_id) }}", function (data){
                 data.forEach(function (item){
-                    $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id));
+                    $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id)).change();
                 });
                 var value = "{{ $value }}";
                 if (value != ''){
-                    document.getElementById("{{ $fieldInfo->name }}").value = "{{ $value }}";
+                    $("#{{ $fieldInfo->name }}").val("{{ $value }}");
                 }
             });
         });

@@ -34,12 +34,12 @@ class PublicationController extends Controller
         $research = Research::join('dropdown_options', 'dropdown_options.id', 'research.status')->where('research_code', $research->research_code)
             ->select('research.*', 'dropdown_options.name as status_name')->first();
                 
-        $values = ResearchPublication::where('research_code', $research->research_code)->first()->toArray();
+        $values = ResearchPublication::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
 
-        $values = collect($values);
+        $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
 

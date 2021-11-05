@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function() {
     //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
 
     //Currency
+    Route::get('/maintenances/currencies/list', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'list'])->name('currencies.list');
     Route::resource('/maintenances/currencies', \App\Http\Controllers\Maintenances\CurrencyController::class);
 
     // dropdowns

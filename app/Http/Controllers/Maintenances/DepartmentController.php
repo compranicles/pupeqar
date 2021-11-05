@@ -49,7 +49,7 @@ class DepartmentController extends Controller
             'college_id' => $request->input('college')
         ]);
 
-        return redirect()->route('admin.departments.create')->with('add_department_success', 'Added department has been saved successfully.');
+        return redirect()->route('departments.create')->with('add_department_success', 'Added department has been saved successfully.');
     }
 
     /**
@@ -96,7 +96,7 @@ class DepartmentController extends Controller
             'college_id' => $request->input('college')
         ]);
 
-        return redirect()->route('admin.departments.index')->with('edit_department_success', 'Edit in department has been saved.');
+        return redirect()->route('departments.index')->with('edit_department_success', 'Edit in department has been saved.');
     }
 
     /**
@@ -109,7 +109,7 @@ class DepartmentController extends Controller
     {
         //
         $department->delete();
-        return redirect()->route('admin.departments.index')->with('edit_department_success', 'Department has been deleted.');
+        return redirect()->route('departments.index')->with('edit_department_success', 'Department has been deleted.');
     }
 
     public function options($id){

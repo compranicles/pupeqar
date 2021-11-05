@@ -36,12 +36,12 @@ class CompletedController extends Controller
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
-        $values = ResearchComplete::where('research_code', $research->research_code)->first()->toArray();
+        $values = ResearchComplete::where('research_code', $research->research_code)->first();
         // dd($values);
         if($values == null){
-            return redirect()->route('research.complete.create', $research->research_code);
+            return redirect()->route('research.completed.create', $research->research_code);
         }
-        $values = collect($values);
+        $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
 
