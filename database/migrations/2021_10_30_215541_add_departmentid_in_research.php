@@ -14,7 +14,7 @@ class AddDepartmentidInResearch extends Migration
     public function up()
     {
         Schema::table('research', function (Blueprint $table) {
-            $table->foreignId('department_id');
+
         });
     }
 
