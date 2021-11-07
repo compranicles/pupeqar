@@ -14,7 +14,8 @@ class CreateResearchTable extends Migration
     public function up()
     {
         Schema::create('research', function (Blueprint $table) {
-            $table->string('research_code')->unique();
+            $table->id();
+            $table->string('research_code');
             $table->foreignId('college_id');
             $table->foreignId('department_id');
             $table->foreignId('classification');

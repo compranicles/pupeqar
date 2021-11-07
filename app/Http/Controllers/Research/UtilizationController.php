@@ -27,65 +27,11 @@ class UtilizationController extends Controller
     {
         $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->get();
 
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
-
-                $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-                $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-                $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-                $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-                $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-                $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-                $utilized = 0;
-                $completed = 0;
-                $presented = 0;
-                $published = 0;
-                $cited = 0;
-                $copyrighted = 0;
-        
-                if ($has_utilization) {
-                    $utilized = 1;
-                }
-                else {
-                    $utilized = 0;
-                }
-        
-                if ($has_completion) {
-                    $completed = 1;
-                }
-                else {
-                    $completed = 0;
-                }
-        
-                if ($has_presentation) {
-                    $presented = 1;
-                }
-                else {
-                    $presented = 0;
-                }
-        
-                if ($has_publication) {
-                    $published = 1;
-                }
-                else {
-                    $published = 0;
-                }
-        
-                if ($has_copyright) {
-                    $copyrighted = 1;
-                }
-                else {
-                    $copyrighted = 0;
-                }
-        
-                if ($has_citation) {
-                    $cited = 1;
-                }
-                else {
-                    $cited= 0;
-                }
-        return view('research.utilization.index', compact('research', 'researchutilizations', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+        return view('research.utilization.index', compact('research', 'researchutilizations'));
     }
 
     /**
@@ -100,71 +46,7 @@ class UtilizationController extends Controller
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
 
-            $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-
-            $completed = 0;
-            if ($has_completion) {
-                $completed = 1;
-            }
-            else {
-                $completed = 0;
-            }
-            
-            $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-            $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-            $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-            $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-            $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-            $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-            $utilized = 0;
-            $completed = 0;
-            $presented = 0;
-            $published = 0;
-            $cited = 0;
-            $copyrighted = 0;
-    
-            if ($has_utilization) {
-                $utilized = 1;
-            }
-            else {
-                $utilized = 0;
-            }
-    
-            if ($has_completion) {
-                $completed = 1;
-            }
-            else {
-                $completed = 0;
-            }
-    
-            if ($has_presentation) {
-                $presented = 1;
-            }
-            else {
-                $presented = 0;
-            }
-    
-            if ($has_publication) {
-                $published = 1;
-            }
-            else {
-                $published = 0;
-            }
-    
-            if ($has_copyright) {
-                $copyrighted = 1;
-            }
-            else {
-                $copyrighted = 0;
-            }
-    
-            if ($has_citation) {
-                $cited = 1;
-            }
-            else {
-                $cited= 0;
-            }
-        return view('research.utilization.create', compact('researchFields', 'research', 'completed', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+        return view('research.utilization.create', compact('researchFields', 'research'));
     }
 
     /**
@@ -204,7 +86,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->research_code)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Added Successfully');
     }
 
     /**
@@ -221,7 +103,7 @@ class UtilizationController extends Controller
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_utilization_id', $utilization->id)->get()->toArray();
 
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
@@ -229,61 +111,7 @@ class UtilizationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-        $utilized = 0;
-        $completed = 0;
-        $presented = 0;
-        $published = 0;
-        $cited = 0;
-        $copyrighted = 0;
-
-        if ($has_utilization) {
-            $utilized = 1;
-        }
-        else {
-            $utilized = 0;
-        }
-
-        if ($has_completion) {
-            $completed = 1;
-        }
-        else {
-            $completed = 0;
-        }
-
-        if ($has_presentation) {
-            $presented = 1;
-        }
-        else {
-            $presented = 0;
-        }
-
-        if ($has_publication) {
-            $published = 1;
-        }
-        else {
-            $published = 0;
-        }
-
-        if ($has_copyright) {
-            $copyrighted = 1;
-        }
-        else {
-            $copyrighted = 0;
-        }
-
-        if ($has_citation) {
-            $cited = 1;
-        }
-        else {
-            $cited= 0;
-        }
-        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }
 
     /**
@@ -308,62 +136,7 @@ class UtilizationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-        $utilized = 0;
-        $completed = 0;
-        $presented = 0;
-        $published = 0;
-        $cited = 0;
-        $copyrighted = 0;
-
-        if ($has_utilization) {
-            $utilized = 1;
-        }
-        else {
-            $utilized = 0;
-        }
-
-        if ($has_completion) {
-            $completed = 1;
-        }
-        else {
-            $completed = 0;
-        }
-
-        if ($has_presentation) {
-            $presented = 1;
-        }
-        else {
-            $presented = 0;
-        }
-
-        if ($has_publication) {
-            $published = 1;
-        }
-        else {
-            $published = 0;
-        }
-
-        if ($has_copyright) {
-            $copyrighted = 1;
-        }
-        else {
-            $copyrighted = 0;
-        }
-
-        if ($has_citation) {
-            $cited = 1;
-        }
-        else {
-            $cited= 0;
-        }
-
-        return view('research.utilization.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+        return view('research.utilization.edit', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }
 
     /**
@@ -404,7 +177,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->research_code)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->include_once)->with('success', 'Research Utilization Added Successfully');
     }
 
     /**
@@ -416,6 +189,6 @@ class UtilizationController extends Controller
     public function destroy(Research $research, ResearchUtilization $utilization)
     {
         $utilization->delete();
-        return redirect()->route('research.utilization.index', $research->research_code)->with('success', 'Research Utilization Deleted Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Deleted Successfully');
     }
 }

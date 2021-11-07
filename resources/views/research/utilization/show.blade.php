@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code, 'research_status' => $research->status])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
 
@@ -18,8 +18,11 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('research.utilization.edit', [$research->research_code, $values['id']]) }}" class="btn btn-warning">Update</a>
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                @if ($research->nature_of_involvement == 11)
+
+                                    <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="btn btn-warning">Update</a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                @endif
                             </div>
                         </div>
                         <hr>
@@ -111,7 +114,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this utilization?</h5>
-                    <form action="{{ route('research.utilization.destroy', [$research->research_code, $values['id']]) }}" method="POST">
+                    <form action="{{ route('research.utilization.destroy', [$research->id, $values['id']]) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>
@@ -138,101 +141,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-        <script>
-        $(function() {
-            $('#link-to-register').show();
-            $('#link-to-utilize').show();
-
-            $('#link-to-complete').show();
-            $("#link-to-publish").show();
-            $("#link-to-present").show();
-            $("#link-to-copyright").show();
-            $("#link-to-cite").show();
-        });
-
-        if ( {{$research->status}} ==26 ){
-            $('.research-tabs').remove();
-        }
-
-        else if ({{ $research->status }} == 27) {
-            if ({{ $utilized }} == 0) {
-                // $('#link-to-register').show();
-                // $('#link-to-utilize').show();
-                $('#link-to-utilize').remove();
-            }
-            else {
-                $('.research-tabs').remove();
-            }
-        }
-
-        else if ({{ $research->status }} == 28) {
-            $("#link-to-cite").remove();
-
-            if ({{ $published }} == 0) {
-                $("#link-to-publish").remove();
-            }
-
-            if ({{ $presented }} == 0) {
-                $("#link-to-present").remove();
-            }
-
-            if ({{ $copyrighted }} == 0) {
-                $("#link-to-copyright").remove();
-            }
-
-            if ({{ $utilized }} == 0) {
-                $("#link-to-utilize").remove();
-            }
-        }
-
-        else if ({{ $research->status }} == 29) {
-            $("#link-to-cite").remove();
-
-            if ({{ $published }} == 0) {
-                $("#link-to-publish").remove();
-            }
-
-            if ({{ $copyrighted }} == 0) {
-                $("#link-to-copyright").remove();
-            }
-
-            if ({{ $utilized }} == 0) {
-                $("#link-to-utilize").remove();
-            }
-        }
-
-        else if ({{ $research->status }} == 30) {
-            if ({{ $presented }} == 0) {
-                $("#link-to-present").remove();
-            }
-
-            if ({{ $copyrighted }} == 0) {
-                $("#link-to-copyright").remove();
-            }
-
-            if ({{ $cited }} == 0) {
-                $("#link-to-cite").remove();
-            }
-
-            if ({{ $utilized }} == 0) {
-                $("#link-to-utilize").remove();
-            }
-        }
-
-        else if ({{$research->status}} == 31) {
-            if ({{ $copyrighted }} == 0) {
-                $("#link-to-copyright").remove();
-            }
-
-            if ({{ $cited }} == 0) {
-                $("#link-to-cite").remove();
-            }
-
-            if ({{ $utilized }} == 0) {
-                $("#link-to-utilize").remove();
-            }
-        }
     </script>
 @endpush
 

@@ -18,30 +18,33 @@
                         <form action="{{ route('research.update', $research->id) }}" method="post">
                             @csrf
                             @method('put')
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
+                            <fieldset id="research">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Colleges/Campus/Branch</label>
+        
+                                            <select name="college_id" id="college" class="form-control custom-select"  required>
+                                                <option value="" selected disabled>Choose...</option>
+                                                @foreach ($colleges as $college)
+                                                <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
+                                                @endforeach
+                                            
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Department</label>
+
+                                        <select name="department_id" id="department" class="form-control custom-select" required>
                                             <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
-                                            @endforeach
-                                           
                                         </select>
-                                        
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label>Department</label>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $values])
+                                @include('research.form-view', ['formFields' => $researchFields, 'value' => $values])
+                            </fieldset>
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -62,7 +65,7 @@
                             <div class="col-md-12">
                                 <h5 id="textHome" style="color:maroon">Supporting Documents</h5>
                             </div>
-                        </div>
+                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-file-alt mr-2"></i>Documents</h6>
@@ -70,7 +73,7 @@
                                     @if (count($researchDocuments) > 0)
                                         @foreach ($researchDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-12 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
@@ -80,11 +83,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                                                                </div>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -103,33 +102,26 @@
                                     @if(count($researchDocuments) > 0)
                                         @foreach ($researchDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-6 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
-                                                        <div class="card-body">
-                                                            <table class="table table-sm my-n3 text-center">
-                                                                <tr>
-                                                                    <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                                                                    </th>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             @endif
                                         @endforeach
                                     @else
                                         <div class="col-md-4 offset-md-4">
-                                            <h6 class="text-center">No Documents Attached</h6>
+                                            <h6 class="text-center">No Images Attached</h6>
                                         </div>
                                     </div>
                                     @endif
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -194,7 +186,41 @@
                 $('#target_date').attr('disabled', true);
             }
 
+            $('#classification').on('change', function () {
+                $('#classification').attr('disabled', 'disabled'); 
+            });
+            $('#category').on('change', function () {
+                $('#category').attr('disabled', 'disabled'); 
+            });
+            $('#agenda').on('change', function () {
+                $('#agenda').attr('disabled', 'disabled'); 
+            });
+            $('#nature_of_involvement').on('change', function (){
+                $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
+            });
+            $('#research_type').on('change', function () {
+                $('#research_type').attr('disabled', 'disabled'); 
+            });
+            $('#funding_type').on('change', function () {
+                $('#funding_type').attr('disabled', 'disabled'); 
+            });
+            $('#currency_select').on('change', function () {
+                $('#currency_select').attr('disabled', 'disabled'); 
+            });
+
             $(function() {
+                $('#title').attr('disabled', 'disabled'); 
+                $('#keywords').attr('disabled', 'disabled'); 
+                // $('#researchers').val(researcher+", "+"{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
+                $('#researchers').attr('disabled', true);
+                $('#currency_select').empty().append('<option selected="selected" value="{{ $values["currency"] }}">{{ $values["currency_code"]}}</option>');
+                $('#currency_select').attr('disabled', true);
+                $('#funding_amount').attr('disabled', true);
+                $('#funding_agency').attr('disabled', true);
+                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
+                $('#status').attr('disabled', true);
+                $('#description').attr('disabled', true);
+
                 if ({{$research->status}} == 26) {
                     hide_dates();
                     
@@ -214,8 +240,6 @@
                     });
                     document.getElementById("department").value = "{{ $values['department_id'] }}";
                 });
-                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
-                $('#status').attr('disabled', true);
             });
 
             $('#status').on('change', function(){
@@ -225,11 +249,11 @@
                     $('#start_date').removeAttr('required');
                     $('#target_date').removeAttr('required');
                 }
-                else if (statusId == 27) {
+                else if (statusId != 27) {
                     $('.start_date').show();
                     $('.target_date').show();
-                    $('#start_date').attr("required", true);
-                    $('#target_date').attr("required", true);;
+                    $('#start_date').attr("disabled", true);
+                    $('#target_date').attr("disabled", true);;
                 }
             });
         </script>

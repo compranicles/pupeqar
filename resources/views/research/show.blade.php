@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Details') }}
+            {{ __($research->research_code.' > Research Information') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code, 'research_status' => $research->status])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
 
@@ -18,89 +18,30 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4>Research Registration</h4>
+                                <h4>Research Registration </h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <div class="dropdown">
-                                    <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Options
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
-                                    @switch($research->status_name)
-                                            @case('Ongoing')
-                                                <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                @break
-                                            @case('Completed')
-                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                @if ($copyrighted == 0)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                @endif
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                @if ($copyrighted == 1)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
-                                                @endif
-                                                @break
-                                            @case('Published')
-                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                @if ($copyrighted == 0)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                @endif
-                                                <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
-                                                @if ($copyrighted == 1)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
-                                                @endif
-                                                @break
-                                            @case('Presented')
-                                                
-                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                @if ($copyrighted == 0)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                @endif
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Presentation</a>
-                                                @if ($copyrighted == 1)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
-                                                @endif
-                                                @break
-                                            @case('Presented & Published')
-                                                @if ($copyrighted == 0)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                @endif
-                                                <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
-                                                <a class="dropdown-item" href="{{ route('research.presentation', $research->research_code) }}">Edit Presentation</a>
-                                                @if ($copyrighted == 1)
-                                                    <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Edit Copyright</a>
-                                                @endif
-                                                @break
-                                            @case('Deferred')
-                                                @break
-                                            @default
-                                                
-                                        @endswitch
-                                        <a class="dropdown-item" href="{{ route('research.edit', $research->research_code) }}">Edit Research Info</a>
-                                        <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                <div class="mb-0">
+                                    <div class="d-flex justify-content-end align-items-baseline">
+                                        @if ($research->nature_of_involvement != 11)
+                                            <a href="{{ route('research.retrieve', $research->research_code) }}" class="btn btn-outline-dark btn-sm mr-2">Retrieve Leader's Version</a>
+                                        @endif
+                                        @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement])
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-12">
+                                {{-- Success Message --}}
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-index mx-3">
+                                    {{ $message }}
+                                </div>
+                                @endif
                             </div>
                         </div>
                         <hr>
                         <fieldset id="research">
-                        <div class="row">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Colleges/Campus/Branch</label>
@@ -176,7 +117,7 @@
                                             @endforeach
                                         @else
                                             <div class="col-md-4 offset-md-4">
-                                                <h6 class="text-center">No Documents Attached</h6>
+                                                <h6 class="text-center">No Images Attached</h6>
                                             </div>
                                         </div>
                                         @endif
@@ -202,7 +143,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this research?</h5>
-                    <form action="{{ route('research.destroy', $research->research_code) }}" method="POST">
+                    <form action="{{ route('research.destroy', $research->id) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>
@@ -237,16 +178,6 @@
         });
     </script>
             <script>
-        $(function() {
-            $('#link-to-register').show();
-            $('#link-to-utilize').show();
-
-            $('#link-to-complete').show();
-            $("#link-to-publish").show();
-            $("#link-to-present").show();
-            $("#link-to-copyright").show();
-            $("#link-to-cite").show();
-        });
 
         if ( {{$research->status}} ==26 ){
             $('.start_date').hide();

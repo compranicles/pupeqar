@@ -30,72 +30,18 @@ class CopyrightedController extends Controller
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
         if($values == null){
-            return redirect()->route('research.copyrighted.create', $research->research_code);
+            return redirect()->route('research.copyrighted.create', $research->id);
         }
         $values = array_merge($research->toArray(), $values->toArray());
-        // dd($values);
-
-        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-        $utilized = 0;
-        $completed = 0;
-        $presented = 0;
-        $published = 0;
-        $cited = 0;
-        $copyrighted = 0;
-
-        if ($has_utilization) {
-            $utilized = 1;
-        }
-        else {
-            $utilized = 0;
-        }
-
-        if ($has_completion) {
-            $completed = 1;
-        }
-        else {
-            $completed = 0;
-        }
-
-        if ($has_presentation) {
-            $presented = 1;
-        }
-        else {
-            $presented = 0;
-        }
-
-        if ($has_publication) {
-            $published = 1;
-        }
-        else {
-            $published = 0;
-        }
-
-        if ($has_copyright) {
-            $copyrighted = 1;
-        }
-        else {
-            $copyrighted = 0;
-        }
-
-        if ($has_citation) {
-            $cited = 1;
-        }
-        else {
-            $cited= 0;
-        }
-        return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+    
+        return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }
 
     /**
@@ -109,65 +55,9 @@ class CopyrightedController extends Controller
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
-        // $research = $research->first()->except('description');
-        // $research = except($research['description']);
-            // dd($research);
 
-            $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-            $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-            $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-            $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-            $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-            $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-            $utilized = 0;
-            $completed = 0;
-            $presented = 0;
-            $published = 0;
-            $cited = 0;
-            $copyrighted = 0;
-    
-            if ($has_utilization) {
-                $utilized = 1;
-            }
-            else {
-                $utilized = 0;
-            }
-    
-            if ($has_completion) {
-                $completed = 1;
-            }
-            else {
-                $completed = 0;
-            }
-    
-            if ($has_presentation) {
-                $presented = 1;
-            }
-            else {
-                $presented = 0;
-            }
-    
-            if ($has_publication) {
-                $published = 1;
-            }
-            else {
-                $published = 0;
-            }
-    
-            if ($has_copyright) {
-                $copyrighted = 1;
-            }
-            else {
-                $copyrighted = 0;
-            }
-    
-            if ($has_citation) {
-                $cited = 1;
-            }
-            else {
-                $cited= 0;
-            }
-        return view('research.copyrighted.create', compact('researchFields', 'research', 'utilized', 'completed', 'presented', 'published', 'copyrighted', 'cited'));
+           
+        return view('research.copyrighted.create', compact('researchFields', 'research'));
     }
 
     /**
@@ -206,7 +96,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        return redirect()->route('research.copyrighted.index', $research->research_code)->with('success', 'Research Copyrighted Added Successfully');
+        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research Copyrighted Added Successfully');
     }
 
 
@@ -235,65 +125,9 @@ class CopyrightedController extends Controller
         ->orderBy('order')->get();
     
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 7)->get()->toArray();
-        
-
-        $has_completion = ResearchComplete::where('research_code', $research->research_code)->first();
-        $has_presentation = ResearchPresentation::where('research_code', $research->research_code)->first();
-        $has_publication = ResearchPublication::where('research_code', $research->research_code)->first();
-        $has_citation = ResearchCitation::where('research_code', $research->research_code)->first();
-        $has_copyright = ResearchCopyright::where('research_code', $research->research_code)->first();
-        $has_utilization = ResearchUtilization::where('research_code', $research->research_code)->first();
-        $utilized = 0;
-        $completed = 0;
-        $presented = 0;
-        $published = 0;
-        $cited = 0;
-        $varcopyrighted = 0;
-
-        if ($has_utilization) {
-            $utilized = 1;
-        }
-        else {
-            $utilized = 0;
-        }
-
-        if ($has_completion) {
-            $completed = 1;
-        }
-        else {
-            $completed = 0;
-        }
-
-        if ($has_presentation) {
-            $presented = 1;
-        }
-        else {
-            $presented = 0;
-        }
-
-        if ($has_publication) {
-            $published = 1;
-        }
-        else {
-            $published = 0;
-        }
-
-        if ($has_copyright) {
-            $varcopyrighted = 1;
-        }
-        else {
-            $varcopyrighted = 0;
-        }
-
-        if ($has_citation) {
-            $cited = 1;
-        }
-        else {
-            $cited= 0;
-        }
 
         $value = array_merge($research->toArray(), $copyrighted->toArray());
-        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'utilized', 'completed', 'presented', 'published', 'varcopyrighted', 'cited'));
+        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
     /**
@@ -333,7 +167,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        return redirect()->route('research.copyrighted.index', $research->research_code)->with('success', 'Research Copyrighted Updated Successfully');
+        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research Copyrighted Updated Successfully');
     }
 
     /**

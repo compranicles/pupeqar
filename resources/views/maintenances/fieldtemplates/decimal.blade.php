@@ -38,10 +38,10 @@
                     $("#currency_select").append(new Option(item.code, item.id));
                 });
                 var value = "{{ $currency }}";
-                if (value != ''){
+                if (value == ''){
                     $("#currency_select").val(74);
                 }else{
-                    $("#currency_select").val("{{ $currency }}");
+                    $("#currency_select").val(value);
                 }
             });
         });

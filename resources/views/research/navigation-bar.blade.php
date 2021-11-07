@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <ul class="nav justify-content-center m-n3">
                     @switch($research_status)
-                        @case('26')
+                        @case('26') 
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -96,6 +96,12 @@
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.copyrighted.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.copyrighted.*')">
                                     {{ __('Copyright') }}
+                                </x-jet-nav-link>
+                            </li>
+
+                            <li class="nav-item">
+                                <x-jet-nav-link href="{{ route('research.publication.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.publication.*')">
+                                    {{ __('Publication') }}
                                 </x-jet-nav-link>
                             </li>
 

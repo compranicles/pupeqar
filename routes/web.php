@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth'], function() {
     // Colleges and Departments
     Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
     //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
+    Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);
     Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
     //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
 
@@ -78,12 +79,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research-forms.research-fields', \App\Http\Controllers\Maintenances\ResearchFieldController::class);
 
     //researchSubmissions
-    Route::get('/research/complete/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
-    Route::get('/research/publication/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');
-    Route::get('/research/presentation/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'presentation'])->name('research.presentation');
-    Route::get('/research/copyright/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'copyright'])->name('research.copyright');
+    Route::get('/research/complete/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
+    Route::get('/research/publication/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');
+    Route::get('/research/presentation/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'presentation'])->name('research.presentation');
+    Route::get('/research/copyright/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'copyright'])->name('research.copyright');
     Route::get('/research/remove-document/{filename}', [\App\Http\Controllers\Research\ResearchController::class, 'removeDoc'])->name('research.removedoc');
     
+    Route::post('/research/with-code', [\App\Http\Controllers\Research\ResearchController::class, 'useResearchCode'])->name('research.code');
+    Route::get('/research/with-code/create/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'addResearch'])->name('research.code.create');
+    Route::post('/research/with-code/save/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'saveResearch'])->name('research.code.save');
+    Route::get('/research/retrieve/{research_code}',  [\App\Http\Controllers\Research\ResearchController::class, 'retrieve'])->name('research.retrieve');
+
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
     Route::resource('research.publication', \App\Http\Controllers\Research\PublicationController::class);
@@ -111,7 +117,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
     Route::resource('users', \App\Http\Controllers\UserController::class);
 
-    Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);
      
 
     // HAP routes

@@ -10,11 +10,7 @@ class Research extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'research_code';
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 
