@@ -26,6 +26,25 @@
                 </li>
                 
                 <li class="navbar-nav mr-auto">
+                    <x-jet-dropdown>
+                        <x-slot name="trigger">
+                            Authentication
+                        </x-slot>
+                        <x-slot name="content">
+                            <x-jet-dropdown-link href="">
+                                {{ __('Users') }}
+                            </x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="">
+                                {{ __('Roles') }}
+                            </x-jet-dropdown-link>
+                            <x-jet-dropdown-link href="">
+                                {{ __('Permissions') }}
+                            </x-jet-dropdown-link>
+                        </x-slot>
+                    </x-jet-dropdown>
+                </li>
+
+                <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
