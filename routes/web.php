@@ -67,6 +67,26 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/dropdowns/options/inactivate/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'inactivate']);
     Route::resource('dropdowns', \App\Http\Controllers\Maintenances\DropdownController::class);
 
+    //reportsManagement
+    Route::get('/reports/tables/{table}', [\App\Http\Controllers\Maintenances\ReportCategoryController::class, 'getTableColumns']);
+    Route::get('/report-columns/activate/{id}', [\App\Http\Controllers\Maintenances\ReportColumnController::class, 'activate']);
+    Route::get('/report-columns/inactivate/{id}', [\App\Http\Controllers\Maintenances\ReportColumnController::class, 'inactivate']);
+    Route::post('/report-columns/arrange', [\App\Http\Controllers\Maintenances\ReportColumnController::class, 'arrange']);
+    Route::resource('report-types', \App\Http\Controllers\Maintenances\ReportTypeController::class);
+    Route::resource('report-categories', \App\Http\Controllers\Maintenances\ReportCategoryController::class);
+    Route::resource('report-categories.report-columns', \App\Http\Controllers\Maintenances\ReportColumnController::class);
+
+    //inventionForms
+    Route::get('/invention-forms/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'activate']);
+    Route::get('/invention-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'inactivate']);
+    Route::resource('invention-forms', \App\Http\Controllers\Maintenances\InventionFormController::class);
+
+    //inventionFields
+    Route::get('/invention-fields/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'activate']);
+    Route::get('/invention-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'inactivate']);
+    Route::post('/invention-fields/arrange', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'arrange']);
+    Route::resource('invention-forms.invention-fields', \App\Http\Controllers\Maintenances\InventionFieldController::class);
+
     //researchForms
     Route::get('/research-forms/activate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'activate']);
     Route::get('/research-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'inactivate']);
@@ -98,19 +118,16 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research.utilization', \App\Http\Controllers\Research\UtilizationController::class);
     Route::resource('research.copyrighted', \App\Http\Controllers\Research\CopyrightedController::class);
 
-    //inventionForms
-    Route::get('/invention-forms/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'activate']);
-    Route::get('/invention-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFormController::class, 'inactivate']);
-    Route::resource('invention-forms', \App\Http\Controllers\Maintenances\InventionFormController::class);
-
-    //inventionFields
-    Route::get('/invention-fields/activate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'activate']);
-    Route::get('/invention-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'inactivate']);
-    Route::post('/invention-fields/arrange', [\App\Http\Controllers\Maintenances\InventionFieldController::class, 'arrange']);
-    Route::resource('invention-forms.invention-fields', \App\Http\Controllers\Maintenances\InventionFieldController::class);
-
+    
     //invention
     Route::resource('inventions', \App\Http\Controllers\Inventions\InventionController::class);
+
+    // Reports
+    Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
+    Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
+
+    //faculty Reports
+    Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
 
     //users
     Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');

@@ -17,6 +17,14 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-12">
+                                {{-- Success Message --}}
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-index mx-3">
+                                    {{ $message }}
+                                </div>
+                                @endif
+                            </div>
                             <div class="col-md-6">
                                 <h4>Research Copyrighted</h4>
                             </div>

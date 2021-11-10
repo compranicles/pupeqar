@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Forms Manager') }}
+            {{ __('Invention Forms Manager') }}
         </h2>
     </x-slot>
 

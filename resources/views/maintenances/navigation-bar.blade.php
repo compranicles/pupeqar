@@ -32,6 +32,12 @@
                     </li>
                     
                     <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('report-types.index') }}" class="text-dark" :active="request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
+                            {{ __('Reports') }}
+                        </x-jet-nav-link>
+                    </li>
+
+                    <li class="nav-item">
                         <x-jet-nav-link href="{{ route('research-forms.index') }}" class="text-dark" :active="request()->routeIs('research-forms.*')">
                             {{ __('Research') }}
                         </x-jet-nav-link>

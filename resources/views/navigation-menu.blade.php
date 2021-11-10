@@ -26,7 +26,7 @@
                 </li>
                 
                 <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*')">
+                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
@@ -40,6 +40,11 @@
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
                         {{ __('Inventions') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
+                        {{ __('Reports') }}
                     </x-jet-nav-link>
                 </li>
                 @endif

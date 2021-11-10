@@ -18,6 +18,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
+                                {{-- Success Message --}}
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-index mx-3">
+                                    {{ $message }}
+                                </div>
+                                @endif
+                            </div>
+                            <div class="col-md-12">
                                 @if ($research->nature_of_involvement == 11)
 
                                     <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="btn btn-warning">Update</a>

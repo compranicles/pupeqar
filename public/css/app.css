@@ -12809,4 +12809,10 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
   }
 }
 
+
+
 /* ----------------- RESEARCH FORM ACTIVATION ------------------ */
+
+.table-condensed{
+  font-size: 0.625rem !important; 
+}

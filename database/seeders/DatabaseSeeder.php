@@ -32,6 +32,9 @@ class DatabaseSeeder extends Seeder
             InventionDropdownSeeder::class,
             InventionFormSeeder::class,
             InventionSeeder::class,
+
+
+            ReportTypeSeeder::class,
         ]);
     }
 }

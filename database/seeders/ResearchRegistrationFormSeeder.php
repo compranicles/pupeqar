@@ -84,7 +84,7 @@ class ResearchRegistrationFormSeeder extends Seeder
 
         ResearchField::create([
             'research_form_id' => 1,
-            'label' => 'Keywords',
+            'label' => 'Keywords (at least five (5) keywords)',
             'name' => 'keywords',
             'placeholder' => null,
             'size' => 'col-md-12',

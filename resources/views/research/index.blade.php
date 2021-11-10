@@ -94,7 +94,6 @@
                 "searching":true
             });
             var table =  $("#researchTable").DataTable();
-            // $("#researchTable_filter.dataTables_filter").append($("#status-filter"));
 
             var statusIndex = 0;
             $("#researchTable th").each(function (i) {
