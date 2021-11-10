@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Authentication;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Authentication\Permission;
 
 class PermissionController extends Controller
 {
@@ -14,7 +15,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        //
+        $permissions = Permission::get();
+        return view('authentication.permissions.index', compact('permissions'));
     }
 
     /**
@@ -24,7 +26,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('authentication.permissions.create');
     }
 
     /**
@@ -35,7 +37,15 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'permission_name' => 'required|unique:App\Models\Authentication\Permission,name,NULL,id,deleted_at,NULL|max:255',
+        ]);
+
+        Permission::create([
+            'name' => $request->input('permission_name'),
+        ]);
+
+        return redirect()->route('admin.permissions.create')->with('add_permission_success', 'Added permission has been saved.');
     }
 
     /**
@@ -55,9 +65,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
-        //
+        return view('authentication.permissions.edit', compact('permission'));
     }
 
     /**
@@ -67,9 +77,17 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
-        //
+        $request->validate([
+            'permission_name' => ['required', 'unique:App\Models\Authentication\Permission,name,NULL,id,deleted_at,NULL', 'max:255'],
+        ]);
+
+        $permission->update([
+            'name'=>$request->input('permission_name'),
+        ]);
+
+        return redirect()->route('admin.permissions.index')->with('edit_permission_success', 'Edited permission has been saved.');
     }
 
     /**
@@ -78,8 +96,10 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+
+        return redirect()->route('admin.permissions.index')->with('edit_permission_success', 'Permission has been deleted.');
     }
 }

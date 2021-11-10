@@ -1,26 +1,19 @@
 <x-app-layout>
-    @include('admin.auth.header')
+    <x-slot name="header">
+        <h2 class="h4 font-weight-bold">
+            {{ __('Create Role') }}
+        </h2>
+    </x-slot>
     <div class="container">
-      <div class="row">
+      <div class="row justify-content-center">
 
-        <div class="col-md-12">
-          @include('admin.auth.roles.components.breadcrumb')
-              <li class="breadcrumb-item" aria-current="page">List</li>
-            </ol>
-          </nav>
-          <br>
-        </div>
-
-        <div class="col-md-3">
-          @include('admin.auth.index')
-        </div>
-
-        <div class="col-md-9">
+        
+        <div class="col-md-9 offset-md-2">
           <div class="d-flex align-content-center">
             <h2 class="ml-3 mr-3">Roles</h2>
-            <p class="mt-2 mr-3">Add Role.</p>
+            <p class="mt-2 mr-3">Create Role.</p>
             <p class="mt-2">
-              <a class="back_link" href="{{ route('roles.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Roles</a>
+              <a class="back_link" href="{{ route('admin.roles.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Roles</a>
             </p>
           </div>
 
@@ -41,15 +34,15 @@
 
             <div class="card">
               <div class="card-body">
-                <form method="POST" action="{{ route('roles.store') }}">
+                <form method="POST" action="{{ route('admin.roles.store') }}">
                   @csrf
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <x-jet-label value="{{ __('Name') }}" />
     
-                        <x-jet-input class="{{ $errors->has('role_name') ? 'is-invalid' : '' }}" type="text" name="role_name" multiple
-                                    :value="old('role_name')" required autofocus autocomplete="role_name" />
+                        <x-jet-input class="{{ $errors->has('role_name') ? 'is-invalid' : '' }}" type="text" name="role_name"
+                                    required autofocus />
                         <x-jet-input-error for="role_name"></x-jet-input-error>
                       </div>
                     </div>
@@ -61,25 +54,27 @@
                       </div>
                     </div>
                     <div class="row">
-                    @foreach ($permissions as $permission)
+                    @forelse ($permissions as $permission)
                       <div class="col-md-4 ml-3">
                         <label for="{{ $permission->id }}">
                           <input type="checkbox" id="{{ $permission->id }}" value="{{ $permission->id }}" name="permissions[]">
                           {{ $permission->name }}
-                          @empty
-                          <p></p>
                         </label>
                       </div>
-                    @endforeach
+                    @empty
+                      <div class="m-auto">
+                        <p>No permissions found. <a href="{{ route('admin.permissions.create') }}">Create now.</a></p>
+                      </div>
+                    @endforelse
                     </div>
                   </div>       
               </div>
             </div>
             <div class="row">
-              <div class="mb-0 mt-3 ml-2">
+              <div class="mb-0 mt-3 ml-3">
                 <div class="d-flex justify-content-start align-items-baseline">
                   <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
-                  <a href="{{ route('roles.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
+                  <a href="{{ route('admin.roles.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
                 </div>
               </div>
             </div>
@@ -97,6 +92,4 @@
         }, 4000);
       </script>
     @endpush
-
-    @push('pagetitle', "Add Role")
   </x-app-layout>

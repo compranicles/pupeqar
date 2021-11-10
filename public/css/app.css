@@ -1654,7 +1654,7 @@ pre code {
 .table th,
 .table td {
   padding: 0.75rem;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
 .table thead th {
@@ -3996,6 +3996,11 @@ input[type=button].btn-block {
   padding-right: 0;
   padding-left: 0;
 }
+
+.navbar-nav .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 .navbar-nav .dropdown-menu {
   position: static;
   float: none;
