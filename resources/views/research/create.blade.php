@@ -15,7 +15,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label>
+                                        <label>Colleges/Campus/Branch</label><span style="color: red;"> *</span>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Department</label>
+                                    <label>Department</label><span style="color: red;"> *</span>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
@@ -37,10 +37,12 @@
                             </div>
                             
                             @include('research.form', ['formFields' => $researchFields])
-                            <div class="col-md-12">
-                                <div class="mb-0">
-                                    <div class="d-flex justify-content-end align-items-baseline">
-                                        <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-0">
+                                        <div class="d-flex justify-content-end align-items-baseline">
+                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

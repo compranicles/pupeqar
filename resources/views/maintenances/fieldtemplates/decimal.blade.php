@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label>
+        <label>{{ $fieldInfo->label }}</label><?php if ($fieldInfo->required == 1) { echo "<span style='color: red'> *</span>"; } ?>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <select class="custom-select" name="currency" id="currency_select">
