@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Invite;
+// use App\Models\Invite;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Notifications\InviteNotification;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Role;
+use App\Models\Authentication\Permission;
+use App\Models\Authentication\RolePermission;
+use App\Models\Authentication\UserRole;
 
 class UserController extends Controller
 {
@@ -34,7 +38,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::get();
+        $permissions = Permission::get();
+        return view('users.create', compact('roles', 'permissions'));
     }
 
     /**
@@ -48,25 +54,35 @@ class UserController extends Controller
 
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['string', 'max:255'],
+            'middle_name' => ['max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'date_of_birth' => ['required'],
+            'birthdate' => ['required'],
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'password' => ['required'],
         ]);
 
-        User::create([
+        $user = User::create([
             'first_name' => $request->input('first_name'),
             'middle_name' => $request->input('middle_name'),
             'last_name' => $request->input('last_name'),
             'suffix' => $request->input('suffix') ?? null,
-            'date_of_birth' => $request->input('date_of_birth'),
-            'role_id' => $request->input('role_id'),
+            'date_of_birth' => $request->input('birthdate'),
+            'role_id' => 1,
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
 
-        return redirect()->route('users.index')->with('success','User added successfully.');
+        $user_id = $user->id;
+
+        $roles = $request->input('roles');
+        foreach($roles as $role){
+            $user->userrole()->create([
+                'user_id' => $user_id,
+                'role_id' => $role,
+            ]);
+        }
+
+        return redirect()->route('users.create')->with('add_user_success','User added successfully.');
     }
 
     /**
@@ -77,6 +93,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $users = User::all();
         return view('users.show', compact('user'));
     }
 
@@ -88,7 +105,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $rolehaspermissions = RolePermission::join('user_roles', 'user_roles.role_id', '=', 'role_permissions.role_id')
+                                        ->where('user_roles.user_id', '=', $user->id)
+                                        ->select('role_permissions.role_id')
+                                        ->get();
+        $roles = Role::get();
+        $permissions = Permission::get();
+        return view('users.edit', compact('user', 'roles', 'permissions', 'rolehaspermissions'));
     }
 
     /**
@@ -101,21 +124,22 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'middle_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'max:255'],
+            // 'middle_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
             'date_of_birth' => ['required'],
         ]);
         $user->update([
             'first_name' => $request->input('first_name'),
-            'middle_name' => $request->input('middle_name'),
+            'middle_name' => $request->input('middle_name') ?? null,
             'last_name' => $request->input('last_name'),
             'suffix' => $request->input('suffix') ?? null,
             'date_of_birth' => $request->input('date_of_birth'),
             'role_id' => $request->input('role_id'),
         ]);
 
-        return redirect()->route('users.index')->with('success','User updated successfully.');
+        return redirect()->route('users.index')->with('edit_user_success','User record updated successfully.');
     }
 
     /**
@@ -128,7 +152,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with('edit_user_success', 'User record deleted successfully');
     }
 
     // public function invite(){

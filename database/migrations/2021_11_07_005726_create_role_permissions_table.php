@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsToDropdownOptionsTable extends Migration
+class CreateRolePermissionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class AddColumnsToDropdownOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('dropdown_options', function (Blueprint $table) {
-            $table->string('name');
-            $table->integer('order');
-            $table->integer('is_active');
+        Schema::create('role_permissions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('role_id');
+            $table->foreignId('permission_id');     
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,8 +29,6 @@ class AddColumnsToDropdownOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('dropdown_options', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('role_permissions');
     }
 }

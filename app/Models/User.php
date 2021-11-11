@@ -66,5 +66,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    
+    public function userrole() {
+        return $this->hasMany(\App\Models\Authentication\UserRole::class);
+    }
 }

@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @if ($message = Session::get('success'))
+                        @if ($message = Session::get('edit_user_success'))
                             <div class="alert alert-success">
                                 {{ $message }}
                             </div>
@@ -17,10 +17,6 @@
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
                                 <a href="{{ route('users.create') }}" class="btn btn-success mb-2">Add New User</a>
-                            </div>
-            
-                            <div class="d-inline ">
-                                <a href="{{ route('users.invite') }}" class="btn btn-success mb-2">Invite a User</a>
                             </div>
                         </div>  
                         <hr>

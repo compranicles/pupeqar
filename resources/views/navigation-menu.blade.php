@@ -20,11 +20,27 @@
                 
                 @if (auth()->user()->role_id == 1)
                 <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
+                    <x-jet-nav-link href="">
                         {{ __('Users') }}
                     </x-jet-nav-link>
                 </li>
-                
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                        Authentication
+                    </a>
+                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
+                        @can('viewAny', App\Models\Role::class)
+                        <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}">Roles</a></li>
+                        @endcan
+
+                        @can('viewAny', App\Models\Authentication\Permission::class)
+                        <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li>
+                        @endcan
+                    </ul>
+                </li>
+
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}

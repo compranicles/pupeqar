@@ -19,8 +19,8 @@ Route::get('/', function () {
 })->name('home')->middleware('guest');
 
 // registration
-Route::get('/registration/{token}', [\App\Http\Controllers\Administrators\UserController::class, 'registration_view'])->name('registration')->middleware('guest');
-Route::post('/registration/accept', [\App\Http\Controllers\Registration\RegisterController::class, 'create'])->name('accept')->middleware('guest');
+// Route::get('/registration/{token}', [\App\Http\Controllers\Administrators\UserController::class, 'registration_view'])->name('registration')->middleware('guest');
+// Route::post('/registration/accept', [\App\Http\Controllers\Registration\RegisterController::class, 'create'])->name('accept')->middleware('guest');
 
 // dashboard and homepage display
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
@@ -130,26 +130,50 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
 
     //users
-    Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
-    Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
+    // Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
+    // Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
     Route::resource('users', \App\Http\Controllers\UserController::class);
 
      
 
     // HAP routes
-    Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
-    });
+    // Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
+    // });
 
     // faculty/professor routes
-    Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
-    });
+    // Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
+    // });
     
     // admin routes
     Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
 
+        // forms
+        Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
+        Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
+        // form's fields
+        Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
+        Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
+        Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
+        Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
+
+        // users
+        // Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
+        // Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
+        // Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
+
+        //maintenances
+        Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
+        //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
+        
+        Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
+        //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
+    
+        //authentication management
+        //roles
+        Route::resource('/authentication/roles', \App\Http\Controllers\Authentication\RoleController::class);
+        //permissions
+        Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
         //users
-        Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
-        Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
-        Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
+        Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
     });
 });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsToDropdownOptionsTable extends Migration
+class AddSoftdeletesInRolesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class AddColumnsToDropdownOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('dropdown_options', function (Blueprint $table) {
-            $table->string('name');
-            $table->integer('order');
-            $table->integer('is_active');
+        Schema::table('roles', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -27,7 +25,7 @@ class AddColumnsToDropdownOptionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('dropdown_options', function (Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             //
         });
     }
