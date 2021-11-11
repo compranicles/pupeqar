@@ -22,6 +22,7 @@
               <div class="card-body">
                 <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
                   @csrf
+                  @method('PUT')
                   <div class="row">
                   <div class="col-md-12">
                       <div class="form-group">
@@ -50,45 +51,27 @@
                         <x-jet-label value="{{ __('Email') }}" />
                         <x-jet-input type="email" name="email" :value="old('email', $user->email)" disabled autocomplete="email" />
                       </div>
+                      <!-- <div class="form-group">
+                <x-jet-label value="{{ __('User Role Permissions') }}" /> -->
                       <div class="form-group">
-                <x-jet-label value="{{ __('User Role Permissions') }}" />
-                <div class="form-group ml-3">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <label>Roles</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                  @foreach ($roles as $role)
-                  @foreach ($rolehaspermissions as $rolehaspermission)
-                    <div class="col-sm-6">
-                      <label for="{{ $role->id }}">
-                        <input type="checkbox" id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" {{ $rolehaspermission->role_id == $role->id  ? 'checked' : '' }}>
-                        {{ $role->name }}
-                      </label>
-                    </div>
-                    @endforeach
-                  @endforeach
-                  </div>
-                </div>
-                <div class="form-group ml-3">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <label>Permissions</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                  @foreach ($permissions as $permission)
-                    <div class="col-sm-6">
-                      <label for="{{ $permission->id }}">
-                        <input type="checkbox" id="{{ $permission->id }}" value="{{ $permission->id }}" name="permissions[]">
-                        {{ $permission->name }}
-                      </label>
-                    </div>
-                  @endforeach
-                  </div>
-                </div>
-              </div>       
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <label>Roles</label>
+                          </div>
+                        </div>
+                        <div class="row">
+                        @foreach ($roles as $role)
+                          
+                          <div class="col-sm-6">
+                            <label for="{{ $role->id }}">
+                              <input type="checkbox" id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" <?php foreach ($rolehaspermissions as $rolehaspermission) { if ($rolehaspermission->role_id == $role->id) { echo "checked=checked" ; } }?> >
+                              {{ $role->name }}
+                            </label>
+                          </div>
+                        @endforeach
+                        </div>
+                      </div>
+         
                     </div>
                   </div>
                 </div>

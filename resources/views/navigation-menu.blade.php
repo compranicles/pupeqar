@@ -31,8 +31,13 @@
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
+                        @can('viewAny', App\Models\Role::class)
                         <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}">Roles</a></li>
+                        @endcan
+
+                        @can('viewAny', App\Models\Authentication\Permission::class)
                         <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li>
+                        @endcan
                     </ul>
                 </li>
 

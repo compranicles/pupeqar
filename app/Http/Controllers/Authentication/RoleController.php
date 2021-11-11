@@ -15,7 +15,9 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {     
+        $this->authorize('viewAny', Role::class);
+
         $roles = Role::get();
         return view('authentication.roles.index', compact('roles'));
     }
@@ -27,6 +29,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Role::class);
+
         $permissions = Permission::get();
         return view('authentication.roles.create', compact('permissions'));
     }
@@ -39,6 +43,8 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Role::class);
+
         $request->validate([
             'role_name' => 'required|unique:App\Models\Role,name,NULL,id,deleted_at,NULL|max:255',
         ]);
@@ -74,7 +80,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('view', Role::class);
     }
 
     /**
@@ -85,6 +91,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        $this->authorize('update', Role::class);
+
         $allpermissions = Permission::get();
         $yourpermissions = $role->rolepermission()->pluck('permission_id')->all();
         return view('authentication.roles.edit', compact('role', 'allpermissions', 'yourpermissions'));
@@ -99,6 +107,8 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
+        $this->authorize('update', Role::class);
+
         $request->validate([
             'role_name' => 'required|string|max:255',
         ]);
@@ -156,6 +166,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        $this->authorize('delete', Role::class);
+
         $role->delete();
 
         return redirect()->route('admin.roles.index')->with('edit_role_success', 'Role has been deleted.');

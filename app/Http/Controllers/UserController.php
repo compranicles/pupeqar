@@ -93,6 +93,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $users = User::all();
         return view('users.show', compact('user'));
     }
 
@@ -107,7 +108,7 @@ class UserController extends Controller
         $rolehaspermissions = RolePermission::join('user_roles', 'user_roles.role_id', '=', 'role_permissions.role_id')
                                         ->where('user_roles.user_id', '=', $user->id)
                                         ->select('role_permissions.role_id')
-                                        ->get();//not used
+                                        ->get();
         $roles = Role::get();
         $permissions = Permission::get();
         return view('users.edit', compact('user', 'roles', 'permissions', 'rolehaspermissions'));
