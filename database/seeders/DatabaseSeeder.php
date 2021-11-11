@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
 
 
             ReportTypeSeeder::class,
+            ReportCategorySeeder::class,
+            ReportColumnSeeder::class,
         ]);
     }
 }

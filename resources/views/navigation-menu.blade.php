@@ -18,7 +18,7 @@
                     </x-jet-nav-link>
                 </li>
                 
-                @if (auth()->user()->role_id == 1)
+                @if (auth()->user()->role_id == 3)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="">
                         {{ __('Users') }}
@@ -47,7 +47,7 @@
                     </x-jet-nav-link>
                 </li>
 
-                @elseif (auth()->user()->role_id == 3)
+                @elseif (auth()->user()->role_id == 1)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
                         {{ __('Research') }}
