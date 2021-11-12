@@ -28,7 +28,10 @@ class ResearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
+    {   
+        $this->authorize('viewAny', Research::class);
+
+        $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
         $researches = Research::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->orderBy('research.updated_at', 'desc')->get();
         return view('research.index', compact('researches', 'researchStatus'));
@@ -41,6 +44,8 @@ class ResearchController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Research::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 1)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -60,6 +65,8 @@ class ResearchController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Research::class);
+
         $departmentIni = '';
         $classIni = '';
         $catIni = '';
@@ -153,6 +160,8 @@ class ResearchController extends Controller
      */
     public function show(Research $research)
     {
+        $this->authorize('view', Research::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 1)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -185,6 +194,8 @@ class ResearchController extends Controller
      */
     public function edit(Research $research)
     {
+        $this->authorize('update', Research::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 1)->where('is_active', 1)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -217,6 +228,8 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
+        $this->authorize('update', Research::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $research->update($input);
@@ -257,6 +270,8 @@ class ResearchController extends Controller
      */
     public function destroy(Research $research)
     {
+        $this->authorize('delete', Research::class);
+
         $research->delete();
 
         return redirect()->route('research.index')->with('success', 'Research Deleted Successfully');
@@ -305,6 +320,8 @@ class ResearchController extends Controller
     }
 
     public function useResearchCode(Request $request){
+        $this->authorize('create', Research::class);
+        
         if (Research::where('research_code', $request->code)->exists())
             return redirect()->route('research.code.create', $request->code);
         else
@@ -312,6 +329,9 @@ class ResearchController extends Controller
     }
 
     public function addResearch($research_code){
+
+        $this->authorize('create', Research::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 1)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -335,6 +355,9 @@ class ResearchController extends Controller
     }
 
     public function saveResearch($research_code, Request $request){
+
+        $this->authorize('create', Research::class);
+
         $research = Research::where('research_code', $research_code)->first()->toArray();
         $research = collect($research);
         $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'researchers', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);

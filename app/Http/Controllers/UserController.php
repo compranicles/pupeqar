@@ -27,6 +27,8 @@ class UserController extends Controller
     
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         $users = User::all();
         return view('users.index', compact('users'));
     }
@@ -38,6 +40,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $roles = Role::get();
         $permissions = Permission::get();
         return view('users.create', compact('roles', 'permissions'));
@@ -51,6 +55,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
 
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -82,7 +87,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->route('users.create')->with('add_user_success','User added successfully.');
+        return redirect()->route('admin.users.create')->with('add_user_success','User added successfully.');
     }
 
     /**
@@ -93,6 +98,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('view', User::class);
+
         $users = User::all();
         return view('users.show', compact('user'));
     }
@@ -105,13 +112,16 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $rolehaspermissions = RolePermission::join('user_roles', 'user_roles.role_id', '=', 'role_permissions.role_id')
-                                        ->where('user_roles.user_id', '=', $user->id)
-                                        ->select('role_permissions.role_id')
-                                        ->get();
+        $this->authorize('update', User::class);
+
+        // $rolehaspermissions = RolePermission::join('user_roles', 'user_roles.role_id', '=', 'role_permissions.role_id')
+        //                                 ->where('user_roles.user_id', '=', $user->id)
+        //                                 ->select('role_permissions.role_id')
+        //                                 ->get();
         $roles = Role::get();
+        $yourroles = $user->userrole()->pluck('role_id')->all();
         $permissions = Permission::get();
-        return view('users.edit', compact('user', 'roles', 'permissions', 'rolehaspermissions'));
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles'));
     }
 
     /**
@@ -123,23 +133,47 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'first_name' => ['required', 'max:255'],
-            // 'middle_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users'],
-            'date_of_birth' => ['required'],
-        ]);
-        $user->update([
-            'first_name' => $request->input('first_name'),
-            'middle_name' => $request->input('middle_name') ?? null,
-            'last_name' => $request->input('last_name'),
-            'suffix' => $request->input('suffix') ?? null,
-            'date_of_birth' => $request->input('date_of_birth'),
-            'role_id' => 1,
-        ]);
+        $this->authorize('update', User::class);
 
-        return redirect()->route('users.index')->with('edit_user_success','User record updated successfully.');
+        $checkedroles = $request->input('roles');
+
+        $allroles = $user->userrole()->pluck('role_id')->all();
+        $trashedroles = $user->userrole()->onlyTrashed()->pluck('role_id')->all();
+
+        if ($checkedroles == null) {
+            $user->userrole()->delete();
+        }
+
+        else {
+            foreach ($checkedroles as $checkedrole){
+
+                if ($user->userrole($checkedrole)) {
+                    if (in_array($checkedrole, $trashedroles)) {
+                        $user->userrole()->where('role_id', $checkedrole)->restore();
+                    }
+                }
+
+                if (!(in_array($checkedrole, $allroles))) {
+                    if (in_array($checkedrole, $trashedroles)) {
+                        $user->userrole()->where('role_id', $checkedrole)->restore();
+                    }
+                    else {
+                        $user->userrole()->create([
+                            'user_id' => $user->id,
+                            'role_id' => $checkedrole
+                        ]);
+                    }
+                }
+            }
+
+            foreach ($allroles as $role) {
+                if (!(in_array($role, $checkedroles))) {
+                    $user->userrole()->where('role_id', $role)->delete();
+                }
+            }
+        }
+
+        return redirect()->route('admin.users.index')->with('edit_user_success','User record updated successfully.');
     }
 
     /**
@@ -150,9 +184,11 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', User::class);
+
         $user->delete();
 
-        return redirect()->route('users.index')->with('edit_user_success', 'User record deleted successfully');
+        return redirect()->route('admin.users.index')->with('edit_user_success', 'User record deleted successfully');
     }
 
     // public function invite(){

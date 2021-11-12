@@ -16,42 +16,30 @@ class PermissionSeeder extends Seeder
     {
         /* ************************RESEARCH********************************** */
 
-        Permission::create(['name' => 'view research']);
-        Permission::create(['name' => 'add research']);
-        Permission::create(['name' => 'edit research']);
-        Permission::create(['name' => 'delete research']);
+        Permission::create(['name' => 'view all faculty research']);
 
-        Permission::create(['name' => 'view completed research']);
-        Permission::create(['name' => 'complete research']);
-        Permission::create(['name' => 'edit completed research']);
-        Permission::create(['name' => 'delete completed research']);
+        Permission::create(['name' => 'manage faculty research registration']);
 
-        Permission::create(['name' => 'view presented research']);
-        Permission::create(['name' => 'present research']);
-        Permission::create(['name' => 'edit presented research']);
-        Permission::create(['name' => 'delete presented research']);
 
-        Permission::create(['name' => 'view published research']);
-        Permission::create(['name' => 'publish research']);
-        Permission::create(['name' => 'edit published research']);
-        Permission::create(['name' => 'delete published research']);
+        Permission::create(['name' => 'manage faculty research completion']);
 
-        Permission::create(['name' => 'view research copyright']);
-        Permission::create(['name' => 'add research copyright']);
-        Permission::create(['name' => 'edit research copyright']);
-        Permission::create(['name' => 'delete research copyright']);
 
-        Permission::create(['name' => 'view research utilization']);
-        Permission::create(['name' => 'add research utilization']);
-        Permission::create(['name' => 'edit research utilization']);
-        Permission::create(['name' => 'delete research utilization']);
+        Permission::create(['name' => 'manage faculty research presentation']);
 
-        Permission::create(['name' => 'view research citation']);
-        Permission::create(['name' => 'add research citation']);
-        Permission::create(['name' => 'edit research citation']);
-        Permission::create(['name' => 'delete research citation']);
+        Permission::create(['name' => 'manage faculty research publication']);
+
+        Permission::create(['name' => 'manage faculty research copyright']);
+
+        Permission::create(['name' => 'manage faculty research utilization']);
+
+        Permission::create(['name' => 'manage faculty research citation']);
 
         Permission::create(['name' => 'defer research']);
+
+        /* ************************Users********************************** */
+        Permission::create(['name' => 'view users']);
+        Permission::create(['name' => 'edit user role']);
+        Permission::create(['name' => 'delete user record']);
 
     }
 }

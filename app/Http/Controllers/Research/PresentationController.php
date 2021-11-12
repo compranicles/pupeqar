@@ -26,6 +26,8 @@ class PresentationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -64,6 +66,8 @@ class PresentationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -98,6 +102,8 @@ class PresentationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchPresentation::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
@@ -161,6 +167,8 @@ class PresentationController extends Controller
      */
     public function edit( Research $research, ResearchPresentation $presentation)
     {
+        $this->authorize('update', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -197,6 +205,8 @@ class PresentationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPresentation $presentation)
     {
+        $this->authorize('update', ResearchPresentation::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $presentation->update($input);

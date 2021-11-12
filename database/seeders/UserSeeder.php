@@ -25,5 +25,16 @@ class UserSeeder extends Seeder
             'last_name' => 'Compra',
             'suffix' => null,
         ]);
+
+        User::create([
+            'email' => 'candy@mailinator.com',
+            'password'=> Hash::make('12345678'),
+            'role_id' => 3,
+            'date_of_birth' => 1992-04-24,
+            'first_name' => 'Candy',
+            'middle_name' => null,
+            'last_name' => 'Pena',
+            'suffix' => null,
+        ]);
     }
 }

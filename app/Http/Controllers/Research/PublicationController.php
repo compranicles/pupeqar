@@ -26,6 +26,8 @@ class PublicationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -62,6 +64,8 @@ class PublicationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -93,6 +97,8 @@ class PublicationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchPublication::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -158,6 +164,8 @@ class PublicationController extends Controller
      */
     public function edit(Research $research, ResearchPublication $publication)
     {
+        $this->authorize('update', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -193,6 +201,8 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
+        $this->authorize('update', ResearchPublication::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publication->update($input);

@@ -25,6 +25,8 @@ class UtilizationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchUtilization::class);
+
         $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->get();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
@@ -41,6 +43,8 @@ class UtilizationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchUtilization::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 6)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -57,6 +61,8 @@ class UtilizationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchUtilization::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $id = ResearchUtilization::insertGetId($input);
@@ -97,6 +103,8 @@ class UtilizationController extends Controller
      */
     public function show(Research $research, ResearchUtilization $utilization)
     {
+        $this->authorize('view', ResearchUtilization::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 6)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -122,6 +130,8 @@ class UtilizationController extends Controller
      */
     public function edit(Research $research, ResearchUtilization $utilization)
     {
+        $this->authorize('update', ResearchUtilization::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 6)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -148,6 +158,8 @@ class UtilizationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchUtilization $utilization)
     {
+        $this->authorize('update', ResearchUtilization::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $utilization->update($input);
@@ -188,6 +200,8 @@ class UtilizationController extends Controller
      */
     public function destroy(Research $research, ResearchUtilization $utilization)
     {
+        $this->authorize('delete', ResearchUtilization::class);
+
         $utilization->delete();
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Deleted Successfully');
     }
