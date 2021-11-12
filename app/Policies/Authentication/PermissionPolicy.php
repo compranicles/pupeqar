@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class PermissionPolicy
 {
@@ -30,6 +29,7 @@ class PermissionPolicy
                             ->first();
 
             return $permission !== null ;
+
         }
     }
 
@@ -37,12 +37,12 @@ class PermissionPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     *
+     * @param  \App\Models\Authentication\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
     /**
@@ -53,19 +53,19 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * 
+     * @param  \App\Models\Authentication\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
     /**
@@ -77,7 +77,7 @@ class PermissionPolicy
      */
     public function delete(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
 }

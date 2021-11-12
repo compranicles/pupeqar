@@ -18,13 +18,14 @@
                     </x-jet-nav-link>
                 </li>
                 
-                @if (auth()->user()->role_id == 3)
+
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="">
                         {{ __('Users') }}
                     </x-jet-nav-link>
                 </li>
 
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
                         Authentication
@@ -47,7 +48,7 @@
                     </x-jet-nav-link>
                 </li>
 
-                @elseif (auth()->user()->role_id == 1)
+
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
                         {{ __('Research') }}
@@ -63,7 +64,7 @@
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </li>
-                @endif
+
 
             </ul>
             

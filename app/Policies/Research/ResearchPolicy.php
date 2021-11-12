@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Research;
 
-use App\Models\Role;
+use App\Models\Research;
 use App\Models\User;
-use App\Models\Authentication\UserRole;
-use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
-class RolePolicy
+class ResearchPolicy
 {
     use HandlesAuthorization;
 
@@ -21,28 +18,17 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        $roles = UserRole::where('user_roles.user_id', $user->id)
-                 ->pluck('user_roles.role_id')->all();
-        foreach ($roles as $role) {
-            $permission = RolePermission::where('role_permissions.role_id', $role)
-                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                            ->where('permissions.name', "manage roles")
-                            ->first();
-
-            return $permission !== null ;
-                // ? Response::allow()
-                // : Response::deny('You are not authorized to manage the roles.');
-        }
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Research  $research
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Role $role)
+    public function view(User $user, Research $research)
     {
         //
     }
@@ -55,17 +41,17 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        $this->viewAny($user);
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Research  $research
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Research $research)
     {
         //
     }
@@ -74,10 +60,10 @@ class RolePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Research  $research
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Research $research)
     {
         //
     }
@@ -86,10 +72,10 @@ class RolePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Research  $research
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user, Research $research)
     {
         //
     }
@@ -98,10 +84,10 @@ class RolePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Research  $research
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user, Research $research)
     {
         //
     }

@@ -136,7 +136,7 @@ class UserController extends Controller
             'last_name' => $request->input('last_name'),
             'suffix' => $request->input('suffix') ?? null,
             'date_of_birth' => $request->input('date_of_birth'),
-            'role_id' => $request->input('role_id'),
+            'role_id' => 1,
         ]);
 
         return redirect()->route('users.index')->with('edit_user_success','User record updated successfully.');
