@@ -1,6 +1,6 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
     <div class="form-group">
-        <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><?php if ($fieldInfo->required == 1) { echo "<span style='color: red'> *</span>"; } ?>
+        <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label> <span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <input type="date" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ $value }}" class="form-control" 
                 {{ ($fieldInfo->required == 1) ? 'required' : '' }}

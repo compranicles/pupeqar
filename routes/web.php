@@ -121,6 +121,12 @@ Route::group(['middleware' => 'auth'], function() {
     
     //invention
     Route::resource('inventions', \App\Http\Controllers\Inventions\InventionController::class);
+    
+    //extensions
+    Route::resource('extensions', \App\Http\Controllers\Extensions\ExtensionController::class);
+    
+    //academics
+    Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
 
     // Reports
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);

@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label>
+                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Department</label>
+                                    <label>Department where you commit the research</label>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
@@ -218,6 +218,12 @@
                 $('#status').attr('disabled', true);
             });
 
+            $('#nature_of_involvement').on('change', function (){
+                $('#nature_of_involvement option[value=11]').attr('selected','selected');
+                // console.log(11);
+                $('#nature_of_involvement').attr('disabled', true); 
+            });
+
             $('#status').on('change', function(){
                 var statusId = $('#status').val();
                 if (statusId == 26) {
@@ -232,6 +238,22 @@
                     $('#target_date').attr("required", true);;
                 }
             });
+
+            
+            $('#keywords').on('keyup', function(){
+                var value = $(this).val();
+                if (value != null){
+                    var count = value.match(/(\w+)/g).length;
+                    if(count < 5)
+                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
+                    else{
+                        $("#validation-keywords").text('');
+                    }
+                }
+                if (value == null)
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+            });
+
         </script>
         <script>
              $('#start_date').on('input', function(){

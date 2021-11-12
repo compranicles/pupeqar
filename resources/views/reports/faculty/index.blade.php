@@ -124,7 +124,10 @@
             });
             $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
                 data.forEach(function (item){
-                    $('#data_view').append('<p class="report-content h5">'+item+'</p>');
+                    if(item == null)
+                        $('#data_view').append('<p class="report-content h5">-  </p>');
+                    else
+                        $('#data_view').append('<p class="report-content h5">'+item+'</p>');
                 });
             });
         });

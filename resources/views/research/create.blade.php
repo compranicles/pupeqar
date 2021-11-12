@@ -15,7 +15,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label><span style="color: red;"> *</span>
+                                        <label>Colleges/Campus/Branch/Office where you commit the research</label><span style="color: red;"> *</span>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
@@ -28,7 +28,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Department</label><span style="color: red;"> *</span>
+                                    <label>Department where you commit the research</label><span style="color: red;"> *</span>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
@@ -71,19 +71,37 @@
                 $('.target_date').hide();
             }
 
-            $(function() {
-                hide_dates();
-            });
-
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('selected','selected');
                 // console.log(11);
-                $('#nature_of_involvement').attr('readonly', true); 
+                $('#nature_of_involvement').attr('disabled', true); 
             });
 
             $(function () {
+                hide_dates();
+                $('.funding_agency').hide();
                 $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
                 $('#researchers').attr('readonly', true);
+            });
+
+            $('#funding_type').on('change', function (){
+                var type = $(this).val();
+                if(type == 23){
+                    
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                    $('#funding_agency').attr('readonly', true);
+                }
+                else if(type == 24){
+                    $('.funding_agency').hide();
+                    $('#funding_agency').attr('disabled', true);
+                }
+                else if(type == 25){
+                    $('#funding_agency').removeAttr('readonly');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('');
+                }
             });
 
             $('#status').on('change', function(){
@@ -92,6 +110,8 @@
                     hide_dates();
                     $('#start_date').removeAttr('required');
                     $('#target_date').removeAttr('required');
+                    $('#start_date').attr("disabled", true);
+                    $('#target_date').attr("disabled", true);
                     
                 }
                 else if (statusId == 27) {
@@ -100,7 +120,23 @@
                     
                     $('#start_date').attr("required", true);
                     $('#target_date').attr("required", true);
+                    $('#start_date').removeAttr('disabled');
+                    $('#target_date').removeAttr('disabled');
                 }
+            });
+
+            $('#keywords').on('keyup', function(){
+                var value = $(this).val();
+                if (value != null){
+                    var count = value.match(/(\w+)/g).length;
+                    if(count < 5)
+                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
+                    else{
+                        $("#validation-keywords").text('');
+                    }
+                }
+                if (value == null)
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
             });
 
             $('#start_date').on('input', function(){

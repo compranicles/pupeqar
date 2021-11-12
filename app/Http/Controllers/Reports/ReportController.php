@@ -27,6 +27,7 @@ class ReportController extends Controller
             if($column->column == 'funding_amount'){
                 $curr = DB::table($column->table)->where('research_code', $research_code)->value('currency');
                 $currName = Currency::where('id', $curr)->pluck('code')->first();
+                $data = number_format($data, 2, '.', ',');
                 $data = $currName.' '.$data;
             }
 

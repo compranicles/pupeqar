@@ -67,7 +67,7 @@ class ResearchController extends Controller
         
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]/i';
-        $input = $request->except(['_token', 'document']);
+        $input = $request->except(['_token', 'document', 'funding_amount']);
 
         if($request->has('classification')){
             $classificationName = DropdownOption::where('id', $input['classification'])->pluck('name')->first();
@@ -111,9 +111,17 @@ class ResearchController extends Controller
                 $researchCode = $classIni.$catIni.$resIni.$year.'01';
             }
         }
-        Research::create(
-            ['research_code' => $researchCode, 'user_id' => auth()->id()]
-        );
+
+        $funding_amount = $request->funding_amount;    
+
+        $funding_amount = str_replace( ',' , '', $funding_amount);
+
+        Research::create([
+            'research_code' => $researchCode, 
+            'user_id' => auth()->id(), 
+            'funding_amount' => $funding_amount,
+            'nature_of_involvement' => 11
+        ]);
 
         Research::where('research_code', $researchCode)->update($input);
 
@@ -217,9 +225,13 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
-        $input = $request->except(['_token', '_method', 'document']);
-
+        $input = $request->except(['_token', '_method', 'document', 'funding_type']);
+        $funding_amount = $request->funding_amount;    
+        $funding_amount = str_replace( ',' , '', $funding_amount);
         $research->update($input);
+        $research->update([
+            'funding_amount' => $funding_amount
+        ]);
         
         if($request->has('document')){
             $documents = $request->input('document');

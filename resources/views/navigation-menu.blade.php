@@ -59,6 +59,16 @@
                     </x-jet-nav-link>
                 </li>
                 <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('extensions.index') }}" :active="request()->routeIs('extensions.*')">
+                        {{ __('Extensions') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('academics.index') }}" :active="request()->routeIs('academics.*')">
+                        {{ __('Academics') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>

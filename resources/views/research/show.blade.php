@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label>
+                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>{{ $collegeAndDepartment->college_name }}</option>
@@ -55,7 +55,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Department</label>
+                                    <label>Department where you commit the research</label>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>{{ $collegeAndDepartment->department_name }}</option>

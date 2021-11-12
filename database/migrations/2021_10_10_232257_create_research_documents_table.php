@@ -21,6 +21,7 @@ class CreateResearchDocumentsTable extends Migration
             $table->foreignId('research_utilization_id')->nullable();
             $table->string('filename');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
