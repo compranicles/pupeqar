@@ -18,10 +18,6 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('home')->middleware('guest');
 
-// registration
-// Route::get('/registration/{token}', [\App\Http\Controllers\Administrators\UserController::class, 'registration_view'])->name('registration')->middleware('guest');
-// Route::post('/registration/accept', [\App\Http\Controllers\Registration\RegisterController::class, 'create'])->name('accept')->middleware('guest');
-
 // dashboard and homepage display
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     $announcements = \App\Models\Announcement::where('status', 1)->latest()->take(5)->get();
@@ -134,24 +130,9 @@ Route::group(['middleware' => 'auth'], function() {
 
     //faculty Reports
     Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
-
-    //users
-    // Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
-    // Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
-    Route::resource('users', \App\Http\Controllers\UserController::class);
-
-     
-
-    // HAP routes
-    // Route::group(['middleware' => 'role:hap', 'prefix' => 'hap', 'as' => 'hap.'], function(){
-    // });
-
-    // faculty/professor routes
-    // Route::group(['middleware' => 'role:professor', 'prefix' => 'professor', 'as' => 'professor.'], function(){
-    // });
     
     // admin routes
-    Route::group(['middleware' => 'role:administrator', 'prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
         // forms
         Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
@@ -161,11 +142,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
         Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
         Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
-
-        // users
-        // Route::get('/users/invite', [\App\Http\Controllers\Administrators\UserController::class, 'invite'])->name('users.invite');
-        // Route::post('/users/invite/send', [\App\Http\Controllers\Administrators\UserController::class, 'send'])->name('users.sendinvite');
-        // Route::resource('users', \App\Http\Controllers\Administrators\UserController::class);
 
         //maintenances
         Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);

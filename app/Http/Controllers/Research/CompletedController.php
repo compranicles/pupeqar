@@ -28,6 +28,8 @@ class CompletedController extends Controller
     public function index(Research $research)
     {
         // dd($research);
+        $this->authorize('viewAny', ResearchComplete::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 2)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -64,6 +66,8 @@ class CompletedController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchComplete::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 2)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -88,6 +92,8 @@ class CompletedController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchComplete::class);
+
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
         $input = Arr::add($input, 'status', 28);
         $research->update($input);
@@ -144,6 +150,8 @@ class CompletedController extends Controller
      */
     public function edit(Research $research, ResearchComplete $completed)
     {   
+        $this->authorize('update', ResearchComplete::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 2)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -171,6 +179,8 @@ class CompletedController extends Controller
      */
     public function update(Request $request, Research $research, ResearchComplete $completed)
     {
+        $this->authorize('update', ResearchComplete::class);
+
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
 
         $research->update($input);

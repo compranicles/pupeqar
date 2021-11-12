@@ -2,13 +2,12 @@
 
 namespace App\Policies\Authentication;
 
-use App\Models\Authentication\Permission;
 use App\Models\User;
 use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PermissionPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -25,7 +24,7 @@ class PermissionPolicy
         foreach ($roles as $role) {
             $permission = RolePermission::where('role_permissions.role_id', $role)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                            ->where('permissions.name', "manage permissions")
+                            ->where('permissions.name', "view users")
                             ->first();
 
             return $permission !== null ;
@@ -37,12 +36,12 @@ class PermissionPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Authentication\Permission  $permission
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user)
     {
-        return $this->viewAny($user);
+    //
     }
 
     /**
@@ -53,31 +52,60 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $this->viewAny($user);
+        $roles = UserRole::where('user_roles.user_id', $user->id)
+                 ->pluck('user_roles.role_id')->all();
+        foreach ($roles as $role) {
+            $permission = RolePermission::where('role_permissions.role_id', $role)
+                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                            ->where('permissions.name', "add users")
+                            ->first();
+
+            return $permission !== null ;
+
+        }
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Authentication\Permission  $permission
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user)
     {
-        return $this->viewAny($user);
+        $roles = UserRole::where('user_roles.user_id', $user->id)
+                 ->pluck('user_roles.role_id')->all();
+        foreach ($roles as $role) {
+            $permission = RolePermission::where('role_permissions.role_id', $role)
+                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                            ->where('permissions.name', "edit user role")
+                            ->first();
+
+            return $permission !== null ;
+
+        }
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Authentication\Permission  $permission
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user)
     {
-        return $this->viewAny($user);
-    }
+        $roles = UserRole::where('user_roles.user_id', $user->id)
+                 ->pluck('user_roles.role_id')->all();
+        foreach ($roles as $role) {
+            $permission = RolePermission::where('role_permissions.role_id', $role)
+                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                            ->where('permissions.name', "delete user record")
+                            ->first();
 
+            return $permission !== null ;
+
+        }
+    }
 }

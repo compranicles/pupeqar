@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class RolePolicy
 {
@@ -39,12 +38,12 @@ class RolePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     *
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user)
+    public function view(User $user, Role $role)
     {
-        $this->viewAny($user);
+        //
     }
 
     /**
@@ -55,32 +54,30 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     *
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user)
     {
-        //
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     *
+     * @param  \App\Models\Role  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user)
     {
-        $this->viewAny($user);
+        return $this->viewAny($user);
     }
-
 }

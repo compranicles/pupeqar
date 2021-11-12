@@ -64,7 +64,10 @@
                 @break
             @case('32')
                 {{-- Deffered --}}
+                @can('defer', App\Models\Research::class)
                 <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>
+                @endcan
+                
                 @break
             @default
                 

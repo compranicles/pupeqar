@@ -64,7 +64,7 @@
                           
                           <div class="col-sm-6">
                             <label for="{{ $role->id }}">
-                              <input type="checkbox" id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" <?php foreach ($rolehaspermissions as $rolehaspermission) { if ($rolehaspermission->role_id == $role->id) { echo "checked=checked" ; } }?> >
+                              <input type="checkbox" id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" @if (in_array($role->id, $yourroles)) checked @endif >
                               {{ $role->name }}
                             </label>
                           </div>

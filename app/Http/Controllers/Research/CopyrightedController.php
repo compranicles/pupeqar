@@ -25,6 +25,8 @@ class CopyrightedController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -51,6 +53,8 @@ class CopyrightedController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -68,6 +72,8 @@ class CopyrightedController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchCopyright::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         ResearchCopyright::create($input);
@@ -119,6 +125,8 @@ class CopyrightedController extends Controller
      */
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
+        $this->authorize('update', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -139,6 +147,8 @@ class CopyrightedController extends Controller
      */
     public function update(Request $request, Research $research, ResearchCopyright $copyrighted)
     {
+        $this->authorize('update', ResearchCopyright::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyrighted->update($input);
