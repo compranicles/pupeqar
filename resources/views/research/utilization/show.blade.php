@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
 
@@ -18,8 +18,19 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('research.utilization.edit', [$research->research_code, $values['id']]) }}" class="btn btn-warning">Update</a>
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                {{-- Success Message --}}
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-index mx-3">
+                                    {{ $message }}
+                                </div>
+                                @endif
+                            </div>
+                            <div class="col-md-12">
+                                @if ($research->nature_of_involvement == 11)
+
+                                    <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="btn btn-warning">Update</a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                @endif
                             </div>
                         </div>
                         <hr>
@@ -111,7 +122,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this utilization?</h5>
-                    <form action="{{ route('research.utilization.destroy', [$research->research_code, $values['id']]) }}" method="POST">
+                    <form action="{{ route('research.utilization.destroy', [$research->id, $values['id']]) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>

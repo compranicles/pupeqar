@@ -17,27 +17,66 @@
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
                 </li>
-                
-                @if (auth()->user()->role_id == 1)
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
-                        {{ __('Users') }}
-                    </x-jet-nav-link>
+
+                @can('viewAny', App\Models\User::class)
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                        Authentication
+                    </a>
+                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                        @can('viewAny', App\Models\User::class)
+                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
+                        @endcan
+
+                        @can('viewAny', App\Models\Role::class)
+                        <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}">Roles</a></li>
+                        @endcan
+
+                        @can('viewAny', App\Models\Authentication\Permission::class)
+                        <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li>
+                        @endcan
+                    </ul>
                 </li>
+                @endcan
+
                 
                 <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*')">
+                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
 
-                @elseif (auth()->user()->role_id == 3)
+                @can('viewAny', App\Models\Research::class)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
                         {{ __('Research') }}
                     </x-jet-nav-link>
                 </li>
-                @endif
+                @endcan
+
+
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
+                        {{ __('Inventions') }}
+                    </x-jet-nav-link>
+                </li>
+
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('extensions.index') }}" :active="request()->routeIs('extensions.*')">
+                        {{ __('Extensions') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('academics.index') }}" :active="request()->routeIs('academics.*')">
+                        {{ __('Academics') }}
+                    </x-jet-nav-link>
+                </li>
+                <li class="navbar-nav mr-auto">
+                    <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
+                        {{ __('Reports') }}
+                    </x-jet-nav-link>
+                </li>
+
 
             </ul>
             

@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Copyrighted Research ') }}
+            {{ __($research->research_code.' > Mark Research as Copyrighted') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.copyrighted.store', $research->research_code) }}" method="post">
+                        <form action="{{ route('research.copyrighted.store', $research->id) }}" method="post">
                             @csrf
                             @include('research.form', ['formFields' => $researchFields, 'value' => $research])
                             <div class="col-md-12">
@@ -45,26 +45,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        if ({{ $research->status }} == 28) {
-
-            $("#link-to-publish").remove();
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-            $("#link-to-cite").remove();
-        }
-        else if ({{ $research->status }} == 29) {
-            $("#link-to-publish").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 30) {
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 31) {
-            $("#link-to-copyright").remove();
-        } 
     </script>
     <script>
         function hide_dates() {

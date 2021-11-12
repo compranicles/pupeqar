@@ -47,7 +47,7 @@ class CollegeController extends Controller
             'name' => $request->input('name')
         ]);
 
-        return redirect()->route('admin.colleges.create')->with('add_college_success', 'Added college has been saved.');
+        return redirect()->route('colleges.create')->with('add_college_success', 'Added college has been saved.');
     }
 
     /**
@@ -95,7 +95,7 @@ class CollegeController extends Controller
             'name' => $request->input('name')
         ]);
 
-        return redirect()->route('admin.colleges.index')->with('edit_college_success', 'Edit in college has been saved.');
+        return redirect()->route('colleges.index')->with('edit_college_success', 'Edit in college has been saved.');
     }
 
     /**
@@ -109,6 +109,6 @@ class CollegeController extends Controller
         //
         $college->delete();
 
-        return redirect()->route('admin.colleges.index')->with('edit_college_success', 'College has been deleted.');
+        return redirect()->route('colleges.index')->with('edit_college_success', 'College has been deleted.');
     }
 }

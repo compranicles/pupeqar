@@ -9,18 +9,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @if ($message = Session::get('success'))
+                        @if ($message = Session::get('edit_user_success'))
                             <div class="alert alert-success">
                                 {{ $message }}
                             </div>
                         @endif
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('users.create') }}" class="btn btn-success mb-2">Add New User</a>
-                            </div>
-            
-                            <div class="d-inline ">
-                                <a href="{{ route('users.invite') }}" class="btn btn-success mb-2">Invite a User</a>
+                                <a href="{{ route('admin.users.create') }}" class="btn btn-success mb-2">Add New User</a>
                             </div>
                         </div>  
                         <hr>
@@ -41,12 +37,12 @@
                                             <td>{{ $user->first_name." ".$user->middle_name." ".$user->last_name." ".$user->suffix }}</td>
                                             <td>{{ $user->created_at }}</td>
                                             <td>
-                                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('users.show', $user->id) }}"  class="btn btn-success btn-sm">View</a>
-                                                        <a href="{{ route('users.edit', $user->id) }}"  class="btn btn-primary btn-sm">Edit</a>
+                                                        <a href="{{ route('admin.users.show', $user->id) }}"  class="btn btn-success btn-sm">View</a>
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}"  class="btn btn-primary btn-sm">Edit</a>
                                                         <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                                                     </div>
                                                 </form>

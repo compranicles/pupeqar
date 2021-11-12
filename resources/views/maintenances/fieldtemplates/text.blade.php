@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label>
+        <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ $value }}" class="form-control" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
@@ -19,6 +19,7 @@
                     @default
                         
                 @endswitch>
+        <small id="validation-{{ $fieldInfo->name }}" class="ml-2"></small>
 
     </div>
 </div>

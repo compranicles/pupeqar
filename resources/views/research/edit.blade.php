@@ -1,32 +1,32 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Registration') }}
+            {{ __($research->research_code.' > Update Research Information') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.update', $research->research_code) }}" method="post">
+                        <form action="{{ route('research.update', $research->id) }}" method="post">
                             @csrf
                             @method('put')
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label>
+                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($research->college_id == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
+                                            <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
                                             @endforeach
                                            
                                         </select>
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Department</label>
+                                    <label>Department where you commit the research</label>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
@@ -186,28 +186,24 @@
             });
         
         </script>
-
-        <script>
-            $(function() {
-                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
-                $('#status').attr('disabled', true);
-            });
-        </script>
         <script>
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
+                $('#start_date').attr('disabled', true);
+                $('#target_date').attr('disabled', true);
             }
 
             $(function() {
                 if ({{$research->status}} == 26) {
                     hide_dates();
+                    
                 }
                 else if ({{$research->status}} == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
+                    $('#status').attr('disabled', true);
                 }
-
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
                 $.get('/departments/options/'+collegeId, function (data){
@@ -216,26 +212,51 @@
                         $("#department").append(new Option(item.name, item.id));
                         
                     });
-                    document.getElementById("department").value = "{{ $research->department_id }}";
+                    document.getElementById("department").value = "{{ $values['department_id'] }}";
                 });
+                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
+                $('#status').attr('disabled', true);
+            });
+
+            $('#nature_of_involvement').on('change', function (){
+                $('#nature_of_involvement option[value=11]').attr('selected','selected');
+                // console.log(11);
+                $('#nature_of_involvement').attr('disabled', true); 
             });
 
             $('#status').on('change', function(){
                 var statusId = $('#status').val();
                 if (statusId == 26) {
                     hide_dates();
+                    $('#start_date').removeAttr('required');
+                    $('#target_date').removeAttr('required');
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
+                    $('#start_date').attr("required", true);
+                    $('#target_date').attr("required", true);;
                 }
             });
+
+            
+            $('#keywords').on('keyup', function(){
+                var value = $(this).val();
+                if (value != null){
+                    var count = value.match(/(\w+)/g).length;
+                    if(count < 5)
+                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
+                    else{
+                        $("#validation-keywords").text('');
+                    }
+                }
+                if (value == null)
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+            });
+
         </script>
         <script>
-           
-        </script>
-        <script>
-           $('#start_date').on('input', function(){
+             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();
                 var month = date.getMonth() + 1;

@@ -1654,7 +1654,7 @@ pre code {
 .table th,
 .table td {
   padding: 0.75rem;
-  vertical-align: top;
+  vertical-align: middle;
   border-top: 1px solid #dee2e6;
 }
 .table thead th {
@@ -3996,6 +3996,11 @@ input[type=button].btn-block {
   padding-right: 0;
   padding-left: 0;
 }
+
+.navbar-nav .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 .navbar-nav .dropdown-menu {
   position: static;
   float: none;
@@ -4346,7 +4351,7 @@ input[type=button].btn-block {
   background-color: #fff;
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
-  border-radius: 0.25rem;
+  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
 }
 .card > hr {
   margin-right: 0;
@@ -12809,4 +12814,14 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
   }
 }
 
+
+
 /* ----------------- RESEARCH FORM ACTIVATION ------------------ */
+
+.table-condensed{
+  font-size: 0.625rem !important; 
+}
+
+.header-padding {
+  vertical-align: baseline;
+}

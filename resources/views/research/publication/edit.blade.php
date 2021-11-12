@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Publication') }}
+            {{ __($research['research_code'].' > Update Research Publication') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code ?? $research['research_code']])
+                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.publication.update', [$research['research_code'], $value['id']]) }}" method="post">
+                        <form action="{{ route('research.publication.update', [$research['id'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
                             @include('research.form', ['formFields' => $researchFields, 'value' => $value])
@@ -166,5 +166,6 @@
             $('#publish_date').prop("min", "{{ $research->completion_date }}");
         });
     </script>
+       
 @endpush
 </x-app-layout>

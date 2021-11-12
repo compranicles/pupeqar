@@ -6,12 +6,16 @@ use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ResearchDocument;
-use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class PublicationController extends Controller
 {
@@ -22,22 +26,23 @@ class PublicationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 3)->get()->toArray();
-        $research = Research::join('dropdown_options', 'dropdown_options.id', 'research.status')->where('research_code', $research->research_code)
+        $research = Research::join('dropdown_options', 'dropdown_options.id', 'research.status')
+            ->where('research_code', $research->research_code)->where('user_id', auth()->id())
             ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
                 
         $values = ResearchPublication::where('research_code', $research->research_code)->first();
-
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
 
-        $values = collect($values);
+        $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
 
@@ -47,7 +52,8 @@ class PublicationController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        $value = array_merge($value, $values);
+
         return view('research.publication.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
@@ -58,6 +64,8 @@ class PublicationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -89,6 +97,8 @@ class PublicationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchPublication::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -132,7 +142,7 @@ class PublicationController extends Controller
             }
         }
 
-        return redirect()->route('research.publication.index', $research->research_code)->with('success', 'Research Published Successfully');
+        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research Published Successfully');
     }
 
     /**
@@ -154,6 +164,8 @@ class PublicationController extends Controller
      */
     public function edit(Research $research, ResearchPublication $publication)
     {
+        $this->authorize('update', ResearchPublication::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -189,12 +201,9 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
+        $this->authorize('update', ResearchPublication::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
-
-        $research->update([
-            'status' => $request->input('status')
-        ]);
-
 
         $publication->update($input);
 
@@ -222,7 +231,7 @@ class PublicationController extends Controller
             }
         }
 
-        return redirect()->route('research.publication.index', $research->research_code)->with('success', 'Research Published Successfully');
+        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research Published Successfully');
     }
 
     /**

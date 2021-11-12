@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchCitation;
 use App\Models\ResearchDocument;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class CitationController extends Controller
 {
@@ -20,12 +25,13 @@ class CitationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchCitation::class);
+
         $researchcitations = ResearchCitation::where('research_code', $research->research_code)->get();
 
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-
         return view('research.citation.index', compact('research', 'researchcitations'));
     }
 
@@ -36,11 +42,12 @@ class CitationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchCitation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 5)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
-
         return view('research.citation.create', compact('researchFields', 'research'));
     }
 
@@ -52,6 +59,8 @@ class CitationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchCitation::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $id = ResearchCitation::insertGetId($input);
@@ -81,7 +90,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->research_code)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
     }
 
     /**
@@ -92,13 +101,15 @@ class CitationController extends Controller
      */
     public function show(Research $research, ResearchCitation $citation)
     {
+        $this->authorize('view', ResearchCitation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 5)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_citation_id', $citation->id)->get()->toArray();
 
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
@@ -116,6 +127,8 @@ class CitationController extends Controller
      */
     public function edit(Research $research, ResearchCitation $citation)
     {
+        $this->authorize('update', ResearchCitation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 5)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -143,6 +156,8 @@ class CitationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchCitation $citation)
     {
+        $this->authorize('update', ResearchCitation::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $citation->update($input);
@@ -172,7 +187,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->research_code)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
     }
 
     /**
@@ -183,8 +198,10 @@ class CitationController extends Controller
      */
     public function destroy(Research $research, ResearchCitation $citation)
     {
+        $this->authorize('delete', ResearchCitation::class);
+
         $citation->delete();
 
-        return redirect()->route('research.citation.index', $research->research_code)->with('success', 'Research Citation Deleted Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Deleted Successfully');
     }
 }

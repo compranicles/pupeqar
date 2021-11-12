@@ -6,10 +6,15 @@ use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ResearchDocument;
-use App\Models\ResearchCopyright;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class CopyrightedController extends Controller
 {
@@ -20,21 +25,24 @@ class CopyrightedController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();
-        $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
         if($values == null){
-            return redirect()->route('research.show', $research->research_code);
+            return redirect()->route('research.copyrighted.create', $research->id);
         }
         $values = array_merge($research->toArray(), $values->toArray());
-        // dd($values);
+    
         return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }
 
@@ -45,14 +53,14 @@ class CopyrightedController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
             ->orderBy('order')->get();
-        // $research = $research->first()->except('description');
-        // $research = except($research['description']);
-            // dd($research);
 
+           
         return view('research.copyrighted.create', compact('researchFields', 'research'));
     }
 
@@ -64,6 +72,8 @@ class CopyrightedController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchCopyright::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         ResearchCopyright::create($input);
@@ -92,7 +102,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        return redirect()->route('research.copyrighted.index', $research->research_code)->with('success', 'Research Copyrighted Added Successfully');
+        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research Copyrighted Added Successfully');
     }
 
 
@@ -115,15 +125,17 @@ class CopyrightedController extends Controller
      */
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
+        $this->authorize('update', ResearchCopyright::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 7)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
         ->orderBy('order')->get();
     
-        $research = array_merge($research->toArray(), $copyrighted->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 7)->get()->toArray();
 
-        return view('research.copyrighted.edit', compact('research', 'researchFields', 'researchDocuments'));
+        $value = array_merge($research->toArray(), $copyrighted->toArray());
+        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
     /**
@@ -135,6 +147,8 @@ class CopyrightedController extends Controller
      */
     public function update(Request $request, Research $research, ResearchCopyright $copyrighted)
     {
+        $this->authorize('update', ResearchCopyright::class);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyrighted->update($input);
@@ -163,7 +177,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        return redirect()->route('research.copyrighted.index', $research->research_code)->with('success', 'Research Copyrighted Updated Successfully');
+        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research Copyrighted Updated Successfully');
     }
 
     /**

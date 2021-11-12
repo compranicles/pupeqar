@@ -17,13 +17,20 @@
                                 <div class="alert alert-success alert-index mx-3">
                                     {{ $message }}
                                 </div>
+                                @elseif ($message = Session::get('code-missing'))
+                                <div class="alert alert-danger alert-index mx-3">
+                                    {{ $message }}
+                                </div>
                                 @endif
                             </div>
                             <div class="col-md-12">
                                 {{-- ADD Fields --}}
-                                <a href="{{ route('research.create') }}" class="btn btn-success">
+                                <a href="{{ route('research.create') }}" class="btn btn-success mr-1">
                                     <i class="fas fa-plus"></i> Add Research
                                 </a>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+                                     Use Research Code
+                                </button>
                                 <hr>
                             </div>
                         </div>
@@ -51,17 +58,17 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
+                                                <th>Research Code</th>
                                                 <th>Research Title</th>
-                                                <th>Date Modified</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($researches as $research)
                                                 <tr role="button">
-                                                    <td><a href="{{ route('research.show', $research->research_code) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
+                                                    <td><a href="{{ route('research.show', $research->id) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
+                                                    <td>{{ $research->research_code }}</td>
                                                     <td>{{ $research->title }}</td>
-                                                    <td>{{ $research->updated_at }}</td>
                                                     <td>{{ $research->status_name }}</td>
                                                 </tr>
                                             @endforeach
@@ -75,6 +82,8 @@
             </div>
         </div>
     </div>
+
+    @include('research.research-code')
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
@@ -85,7 +94,6 @@
                 "searching":true
             });
             var table =  $("#researchTable").DataTable();
-            // $("#researchTable_filter.dataTables_filter").append($("#status-filter"));
 
             var statusIndex = 0;
             $("#researchTable th").each(function (i) {

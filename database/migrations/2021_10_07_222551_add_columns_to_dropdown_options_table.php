@@ -13,14 +13,10 @@ class AddColumnsToDropdownOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dropdown_options', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignId('dropdown_id');
+        Schema::table('dropdown_options', function (Blueprint $table) {
             $table->string('name');
             $table->integer('order');
             $table->integer('is_active');
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 

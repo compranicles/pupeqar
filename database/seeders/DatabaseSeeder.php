@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ResearchFormSeeder::class,
             CollegeSeeder::class,
             DepartmentSeeder::class,
+            CurrencySeeder::class,
             ResearchRegistrationFormSeeder::class,
             ResearchCompletedFormSeeder::class,
             ResearchPublicationFormSeeder::class,
@@ -29,6 +30,14 @@ class DatabaseSeeder extends Seeder
             ResearchCitationFormSeeder::class,
             ResearchUtilizationFormSeeder::class,
             ResearchCopyrightedFormSeeder::class,
+            InventionDropdownSeeder::class,
+            InventionFormSeeder::class,
+            InventionSeeder::class,
+
+
+            ReportTypeSeeder::class,
+            ReportCategorySeeder::class,
+            ReportColumnSeeder::class,
         ]);
     }
 }

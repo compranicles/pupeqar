@@ -6,12 +6,16 @@ use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ResearchDocument;
-use App\Models\ResearchPublication;
 use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\ResearchComplete;
+use App\Models\ResearchPresentation;
+use App\Models\ResearchPublication;
+use App\Models\ResearchUtilization;
+use App\Models\ResearchCopyright;
+use App\Models\ResearchCitation;
 
 class PresentationController extends Controller
 {
@@ -22,12 +26,15 @@ class PresentationController extends Controller
      */
     public function index(Research $research)
     {
+        $this->authorize('viewAny', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 4)->get()->toArray();
-        $research = Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
                 // dd($research);    
@@ -37,7 +44,7 @@ class PresentationController extends Controller
         }
         // $values = array_merge($research->toArray(), $values->toArray());
         
-        $values = collect($values);
+        $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
 
@@ -46,8 +53,9 @@ class PresentationController extends Controller
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
-
-        // $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+        
+        $value = array_merge($value, $values);
+        
         return view('research.presentation.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
     }
 
@@ -58,6 +66,8 @@ class PresentationController extends Controller
      */
     public function create(Research $research)
     {
+        $this->authorize('create', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
             ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -80,6 +90,7 @@ class PresentationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
+
         return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value'));
     }
 
@@ -91,11 +102,13 @@ class PresentationController extends Controller
      */
     public function store(Request $request, Research $research)
     {
+        $this->authorize('create', ResearchPresentation::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
-        $presentationChecker = ResearchPresentation::where('research_code', $research->research_code)->first();
+        $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
 
-        if($presentationChecker == null){
+        if($publicationChecker == null){
             $researchStatus = 29;
         }
         else{
@@ -132,7 +145,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->research_code)->with('success', 'Research Presentation Added Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Added Successfully');
     }
 
     /**
@@ -154,6 +167,8 @@ class PresentationController extends Controller
      */
     public function edit( Research $research, ResearchPresentation $presentation)
     {
+        $this->authorize('update', ResearchPresentation::class);
+
         $researchFields = ResearchField::where('research_fields.research_form_id', 4)->where('is_active', 1)
         ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
         ->select('research_fields.*', 'field_types.name as field_type_name')
@@ -190,12 +205,9 @@ class PresentationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPresentation $presentation)
     {
+        $this->authorize('update', ResearchPresentation::class);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
-
-        $research->update([
-            'status' => $request->input('status')
-        ]);
-
 
         $presentation->update($input);
 
@@ -223,7 +235,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->research_code)->with('success', 'Research Presentation Updated Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Updated Successfully');
     }
 
     /**

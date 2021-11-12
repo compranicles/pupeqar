@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
         <div class="row">
@@ -24,66 +24,21 @@
                                 </div>
                                 @endif
                             </div>
-                            <div class="col-md-12 text-right">
-                                <div class="dropdown">
-                                    <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Options
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
-                                    @switch($research->status_name)
-                                            @case('Ongoing')
-                                                <a class="dropdown-item" id="to-complete" href="{{ route('research.completed.create', $research->research_code) }}">Mark as Completed</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                @break
-                                            @case('Completed')
-                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                @break
-                                            @case('Published')
-                                                <a class="dropdown-item" id="to-present" href="{{ route('research.presentation', $research->research_code ) }}">Mark as Presented</a>
-                                                <a class="dropdown-item" id="to-copyright" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
-                                                @break
-                                            @case('Presented')
-                                                
-                                                <a class="dropdown-item" id="to-publish" href="{{ route('research.publication', $research->research_code ) }}">Mark as Published</a>
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Presentation</a>
-                                                @break
-                                            @case('Presented & Published')
-                                                <a class="dropdown-item" href="{{ route('research.copyright', $research->research_code ) }}">Add Copyright</a>
-                                                <a class="dropdown-item" href="{{ route('research.citation.create', $research->research_code) }}">Add Citation</a>
-                                                <a class="dropdown-item" href="{{ route('research.utilization.create', $research->research_code) }}">Add Utilization</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="{{ route('research.complete', $research->research_code) }}">Edit Completed Research</a>
-                                                <a class="dropdown-item" href="{{ route('research.publication', $research->research_code) }}">Edit Publication</a>
-                                                <a class="dropdown-item" href="{{ route('research.presentation', $research->research_code) }}">Edit Presentation</a>
-                                                @break
-                                            @case('Deferred')
-                                                @break
-                                            @default
-                                                
-                                        @endswitch
-                                        <a class="dropdown-item" href="{{ route('research.edit', $research->research_code) }}">Edit Research Info</a>
-                                        <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>
-                                    </div>
-                                </div>
+                            <div class="col-md-6">
+                                {{-- ADD Fields --}}
+                                @if ($research->nature_of_involvement == 11)
+                                <a href="{{ route('research.utilization.create', $research->id) }}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Add Utilization
+                                </a>
+                                @endif
+                            </div>
+                            <div class="col-md-6 text-md-right">
+                                @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement])
                             </div>
                         </div>
-                        <div class="row mt-3">
+                        <div class="row">
                             <div class="col-md-12">
+                                <hr>
                                 <div class="table-responsive">
                                     <table class="table my-3 text-center table-hover" id="researchc_table" >
                                         <thead>
@@ -97,7 +52,7 @@
                                             @foreach ($researchutilizations as $utilization)
                                                 <tr role="button">
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td><a href="{{ route('research.utilization.show', [$research->research_code, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
+                                                    <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
                                                     <td>{{ $utilization->utilization_description }}</td>
                                                 </tr>
                                             @endforeach
@@ -123,7 +78,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this research?</h5>
-                    <form action="{{ route('research.destroy', $research->research_code) }}" method="POST">
+                    <form action="{{ route('research.destroy', $research->id) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>

@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Completed') }}
+            {{ __($research->research_code.' > Mark Research as Completed') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
 
@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.completed.store', $research->research_code) }}" method="post">
+                        <form action="{{ route('research.completed.store', $research->id) }}" method="post">
                             @csrf
                             @include('research.form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
@@ -57,12 +57,6 @@
         $('#completion_date').on('click', function(){
             $('#completion_date').prop("min", "{{ $research->start_date }}");
         });
-    </script>
-
-<script>
-        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
-            $(".research-tabs").remove();
-        }
     </script>
 @endpush
 </x-app-layout>

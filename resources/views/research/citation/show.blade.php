@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Citations') }}
+            {{ __($research->research_code.' > Research Citation') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
 
@@ -18,8 +18,19 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('research.citation.edit', [$research->research_code, $values['id']]) }}" class="btn btn-warning">Update</a>
-                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                {{-- Success Message --}}
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-index mx-3">
+                                    {{ $message }}
+                                </div>
+                                @endif
+                            </div>
+                            <div class="col-md-12">
+                                @if ($research->nature_of_involvement == 11)
+
+                                    <a href="{{ route('research.citation.edit', [$research->id, $values['id']]) }}" class="btn btn-warning">Update</a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                @endif
                             </div>
                         </div>
                         <hr>
@@ -111,7 +122,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this citation?</h5>
-                    <form action="{{ route('research.citation.destroy', [$research->research_code, $values['id']]) }}" method="POST">
+                    <form action="{{ route('research.citation.destroy', [$research->id, $values['id']]) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>
@@ -139,6 +150,5 @@
             });
         }, 4000);
     </script>
-@endpush
-
+ @endpush
 </x-app-layout>

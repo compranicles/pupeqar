@@ -1,24 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Copyrighted Research ') }}
+            {{ __($research->research_code.' > Update Research Copyrighted') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code ?? $research['research_code']])
+                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.copyrighted.update', [$research['research_code'], $research['id']]) }}" method="post">
+                        <form action="{{ route('research.copyrighted.update', [$research['id'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('research.form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -155,5 +155,6 @@
             });
         }, 4000);
     </script>
+        
 @endpush
 </x-app-layout>

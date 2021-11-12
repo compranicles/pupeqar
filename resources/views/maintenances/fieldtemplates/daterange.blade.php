@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label>{{ $fieldInfo->label }} - From</label>
+                <label>{{ $fieldInfo->label }} - From</label><?php if ($fieldInfo->required == 1) { echo "<span style='color: red'> *</span>"; } ?>
         
                 <input type="date" name="{{ $fieldInfo->name }}[]" id="{{ $fieldInfo->name }}_from" value="{{ (isset($value[0]))? $value[0]: '' }}" 
                         class="form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }}

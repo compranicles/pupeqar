@@ -15,6 +15,7 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('college_id');
             $table->string('name', 300);
             $table->timestamps();
             $table->softDeletes();

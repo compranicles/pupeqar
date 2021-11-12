@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Completed') }}
+            {{ __($research['id'].' > Update Research Completion') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code ?? $research['research_code']])
+                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.completed.update', [$research['research_code'], $value['id']]) }}" method="post">
+                        <form action="{{ route('research.completed.update', [$research['id'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
                             @include('research.form', ['formFields' => $researchFields, 'value' => $value])
@@ -166,30 +166,6 @@
         $('#completion_date').on('click', function(){
             $('#completion_date').prop("min", "{{ $research['start_date'] }}");
         });
-    </script>
-
-    <script>
-        if ({{ $research->status }} == 26 || {{$research->status}} == 27) {
-            $(".research-tabs").remove();
-        }
-        else if ({{ $research->status }} == 28) {
-
-            $("#link-to-publish").remove();
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-            $("#link-to-cite").remove();
-        }
-        else if ({{ $research->status }} == 29) {
-            $("#link-to-publish").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 30) {
-            $("#link-to-present").remove();
-            $("#link-to-copyright").remove();
-        }
-        else if ({{ $research->status }} == 31) {
-            $("#link-to-copyright").remove();
-        } 
     </script>
     <script>
         function hide_dates() {

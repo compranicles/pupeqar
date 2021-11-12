@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Presentation') }}
+            {{ __($research->research_code.' > Update Research Presentation') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->research_code ?? $research['research_code']])
+                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.presentation.update', [$research['research_code'], $value['id']]) }}" method="post">
+                        <form action="{{ route('research.presentation.update', [$research['id'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
                             @include('research.form', ['formFields' => $researchFields, 'value' => $value])
