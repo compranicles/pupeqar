@@ -37,6 +37,10 @@ class DatabaseSeeder extends Seeder
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
+
+            UserSeeder::class,
+            UserRoleSeeder::class,
+            RolePermissionSeeder::class,
         ]);
     }
 }

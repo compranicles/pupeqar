@@ -17,29 +17,27 @@ class PermissionSeeder extends Seeder
         /* ************************RESEARCH********************************** */
 
         Permission::create(['name' => 'view all faculty research']);
-
         Permission::create(['name' => 'manage faculty research registration']);
-
-
         Permission::create(['name' => 'manage faculty research completion']);
-
-
         Permission::create(['name' => 'manage faculty research presentation']);
-
         Permission::create(['name' => 'manage faculty research publication']);
-
         Permission::create(['name' => 'manage faculty research copyright']);
-
         Permission::create(['name' => 'manage faculty research utilization']);
-
         Permission::create(['name' => 'manage faculty research citation']);
+        Permission::create(['name' => 'defer research']); //9
 
-        Permission::create(['name' => 'defer research']);
-
-        /* ************************Users********************************** */
+        /* ************************USERS********************************** */
         Permission::create(['name' => 'view users']);
         Permission::create(['name' => 'edit user role']);
         Permission::create(['name' => 'delete user record']);
 
+        /* ************************CONTENT********************************** */
+        Permission::create(['name' => 'manage announcements']);
+
+        /* ************************MAINTENANCES********************************** */
+        Permission::create(['name' => 'manage currencies']);
+        Permission::create(['name' => 'manage dropdowns']);
+        Permission::create(['name' => 'manage research forms']);
+        Permission::create(['name' => 'manage invention forms']);
     }
 }

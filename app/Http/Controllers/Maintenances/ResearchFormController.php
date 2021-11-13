@@ -18,6 +18,8 @@ class ResearchFormController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ResearchForm::class);
+
         $researchforms = ResearchForm::all();
         return view('maintenances.research.index', compact('researchforms'));
     }
@@ -29,7 +31,7 @@ class ResearchFormController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -51,6 +53,8 @@ class ResearchFormController extends Controller
      */
     public function show(ResearchForm $research_form)
     {
+        $this->authorize('view', ResearchForm::class);
+
         $research_fields = ResearchField::where('research_fields.research_form_id', $research_form->id)->orderBy('research_fields.order')
                     ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
                     ->select('research_fields.*', 'field_types.name as field_type_name')->get();

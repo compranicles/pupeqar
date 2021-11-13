@@ -24,5 +24,6 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'Director/Dean']);
         Role::create(['name' => 'VP/Sector Head']);
         Role::create(['name' => 'IPQMSO']);
+        Role::create(['name' => 'Super Admin']);
     }
 }

@@ -39,12 +39,13 @@
                 </li>
                 @endcan
 
-                
+                @can('viewAny', App\Models\Announcement::class)
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
+                @endcan
 
                 @can('viewAny', App\Models\Research::class)
                 <li class="navbar-nav mr-auto">
@@ -54,7 +55,7 @@
                 </li>
                 @endcan
 
-
+                
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
                         {{ __('Inventions') }}
