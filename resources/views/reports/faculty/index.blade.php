@@ -25,7 +25,7 @@
                                 <div class="card">
                                     <div class="card-header border @if ($loop->first) rounded-top @elseif ($loop->last) rounded-bottom @endif" id="heading-{{ $table->id }}">
                                         <h2 class="mb-0">
-                                          <button class="btn btn-link text-dark btn-block text-decoration-none" type="button" data-toggle="collapse" data-target="#collapse-{{ $table->id }}" aria-expanded="true" aria-controls="collapse-{{ $table->id }}">
+                                          <button class="btn btn-link btn-sm text-dark btn-block text-decoration-none font-weight-bold" type="button" data-toggle="collapse" data-target="#collapse-{{ $table->id }}" aria-expanded="true" aria-controls="collapse-{{ $table->id }}">
                                             {{ $table->name }}
                                           </button>
                                         </h2>

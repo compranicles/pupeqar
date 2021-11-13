@@ -15,7 +15,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        // Role::truncate();
+        Role::truncate();
         Role::create(['name' => 'Faculty']);
         Role::create(['name' => 'Faculty with designation']);
         Role::create(['name' => 'Admin employee']);
