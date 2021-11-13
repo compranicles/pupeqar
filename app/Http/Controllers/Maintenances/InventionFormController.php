@@ -20,6 +20,8 @@ class InventionFormController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', InventionForm::class);
+
         $inventionforms = InventionForm::all();
         return view('maintenances.invention.index', compact('inventionforms'));
     }
@@ -42,6 +44,8 @@ class InventionFormController extends Controller
      */
     public function store(InventionForm $invention_form, Request $request)
     {   
+        $this->authorize('create', InventionForm::class);
+
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
@@ -105,6 +109,8 @@ class InventionFormController extends Controller
      */
     public function show(InventionForm $invention_form)
     {
+        $this->authorize('view', InventionForm::class);
+
         $invention_fields = InventionField::where('invention_fields.invention_form_id', $invention_form->id)->orderBy('invention_fields.order')
         ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
         ->select('invention_fields.*', 'field_types.name as field_type_name')->get();

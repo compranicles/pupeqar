@@ -17,6 +17,8 @@ class DropdownController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Dropdown::class);
+
         $dropdowns = Dropdown::all();
         return view('maintenances.dropdowns.index', compact('dropdowns'));
     }
@@ -28,6 +30,8 @@ class DropdownController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Dropdown::class);
+
         return view('maintenances.dropdowns.create');
     }
 
@@ -39,6 +43,8 @@ class DropdownController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Dropdown::class);
+
         //save dropdown name to dropdown table and get the Id
         $dropdownId = Dropdown::create([
             'name' => $request->input('name'),
@@ -69,6 +75,8 @@ class DropdownController extends Controller
      */
     public function show(Dropdown $dropdown)
     {
+        $this->authorize('view', Dropdown::class);
+
         $dropdown_options = DropdownOption::where('dropdown_id', $dropdown->id)->orderBy('order')->get();
 
         return view('maintenances.dropdowns.show', compact('dropdown', 'dropdown_options'));
@@ -82,7 +90,7 @@ class DropdownController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('update', Dropdown::class);
     }
 
     /**
@@ -94,6 +102,8 @@ class DropdownController extends Controller
      */
     public function update(Request $request, Dropdown $dropdown)
     {
+        $this->authorize('update', Dropdown::class);
+
         // updating name 
         $dropdown->update([
             'name' => $request->input('name'),
@@ -110,6 +120,8 @@ class DropdownController extends Controller
      */
     public function destroy(Dropdown $dropdown)
     {
+        $this->authorize('delete', Dropdown::class);
+
         DropdownOption::where('dropdown_id', $dropdown->id)->delete();
         $dropdown->delete();
         return redirect()->route('dropdowns.index')->with('success', 'Dropdown deleted successfully');
@@ -119,6 +131,7 @@ class DropdownController extends Controller
      * Get the dropdown's options from dropdown_options model
      */
     public function options($id){
+
         $options = DropdownOption::where('dropdown_id', $id)->where('is_active', 1)->orderBy('order')->get();
         
         return $options;
@@ -156,6 +169,7 @@ class DropdownController extends Controller
      * @return void
      */
     public function activate($id){
+
         DropdownOption::where('id', $id)->update([
             'is_active' => 1
         ]);
@@ -164,6 +178,7 @@ class DropdownController extends Controller
     }
 
     public function inactivate($id){
+
         DropdownOption::where('id', $id)->update([
             'is_active' => 0
         ]);

@@ -15,6 +15,8 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Announcement::class);
+
         $announcements = Announcement::orderByDesc('created_at')->get();
         return view('announcements.index', compact('announcements'));
     }
@@ -26,6 +28,8 @@ class AnnouncementController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Announcement::class);
+
         return view('announcements.create');
     }
 
@@ -37,6 +41,8 @@ class AnnouncementController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Announcement::class);
+        
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
@@ -62,6 +68,8 @@ class AnnouncementController extends Controller
      */
     public function show(Announcement $announcement)
     {
+        $this->authorize('view', Announcement::class);
+
         return view('announcements.show', compact('announcement'));
     }
 
@@ -73,6 +81,8 @@ class AnnouncementController extends Controller
      */
     public function edit(Announcement $announcement)
     {
+        $this->authorize('update', Announcement::class);
+
         return view('announcements.edit', compact('announcement'));
     }
 
@@ -85,6 +95,8 @@ class AnnouncementController extends Controller
      */
     public function update(Request $request, Announcement $announcement)
     {
+        $this->authorize('update', Announcement::class);
+
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
@@ -110,6 +122,8 @@ class AnnouncementController extends Controller
      */
     public function destroy(Announcement $announcement)
     {
+        $this->authorize('delete', Announcement::class);
+
         $announcement->delete();
         return redirect()->route('announcements.index')->with('success','Announcement deleted successfully.');
     }

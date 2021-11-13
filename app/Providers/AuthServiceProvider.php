@@ -14,7 +14,12 @@ use App\Models\ResearchPublication;
 use App\Models\ResearchCopyright;
 use App\Models\ResearchCitation;
 use App\Models\ResearchUtilization;
-use App\Models\Reports;
+use App\Models\Announcement;
+use App\Models\Currency;
+use App\Models\FormBuilder\Dropdown;
+use App\Models\FormBuilder\ResearchForm;
+use App\Models\FormBuilder\InventionForm;
+
 use App\Models\Authentication\Permission;
 use App\Policies\Authentication\RolePolicy;
 use App\Policies\Authentication\PermissionPolicy;
@@ -26,6 +31,11 @@ use App\Policies\Research\ResearchPublicationPolicy;
 use App\Policies\Research\ResearchCopyrightPolicy;
 use App\Policies\Research\ResearchUtilizationPolicy;
 use App\Policies\Research\ResearchCitationPolicy;
+use App\Policies\Content\AnnouncementPolicy;
+use App\Policies\Maintenance\CurrencyPolicy;
+use App\Policies\Maintenance\DropdownPolicy;
+use App\Policies\Maintenance\Research\ResearchFormPolicy;
+use App\Policies\Maintenance\Invention\InventionFormPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -48,6 +58,15 @@ class AuthServiceProvider extends ServiceProvider
         ResearchCitation::class => ResearchCitationPolicy::class,
         ResearchCopyright::class => ResearchCopyrightPolicy::class,
         ResearchUtilization::class => ResearchUtilizationPolicy::class,
+
+        //Content Management
+        Announcement::class => AnnouncementPolicy::class,
+
+        //Maintenances
+        Currency::class => CurrencyPolicy::class,
+        Dropdown::class => DropdownPolicy::class,
+        ResearchForm::class => ResearchFormPolicy::class,
+        InventionForm::class => InventionFormPolicy::class,
     ];
 
     /**
