@@ -39,5 +39,9 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'manage dropdowns']);
         Permission::create(['name' => 'manage research forms']);
         Permission::create(['name' => 'manage invention forms']);
+
+        /* ************************MAINTENANCES********************************** */
+        Permission::create(['name' => 'manage roles']);
+        Permission::create(['name' => 'manage permissions']);
     }
 }
