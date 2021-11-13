@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function view(User $user)
     {
-    //
+        return $this->viewAny($user);
     }
 
     /**
