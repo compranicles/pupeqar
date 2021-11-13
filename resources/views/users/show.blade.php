@@ -55,7 +55,7 @@
                         </div>
                         <div class="mb-0">
                             <div class="d-flex justify-content-end align-items-baseline">
-                                <a href="{{ route('users.index') }}" class="btn btn-secondary">Back to List</a>
+                                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Back to List</a>
                             </div>
                         </div>
                     </div>
