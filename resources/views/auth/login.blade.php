@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <x-jet-label value="{{ __('Email') }}" />
 
-                    <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }} login-field" type="email"
+                    <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }} login-field rounded-0" type="email"
                                  name="email" :value="old('email')" required />
                     <x-jet-input-error for="email"></x-jet-input-error>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <x-jet-label value="{{ __('Password') }}" />
 
-                    <x-jet-input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} login-field" type="password"
+                    <x-jet-input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} login-field rounded-0" type="password"
                                  name="password" required autocomplete="current-password" />
                     <x-jet-input-error for="password"></x-jet-input-error>
                 </div>
@@ -49,7 +49,7 @@
                             </a>
                         @endif
 
-                        <x-jet-button>
+                        <x-jet-button class="rounded-0">
                             {{ __('Log in') }}
                         </x-jet-button>
                     </div>
