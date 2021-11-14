@@ -1,4 +1,4 @@
-r<x-app-layout>
+<x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Reports') }}
@@ -13,69 +13,55 @@ r<x-app-layout>
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report - {{ $department_name }}
+                                Quarterly Accomplishment Report - {{ $departmentHeadOf->department_name }}
                             </h3>
                             <hr>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="accordion" id="accordionReport">
-                                @foreach ( $report_tables as $table)
-                                <div class="card">
-                                    <div class="card-header border @if ($loop->first) rounded-top @elseif ($loop->last) rounded-bottom @endif" id="heading-{{ $table->id }}">
-                                        <h2 class="mb-0">
-                                          <button class="btn btn-link btn-sm text-dark btn-block text-decoration-none font-weight-bold" type="button" data-toggle="collapse" data-target="#collapse-{{ $table->id }}" aria-expanded="true" aria-controls="collapse-{{ $table->id }}">
-                                            {{ $table->name }}
-                                          </button>
-                                        </h2>
-                                      </div>
-                                  
-                                      <div id="collapse-{{ $table->id }}" class="collapse @if ($loop->first) show @endif" aria-labelledby="heading-{{ $table->id }}" data-parent="#accordionReport">
-                                        <div class="card-body border">
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-12">
-                                                    <div class="table-responsive text-center">
-                                                        <table class="table table-sm table-bordered table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <td>#</td>
-                                                                    <td>Research Code</td>
-                                                                    <td>Reporting Status</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($report_array[$table->id] as $row)
-                                                                    <tr class="report-view" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.download', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">
-                                                                        <td>{{ $loop->iteration }}</td>
-                                                                        <td>{{ $row->research_code }}</td>
-                                                                        <td>
-                                                                            @isset($row->id)
-                                                                                @if ( count($report_document_checker[$table->id][$row->id]) == 0)
-                                                                                    <span class="text-danger doc-incomplete">Missing Supporting Document</span>
-                                                                                @else
-                                                                                    <span class="text-success doc-complete">Completed</span>
-                                                                                @endif
-                                                                            @else
-                                                                                @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
-                                                                                    <span class="text-danger doc-incomplete">Missing Supporting Document</span>
-                                                                                @else
-                                                                                    <span class="text-success doc-complete">Completed</span>
-                                                                                @endif
-                                                                            @endisset
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-link active" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">To Review</a>
+                                    <a class="nav-link" id="nav-denied-tab" data-toggle="tab" href="#nav-denied" role="tab" aria-controls="nav-denied" aria-selected="false">Denied</a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
+                                    {{-- To Review Table --}}
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Report Category</th>
+                                                            <th>Faculty Name</th>
+                                                            <th>Report Date</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($reportsToReview as $row)
+                                                            <tr>
+                                                                <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $row->report_category }}</td>
+                                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                                <td>
+                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @endforeach
-
+                                <div class="tab-pane fade show active" id="nav-denied" role="tabpanel" aria-labelledby="nav-denied-tab">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,7 +72,7 @@ r<x-app-layout>
 </div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -96,17 +82,21 @@ r<x-app-layout>
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-6 text-right" id="columns_view">
-                    
-                </div>
-                <div class="col-md-6 text-left" id="data_view">
-
+                <div class="col-md-12">
+                    <table class="table table-sm table-borderless" id="columns_value_table">
+                    </table>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 h5 font-weight-bold text-center">Documents:</div>
                 <div class="col-md-12 text-center" id="data_documents">
-
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12"><hr></div>
+                <div class="col-md-6 text-center" id="review_btn_accept">
+                </div>
+                <div class="col-md-6 text-center" id="review_btn_reject">
                 </div>
             </div>
         </div>
@@ -120,33 +110,38 @@ r<x-app-layout>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $('.report-view').on('click', function(){
-            let catID = $(this).data('id');
-            let rowID = $(this).data('code');
-            let link = $(this).data('url');
-            $.get('/reports/tables/data/'+catID, function (data){
-                data.forEach(function (item){
-                    $('#columns_view').append('<p class="report-content font-weight-bold h5 ">'+item.name+':</p>');
+        $('.button-view').on('click', function(){
+            var catID = $(this).data('id');
+            var link = $(this).data('url');
+            var countColumns = 0;
+            
+            $.get('/reports/data/'+catID, function (data){
+                Object.keys(data).forEach(function(k){
+                    console.log(k + ' - ' + data[k]);
+                    countColumns = countColumns + 1;
+                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-right">'+k+':</td>');
+                    $('#row-'+countColumns).append('<td class="report-content h5 text-left">'+data[k]+'</td>');
                 });
             });
-            $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
-                data.forEach(function (item){
-                    if(item == null)
-                        $('#data_view').append('<p class="report-content h5">-  </p>');
-                    else
-                        $('#data_view').append('<p class="report-content h5">'+item+'</p>');
-                });
-            });
-            $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
+            $.get('/reports/docs/'+catID, function (data) {
                 data.forEach(function (item){
                     var newlink = link.replace(':filename', item)
-                    $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 btn btn-success">'+item+'<a/>');
+                    $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                 });
             });
+            
+            $('#review_btn_accept').append('<a class="btn btn-success btn-lg btn-block report-content">ACCEPT</a>');
+            $('#review_btn_reject').append('<a class="btn btn-danger  btn-lg btn-block report-content">REJECT</a>');
+            
         });
 
         $('#viewReport').on('hidden.bs.modal', function(event) {
             $('.report-content').remove();
+        });
+
+        $(function () {
+            $('#to_review_table').DataTable();
         });
     </script>
 @endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Models\ResearchCitation;
 use App\Models\ResearchDocument;
@@ -78,6 +79,25 @@ class ReportController extends Controller
             $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
             $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', $report_category_id)->where('research_utilization_id', $id)->pluck('filename')->all();
         }
+        return $report_docs;
+    }
+
+    public function getReportData($report_id){
+        $report_data = Report::where('id', $report_id)->first();
+        $report_details = json_decode($report_data->report_details, true);
+        $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
+
+        $new_report_details = [];
+        foreach($report_columns as $row){
+            $new_report_details[$row->name] = $report_details[$row->column];
+        }
+
+        return $new_report_details;
+    }
+
+    public function getDocumentsUsingId($report_id){
+        $report_docs = json_decode(Report::where('id', $report_id)->pluck('report_documents')->first(), true);
+
         return $report_docs;
     }
 }

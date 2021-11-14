@@ -130,6 +130,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
     Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
     Route::get('/reports/tables/data/documents/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getDocuments']);
+    Route::get('/reports/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getReportData']);
+    Route::get('/reports/docs/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getDocumentsUsingId']);
 
     //faculty Reports
     Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
