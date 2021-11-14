@@ -12668,7 +12668,8 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
 }
 
 .font-sans {
-  font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+  font-family: Arial;
 }
 
 /*
@@ -12824,4 +12825,56 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
 
 .header-padding {
   vertical-align: baseline;
+}
+
+body {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/storage/cover.jpg) no-repeat;
+
+  /* Center and scale the image nicely */
+  background-position: top;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.login-card:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+  filter: blur(20px);
+  background: inherit;
+}
+
+.login-card {
+  background: inherit;
+  background-color: rgba(255, 255, 255, .80);  
+ backdrop-filter: blur(5px);
+ 
+}
+
+.login-container {
+  margin-top: 90px;
+}
+
+.system-name {
+  margin-top: 17px;
+  margin-left: 10px;
+  color: white;
+}
+
+.login-logo {
+  padding-top: 20px;
+}
+
+.login-field {
+  color: #495057;
+  background-color: #fff;
+  border-color: #a1cbef;
+  outline: 0;
+}
+
+.login-field:focus {
+  box-shadow: 0 0 0 0.1rem rgba(52, 144, 220, 0.25);
 }
