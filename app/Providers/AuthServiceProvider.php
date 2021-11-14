@@ -52,7 +52,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //Faculty Research
         Research::class => ResearchPolicy::class,
-        ResearchComplete::class => ResearchCompletePolicy::class,
+        ResearchComplete::class => ResearchCompletionPolicy::class,
         ResearchPresentation::class => ResearchPresentationPolicy::class,
         ResearchPublication::class => ResearchPublicationPolicy::class,
         ResearchCitation::class => ResearchCitationPolicy::class,

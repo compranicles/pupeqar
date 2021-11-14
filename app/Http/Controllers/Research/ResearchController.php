@@ -97,7 +97,7 @@ class ResearchController extends Controller
         }
 
         $researchCodeIni = $classIni.$catIni.$resIni.$year;
-        $lastID = Research::where('research_code', 'like', '%'.$researchCodeIni.'%')
+        $lastID = Research::withTrashed()->where('research_code', 'like', '%'.$researchCodeIni.'%')
             ->pluck('research_code')->last();
         
         if($lastID == null){
@@ -390,5 +390,62 @@ class ResearchController extends Controller
                 ->update($researchLead->toArray());
         $research = Research::where('research_code', $research_code)->where('user_id', auth()->id())->first();
         return redirect()->route('research.show', $research->id)->with('success', 'Latest Version Retrieved Successfully');
+    }
+
+    public function addDocument($research_code, $report_category_id){
+        return view('research.add-documents', compact('research_code', 'report_category_id'));
+    }
+    public function saveDocument($research_code, $report_category_id, Request $request){
+        if($report_category_id == 5){
+            $citation_id = $research_code;
+            $research_code = ResearchCitation::where('id', $citation_id)->pluck('research_code')->first();
+        }
+        if($report_category_id == 6){
+            $utilization_id = $research_code;
+            $research_code = ResearchUtilization::where('id', $utilization_id)->pluck('research_code')->first();
+        }
+        if($request->has('document')){
+            $documents = $request->input('document');
+            $count = 1;
+            foreach($documents as $document){
+                $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                if($temporaryFile){
+                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                    $ext = $info['extension'];
+                    $fileName = 'RR-'.$research_code.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $newPath = "documents/".$fileName;
+                    Storage::move($temporaryPath, $newPath);
+                    Storage::deleteDirectory("documents/tmp/".$document);
+                    $temporaryFile->delete();
+
+                    if($report_category_id == 5){//citations
+                        ResearchDocument::create([
+                            'research_code' => $research_code,
+                            'research_form_id' => $report_category_id,
+                            'research_citation_id' => $citation_id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 6){
+                        ResearchDocument::create([
+                            'research_code' => $research_code,
+                            'research_form_id' => $report_category_id,
+                            'research_utilization_id' => $utilization_id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    else{
+                        ResearchDocument::create([
+                            'research_code' => $research_code,
+                            'research_form_id' => $report_category_id,
+                            'filename' => $fileName,
+                            
+                        ]);
+                    }
+                }
+            }
+        }
+        return redirect()->route('faculty.index')->with('success', 'Document added successfully');
     }
 }

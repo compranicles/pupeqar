@@ -14,6 +14,7 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
+        RolePermission::truncate();
         //Super admin role permissions
         RolePermission::create(['role_id' => '9', 'permission_id' => '9']);
         RolePermission::create(['role_id' => '9', 'permission_id' => '10']);

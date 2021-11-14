@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __($research['id'].' > Update Research Completion') }}
+            {{ __($research['research_code'].' > Update Research Completion') }}
         </h2>
     </x-slot>
 

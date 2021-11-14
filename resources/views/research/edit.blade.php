@@ -216,12 +216,34 @@
                 });
                 $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
                 $('#status').attr('disabled', true);
+                
             });
 
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('selected','selected');
                 // console.log(11);
                 $('#nature_of_involvement').attr('disabled', true); 
+            });
+
+            $('#funding_type').on('change', function (){
+                var type = $(this).val();
+                if(type == 23){
+                    
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').attr('readonly', true);
+                }
+                else if(type == 24){
+                    $('.funding_agency').hide();
+                    $('#funding_agency').attr('disabled', true);
+                }
+                else if(type == 25){
+                    $('#funding_agency').removeAttr('readonly');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('');
+                }
             });
 
             $('#status').on('change', function(){

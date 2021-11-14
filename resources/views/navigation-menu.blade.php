@@ -20,7 +20,7 @@
 
                 @can('viewAny', App\Models\User::class)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                    <a class="nav-link dropdown-toggle @if (request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')) active @endif" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="">
                         Authentication
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
@@ -72,10 +72,25 @@
                         {{ __('Academics') }}
                     </x-jet-nav-link>
                 </li>
+
+               
                 <li class="navbar-nav mr-auto">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*')) active @endif" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                        Reports
+                    </a>
+                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Faculty</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Chairpersons</a></li>
+
+                        {{-- <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li> --}}
+                    </ul>
                 </li>
 
 

@@ -5,7 +5,7 @@
                 <ul class="nav justify-content-center m-n3">
                     @switch($research_status)
                         @case('26') 
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -14,7 +14,7 @@
                             @endcanany
                             @break
                         @case('27')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -22,7 +22,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchUtilization::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchUtilization::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.utilization.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.utilization.*')">
                                     {{ __('Utilization') }}
@@ -32,7 +32,7 @@
 
                             @break
                         @case('28')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -40,7 +40,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchCompletion::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchComplete::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.completed.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.completed.*')">
                                     {{ __('Completion') }}
@@ -48,7 +48,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchCopyright::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchCopyright::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.copyrighted.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.copyrighted.*')">
                                     {{ __('Copyright') }}
@@ -56,7 +56,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchUtilization::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchUtilization::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.utilization.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.utilization.*')">
                                     {{ __('Utilization') }}
@@ -66,7 +66,7 @@
                             
                             @break
                         @case('29')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -74,7 +74,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchCompletion::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchComplete::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.completed.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.completed.*')">
                                     {{ __('Completion') }}
@@ -82,7 +82,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchPresentation::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchPresentation::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.presentation.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.presentation.*')">
                                     {{ __('Presentation') }}
@@ -90,7 +90,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchCopyright::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchCopyright::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.copyrighted.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.copyrighted.*')">
                                     {{ __('Copyright') }}
@@ -98,7 +98,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchUtilization::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchUtilization::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.utilization.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.utilization.*')">
                                     {{ __('Utilization') }}
@@ -107,7 +107,7 @@
                             @endcanany
                             @break
                         @case('30')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -115,7 +115,7 @@
                             </li>
                             @endcanany
         
-                            @canany(['viewAny, create, update'], App\Models\ResearchCompletion::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchComplete::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.completed.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.completed.*')">
                                     {{ __('Completion') }}
@@ -123,7 +123,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchCopyright::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchCopyright::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.copyrighted.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.copyrighted.*')">
                                     {{ __('Copyright') }}
@@ -131,7 +131,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, create, update'], App\Models\ResearchPublication::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchPublication::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.publication.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.publication.*')">
                                     {{ __('Publication') }}
@@ -139,7 +139,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchCitation::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchCitation::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.citation.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.citation.*')">
                                     {{ __('Citation') }}
@@ -147,7 +147,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchUtilization::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchUtilization::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.utilization.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.utilization.*')">
                                     {{ __('Utilization') }}
@@ -157,7 +157,7 @@
 
                             @break
                         @case('31')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}
@@ -165,7 +165,7 @@
                             </li>
                             @endcanany
         
-                            @canany(['viewAny, create, update'], App\Models\ResearchCompletion::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchComplete::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.completed.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.completed.*')">
                                     {{ __('Completion') }}
@@ -173,7 +173,7 @@
                             </li>
                             @endcanany
                             
-                            @canany(['viewAny, create, update'], App\Models\ResearchPublication::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchPublication::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.publication.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.publication.*')">
                                     {{ __('Publication') }}
@@ -181,7 +181,7 @@
                             </li>
                             @endcanany
         
-                            @canany(['viewAny, create, update'], App\Models\ResearchPresentation::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchPresentation::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.presentation.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.presentation.*')">
                                     {{ __('Presentation') }}
@@ -189,7 +189,7 @@
                             </li>
                             @endcanany
                             
-                            @canany(['viewAny, create, update'], App\Models\ResearchCopyright::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchCopyright::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.copyrighted.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.copyrighted.*')">
                                     {{ __('Copyrighted') }}
@@ -197,7 +197,7 @@
                             </li>
                             @endcanany
 
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchCitation::class)
+                            @canany(['viewAny','create', 'update'], App\Models\ResearchCitation::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.citation.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.citation.*')">
                                     {{ __('Citation') }}
@@ -205,7 +205,7 @@
                             </li>
                             @endcanany
         
-                            @canany(['viewAny, view, create, update', 'delete'], App\Models\ResearchUtilization::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\ResearchUtilization::class)
                             <li class="nav-item">
                                 <x-jet-nav-link href="{{ route('research.utilization.index', $research_code) }}" class="text-dark" :active="request()->routeIs('research.utilization.*')">
                                     {{ __('Utilization') }}
@@ -215,7 +215,7 @@
 
                             @break
                         @case('32')
-                            @canany(['viewAny, create, update', 'delete'], App\Models\Research::class)
+                            @canany(['viewAny','create', 'update', 'delete'], App\Models\Research::class)
                             <li class="nav-item">
                                 <x-jet-nav-link  href="{{ route('research.show', $research_code) }}" class="text-dark" :active="request()->routeIs('research.show')">
                                     {{ __('Registration') }}

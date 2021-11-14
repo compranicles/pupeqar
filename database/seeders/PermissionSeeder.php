@@ -14,6 +14,7 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        Permission::truncate();
         /* ************************RESEARCH********************************** */
 
         Permission::create(['name' => 'view all faculty research']);
