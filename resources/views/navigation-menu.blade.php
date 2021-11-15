@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li>
+                <li class="main-nav-item">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
@@ -20,7 +20,7 @@
 
                 @can('viewAny', App\Models\User::class)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                    <a class="nav-link main-dropdown {{ request()->routeIs('admin.users.*') ? 'active' : ''}} {{ request()->routeIs('admin.roles.*') ? 'active' : ''}} {{ request()->routeIs('admin.permissions.*') ? 'active' : ''}}" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
                         Authentication
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
@@ -40,7 +40,7 @@
                 @endcan
 
                 @can('viewAny', App\Models\Announcement::class)
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
@@ -48,7 +48,7 @@
                 @endcan
 
                 @can('viewAny', App\Models\Research::class)
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
                         {{ __('Research') }}
                     </x-jet-nav-link>
@@ -56,13 +56,13 @@
                 @endcan
 
                 
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
                         {{ __('Inventions') }}
                     </x-jet-nav-link>
                 </li>
 
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>

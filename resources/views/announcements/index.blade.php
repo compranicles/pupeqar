@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('announcements.create') }}" class="btn btn-success">Create Announcement</a>
+                                <a href="{{ route('announcements.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Create Announcement</a>
                             </div>
                         </div>  
                         <hr>
