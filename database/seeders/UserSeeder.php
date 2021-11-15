@@ -15,25 +15,45 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        //Super Admin
         User::create([
             'email' => 'mugomec@mailinator.com',
-            'password'=> Hash::make('12345678'),
-            'role_id' => 3,
+            'password'=> Hash::make('primogems#2022-letsgo'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Earl Janiel',
-            'middle_name' => 'Fernando',
-            'last_name' => 'Compra',
+            'first_name' => 'Eru',
+            'middle_name' => null,
+            'last_name' => 'Eru',
             'suffix' => null,
         ]);
 
         User::create([
             'email' => 'candy@mailinator.com',
-            'password'=> Hash::make('12345678'),
-            'role_id' => 3,
+            'password'=> Hash::make('primogems#2022-letsgo'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Candy',
             'middle_name' => null,
-            'last_name' => 'Pena',
+            'last_name' => 'Candy',
+            'suffix' => null,
+        ]);
+
+        //Faculty
+        User::create([
+            'email' => 'cozy@mailinator.com',
+            'password'=> Hash::make('facultyaccount#2022-letsgo'),
+            'date_of_birth' => 1992-04-24,
+            'first_name' => 'Cozy',
+            'middle_name' => null,
+            'last_name' => 'Promise',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'kyhogo@mailinator.com',
+            'password'=> Hash::make('facultyaccount#2022-letsgo'),
+            'date_of_birth' => 1992-04-24,
+            'first_name' => 'Taylor',
+            'middle_name' => null,
+            'last_name' => 'Swift',
             'suffix' => null,
         ]);
     }

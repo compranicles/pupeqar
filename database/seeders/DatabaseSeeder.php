@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            PermissionSeeder::class,
             FieldTypeSeeder::class,
             ResearchDropdownSeeder::class,
             ResearchFormSeeder::class,
@@ -38,6 +39,10 @@ class DatabaseSeeder extends Seeder
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
+
+            UserSeeder::class,
+            UserRoleSeeder::class,
+            RolePermissionSeeder::class,
         ]);
     }
 }

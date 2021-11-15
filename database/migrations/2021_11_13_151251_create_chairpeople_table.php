@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormTypesTable extends Migration
+class CreateChairpeopleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateFormTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_types', function (Blueprint $table) {
+        Schema::create('chairpeople', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id');
+            $table->foreignId('department_id');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +29,6 @@ class CreateFormTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_types');
+        Schema::dropIfExists('chairpeople');
     }
 }

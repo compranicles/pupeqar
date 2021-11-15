@@ -1,10 +1,10 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }} ">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
     <div class="form-group">
-        <label for="{{ $fieldInfo->name }}" class="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="form-control custom-select {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+        <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="form-control custom-select form-validation {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             @switch($fieldInfo->visibility)
                     @case(2)
                         {{ 'readonly' }}

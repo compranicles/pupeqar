@@ -10,14 +10,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.store') }}" method="post">
+                        <form action="{{ route('research.store') }}" method="post" id="create_research">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Colleges/Campus/Branch/Office where you commit the research</label><span style="color: red;"> *</span>
     
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
+                                        <select name="college_id" id="college" class="form-control custom-select form-validation"  required>
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach ($colleges as $college)
                                             <option value="{{ $college->id }}">{{ $college->name }}</option>
@@ -30,7 +30,7 @@
                                 <div class="col-md-6">
                                     <label>Department where you commit the research</label><span style="color: red;"> *</span>
 
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
+                                    <select name="department_id" id="department" class="form-control custom-select form-validation" required>
                                         <option value="" selected disabled>Choose...</option>
                                     </select>
                                 </div>
@@ -69,18 +69,26 @@
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
+                $('#start_date').removeClass('form-validation');
+                $('#target_date').removeClass('form-validation');
+                $('#start_date').removeAttr('required');
+                $('#target_date').removeAttr('required');
+                $('#start_date').attr("disabled", true);
+                $('#target_date').attr("disabled", true);
             }
 
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('selected','selected');
                 // console.log(11);
                 $('#nature_of_involvement').attr('disabled', true); 
+                $('#nature_of_involvement').removeClass('form-validation'); 
             });
 
             $(function () {
                 hide_dates();
                 $('.funding_agency').hide();
-                $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
+                $('#funding_agency').removeClass('form-validation');
+                $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->middle_name.' '.auth()->user()->last_name }}");
                 $('#researchers').attr('readonly', true);
             });
 
@@ -90,17 +98,21 @@
                     
                     $('.funding_agency').show();
                     $('#funding_agency').val('Polytechnic University of the Philippines');
+                    $('#funding_agency').removeAttr('disabled');
                     $('#funding_agency').attr('readonly', true);
+                    $('#funding_agency').addClass('form-validation');
                 }
                 else if(type == 24){
                     $('.funding_agency').hide();
                     $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').removeClass('form-validation');
                 }
                 else if(type == 25){
                     $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').removeAttr('disabled');
                     $('.funding_agency').show();
                     $('#funding_agency').val('');
+                    $('#funding_agency').addClass('form-validation');
                 }
             });
 
@@ -108,11 +120,6 @@
                 var statusId = $('#status').val();
                 if (statusId == 26) {
                     hide_dates();
-                    $('#start_date').removeAttr('required');
-                    $('#target_date').removeAttr('required');
-                    $('#start_date').attr("disabled", true);
-                    $('#target_date').attr("disabled", true);
-                    
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
@@ -122,6 +129,8 @@
                     $('#target_date').attr("required", true);
                     $('#start_date').removeAttr('disabled');
                     $('#target_date').removeAttr('disabled');
+                    $('#start_date').addClass('form-validation');
+                    $('#target_date').addClass('form-validation');
                 }
             });
 
@@ -149,6 +158,24 @@
                 document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
+
+            function validateForm() {
+                var isValid = true;
+                $('.form-validation').each(function() {
+                    if ( $(this).val() === '' )
+                        isValid = false;
+                });
+                return isValid;
+            }
+
+            // $('.form-validation').on('change', function(){
+            //     if(validateForm == true){
+            //         $('#submit').removeAttr('disabled');
+            //     }
+            //     else{
+            //         $('#submit').attr('disabled', true);
+            //     }
+            // });
         </script>
     @endpush
 </x-app-layout>

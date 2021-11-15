@@ -15,6 +15,8 @@ class CurrencyController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Currency::class);
+
         $currencies = Currency::get();
         return view('maintenances.currencies.index', compact('currencies'));
     }
@@ -26,6 +28,8 @@ class CurrencyController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Currency::class);
+
         return view('maintenances.currencies.create');
     }
 
@@ -37,6 +41,8 @@ class CurrencyController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Currency::class);
+
         $request->validate([
             'name' => 'required|max:200',
             'code' => 'required|max:200',
@@ -60,7 +66,7 @@ class CurrencyController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('view', Currency::class);
     }
 
     /**
@@ -71,6 +77,8 @@ class CurrencyController extends Controller
      */
     public function edit(Currency $currency)
     {
+        $this->authorize('update', Currency::class);
+
         return view('maintenances.currencies.edit', compact('currency'));
     }
 
@@ -83,6 +91,8 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, Currency $currency)
     {
+        $this->authorize('update', Currency::class);
+
         $request->validate([
             'name' => 'required|max:200',
             'code' => 'required|max:200',
@@ -107,6 +117,8 @@ class CurrencyController extends Controller
     public function destroy(Currency $currency)
     {
         //
+        $this->authorize('delete', Currency::class);
+
         $currency->delete();
 
         return redirect()->route('currencies.index')->with('edit_currency_success', 'Currency has been deleted.');

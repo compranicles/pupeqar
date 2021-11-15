@@ -3,7 +3,7 @@
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="/dashboard" style="color:maroon">
             <img src="{{ asset('img/android-chrome-192x192.png') }}" width="36" class="mr-1">
-            PUP E-QAR
+            PUP eQAR
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-                <li>
+                <li class="main-nav-item">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-jet-nav-link>
@@ -20,7 +20,7 @@
 
                 @can('viewAny', App\Models\User::class)
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                    <a class="nav-link main-dropdown {{ request()->routeIs('admin.users.*') ? 'active' : ''}} {{ request()->routeIs('admin.roles.*') ? 'active' : ''}} {{ request()->routeIs('admin.permissions.*') ? 'active' : ''}}" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
                         Authentication
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
@@ -39,42 +39,53 @@
                 </li>
                 @endcan
 
-                
-                <li class="navbar-nav mr-auto">
+                @can('viewAny', App\Models\Announcement::class)
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
+                @endcan
 
                 @can('viewAny', App\Models\Research::class)
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
                         {{ __('Research') }}
                     </x-jet-nav-link>
                 </li>
                 @endcan
 
-
-                <li class="navbar-nav mr-auto">
+                
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
                         {{ __('Inventions') }}
                     </x-jet-nav-link>
                 </li>
 
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('extensions.index') }}" :active="request()->routeIs('extensions.*')">
-                        {{ __('Extensions') }}
-                    </x-jet-nav-link>
-                </li>
-                <li class="navbar-nav mr-auto">
-                    <x-jet-nav-link href="{{ route('academics.index') }}" :active="request()->routeIs('academics.*')">
-                        {{ __('Academics') }}
-                    </x-jet-nav-link>
-                </li>
-                <li class="navbar-nav mr-auto">
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
+                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                        Reports
+                    </a>
+                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Faculty</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
+                    </ul>
                 </li>
 
 

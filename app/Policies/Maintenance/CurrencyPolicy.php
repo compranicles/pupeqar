@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Policies\Reports;
+namespace App\Policies\Maintenance;
 
-use App\Models\Report;
+use App\Models\Currency;
 use App\Models\User;
 use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ReportPolicy
+class CurrencyPolicy
 {
     use HandlesAuthorization;
 
@@ -21,15 +21,14 @@ class ReportPolicy
     public function viewAny(User $user)
     {
         $roles = UserRole::where('user_roles.user_id', $user->id)
-                ->pluck('user_roles.role_id')->all();
+                 ->pluck('user_roles.role_id')->all();
         foreach ($roles as $role) {
-        $permission = RolePermission::where('role_permissions.role_id', $role)
-                        ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                        ->where('permissions.name', "manage report")
-                        ->first();
+            $permission = RolePermission::where('role_permissions.role_id', $role)
+                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                            ->where('permissions.name', "manage currencies")
+                            ->first();
 
-        return $permission !== null ;
-
+            return $permission !== null ;
         }
     }
 
@@ -37,7 +36,7 @@ class ReportPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user)
@@ -53,7 +52,6 @@ class ReportPolicy
      */
     public function create(User $user)
     {
-        // create, store
         return $this->viewAny($user);
     }
 
@@ -61,12 +59,11 @@ class ReportPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user)
     {
-        // edit, update
         return $this->viewAny($user);
     }
 
@@ -74,12 +71,11 @@ class ReportPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Report  $report
+     * @param  \App\Models\Currency  $currency
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user)
     {
-        // destroy
         return $this->viewAny($user);
     }
 }

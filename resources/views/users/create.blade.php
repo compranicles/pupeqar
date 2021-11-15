@@ -59,12 +59,12 @@
                           <x-jet-label value="{{ __('Suffix') }}" />
                           <select name="suffix" id="suffix" class="{{ $errors->has('suffix') 
                           ? 'is-invalid': '' }} form-control form-control-md">
-                              <option value="">None</option>
-                              <option value="Sr">Sr</option>
-                              <option value="Jr">Jr</option>
-                              <option value="III">III</option>
-                              <option value="IV">IV</option>
-                              <option value="V">V</option>
+                              <option value="" {{ (old('suffix') == '') ? 'selected' : '' }}>None</option>
+                              <option value="Sr" {{ (old('suffix') == 'Sr') ? 'selected' : '' }}>Sr</option>
+                              <option value="Jr" {{ (old('suffix') == 'Jr') ? 'selected' : '' }}>Jr</option>
+                              <option value="III" {{ (old('suffix') == 'III') ? 'selected' : '' }}>III</option>
+                              <option value="IV" {{ (old('suffix') == 'IV') ? 'selected' : '' }}>IV</option>
+                              <option value="V" {{ (old('suffix') == 'V') ? 'selected' : '' }}>V</option>
                           </select>
                           <x-jet-input-error for="suffix"></x-jet-input-error>
                         </div>
@@ -102,14 +102,34 @@
                                 <div class="col-md-4 ml-3">
                                     <label for="role-{{ $role->id }}">
                                         <input 
-                                        class="role-checkbox" type="checkbox" id="role-{{$role->id}}" 
+                                        class="role-checkbox" type="checkbox" data-id="{{ $role->id }}" id="role-{{$role->id}}" 
                                         name="roles[]" value="{{ $role->id }}" />
                                         {{ $role->name }}
                                     </label>
                                 </div>
                                 @endforeach
                             </div>
-                        </div>     
+                        </div>
+                        <div class="form-group department-input" style="display: none;">
+                          <x-jet-label value="{{ __('Department') }}" />
+                          <select name="department" id="department" class="form-control form-control-md">
+                              <option value="" selected>Choose...</option>
+                              @foreach ($departments as $department)
+                                  <option value="{{ $department->id }}">{{ $department->college_name.' - '.$department->name }}</option>  
+                              @endforeach
+                          </select>
+                          <x-jet-input-error for="department"></x-jet-input-error>
+                        </div>       
+                        <div class="form-group college-input" style="display: none;">
+                          <x-jet-label value="{{ __('College') }}" />
+                          <select name="college" id="college" class="form-control form-control-md">
+                              <option value="" selected>Choose...</option>
+                              @foreach ($colleges as $college)
+                                  <option value="{{ $college->id }}">{{ $college->name }}</option>  
+                              @endforeach
+                          </select>
+                          <x-jet-input-error for="college"></x-jet-input-error>
+                        </div>       
                     </div>
                   </div>
               </div>
@@ -128,6 +148,47 @@
       </div>
     </div>
     @push('scripts')
+      <script src="{{ asset('dist/selectize.min.js') }}"></script>
+      <script>
+          $("#department").selectize({
+              sortField: "text",
+          });
+          $("#college").selectize({
+              sortField: "text",
+          });
+
+          $('.role-checkbox').on('change', function() {
+              var id = $(this).data('id');
+              changeDeptDisp(id);
+              changeColDisp(id);
+          });
+
+          function changeDeptDisp(id){
+              if( $('#role-'+5).is(':checked')){
+                $('.department-input').show();
+                $('#department').removeAttr('disabled');
+                $('#department').attr('required', true);
+              }
+              else{
+                $('.department-input').hide();
+                $('#department').removeAttr('required');
+                $('#department').attr('disabled', true);
+              }
+          }
+
+          function changeColDisp(id){
+              if( $('#role-'+6).is(':checked')){
+                $('.college-input').show();
+                $('#college').removeAttr('disabled');
+                $('#college').attr('required', true);
+              }
+              else{
+                $('.college-input').hide();
+                $('#college').removeAttr('required');
+                $('#college').attr('disabled', true);
+              }
+          }
+      </script>
       <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){

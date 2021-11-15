@@ -28,52 +28,54 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Columns</a>
                                     <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Rename</a>
-                                </div>
+                                </div><hr>
                             </div>
-                            <div class="col-9">
+                            <div class="col-md-9">
                                 <div class="tab-content" id="v-pills-tabContent">
                                     <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                        <div class="col-md-12">
-                                            <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
-                                                <i class="fas fa-plus"></i> Add Column
-                                            </button>
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="table-responsive text-center">
-                                                <table id="report_columns_table" class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Name</th>
-                                                            <th>Table</th>
-                                                            <th>Column</th>
-                                                            <th>Active</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody id="field_sortable">
-                                                        @foreach ($report_columns as $report_column)
-                                                        <tr id="{{ $report_column->id }}">
-                                                            <td>{{ $report_column->name }}</td>
-                                                            <td>{{ $report_column->table }}</td>
-                                                            <td>{{ $report_column->column }}</td>
-                                                            <td>
-                                                                <div class="custom-control custom-switch">
-                                                                    <input type="checkbox" class="custom-control-input active-switch" id="is_active_{{ $report_column->id }}" data-id="{{ $report_column->id }}" {{ ($report_column->is_active == 1) ? 'checked': '' }}>
-                                                                    <label class="custom-control-label" for="is_active_{{ $report_column->id }}"></label>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <a href="{{ route('report-categories.report-columns.edit', [$report_category->id, $report_column->id]) }}" class="btn btn-warning edit-row">Manage</a>
-                                                            </td>    
-                                                        </tr>                                                
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
+                                                    <i class="fas fa-plus"></i> Add Column
+                                                </button>
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="table-responsive text-center">
+                                                    <table id="report_columns_table" class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Table</th>
+                                                                <th>Column</th>
+                                                                <th>Active</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="field_sortable">
+                                                            @foreach ($report_columns as $report_column)
+                                                            <tr id="{{ $report_column->id }}">
+                                                                <td>{{ $report_column->name }}</td>
+                                                                <td>{{ $report_column->table }}</td>
+                                                                <td>{{ $report_column->column }}</td>
+                                                                <td>
+                                                                    <div class="custom-control custom-switch">
+                                                                        <input type="checkbox" class="custom-control-input active-switch" id="is_active_{{ $report_column->id }}" data-id="{{ $report_column->id }}" {{ ($report_column->is_active == 1) ? 'checked': '' }}>
+                                                                        <label class="custom-control-label" for="is_active_{{ $report_column->id }}"></label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="{{ route('report-categories.report-columns.edit', [$report_category->id, $report_column->id]) }}" class="btn btn-warning btn-sm edit-row">Manage</a>
+                                                                </td>    
+                                                            </tr>                                                
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

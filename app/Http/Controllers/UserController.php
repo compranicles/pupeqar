@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Dean;
 // use App\Models\Invite;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Invite;
+use App\Models\Chairperson;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Maintenance\College;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Maintenance\Department;
+use App\Models\Authentication\UserRole;
+use App\Models\Authentication\Permission;
 use App\Notifications\InviteNotification;
 use Illuminate\Support\Facades\Notification;
-use Symfony\Component\HttpFoundation\Response;
-use App\Models\Role;
-use App\Models\Authentication\Permission;
 use App\Models\Authentication\RolePermission;
-use App\Models\Authentication\UserRole;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -44,7 +49,9 @@ class UserController extends Controller
 
         $roles = Role::get();
         $permissions = Permission::get();
-        return view('users.create', compact('roles', 'permissions'));
+        $departments = Department::select('departments.*', 'colleges.name as college_name')->join('colleges', 'departments.college_id', 'colleges.id')->get();
+        $colleges = College::all();
+        return view('users.create', compact('roles', 'permissions', 'departments', 'colleges'));
     }
 
     /**
@@ -72,7 +79,7 @@ class UserController extends Controller
             'last_name' => $request->input('last_name'),
             'suffix' => $request->input('suffix') ?? null,
             'date_of_birth' => $request->input('birthdate'),
-            'role_id' => 1,
+            // 'role_id' => 1,
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
@@ -86,7 +93,19 @@ class UserController extends Controller
                 'role_id' => $role,
             ]);
         }
-
+        
+        if($request->has('department')){
+            Chairperson::create([
+                'user_id' => $user_id,
+                'department_id' => $request->input('department') ?? null
+            ]);
+        }
+        if($request->has('college')){
+            Dean::create([
+                'user_id' => $user_id,
+                'college_id' => $request->input('college') ?? null
+            ]);
+        }
         return redirect()->route('admin.users.create')->with('add_user_success','User added successfully.');
     }
 
@@ -121,7 +140,10 @@ class UserController extends Controller
         $roles = Role::get();
         $yourroles = $user->userrole()->pluck('role_id')->all();
         $permissions = Permission::get();
-        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles'));
+        $departments = Department::select('departments.*', 'colleges.name as college_name')->join('colleges', 'departments.college_id', 'colleges.id')->get();
+        $chairperson = Chairperson::where('user_id', $user->id)->pluck('id')->first();
+
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson'));
     }
 
     /**
@@ -172,6 +194,14 @@ class UserController extends Controller
                 }
             }
         }
+
+        Chairperson::where('user_id', $user->id)->update([
+            'department_id' => $request->input('department') ?? null
+        ]);
+        Dean::where('user_id', $user->id)->update([
+            'college_id' => $request->input('college') ?? null
+        ]);
+
 
         return redirect()->route('admin.users.index')->with('edit_user_success','User record updated successfully.');
     }

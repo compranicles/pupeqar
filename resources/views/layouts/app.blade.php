@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>PUP E-QAR</title>
+        <title>PUP eQAR</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -18,7 +18,8 @@
         <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
         <link href="{{ asset('lightbox2/dist/css/lightbox.css') }}" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> <!--added-->        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> <!--added-->    
+        <link rel="stylesheet" href="{{ asset('dist/selectize.bootstrap4.css') }}">    
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         @livewireStyles

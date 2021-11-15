@@ -38,12 +38,12 @@
                       <div class="form-group">
                         <x-jet-label value="{{ __('Suffix') }}" />
                         <select name="suffix" id="suffix" class="form-control form-control-md" disabled>
-                            <option value="">None</option>
-                            <option value="Sr">Sr</option>
-                            <option value="Jr">Jr</option>
-                            <option value="III">III</option>
-                            <option value="IV">IV</option>
-                            <option value="V">V</option>
+                            <option value="" {{ (old('suffix', $user->suffix) == '') ? 'selected' : '' }}>None</option>
+                            <option value="Sr" {{ (old('suffix', $user->suffix) == 'Sr') ? 'selected' : '' }}>Sr</option>
+                            <option value="Jr" {{ (old('suffix', $user->suffix) == 'Jr') ? 'selected' : '' }}>Jr</option>
+                            <option value="III" {{ (old('suffix', $user->suffix) == 'III') ? 'selected' : '' }}>III</option>
+                            <option value="IV" {{ (old('suffix', $user->suffix) == 'IV') ? 'selected' : '' }}>IV</option>
+                            <option value="V" {{ (old('suffix', $user->suffix) == 'V') ? 'selected' : '' }}>V</option>
                         </select>
                         <x-jet-input-error for="suffix"></x-jet-input-error>
                       </div>  
@@ -63,15 +63,26 @@
                         @foreach ($roles as $role)
                           
                           <div class="col-sm-6">
-                            <label for="{{ $role->id }}">
-                              <input type="checkbox" id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" @if (in_array($role->id, $yourroles)) checked @endif >
+                            <label for="role-{{ $role->id }}">
+                              <input type="checkbox" class="role-checkbox" id="role-{{ $role->id }}" data-id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" @if (in_array($role->id, $yourroles)) checked @endif >
                               {{ $role->name }}
                             </label>
                           </div>
                         @endforeach
                         </div>
                       </div>
-         
+        
+                      <div class="form-group department-input" style="@if($chairperson == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Department') }}" />
+                        <select name="department" id="department" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ (old('department', $chairperson) == $department->id) ? 'selected' : '' }}>{{ $department->college_name.' - '.$department->name }}</option>  
+                            @endforeach
+                        </select>
+                        <x-jet-input-error for="department"></x-jet-input-error>
+                      </div>  
+
                     </div>
                   </div>
                 </div>
@@ -90,6 +101,32 @@
       </div>
     </div>
     @push('scripts')
+      <script src="{{ asset('dist/selectize.min.js') }}"></script>
+      <script>
+          $("#department").selectize({
+              sortField: "text",
+          });
+
+          $('.role-checkbox').on('change', function() {
+              var id = $(this).data('id');
+              if(id == 5){
+                changeDeptDisp(id);
+              }
+          });
+
+          function changeDeptDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.department-input').show();
+                 $('#department').removeAttr('disabled');
+                 $('#department').attr('required', true);
+              }
+              else{
+                $('.department-input').hide();
+                $('#department').removeAttr('required');
+                $('#department').attr('disabled', true);
+              }
+          }
+      </script>
       <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){

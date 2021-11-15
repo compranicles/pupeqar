@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQarFormsTable extends Migration
+class CreateDeansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateQarFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('qar_forms', function (Blueprint $table) {
+        Schema::create('deans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('form_id');
+            $table->foreignId('user_id');
+            $table->foreignId('college_id');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +29,6 @@ class CreateQarFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('qar_forms');
+        Schema::dropIfExists('deans');
     }
 }

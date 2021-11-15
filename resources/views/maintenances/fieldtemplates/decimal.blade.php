@@ -9,7 +9,7 @@
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
-            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ number_format(($value == null) ? 0.00 : $value, 2, '.', ',') }}" class="form-control" 
+            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ number_format(($value == null) ? 0.00 : $value, 2, '.', ',') }}" class="form-control form-validation" 
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} step="0.01" placeholder="{{ $fieldInfo->placeholder }}"
                 @switch($fieldInfo->visibility)
                     @case(2)
