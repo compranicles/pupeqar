@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report - {{ $departmentHeadOf->department_name }}
+                                Quarterly Accomplishment Report - {{ $collegeHeadOf->college_name }}
                             </h3>
                             <hr>
                         </div>
@@ -45,6 +45,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>#</th>
+                                                            <th>Department</th>
                                                             <th>Report Category</th>
                                                             <th>Faculty</th>
                                                             <th>Report Date</th>
@@ -55,11 +56,12 @@
                                                         @foreach ($reportsToReview as $row)
                                                             <tr>
                                                                 <td>{{ $loop->iteration }}</td>
+                                                                <td>{{ $row->department_name }}</td>
                                                                 <td>{{ $row->report_category }}</td>
                                                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                                 <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                                                 <td>
-                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
                                                                 </td>
                                                             </tr>
                                                         @endforeach

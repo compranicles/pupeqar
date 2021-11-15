@@ -120,6 +120,16 @@
                           </select>
                           <x-jet-input-error for="department"></x-jet-input-error>
                         </div>       
+                        <div class="form-group college-input" style="display: none;">
+                          <x-jet-label value="{{ __('College') }}" />
+                          <select name="college" id="college" class="form-control form-control-md">
+                              <option value="" selected>Choose...</option>
+                              @foreach ($colleges as $college)
+                                  <option value="{{ $college->id }}">{{ $college->name }}</option>  
+                              @endforeach
+                          </select>
+                          <x-jet-input-error for="college"></x-jet-input-error>
+                        </div>       
                     </div>
                   </div>
               </div>
@@ -143,16 +153,18 @@
           $("#department").selectize({
               sortField: "text",
           });
+          $("#college").selectize({
+              sortField: "text",
+          });
 
           $('.role-checkbox').on('change', function() {
               var id = $(this).data('id');
-              if(id == 5){
-                changeDeptDisp(id);
-              }
+              changeDeptDisp(id);
+              changeColDisp(id);
           });
 
           function changeDeptDisp(id){
-              if( $('#role-'+id).is(':checked')){
+              if( $('#role-'+5).is(':checked')){
                 $('.department-input').show();
                 $('#department').removeAttr('disabled');
                 $('#department').attr('required', true);
@@ -161,6 +173,19 @@
                 $('.department-input').hide();
                 $('#department').removeAttr('required');
                 $('#department').attr('disabled', true);
+              }
+          }
+
+          function changeColDisp(id){
+              if( $('#role-'+6).is(':checked')){
+                $('.college-input').show();
+                $('#college').removeAttr('disabled');
+                $('#college').attr('required', true);
+              }
+              else{
+                $('.college-input').hide();
+                $('#college').removeAttr('required');
+                $('#college').attr('disabled', true);
               }
           }
       </script>

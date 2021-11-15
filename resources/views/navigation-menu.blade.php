@@ -87,9 +87,13 @@
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Faculty</a></li>
 
-                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Chairpersons</a></li>
+                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
 
-                        {{-- <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li> --}}
+                        <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
                     </ul>
                 </li>
 

@@ -85,7 +85,7 @@ class FacultyController extends Controller
                     $checker_array = [];
                     break;
                 case '5':
-                    $data = ResearchCitation::select('research_citations.id','research.research_code')->
+                    $data = ResearchCitation::select('research_citations.id','research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             orWhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->
                             join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())->get();
@@ -101,7 +101,7 @@ class FacultyController extends Controller
                     $checker_array = [];
                     break;
                 case '6':
-                    $data = ResearchUtilization::select('research_utilizations.id','research.research_code')->
+                    $data = ResearchUtilization::select('research_utilizations.id','research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             orWhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->
                             join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())->get();

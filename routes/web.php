@@ -137,8 +137,20 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
 
     //chairperson Reports
+    Route::get('/reports/chairperson/accept/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'accept'])->name('chairperson.accept');
     Route::resource('/reports/chairperson', \App\Http\Controllers\Reports\ChairpersonController::class);
+
+    //dean reports
+    Route::get('/reports/dean/accept/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'accept'])->name('dean.accept');
+    Route::resource('/reports/dean', \App\Http\Controllers\Reports\DeanController::class);
+
+    //sector reports
+    Route::get('/reports/sector/accept/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'accept'])->name('sector.accept');
+    Route::resource('/reports/sector', \App\Http\Controllers\Reports\SectorController::class);
     
+    //ipqmso reports
+    Route::get('/reports/ipqmso/accept/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
+    Route::resource('/reports/ipqmso', \App\Http\Controllers\Reports\IpqmsoController::class);
     // admin routes
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 

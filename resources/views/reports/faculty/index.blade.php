@@ -278,6 +278,14 @@
             $('#report_denied').DataTable();
         });
     </script>
+    <script>
+        // auto hide alert
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+    </script>
 @endpush
 
 </x-app-layout>

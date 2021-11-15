@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Report;
-use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ChairpersonController extends Controller
+class IpqmsoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +15,15 @@ class ChairpersonController extends Controller
      */
     public function index()
     {
-        $departmentHeadOf = Chairperson::select('chairpeople.*', 'departments.name as department_name')->
-            join('departments', 'chairpeople.department_id', 'departments.id')->where('user_id', auth()->id())->first();
-
-        
-        $reportsToReview = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-                            ->join('departments', 'reports.department_id', 'departments.id')
-                            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-                            ->join('users', 'reports.user_id', 'users.id')
-                            ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', null)->get();
-
-        return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview'));
+        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            ->join('departments', 'reports.department_id', 'departments.id')
+            ->join('colleges', 'reports.college_id', 'colleges.id')
+            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+            ->join('users', 'reports.user_id', 'users.id')
+            ->where('chairperson_approval', 1)->where('dean_approval', 1)
+            ->where('sector_approval', 1)->where('ipqmso_approval', null)->get();
+    
+    return view('reports.ipqmso.index', compact('reportsToReview'));
     }
 
     /**
@@ -96,8 +93,8 @@ class ChairpersonController extends Controller
     }
 
     public function accept($report_id){
-        Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
+        Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
-        return redirect()->route('chairperson.index')->with('success', 'Report Accepted');
+        return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
     }
 }

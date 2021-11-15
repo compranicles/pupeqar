@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Models\Dean;
 // use App\Models\Invite;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Invite;
 use App\Models\Chairperson;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Maintenance\College;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -47,7 +50,8 @@ class UserController extends Controller
         $roles = Role::get();
         $permissions = Permission::get();
         $departments = Department::select('departments.*', 'colleges.name as college_name')->join('colleges', 'departments.college_id', 'colleges.id')->get();
-        return view('users.create', compact('roles', 'permissions', 'departments'));
+        $colleges = College::all();
+        return view('users.create', compact('roles', 'permissions', 'departments', 'colleges'));
     }
 
     /**
@@ -58,7 +62,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->department);
         $this->authorize('create', User::class);
 
         $request->validate([
@@ -90,10 +93,19 @@ class UserController extends Controller
                 'role_id' => $role,
             ]);
         }
-        Chairperson::create([
-            'user_id' => $user_id,
-            'department_id' => $request->input('department') ?? null
-        ]);
+        
+        if($request->has('department')){
+            Chairperson::create([
+                'user_id' => $user_id,
+                'department_id' => $request->input('department') ?? null
+            ]);
+        }
+        if($request->has('college')){
+            Dean::create([
+                'user_id' => $user_id,
+                'college_id' => $request->input('college') ?? null
+            ]);
+        }
         return redirect()->route('admin.users.create')->with('add_user_success','User added successfully.');
     }
 
@@ -186,6 +198,10 @@ class UserController extends Controller
         Chairperson::where('user_id', $user->id)->update([
             'department_id' => $request->input('department') ?? null
         ]);
+        Dean::where('user_id', $user->id)->update([
+            'college_id' => $request->input('college') ?? null
+        ]);
+
 
         return redirect()->route('admin.users.index')->with('edit_user_success','User record updated successfully.');
     }
