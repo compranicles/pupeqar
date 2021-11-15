@@ -1,5 +1,5 @@
 <div class="container-fluid mega-box">
-    <div class="col-md-10 offset-md-1">
+    <div class="col-md-10 offset-md-1 content">
         <div class="row">
             <div class="col-md-4 mega-menu-col">
               <h6>Faculty Accomplishment</h6>
