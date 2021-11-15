@@ -69,7 +69,8 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*')) active @endif" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                    <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
+                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
@@ -82,6 +83,8 @@
                         <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
 
                         <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
+
+                        <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
                     </ul>
                 </li>
 

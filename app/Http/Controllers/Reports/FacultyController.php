@@ -138,6 +138,7 @@ class FacultyController extends Controller
                     ->where('reports.user_id', auth()->id())->join('colleges', 'reports.college_id', 'colleges.id')->join('departments', 'reports.department_id', 'departments.id')
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->where('reports.chairperson_approval', 0)->orWhere('reports.dean_approval', 0)
                     ->orWhere('reports.sector_approval', 0)->orWhere('reports.ipqmso_approval', 0)->get();
+    
         // dd($reported_accomplishments);
         return view('reports.faculty.index', compact('report_tables', 'report_array' , 'report_document_checker', 'reported_accomplishments'));
     }

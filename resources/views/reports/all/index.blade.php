@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report - IPQMSO
+                                Quarterly Accomplishment Report
                             </h3>
                             <hr>
                         </div>
@@ -29,47 +29,38 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a class="nav-link active" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">To Review</a>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
-                                    {{-- To Review Table --}}
-                                    <div class="row mt-2">
-                                        <div class="col-md-12">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>College</th>
-                                                            <th>Department</th>
-                                                            <th>Report Category</th>
-                                                            <th>Faculty</th>
-                                                            <th>Report Date</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($reportsToReview as $row)
-                                                            <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $row->college_name }}</td>
-                                                                <td>{{ $row->department_name }}</td>
-                                                                <td>{{ $row->report_category }}</td>
-                                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
-                                                                <td>
-                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                            {{-- To Review Table --}}
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-hover table-bordered text-center" id="all_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>College</th>
+                                                    <th>Department</th>
+                                                    <th>Report Category</th>
+                                                    <th>Faculty</th>
+                                                    <th>Report Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($reportsToReview as $row)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $row->college_name }}</td>
+                                                        <td>{{ $row->department_name }}</td>
+                                                        <td>{{ $row->report_category }}</td>
+                                                        <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                        <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                        <td>
+                                                            <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -103,13 +94,6 @@
                 <div class="col-md-12 text-center" id="data_documents">
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-12"><hr></div>
-                <div class="col-md-6 text-center" id="review_btn_accept">
-                </div>
-                <div class="col-md-6 text-center" id="review_btn_reject">
-                </div>
-            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -125,7 +109,6 @@
             var catID = $(this).data('id');
             var link = $(this).data('url');
             var accept = $(this).data('accept');
-            var deny = $(this).data('deny');
             var countColumns = 0;
             
             $.get('/reports/data/'+catID, function (data){
@@ -142,10 +125,6 @@
                     $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                 });
             });
-            
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success btn-lg btn-block report-content">ACCEPT</a>');
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger  btn-lg btn-block report-content">DENY</a>');
-            
         });
 
         $('#viewReport').on('hidden.bs.modal', function(event) {
@@ -153,7 +132,7 @@
         });
 
         $(function () {
-            $('#to_review_table').DataTable();
+            $('#all_table').DataTable();
         });
     </script>
     <script>

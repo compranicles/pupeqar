@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Report;
+use App\Models\DenyReason;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,14 @@ class ChairpersonController extends Controller
                             ->join('users', 'reports.user_id', 'users.id')
                             ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', null)->get();
 
-        return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview'));
+        $reportsDenied = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+                            ->join('departments', 'reports.department_id', 'departments.id')
+                            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                            ->join('users', 'reports.user_id', 'users.id')
+                            ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', 1)
+                            ->where('dean_approval', 0)->get();
+
+        return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview', 'reportsDenied'));
     }
 
     /**
@@ -99,5 +107,28 @@ class ChairpersonController extends Controller
         Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
 
         return redirect()->route('chairperson.index')->with('success', 'Report Accepted');
+    
+    }
+    public function rejectCreate($report_id){
+        return view('reports.chairpersons.reject', compact('report_id'));
+    }
+
+    public function reject($report_id, Request $request){
+        DenyReason::create([
+            'report_id' => $report_id,
+            'user_id' => auth()->id(),
+            'position_name' => 'chairperson',
+            'reason' => $request->input('reason'),
+        ]);
+
+        Report::where('id', $report_id)->update([
+            'chairperson_approval' => 0
+        ]);
+        return redirect()->route('chairperson.index')->with('success', 'Report Denied');
+    }
+
+    public function relay($report_id){
+        Report::where('id', $report_id)->update(['chairperson_approval' => 0]);
+        return redirect()->route('chairperson.index')->with('success', 'Report Denial successfully sent');
     }
 }

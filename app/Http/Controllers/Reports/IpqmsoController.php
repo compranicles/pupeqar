@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Report;
+use App\Models\DenyReason;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -22,8 +23,8 @@ class IpqmsoController extends Controller
             ->join('users', 'reports.user_id', 'users.id')
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', 1)->where('ipqmso_approval', null)->get();
-    
-    return view('reports.ipqmso.index', compact('reportsToReview'));
+
+        return view('reports.ipqmso.index', compact('reportsToReview'));
     }
 
     /**
@@ -96,5 +97,23 @@ class IpqmsoController extends Controller
         Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
         return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
+    }
+
+    public function rejectCreate($report_id){
+        return view('reports.ipqmso.reject', compact('report_id'));
+    }
+
+    public function reject($report_id, Request $request){
+        DenyReason::create([
+            'report_id' => $report_id,
+            'user_id' => auth()->id(),
+            'position_name' => 'ipqmso',
+            'reason' => $request->input('reason'),
+        ]);
+
+        Report::where('id', $report_id)->update([
+            'ipqmso_approval' => 0
+        ]);
+        return redirect()->route('ipqmso.index')->with('success', 'Report Denied');
     }
 }

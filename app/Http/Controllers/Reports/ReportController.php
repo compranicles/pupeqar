@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Report;
+use App\Models\DenyReason;
 use Illuminate\Http\Request;
 use App\Models\ResearchCitation;
 use App\Models\ResearchDocument;
@@ -99,5 +100,12 @@ class ReportController extends Controller
         $report_docs = json_decode(Report::where('id', $report_id)->pluck('report_documents')->first(), true);
 
         return $report_docs;
+    }
+
+    public function getRejectDetails($report_id){
+        $deny_details = DenyReason::where('report_id', $report_id)->first();
+        $newtime = strtotime($deny_details->created_at);
+        $deny_details->time = date("F j, Y, g:i a", $newtime);
+        return $deny_details;
     }
 }
