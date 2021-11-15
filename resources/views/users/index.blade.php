@@ -16,7 +16,7 @@
                         @endif
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('admin.users.create') }}" class="btn btn-success mb-2">Add New User</a>
+                                <a href="{{ route('admin.users.create') }}" class="btn btn-success mb-2"><i class="bi bi-plus"></i> Add New User</a>
                             </div>
                         </div>  
                         <hr>
@@ -24,7 +24,7 @@
                             <table class="table" id="user_table">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th></th>
                                         <th>Name</th>
                                         <th>Date Joined</th>
                                         <th>Actions</th>
@@ -32,18 +32,18 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $user)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $user->first_name." ".$user->middle_name." ".$user->last_name." ".$user->suffix }}</td>
-                                            <td>{{ $user->created_at }}</td>
+                                        <tr class="tr-hover" role="button">
+                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >{{ $loop->iteration }}</td>
+                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >{{ $user->first_name." ".$user->middle_name." ".$user->last_name." ".$user->suffix }}</td>
+                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >{{ $user->created_at }}</td>
                                             <td>
                                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group" role="group">
-                                                        {{-- <a href="{{ route('admin.users.show', $user->id) }}"  class="btn btn-success btn-sm">View</a> --}}
-                                                        <a href="{{ route('admin.users.edit', $user->id) }}"  class="btn btn-warning text-dark btn-sm">Manage</a>
-                                                        <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                                                        
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                        <i class="bi bi-trash trash"></i> <input type="submit" class="action-delete" value="Delete">
                                                     </div>
                                                 </form>
                                             </td>
@@ -66,5 +66,6 @@
              });
          } );
      </script>
+     
      @endpush
 </x-app-layout>
