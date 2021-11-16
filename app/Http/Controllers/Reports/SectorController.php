@@ -16,6 +16,7 @@ class SectorController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAnySectorHeadReport', Report::class);
 
         $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('departments', 'reports.department_id', 'departments.id')
@@ -105,16 +106,22 @@ class SectorController extends Controller
     }
 
     public function accept($report_id){
+        $this->authorize('validateBySectorHead', Report::class);
+
         Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
         return redirect()->route('sector.index')->with('success', 'Report Accepted');
     }
 
     public function rejectCreate($report_id){
+        $this->authorize('validateBySectorHead', Report::class);
+
         return view('reports.sector.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $this->authorize('validateBySectorHead', Report::class);
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -129,6 +136,8 @@ class SectorController extends Controller
     }
 
     public function relay($report_id){
+        $this->authorize('validateBySectorHead', Report::class);
+
         Report::where('id', $report_id)->update(['sector_approval' => 0]);
         return redirect()->route('sector.index')->with('success', 'Report Denial successfully sent');
     }

@@ -17,6 +17,7 @@ class DeanController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAnyDeanReport', Report::class);
         $collegeHeadOf = Dean::select('deans.*', 'colleges.name as college_name')->
             join('colleges', 'deans.college_id', 'colleges.id')->where('user_id', auth()->id())->first();
         
@@ -104,16 +105,21 @@ class DeanController extends Controller
     }
 
     public function accept($report_id){
+        $this->authorize('validateByDean', Report::class);
         Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
         return redirect()->route('dean.index')->with('success', 'Report Accepted');
     }
 
     public function rejectCreate($report_id){
+        $this->authorize('validateByDean', Report::class);
+        
         return view('reports.dean.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $this->authorize('validateByDean', Report::class);
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -128,6 +134,8 @@ class DeanController extends Controller
     }
 
     public function relay($report_id){
+        $this->authorize('validateByDean', Report::class);
+
         Report::where('id', $report_id)->update(['dean_approval' => 0]);
         return redirect()->route('dean.index')->with('success', 'Report Denial successfully sent');
     }

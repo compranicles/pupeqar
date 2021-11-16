@@ -30,7 +30,7 @@ class PermissionSeeder extends Seeder
         /* ************************USERS********************************** */
         Permission::create(['name' => 'view users']);
         Permission::create(['name' => 'edit user role']);
-        Permission::create(['name' => 'delete user record']);
+        Permission::create(['name' => 'delete user record']); //12
 
         /* ************************CONTENT********************************** */
         Permission::create(['name' => 'manage announcements']);
@@ -39,10 +39,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'manage currencies']);
         Permission::create(['name' => 'manage dropdowns']);
         Permission::create(['name' => 'manage research forms']);
-        Permission::create(['name' => 'manage invention forms']);
+        Permission::create(['name' => 'manage invention forms']); //17
 
         /* ************************MAINTENANCES********************************** */
         Permission::create(['name' => 'manage roles']);
-        Permission::create(['name' => 'manage permissions']);
+        Permission::create(['name' => 'manage permissions']); //19
     }
 }

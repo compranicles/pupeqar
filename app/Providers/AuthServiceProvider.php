@@ -19,6 +19,7 @@ use App\Models\Currency;
 use App\Models\FormBuilder\Dropdown;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\InventionForm;
+use App\Models\Report;
 
 use App\Models\Authentication\Permission;
 use App\Policies\Authentication\RolePolicy;
@@ -36,6 +37,8 @@ use App\Policies\Maintenance\CurrencyPolicy;
 use App\Policies\Maintenance\DropdownPolicy;
 use App\Policies\Maintenance\Research\ResearchFormPolicy;
 use App\Policies\Maintenance\Invention\InventionFormPolicy;
+use App\Policies\Report\ReportPolicy;
+
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -67,6 +70,8 @@ class AuthServiceProvider extends ServiceProvider
         Dropdown::class => DropdownPolicy::class,
         ResearchForm::class => ResearchFormPolicy::class,
         InventionForm::class => InventionFormPolicy::class,
+        Report::class => ReportPolicy::class,
+
     ];
 
     /**

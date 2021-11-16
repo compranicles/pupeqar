@@ -22,6 +22,8 @@ class FacultyController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAnyFacultyReport', Report::class);
+
         $report_tables = ReportCategory::all();
         $report_array = [];
         $report_document_checker = [];
@@ -161,6 +163,8 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('submitFacultyReport', Report::class);
+
         $report_controller = new ReportController;
         $user_id = auth()->id();
 

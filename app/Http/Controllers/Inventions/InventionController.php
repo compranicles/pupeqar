@@ -18,6 +18,8 @@ class InventionController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Invention::class);
+
         $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
         ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
         return view('inventions.index', compact('inventions'));
@@ -31,6 +33,8 @@ class InventionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Invention::class);
+
         $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
             ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
             ->select('invention_fields.*', 'field_types.name as field_type_name')
@@ -50,7 +54,7 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Invention::class);
     }
 
     /**
@@ -61,7 +65,7 @@ class InventionController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('view', Invention::class);
     }
 
     /**
@@ -72,7 +76,7 @@ class InventionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('update', Invention::class);
     }
 
     /**
@@ -84,7 +88,7 @@ class InventionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('update', Invention::class);
     }
 
     /**
@@ -95,6 +99,6 @@ class InventionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('delete', Invention::class);
     }
 }
