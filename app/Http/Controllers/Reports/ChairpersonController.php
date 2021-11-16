@@ -17,8 +17,6 @@ class ChairpersonController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAnyChairpersonReport', Report::class);
-
         $departmentHeadOf = Chairperson::select('chairpeople.*', 'departments.name as department_name')->
             join('departments', 'chairpeople.department_id', 'departments.id')->where('user_id', auth()->id())->first();
 
@@ -106,8 +104,6 @@ class ChairpersonController extends Controller
     }
 
     public function accept($report_id){
-        $this->authorize('validateByChairperson', Report::class);
-
         Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
 
         return redirect()->route('chairperson.index')->with('success', 'Report Accepted');
@@ -118,8 +114,6 @@ class ChairpersonController extends Controller
     }
 
     public function reject($report_id, Request $request){
-        $this->authorize('validateByChairperson', Report::class);
-
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -134,8 +128,6 @@ class ChairpersonController extends Controller
     }
 
     public function relay($report_id){
-        $this->authorize('validateByChairperson', Report::class);
-
         Report::where('id', $report_id)->update(['chairperson_approval' => 0]);
         return redirect()->route('chairperson.index')->with('success', 'Report Denial successfully sent');
     }

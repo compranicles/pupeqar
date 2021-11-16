@@ -16,8 +16,6 @@ class IpqmsoController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAnyIpmsoReport', Report::class);
-
         $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('departments', 'reports.department_id', 'departments.id')
             ->join('colleges', 'reports.college_id', 'colleges.id')
@@ -96,22 +94,16 @@ class IpqmsoController extends Controller
     }
 
     public function accept($report_id){
-        $this->authorize('validateByIpqmso', Report::class);
-
         Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
         return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
     }
 
     public function rejectCreate($report_id){
-        $this->authorize('validateByIpqmso', Report::class);
-
         return view('reports.ipqmso.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
-        $this->authorize('validateByIpqmso', Report::class);
-
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),

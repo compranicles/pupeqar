@@ -55,50 +55,36 @@
                 </li>
                 @endcan
 
-                @can('viewAny', App\Models\Invention::class)
+                
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
                         {{ __('Inventions') }}
                     </x-jet-nav-link>
                 </li>
-                @endcan
 
-                @can('viewAnyFacultyReport', App\Models\Report::class)
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </li>
-                @endcan
 
                 <li class="nav-item dropdown">
-                    @canany(['viewAnyChairpersonReport', 'viewAnyDeanReport', 'viewAnySectorHeadReport', 'viewAnyIpmsoReport'], App\Models\Report::class)
                     <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
                     </a>
-                    @endcanany
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Faculty</a></li>
 
-                        @can('viewAnyChairpersonReport', App\Models\Report::class)
                         <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
-                        @endcan
 
-                        @can('viewAnyDeanReport', App\Models\Report::class)
                         <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
-                        @endcan
 
-                        @can('viewAnySectorHeadReport', App\Models\Report::class)
                         <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
-                        @endcan
 
-                        @can('viewAnyIpmsoReport', App\Models\Report::class)
                         <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
-                        @endcan
 
-                        @can('viewAny', App\Models\Report::class)
                         <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
-                        @endcan
                     </ul>
                 </li>
 
