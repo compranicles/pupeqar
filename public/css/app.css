@@ -12924,3 +12924,87 @@ body {
 .tr-hover:hover {
   background-color: whitesmoke;
 }
+
+/* ------Mega Menu-------- */
+.menu-sub {
+  position: absolute;
+  background: white;
+  width: 90%;
+  display: none;
+  padding: 2em;
+  left: 0;
+  margin-left: 4.75em;
+  margin-top: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
+}
+
+nav li:hover .menu-sub {
+  display: block;
+  
+}
+
+.menu-sub li {
+  display: block;
+  padding-bottom: .50em;
+}
+
+.menu-sub a {
+  padding: 0;
+  margin-bottom: .25em;
+  font-size: 15px;
+  color: #6f080b;
+  text-decoration: none;
+}
+
+.menu-sub a:hover {
+  transition-timing-function: linear;
+  transition-duration: 0.25s;
+  padding-left: 3px;
+  color: #eeb510;
+  filter: brightness(0.95);
+}
+
+.menu-category {
+  margin: 2em 0 .5em;
+  padding-top: 1em;
+  font-size: 15px;
+  color: #6f080b;
+  font-weight: bold;
+  cursor: default;
+}
+
+.menu-category:first-of-type {
+  margin-top: 0;
+}
+
+.menu-col-1,
+.menu-col-2,
+.menu-col-3 {
+  float: left;
+  margin: 20px;
+  width: auto;
+}
+
+.menu-col-2 {
+  padding-left: 8%;
+}
+
+.menu-col-3 {
+  margin-right: 20px;
+  padding-left: 5%;
+}
+
+.nav-link #accomplishment {
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  
+}
+
+.nav-link #accomplishment:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.nav-item a.active {
+  border-bottom: 2px solid #820202;
+}

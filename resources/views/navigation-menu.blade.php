@@ -47,21 +47,11 @@
                 </li>
                 @endcan
 
-                @can('viewAny', App\Models\Research::class)
-                <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('research.index') }}" :active="request()->routeIs('research.*') || request()->routeIs('research-completed.*') || request()->routeIs('research-publication.*')|| request()->routeIs('research-presentation.*')|| request()->routeIs('research-citation.*') ||request()->routeIs('research-utilization.*') || request()->routeIs('research-copyrighted.*')">
-                        {{ __('Research') }}
-                    </x-jet-nav-link>
+                <li class="nav-item">
+                    <a href="" id="accomplishment" class="nav-link @if (request()->routeIs('research.*')) active @endif" >Accomplishments</a>
+                    @include('mega-menu')
                 </li>
-                @endcan
-
                 
-                <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('inventions.index') }}" :active="request()->routeIs('inventions.*')">
-                        {{ __('Inventions') }}
-                    </x-jet-nav-link>
-                </li>
-
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
                         {{ __('Reports') }}
