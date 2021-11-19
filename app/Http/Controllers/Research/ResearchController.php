@@ -208,7 +208,7 @@ class ResearchController extends Controller
                 ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
                 ->select('research_fields.*', 'field_types.name as field_type_name')
                 ->orderBy('order')->get();
-        $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+        $phues = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('currencies', 'currencies.id', 'research.currency')
                 ->select('research.*', 'currencies.code as currency_code')->first()->toArray();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();

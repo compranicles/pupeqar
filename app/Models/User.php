@@ -69,4 +69,8 @@ class User extends Authenticatable
     public function userrole() {
         return $this->hasMany(\App\Models\Authentication\UserRole::class);
     }
+
+    public function expertserviceconsultant() {
+        return $this->hasMany(\App\Models\ExpertServiceConsultant::class);
+    }
 }

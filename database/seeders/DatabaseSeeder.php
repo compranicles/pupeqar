@@ -43,6 +43,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UserRoleSeeder::class,
             RolePermissionSeeder::class,
+
+            ExtensionFormSeeder::class,
+            ExtensionDropdownSeeder::class
         ]);
     }
 }

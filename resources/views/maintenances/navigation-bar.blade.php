@@ -59,6 +59,12 @@
                         </x-jet-nav-link>
                     </li>
                     @endcan
+
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('extension-program-forms.index') }}" class="text-dark" :active="request()->routeIs('extension-program-forms.*')">
+                            {{ __('Extension Programs') }}
+                        </x-jet-nav-link>
+                    </li>
                 </ul>
             </div>
         </div>

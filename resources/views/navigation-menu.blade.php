@@ -53,13 +53,13 @@
                 </li>
                 
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('faculty.index') }}" :active="request()->routeIs('faculty.*')">
+                    <x-jet-nav-link href="{{ route('faculty.index') }}">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
+                    <a class="nav-link dropdown-toggle @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
                     </a>
