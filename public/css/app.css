@@ -13008,3 +13008,21 @@ nav li:hover .menu-sub {
 .nav-item a.active {
   border-bottom: 2px solid #820202;
 }
+
+.date-modifier::-webkit-datetime-edit, .date-modifier::-webkit-inner-spin-button, .date-modifier::-webkit-clear-button {
+  display: none;
+}
+
+.date-modifier:before {
+  position: absolute;
+  left: 1.5rem;
+  content: attr(data-date);
+  display: inline-block;
+}
+
+.date-modifier::-webkit-calendar-picker-indicator {
+  position: absolute;
+  /* top: 3px; */
+  right: 1.5rem;
+  opacity: 1;
+}

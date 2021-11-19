@@ -48,7 +48,7 @@
                 @endcan
 
                 <li class="nav-item">
-                    <a href="" id="accomplishment" class="nav-link @if (request()->routeIs('research.*')) active @endif" >Accomplishments</a>
+                    <a id="accomplishment" role="button" class="nav-link @if (request()->routeIs('research.*')) active @endif" >Accomplishments</a>
                     @include('mega-menu')
                 </li>
                 
