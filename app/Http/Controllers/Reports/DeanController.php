@@ -110,7 +110,7 @@ class DeanController extends Controller
     }
 
     public function rejectCreate($report_id){
-        return view('reports.dean.reject', compact('report_id'));
+        return view('reports.deans.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){

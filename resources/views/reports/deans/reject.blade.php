@@ -16,7 +16,7 @@
                                 <hr>
                             </div>
                         </div>
-                        <form action="{{ route('ipqmso.reject', $report_id) }}" method="post">
+                        <form action="{{ route('dean.reject', $report_id) }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
