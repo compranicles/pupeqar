@@ -1,14 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Extension Programs') }}
+            {{ __('Extension Services') }}
         </h2>
     </x-slot>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-            @include('extension-programs.navigation-bar')
-            </div>
 
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_eservice_success'))

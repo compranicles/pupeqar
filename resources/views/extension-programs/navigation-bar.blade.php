@@ -19,11 +19,6 @@
                             {{ __('Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works') }}
                         </x-jet-nav-link>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('faculty.extension-service.index') }}" class="text-dark"  :active="request()->routeIs('faculty.extension-service.*')">
-                            {{ __('Extension Service') }}
-                        </x-jet-nav-link>
-                    </li>
                 </ul>
             </div>
         </div>
