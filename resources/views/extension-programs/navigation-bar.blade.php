@@ -10,17 +10,17 @@
                     </li>
 
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('colleges.index') }}" class="text-dark"  :active="request()->routeIs('colleges.*')">
+                        <x-jet-nav-link href="{{ route('faculty.expert-service-in-conference.index') }}" class="text-dark"  :active="request()->routeIs('faculty.expert-service-in-conference.*')">
                             {{ __('Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional') }}
                         </x-jet-nav-link>
                     </li>
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('departments.index') }}" class="text-dark"  :active="request()->routeIs('departments.*')">
+                        <x-jet-nav-link href="{{ route('faculty.expert-service-in-academic.index') }}" class="text-dark"  :active="request()->routeIs('faculty.expert-service-in-academic.*')">
                             {{ __('Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works') }}
                         </x-jet-nav-link>
                     </li>
                     <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('departments.index') }}" class="text-dark"  :active="request()->routeIs('departments.*')">
+                        <x-jet-nav-link href="{{ route('faculty.extension-service.index') }}" class="text-dark"  :active="request()->routeIs('faculty.extension-service.*')">
                             {{ __('Extension Service') }}
                         </x-jet-nav-link>
                     </li>

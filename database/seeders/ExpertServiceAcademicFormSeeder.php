@@ -14,7 +14,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
      */
     public function run()
     {
-        ExtensionProgramField::truncate();
+        // ExtensionProgramField::truncate();
         ExtensionProgramField::create([
             'extension_programs_form_id' => 3,
             'label' => 'Classification',
@@ -73,10 +73,10 @@ class ExpertServiceAcademicFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 3,
-            'label' => 'Publication/Audio Visual',
+            'label' => 'Publication/Audio Visual Production',
             'name' => 'publication_or_audio_visual',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
@@ -107,7 +107,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'size' => 'col-md-4',
             'field_type_id' => 5,
             'dropdown_id' => 21, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

@@ -15,6 +15,7 @@ use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Models\ResearchCopyright;
 use App\Models\ResearchCitation;
+use Illuminate\Support\Facades\DB;
 
 class CitationController extends Controller
 {
@@ -44,10 +45,8 @@ class CitationController extends Controller
     {
         $this->authorize('create', ResearchCitation::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 5)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
-            ->select('research_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
+
         return view('research.citation.create', compact('researchFields', 'research'));
     }
 
@@ -103,10 +102,8 @@ class CitationController extends Controller
     {
         $this->authorize('view', ResearchCitation::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 5)
-                ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
-                ->select('research_fields.*', 'field_types.name as field_type_name')
-                ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
+
         $researchDocuments = ResearchDocument::where('research_citation_id', $citation->id)->get()->toArray();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -129,10 +126,8 @@ class CitationController extends Controller
     {
         $this->authorize('update', ResearchCitation::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 5)
-                ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
-                ->select('research_fields.*', 'field_types.name as field_type_name')
-                ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
+
         $researchDocuments = ResearchDocument::where('research_citation_id', $citation->id)->get()->toArray();
 
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')

@@ -50,7 +50,35 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->except(['_token', '_method', 'document']);
+
+        $iicw = Invention::create($input);
+        $iicw->update(['user_id' => auth()->id()]);
+
+        if($request->has('document')){
+            
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                if($temporaryFile){
+                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                    $ext = $info['extension'];
+                    $fileName = 'IICW-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $newPath = "documents/".$fileName;
+                    Storage::move($temporaryPath, $newPath);
+                    Storage::deleteDirectory("documents/tmp/".$document);
+                    $temporaryFile->delete();
+
+                    InventionDocument::create([
+                        'invention_id' => $esConsultant->id,
+                        'filename' => $fileName,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your Accomplishment in Expert Service as Consultant has been saved.');
     }
 
     /**
@@ -59,9 +87,16 @@ class InventionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Invention $invention_innovation_creative)
     {
-        //
+        $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
+            ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
+            ->select('invention_fields.*', 'field_types.name as field_type_name')
+            ->orderBy('order')->get();
+
+        $inventionDocuments = InventionDocument::where('expert_service_consultant_id', $invention_innovation_creative->id)->get()->toArray();
+        
+        return view('inventions.show', compact('invention_innovation_creative', 'inventionsFields', 'inventionDocuments'));
     }
 
     /**
@@ -70,9 +105,16 @@ class InventionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Invention $invention_innovation_creative)
     {
-        //
+        $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
+            ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
+            ->select('invention_fields.*', 'field_types.name as field_type_name')
+            ->orderBy('order')->get();
+
+        $inventionDocuments = InventionDocument::where('expert_service_consultant_id', $invention_innovation_creative->id)->get()->toArray();
+        
+        return view('inventions.edit', compact('invention_innovation_creative', 'inventionsFields', 'inventionDocuments'));
     }
 
     /**
@@ -82,9 +124,36 @@ class InventionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Invention $invention_innovation_creative)
     {
-        //
+        $input = $request->except(['_token', '_method', 'document']);
+
+        $inventions_innovation_creative->update($input);
+
+        if($request->has('document')){
+            
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                if($temporaryFile){
+                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                    $ext = $info['extension'];
+                    $fileName = 'IICW-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $newPath = "documents/".$fileName;
+                    Storage::move($temporaryPath, $newPath);
+                    Storage::deleteDirectory("documents/tmp/".$document);
+                    $temporaryFile->delete();
+
+                    InventionDocument::create([
+                        'invention_id' => $expert_service_as_consultant->id,
+                        'filename' => $fileName,
+                    ]);
+                }
+            }
+        }
+
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your accomplishment in Invention, Innovation, and Creative Work has been updated.');
     }
 
     /**
@@ -93,8 +162,10 @@ class InventionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Invention $invention_innovation_creative)
     {
-        //
+        $invention_innovation_creative->delete();
+        InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your accomplishment in Invention, Innovation, and Creative Work has been deleted.');
     }
 }

@@ -67,32 +67,7 @@ class InventionSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
-        InventionField::create([
-            'invention_form_id' => 1,
-            'label' => 'Funding Agency',
-            'name' => 'funding_agency',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 4,
-            'is_active' => 1,
-        ]);
-        InventionField::create([
-            'invention_form_id' => 1,
-            'label' => 'Amount of Funding',
-            'name' => 'funding_amount',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 3,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 4,
-            'is_active' => 1,
-        ]);
+
         InventionField::create([
             'invention_form_id' => 1,
             'label' => 'Type of Funding',
@@ -106,6 +81,35 @@ class InventionSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
+        
+        InventionField::create([
+            'invention_form_id' => 1,
+            'label' => 'Amount of Funding',
+            'name' => 'funding_amount',
+            'placeholder' => null,
+            'size' => 'col-md-3',
+            'field_type_id' => 3,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+
+        InventionField::create([
+            'invention_form_id' => 1,
+            'label' => 'Funding Agency',
+            'name' => 'funding_agency',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+
         InventionField::create([
             'invention_form_id' => 1,
             'label' => 'Status',

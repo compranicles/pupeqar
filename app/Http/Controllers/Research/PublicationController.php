@@ -16,6 +16,7 @@ use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Models\ResearchCopyright;
 use App\Models\ResearchCitation;
+use Illuminate\Support\Facades\DB;
 
 class PublicationController extends Controller
 {
@@ -28,10 +29,8 @@ class PublicationController extends Controller
     {
         $this->authorize('viewAny', ResearchPublication::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 3)
-                ->join('field_types', 'field_types.id', 'research_fields.field_type_id')->where('is_active', 1)
-                ->select('research_fields.*', 'field_types.name as field_type_name')
-                ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
+
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 3)->get()->toArray();
         $research = Research::join('dropdown_options', 'dropdown_options.id', 'research.status')
             ->where('research_code', $research->research_code)->where('user_id', auth()->id())
@@ -66,10 +65,7 @@ class PublicationController extends Controller
     {
         $this->authorize('create', ResearchPublication::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
-            ->select('research_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
         
         $value = $research;
         $value->toArray();
@@ -166,10 +162,7 @@ class PublicationController extends Controller
     {
         $this->authorize('update', ResearchPublication::class);
 
-        $researchFields = ResearchField::where('research_fields.research_form_id', 3)->where('is_active', 1)
-        ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
-        ->select('research_fields.*', 'field_types.name as field_type_name')
-        ->orderBy('order')->get();
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
     
         // $research = array_merge($research->toArray(), $publication->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 3)->get()->toArray();

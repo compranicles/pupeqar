@@ -46,7 +46,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Nature of Involvement',
-            'name' => 'nature-of-involvement',
+            'name' => 'nature_of_involvement',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 5,
@@ -88,7 +88,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Title of Extension Program',
-            'name' => 'title-of-extension-program',
+            'name' => 'title_of_extension_program',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,
@@ -102,7 +102,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Title of Extension Project',
-            'name' => 'title-of-extension-project',
+            'name' => 'title_of_extension_project',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,
@@ -116,7 +116,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Title of Extension Activity',
-            'name' => 'title-of-extension-activity',
+            'name' => 'title_of_extension_activity',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,
@@ -129,13 +129,13 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
-            'label' => 'Funding Agency',
-            'name' => 'funding-agency',
+            'label' => 'Type of Funding',
+            'name' => 'type_of_funding',
             'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 0,
+            'size' => 'col-md-3',
+            'field_type_id' => 5,
+            'dropdown_id' => 28, 
+            'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -144,7 +144,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Amount of Funding',
-            'name' => 'amount-of-funding',
+            'name' => 'amount_of_funding',
             'placeholder' => '0.00',
             'size' => 'col-md-3',
             'field_type_id' => 3,
@@ -157,13 +157,13 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
-            'label' => 'Type of Funding',
-            'name' => 'type-of-funding',
+            'label' => 'Funding Agency',
+            'name' => 'funding_agency',
             'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 5,
-            'dropdown_id' => 28, 
-            'required' => 1,
+            'size' => 'col-md-6',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -200,7 +200,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'No. of Trainess/Beneficiaries',
-            'name' => 'no-of-trainees-or-beneficiaries',
+            'name' => 'no_of_trainees_or_beneficiaries',
             'placeholder' => null,
             'size' => 'col-md-3',
             'field_type_id' => 2,
@@ -214,7 +214,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Total No. of Hours',
-            'name' => 'total-no-of-hours',
+            'name' => 'total_no_of_hours',
             'placeholder' => null,
             'size' => 'col-md-3',
             'field_type_id' => 11,
@@ -228,7 +228,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Classification of Trainees/Beneficiaries',
-            'name' => 'classification-of-trainees-or-beneficiaries',
+            'name' => 'classification_of_trainees_or_beneficiaries',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 5,
@@ -242,7 +242,7 @@ class ExtensionServiceFormSeeder extends Seeder
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
             'label' => 'Place/Venue',
-            'name' => 'place-or-venue',
+            'name' => 'place_or_venue',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 1,
@@ -262,146 +262,6 @@ class ExtensionServiceFormSeeder extends Seeder
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Poor',
-            'name' => 'quality-poor',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Fair',
-            'name' => 'quality-fair',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Satisfactory',
-            'name' => 'quality-satisfactory',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Very Satisfactory',
-            'name' => 'quality-very-satisfactory',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Outstanding',
-            'name' => 'quality-outstanding',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Poor',
-            'name' => 'timeliness-poor',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Fair',
-            'name' => 'timeliness-fair',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Satisfactory',
-            'name' => 'timeliness-satisfactory',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Very Satisfactory',
-            'name' => 'timeliness-very-satisfactory',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 4,
-            'label' => 'Outstanding',
-            'name' => 'timeliness-outstanding',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 2,
-            'dropdown_id' => null, 
-            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

@@ -59,8 +59,8 @@ class ExpertServiceConsultantFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 1,
-            'label' => 'Start Date',
-            'name' => 'start_date',
+            'label' => 'From',
+            'name' => 'from',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 4,
@@ -73,8 +73,8 @@ class ExpertServiceConsultantFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 1,
-            'label' => 'End Date',
-            'name' => 'end_date',
+            'label' => 'To',
+            'name' => 'to',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 4,
@@ -115,8 +115,8 @@ class ExpertServiceConsultantFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 1,
-            'label' => 'Partner',
-            'name' => 'partner',
+            'label' => 'Partner Agency',
+            'name' => 'partner_agency',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,

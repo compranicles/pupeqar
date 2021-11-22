@@ -45,7 +45,13 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
 
             ExtensionFormSeeder::class,
-            ExtensionDropdownSeeder::class
+            ExtensionDropdownSeeder::class,
+
+            //Extension Program Forms
+            ExpertServiceConsultantFormSeeder::class,
+            ExpertServiceConferenceFormSeeder::class,
+            ExpertServiceAcademicFormSeeder::class,
+            ExtensionServiceFormSeeder::class,
         ]);
     }
 }

@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}<span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ $value }}" class="form-control form-validation" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}

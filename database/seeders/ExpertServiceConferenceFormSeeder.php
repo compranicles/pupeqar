@@ -14,7 +14,7 @@ class ExpertServiceConferenceFormSeeder extends Seeder
      */
     public function run()
     {
-        ExtensionProgramField::truncate();
+        // ExtensionProgramField::truncate();
         ExtensionProgramField::create([
             'extension_programs_form_id' => 2,
             'label' => 'Nature',
@@ -76,7 +76,7 @@ class ExpertServiceConferenceFormSeeder extends Seeder
             'label' => 'Title',
             'name' => 'title',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
@@ -90,7 +90,7 @@ class ExpertServiceConferenceFormSeeder extends Seeder
             'label' => 'Venue',
             'name' => 'venue',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-6',
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
@@ -101,10 +101,10 @@ class ExpertServiceConferenceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 2,
-            'label' => 'Partner',
-            'name' => 'partner',
+            'label' => 'Partner Agency',
+            'name' => 'partner_agency',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-6',
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,

@@ -73,4 +73,16 @@ class User extends Authenticatable
     public function expertserviceconsultant() {
         return $this->hasMany(\App\Models\ExpertServiceConsultant::class);
     }
+
+    public function expertserviceconference() {
+        return $this->hasMany(\App\Models\ExpertServiceConference::class);
+    }
+
+    public function expertserviceacademic() {
+        return $this->hasMany(\App\Models\ExpertServiceAcademic::class);
+    }
+
+    public function extensionservice() {
+        return $this->hasMany(\App\Models\ExtensionService::class);
+    }
 }

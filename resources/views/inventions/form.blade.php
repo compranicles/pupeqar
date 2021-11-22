@@ -13,8 +13,8 @@
             @case("date-range")
                 @include('maintenances.fieldtemplates.daterange', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
-            @case("decimal")
-                @include('maintenances.fieldtemplates.decimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])    
+            @case("currency-decimal")
+                @include('maintenances.fieldtemplates.decimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? '', 'currency' => $value['currency'] ?? ''])    
                 @break
             @case("dropdown")
                 @include('maintenances.fieldtemplates.dropdown', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
@@ -24,6 +24,9 @@
                 @break
             @case("multiple-file-upload")
                 @include('maintenances.fieldtemplates.multiplefileupload', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
+            @case("decimal")
+                @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
         @endswitch
     @endforeach

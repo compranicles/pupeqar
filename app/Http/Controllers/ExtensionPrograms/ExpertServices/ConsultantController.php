@@ -9,6 +9,7 @@ use App\Models\FormBuilder\ExtensionProgramField;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ConsultantController extends Controller
 {
@@ -19,11 +20,12 @@ class ConsultantController extends Controller
      */
     public function index()
     {
+        
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
                                         ->get();
-
+        
         return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant'));
     }
 
@@ -34,10 +36,7 @@ class ConsultantController extends Controller
      */
     public function create()
     {
-        $expertServiceConsultantFields = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 1)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-            ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
+        $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
         return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields'));
     }
@@ -87,9 +86,15 @@ class ConsultantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(ExpertServiceConsultant $expert_service_as_consultant)
     {
-        //
+        $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
+
+        // print_r($expertServiceConsultantFields);
+
+        $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
+        
+        return view('extension-programs.expert-services.consultant.show', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments'));
     }
 
     /**
@@ -101,10 +106,7 @@ class ConsultantController extends Controller
     public function edit(ExpertServiceConsultant $expert_service_as_consultant)
     {
         // dd($expert_service_as_consultant);
-        $expertServiceConsultantFields = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 1)->where('is_active', 1)
-                            ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                            ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                            ->orderBy('order')->get();
+        $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
         

@@ -177,15 +177,15 @@
 
         </script>
         <script>
-             $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
+             $('#from').on('input', function(){
+                var date = new Date($('#from').val());
                 var day = date.getDate();
                 var month = date.getMonth() + 1;
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                document.getElementById('to').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#to').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
     @endpush

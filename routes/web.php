@@ -127,11 +127,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research.citation', \App\Http\Controllers\Research\CitationController::class);
     Route::resource('research.utilization', \App\Http\Controllers\Research\UtilizationController::class);
     Route::resource('research.copyrighted', \App\Http\Controllers\Research\CopyrightedController::class);
-
-    //FACULTY:invention
-    Route::resource('inventions', \App\Http\Controllers\Inventions\InventionController::class);
-    
-    
     
     //academics
     Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
@@ -207,7 +202,14 @@ Route::group(['middleware' => 'auth'], function() {
     });
 
     Route::group(['prefix' => 'faculty', 'as' => 'faculty.'], function(){
+        //FACULTY:invention
+        Route::resource('invention-innovation-creative', \App\Http\Controllers\Inventions\InventionController::class);
+
         //FACULTY: extension-programs > expert-services-as-consultant
         Route::resource('/extension-programs/expert-service-as-consultant', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class);
+        Route::resource('/extension-programs/expert-service-in-conference', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class);
+        Route::resource('/extension-programs/expert-service-in-academic', \App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class);
+        Route::resource('/extension-programs/extension-service', \App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class);
+        
     });
 });
