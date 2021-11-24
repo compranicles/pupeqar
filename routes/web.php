@@ -94,6 +94,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/research-fields/arrange', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'arrange']);
     Route::resource('research-forms.research-fields', \App\Http\Controllers\Maintenances\ResearchFieldController::class);
 
+    //extensionProgramForms
+    Route::get('/extension-program-forms/activate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFormController::class, 'activate']);
+    Route::get('/extension-program-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFormController::class, 'inactivate']);
+    Route::resource('extension-program-forms', \App\Http\Controllers\Maintenances\ExtensionProgramFormController::class);    
+
+    //extensionProgramFields
+    Route::get('/extension-program-fields/activate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'activate']);
+    Route::get('/extension-program-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'inactivate']);
+    Route::post('/extension-program-fields/arrange', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'arrange']);
+    Route::resource('extension-program-forms.extension-program-fields', \App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class);
+
     //researchSubmissions
     Route::get('/research/complete/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
     Route::get('/research/publication/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');
@@ -108,6 +119,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/research/with-code/save/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'saveResearch'])->name('research.code.save');
     Route::get('/research/retrieve/{research_code}',  [\App\Http\Controllers\Research\ResearchController::class, 'retrieve'])->name('research.retrieve');
 
+    //FACULTY: research
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
     Route::resource('research.publication', \App\Http\Controllers\Research\PublicationController::class);
@@ -115,13 +127,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research.citation', \App\Http\Controllers\Research\CitationController::class);
     Route::resource('research.utilization', \App\Http\Controllers\Research\UtilizationController::class);
     Route::resource('research.copyrighted', \App\Http\Controllers\Research\CopyrightedController::class);
-
-    
-    //invention
-    Route::resource('inventions', \App\Http\Controllers\Inventions\InventionController::class);
-    
-    //extensions
-    Route::resource('extensions', \App\Http\Controllers\Extensions\ExtensionController::class);
     
     //academics
     Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
@@ -172,13 +177,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 
         // forms
-        Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
-        Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
+        // Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
+        // Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
         // form's fields
-        Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
-        Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
-        Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
-        Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
+        // Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
+        // Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
+        // Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
+        // Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
 
         //maintenances
         Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
@@ -194,5 +199,17 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
         //users
         Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
+    });
+
+    Route::group(['prefix' => 'faculty', 'as' => 'faculty.'], function(){
+        //FACULTY:invention
+        Route::resource('invention-innovation-creative', \App\Http\Controllers\Inventions\InventionController::class);
+
+        //FACULTY: extension-programs > expert-services-as-consultant
+        Route::resource('/extension-programs/expert-service-as-consultant', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class);
+        Route::resource('/extension-programs/expert-service-in-conference', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class);
+        Route::resource('/extension-programs/expert-service-in-academic', \App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class);
+        Route::resource('/extension-programs/extension-service', \App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class);
+        
     });
 });

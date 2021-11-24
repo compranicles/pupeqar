@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Invention') }}
+            {{ __('Invention, Innovation, and Creativity') }}
         </h2>
     </x-slot>
 
@@ -21,8 +21,8 @@
                             </div>
                             <div class="col-md-12">
                                 {{-- ADD Fields --}}
-                                <a href="{{ route('inventions.create') }}" class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Add Invention
+                                <a href="{{ route('faculty.invention-innovation-creative.create') }}" class="btn btn-success">
+                                    <i class="fas fa-plus"></i> Add Invention, Innovation, or Creative Work
                                 </a>
                                 <hr>
                             </div>
@@ -59,7 +59,7 @@
                                         <tbody>
                                             @foreach ($inventions as $invention)
                                                 <tr role="button">
-                                                    <td><a href="{{ route('inventions.show', $invention->invention_code) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
+                                                    <td><a href="{{ route('faculty.invention-innovation-creative.show', $invention->invention_code) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
                                                     <td>{{ $invention->title }}</td>
                                                     <td>{{ $invention->updated_at }}</td>
                                                     <td>{{ $invention->status_name }}</td>

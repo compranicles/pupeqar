@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Invention, Innovation and Creative Works Commitment') }}
+            {{ __('Add Invention, Innovation or Creative Work') }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('inventions.store') }}" method="post">
+                        <form action="{{ route('faculty.invention-innovation-creative.store') }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6">
@@ -64,16 +64,35 @@
                 });
             });
         </script>
-        {{-- <script>
-            function hide_dates() {
-                $('.start_date').hide();
-                $('.target_date').hide();
-            }
-
+        <script>
             $(function() {
-                hide_dates();
+                $('.funding_agency').hide();
+                $('#funding_agency').removeClass('form-validation');
             });
 
+            $('#funding_type').on('change', function (){
+                var type = $(this).val();
+                if(type == 49){
+                    
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').attr('readonly', true);
+                    $('#funding_agency').addClass('form-validation');
+                }
+                else if(type == 50){
+                    $('.funding_agency').hide();
+                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').removeClass('form-validation');
+                }
+                else if(type == 51){
+                    $('#funding_agency').removeAttr('readonly');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('');
+                    $('#funding_agency').addClass('form-validation');
+                }
+            });
         </script>
         <script>
             $('#status').on('change', function(){

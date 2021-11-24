@@ -1,4 +1,4 @@
-<div class="{{ $fieldInfo->size }}">
+<div id="{{ $fieldInfo->name }}" class="{{ $fieldInfo->size }}">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 

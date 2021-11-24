@@ -1,6 +1,6 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
@@ -18,6 +18,7 @@
                     @default
                         
                 @endswitch>
+
             <option value="" selected disabled>Choose...</option>
             
         </select>

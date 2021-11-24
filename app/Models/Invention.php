@@ -21,4 +21,8 @@ class Invention extends Model
     public function department() {
         return $this->belongsTo(\App\Models\Maintenance\Department::class);
     }
+
+    public function inventiondocument() {
+        return $this->hasMany(\App\Models\InventionDocument::class);
+    }
 }

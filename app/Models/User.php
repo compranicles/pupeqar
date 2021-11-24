@@ -69,4 +69,20 @@ class User extends Authenticatable
     public function userrole() {
         return $this->hasMany(\App\Models\Authentication\UserRole::class);
     }
+
+    public function expertserviceconsultant() {
+        return $this->hasMany(\App\Models\ExpertServiceConsultant::class);
+    }
+
+    public function expertserviceconference() {
+        return $this->hasMany(\App\Models\ExpertServiceConference::class);
+    }
+
+    public function expertserviceacademic() {
+        return $this->hasMany(\App\Models\ExpertServiceAcademic::class);
+    }
+
+    public function extensionservice() {
+        return $this->hasMany(\App\Models\ExtensionService::class);
+    }
 }

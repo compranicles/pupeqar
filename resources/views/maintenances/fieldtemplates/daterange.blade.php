@@ -1,6 +1,6 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }}">
+<div class="{{ $fieldInfo->size }} mb-3">
     <div class="row">
         <div class="col">
             <div class="form-group">

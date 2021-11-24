@@ -23,12 +23,12 @@
         
         <ul>
             <h6 class="menu-category">Inventions, Innovation, and Creativity</h6>
-            <li><a href="{{ route('inventions.index') }}">Inventions, Innovation, and Creativity</a></li>
+            <li><a href="{{ route('faculty.invention-innovation-creative.index') }}">Inventions, Innovation, and Creativity</a></li>
         </ul>
         <ul>
             <h6 class="menu-category">Extension Programs and Expert Services</h6>
-            <li><a href="">Expert Services Rendered</a></li>
-            <li><a href="">Extension Services</a></li>
+            <li><a href="{{ route('faculty.expert-service-as-consultant.index') }}">Expert Services Rendered</a></li>
+            <li><a href="{{ route('faculty.extension-service.index') }}">Extension Services</a></li>
             <li><a href="">Partnership/Linkages/Network</a></li>
             <li><a href="">Inter-country Mobility</a></li>
         </ul>
