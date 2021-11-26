@@ -88,13 +88,16 @@ class ConsultantController extends Controller
      */
     public function show(ExpertServiceConsultant $expert_service_as_consultant)
     {
-        $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
-
-        // print_r($expertServiceConsultantFields);
-
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
         
-        return view('extension-programs.expert-services.consultant.show', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments'));
+        $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->classification.")");
+
+        $category = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->category.")");
+
+        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->level.")");
+
+        return view('extension-programs.expert-services.consultant.show', compact('expert_service_as_consultant', 'expertServiceConsultantDocuments',
+                    'classification', 'category', 'level'));
     }
 
     /**

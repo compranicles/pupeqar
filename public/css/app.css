@@ -12880,7 +12880,7 @@ body {
 }
 
 .login-field:focus {
-  box-shadow: 0 0 0 0.1rem rgba(52, 144, 220, 0.25);
+  box-shadow: 0 0 0 0 rgba(52, 144, 220, 0.25);
 }
 
 .main-nav-item + .nav-item a.active {
@@ -13007,4 +13007,41 @@ nav li:hover .menu-sub {
 
 .nav-item a.active {
   border-bottom: 2px solid #820202;
+}
+
+/*************SHOW BLADES************/
+
+.show_table {
+  width: 90%;
+  justify-self: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.show_table tr:hover {
+  border-bottom: 1px solid #820202 !important;
+}
+
+table tr .padding_left_show {
+  padding-left: 50px;
+}
+
+.show_table tr th {
+  width: 50%;
+}
+
+.back_link, .action_buttons_show {
+  color: #820202;
+}
+
+.back_link:hover, .action_buttons_show:hover {
+  color: #820202 !important;
+  filter: brightness(0.85);
+  text-decoration: none;
+}
+
+.card_show {
+  border-top: 4px solid#ffa000;
+  border-radius: 6px;
 }

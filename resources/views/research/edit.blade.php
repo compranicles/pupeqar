@@ -18,10 +18,11 @@
                         <form action="{{ route('research.update', $research->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('research.form', ['formFields' => $researchFields1, 'value' => $values])
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
+                                        <label>College/Campus/Branch/Office where you commit the research</label>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
@@ -41,7 +42,8 @@
                                     </select>
                                 </div>
                             </div>
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $values])
+                            @include('research.form', ['formFields' => $researchFields2, 'value' => $values])
+                            
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

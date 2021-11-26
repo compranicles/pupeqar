@@ -8,6 +8,11 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\InventionField;
+use App\Models\TemporaryFile;
+use Illuminate\Support\Facades\Storage;
+use App\Models\InventionDocument;
+use Illuminate\Support\Facades\DB;
+use App\Models\FormBuilder\DropdownOption;
 
 class InventionController extends Controller
 {
@@ -20,7 +25,11 @@ class InventionController extends Controller
     {
         $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
         ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
-        return view('inventions.index', compact('inventions'));
+
+        $classifications = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
+        ->select('dropdown_options.name as classification_name')->orderBy('inventions.updated_at', 'desc')->get();
+
+        return view('inventions.index', compact('inventions', 'classifications'));
 
     }
 
@@ -31,15 +40,13 @@ class InventionController extends Controller
      */
     public function create()
     {
-        $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
-            ->select('invention_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
-        // dd($inventionsfields);
+        $inventionFields1 = DB::select("CALL get_invention_fields_by_form_id_and_field_ids(1, 1, 13)");
+        
+        $inventionFields2 = DB::select("CALL get_invention_fields_by_form_id_and_field_ids(1, 14, 15)");
 
         $departments = Department::all();
         $colleges = College::all();
-        return view('inventions.create', compact('inventionsFields', 'departments', 'colleges'));
+        return view('inventions.create', compact('inventionFields1', 'inventionFields2', 'departments', 'colleges'));
     }
 
     /**
@@ -50,7 +57,7 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
@@ -71,14 +78,14 @@ class InventionController extends Controller
                     $temporaryFile->delete();
 
                     InventionDocument::create([
-                        'invention_id' => $esConsultant->id,
+                        'invention_id' => $iicw->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your Accomplishment in Expert Service as Consultant has been saved.');
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been saved.');
     }
 
     /**
@@ -89,14 +96,20 @@ class InventionController extends Controller
      */
     public function show(Invention $invention_innovation_creative)
     {
-        $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
-            ->select('invention_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
-
-        $inventionDocuments = InventionDocument::where('expert_service_consultant_id', $invention_innovation_creative->id)->get()->toArray();
+        // dd($fields);
+        $classification = DropdownOption::where('id', $invention_innovation_creative->classification)
+                            ->select('dropdown_options.name')->first();
         
-        return view('inventions.show', compact('invention_innovation_creative', 'inventionsFields', 'inventionDocuments'));
+        $funding_type = DropdownOption::where('id', $invention_innovation_creative->funding_type)
+            ->select('dropdown_options.name')->first();
+
+        $status = DropdownOption::where('id', $invention_innovation_creative->status)
+            ->select('dropdown_options.name')->first();
+
+        $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
+
+        return view('inventions.show', compact('invention_innovation_creative', 'classification', 'funding_type',
+                    'status', 'inventionDocuments'));
     }
 
     /**
@@ -107,14 +120,22 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention_innovation_creative)
     {
-        $inventionsFields = InventionField::where('invention_fields.invention_form_id', 1)->where('is_active', 1)
-            ->join('field_types', 'field_types.id', 'invention_fields.field_type_id')
-            ->select('invention_fields.*', 'field_types.name as field_type_name')
-            ->orderBy('order')->get();
-
-        $inventionDocuments = InventionDocument::where('expert_service_consultant_id', $invention_innovation_creative->id)->get()->toArray();
+        $inventionFields1 = DB::select("CALL get_invention_fields_by_form_id_and_field_ids(1, 1, 13)");
         
-        return view('inventions.edit', compact('invention_innovation_creative', 'inventionsFields', 'inventionDocuments'));
+        $inventionFields2 = DB::select("CALL get_invention_fields_by_form_id_and_field_ids(1, 14, 15)");
+
+        $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
+        
+        $colleges = College::all();
+
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
+
+        $value = $invention_innovation_creative;
+        $value->toArray();
+        $value = collect($invention_innovation_creative);
+        $value = $value->toArray();
+
+        return view('inventions.edit', compact('value', 'inventionFields1', 'inventionFields2', 'inventionDocuments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**
@@ -126,9 +147,9 @@ class InventionController extends Controller
      */
     public function update(Request $request, Invention $invention_innovation_creative)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
-        $inventions_innovation_creative->update($input);
+        $invention_innovation_creative->update($input);
 
         if($request->has('document')){
             
@@ -146,14 +167,14 @@ class InventionController extends Controller
                     $temporaryFile->delete();
 
                     InventionDocument::create([
-                        'invention_id' => $expert_service_as_consultant->id,
+                        'invention_id' => $invention_innovation_creative->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your accomplishment in Invention, Innovation, and Creative Work has been updated.');
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been updated.');
     }
 
     /**
@@ -166,6 +187,6 @@ class InventionController extends Controller
     {
         $invention_innovation_creative->delete();
         InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_esconsultant_success', 'Your accomplishment in Invention, Innovation, and Creative Work has been deleted.');
+        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
     }
 }

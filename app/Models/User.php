@@ -85,4 +85,16 @@ class User extends Authenticatable
     public function extensionservice() {
         return $this->hasMany(\App\Models\ExtensionService::class);
     }
+
+    public function invention() {
+        return $this->hasMany(\App\Models\Invention::class);
+    }
+
+    public function reference() {
+        return $this->hasMany(\App\Models\Reference::class);
+    }
+
+    public function syllabus() {
+        return $this->hasMany(\App\Models\Syllabus::class);
+    }
 }

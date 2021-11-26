@@ -14,7 +14,7 @@ class CreateInventionsTable extends Migration
     public function up()
     {
         Schema::create('inventions', function (Blueprint $table) {
-            $table->string('invention_code')->nullable();
+            $table->id();
             $table->foreignId('college_id');
             $table->foreignId('department_id');
             $table->foreignId('classification');
