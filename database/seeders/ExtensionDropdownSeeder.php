@@ -548,5 +548,294 @@ class ExtensionDropdownSeeder extends Seeder
             'order' => 5,
             'is_active' => 1,
         ]);
+
+        //Nature of Collaboration
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Nature of Collaboration'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Academic Linkages',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Research',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Extension',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Student-Exchange Program',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Educational and Cultural Exchange',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Twinning Program',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Transnational Education',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Others',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+
+        //Type of Partnership Institution
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Type of Partnership Institution'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'BPO',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Educational Institution',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Food Service',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Government Agency',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Hotel and Hospitality Service',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Medical Service',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'NGO',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Professional Organization',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Telecommunication',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Travel Agency',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Others',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+
+        //Deliverable/Desired Output
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Deliverable/Desired Output'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Technology Transfer',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Training/ Instruction Conducted',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Information, Education and Communication',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Research',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Consultancy',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Linkages',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Network',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Others',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+
+         //Partnership Level
+         $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Partnership Level'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'International',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'National',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Regional',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Provincial, City or Municipal',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Local-PUP',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        
+        //Nature of Engagement
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Nature of Engagement (inter-country mobility)'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Resource Person/ Speaker/ Panel',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Institutional Representative',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Country Representative',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'MOU/MOA Signing',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Performer',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Sport Delegates',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Visiting Professor',
+            'order' => 5,
+            'is_active' => 1,
+        ]);
+
+        //Type of mobility
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Type of Mobility'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'On-The-Job Training',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Internship',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Exchange Student',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Others',
+            'order' => 4,
+            'is_active' => 1,
+        ]);
+        
     }
 }

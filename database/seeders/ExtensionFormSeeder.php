@@ -36,5 +36,15 @@ class ExtensionFormSeeder extends Seeder
             'table_name' => 'extension_services',
             'is_active' => 1
         ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Partnership/ Linkages/ Network',
+            'table_name' => 'partnership',
+            'is_active' => 1
+        ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Inter-Country Mobility',
+            'table_name' => 'mobility',
+            'is_active' => 1
+        ]);
     }
 }
