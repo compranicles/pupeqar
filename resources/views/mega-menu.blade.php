@@ -36,8 +36,8 @@
     <div class="menu-col-3">
         <ul>
             <h6 class="menu-category">Academic Program Development</h6>
-            <li><a href="">Course Syllabus</a></li>
-            <li><a href="">Reference/Textbook/Module/<br>Monographs/
+            <li><a href="{{ route('faculty.syllabus.index') }}">Course Syllabus</a></li>
+            <li><a href="{{ route('faculty.rtmmi.index') }}">Reference/Textbook/Module/<br>Monographs/
             Instructional Materials</a></li>
         </ul>
         <ul>

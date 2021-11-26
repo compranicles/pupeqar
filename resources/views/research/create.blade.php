@@ -12,31 +12,28 @@
                     <div class="card-body">
                         <form action="{{ route('research.store') }}" method="post" id="create_research">
                             @csrf
+                            @include('research.form', ['formFields' => $researchFields1])
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the research</label><span style="color: red;"> *</span>
+                                        <label>College/Campus/Branch/Office where you commit the research</label><span style="color: red;"> *</span>
     
                                         <select name="college_id" id="college" class="form-control custom-select form-validation"  required>
                                             <option value="" selected disabled>Choose...</option>
                                             @foreach ($colleges as $college)
                                             <option value="{{ $college->id }}">{{ $college->name }}</option>
                                             @endforeach
-                                           
                                         </select>
-                                        
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <label>Department where you commit the research</label><span style="color: red;"> *</span>
-
                                     <select name="department_id" id="department" class="form-control custom-select form-validation" required>
                                         <option value="" selected disabled>Choose...</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            @include('research.form', ['formFields' => $researchFields])
+                            @include('research.form', ['formFields' => $researchFields2])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

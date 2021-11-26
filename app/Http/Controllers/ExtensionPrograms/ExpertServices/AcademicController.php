@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\ExpertServiceAcademic;
 use App\Models\FormBuilder\ExtensionProgramField;
 use App\Models\ExpertServiceAcademicDocument;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Department;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -35,9 +37,14 @@ class AcademicController extends Controller
      */
     public function create()
     {
-        $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id('3')");
+        $expertServiceAcademicFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 20, 27)");
 
-        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields'));
+        $expertServiceAcademicFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 28, 29)");
+
+        $departments = Department::all();
+        $colleges = College::all();
+
+        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields1', 'expertServiceAcademicFields2', 'departments', 'colleges'));
     }
 
     /**
@@ -48,7 +55,7 @@ class AcademicController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $esAcademic = ExpertServiceAcademic::create($input);
         $esAcademic->update(['user_id' => auth()->id()]);
@@ -87,11 +94,21 @@ class AcademicController extends Controller
      */
     public function show(ExpertServiceAcademic $expert_service_in_academic)
     {
-        $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
-
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
-        return view('extension-programs.expert-services.academic.show', compact('expert_service_in_academic', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments'));
+        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
+
+        $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->classification.")");
+        
+        $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->nature.")");
+
+        $indexing = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->indexing.")");
+
+        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->level.")");
+
+        return view('extension-programs.expert-services.academic.show', compact('expert_service_in_academic', 'expertServiceAcademicDocuments', 
+            'collegeAndDepartment', 'classification', 'nature',
+            'indexing', 'level'));
     }
 
     /**
@@ -102,11 +119,25 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
-        $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id('3')");
+        $expertServiceAcademicFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 20, 27)");
 
-        $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_conference_id', $expert_service_in_academic->id)->get()->toArray();
+        $expertServiceAcademicFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 28, 29)");
+
+        $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
-        return view('extension-programs.expert-services.academic.edit', compact('expert_service_in_academic', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments'));
+        $departments = Department::all();
+        $colleges = College::all();
+
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
+
+
+        $value = $expert_service_in_academic;
+        $value->toArray();
+        $value = collect($expert_service_in_academic);
+        $value = $value->toArray();
+
+        return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields1', 'expertServiceAcademicFields2', 'expertServiceAcademicDocuments',
+            'departments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**
@@ -118,7 +149,7 @@ class AcademicController extends Controller
      */
     public function update(Request $request, ExpertServiceAcademic $expert_service_in_academic)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $expert_service_in_academic->update($input);
 

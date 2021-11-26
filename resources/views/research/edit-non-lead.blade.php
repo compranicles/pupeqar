@@ -19,11 +19,11 @@
                             @csrf
                             @method('put')
                             <fieldset id="research">
-
+                                @include('research.form-view', ['formFields' => $researchFields1, 'value' => $values])
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Colleges/Campus/Branch where you commit the research</label>
+                                            <label>College/Campus/Branch where you commit the research</label>
         
                                             <select name="college_id" id="college" class="form-control custom-select"  required>
                                                 <option value="" selected disabled>Choose...</option>
@@ -43,7 +43,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                @include('research.form-view', ['formFields' => $researchFields, 'value' => $values])
+                                @include('research.form-view', ['formFields' => $researchFields2, 'value' => $values])
+
                             </fieldset>
                             <div class="col-md-12">
                                 <div class="mb-0">

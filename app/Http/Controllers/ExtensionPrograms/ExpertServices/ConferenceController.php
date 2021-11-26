@@ -88,13 +88,13 @@ class ConferenceController extends Controller
      */
     public function show(ExpertServiceConference $expert_service_in_conference)
     {
-        $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
-
-        // print_r($expertServiceConsultantFields);
-
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
         
-        return view('extension-programs.expert-services.conference.show', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments'));
+        $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->nature.")");
+
+        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->level.")");
+
+        return view('extension-programs.expert-services.conference.show', compact('expert_service_in_conference', 'expertServiceConferenceDocuments', 'nature', 'level'));
     }
 
     /**

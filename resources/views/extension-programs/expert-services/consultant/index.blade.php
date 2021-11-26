@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Extension Programs') }}
+            {{ __('Expert Services Rendered') }}
         </h2>
     </x-slot>
     <div class="container">

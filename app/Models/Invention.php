@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invention extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'invention_code';
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
+    protected $primaryKey = 'id';
 
     protected $guarded = [];
 
@@ -24,5 +20,9 @@ class Invention extends Model
 
     public function inventiondocument() {
         return $this->hasMany(\App\Models\InventionDocument::class);
+    }
+
+    public function user() {
+        return $this->belongsTo(\App\Models\User::class);
     }
 }

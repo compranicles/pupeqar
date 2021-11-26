@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Extension Programs') }}
+            {{ __('Expert Services Rendered') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.expert-service-in-academic.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works</a>
+                                <a href="{{ route('faculty.expert-service-in-academic.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service in Academic Journals, Books, Publication, Newsletter, or Creative Works</a>
                             </div>
                         </div>  
                         <hr>

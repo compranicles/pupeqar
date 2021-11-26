@@ -18,17 +18,17 @@ class ExtensionFormSeeder extends Seeder
         ExtensionProgramForm::truncate();
         ExtensionProgramForm::insert([
             'label' => 'Expert Service Rendered as Consultant',
-            'table_name' => 'expert_service_consultant',
+            'table_name' => 'expert_service_consultants',
             'is_active' => 1
         ]);
         ExtensionProgramForm::insert([
             'label' => 'Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional',
-            'table_name' => 'expert_services_conference',
+            'table_name' => 'expert_service_conferences',
             'is_active' => 1
         ]);
         ExtensionProgramForm::insert([
             'label' => 'Expert Service Rendered in Academic',
-            'table_name' => 'expert_services_academic',
+            'table_name' => 'expert_service_academics',
             'is_active' => 1
         ]);
         ExtensionProgramForm::insert([

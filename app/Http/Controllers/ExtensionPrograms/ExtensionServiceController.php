@@ -10,6 +10,8 @@ use App\Models\FormBuilder\ExtensionProgramField;
 use Illuminate\Support\Facades\DB;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Maintenance\Department;
+use App\Models\Maintenance\College;
 
 class ExtensionServiceController extends Controller
 {
@@ -36,23 +38,22 @@ class ExtensionServiceController extends Controller
     public function create()
     {
 
-        $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereBetween('extension_program_fields.id', [30, 47])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
-        
-        $extensionServiceFields2 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereIn('extension_program_fields.id', [48, 49])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
+        // $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
+        //                                 ->where('extension_program_fields.is_active', 1)
+        //                                 ->whereBetween('extension_program_fields.id', [30, 47])
+        //                                 ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
+        //                                 ->select('extension_program_fields.*', 'field_types.name as field_type_name')
+        //                                 ->orderBy('order')
+        //                                 ->get();
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields1', 'extensionServiceFields2'));
+        $extensionServiceFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 30, 47)");
+        
+        $extensionServiceFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 48, 49)"); 
+
+        $departments = Department::all();
+        $colleges = College::all();
+
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields1', 'extensionServiceFields2', 'departments', 'colleges'));
     }
 
     /**
@@ -63,7 +64,7 @@ class ExtensionServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $eService = ExtensionService::create($input);
         $eService->update(['user_id' => auth()->id()]);
@@ -102,25 +103,17 @@ class ExtensionServiceController extends Controller
      */
     public function show(ExtensionService $extension_service)
     {
-        $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereBetween('extension_program_fields.id', [30, 47])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
-        
-        $extensionServiceFields2 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereIn('extension_program_fields.id', [48, 49])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
-        
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
-
-        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceFields1', 'extensionServiceFields2', 'extensionServiceDocuments'));
+        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
+        $level = DB::select("CALL get_dropdown_name_by_id(".$extension_service->level.")");
+        $status = DB::select("CALL get_dropdown_name_by_id(".$extension_service->status.")");
+        $nature_of_involvement = DB::select("CALL get_dropdown_name_by_id(".$extension_service->nature_of_involvement.")");
+        $classification = DB::select("CALL get_dropdown_name_by_id(".$extension_service->classification.")");
+        $type = DB::select("CALL get_dropdown_name_by_id(".$extension_service->type.")");
+        $type_of_funding = DB::select("CALL get_dropdown_name_by_id(".$extension_service->type_of_funding.")");
+        
+        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'collegeAndDepartment', 'level',
+                'status', 'nature_of_involvement', 'classification', 'type', 'type_of_funding'));
     }
 
     /**
@@ -131,25 +124,27 @@ class ExtensionServiceController extends Controller
      */
     public function edit(ExtensionService $extension_service)
     {
-        $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereBetween('extension_program_fields.id', [30, 47])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
+        $extensionServiceFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 30, 47)");
         
-        $extensionServiceFields2 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-                                        ->where('extension_program_fields.is_active', 1)
-                                        ->whereIn('extension_program_fields.id', [48, 49])
-                                        ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-                                        ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-                                        ->orderBy('order')
-                                        ->get();
+        $extensionServiceFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 48, 49)"); 
         
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
-        return view('extension-programs.extension-services.edit', compact('extension_service', 'extensionServiceFields1', 'extensionServiceFields2', 'extensionServiceDocuments'));
+        $departments = Department::all();
+        $colleges = College::all();
+
+        $collegeOfDepartment = Department::where('departments.id', $extension_service->department_id)
+                                ->join('colleges', 'colleges.id', 'departments.college_id')
+                                ->select('colleges.id', 'colleges.name')
+                                ->first();
+
+        $value = $extension_service;
+        $value->toArray();
+        $value = collect($extension_service);
+        $value = $value->toArray();
+        // dd($value);
+
+        return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields1', 'extensionServiceFields2', 'extensionServiceDocuments', 'departments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**

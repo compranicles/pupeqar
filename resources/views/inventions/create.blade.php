@@ -12,10 +12,11 @@
                     <div class="card-body">
                         <form action="{{ route('faculty.invention-innovation-creative.store') }}" method="post">
                             @csrf
+                            @include('inventions.form', ['formFields' => $inventionFields1])
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-3">
                                     <div class="form-group">
-                                        <label>Colleges/Campus/Branch</label><span style="color: red;"> *</span>
+                                        <label>College/Campus/Branch/Office where you commit the accomplishment</label><span style="color: red;"> *</span>
     
                                         <select name="college_id" id="college" class="form-control custom-select"  required>
                                             <option value="" selected disabled>Choose...</option>
@@ -27,16 +28,15 @@
                                         
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label>Department</label><span style="color: red;"> *</span>
+                                <div class="col-md-6 mb-3">
+                                    <label>Department where you commit the accomplishment</label><span style="color: red;"> *</span>
 
                                     <select name="department_id" id="department" class="form-control custom-select" required>
                                         <option value="" selected disabled>Choose...</option>
                                     </select>
                                 </div>
                             </div>
-                            
-                            @include('inventions.form', ['formFields' => $inventionsFields])
+                            @include('inventions.form', ['formFields' => $inventionFields2])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -98,17 +98,15 @@
             $('#status').on('change', function(){
                 var statusId = $('#status').val();
                 if (statusId == 26) {
-                    hide_dates();
-
                     $('#start_date').prop("required", false);
-                    $('#target_date').prop("required", false);
+                    $('#end_date').prop("required", false);
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
-                    $('.target_date').show();
+                    $('.end_date').show();
                 }
             });
-        </script> --}}
+        </script>
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
@@ -117,8 +115,8 @@
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
     @endpush

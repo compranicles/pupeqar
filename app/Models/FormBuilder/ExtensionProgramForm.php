@@ -18,8 +18,4 @@ class ExtensionProgramForm extends Model
     public function extensionprogramfield() {
         return $this->hasMany(\App\Models\FormBuilder\ExtensionProgramField::class);
     }
-
-    public function extensionprogramdocument() {
-        return $this->hasMany(\App\Models\ExtensionProgramDocument::class);
-    }
 }

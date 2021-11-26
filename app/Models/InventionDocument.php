@@ -15,4 +15,5 @@ class InventionDocument extends Model
     public function invention() {
         return $this->belongsTo(\App\Models\Invention::class);
     }
+
 }

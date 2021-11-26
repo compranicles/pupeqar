@@ -48,13 +48,13 @@ class ResearchController extends Controller
     {
         $this->authorize('create', Research::class);
 
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
-
-        // dd($researchfields);
+        $researchFields1 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 1, 14)");
+        
+        $researchFields2 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 15, 16)");
 
         $departments = Department::all();
         $colleges = College::all();
-        return view('research.create', compact('researchFields', 'departments', 'colleges'));
+        return view('research.create', compact('researchFields1', 'researchFields2', 'departments', 'colleges'));
     }
 
     /**
@@ -189,7 +189,7 @@ class ResearchController extends Controller
                                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
                                 ->first();
 
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment', 'value'));
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment'));
     }
 
     /**
@@ -202,7 +202,9 @@ class ResearchController extends Controller
     {
         $this->authorize('update', Research::class);
 
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
+        $researchFields1 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 1, 14)");
+        
+        $researchFields2 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 15, 16)");
 
         $phues = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('currencies', 'currencies.id', 'research.currency')
@@ -217,9 +219,9 @@ class ResearchController extends Controller
         // dd($collegeAndDepartment);
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement == 11)
-            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
+            return view('research.edit', compact('research', 'researchFields1', 'researchFields2', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
         else
-            return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
+            return view('research.edit-non-lead', compact('research', 'researchFields1', 'researchFields2', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
 
     }
 
