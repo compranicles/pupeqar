@@ -12,30 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('partnership.store' ) }}" method="post">
                             @csrf
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office to commit this accomplishment</label><span style="color: red;"> *</span>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select form-validation"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Department to commit this accomplishment</label><span style="color: red;"> *</span>
-
-                                    <select name="department_id" id="department" class="form-control custom-select form-validation" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('extension-programs.form', ['formFields' => $partnershipFields])
+                            @include('form', ['formFields' => $partnershipFields, 'colleges' => $colleges])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -54,17 +31,6 @@
 
     @push('scripts')
         <script>
-             $('#college').on('blur', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                    });
-                });
-            });
-
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();

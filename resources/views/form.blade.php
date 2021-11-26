@@ -28,6 +28,9 @@
             @case("decimal")
                 @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("college-and-department")
+                @include('maintenances.fieldtemplates.college-and-department', ['fieldInfo' => $field, 'colleges' => $colleges ?? '', 'college' => $value['college_id'] ?? '', 'department' => $value['department_id'] ?? ''])
+                @break
         @endswitch
     @endforeach
 </div>

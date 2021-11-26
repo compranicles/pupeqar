@@ -13,6 +13,7 @@ class CreateInventionsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('inventions');
         Schema::create('inventions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('college_id');

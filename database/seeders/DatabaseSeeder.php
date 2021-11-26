@@ -16,14 +16,35 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            //authentication
             RoleSeeder::class,
             PermissionSeeder::class,
+            UserSeeder::class,
+            UserRoleSeeder::class,
+            RolePermissionSeeder::class,
+
+            // Field types
             FieldTypeSeeder::class,
-            ResearchDropdownSeeder::class,
-            ResearchFormSeeder::class,
+            
+            //other maintenance
             CollegeSeeder::class,
             DepartmentSeeder::class,
             CurrencySeeder::class,
+
+            //Dropdown Seeders
+            ResearchDropdownSeeder::class,
+            InventionDropdownSeeder::class,
+            ExtensionDropdownSeeder::class,
+            AcademicDevelopmentDropdownSeeder::class,
+
+            //Form Seeder
+            ResearchFormSeeder::class,
+            InventionFormSeeder::class,
+            ExtensionFormSeeder::class,
+            AcademicDevelopmentFormSeeder::class,
+
+
+            //Research FIELD Seeders
             ResearchRegistrationFormSeeder::class,
             ResearchCompletedFormSeeder::class,
             ResearchPublicationFormSeeder::class,
@@ -31,28 +52,22 @@ class DatabaseSeeder extends Seeder
             ResearchCitationFormSeeder::class,
             ResearchUtilizationFormSeeder::class,
             ResearchCopyrightedFormSeeder::class,
-            InventionDropdownSeeder::class,
-            InventionFormSeeder::class,
+            
+            //Invention FIELD Seeders
             InventionSeeder::class,
 
+            //Extension Program FIELD Seeeders
+            ExtensionProgramFieldSeeder::class,
+            
+            //Academic Dvpt FIELD Seeders
+            ReferenceFormSeeder::class,
+            SyllabusFormSeeder::class,
 
+
+            //Reports
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
-
-            UserSeeder::class,
-            UserRoleSeeder::class,
-            RolePermissionSeeder::class,
-
-            ExtensionFormSeeder::class,
-            ExtensionDropdownSeeder::class,
-
-            //Extension Program Forms
-            ExpertServiceConsultantFormSeeder::class,
-            ExpertServiceConferenceFormSeeder::class,
-            ExpertServiceAcademicFormSeeder::class,
-            ExtensionServiceFormSeeder::class,
-            PartnershipFormSeeder::class,
         ]);
     }
 }

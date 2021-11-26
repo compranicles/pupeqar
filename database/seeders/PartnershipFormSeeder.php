@@ -185,6 +185,19 @@ class PartnershipFormSeeder extends Seeder
         ]);
         ExtensionProgramField::create([
             'extension_programs_form_id' => 5,
+            'label' => '',
+            'name' => '',
+            'placeholder' => null,
+            'size' => '',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
             'placeholder' => null,

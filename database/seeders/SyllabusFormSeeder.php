@@ -14,7 +14,6 @@ class SyllabusFormSeeder extends Seeder
      */
     public function run()
     {
-        // AcademicDevelopmentField::truncate();
         AcademicDevelopmentField::create([
             'academic_development_form_id' => 2,
             'label' => 'Course Title',
@@ -35,7 +34,7 @@ class SyllabusFormSeeder extends Seeder
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 5,
-            'dropdown_id' => 32, 
+            'dropdown_id' => 38, 
             'required' => 1,
             'visibility' => 1,
             'order' => 2,
