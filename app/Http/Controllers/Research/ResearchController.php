@@ -204,7 +204,7 @@ class ResearchController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
 
-        $phues = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+        $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('currencies', 'currencies.id', 'research.currency')
                 ->select('research.*', 'currencies.code as currency_code')->first()->toArray();
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();

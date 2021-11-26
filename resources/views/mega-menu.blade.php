@@ -29,8 +29,8 @@
             <h6 class="menu-category">Extension Programs and Expert Services</h6>
             <li><a href="{{ route('faculty.expert-service-as-consultant.index') }}">Expert Services Rendered</a></li>
             <li><a href="{{ route('faculty.extension-service.index') }}">Extension Services</a></li>
-            <li><a href="">Partnership/Linkages/Network</a></li>
-            <li><a href="">Inter-country Mobility</a></li>
+            <li><a href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>
+            <li><a href="{{ route('mobility.index') }}">Inter-country Mobility</a></li>
         </ul>
     </div>
     <div class="menu-col-3">

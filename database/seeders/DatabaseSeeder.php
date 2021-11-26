@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             ExpertServiceConferenceFormSeeder::class,
             ExpertServiceAcademicFormSeeder::class,
             ExtensionServiceFormSeeder::class,
+            PartnershipFormSeeder::class,
         ]);
     }
 }

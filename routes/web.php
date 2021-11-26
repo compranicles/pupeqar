@@ -131,6 +131,14 @@ Route::group(['middleware' => 'auth'], function() {
     //academics
     Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
 
+    //partnership, linkages, network
+    Route::get('/partnership/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\PartnershipController::class, 'removeDoc'])->name('partnership.removedoc');
+    Route::resource('partnership', \App\Http\Controllers\ExtensionPrograms\PartnershipController::class);
+
+    //inter-country mobility
+    Route::get('mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');;
+    Route::resource('mobility', \App\Http\Controllers\ExtensionPrograms\MobilityController::class);
+
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
     Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
