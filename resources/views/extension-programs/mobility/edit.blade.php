@@ -16,7 +16,7 @@
                         <form action="{{ route('mobility.update', $mobility->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('extension-programs.form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
