@@ -186,4 +186,8 @@ class DropdownController extends Controller
         return true;
     }
 
+    public function getOptionName($id){
+        return DropdownOption::where('id', $id)->pluck('name')->first();
+    }
+
 }

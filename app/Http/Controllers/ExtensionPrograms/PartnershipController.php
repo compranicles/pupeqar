@@ -92,11 +92,8 @@ class PartnershipController extends Controller
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
     
         $values = $partnership->toArray();
-
-        $colleges = College::all();
-        $departments = Department::all();
         
-        return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'departments'));
+        return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values'));
     }
 
     /**
@@ -172,14 +169,13 @@ class PartnershipController extends Controller
      */
     public function destroy(Partnership $partnership)
     {
-        $partnership->delete();
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
+        $partnership->delete();
         return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
     }
 
     public function removeDoc($filename){
         PartnershipDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
         return true;
     }
 }

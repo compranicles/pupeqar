@@ -317,7 +317,6 @@ class ResearchController extends Controller
 
     public function removeDoc($filename){
         ResearchDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
         return true;
     }
 

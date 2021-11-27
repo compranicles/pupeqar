@@ -23,6 +23,7 @@ class ExtensionProgramFieldSeeder extends Seeder
             ExtensionServiceFormSeeder::class,
             PartnershipFormSeeder::class,
             MobilityFormSeeder::class,
+            OutreachProgramFormSeeder::class,
         ]);
     }
 }

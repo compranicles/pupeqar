@@ -837,5 +837,28 @@ class ExtensionDropdownSeeder extends Seeder
             'is_active' => 1,
         ]);
         
+        //Outreach Level
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Outreach Level'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'International',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'National',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Local',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        
     }
 }

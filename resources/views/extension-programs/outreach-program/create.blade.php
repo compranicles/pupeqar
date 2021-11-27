@@ -1,21 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Add Inter-Country Mobility') }}
+            {{ __('Add Community Relations and Outreach Program') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
-            <p>
-                <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
-            </p>
             <div class="col-md-12">
+                <p>
+                    <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
+                </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('mobility.store') }}" method="post">
+                        <form action="{{ route('outreach-program.store' ) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $outreachFields])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -34,17 +34,6 @@
 
     @push('scripts')
         <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                var day = date.getDate();
-                var month = date.getMonth() + 1;
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#start_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-
             function validateForm() {
                 var isValid = true;
                 $('.form-validation').each(function() {

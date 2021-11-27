@@ -107,5 +107,28 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
+
+         //student award / recognition
+         $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Award Level'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'International',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'National',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Local',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
     }
 }

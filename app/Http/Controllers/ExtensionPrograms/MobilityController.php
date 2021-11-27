@@ -169,14 +169,13 @@ class MobilityController extends Controller
      */
     public function destroy(Mobility $mobility)
     {
-        $mobility->delete();
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
+        $mobility->delete();
         return redirect()->route('mobility.index')->with('mobility_success', 'Your accomplishment in Inter-Country Mobility has been deleted.');
     }
 
     public function removeDoc($filename){
         MobilityDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
         return true;
     }
 }

@@ -32,10 +32,7 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
 
             //Dropdown Seeders
-            ResearchDropdownSeeder::class,
-            InventionDropdownSeeder::class,
-            ExtensionDropdownSeeder::class,
-            AcademicDevelopmentDropdownSeeder::class,
+            DropdownSeeder::class,
 
             //Form Seeder
             ResearchFormSeeder::class,
@@ -62,6 +59,7 @@ class DatabaseSeeder extends Seeder
             //Academic Dvpt FIELD Seeders
             ReferenceFormSeeder::class,
             SyllabusFormSeeder::class,
+            StudentAwardFormSeeder::class,
 
 
             //Reports
