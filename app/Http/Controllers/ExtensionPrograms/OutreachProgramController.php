@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Models\Partnership;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use App\Models\OutreachProgram;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
 use App\Models\PartnershipDocument;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
+use App\Models\OutreachProgramDocument;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ExtensionProgramField;
 
-class PartnershipController extends Controller
+class OutreachProgramController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,8 +20,8 @@ class PartnershipController extends Controller
      */
     public function index()
     {
-        $partnerships = Partnership::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
-        return view('extension-programs.partnership.index', compact('partnerships'));
+        $outreach_programs = OutreachProgram::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
+        return view('extension-programs.outreach-program.index', compact('outreach_programs'));
     }
 
     /**
@@ -33,10 +31,9 @@ class PartnershipController extends Controller
      */
     public function create()
     {
-        $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
+        $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
 
-        $colleges = College::all();
-        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges'));
+        return view('extension-programs.outreach-program.create', compact('outreachFields'));
     }
 
     /**
@@ -49,8 +46,8 @@ class PartnershipController extends Controller
     {
         $input = $request->except(['_token', '_method', 'document']);
 
-        $partnership = Partnership::create($input);
-        $partnership->update(['user_id' => auth()->id()]);
+        $outreach = OutreachProgram::create($input);
+        $outreach->update(['user_id' => auth()->id()]);
 
         
         if($request->has('document')){
@@ -62,21 +59,21 @@ class PartnershipController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Partnership-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'OutreachProgram-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
-                    PartnershipDocument::create([
-                        'partnership_id' => $partnership->id,
+                    OutreachProgramDocument::create([
+                        'outreach_program_id' => $outreach->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your Accomplishment in Partnership/ Linkages/ Network has been saved.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been saved.');
     }
 
     /**
@@ -85,18 +82,9 @@ class PartnershipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Partnership $partnership)
+    public function show($id)
     {
-        $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
-
-        $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
-    
-        $values = $partnership->toArray();
-
-        $colleges = College::all();
-        $departments = Department::all();
-        
-        return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'departments'));
+        //
     }
 
     /**
@@ -105,23 +93,15 @@ class PartnershipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Partnership $partnership)
+    public function edit(OutreachProgram $outreach_program)
     {
-        $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
+        $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
 
-        $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
-                ->where('colleges.id', $partnership->college_id)
-                ->select('colleges.name AS college_name', 'departments.name AS department_name')
-                ->first();
+        $values = $outreach_program->toArray();
 
-        $values = $partnership->toArray();
+        $documents = OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->get()->toArray();
 
-        $colleges = College::all();
-
-        $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
-
-        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
-
+        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values'));
     }
 
     /**
@@ -131,12 +111,13 @@ class PartnershipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Partnership $partnership)
+    public function update(Request $request, OutreachProgram $outreach_program)
     {
         $input = $request->except(['_token', '_method', 'document']);
 
-        $partnership->update($input);
+        $outreach_program->update($input);
 
+        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -146,22 +127,21 @@ class PartnershipController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Partnership-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'OutreachProgram-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
-                    PartnershipDocument::create([
-                        'partnership_id' => $partnership->id,
+                    OutreachProgramDocument::create([
+                        'outreach_program_id' => $outreach->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been updated.');
-
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been updated.');
     }
 
     /**
@@ -170,15 +150,15 @@ class PartnershipController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Partnership $partnership)
+    public function destroy(OutreachProgram $outreach_program)
     {
-        PartnershipDocument::where('partnership_id', $partnership->id)->delete();
-        $partnership->delete();
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
+        OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
+        $outreach_program->delete();
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your accomplishment in Community Relations and Outreach Program has been deleted.');
     }
 
     public function removeDoc($filename){
-        PartnershipDocument::where('filename', $filename)->delete();
+        OutreachProgramDocument::where('filename', $filename)->delete();
         return true;
     }
 }

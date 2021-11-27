@@ -7,6 +7,9 @@
 
     <div class="container">
         <div class="row">
+            <p>
+                <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
+            </p>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">

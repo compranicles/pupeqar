@@ -15,8 +15,7 @@ class ResearchDropdownSeeder extends Seeder
      */
     public function run()
     {
-        Dropdown::truncate();
-        DropdownOption::truncate();
+        
         //classification
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Research Classification'

@@ -136,8 +136,16 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('partnership', \App\Http\Controllers\ExtensionPrograms\PartnershipController::class);
 
     //inter-country mobility
-    Route::get('mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');;
+    Route::get('/mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');
     Route::resource('mobility', \App\Http\Controllers\ExtensionPrograms\MobilityController::class);
+
+    //Outreach Programs
+    Route::get('/outreach-program/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class, 'removeDoc'])->name('outreach-program.removedoc');
+    Route::resource('outreach-program', \App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class);
+
+    //StudentAwards and Recognition
+    Route::get('/student-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentAwardController::class, 'removeDoc'])->name('student-award.removedoc');
+    Route::resource('student-award', \App\Http\Controllers\AcademicDevelopment\StudentAwardController::class);
 
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
