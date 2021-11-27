@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <form action="{{ route('research.citation.store', $research['id']) }}" method="post">
                             @csrf
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('form', ['formFields' => $researchFields, 'value' => $research])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

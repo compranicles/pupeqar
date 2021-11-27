@@ -163,4 +163,10 @@ class ConferenceController extends Controller
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
         return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Cours has been deleted.');
     }
+
+    public function removeDoc($filename){
+        ExpertServiceConferenceDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
+    }
 }

@@ -28,8 +28,11 @@
             @case("decimal")
                 @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
-            @case("college-and-department")
-                @include('maintenances.fieldtemplates.college-and-department', ['fieldInfo' => $field, 'colleges' => $colleges ?? '', 'college' => $value['college_id'] ?? '', 'department' => $value['department_id'] ?? ''])
+            @case("college")
+                @include('maintenances.fieldtemplates.college', ['fieldInfo' => $field, 'colleges' => $colleges ?? '', 'college_id' => $collegeOfDepartment[0]->id ?? '', 'department_id' => $value['department_id'] ?? ''])
+                @break
+            @case("department")
+                @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field])
                 @break
         @endswitch
     @endforeach

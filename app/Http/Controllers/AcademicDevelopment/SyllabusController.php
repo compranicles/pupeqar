@@ -11,7 +11,6 @@ use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
-use App\Models\FormBuilder\DropdownOption;
 
 class SyllabusController extends Controller
 {
@@ -37,13 +36,10 @@ class SyllabusController extends Controller
      */
     public function create()
     {
-        $syllabusFields1 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(2, 15, 17)");
-        
-        $syllabusFields2 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(2, 18, 19)");
-        
-        $departments = Department::all();
+        $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
+
         $colleges = College::all();
-        return view('academic-development.syllabi.create', compact('syllabusFields1', 'syllabusFields2', 'colleges', 'departments'));
+        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges'));
     }
 
     /**
@@ -110,13 +106,10 @@ class SyllabusController extends Controller
      */
     public function edit(Syllabus $syllabu)
     {
-        $syllabusFields1 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(2, 15, 17)");
-        
-        $syllabusFields2 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(2, 18, 19)");
+        $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
-        $departments = Department::all();
         $colleges = College::all();
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
@@ -126,7 +119,7 @@ class SyllabusController extends Controller
         $value = collect($syllabu);
         $value = $value->toArray();
         
-        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields1', 'syllabusFields2', 'syllabusDocuments', 'colleges', 'departments', 'collegeOfDepartment'));
+        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**
@@ -182,5 +175,11 @@ class SyllabusController extends Controller
 
         return redirect()->route('faculty.syllabus.index')->with('edit_syllabus_success', 'course syllabus')
                                 ->with('action', 'deleted.');
+    }
+
+    public function removeDoc($filename){
+        SyllabusDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
     }
 }

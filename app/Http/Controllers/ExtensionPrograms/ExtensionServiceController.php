@@ -46,14 +46,11 @@ class ExtensionServiceController extends Controller
         //                                 ->orderBy('order')
         //                                 ->get();
 
-        $extensionServiceFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 30, 47)");
-        
-        $extensionServiceFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 48, 49)"); 
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
-        $departments = Department::all();
         $colleges = College::all();
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields1', 'extensionServiceFields2', 'departments', 'colleges'));
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges'));
     }
 
     /**
@@ -124,19 +121,13 @@ class ExtensionServiceController extends Controller
      */
     public function edit(ExtensionService $extension_service)
     {
-        $extensionServiceFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 30, 47)");
-        
-        $extensionServiceFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(4, 48, 49)"); 
-        
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
+
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
-        $departments = Department::all();
         $colleges = College::all();
 
-        $collegeOfDepartment = Department::where('departments.id', $extension_service->department_id)
-                                ->join('colleges', 'colleges.id', 'departments.college_id')
-                                ->select('colleges.id', 'colleges.name')
-                                ->first();
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
 
         $value = $extension_service;
         $value->toArray();
@@ -144,7 +135,7 @@ class ExtensionServiceController extends Controller
         $value = $value->toArray();
         // dd($value);
 
-        return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields1', 'extensionServiceFields2', 'extensionServiceDocuments', 'departments', 'colleges', 'collegeOfDepartment'));
+        return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**

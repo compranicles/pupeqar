@@ -12,28 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('research.store') }}" method="post" id="create_research">
                             @csrf
-                            @include('research.form', ['formFields' => $researchFields1])
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label>College/Campus/Branch/Office where you commit the research</label><span style="color: red;"> *</span>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select form-validation"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Department where you commit the research</label><span style="color: red;"> *</span>
-                                    <select name="department_id" id="department" class="form-control custom-select form-validation" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('research.form', ['formFields' => $researchFields2])
+                            @include('form', ['formFields' => $researchFields, 'colleges' => $colleges])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -85,7 +64,14 @@
                 hide_dates();
                 $('.funding_agency').hide();
                 $('#funding_agency').removeClass('form-validation');
-                $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->middle_name.' '.auth()->user()->last_name }}");
+                if ("{{ auth()->user()->middle_name }}" == '')
+                {
+                    $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
+                }
+                else
+                {
+                    $('#researchers').val("{{ auth()->user()->first_name.' '.auth()->user()->middle_name.' '.auth()->user()->last_name }}");
+                }
                 $('#researchers').attr('readonly', true);
             });
 

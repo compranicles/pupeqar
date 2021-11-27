@@ -28,7 +28,9 @@
 
 @push('scripts')
     <script>
-        $('#{{ $fieldInfo->name }}').ready(function (){
+
+        $(document).ready(function() {
+            
             $.get("{{ route('dropdowns.options', $fieldInfo->dropdown_id) }}", function (data){
                 data.forEach(function (item){
                     $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id)).change();

@@ -48,13 +48,10 @@ class ResearchController extends Controller
     {
         $this->authorize('create', Research::class);
 
-        $researchFields1 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 1, 14)");
-        
-        $researchFields2 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 15, 16)");
+        $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        $departments = Department::all();
         $colleges = College::all();
-        return view('research.create', compact('researchFields1', 'researchFields2', 'departments', 'colleges'));
+        return view('research.create', compact('researchFields', 'colleges'));
     }
 
     /**
@@ -179,17 +176,17 @@ class ResearchController extends Controller
 
         //$values = Research::where('research_code', $research->research_code)->first()->toArray();
 
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
         $value = $value->except(['status']);
         $value = $value->toArray();
-        $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
-                                ->where('colleges.id', $research->college_id)
-                                ->select('colleges.name AS college_name', 'departments.name AS department_name')
-                                ->first();
 
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'collegeAndDepartment'));
+        $colleges = College::all();
+
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'colleges', 'collegeOfDepartment'));
     }
 
     /**
@@ -202,26 +199,23 @@ class ResearchController extends Controller
     {
         $this->authorize('update', Research::class);
 
-        $researchFields1 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 1, 14)");
-        
-        $researchFields2 = DB::select("CALL get_research_fields_by_form_id_and_field_ids(1, 15, 16)");
+        $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
         $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('currencies', 'currencies.id', 'research.currency')
                 ->select('research.*', 'currencies.code as currency_code')->first()->toArray();
+        
+                dd($values);
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
-        // dd($values);
-        $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
-                                ->where('colleges.id', $research->college_id)
-                                ->select('colleges.name AS college_name', 'departments.name AS department_name')
-                                ->first();
-        // dd($collegeAndDepartment);
+
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement == 11)
-            return view('research.edit', compact('research', 'researchFields1', 'researchFields2', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
+            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
         else
-            return view('research.edit-non-lead', compact('research', 'researchFields1', 'researchFields2', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeAndDepartment'));
+            return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
 
     }
 

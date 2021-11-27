@@ -26,6 +26,7 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->insert(['name' => 'file-upload']);
         DB::table('field_types')->insert(['name' => 'multiple-file-upload']);
         DB::table('field_types')->insert(['name' => 'decimal']);
-        DB::table('field_types')->insert(['name' => 'college-and-department']);
+        DB::table('field_types')->insert(['name' => 'college']);
+        DB::table('field_types')->insert(['name' => 'department']);
     }
 }

@@ -35,12 +35,12 @@
                                 <td>{{ $syllabu->date_finished }}</td>
                               </tr>
                               <tr>
-                                <th>Colleges/Campus/Branch/Office where you Committed the Accomplishment</th>
+                                <th>Colleges/Campus/Branch/Office to commit the Accomplishment</th>
                                 <td>{{ $collegeAndDepartment[0]->college_name }}</td>
 
                               </tr>
                               <tr>
-                                <th>Department where you Committed the Accomplishment</th>
+                                <th>Department to commit the Accomplishment</th>
                                 <td>{{ $collegeAndDepartment[0]->department_name }}</td>
 
                               </tr>
@@ -99,7 +99,7 @@
                                   @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                     <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
                                       <div class="card bg-light border border-maroon rounded-lg">
-                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                         </a>
                                       </div>

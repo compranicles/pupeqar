@@ -167,4 +167,10 @@ class ConsultantController extends Controller
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
         return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
     }
+
+    public function removeDoc($filename){
+        ExpertServiceConsultantDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
+    }
 }

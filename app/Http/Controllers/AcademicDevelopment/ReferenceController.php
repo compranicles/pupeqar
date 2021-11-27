@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
-use App\Models\FormBuilder\DropdownOption;
 
 class ReferenceController extends Controller
 {
@@ -37,13 +36,10 @@ class ReferenceController extends Controller
      */
     public function create()
     {
-        $referenceFields1 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(1, 1, 12)");
-        
-        $referenceFields2 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(1, 13, 14)");
-        
-        $departments = Department::all();
+        $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
+
         $colleges = College::all();
-        return view('academic-development.references.create', compact('referenceFields1', 'referenceFields2', 'colleges', 'departments'));
+        return view('academic-development.references.create', compact('referenceFields', 'colleges'));
     }
 
     /**
@@ -100,13 +96,15 @@ class ReferenceController extends Controller
     {
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
 
-        $category = DropdownOption::where('id', $rtmmi->category)
-                            ->select('dropdown_options.name')->first();
+        $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $level = DropdownOption::where('id', $rtmmi->level)
-                            ->select('dropdown_options.name')->first();
+        $level = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->level.")");
 
-        return view('academic-development.references.show', compact('rtmmi', 'referenceDocuments', 'category', 'level'));
+        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
+
+        $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
+
+        return view('academic-development.references.show', compact('rtmmi', 'referenceDocuments', 'category', 'level', 'collegeAndDepartment', 'referenceFields'));
     }
 
     /**
@@ -117,16 +115,12 @@ class ReferenceController extends Controller
      */
     public function edit(Reference $rtmmi)
     {
-        $referenceFields1 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(1, 1, 12)");
-        
-        $referenceFields2 = DB::select("CALL get_academic_development_fields_by_form_id_and_field_ids(1, 13, 14)");
+        $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
 
-        $category = DropdownOption::where('id', $rtmmi->category)
-                            ->select('dropdown_options.name')->first();
+        $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $departments = Department::all();
         $colleges = College::all();
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
@@ -136,7 +130,7 @@ class ReferenceController extends Controller
         $value = collect($rtmmi);
         $value = $value->toArray();
         
-        return view('academic-development.references.edit', compact('value', 'referenceFields1', 'referenceFields2', 'referenceDocuments', 'colleges', 'departments', 'category', 'collegeOfDepartment'));
+        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment'));
     }
 
     /**
@@ -202,5 +196,11 @@ class ReferenceController extends Controller
 
         return redirect()->route('faculty.rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0])
                             ->with('action', 'deleted.'));
+    }
+
+    public function removeDoc($filename){
+        ReferenceDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
     }
 }

@@ -12,32 +12,9 @@
                     <div class="card-body">
                         <form action="{{ route('faculty.extension-service.store' ) }}" method="post">
                             @csrf
-                            @include('extension-programs.form', ['formFields' => $extensionServiceFields1])
+                            @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'colleges' => $colleges])
                             @include('extension-programs.extension-services.no-of-beneficiaries', ['value' => ''])
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the accomplishment</label><span style="color: red;"> *</span>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Department where you commit the accomplishment</label><span style="color: red;"> *</span>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('extension-programs.form', ['formFields' => $extensionServiceFields2])
+                            @include('extension-programs.extension-services.form2', ['formFields' => $extensionServiceFields])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -55,18 +32,6 @@
     </div>
 
     @push('scripts')
-        <script>
-            $('#college').on('blur', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                    });
-                });
-            });
-        </script>
         <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());

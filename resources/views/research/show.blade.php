@@ -40,29 +40,7 @@
                             </div>
                         </div>
                         <hr>
-                        <fieldset id="research">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>{{ $collegeAndDepartment->college_name }}</option>
-                                       
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Department where you commit the research</label>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>{{ $collegeAndDepartment->department_name }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $value,])
+                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
                             <div class="row mb-3">
                                 <div class="col-md-12">
@@ -107,7 +85,7 @@
                                                 @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                     <div class="col-md-6 mb-3">
                                                         <div class="card bg-light border border-maroon rounded-lg">
-                                                            <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                                            <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                                 <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                             </a>
                                                             
@@ -184,7 +162,13 @@
             $('.target_date').hide();
         }
     </script>
-
+    <script>
+        $(document).ready(function(){
+            $("input").prop("disabled", true);
+            $("textarea").prop("disabled", true);
+            $("select").prop("disabled", true);
+        });
+    </script>
 @endpush
 
 </x-app-layout>
