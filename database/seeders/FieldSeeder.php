@@ -33,7 +33,7 @@ class FieldSeeder extends Seeder
             ReferenceFormSeeder::class,
             SyllabusFormSeeder::class,
             StudentAwardFormSeeder::class,
-
+            StudentTrainingFormSeeder::class,
         ]);
     }
 }

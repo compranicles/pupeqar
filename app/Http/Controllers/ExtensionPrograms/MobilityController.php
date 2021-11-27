@@ -91,11 +91,8 @@ class MobilityController extends Controller
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
     
         $values = $mobility->toArray();
-
-        $colleges = College::all();
-        $departments = Department::all();
         
-        return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'departments'));
+        return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values'));
     }
 
     /**

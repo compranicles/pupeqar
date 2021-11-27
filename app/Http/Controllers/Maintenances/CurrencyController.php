@@ -130,6 +130,6 @@ class CurrencyController extends Controller
     }
 
     public function getCurrencyName($id){
-        return Currency::where('id', $id)->pluck('name')->first();
+        return Currency::where('id', $id)->pluck('code')->first();
     }
 }

@@ -42,6 +42,7 @@
             <li><a href="{{ route('faculty.rtmmi.index') }}">Reference/Textbook/Module/<br>Monographs/Instructional Materials</a></li>
             {{-- For College and Departments --}}
             <li><a href="{{ route('student-award.index') }}">Student Awards and Recognition</a></li>
+            <li><a href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
         </ul>
         <ul>
             <h6 class="menu-category">Others</h6>

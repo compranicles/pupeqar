@@ -151,6 +151,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/student-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentAwardController::class, 'removeDoc'])->name('student-award.removedoc');
     Route::resource('student-award', \App\Http\Controllers\AcademicDevelopment\StudentAwardController::class);
 
+    //Student Seminar and Trainings
+    Route::get('/student-training/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class, 'removeDoc'])->name('student-training.removedoc');
+    Route::resource('student-training', \App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class);
+
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
     Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
