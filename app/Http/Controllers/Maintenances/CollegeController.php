@@ -111,4 +111,8 @@ class CollegeController extends Controller
 
         return redirect()->route('colleges.index')->with('edit_college_success', 'College has been deleted.');
     }
+
+    public function getCollegeName($id){
+        return College::where('id', $id)->pluck('name')->first();
+    }
 }
