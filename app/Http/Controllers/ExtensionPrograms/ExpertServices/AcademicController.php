@@ -37,14 +37,11 @@ class AcademicController extends Controller
      */
     public function create()
     {
-        $expertServiceAcademicFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 20, 27)");
+        $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
-        $expertServiceAcademicFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 28, 29)");
-
-        $departments = Department::all();
         $colleges = College::all();
 
-        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields1', 'expertServiceAcademicFields2', 'departments', 'colleges'));
+        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges'));
     }
 
     /**
@@ -119,25 +116,21 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
-        $expertServiceAcademicFields1 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 20, 27)");
-
-        $expertServiceAcademicFields2 = DB::select("CALL get_extension_program_fields_by_form_id_and_field_ids(3, 28, 29)");
+        $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
-        $departments = Department::all();
         $colleges = College::all();
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
-
 
         $value = $expert_service_in_academic;
         $value->toArray();
         $value = collect($expert_service_in_academic);
         $value = $value->toArray();
 
-        return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields1', 'expertServiceAcademicFields2', 'expertServiceAcademicDocuments',
-            'departments', 'colleges', 'collegeOfDepartment'));
+        return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments',
+            'colleges', 'collegeOfDepartment'));
     }
 
     /**
@@ -190,5 +183,11 @@ class AcademicController extends Controller
         $expert_service_in_academic->delete();
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
         return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
+    }
+
+    public function removeDoc($filename){
+        ExpertServiceAcademicDocument::where('filename', $filename)->delete();
+        Storage::delete('documents/'.$filename);
+        return true;
     }
 }

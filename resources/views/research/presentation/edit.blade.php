@@ -18,7 +18,7 @@
                         <form action="{{ route('research.presentation.update', [$research['id'], $value['id']]) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $value])
+                            @include('form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -82,7 +82,7 @@
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
-                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
                                                         <div class="card-body">

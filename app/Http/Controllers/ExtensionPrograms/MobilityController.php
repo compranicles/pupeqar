@@ -46,7 +46,7 @@ class MobilityController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
@@ -131,7 +131,7 @@ class MobilityController extends Controller
      */
     public function update(Request $request, Mobility $mobility)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $mobility->update($input);
 

@@ -19,31 +19,7 @@
                             @csrf
                             @method('put')
                             <fieldset id="research">
-                                @include('research.form-view', ['formFields' => $researchFields1, 'value' => $values])
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>College/Campus/Branch where you commit the research</label>
-        
-                                            <select name="college_id" id="college" class="form-control custom-select"  required>
-                                                <option value="" selected disabled>Choose...</option>
-                                                @foreach ($colleges as $college)
-                                                <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
-                                                @endforeach
-                                            
-                                            </select>
-                                            
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Department where you commit the research</label>
-
-                                        <select name="department_id" id="department" class="form-control custom-select" required>
-                                            <option value="" selected disabled>Choose...</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                @include('research.form-view', ['formFields' => $researchFields2, 'value' => $values])
+                            @include('form-view', ['formFields' => $researchFields1, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
                             </fieldset>
                             <div class="col-md-12">
@@ -105,7 +81,7 @@
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
-                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
                                                         

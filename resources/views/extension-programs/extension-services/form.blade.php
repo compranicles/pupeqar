@@ -19,11 +19,11 @@
             @case("dropdown")
                 @include('maintenances.fieldtemplates.dropdown', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
-            @case("textarea")
-                @include('maintenances.fieldtemplates.textarea', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+            @case("college")
+                @include('maintenances.fieldtemplates.college', ['fieldInfo' => $field, 'colleges' => $colleges ?? '', 'college_id' => $collegeOfDepartment[0]->id ?? '', 'department_id' => $value['department_id'] ?? ''])
                 @break
-            @case("multiple-file-upload")
-                @include('maintenances.fieldtemplates.multiplefileupload', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+            @case("department")
+                @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field])
                 @break
         @endswitch
     @endforeach

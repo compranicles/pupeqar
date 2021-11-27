@@ -37,7 +37,7 @@ class SyllabusFormSeeder extends Seeder
             'dropdown_id' => 38, 
             'required' => 1,
             'visibility' => 1,
-            'order' => 2,
+            'order' => 1,
             'is_active' => 1,
         ]);
         AcademicDevelopmentField::create([
@@ -50,7 +50,33 @@ class SyllabusFormSeeder extends Seeder
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
-            'order' => 3,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        AcademicDevelopmentField::create([
+            'academic_development_form_id' => 2,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        AcademicDevelopmentField::create([
+            'academic_development_form_id' => 2,
+            'label' => 'Department to commit the accomplishment',
+            'name' => 'department_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 13,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
             'is_active' => 1,
         ]);
         AcademicDevelopmentField::create([
@@ -63,7 +89,7 @@ class SyllabusFormSeeder extends Seeder
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
-            'order' => 4,
+            'order' => 1,
             'is_active' => 1,
         ]);
         AcademicDevelopmentField::create([
@@ -76,7 +102,7 @@ class SyllabusFormSeeder extends Seeder
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
-            'order' => 5,
+            'order' => 1,
             'is_active' => 1,
         ]);
     }

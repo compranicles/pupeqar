@@ -13,32 +13,9 @@
                         <form action="{{ route('faculty.extension-service.update', $value['id'] ) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('extension-programs.form', ['formFields' => $extensionServiceFields1, 'value' => $value])
+                            @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             @include('extension-programs.extension-services.no-of-beneficiaries', ['value' => $value])
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($collegeOfDepartment->id == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Department where you commit the research</label>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('extension-programs.form', ['formFields' => $extensionServiceFields2, 'value' => $value])
+                            @include('extension-programs.extension-services.form2', ['formFields' => $extensionServiceFields, 'value' => $value])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -102,7 +79,7 @@
                                                     @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
-                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
                                                         <div class="card-body">
@@ -135,18 +112,6 @@
     </div>
 
     @push('scripts')
-        <script>
-            var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-                    document.getElementById("department").value = "{{ $value['department_id'] }}";
-                });
-        </script>
         <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());

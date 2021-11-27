@@ -47,7 +47,7 @@ class PartnershipController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
@@ -133,7 +133,7 @@ class PartnershipController extends Controller
      */
     public function update(Request $request, Partnership $partnership)
     {
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership->update($input);
 

@@ -16,28 +16,7 @@
                         <form action="{{ route('faculty.invention-innovation-creative.update', $value['id']) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('inventions.form', ['formFields' => $inventionFields1, 'value' => $value])
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label>College/Campus/Branch/Office where you commit the research</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($collegeOfDepartment[0]->id == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Department where you commit the research</label>
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('inventions.form', ['formFields' => $inventionFields2, 'value' => $value])
+                            @include('form', ['formFields' => $inventionFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -78,7 +57,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -101,14 +80,14 @@
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
-                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}">
+                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
                                                         <div class="card-body">
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -132,17 +111,35 @@
     </div>
 
     @push('scripts')
-        <script>
-            var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
+    <script>
+            $(function() {
+                $('.funding_agency').hide();
+                $('#funding_agency').removeClass('form-validation');
+            });
 
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-                    document.getElementById("department").value = "{{ $value['department_id'] }}";
-                });
+            $('#funding_type').on('change', function (){
+                var type = $(this).val();
+                if(type == 49){
+                    
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').attr('readonly', true);
+                    $('#funding_agency').addClass('form-validation');
+                }
+                else if(type == 50){
+                    $('.funding_agency').hide();
+                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').removeClass('form-validation');
+                }
+                else if(type == 51){
+                    $('#funding_agency').removeAttr('readonly');
+                    $('#funding_agency').removeAttr('disabled');
+                    $('.funding_agency').show();
+                    $('#funding_agency').val('');
+                    $('#funding_agency').addClass('form-validation');
+                }
+            });
         </script>
         {{-- <script>
             function hide_dates() {

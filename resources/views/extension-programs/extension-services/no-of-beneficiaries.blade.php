@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 mt-3 mb-3">
         <p>No. of Trainees/Benefiaries Who Rated the <em>Quality</em> of Extension Service</p>
         <div class="row">
         <div class="col-md-2">
@@ -36,7 +36,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-12 my-3">
+    <div class="col-md-12 mb-3">
         <p>No. of Trainees/Benefiaries Who Rated the <em>Timeliness</em> of Extension Service</p>
         <div class="row">
         <div class="col-md-2">

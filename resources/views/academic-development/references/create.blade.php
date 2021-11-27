@@ -12,31 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('faculty.rtmmi.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $referenceFields1])
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <div class="form-group">
-                                        <label>College/Campus/Branch/Office where you commit the accomplishment</label><span style="color: red;"> *</span>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label>Department where you commit the accomplishment</label><span style="color: red;"> *</span>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('form', ['formFields' => $referenceFields2])
+                            @include('form', ['formFields' => $referenceFields, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
