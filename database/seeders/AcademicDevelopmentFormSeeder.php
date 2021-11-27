@@ -26,10 +26,14 @@ class AcademicDevelopmentFormSeeder extends Seeder
             'table_name' => 'syllabi',
             'is_active' => 1
         ]);
-
         AcademicDevelopmentForm::insert([
             'label' => 'Student Awards and Recognition',
             'table_name' => 'student_awards',
+            'is_active' => 1
+        ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Student Awards and Recognition',
+            'table_name' => 'student_trainings',
             'is_active' => 1
         ]);
     }

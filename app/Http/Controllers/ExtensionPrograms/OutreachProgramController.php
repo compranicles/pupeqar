@@ -82,9 +82,15 @@ class OutreachProgramController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(OutreachProgram $outreach_program)
     {
-        //
+        $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
+
+        $values = $outreach_program->toArray();
+
+        $documents = OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->get()->toArray();
+
+        return view('extension-programs.outreach-program.show', compact('outreach_program', 'outreachFields', 'documents', 'values'));
     }
 
     /**

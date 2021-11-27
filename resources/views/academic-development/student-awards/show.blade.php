@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Community Relations and Outreach Program') }}
+            {{ __('Show Student Awards and Recognition') }}
         </h2>
     </x-slot>
 
@@ -9,9 +9,9 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
+                    <a class="back_link" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
                 </p>
-                @include('show', ['formFields' => $outreachFields, 'value' => $values])
+                @include('show', ['formFields' => $studentFields, 'value' => $values])
             </div>
         </div>
         <div class="row mt-3">

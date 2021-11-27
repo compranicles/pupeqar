@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Models\StudentAward;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use App\Models\StudentTraining;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\StudentAwardDocument;
+use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
 
-class StudentAwardController extends Controller
+class StudentTrainingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,9 @@ class StudentAwardController extends Controller
      */
     public function index()
     {
-        $student_awards = StudentAward::where('user_id', auth()->id())->get();
-        return view('academic-development.student-awards.index', compact('student_awards'));
+        $student_trainings = StudentTraining::where('user_id', auth()->id())->get();
+
+        return view('academic-development.student-training.index', compact('student_trainings'));
     }
 
     /**
@@ -30,9 +31,9 @@ class StudentAwardController extends Controller
      */
     public function create()
     {
-        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
+        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
-        return view('academic-development.student-awards.create', compact('studentFields'));
+        return view('academic-development.student-training.create', compact('studentFields'));
     }
 
     /**
@@ -45,8 +46,8 @@ class StudentAwardController extends Controller
     {
         $input = $request->except(['_token', '_method', 'document']);
 
-        $student_award = StudentAward::create($input);
-        $student_award->update(['user_id' => auth()->id()]);
+        $student_training = StudentTraining::create($input);
+        $student_training->update(['user_id' => auth()->id()]);
         
         if($request->has('document')){
             
@@ -57,21 +58,21 @@ class StudentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'StudentAward-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'StudentTraining-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
-                    StudentAwardDocument::create([
-                        'student_award_id' => $student_award->id,
+                    StudentTrainingDocument::create([
+                        'student_training_id' => $student_training->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been saved.');
+        return redirect()->route('student-training.index')->with('student_success', 'Your Accomplishment in Student Attended Seminars and Trainings has been saved.');
     }
 
     /**
@@ -80,15 +81,16 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentAward $student_award)
+    public function show(StudentTraining $student_training)
     {
-        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
+        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
-        $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
+        $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
 
-        $values = $student_award->toArray();
+        $values = $student_training->toArray();
 
-        return view('academic-development.student-awards.show', compact('studentFields', 'student_award', 'documents', 'values'));
+        return view('academic-development.student-training.show', compact('studentFields', 'student_training', 'documents', 'values'));
+
     }
 
     /**
@@ -97,15 +99,15 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(StudentAward $student_award)
+    public function edit(StudentTraining $student_training)
     {
-        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
+        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
-        $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
+        $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
 
-        $values = $student_award->toArray();
+        $values = $student_training->toArray();
 
-        return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values'));
+        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values'));
     }
 
     /**
@@ -115,11 +117,11 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StudentAward $student_award)
+    public function update(Request $request, StudentTraining $student_training)
     {
         $input = $request->except(['_token', '_method', 'document']);
 
-        $student_award->update($input);
+        $student_training->update($input);
         
         if($request->has('document')){
             
@@ -130,21 +132,21 @@ class StudentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'StudentAward-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'StudentTraining-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
-                    StudentAwardDocument::create([
-                        'student_award_id' => $student_award->id,
+                    StudentTrainingDocument::create([
+                        'student_training_id' => $student_training->id,
                         'filename' => $fileName,
                     ]);
                 }
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been updated.');
+        return redirect()->route('student-training.index')->with('student_success', 'Your Accomplishment in Student Attended Seminars and Trainings has been updated.');
     }
 
     /**
@@ -153,15 +155,15 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StudentAward $student_award)
+    public function destroy(StudentTraining $student_training)
     {
-        StudentAwardDocument::where('student_award_id', $student_award->id)->delete();
-        $student_award->delete();
-        return redirect()->route('student-award.index')->with('student_success', 'Your accomplishment in Student Award and Recognition has been deleted.');
+        StudentTrainingDocument::where('student_training_id', $student_training->id)->delete();
+        $student_training->delete();
+        return redirect()->route('student-training.index')->with('student_success', 'Your accomplishment in Student Attended Seminars and Trainings has been deleted.');
     }
 
     public function removeDoc($filename){
-        StudentAwardDocument::where('filename', $filename)->delete();
+        StudentTrainingDocument::where('filename', $filename)->delete();
         return true;
     }
 }

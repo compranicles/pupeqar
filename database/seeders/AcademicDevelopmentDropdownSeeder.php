@@ -130,5 +130,56 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
             'order' => 3,
             'is_active' => 1,
         ]);
+
+        // student attended seminars and trainings
+         $dropdownId  = Dropdown::insertGetId([
+            'name' => 'SAST, Source of Fund'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'University Funded',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Self-Funded',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Externally Funded',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'No Funding Required',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Student Training Level'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'International',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'National',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Local',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        
     }
 }

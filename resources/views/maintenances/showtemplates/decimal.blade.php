@@ -1,6 +1,6 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <td><div id="currency"></div>{{ $value }}</td>
+    <td><span id="currency"></span> {{ $value }}</td>
 </tr>
 
 @push('scripts')
