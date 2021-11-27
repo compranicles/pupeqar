@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
         Role::create(['name' => 'Faculty with designation']);
         Role::create(['name' => 'Admin employee']);
         Role::create(['name' => 'Admin with teaching load']);
-        Role::create(['name' => 'Chaiperson']);
+        Role::create(['name' => 'Chairperson']);
         Role::create(['name' => 'Director/Dean']);
         Role::create(['name' => 'VP/Sector Head']);
         Role::create(['name' => 'IPQMSO']);

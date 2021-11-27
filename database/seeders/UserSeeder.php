@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         //Super Admin
+        User::truncate();
         User::create([
             'email' => 'mugomec@mailinator.com',
             'password'=> Hash::make('primogems#2022-letsgo'),
@@ -54,6 +55,153 @@ class UserSeeder extends Seeder
             'first_name' => 'Taylor',
             'middle_name' => null,
             'last_name' => 'Swift',
+            'suffix' => null,
+        ]);
+
+        //Faculty with designation
+        User::create([
+            'email' => 'loey@mailinator.com',
+            'password'=> Hash::make('chairpersonaccount#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Loey',
+            'middle_name' => null,
+            'last_name' => 'Well',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'miro@mailinator.com',
+            'password'=> Hash::make('chairpersonaccount#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Miro',
+            'middle_name' => null,
+            'last_name' => 'Sales',
+            'suffix' => null,
+        ]);
+
+        //Admin Employee
+        User::create([
+            'email' => 'harry@mailinator.com',
+            'password'=> Hash::make('adminemployee#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Harry',
+            'middle_name' => null,
+            'last_name' => 'Styles',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'mira@mailinator.com',
+            'password'=> Hash::make('adminemployee#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Mira',
+            'middle_name' => null,
+            'last_name' => 'Sola',
+            'suffix' => null,
+        ]);
+
+        //Admin with Teaching Load
+        User::create([
+            'email' => 'gola@mailinator.com',
+            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Gola',
+            'middle_name' => null,
+            'last_name' => 'Bamonos',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'sorita@mailinator.com',
+            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Sorita',
+            'middle_name' => null,
+            'last_name' => 'Sen',
+            'suffix' => null,
+        ]);
+
+        //Chairperson
+        User::create([
+            'email' => 'lucas@mailinator.com',
+            'password'=> Hash::make('chairperson#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Lucas',
+            'middle_name' => null,
+            'last_name' => 'Ynes',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'miku@mailinator.com',
+            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Miku',
+            'middle_name' => null,
+            'last_name' => 'Reyes',
+            'suffix' => null,
+        ]);
+
+        //Director/Dean
+        User::create([
+            'email' => 'direk@mailinator.com',
+            'password'=> Hash::make('directordean#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Direk',
+            'middle_name' => null,
+            'last_name' => 'Juano',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'teresita@mailinator.com',
+            'password'=> Hash::make('directordean#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Teresita',
+            'middle_name' => null,
+            'last_name' => 'Malo',
+            'suffix' => null,
+        ]);
+
+        //VP/Sector head
+        User::create([
+            'email' => 'yulo@mailinator.com',
+            'password'=> Hash::make('sectorhead#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Yulo',
+            'middle_name' => null,
+            'last_name' => 'Maki',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'ramen@mailinator.com',
+            'password'=> Hash::make('sectorhead#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Ramen',
+            'middle_name' => null,
+            'last_name' => 'Noodles',
+            'suffix' => null,
+        ]);
+
+        //IPQMSO
+        User::create([
+            'email' => 'goya@mailinator.com',
+            'password'=> Hash::make('ipqmso#2022-letsgo'),
+            'date_of_birth' => 2000-04-24,
+            'first_name' => 'Goya',
+            'middle_name' => null,
+            'last_name' => 'Chocolate',
+            'suffix' => null,
+        ]);
+
+        User::create([
+            'email' => 'lego@mailinator.com',
+            'password'=> Hash::make('ipqmso#2022-letsgo'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Lego',
+            'middle_name' => null,
+            'last_name' => 'Blocks',
             'suffix' => null,
         ]);
     }
