@@ -115,4 +115,8 @@ class DepartmentController extends Controller
     public function options($id){
         return Department::where('college_id', $id)->get();  
     }
+
+    public function getDepartmentName($id){
+        return Department::where('id', $id)->pluck('name')->first();
+    }
 }

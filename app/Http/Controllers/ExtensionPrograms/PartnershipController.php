@@ -92,11 +92,8 @@ class PartnershipController extends Controller
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
     
         $values = $partnership->toArray();
-
-        $colleges = College::all();
-        $departments = Department::all();
         
-        return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'departments'));
+        return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values'));
     }
 
     /**
