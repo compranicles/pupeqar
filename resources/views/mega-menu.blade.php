@@ -45,6 +45,7 @@
             <li><a href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
             <li><a href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
             <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the College and Department</a></li>
+            <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities</a></li>
         </ul>
         <ul>
             <h6 class="menu-category">Others</h6>

@@ -37,6 +37,9 @@
                       @case("department")
                           @include('maintenances.showtemplates.department', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                           @break
+                      @case("yes-no")
+                          @include('maintenances.showtemplates.text', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                          @break
                       @default
                           
                   @endswitch
