@@ -12929,19 +12929,19 @@ body {
 .menu-sub {
   position: absolute;
   background: white;
-  width: 90%;
   display: none;
   padding: 2em;
   left: 0;
-  margin-left: 4.75em;
+  margin-left: auto;
   margin-top: 4px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
+  min-width: 84em;
 }
+
 
 nav li:hover .menu-sub {
   display: block;
-  
 }
 
 .menu-sub li {
@@ -12981,7 +12981,6 @@ nav li:hover .menu-sub {
 .menu-col-1,
 .menu-col-2,
 .menu-col-3 {
-  float: left;
   margin: 20px;
   width: auto;
 }
