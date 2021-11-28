@@ -34,6 +34,7 @@ class FieldSeeder extends Seeder
             SyllabusFormSeeder::class,
             StudentAwardFormSeeder::class,
             StudentTrainingFormSeeder::class,
+            ViableProjectFormSeeder::class,
         ]);
     }
 }

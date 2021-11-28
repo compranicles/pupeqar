@@ -155,6 +155,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/student-training/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class, 'removeDoc'])->name('student-training.removedoc');
     Route::resource('student-training', \App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class);
 
+    //Viable Demonstration Projects
+    Route::get('/viable-project/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ViableProjectController::class, 'removeDoc'])->name('viable-project.removedoc');
+    Route::resource('viable-project', \App\Http\Controllers\AcademicDevelopment\ViableProjectController::class);
+
+    //Awards and Recognition Received by the College and Department
+    Route::get('/college-department-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class, 'removeDoc'])->name('college-department-award.removedoc');
+    Route::resource('college-department-award', \App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class);
+
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
     Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
