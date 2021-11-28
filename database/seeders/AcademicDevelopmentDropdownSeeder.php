@@ -181,7 +181,7 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-         //Collge / Department award / recognition
+        //Collge / Department award / recognition
          $dropdownId  = Dropdown::insertGetId([
             'name' => 'Award Level'
         ]);
@@ -203,6 +203,55 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
             'order' => 3,
             'is_active' => 1,
         ]);
-        
+
+        //Technical Extension Programs/ Projects/ Activities
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Classification of Adoptor'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'LGU',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'SMEs',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Industry',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'NGOs',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'POs',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Extension Borrowed or Not'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'University Projects',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Other University Projects',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
     }
 }
