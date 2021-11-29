@@ -91,11 +91,8 @@ class MobilityController extends Controller
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
     
         $values = $mobility->toArray();
-
-        $colleges = College::all();
-        $departments = Department::all();
         
-        return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'departments'));
+        return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values'));
     }
 
     /**
@@ -169,14 +166,13 @@ class MobilityController extends Controller
      */
     public function destroy(Mobility $mobility)
     {
-        $mobility->delete();
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
+        $mobility->delete();
         return redirect()->route('mobility.index')->with('mobility_success', 'Your accomplishment in Inter-Country Mobility has been deleted.');
     }
 
     public function removeDoc($filename){
         MobilityDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
         return true;
     }
 }

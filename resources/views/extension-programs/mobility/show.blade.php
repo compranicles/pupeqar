@@ -11,37 +11,7 @@
                 <p>
                     <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
                 </p>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Colleges/Campus/Branch/Office to commit this accomplishment</label><span style="color: red;"> *</span>
-
-                                    <select name="college_id" id="college" class="form-control custom-select form-validation"  required>
-                                        <option value="" selected disabled>Choose...</option>
-                                        @foreach ($colleges as $college)
-                                        <option value="{{ $college->id }}" {{ ($college->id == $values['college_id']) ? 'selected': '' }}>{{ $college->name }}</option>
-                                        @endforeach
-                                       
-                                    </select>
-                                    
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Department to commit this accomplishment</label><span style="color: red;"> *</span>
-
-                                <select name="department_id" id="department" class="form-control custom-select form-validation" required>
-                                    <option value="" selected disabled>Choose...</option>
-                                    @foreach ($departments as $department)
-                                        <option value="{{ $department->id }}" {{ ($department->id == $values['department_id']) ? 'selected': '' }}>{{ $department->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        @include('extension-programs.form', ['formFields' => $mobilityFields, 'value' => $values])
-                    </div>
-                </div>
+                @include('show', ['formFields' => $mobilityFields, 'value' => $values])
             </div>
         </div>
         <div class="row mt-3">

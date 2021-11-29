@@ -45,13 +45,16 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/maintenances', [\App\Http\Controllers\Maintenances\MaintenanceController::class, 'index'])->name('maintenances.index');
 
     // Colleges and Departments
+    Route::get('/maintenances/colleges/name/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeName'])->name('college.name');
     Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
     //Route::get('/maintenances/colleges/{college}/delete', [\App\Http\Controllers\Maintenances\CollegeController::class, 'delete']);
     Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);
+    Route::get('/maintenances/departments/name/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'getDepartmentName'])->name('department.name');
     Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
     //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
 
     //Currency
+    Route::get('/maintenances/currencies/name/{id}', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'getCurrencyName'])->name('currency.name');
     Route::get('/maintenances/currencies/list', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'list'])->name('currencies.list');
     Route::resource('/maintenances/currencies', \App\Http\Controllers\Maintenances\CurrencyController::class);
 
@@ -61,6 +64,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/dropdowns/options/arrange', [\App\Http\Controllers\Maintenances\DropdownController::class, 'arrangeOptions']);
     Route::get('/dropdowns/options/activate/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'activate']);
     Route::get('/dropdowns/options/inactivate/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'inactivate']);
+    Route::get('/dropdowns/option/name/{id}', [\App\Http\Controllers\Maintenances\DropdownController::class, 'getOptionName'])->name('dropdowns.option.name');
     Route::resource('dropdowns', \App\Http\Controllers\Maintenances\DropdownController::class);
 
     //reportsManagement
@@ -136,8 +140,32 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('partnership', \App\Http\Controllers\ExtensionPrograms\PartnershipController::class);
 
     //inter-country mobility
-    Route::get('mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');;
+    Route::get('/mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');
     Route::resource('mobility', \App\Http\Controllers\ExtensionPrograms\MobilityController::class);
+
+    //Outreach Programs
+    Route::get('/outreach-program/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class, 'removeDoc'])->name('outreach-program.removedoc');
+    Route::resource('outreach-program', \App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class);
+
+    //StudentAwards and Recognition
+    Route::get('/student-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentAwardController::class, 'removeDoc'])->name('student-award.removedoc');
+    Route::resource('student-award', \App\Http\Controllers\AcademicDevelopment\StudentAwardController::class);
+
+    //Student Seminar and Trainings
+    Route::get('/student-training/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class, 'removeDoc'])->name('student-training.removedoc');
+    Route::resource('student-training', \App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class);
+
+    //Viable Demonstration Projects
+    Route::get('/viable-project/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ViableProjectController::class, 'removeDoc'])->name('viable-project.removedoc');
+    Route::resource('viable-project', \App\Http\Controllers\AcademicDevelopment\ViableProjectController::class);
+
+    //Awards and Recognition Received by the College and Department
+    Route::get('/college-department-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class, 'removeDoc'])->name('college-department-award.removedoc');
+    Route::resource('college-department-award', \App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class);
+
+    //Technical Extension Programs/ Projects/ Activities
+    Route::get('/technical-extension/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class, 'removeDoc'])->name('technical-extension.removedoc');
+    Route::resource('technical-extension', \App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class);
 
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);

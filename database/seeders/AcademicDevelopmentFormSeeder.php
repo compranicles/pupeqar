@@ -26,5 +26,30 @@ class AcademicDevelopmentFormSeeder extends Seeder
             'table_name' => 'syllabi',
             'is_active' => 1
         ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Student Awards and Recognition',
+            'table_name' => 'student_awards',
+            'is_active' => 1
+        ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Student Awards and Recognition',
+            'table_name' => 'student_trainings',
+            'is_active' => 1
+        ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Viable Demonstration Projects',
+            'table_name' => 'viable_projects',
+            'is_active' => 1
+        ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Awards and Recognition Received by the College and Department',
+            'table_name' => 'college_department_awards',
+            'is_active' => 1
+        ]);
+        AcademicDevelopmentForm::insert([
+            'label' => 'Technical Extension Programs/ Projects/ Activities',
+            'table_name' => 'technical_extensions',
+            'is_active' => 1
+        ]);
     }
 }

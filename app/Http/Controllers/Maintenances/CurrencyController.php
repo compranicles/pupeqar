@@ -128,4 +128,8 @@ class CurrencyController extends Controller
         $list = Currency::orderBy('code')->get();
         return $list;
     }
+
+    public function getCurrencyName($id){
+        return Currency::where('id', $id)->pluck('code')->first();
+    }
 }

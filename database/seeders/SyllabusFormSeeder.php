@@ -34,7 +34,7 @@ class SyllabusFormSeeder extends Seeder
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 5,
-            'dropdown_id' => 38, 
+            'dropdown_id' => 39, 
             'required' => 1,
             'visibility' => 1,
             'order' => 1,

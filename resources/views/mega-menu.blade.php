@@ -31,14 +31,21 @@
             <li><a href="{{ route('faculty.extension-service.index') }}">Extension Services</a></li>
             <li><a href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>
             <li><a href="{{ route('mobility.index') }}">Inter-country Mobility</a></li>
+            {{-- For College and Departments --}}
+            <li><a href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
         </ul>
     </div>
     <div class="menu-col-3">
         <ul>
             <h6 class="menu-category">Academic Program Development</h6>
             <li><a href="{{ route('faculty.syllabus.index') }}">Course Syllabus</a></li>
-            <li><a href="{{ route('faculty.rtmmi.index') }}">Reference/Textbook/Module/<br>Monographs/
-            Instructional Materials</a></li>
+            <li><a href="{{ route('faculty.rtmmi.index') }}">Reference/Textbook/Module/<br> Monographs/Instructional Materials</a></li>
+            {{-- For College and Departments --}}
+            <li><a href="{{ route('student-award.index') }}">Student Awards and Recognition</a></li>
+            <li><a href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
+            <li><a href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
+            <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the College and Department</a></li>
+            <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities</a></li>
         </ul>
         <ul>
             <h6 class="menu-category">Others</h6>

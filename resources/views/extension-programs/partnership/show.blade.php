@@ -11,11 +11,7 @@
                 <p>
                     <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership/ Linkages/ Network</a>
                 </p>
-                <div class="card">
-                    <div class="card-body">
-                        @include('form', ['formFields' => $partnershipFields, 'value' => $values, 'colleges' => $colleges])
-                    </div>
-                </div>
+                @include('show', ['formFields' => $partnershipFields, 'value' => $values])
             </div>
         </div>
         <div class="row mt-3">
