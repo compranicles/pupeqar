@@ -49,6 +49,18 @@ class ConsultantController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'classification' => 'required',
+            'category' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConsultant = ExpertServiceConsultant::create($input);
@@ -125,6 +137,18 @@ class ConsultantController extends Controller
      */
     public function update(Request $request, ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $request->validate([
+            'classification' => 'required',
+            'category' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $expert_service_as_consultant->update($input);
@@ -170,7 +194,7 @@ class ConsultantController extends Controller
 
     public function removeDoc($filename){
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

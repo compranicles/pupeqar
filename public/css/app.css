@@ -2988,7 +2988,7 @@ input[type=button].btn-block {
   padding: 0.5rem 0;
   margin: 0.125rem 0 0;
   font-size: 0.9rem;
-  color: #212529;
+  color: #373838;
   text-align: left;
   list-style: none;
   background-color: #fff;
@@ -4001,13 +4001,13 @@ input[type=button].btn-block {
   padding-left: 0;
 }
 
-.navbar-nav .dropdown:hover .dropdown-menu {
-  display: block;
-}
-
 .navbar-nav .dropdown-menu {
   position: static;
   float: none;
+}
+
+.dropdown .nav-link:active {
+  color: #495057 !important;
 }
 
 .navbar-text {
@@ -12929,20 +12929,20 @@ body {
 .menu-sub {
   position: absolute;
   background: white;
+  width: 90%;
   display: none;
   padding: 2em;
   left: 0;
-  margin-left: auto;
+  margin-left: 4.75em;
   margin-top: 4px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
-  min-width: 84em;
 }
 
-
-nav li:hover .menu-sub {
+/* nav li:hover .menu-sub {
   display: block;
-}
+  float: none;
+} */
 
 .menu-sub li {
   display: block;
@@ -12981,17 +12981,19 @@ nav li:hover .menu-sub {
 .menu-col-1,
 .menu-col-2,
 .menu-col-3 {
-  margin: 20px;
+  float: left;
+  margin: 10px;
   width: auto;
+  justify-content: center;
 }
 
 .menu-col-2 {
-  padding-left: 8%;
+  padding-left: 10%;
 }
 
 .menu-col-3 {
-  margin-right: 20px;
-  padding-left: 5%;
+  margin-right: 10px;
+  padding-left: 8%;
 }
 
 .nav-link #accomplishment {
@@ -13044,3 +13046,32 @@ table tr .padding_left_show {
   border-top: 4px solid#ffa000;
   border-radius: 6px;
 }
+
+/************************Tags input******************************/
+.bootstrap-tagsinput{
+  width: 100%;
+}
+.label-info{
+  background-color: #17a2b8;
+
+}
+.label {
+  display: inline-block;
+  padding: .25em .4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25rem;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,
+  border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* #input_tag {
+  position: relative;
+    left: 0;
+    transition: left 0.3s;
+    display: none;
+} */

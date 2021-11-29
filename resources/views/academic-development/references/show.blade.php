@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('View '.$category->name) }}
+            {{ __('View '.$category[0]->name) }}
         </h2>
     </x-slot>
     <div class="container">
@@ -12,10 +12,10 @@
                   <a class="back_link" href="{{ route('faculty.rtmmi.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Reference, Textbook, Module, Monographs, and Instructional Materials</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.rtmmi.edit', $rtmmi->id) }}" class="action_buttons_show mr-3">Edit</a>
+                  <a href="{{ route('faculty.rtmmi.edit', $rtmmi->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
-                  <button type="button" value="{{ $rtmmi->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                  <button type="button" value="{{ $rtmmi->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
                 <div class="card">
@@ -34,11 +34,11 @@
                               </tr>
                               <tr>
                                 <th>Category</th>
-                                <td>{{ $category->name }}</td>
+                                <td>{{ $category[0]->name }}</td>
                               </tr>
                               <tr>
                                 <th>Level</th>
-                                <td>{{ $level->name }}</td>
+                                <td>{{ $level[0]->name }}</td>
                               </tr>
                               <tr>
                                 <th>Date Started</th>

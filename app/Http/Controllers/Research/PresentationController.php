@@ -101,6 +101,16 @@ class PresentationController extends Controller
     {
         $this->authorize('create', ResearchPresentation::class);
 
+        $request->validate([
+            'status' => 'required',
+            'conference_title' => 'required',
+            // 'organizer' => '',
+            // 'venue' => '',
+            'date_presented' => 'required|date',
+            'level' => 'required', 
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
@@ -201,6 +211,16 @@ class PresentationController extends Controller
     {
         $this->authorize('update', ResearchPresentation::class);
 
+        $request->validate([
+            'status' => 'required',
+            'conference_title' => 'required',
+            // 'organizer' => '',
+            // 'venue' => '',
+            'date_presented' => 'required|date',
+            'level' => 'required', 
+            'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $presentation->update($input);

@@ -50,6 +50,15 @@ class SyllabusController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'course_title' => 'required',
+            'assigned_task' => 'required',
+            'date_finished' => 'required|date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $syllabus = Syllabus::create($input);
@@ -131,6 +140,15 @@ class SyllabusController extends Controller
      */
     public function update(Request $request, Syllabus $syllabu)
     {
+        $request->validate([
+            'course_title' => 'required',
+            'assigned_task' => 'required',
+            'date_finished' => 'required|date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $syllabu->update($input);
@@ -179,7 +197,7 @@ class SyllabusController extends Controller
 
     public function removeDoc($filename){
         SyllabusDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

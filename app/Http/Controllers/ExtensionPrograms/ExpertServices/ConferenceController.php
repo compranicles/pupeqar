@@ -49,6 +49,17 @@ class ConferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'nature' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConference = ExpertServiceConference::create($input);
@@ -121,6 +132,17 @@ class ConferenceController extends Controller
      */
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
+        $request->validate([
+            'nature' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $expert_service_in_conference->update($input);
@@ -166,7 +188,7 @@ class ConferenceController extends Controller
 
     public function removeDoc($filename){
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

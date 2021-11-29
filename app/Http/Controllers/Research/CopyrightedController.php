@@ -69,6 +69,14 @@ class CopyrightedController extends Controller
     {
         $this->authorize('create', ResearchCopyright::class);
 
+        $request->validate([
+            'copyright_agency' => 'required',
+            'copyright_number' => 'required',
+            'copyright_year' => 'required',
+            'copyright_level' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         ResearchCopyright::create($input);
@@ -141,6 +149,14 @@ class CopyrightedController extends Controller
     {
         $this->authorize('update', ResearchCopyright::class);
 
+        $request->validate([
+            'copyright_agency' => 'required',
+            'copyright_number' => 'required',
+            'copyright_year' => 'required',
+            'copyright_level' => 'required',
+            'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyrighted->update($input);

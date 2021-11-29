@@ -64,6 +64,27 @@ class ResearchController extends Controller
     {
         $this->authorize('create', Research::class);
 
+        $request->validate([
+            'classification' => 'required',
+            'status' => 'required',
+            'category' => 'required',
+            'agenda' => 'required',
+            'title' => 'required',
+            'researcher' => 'required',
+            'keywords' => 'required',
+            'nature_of_involvement' => 'required',
+            'research_type' => 'required',
+            'funding_type' => 'required',
+            'funding_amount' => 'numeric',
+            'funding_agency' => 'required_if:funding_type,23',
+            'start_date' => 'required_unless:status,32|date',
+            'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
+            // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $departmentIni = '';
         $classIni = '';
         $catIni = '';
@@ -228,6 +249,27 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
+        $request->validate([
+            'classification' => 'required',
+            'status' => 'required',
+            'category' => 'required',
+            'agenda' => 'required',
+            'title' => 'required',
+            'researcher' => 'required',
+            'keywords' => 'required',
+            'nature_of_involvement' => 'required',
+            'research_type' => 'required',
+            'funding_type' => 'required',
+            'funding_amount' => 'numeric',
+            'funding_agency' => 'required_if:funding_type,23',
+            'start_date' => 'required_unless:status,32|date',
+            'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
+            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'funding_type']);
         $funding_amount = $request->funding_amount;    
         $funding_amount = str_replace( ',' , '', $funding_amount);

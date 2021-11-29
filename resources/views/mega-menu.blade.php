@@ -1,5 +1,4 @@
 <div class="menu-sub animate slideIn">
-    <div class="d-flex">
     <div class="menu-col-1">
         <ul>
         <h6 class="menu-category">Faculty Accomplishment</h6>
@@ -53,6 +52,5 @@
             <li><a href="">Attendance in University Functions</a></li>
             <li><a href="">Special Tasks</a></li>
         </ul>
-    </div>
     </div>
 </div>

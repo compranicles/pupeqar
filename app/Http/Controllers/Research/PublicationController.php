@@ -95,6 +95,21 @@ class PublicationController extends Controller
     {
         $this->authorize('create', ResearchPublication::class);
 
+        $request->validate([
+            'status' => 'required',
+            'publisher' => 'required',
+            'journal_name' => 'required',
+            // 'editor' => '',
+            'level' => 'required',
+            'publish_date' => 'required|date', 
+            // 'issn' => '',
+            'page' => 'required',
+            'volume' => 'numeric',
+            'issue' => 'numeric',
+            // 'indexing_platform' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -195,6 +210,21 @@ class PublicationController extends Controller
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
+
+        $request->validate([
+            'status' => 'required',
+            'publisher' => 'required',
+            'journal_name' => 'required',
+            // 'editor' => '',
+            'level' => 'required',
+            'publish_date' => 'required|date', 
+            // 'issn' => '',
+            'page' => 'required',
+            'volume' => 'numeric',
+            'issue' => 'numeric',
+            // 'indexing_platform' => '',
+            'description' => 'required',
+        ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
 

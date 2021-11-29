@@ -1,14 +1,22 @@
-<div id="{{ $fieldInfo->name }}" class="{{ $fieldInfo->size }}">
+<div id="{{ $fieldInfo->name }}" class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <input type="file" 
-            class="filepond mb-n1"
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
             multiple
             data-max-file-size="5MB"
-            data-max-files="10">
+            data-max-files="10"
+            {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+            >
+
+            @error($fieldInfo->name)
+                <span class='invalid-feedback' role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 10.</small></p>
         <p class="mt-n4"><small>Accepts PDF, JPEG, and PNG file formats.</small></p>
 

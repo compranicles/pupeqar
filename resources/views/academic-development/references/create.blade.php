@@ -52,5 +52,6 @@
                 $('#date_completed').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
+
     @endpush
 </x-app-layout>

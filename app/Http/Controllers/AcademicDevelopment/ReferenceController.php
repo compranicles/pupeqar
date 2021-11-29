@@ -50,6 +50,24 @@ class ReferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'category' => 'required',
+            'level' => 'required',
+            'date_started' => 'required|date',
+            'date_completed' => 'required|date|after_or_equal:date_started',
+            'title' => 'required',
+            'authors_compilers' => 'required',
+            // 'editor_name' => ''
+            // 'editor_profession' => ''
+            'volume_no' => 'integer',
+            'issue_no' => 'required|integer',
+            'date_published' => 'date|after:date_completed',
+            // 'copyright_regi_no' => ''
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $rtmmi = Reference::create($input);
@@ -142,6 +160,24 @@ class ReferenceController extends Controller
      */
     public function update(Request $request, Reference $rtmmi)
     {
+        $request->validate([
+            'category' => 'required',
+            'level' => 'required',
+            'date_started' => 'required|date',
+            'date_completed' => 'required|date|after_or_equal:date_started',
+            'title' => 'required',
+            'authors_compilers' => 'required',
+            // 'editor_name' => ''
+            // 'editor_profession' => ''
+            'volume_no' => 'integer',
+            'issue_no' => 'required|integer',
+            'date_published' => 'date|after:date_completed',
+            // 'copyright_regi_no' => ''
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $rtmmi->update($input);
@@ -200,7 +236,7 @@ class ReferenceController extends Controller
 
     public function removeDoc($filename){
         ReferenceDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

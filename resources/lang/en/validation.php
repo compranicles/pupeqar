@@ -153,4 +153,23 @@ return [
 
     'attributes' => [],
 
+    'values' => [
+        'funding_type' => [
+            123 => 'university funded',
+            49 => 'university funded',
+            23 => 'university funded',
+        ],
+        'status' => [
+            107 => 'deferred',
+            55 => 'deferred',
+            54 => 'completed',
+            32 => 'deferred',
+            28 => 'completed', 
+        ],
+        'classification' => [
+            46 => 'invention',
+            
+        ]
+    ]
+
 ];
