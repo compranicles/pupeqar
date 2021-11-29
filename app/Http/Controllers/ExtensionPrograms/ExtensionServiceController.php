@@ -61,6 +61,41 @@ class ExtensionServiceController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'level' => 'required',
+            'status' => 'required',
+            'nature' => 'required',
+            'classification' => 'required',
+            'type' => 'required',
+            'title_of_extension_program' => '',
+            'title_of_extension_project' => '',
+            'title_of_extension_activity' => '',
+            'funding_agency' => 'required_if:funding_type, 123',
+            'amount_of_funding' => 'numeric',
+            'type_of_funding' => 'required',
+            'status' => 'required',
+            'from' => 'required_unless:status, 107|date',
+            'to' => 'date|after_or_equal:from',
+            'no_of_trainees_or_beneficiaries' => 'numeric',
+            'total_no_of_hours' => 'numeric',
+            'classification_of_trainees_or_beneficiaries' => 'required',
+            // 'place_or_venue' => '',
+            // 'keywords' => '',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+            'quality_poor' => 'numeric',
+            'quality_fair' => 'numeric',
+            'quality_satisfactory' => 'numeric',
+            'quality_very_satisfactory' => 'numeric',
+            'quality_outstanding' => 'numeric',
+            'timeliness_poor' => 'numeric',
+            'timeliness_fair' => 'numeric',
+            'timeliness_satisfactory' => 'numeric',
+            'timeliness_very_satisfactory' => 'numeric',
+            'timeliness_outstanding' => 'numeric',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $eService = ExtensionService::create($input);
@@ -147,6 +182,41 @@ class ExtensionServiceController extends Controller
      */
     public function update(Request $request, ExtensionService $extension_service)
     {
+        $request->validate([
+            'level' => 'required',
+            'status' => 'required',
+            'nature' => 'required',
+            'classification' => 'required',
+            'type' => 'required',
+            'title_of_extension_program' => '',
+            'title_of_extension_project' => '',
+            'title_of_extension_activity' => '',
+            'funding_agency' => 'required_if:funding_type, 123',
+            'amount_of_funding' => 'numeric',
+            'type_of_funding' => 'required',
+            'status' => 'required',
+            'from' => 'required_unless:status, 107|date',
+            'to' => 'date|after_or_equal:from',
+            'no_of_trainees_or_beneficiaries' => 'numeric',
+            'total_no_of_hours' => 'numeric',
+            'classification_of_trainees_or_beneficiaries' => 'required',
+            // 'place_or_venue' => '',
+            // 'keywords' => '',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+            'quality_poor' => 'numeric',
+            'quality_fair' => 'numeric',
+            'quality_satisfactory' => 'numeric',
+            'quality_very_satisfactory' => 'numeric',
+            'quality_outstanding' => 'numeric',
+            'timeliness_poor' => 'numeric',
+            'timeliness_fair' => 'numeric',
+            'timeliness_satisfactory' => 'numeric',
+            'timeliness_very_satisfactory' => 'numeric',
+            'timeliness_outstanding' => 'numeric',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $extension_service->update($input);
@@ -188,5 +258,11 @@ class ExtensionServiceController extends Controller
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
         return redirect()->route('faculty.extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been deleted.');
+    }
+
+    public function removeDoc($filename){
+        ExtensionServiceDocument::where('filename', $filename)->delete();
+        // Storage::delete('documents/'.$filename);
+        return true;
     }
 }

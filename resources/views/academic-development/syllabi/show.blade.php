@@ -12,10 +12,10 @@
                   <a class="back_link" href="{{ route('faculty.syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.syllabus.edit', $syllabu->id) }}" class="action_buttons_show mr-3">Edit</a>
+                  <a href="{{ route('faculty.syllabus.edit', $syllabu->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
-                  <button type="button" value="{{ $syllabu->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                  <button type="button" value="{{ $syllabu->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
                 <div class="card">

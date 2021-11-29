@@ -61,6 +61,13 @@ class UtilizationController extends Controller
     {
         $this->authorize('create', ResearchUtilization::class);
 
+        $request->validate([
+            'organization' => 'required',
+            'utilization_description' => 'required',
+            'level' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $id = ResearchUtilization::insertGetId($input);
@@ -154,6 +161,13 @@ class UtilizationController extends Controller
     {
         $this->authorize('update', ResearchUtilization::class);
 
+        $request->validate([
+            'organization' => 'required',
+            'utilization_description' => 'required',
+            'level' => 'required',
+            'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
 
         $utilization->update($input);

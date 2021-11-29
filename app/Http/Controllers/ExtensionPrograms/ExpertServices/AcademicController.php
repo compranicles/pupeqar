@@ -52,6 +52,20 @@ class AcademicController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'classification' => 'required',
+            'nature' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            // 'publication_or_audio_visual' => '',
+            // 'copyright_no' => '',
+            // 'indexing' => '',
+            'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $esAcademic = ExpertServiceAcademic::create($input);
@@ -142,6 +156,20 @@ class AcademicController extends Controller
      */
     public function update(Request $request, ExpertServiceAcademic $expert_service_in_academic)
     {
+        $request->validate([
+            'classification' => 'required',
+            'nature' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            // 'publication_or_audio_visual' => '',
+            // 'copyright_no' => '',
+            // 'indexing' => '',
+            'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $expert_service_in_academic->update($input);
@@ -187,7 +215,7 @@ class AcademicController extends Controller
 
     public function removeDoc($filename){
         ExpertServiceAcademicDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

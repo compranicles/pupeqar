@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('faculty.expert-service-as-consultant.store' ) }}" method="post">
                             @csrf
-                            @include('extension-programs.form', ['formFields' => $expertServiceConsultantFields])
+                            @include('form', ['formFields' => $expertServiceConsultantFields, 'colleges' => $colleges])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

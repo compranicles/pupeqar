@@ -12,10 +12,10 @@
                   <a class="back_link" href="{{ route('faculty.invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation and Creative Works</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.invention-innovation-creative.edit', $invention_innovation_creative->id) }}" class="action_buttons_show mr-3">Edit</a>
+                  <a href="{{ route('faculty.invention-innovation-creative.edit', $invention_innovation_creative->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
-                  <button type="button" value="{{ $invention_innovation_creative->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                  <button type="button" value="{{ $invention_innovation_creative->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
                 <div class="card">
@@ -23,7 +23,7 @@
                         <div class="table-responsive">
                           <table class="table table-borderless show_table">
                               <tr>
-                                  <th>Classification</th><td>{{ $classification->name }}</td>
+                                  <th>Classification</th><td>{{ $classification[0]->name }}</td>
                               </tr>
                               <tr>
                                 <th>Nature (IT Products, Equipments, Machinery, etc.)</th>
@@ -39,7 +39,7 @@
                               </tr>
                               <tr>
                                 <th>Type of Funding</th>
-                                <td>{{ $funding_type->name }}</td>
+                                <td>{{ $funding_type[0]->name }}</td>
 
                               </tr>
                               <tr>
@@ -54,7 +54,7 @@
                               </tr>
                               <tr>
                                 <th>Status</th>
-                                <td>{{ $status->name }}</td>
+                                <td>{{ $status[0]->name }}</td>
 
                               </tr>
                               <tr>

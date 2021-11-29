@@ -114,7 +114,7 @@ class ResearchPublicationFormSeeder extends Seeder
         ]);
         ResearchField::create([
             'research_form_id' => 3,
-            'label' => 'ISSN/ ISBN',
+            'label' => 'ISSN/ISBN',
             'name' => 'issn',
             'placeholder' => null,
             'size' => 'col-md-2',
