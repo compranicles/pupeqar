@@ -104,6 +104,21 @@ class PublicationController extends Controller
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->validate([
+            'status' => 'required',
+            'publisher' => 'required',
+            'journal_name' => 'required',
+            // 'editor' => '',
+            'level' => 'required',
+            'publish_date' => 'required|date', 
+            // 'issn' => '',
+            'page' => 'required',
+            'volume' => 'numeric',
+            'issue' => 'numeric',
+            // 'indexing_platform' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -212,6 +227,21 @@ class PublicationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->validate([
+            'status' => 'required',
+            'publisher' => 'required',
+            'journal_name' => 'required',
+            // 'editor' => '',
+            'level' => 'required',
+            'publish_date' => 'required|date', 
+            // 'issn' => '',
+            'page' => 'required',
+            'volume' => 'numeric',
+            'issue' => 'numeric',
+            // 'indexing_platform' => '',
+            'description' => 'required',
+        ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
 

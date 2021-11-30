@@ -3,7 +3,7 @@
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="form-control" 
+        <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -17,7 +17,13 @@
                         @break
                     @default
                         
-                @endswitch>{{ $value }}</textarea>
+                @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
+
+                @error($fieldInfo->name)
+                    <span class='invalid-feedback' role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
 
     </div>
 </div>

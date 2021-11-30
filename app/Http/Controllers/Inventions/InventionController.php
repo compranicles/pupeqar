@@ -57,8 +57,29 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->validate([
+            'classification' => 'required',
+            'nature' => 'required',
+            'title' => 'required',
+            // 'collaborator' => '',
+            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_amount' => 'numeric',
+            'funding_type' => 'required',
+            'status' => 'required',
+            'start_date' => 'required_unless:status, 55|date',
+            'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
+            'utilization' => 'required_if:classification, 46',
+            // 'copyright_number' => '',
+            'issue_date' => 'date|after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
@@ -155,8 +176,29 @@ class InventionController extends Controller
      */
     public function update(Request $request, Invention $invention_innovation_creative)
     {
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->validate([
+            'classification' => 'required',
+            'nature' => 'required',
+            'title' => 'required',
+            // 'collaborator' => '',
+            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_amount' => 'numeric',
+            'funding_type' => 'required',
+            'status' => 'required',
+            'start_date' => 'required_unless:status, 55|date',
+            'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
+            'utilization' => 'required_if:classification, 46',
+            // 'copyright_number' => '',
+            'issue_date' => 'date|after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            'description' => 'required',
+        ]);
+
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
@@ -210,7 +252,7 @@ class InventionController extends Controller
             return view('inactive');
             
         InventionDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

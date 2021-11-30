@@ -52,8 +52,22 @@ class ConferenceController extends Controller
      */
     public function store(Request $request)
     {
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->validate([
+            'nature' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConference = ExpertServiceConference::create($input);
@@ -130,8 +144,21 @@ class ConferenceController extends Controller
      */
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->validate([
+            'nature' => 'required',
+            'level' => 'required',
+            'from' => 'required|date',
+            'to' => 'required|date|after_or_equal:from',
+            'title' => 'required',
+            // 'venue' => '',
+            'partner_agency' => '',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $expert_service_in_conference->update($input);
@@ -181,7 +208,7 @@ class ConferenceController extends Controller
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
-        Storage::delete('documents/'.$filename);
+        // Storage::delete('documents/'.$filename);
         return true;
     }
 }

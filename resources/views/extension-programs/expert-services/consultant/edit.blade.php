@@ -16,7 +16,7 @@
                         <form action="{{ route('faculty.expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('extension-programs.form', ['formFields' => $expertServiceConsultantFields, 'value' => $expert_service_as_consultant])
+                            @include('form', ['formFields' => $expertServiceConsultantFields, 'value' => $expert_service_as_consultant])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

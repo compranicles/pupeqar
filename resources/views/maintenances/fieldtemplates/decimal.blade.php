@@ -1,6 +1,6 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }}">
+<div class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         <div class="input-group mb-3">
@@ -9,7 +9,7 @@
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
-            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ number_format(($value == null) ? 0.00 : $value, 2, '.', ',') }}" class="form-control form-validation" 
+            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} step="0.01" placeholder="{{ $fieldInfo->placeholder }}"
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -24,6 +24,12 @@
                     @default
                         
                 @endswitch>
+
+                @error($fieldInfo->name)
+                    <span class='invalid-feedback' role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
         </div>
         
 

@@ -25,6 +25,7 @@
         @livewireStyles
 
         <!-- Scripts -->
+        
         <script src="https://kit.fontawesome.com/b22b0c1d67.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>

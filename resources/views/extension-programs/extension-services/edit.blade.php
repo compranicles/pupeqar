@@ -56,7 +56,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                            <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -86,7 +86,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('research.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -106,6 +106,27 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Delete doc Modal --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this document?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger mb-2 mr-2" id="deletedoc">Delete</button>
                 </div>
             </div>
         </div>

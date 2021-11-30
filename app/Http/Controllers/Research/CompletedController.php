@@ -99,6 +99,12 @@ class CompletedController extends Controller
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->validate([
+            'status' => 'required',
+            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
         $input = Arr::add($input, 'status', 28);
         $research->update($input);
@@ -191,6 +197,12 @@ class CompletedController extends Controller
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->validate([
+            'status' => 'required',
+            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
 
         $research->update($input);

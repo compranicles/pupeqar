@@ -12,10 +12,10 @@
                   <a class="back_link" href="{{ route('faculty.expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.expert-service-as-consultant.edit', $expert_service_as_consultant->id) }}" class="action_buttons_show mr-3">Edit</a>
+                  <a href="{{ route('faculty.expert-service-as-consultant.edit', $expert_service_as_consultant->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
-                  <button type="button" value="{{ $expert_service_as_consultant->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                  <button type="button" value="{{ $expert_service_as_consultant->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
             </div>

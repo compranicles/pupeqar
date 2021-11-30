@@ -47,8 +47,8 @@
                 </li>
                 @endcan
 
-                <li class="nav-item">
-                    <a href="" id="accomplishment" class="nav-link @if (request()->routeIs('research.*')) active @endif" >Accomplishments</a>
+                <li class="nav-item main-nav-item" id="accomplishmentlink">
+                    <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*')) active @endif" role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
                 
@@ -59,7 +59,7 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
+                    <a class="nav-link @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
                     </a>
@@ -125,4 +125,42 @@
             </ul>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            let dropdownBtn = document.querySelector('#accomplishmentlink');
+            let menuContent = document.querySelector('.menu-sub');
+            let menuLink = document.querySelectorAll('.menu-sub a');
+            dropdownBtn.addEventListener('click',()=>{
+                if (menuContent.style.display===""){
+                    menuContent.style.display="block";
+                    menuContent.style.cssFloat="none";
+                } else {
+                    menuContent.style.display="";
+                }
+            });
+            menuContent.addEventListener('click', ()=>{
+                if (menuContent.style.display===""){
+                    menuContent.style.display="block";
+                } else {
+                    menuContent.style.display="";
+                }
+            });
+
+            for(var i=0; i < menuLink.length; i++) {
+                menuLink[i].addEventListener('click', ()=>{
+                    menuContent.style.display="";
+                });
+            }
+
+            $(document).click((event) => {
+                if (!$(event.target).closest('#accomplishmentlink').length) {
+                    // the click occured outside
+                    if (!$(event.target).closest('.menu-sub').length) {
+                        menuContent.style.display="";
+                    }      
+                }  
+            });
+        </script>
+    @endpush
 </nav>

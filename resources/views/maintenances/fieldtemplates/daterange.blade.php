@@ -7,7 +7,7 @@
                 <label>{{ $fieldInfo->label }} - From</label><?php if ($fieldInfo->required == 1) { echo "<span style='color: red'> *</span>"; } ?>
         
                 <input type="date" name="{{ $fieldInfo->name }}[]" id="{{ $fieldInfo->name }}_from" value="{{ (isset($value[0]))? $value[0]: '' }}" 
-                        class="form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+                        class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                         @switch($fieldInfo->visibility)
                             @case(2)
                                 {{ 'readonly' }}
@@ -21,6 +21,12 @@
                             @default
                                 
                         @endswitch>
+
+                        @error($fieldInfo->name)
+                            <span class='invalid-feedback' role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
         
             </div>
         </div>

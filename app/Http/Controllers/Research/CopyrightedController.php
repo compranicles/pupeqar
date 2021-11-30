@@ -78,6 +78,14 @@ class CopyrightedController extends Controller
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->validate([
+            'copyright_agency' => 'required',
+            'copyright_number' => 'required',
+            'copyright_year' => 'required',
+            'copyright_level' => 'required',
+            'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         ResearchCopyright::create($input);
@@ -158,6 +166,14 @@ class CopyrightedController extends Controller
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->validate([
+            'copyright_agency' => 'required',
+            'copyright_number' => 'required',
+            'copyright_year' => 'required',
+            'copyright_level' => 'required',
+            'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyrighted->update($input);
