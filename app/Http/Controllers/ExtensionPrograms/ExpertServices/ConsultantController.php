@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ExpertServiceConsultant;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\ExpertServiceConsultantDocument;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ExpertServiceConsultant;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ExpertServiceConsultantDocument;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 class ConsultantController extends Controller
 {
@@ -20,7 +21,6 @@ class ConsultantController extends Controller
      */
     public function index()
     {
-        
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
@@ -36,6 +36,8 @@ class ConsultantController extends Controller
      */
     public function create()
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
         return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields'));
@@ -49,6 +51,8 @@ class ConsultantController extends Controller
      */
     public function store(Request $request)
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConsultant = ExpertServiceConsultant::create($input);
@@ -88,6 +92,8 @@ class ConsultantController extends Controller
      */
     public function show(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
         
         $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->classification.")");
@@ -108,6 +114,8 @@ class ConsultantController extends Controller
      */
     public function edit(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         // dd($expert_service_as_consultant);
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
@@ -125,6 +133,8 @@ class ConsultantController extends Controller
      */
     public function update(Request $request, ExpertServiceConsultant $expert_service_as_consultant)
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $expert_service_as_consultant->update($input);
@@ -163,12 +173,16 @@ class ConsultantController extends Controller
      */
     public function destroy(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
         return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
     }
 
     public function removeDoc($filename){
+        if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
         Storage::delete('documents/'.$filename);
         return true;

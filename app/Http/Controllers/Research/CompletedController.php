@@ -3,21 +3,22 @@
 namespace App\Http\Controllers\Research;
 
 use App\Models\Research;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchDocument;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchField;
-use App\Models\FormBuilder\DropdownOption;
-use Illuminate\Support\Arr;
+use App\Models\ResearchCitation;
 use App\Models\ResearchComplete;
-use App\Models\ResearchPresentation;
+use App\Models\ResearchDocument;
+use App\Models\ResearchCopyright;
+use Illuminate\Support\Facades\DB;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
-use App\Models\ResearchCopyright;
-use App\Models\ResearchCitation;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ResearchForm;
+use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\DropdownOption;
 
 class CompletedController extends Controller
 {
@@ -66,6 +67,10 @@ class CompletedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
 
@@ -89,6 +94,10 @@ class CompletedController extends Controller
     public function store(Request $request, Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
         $input = Arr::add($input, 'status', 28);
@@ -147,6 +156,10 @@ class CompletedController extends Controller
     public function edit(Research $research, ResearchComplete $completed)
     {   
         $this->authorize('update', ResearchComplete::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
         
@@ -173,6 +186,10 @@ class CompletedController extends Controller
     public function update(Request $request, Research $research, ResearchComplete $completed)
     {
         $this->authorize('update', ResearchComplete::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
 

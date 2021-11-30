@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchDocument;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchCitation;
 use App\Models\ResearchComplete;
-use App\Models\ResearchPresentation;
+use App\Models\ResearchDocument;
+use App\Models\ResearchCopyright;
+use Illuminate\Support\Facades\DB;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
-use App\Models\ResearchCopyright;
-use App\Models\ResearchCitation;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ResearchForm;
+use App\Models\FormBuilder\ResearchField;
 
 class UtilizationController extends Controller
 {
@@ -26,7 +27,7 @@ class UtilizationController extends Controller
      */
     public function index(Research $research)
     {
-        $this->authorize('viewAny', ResearchUtilization::class);
+        $this->authorize('viewAny', ResearchUtilization::class);;
 
         $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->get();
 
@@ -45,6 +46,10 @@ class UtilizationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('6')");
 
@@ -60,6 +65,10 @@ class UtilizationController extends Controller
     public function store(Request $request, Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -102,6 +111,10 @@ class UtilizationController extends Controller
     public function show(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('view', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('6')");
 
@@ -127,6 +140,10 @@ class UtilizationController extends Controller
     public function edit(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('update', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('6')");
 
@@ -153,6 +170,10 @@ class UtilizationController extends Controller
     public function update(Request $request, Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('update', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -195,6 +216,10 @@ class UtilizationController extends Controller
     public function destroy(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('delete', ResearchUtilization::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $utilization->delete();
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Deleted Successfully');

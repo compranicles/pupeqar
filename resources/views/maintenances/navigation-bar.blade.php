@@ -65,6 +65,11 @@
                             {{ __('Extension Programs') }}
                         </x-jet-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('academic-module-forms.index') }}" class="text-dark" :active="request()->routeIs('academic-module-forms.*')">
+                            {{ __('Academic Module') }}
+                        </x-jet-nav-link>
+                    </li>
                 </ul>
             </div>
         </div>

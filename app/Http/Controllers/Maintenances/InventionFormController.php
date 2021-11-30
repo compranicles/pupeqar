@@ -42,63 +42,9 @@ class InventionFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(InventionForm $invention_form, Request $request)
-    {   
-        $this->authorize('create', InventionForm::class);
-
-        $required = 1;
-        $field_name = $request->field_name;
-        if($request->required == null){
-            $required = 0;
-        }
-        InventionField::create([
-            'invention_form_id' => $invention_form->id,
-            'label' => $request->label,
-            'name' => $request->field_name,
-            'placeholder' => $request->placeholder,
-            'size' => $request->size,
-            'field_type_id' => $request->field_type,
-            'dropdown_id' => $request->dropdown, 
-            'required' => $required,
-            'visibility' => $request->visibility,
-            'order' => 99,
-            'is_active' => 1,
-        ]);
-
-        switch($request->field_type){
-            case 1: //text
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
-                    $table->string($field_name)->nullable();
-                });
-            break;
-            case 2: // number
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
-                    $table->integer($field_name)->nullable();
-                });
-            break;
-            case 3: // decimal
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name){
-                    $table->decimal($field_name, 9, 2)->nullable();
-                });
-            break; 
-            case 4: // date
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
-                    $table->date($field_name)->nullable();
-                });
-            break; 
-            case 5: // dropdown
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name) {
-                    $table->foreignId($field_name)->nullable();
-                });
-            break; 
-            case 8: // textarea
-                Schema::table($invention_form->table_name, function (Blueprint $table) use ($field_name){
-                    $table->foreignId($field_name)->nullable();
-                });
-            break; 
-            default: 
-        }
-        return redirect()->route('invention-forms.show', $invention_form->id)->with('sucess', 'Invention field added sucessfully.');
+    public function store(Request $request)
+    {
+        //
     }
 
     /**
@@ -126,9 +72,9 @@ class InventionFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(InventionForm $invention_form)
     {
-        //
+        return view('maintenances.invention.rename', compact('invention_form'));
     }
 
     /**
@@ -138,9 +84,17 @@ class InventionFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, InventionForm $invention_form)
     {
-        //
+        $request->validate([
+            'label' => 'required'
+        ]);
+
+        $invention_form->update([
+            'label' => $request->input('label'),
+        ]);
+
+        return redirect()->route('invention-forms.index')->with('success', 'Form renamed successfully.');
     }
 
     /**

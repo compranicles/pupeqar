@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ExtensionService;
-use App\Models\ExtensionServiceDocument;
-use App\Models\FormBuilder\ExtensionProgramField;
-use Illuminate\Support\Facades\DB;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Maintenance\Department;
+use App\Models\ExtensionService;
+use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ExtensionServiceDocument;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 class ExtensionServiceController extends Controller
 {
@@ -37,7 +38,8 @@ class ExtensionServiceController extends Controller
      */
     public function create()
     {
-
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         // $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
         //                                 ->where('extension_program_fields.is_active', 1)
         //                                 ->whereBetween('extension_program_fields.id', [30, 47])
@@ -61,6 +63,8 @@ class ExtensionServiceController extends Controller
      */
     public function store(Request $request)
     {
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $eService = ExtensionService::create($input);
@@ -100,6 +104,8 @@ class ExtensionServiceController extends Controller
      */
     public function show(ExtensionService $extension_service)
     {
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
         $level = DB::select("CALL get_dropdown_name_by_id(".$extension_service->level.")");
@@ -121,6 +127,8 @@ class ExtensionServiceController extends Controller
      */
     public function edit(ExtensionService $extension_service)
     {
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
@@ -147,6 +155,8 @@ class ExtensionServiceController extends Controller
      */
     public function update(Request $request, ExtensionService $extension_service)
     {
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $extension_service->update($input);
@@ -185,6 +195,8 @@ class ExtensionServiceController extends Controller
      */
     public function destroy(ExtensionService $extension_service)
     {
+        if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
         return redirect()->route('faculty.extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been deleted.');

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Research Forms Manager') }}
+            {{ __('Academic Module Forms Manager') }}
         </h2>
     </x-slot>
 
@@ -31,7 +31,7 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <h4>Research Forms</h4>
+                                <h4>Academic Module Forms</h4>
                                 <hr>
                             </div>
                             <div class="col-md-12">
@@ -45,7 +45,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($researchforms as $form)
+                                            @foreach ($academicforms as $form)
                                             <tr>
                                                 <td>{{ $form->label }}</td>
                                                 <td>
@@ -55,8 +55,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('research-forms.edit', $form->id) }}" class="btn btn-outline-primary btn-sm">Rename</a>
-                                                    <a href="{{ route('research-forms.show', $form->id) }}" class="btn btn-warning edit-row btn-sm">Fields</a>
+                                                    <a href="{{ route('academic-module-forms.edit', $form->id) }}" class="btn btn-outline-primary btn-sm">Rename</a>
+                                                    <a href="{{ route('academic-module-forms.show', $form->id) }}" class="btn btn-warning edit-row btn-sm">Fields</a>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -76,11 +76,11 @@
                 var optionID = $(this).data('id');
                 if ($(this).is(':checked')) {
                     $.ajax({
-                        url: '/research-forms/activate/'+optionID
+                        url: '/academic-module-forms/activate/'+optionID
                     });
                 } else {
                     $.ajax({
-                        url: '/research-forms/inactivate/'+optionID
+                        url: '/academic-module-forms/inactivate/'+optionID
                     });
                 }
             });

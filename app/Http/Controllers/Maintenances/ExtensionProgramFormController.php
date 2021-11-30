@@ -66,9 +66,9 @@ class ExtensionProgramFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ExtensionProgramForm $extension_program_form)
     {
-        //
+        return view('maintenances.extension-programs.rename', compact('extension_program_form'));
     }
 
     /**
@@ -78,9 +78,17 @@ class ExtensionProgramFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ExtensionProgramForm $extension_program_form)
     {
-        //
+        $request->validate([
+            'label' => 'required'
+        ]);
+
+        $extension_program_form->update([
+            'label' => $request->input('label'),
+        ]);
+
+        return redirect()->route('extension-program-forms.index')->with('success', 'Form renamed successfully.');
     }
 
     /**
@@ -103,7 +111,7 @@ class ExtensionProgramFormController extends Controller
     }
 
     public function inactivate($id){
-        ExtensionProgram::where('id', $id)->update([
+        ExtensionProgramForm::where('id', $id)->update([
             'is_active' => 0
         ]);
         
