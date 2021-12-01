@@ -11,6 +11,7 @@ use App\Models\PartnershipDocument;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
 
 class PartnershipController extends Controller
@@ -37,6 +38,8 @@ class PartnershipController extends Controller
     {
         $this->authorize('create', Partnership::class);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $colleges = College::all();
@@ -72,6 +75,8 @@ class PartnershipController extends Controller
             // 'description' => 'required',
         ]);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership = Partnership::create($input);
@@ -114,6 +119,8 @@ class PartnershipController extends Controller
     {
         $this->authorize('view', Partnership::class);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
@@ -133,6 +140,8 @@ class PartnershipController extends Controller
     {
         $this->authorize('update', Partnership::class);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
@@ -180,6 +189,8 @@ class PartnershipController extends Controller
             // 'description' => 'required',
         ]);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership->update($input);
@@ -221,6 +232,8 @@ class PartnershipController extends Controller
     {
         $this->authorize('delete', Partnership::class);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
         return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
@@ -229,6 +242,8 @@ class PartnershipController extends Controller
     public function removeDoc($filename){
         $this->authorize('delete', Partnership::class);
 
+        if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         PartnershipDocument::where('filename', $filename)->delete();
         return true;
     }

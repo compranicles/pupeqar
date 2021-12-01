@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchDocument;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchCitation;
 use App\Models\ResearchComplete;
-use App\Models\ResearchPresentation;
+use App\Models\ResearchDocument;
+use App\Models\ResearchCopyright;
+use Illuminate\Support\Facades\DB;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
-use App\Models\ResearchCopyright;
-use App\Models\ResearchCitation;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ResearchForm;
+use App\Models\FormBuilder\ResearchField;
 
 class CopyrightedController extends Controller
 {
@@ -53,6 +54,10 @@ class CopyrightedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCopyright::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
            
@@ -68,6 +73,10 @@ class CopyrightedController extends Controller
     public function store(Request $request, Research $research)
     {
         $this->authorize('create', ResearchCopyright::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $request->validate([
             'copyright_agency' => 'required',
@@ -129,6 +138,10 @@ class CopyrightedController extends Controller
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
         $this->authorize('update', ResearchCopyright::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
@@ -148,6 +161,10 @@ class CopyrightedController extends Controller
     public function update(Request $request, Research $research, ResearchCopyright $copyrighted)
     {
         $this->authorize('update', ResearchCopyright::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $request->validate([
             'copyright_agency' => 'required',

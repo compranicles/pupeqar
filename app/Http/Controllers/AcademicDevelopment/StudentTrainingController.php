@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class StudentTrainingController extends Controller
 {
@@ -35,6 +36,8 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('create', StudentTraining::class);
 
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         return view('academic-development.student-training.create', compact('studentFields'));
@@ -67,6 +70,8 @@ class StudentTrainingController extends Controller
             // 'description' => 'required',
         ]);
         
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
         // dd($input);
 
@@ -109,6 +114,8 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('view', StudentTraining::class);
 
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
@@ -129,6 +136,8 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('update', StudentTraining::class);
 
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
@@ -166,6 +175,8 @@ class StudentTrainingController extends Controller
             // 'description' => 'required',
         ]);
         
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_training->update($input);
@@ -206,6 +217,8 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('delete', StudentTraining::class);
 
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         StudentTrainingDocument::where('student_training_id', $student_training->id)->delete();
         $student_training->delete();
         return redirect()->route('student-training.index')->with('student_success', 'Your accomplishment in Student Attended Seminars and Trainings has been deleted.');
@@ -214,6 +227,8 @@ class StudentTrainingController extends Controller
     public function removeDoc($filename){
         $this->authorize('delete', StudentTraining::class);
 
+        if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         StudentTrainingDocument::where('filename', $filename)->delete();
         return true;
     }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\ViableProjectDocument;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class ViableProjectController extends Controller
 {
@@ -34,6 +35,8 @@ class ViableProjectController extends Controller
     {
         $this->authorize('create', ViableProject::class);
 
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
         return view('academic-development.viable-project.create', compact('projectFields'));
@@ -61,6 +64,9 @@ class ViableProjectController extends Controller
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        $input = $request->except(['_token', '_method', 'document']);
 
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
@@ -105,6 +111,8 @@ class ViableProjectController extends Controller
     {
         $this->authorize('view', ViableProject::class);
 
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
@@ -124,6 +132,8 @@ class ViableProjectController extends Controller
     {
         $this->authorize('update', ViableProject::class);
 
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
@@ -155,6 +165,8 @@ class ViableProjectController extends Controller
             // 'description' => 'required',
         ]);
         
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $viable_project->update($input);
@@ -195,6 +207,8 @@ class ViableProjectController extends Controller
     {
         $this->authorize('delete', ViableProject::class);
 
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
         return redirect()->route('viable-project.index')->with('project_success', 'Your accomplishment in Viable Demonstration Project has been deleted.');
@@ -203,6 +217,8 @@ class ViableProjectController extends Controller
     public function removeDoc($filename){
         $this->authorize('delete', ViableProject::class);
 
+        if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ViableProjectDocument::where('filename', $filename)->delete();
         return true;
     }

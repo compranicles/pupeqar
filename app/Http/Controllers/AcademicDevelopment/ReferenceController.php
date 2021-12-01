@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Reference;
-use App\Models\ReferenceDocument;
+use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
+use App\Models\ReferenceDocument;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class ReferenceController extends Controller
 {
@@ -40,6 +41,8 @@ class ReferenceController extends Controller
     {
         $this->authorize('create', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
         $colleges = College::all();
@@ -56,6 +59,9 @@ class ReferenceController extends Controller
     {
         $this->authorize('create', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+      
         $request->validate([
             'category' => 'required',
             'level' => 'required',
@@ -120,6 +126,8 @@ class ReferenceController extends Controller
     {
         $this->authorize('view', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
@@ -143,6 +151,8 @@ class ReferenceController extends Controller
     {
         $this->authorize('update', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
@@ -172,6 +182,9 @@ class ReferenceController extends Controller
     {
         $this->authorize('update', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+      
         $request->validate([
             'category' => 'required',
             'level' => 'required',
@@ -236,6 +249,8 @@ class ReferenceController extends Controller
     {
         $this->authorize('delete', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $rtmmi->delete();
         ReferenceDocument::where('reference_id', $rtmmi->id)->delete();
 
@@ -252,6 +267,8 @@ class ReferenceController extends Controller
         
         $this->authorize('delete', Reference::class);
 
+        if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ReferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

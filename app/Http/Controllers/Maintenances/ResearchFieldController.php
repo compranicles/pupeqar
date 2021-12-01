@@ -71,7 +71,7 @@ class ResearchFieldController extends Controller
                     $table->integer($field_name)->nullable();
                 });
             break;
-            case 3: // decimal
+            case 11: // decimal
                 Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
                     $table->decimal($field_name, 9, 2)->nullable();
                 });
@@ -88,9 +88,13 @@ class ResearchFieldController extends Controller
             break; 
             case 8: // textarea
                 Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name){
-                    $table->foreignId($field_name)->nullable();
+                    $table->text($field_name)->nullable();
                 });
             break; 
+            case 14: // yes-no
+                Schema::table($research_form->table_name, function (Blueprint $table) use ($field_name) {
+                    $table->string($field_name)->nullable();
+                });
             default: 
         }
         return redirect()->route('research-forms.show', $research_form->id)->with('sucess', 'Research field added sucessfully.');

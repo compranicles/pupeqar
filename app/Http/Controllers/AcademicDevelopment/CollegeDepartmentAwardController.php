@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CollegeDepartmentAward;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CollegeDepartmentAwardDocument;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class CollegeDepartmentAwardController extends Controller
 {
@@ -34,6 +35,8 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('create', CollegeDepartmentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
         return view('academic-development.college-department-award.create', compact('awardFields'));
@@ -58,6 +61,8 @@ class CollegeDepartmentAwardController extends Controller
             // 'description' => 'required',
         ]);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $college_department_award = CollegeDepartmentAward::create($input);
@@ -99,6 +104,8 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('view', CollegeDepartmentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
         $documents = CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->get()->toArray();
@@ -118,6 +125,8 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('update', CollegeDepartmentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
         $documents = CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->get()->toArray();
@@ -147,6 +156,8 @@ class CollegeDepartmentAwardController extends Controller
             // 'description' => 'required',
         ]);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $college_department_award->update($input);
@@ -187,6 +198,8 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('delete', CollegeDepartmentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
         return redirect()->route('college-department-award.index')->with('award_success', 'Your Accomplishment in Awards and Recognition Received by the College and Department has been deleted.');
@@ -195,6 +208,8 @@ class CollegeDepartmentAwardController extends Controller
     public function removeDoc($filename){
         $this->authorize('delete', CollegeDepartmentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         CollegeDepartmentAwardDocument::where('filename', $filename)->delete();
         return true;
     }

@@ -8,10 +8,10 @@ use App\Models\FormBuilder\Dropdown;
 use App\Models\FormBuilder\FieldType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\ExtensionProgramField;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Models\FormBuilder\AcademicDevelopmentField;
 
-class ExtensionProgramFieldController extends Controller
+class AcademicModuleFieldController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -39,15 +39,15 @@ class ExtensionProgramFieldController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ExtensionProgramForm $extension_program_form, Request $request)
+    public function store(Request $request, AcademicDevelopmentForm $academic_module_form)
     {
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
             $required = 0;
         }
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => $extension_program_form->id,
+        AcademicDevelopmentField::create([
+            'academic_development_form_id' => $academic_module_form->id,
             'label' => $request->label,
             'name' => $request->field_name,
             'placeholder' => $request->placeholder,
@@ -62,42 +62,42 @@ class ExtensionProgramFieldController extends Controller
 
         switch($request->field_type){
             case 1: //text
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->string($field_name)->nullable();
                 });
             break;
             case 2: // number
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->integer($field_name)->nullable();
                 });
             break;
             case 11: // decimal
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name){
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name){
                     $table->decimal($field_name, 9, 2)->nullable();
                 });
             break; 
             case 4: // date
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->date($field_name)->nullable();
                 });
             break; 
             case 5: // dropdown
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->foreignId($field_name)->nullable();
                 });
             break; 
             case 8: // textarea
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name){
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name){
                     $table->text($field_name)->nullable();
                 });
             break; 
             case 14: // yes-no
-                Schema::table($extension_program_form->table_name, function (Blueprint $table) use ($field_name) {
+                Schema::table($academic_module_form->table_name, function (Blueprint $table) use ($field_name) {
                     $table->string($field_name)->nullable();
                 });
             default: 
         }
-        return redirect()->route('extension-program-forms.show', $extension_program_form->id)->with('sucess', 'Extension Program field added sucessfully.');
+        return redirect()->route('academic-module-forms.show', $academic_module_form->id)->with('sucess', 'Academic Module field added sucessfully.');
     }
 
     /**
@@ -117,11 +117,11 @@ class ExtensionProgramFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ExtensionProgramForm $extension_program_form, ExtensionProgramField $extension_program_field)
+    public function edit(AcademicDevelopmentForm $academic_module_form, AcademicDevelopmentField $academic_module_field)
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.extension-programs.edit', compact('extension_program_form', 'extension_program_field', 'fieldtypes', 'dropdowns'));
+        return view('maintenances.academic-module.edit', compact('academic_module_form', 'academic_module_field', 'fieldtypes', 'dropdowns'));
     }
 
     /**
@@ -131,12 +131,12 @@ class ExtensionProgramFieldController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExtensionProgramForm $extension_program_form, ExtensionProgramField $extension_program_field)
+    public function update(Request $request, AcademicDevelopmentForm $academic_module_form, AcademicDevelopmentField $academic_module_field)
     {
         $input = $request->except(['_token', '_method']);
 
-        ExtensionProgramField::where('extension_programs_form_id', $extension_program_form->id)->where('id', $extension_program_field->id)->update($input);
-        return redirect()->route('extension-program-forms.show', $extension_program_form->id)->with('sucess', 'Extension program field updated sucessfully.');
+        AcademicDevelopmentField::where('academic_module_form_id', $academic_module_form->id)->where('id', $academic_module_field->id)->update($input);
+        return redirect()->route('academic-fields.show', $academic_module_form->id)->with('sucess', 'Academic Module field added sucessfully.');
     }
 
     /**
@@ -151,7 +151,7 @@ class ExtensionProgramFieldController extends Controller
     }
 
     public function activate($id){
-        ExtensionProgramField::where('id', $id)->update([
+        AcademicDevelopmentField::where('id', $id)->update([
             'is_active' => 1
         ]);
 
@@ -159,7 +159,7 @@ class ExtensionProgramFieldController extends Controller
     }
 
     public function inactivate($id){
-        ExtensionProgramField::where('id', $id)->update([
+        AcademicDevelopmentField::where('id', $id)->update([
             'is_active' => 0
         ]);
         
@@ -171,7 +171,7 @@ class ExtensionProgramFieldController extends Controller
         $options = json_decode($request->data, true);
         
         for($i = 0; $i < count($options); $i++){
-            ExtensionProgramField::where('id', $options[$i])->update([
+            AcademicDevelopmentField::where('id', $options[$i])->update([
                 'order' => $i+1
             ]);
         }

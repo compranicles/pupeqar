@@ -71,11 +71,9 @@ class ResearchFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ResearchForm $research_form)
     {
-        //
-        abort(404);
-
+        return view('maintenances.research.rename', compact('research_form'));
     }
 
     /**
@@ -85,11 +83,17 @@ class ResearchFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, ResearchForm $research_form)
     {
-        //
-        abort(404);
+        $request->validate([
+            'label' => 'required'
+        ]);
 
+        $research_form->update([
+            'label' => $request->input('label'),
+        ]);
+
+        return redirect()->route('research-forms.index')->with('success', 'Form renamed successfully.');
     }
 
     /**

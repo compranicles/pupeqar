@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\StudentAwardDocument;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class StudentAwardController extends Controller
 {
@@ -34,6 +35,8 @@ class StudentAwardController extends Controller
     {
         $this->authorize('create', StudentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         return view('academic-development.student-awards.create', compact('studentFields'));
@@ -58,6 +61,8 @@ class StudentAwardController extends Controller
             // 'description' => 'required',
         ]);
 
+        if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_award = StudentAward::create($input);
@@ -99,6 +104,8 @@ class StudentAwardController extends Controller
     {
         $this->authorize('view', StudentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
@@ -118,6 +125,8 @@ class StudentAwardController extends Controller
     {
         $this->authorize('update', StudentAward::class);
 
+        if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
@@ -147,6 +156,8 @@ class StudentAwardController extends Controller
             // 'description' => 'required',
         ]);
         
+        if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_award->update($input);

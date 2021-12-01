@@ -18,31 +18,7 @@
                         <form action="{{ route('research.update', $research->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment', => $collegeOfDepartment])
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>College/Campus/Branch/Office where you commit the research</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}" {{ ($values['college_id'] == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Department where you commit the research</label>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @include('research.form', ['formFields' => $researchFields2, 'value' => $values])
+                            @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             
                             <div class="col-md-12">
                                 <div class="mb-0">
@@ -197,11 +173,11 @@
             }
 
             $(function() {
-                if ({{$research->status}} == 26) {
+                if ({{ $research->status }} == 26) {
                     hide_dates();
                     
                 }
-                else if ({{$research->status}} == 27) {
+                else if ({{ $research->status }} == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
                     $('#status').attr('disabled', true);
@@ -214,10 +190,10 @@
                         $("#department").append(new Option(item.name, item.id));
                         
                     });
-                    document.getElementById("department").value = "{{ $values['department_id'] }}";
+                    $("#department").val('{{ $values['department_id'] }}');
                 });
-                $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
-                $('#status').attr('disabled', true);
+                // $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
+                // $('#status').attr('disabled', true);
                 
             });
 
@@ -249,17 +225,22 @@
             });
 
             $('#status').on('change', function(){
-                var statusId = $('#status').val();
+                var statusId = $('#status').find(":selected").val();
+                console.log(statusId);
                 if (statusId == 26) {
                     hide_dates();
                     $('#start_date').removeAttr('required');
                     $('#target_date').removeAttr('required');
+                    $('#start_date').attr("disabled", true);
+                    $('#target_date').attr("disabled", true);
                 }
                 else if (statusId == 27) {
                     $('.start_date').show();
                     $('.target_date').show();
                     $('#start_date').attr("required", true);
-                    $('#target_date').attr("required", true);;
+                    $('#target_date').attr("required", true);
+                    $('#target_date').removeAttr('disabled');
+                    $('#start_date').removeAttr('disabled');
                 }
             });
 

@@ -109,6 +109,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/extension-program-fields/arrange', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'arrange']);
     Route::resource('extension-program-forms.extension-program-fields', \App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class);
 
+    //academicForms
+    Route::get('/academic-module-forms/activate/{id}', [\App\Http\Controllers\Maintenances\AcademicModuleFormController::class, 'activate']);
+    Route::get('/academic-module-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\AcademicModuleFormController::class, 'inactivate']);
+    Route::resource('academic-module-forms', \App\Http\Controllers\Maintenances\AcademicModuleFormController::class);
+
+    //academicFields
+    Route::get('/academic-module-fields/activate/{id}', [\App\Http\Controllers\Maintenances\AcademicModuleFieldController::class, 'activate']);
+    Route::get('/academic-module-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\AcademicModuleFieldController::class, 'inactivate']);
+    Route::post('/academic-module-fields/arrange', [\App\Http\Controllers\Maintenances\AcademicModuleFieldController::class, 'arrange']);
+    Route::resource('academic-module-forms.academic-module-fields', \App\Http\Controllers\Maintenances\AcademicModuleFieldController::class);
+
     //researchSubmissions
     Route::get('/research/complete/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
     Route::get('/research/publication/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');

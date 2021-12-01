@@ -174,10 +174,13 @@
             $("#placeholderfield").hide();
             $("#dropdown_field").hide();
 
+            $(".currency-decimal").remove();
             $(".date-range").remove();
             $(".multi-select").remove();
             $(".file-upload").remove();
             $(".multiple-file-upload").remove();
+            $(".college").remove();
+            $(".department").remove();
 
             // show dropdown field on select
             $("#field_type").on('change', function(){
