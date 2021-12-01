@@ -11,6 +11,7 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ExtensionProgramForm;
 
 class MobilityController extends Controller
 {
@@ -32,6 +33,8 @@ class MobilityController extends Controller
      */
     public function create()
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
         $colleges = College::all();
@@ -46,6 +49,8 @@ class MobilityController extends Controller
      */
     public function store(Request $request)
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $mobility = Mobility::create($input);
@@ -86,6 +91,8 @@ class MobilityController extends Controller
      */
     public function show(Mobility $mobility)
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
@@ -103,6 +110,8 @@ class MobilityController extends Controller
      */
     public function edit(Mobility $mobility)
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
@@ -128,6 +137,8 @@ class MobilityController extends Controller
      */
     public function update(Request $request, Mobility $mobility)
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $mobility->update($input);
@@ -166,12 +177,16 @@ class MobilityController extends Controller
      */
     public function destroy(Mobility $mobility)
     {
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
         $mobility->delete();
         return redirect()->route('mobility.index')->with('mobility_success', 'Your accomplishment in Inter-Country Mobility has been deleted.');
     }
 
     public function removeDoc($filename){
+        if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
+            return view('inactive');
         MobilityDocument::where('filename', $filename)->delete();
         return true;
     }

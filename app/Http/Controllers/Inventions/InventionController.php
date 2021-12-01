@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Inventions;
 
 use App\Models\Invention;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
+use App\Models\InventionDocument;
+use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
-use App\Models\FormBuilder\InventionField;
-use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\Storage;
-use App\Models\InventionDocument;
-use Illuminate\Support\Facades\DB;
+use App\Models\FormBuilder\InventionForm;
+use App\Models\FormBuilder\InventionField;
 
 class InventionController extends Controller
 {
@@ -39,6 +40,9 @@ class InventionController extends Controller
      */
     public function create()
     {
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $colleges = College::all();
@@ -53,6 +57,10 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
@@ -71,6 +79,7 @@ class InventionController extends Controller
             'department_id' => 'required',
             'description' => 'required',
         ]);
+
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
@@ -112,6 +121,9 @@ class InventionController extends Controller
     public function show(Invention $invention_innovation_creative)
     {
         // dd($fields);
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $classification = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->classification.")");
         
         $funding_type = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->funding_type.")");
@@ -136,6 +148,9 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention_innovation_creative)
     {
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
@@ -161,6 +176,10 @@ class InventionController extends Controller
      */
     public function update(Request $request, Invention $invention_innovation_creative)
     {
+
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
@@ -179,6 +198,7 @@ class InventionController extends Controller
             'department_id' => 'required',
             'description' => 'required',
         ]);
+
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
@@ -218,12 +238,19 @@ class InventionController extends Controller
      */
     public function destroy(Invention $invention_innovation_creative)
     {
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
+
         $invention_innovation_creative->delete();
         InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
         return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){
+        if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+            
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

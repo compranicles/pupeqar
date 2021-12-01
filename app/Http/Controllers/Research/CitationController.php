@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Research;
 use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use App\Models\ResearchDocument;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\ResearchCitation;
 use App\Models\ResearchComplete;
-use App\Models\ResearchPresentation;
+use App\Models\ResearchDocument;
+use App\Models\ResearchCopyright;
+use Illuminate\Support\Facades\DB;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
-use App\Models\ResearchCopyright;
-use App\Models\ResearchCitation;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ResearchForm;
+use App\Models\FormBuilder\ResearchField;
 
 class CitationController extends Controller
 {
@@ -27,6 +28,7 @@ class CitationController extends Controller
     public function index(Research $research)
     {
         $this->authorize('viewAny', ResearchCitation::class);
+ 
 
         $researchcitations = ResearchCitation::where('research_code', $research->research_code)->get();
 
@@ -44,6 +46,10 @@ class CitationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
 
@@ -59,6 +65,10 @@ class CitationController extends Controller
     public function store(Request $request, Research $research)
     {
         $this->authorize('create', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $request->validate([
             'article_title' => 'required',
@@ -114,6 +124,10 @@ class CitationController extends Controller
     public function show(Research $research, ResearchCitation $citation)
     {
         $this->authorize('view', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
 
@@ -138,6 +152,10 @@ class CitationController extends Controller
     public function edit(Research $research, ResearchCitation $citation)
     {
         $this->authorize('update', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
 
@@ -165,6 +183,10 @@ class CitationController extends Controller
     public function update(Request $request, Research $research, ResearchCitation $citation)
     {
         $this->authorize('update', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $request->validate([
             'article_title' => 'required',
@@ -220,6 +242,10 @@ class CitationController extends Controller
     public function destroy(Research $research, ResearchCitation $citation)
     {
         $this->authorize('delete', ResearchCitation::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+        if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $citation->delete();
 

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\Dropdown;
 use App\Models\FormBuilder\FieldType;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Models\FormBuilder\AcademicDevelopmentField;
 
-class ResearchFormController extends Controller
+class AcademicModuleFormController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,8 @@ class ResearchFormController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', ResearchForm::class);
-
-        $researchforms = ResearchForm::all();
-        return view('maintenances.research.index', compact('researchforms'));
+        $academicforms = AcademicDevelopmentForm::all();
+        return view('maintenances.academic-module.index', compact('academicforms'));
     }
 
     /**
@@ -31,7 +29,7 @@ class ResearchFormController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -51,17 +49,15 @@ class ResearchFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ResearchForm $research_form)
+    public function show(AcademicDevelopmentForm $academic_module_form)
     {
-        $this->authorize('view', ResearchForm::class);
-
-        $research_fields = ResearchField::where('research_fields.research_form_id', $research_form->id)->orderBy('research_fields.order')
-                    ->join('field_types', 'field_types.id', 'research_fields.field_type_id')
-                    ->select('research_fields.*', 'field_types.name as field_type_name')->get();
+        $academic_fields = AcademicDevelopmentField::where('academic_development_fields.academic_development_form_id', $academic_module_form->id)->orderBy('academic_development_fields.order')
+                    ->join('field_types', 'field_types.id', 'academic_development_fields.field_type_id')
+                    ->select('academic_development_fields.*', 'field_types.name as field_type_name')->get();
 
         $field_types = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.research.show', compact('research_form', 'research_fields', 'field_types', 'dropdowns'));
+        return view('maintenances.academic-module.show', compact('academic_module_form', 'academic_fields', 'field_types', 'dropdowns'));
     }
 
     /**
@@ -70,9 +66,9 @@ class ResearchFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ResearchForm $research_form)
+    public function edit(AcademicDevelopmentForm $academic_module_form)
     {
-        return view('maintenances.research.rename', compact('research_form'));
+        return view('maintenances.academic-module.rename', compact('academic_module_form'));
     }
 
     /**
@@ -82,17 +78,17 @@ class ResearchFormController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ResearchForm $research_form)
+    public function update(Request $request, AcademicDevelopmentForm $academic_module_form)
     {
         $request->validate([
             'label' => 'required'
         ]);
 
-        $research_form->update([
+        $academic_module_form->update([
             'label' => $request->input('label'),
         ]);
 
-        return redirect()->route('research-forms.index')->with('success', 'Form renamed successfully.');
+        return redirect()->route('academic-module-forms.index')->with('success', 'Form renamed successfully.');
     }
 
     /**
@@ -106,9 +102,9 @@ class ResearchFormController extends Controller
         //
     }
 
-
+    
     public function activate($id){
-        ResearchForm::where('id', $id)->update([
+        AcademicDevelopmentForm::where('id', $id)->update([
             'is_active' => 1
         ]);
 
@@ -116,7 +112,7 @@ class ResearchFormController extends Controller
     }
 
     public function inactivate($id){
-        ResearchForm::where('id', $id)->update([
+        AcademicDevelopmentForm::where('id', $id)->update([
             'is_active' => 0
         ]);
         

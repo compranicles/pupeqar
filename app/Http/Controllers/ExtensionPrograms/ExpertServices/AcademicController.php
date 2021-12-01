@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ExpertServiceAcademic;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\ExpertServiceAcademicDocument;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Department;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Http\Controllers\Controller;
+use App\Models\ExpertServiceAcademic;
+use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ExpertServiceAcademicDocument;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 class AcademicController extends Controller
 {
@@ -37,6 +38,8 @@ class AcademicController extends Controller
      */
     public function create()
     {
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
         $colleges = College::all();
@@ -52,6 +55,9 @@ class AcademicController extends Controller
      */
     public function store(Request $request)
     {
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
@@ -105,6 +111,8 @@ class AcademicController extends Controller
      */
     public function show(ExpertServiceAcademic $expert_service_in_academic)
     {
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
@@ -130,6 +138,8 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
@@ -156,6 +166,10 @@ class AcademicController extends Controller
      */
     public function update(Request $request, ExpertServiceAcademic $expert_service_in_academic)
     {
+
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
@@ -208,12 +222,16 @@ class AcademicController extends Controller
      */
     public function destroy(ExpertServiceAcademic $expert_service_in_academic)
     {
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expert_service_in_academic->delete();
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
         return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){
+        if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ExpertServiceAcademicDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

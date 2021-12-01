@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ExpertServiceConference;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\ExpertServiceConferenceDocument;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\ExpertServiceConference;
+use Illuminate\Support\Facades\Storage;
+use App\Models\ExpertServiceConferenceDocument;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 
 class ConferenceController extends Controller
@@ -36,6 +37,8 @@ class ConferenceController extends Controller
      */
     public function create()
     {
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields'));
@@ -49,6 +52,10 @@ class ConferenceController extends Controller
      */
     public function store(Request $request)
     {
+
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'nature' => 'required',
             'level' => 'required',
@@ -59,6 +66,7 @@ class ConferenceController extends Controller
             'partner_agency' => '',
             'description' => 'required',
         ]);
+
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -99,6 +107,8 @@ class ConferenceController extends Controller
      */
     public function show(ExpertServiceConference $expert_service_in_conference)
     {
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
         
         $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->nature.")");
@@ -116,6 +126,8 @@ class ConferenceController extends Controller
      */
     public function edit(ExpertServiceConference $expert_service_in_conference)
     {
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
@@ -132,6 +144,10 @@ class ConferenceController extends Controller
      */
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
+
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'nature' => 'required',
             'level' => 'required',
@@ -181,12 +197,16 @@ class ConferenceController extends Controller
      */
     public function destroy(ExpertServiceConference $expert_service_in_conference)
     {
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
         return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Cours has been deleted.');
     }
 
     public function removeDoc($filename){
+        if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('extension-program-forms.extension-program-fields.store', $form_id) }}" id="field_form" class="needs-validation" method="POST">
+                <form action="{{ route('academic-module-forms.academic-module-fields.store', $form_id) }}" id="field_form" class="needs-validation" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-12">

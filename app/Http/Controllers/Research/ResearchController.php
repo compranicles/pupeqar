@@ -10,6 +10,7 @@ use App\Models\ResearchCitation;
 use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
+use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
@@ -17,9 +18,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ResearchPresentation;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
-use Illuminate\Support\Facades\DB;
 
 
 class ResearchController extends Controller
@@ -47,6 +48,8 @@ class ResearchController extends Controller
     public function create()
     {
         $this->authorize('create', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+        return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
@@ -63,6 +66,8 @@ class ResearchController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+        return view('inactive');
 
         $request->validate([
             'classification' => 'required',
@@ -187,6 +192,8 @@ class ResearchController extends Controller
     public function show(Research $research)
     {
         $this->authorize('view', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+        return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
 
@@ -219,6 +226,8 @@ class ResearchController extends Controller
     public function edit(Research $research)
     {
         $this->authorize('update', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+        return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
@@ -226,7 +235,6 @@ class ResearchController extends Controller
                 ->join('currencies', 'currencies.id', 'research.currency')
                 ->select('research.*', 'currencies.code as currency_code')->first()->toArray();
         
-                dd($values);
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
 
@@ -249,6 +257,9 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
         $request->validate([
             'classification' => 'required',
             'status' => 'required',
@@ -315,6 +326,8 @@ class ResearchController extends Controller
     public function destroy(Research $research)
     {
         $this->authorize('delete', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+        return view('inactive');
 
         $research->delete();
 
@@ -322,6 +335,8 @@ class ResearchController extends Controller
     }
 
     public function complete($complete){
+        if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $research = Research::where('id', $complete)->pluck('research_code')->first();
         $researchCompleteId = ResearchComplete::where('research_code', $research)->pluck('id')->first();
         if($researchCompleteId != null)
@@ -331,6 +346,8 @@ class ResearchController extends Controller
     }
 
     public function publication($publication){
+        if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $research = Research::where('id', $publication)->pluck('research_code')->first();
         $researchPublicationId = ResearchPublication::where('research_code', $research)->pluck('id')->first();
         if($researchPublicationId != null)
@@ -340,6 +357,8 @@ class ResearchController extends Controller
     }
 
     public function presentation($presentation){
+        if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $research = Research::where('id', $presentation)->pluck('research_code')->first();
         $researchPresentationId = ResearchPresentation::where('research_code', $research)->pluck('id')->first();
         if($researchPresentationId != null)
@@ -349,6 +368,8 @@ class ResearchController extends Controller
     }
 
     public function copyright($copyright){
+        if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $research = Research::where('id', $copyright)->pluck('research_code')->first();
         $researchCopyrightId = ResearchCopyright::where('research_code', $research)->pluck('id')->first();
         if($researchCopyrightId != null)
@@ -364,6 +385,8 @@ class ResearchController extends Controller
 
     public function useResearchCode(Request $request){
         $this->authorize('create', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         
         if (Research::where('research_code', $request->code)->exists())
             return redirect()->route('research.code.create', $request->code);
@@ -374,6 +397,8 @@ class ResearchController extends Controller
     public function addResearch($research_code){
 
         $this->authorize('create', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
 
@@ -398,6 +423,8 @@ class ResearchController extends Controller
     public function saveResearch($research_code, Request $request){
 
         $this->authorize('create', Research::class);
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
 
         $research = Research::where('research_code', $research_code)->first()->toArray();
         $research = collect($research);
@@ -414,6 +441,8 @@ class ResearchController extends Controller
     }
 
     public function retrieve($research_code){
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $researchLead = Research::where('research_code', $research_code)->first()->toArray();
         $researchLead = collect($researchLead);
         $researchLead = $researchLead->except(['id','research_code', 'college_id', 'department_id', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at' ]);
@@ -424,9 +453,13 @@ class ResearchController extends Controller
     }
 
     public function addDocument($research_code, $report_category_id){
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         return view('research.add-documents', compact('research_code', 'report_category_id'));
     }
     public function saveDocument($research_code, $report_category_id, Request $request){
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
         if($report_category_id == 5){
             $citation_id = $research_code;
             $research_code = ResearchCitation::where('id', $citation_id)->pluck('research_code')->first();

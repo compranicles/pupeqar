@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Syllabus;
-use Illuminate\Support\Facades\DB;
-use App\Models\SyllabusDocument;
+use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
-use Illuminate\Support\Facades\Storage;
+use App\Models\SyllabusDocument;
+use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class SyllabusController extends Controller
 {
@@ -36,6 +37,8 @@ class SyllabusController extends Controller
      */
     public function create()
     {
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $colleges = College::all();
@@ -50,6 +53,9 @@ class SyllabusController extends Controller
      */
     public function store(Request $request)
     {
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
+      
         $request->validate([
             'course_title' => 'required',
             'assigned_task' => 'required',
@@ -98,6 +104,8 @@ class SyllabusController extends Controller
      */
     public function show(Syllabus $syllabu)
     {
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
@@ -115,6 +123,8 @@ class SyllabusController extends Controller
      */
     public function edit(Syllabus $syllabu)
     {
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -140,6 +150,9 @@ class SyllabusController extends Controller
      */
     public function update(Request $request, Syllabus $syllabu)
     {
+
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $request->validate([
             'course_title' => 'required',
             'assigned_task' => 'required',
@@ -188,6 +201,8 @@ class SyllabusController extends Controller
      */
     public function destroy(Syllabus $syllabu)
     {
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 
@@ -196,6 +211,8 @@ class SyllabusController extends Controller
     }
 
     public function removeDoc($filename){
+        if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
+            return view('inactive');
         SyllabusDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;
