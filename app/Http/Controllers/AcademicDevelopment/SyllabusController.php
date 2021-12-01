@@ -21,6 +21,8 @@ class SyllabusController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Syllabus::class);
+
         $syllabi = Syllabus::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
                                         ->select('syllabi.*', 'dropdown_options.name as assigned_task_name')
@@ -36,6 +38,8 @@ class SyllabusController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Syllabus::class);
+
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $colleges = College::all();
@@ -50,13 +54,15 @@ class SyllabusController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Syllabus::class);
+
         $request->validate([
             'course_title' => 'required',
             'assigned_task' => 'required',
             'date_finished' => 'required|date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -98,6 +104,8 @@ class SyllabusController extends Controller
      */
     public function show(Syllabus $syllabu)
     {
+        $this->authorize('view', Syllabus::class);
+
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
@@ -115,6 +123,8 @@ class SyllabusController extends Controller
      */
     public function edit(Syllabus $syllabu)
     {
+        $this->authorize('update', Syllabus::class);
+
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -140,13 +150,15 @@ class SyllabusController extends Controller
      */
     public function update(Request $request, Syllabus $syllabu)
     {
+        $this->authorize('update', Syllabus::class);
+
         $request->validate([
             'course_title' => 'required',
             'assigned_task' => 'required',
             'date_finished' => 'required|date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => '',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -188,6 +200,8 @@ class SyllabusController extends Controller
      */
     public function destroy(Syllabus $syllabu)
     {
+        $this->authorize('delete', Syllabus::class);
+
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 
@@ -196,6 +210,8 @@ class SyllabusController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Syllabus::class);
+
         SyllabusDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

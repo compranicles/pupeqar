@@ -93,7 +93,7 @@ class CompletedController extends Controller
         $request->validate([
             'status' => 'required',
             'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
@@ -183,7 +183,7 @@ class CompletedController extends Controller
         $request->validate([
             'status' => 'required',
             'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);

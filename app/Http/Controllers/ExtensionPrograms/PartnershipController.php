@@ -22,6 +22,8 @@ class PartnershipController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Partnership::class);
+
         $partnerships = Partnership::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
         return view('extension-programs.partnership.index', compact('partnerships'));
     }
@@ -33,6 +35,8 @@ class PartnershipController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Partnership::class);
+
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $colleges = College::all();
@@ -47,6 +51,27 @@ class PartnershipController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Partnership::class);
+
+        $request->validate([
+            'moa_code' => 'required',
+            'collab_nature' => 'required',
+            'partnership_type' => 'required',
+            'deliverable' => 'required',
+            // 'name_of_partner' => '',
+            'title_of_partnership' => 'required',
+            'beneficiaries' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'level' => 'required',
+            // 'name_of_contact_person' => '',
+            // 'address_of_contact_person' => '',
+            // 'telephone_number' => '',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            // 'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership = Partnership::create($input);
@@ -87,6 +112,8 @@ class PartnershipController extends Controller
      */
     public function show(Partnership $partnership)
     {
+        $this->authorize('view', Partnership::class);
+
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
@@ -104,6 +131,8 @@ class PartnershipController extends Controller
      */
     public function edit(Partnership $partnership)
     {
+        $this->authorize('update', Partnership::class);
+
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
@@ -130,6 +159,27 @@ class PartnershipController extends Controller
      */
     public function update(Request $request, Partnership $partnership)
     {
+        $this->authorize('update', Partnership::class);
+
+        $request->validate([
+            'moa_code' => 'required',
+            'collab_nature' => 'required',
+            'partnership_type' => 'required',
+            'deliverable' => 'required',
+            // 'name_of_partner' => '',
+            'title_of_partnership' => 'required',
+            'beneficiaries' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'level' => 'required',
+            // 'name_of_contact_person' => '',
+            // 'address_of_contact_person' => '',
+            // 'telephone_number' => '',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            // 'description' => 'required',
+        ]);
+
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $partnership->update($input);
@@ -169,12 +219,16 @@ class PartnershipController extends Controller
      */
     public function destroy(Partnership $partnership)
     {
+        $this->authorize('delete', Partnership::class);
+
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
         return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Partnership::class);
+
         PartnershipDocument::where('filename', $filename)->delete();
         return true;
     }

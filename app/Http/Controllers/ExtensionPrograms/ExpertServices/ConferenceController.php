@@ -21,6 +21,8 @@ class ConferenceController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExpertServiceConference::class);
+
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
                                         ->select('expert_service_conferences.*', 'dropdown_options.name as nature')
@@ -36,6 +38,8 @@ class ConferenceController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ExpertServiceConference::class);
+
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields'));
@@ -49,6 +53,8 @@ class ConferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExpertServiceConference::class);
+
         $request->validate([
             'nature' => 'required',
             'level' => 'required',
@@ -57,7 +63,7 @@ class ConferenceController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -99,6 +105,8 @@ class ConferenceController extends Controller
      */
     public function show(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('view', ExpertServiceConference::class);
+
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
         
         $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->nature.")");
@@ -116,6 +124,8 @@ class ConferenceController extends Controller
      */
     public function edit(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('update', ExpertServiceConference::class);
+
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
@@ -132,6 +142,8 @@ class ConferenceController extends Controller
      */
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('update', ExpertServiceConference::class);
+
         $request->validate([
             'nature' => 'required',
             'level' => 'required',
@@ -140,7 +152,7 @@ class ConferenceController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -181,12 +193,16 @@ class ConferenceController extends Controller
      */
     public function destroy(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('delete', ExpertServiceConference::class);
+
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
         return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Cours has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExpertServiceConference::class);
+
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

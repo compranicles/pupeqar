@@ -37,6 +37,9 @@
             @case("yes-no")
                 @include('maintenances.fieldtemplates.yes-no', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("percentage")
+                @include('maintenances.fieldtemplates.percentage', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
         @endswitch
     @endforeach
 </div>

@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\DB;
+
 
 class ResearchPolicy
 {
@@ -20,10 +22,10 @@ class ResearchPolicy
      */
     public function viewAny(User $user)
     {
-        $roles = UserRole::where('user_roles.user_id', $user->id)
-                 ->pluck('user_roles.role_id')->all();
+        $roles = DB::select("CALL get_roles_by_user_id($user->id)");
+        
         foreach ($roles as $role) {
-            $permission = RolePermission::where('role_permissions.role_id', $role)
+            $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "view all faculty research")
                             ->first();
@@ -42,10 +44,10 @@ class ResearchPolicy
      */
     public function view(User $user)
     {
-        $roles = UserRole::where('user_roles.user_id', $user->id)
-                ->pluck('user_roles.role_id')->all();
+        $roles = DB::select("CALL get_roles_by_user_id($user->id)");
+
         foreach ($roles as $role) {
-        $permission = RolePermission::where('role_permissions.role_id', $role)
+        $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                         ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                         ->where('permissions.name', "manage faculty research registration")
                         ->first();
@@ -63,10 +65,10 @@ class ResearchPolicy
      */
     public function create(User $user)
     {
-        $roles = UserRole::where('user_roles.user_id', $user->id)
-                 ->pluck('user_roles.role_id')->all();
+        $roles = DB::select("CALL get_roles_by_user_id($user->id)");
+
         foreach ($roles as $role) {
-            $permission = RolePermission::where('role_permissions.role_id', $role)
+            $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage faculty research registration")
                             ->first();
@@ -108,10 +110,10 @@ class ResearchPolicy
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function defer(User $user) {
-        $roles = UserRole::where('user_roles.user_id', $user->id)
-                 ->pluck('user_roles.role_id')->all();
+        $roles = DB::select("CALL get_roles_by_user_id($user->id)");
+
         foreach ($roles as $role) {
-            $permission = RolePermission::where('role_permissions.role_id', $role)
+            $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "defer research")
                             ->first();

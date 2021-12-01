@@ -107,7 +107,7 @@ class PublicationController extends Controller
             'volume' => 'numeric',
             'issue' => 'numeric',
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -223,7 +223,7 @@ class PublicationController extends Controller
             'volume' => 'numeric',
             'issue' => 'numeric',
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);

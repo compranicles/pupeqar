@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Colleges') }}
+            {{ __('Currencies') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -11,13 +11,6 @@
         </div>
 
         <div class="col-md-12">
-        <!--<div class="col-md-10 float-none m-0 m-auto"> -->
-          <h2 class="mb-2">Currencies</h2>
-
-          <p class="mb-3">
-            <a href="{{ route('currencies.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add Currency</a>
-          </p>
-          
           @if ($message = Session::get('edit_currency_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
               <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -33,48 +26,46 @@
           @endif 
 
           <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <table id="currency_table" class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>Code</th>
-                              <th>Name</th>
-                              <th>Symbol</th>
-                              <th>Actions</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        @foreach ($currencies as $currency)
-                          <tr>
-                            <td>{{ $currency->code }}</td>
-                            <td>{{ $currency->name }}</td>
-                            <td>{{ $currency->symbol }}</td>
-                            <td>
-                              <div role="group">
-                                  <a href="{{ route('currencies.edit', $currency->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
-                                  <button type="button" value="{{ $currency->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-currency="{{ $currency->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
-                              </div>
-                            </td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Code</th>
-                          <th>Name</th>
-                          <th>Symbol</th>
-                          <th>Actions</th>
-                      </tr>
-                      </tfoot>
-                  </table>
+                    <div class="card-body">
+                        <div class="mb-3 ml-1">
+                            <div class="d-inline mr-2">
+                                <a href="{{ route('currencies.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Currency</a>
+                            </div>
+                        </div>  
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table" id="currency_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Symbol</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($currencies as $currency)
+                                    <tr>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $currency->code }}</td>
+                                        <td>{{ $currency->name }}</td>
+                                        <td>{{ $currency->symbol }}</td>
+                                        <td>
+                                          <div role="group">
+                                              <a href="{{ route('currencies.edit', $currency->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                              <button type="button" value="{{ $currency->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-currency="{{ $currency->name }}"><i class="bi bi-trash"></i> Delete</button>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     {{-- Delete Modal --}}

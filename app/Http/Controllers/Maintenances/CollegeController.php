@@ -16,6 +16,8 @@ class CollegeController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', College::class);
+
         $colleges = College::get();
         return view('maintenances.colleges.index', compact('colleges'));
     }
@@ -27,6 +29,8 @@ class CollegeController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', College::class);
+
         return view('maintenances.colleges.create');
     }
 
@@ -38,6 +42,8 @@ class CollegeController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', College::class);
+
         //
         $validatecollege = $request->validate([
             'name' => 'required|max:200',
@@ -58,7 +64,8 @@ class CollegeController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('view', College::class);
+        
     }
 
     /**
@@ -70,6 +77,8 @@ class CollegeController extends Controller
     public function edit(College $college)
     {
         //
+        $this->authorize('update', College::class);
+
         $departments = Department::select('name')->where('college_id', $college->id)->get();
         // dd($departments);
 
@@ -86,6 +95,8 @@ class CollegeController extends Controller
      */
     public function update(Request $request, College $college)
     {
+        $this->authorize('update', College::class);
+
         //
         $request->validate([
             'name' => 'required|max:200',
@@ -106,6 +117,8 @@ class CollegeController extends Controller
      */
     public function destroy(College $college)
     {
+        $this->authorize('delete', College::class);
+
         //
         $college->delete();
 

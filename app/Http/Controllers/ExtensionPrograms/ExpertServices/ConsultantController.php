@@ -20,6 +20,7 @@ class ConsultantController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExpertServiceConsultant::class);
         
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
@@ -36,6 +37,8 @@ class ConsultantController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ExpertServiceConsultant::class);
+
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
         return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields'));
@@ -49,6 +52,8 @@ class ConsultantController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExpertServiceConsultant::class);
+
         $request->validate([
             'classification' => 'required',
             'category' => 'required',
@@ -58,7 +63,7 @@ class ConsultantController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -100,6 +105,8 @@ class ConsultantController extends Controller
      */
     public function show(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('view', ExpertServiceConsultant::class);
+
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
         
         $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->classification.")");
@@ -120,6 +127,8 @@ class ConsultantController extends Controller
      */
     public function edit(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('update', ExpertServiceConsultant::class);
+
         // dd($expert_service_as_consultant);
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
@@ -137,6 +146,8 @@ class ConsultantController extends Controller
      */
     public function update(Request $request, ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('update', ExpertServiceConsultant::class);
+
         $request->validate([
             'classification' => 'required',
             'category' => 'required',
@@ -146,7 +157,7 @@ class ConsultantController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -187,12 +198,16 @@ class ConsultantController extends Controller
      */
     public function destroy(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('delete', ExpertServiceConsultant::class);
+
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
         return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExpertServiceConsultant::class);
+
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

@@ -66,7 +66,8 @@ class InventionFormPolicy
      */
     public function update(User $user)
     {
-        abort(404);
+        return $this->viewAny($user);
+
     }
 
     /**
@@ -79,6 +80,7 @@ class InventionFormPolicy
     public function delete(User $user)
     {
         //
-        abort(404);
+        return $this->viewAny($user);
+
     }
 }

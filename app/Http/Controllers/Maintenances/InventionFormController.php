@@ -33,7 +33,8 @@ class InventionFormController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
+        
     }
 
     /**
@@ -128,7 +129,8 @@ class InventionFormController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(404);
+        
     }
 
     /**
@@ -140,7 +142,7 @@ class InventionFormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -151,10 +153,12 @@ class InventionFormController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
     
     public function activate($id){
+        $this->authorize('update', InventionForm::class);
+
         InventionForm::where('id', $id)->update([
             'is_active' => 1
         ]);
@@ -163,6 +167,8 @@ class InventionFormController extends Controller
     }
 
     public function inactivate($id){
+        $this->authorize('update', InventionForm::class);
+
         InventionForm::where('id', $id)->update([
             'is_active' => 0
         ]);

@@ -108,7 +108,7 @@ class PresentationController extends Controller
             // 'venue' => '',
             'date_presented' => 'required|date',
             'level' => 'required', 
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -218,7 +218,7 @@ class PresentationController extends Controller
             // 'venue' => '',
             'date_presented' => 'required|date',
             'level' => 'required', 
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);

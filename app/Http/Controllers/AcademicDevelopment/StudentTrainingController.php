@@ -19,6 +19,8 @@ class StudentTrainingController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', StudentTraining::class);
+
         $student_trainings = StudentTraining::where('user_id', auth()->id())->get();
 
         return view('academic-development.student-training.index', compact('student_trainings'));
@@ -31,6 +33,8 @@ class StudentTrainingController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', StudentTraining::class);
+
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         return view('academic-development.student-training.create', compact('studentFields'));
@@ -44,7 +48,27 @@ class StudentTrainingController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', StudentTraining::class);
+
+        $request->validate([
+            'name_of_student' => 'required',
+            'title' => 'required',
+            'classification' => 'required',
+            'nature' => 'required',
+            'currency-budget' => 'required',
+            'budget' => 'required|numeric',
+            // 'source_of_fund' => '',
+            'organization' => 'required',
+            'level' => 'required',
+            // 'venue' => '',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'total_hours' => 'required|numeric',
+            // 'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
+        // dd($input);
 
         $student_training = StudentTraining::create($input);
         $student_training->update(['user_id' => auth()->id()]);
@@ -83,6 +107,8 @@ class StudentTrainingController extends Controller
      */
     public function show(StudentTraining $student_training)
     {
+        $this->authorize('view', StudentTraining::class);
+
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
@@ -101,6 +127,8 @@ class StudentTrainingController extends Controller
      */
     public function edit(StudentTraining $student_training)
     {
+        $this->authorize('update', StudentTraining::class);
+
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
@@ -119,6 +147,25 @@ class StudentTrainingController extends Controller
      */
     public function update(Request $request, StudentTraining $student_training)
     {
+        $this->authorize('update', StudentTraining::class);
+
+        $request->validate([
+            'name_of_student' => 'required',
+            'title' => 'required',
+            'classification' => 'required',
+            'nature' => 'required',
+            'currency_budget' => 'required',
+            'budget' => 'required|numeric',
+            // 'source_of_fund' => '',
+            'organization' => 'required',
+            'level' => 'required',
+            // 'venue' => '',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'total_hours' => 'required|numeric',
+            // 'description' => 'required',
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_training->update($input);
@@ -157,12 +204,16 @@ class StudentTrainingController extends Controller
      */
     public function destroy(StudentTraining $student_training)
     {
+        $this->authorize('delete', StudentTraining::class);
+
         StudentTrainingDocument::where('student_training_id', $student_training->id)->delete();
         $student_training->delete();
         return redirect()->route('student-training.index')->with('student_success', 'Your accomplishment in Student Attended Seminars and Trainings has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', StudentTraining::class);
+
         StudentTrainingDocument::where('filename', $filename)->delete();
         return true;
     }

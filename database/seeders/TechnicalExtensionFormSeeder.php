@@ -135,7 +135,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'academic_development_form_id' => 7,
             'label' => 'Total Profit/ Income of the Adoptors',
             'name' => 'total_profit',
-            'placeholder' => null,
+            'placeholder' => '0.00',
             'size' => 'col-md-6',
             'field_type_id' => 3,
             'dropdown_id' => null, 

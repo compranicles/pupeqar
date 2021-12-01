@@ -22,6 +22,8 @@ class InventionController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Invention::class);
+
         $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
         ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
 
@@ -39,6 +41,8 @@ class InventionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Invention::class);
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $colleges = College::all();
@@ -53,23 +57,26 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Invention::class);
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
             'title' => 'required',
             // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_type' => 'required',
             'status' => 'required',
             'start_date' => 'required_unless:status, 55|date',
             'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            // 'copyright_number' => '',
+            'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -111,6 +118,8 @@ class InventionController extends Controller
      */
     public function show(Invention $invention_innovation_creative)
     {
+        $this->authorize('view', Invention::class);
+
         // dd($fields);
         $classification = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->classification.")");
         
@@ -136,6 +145,8 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention_innovation_creative)
     {
+        $this->authorize('update', Invention::class);
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
@@ -161,23 +172,26 @@ class InventionController extends Controller
      */
     public function update(Request $request, Invention $invention_innovation_creative)
     {
+        $this->authorize('update', Invention::class);
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
             'title' => 'required',
             // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_type' => 'required',
             'status' => 'required',
             'start_date' => 'required_unless:status, 55|date',
             'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            // 'copyright_number' => '',
+            'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -218,12 +232,16 @@ class InventionController extends Controller
      */
     public function destroy(Invention $invention_innovation_creative)
     {
+        $this->authorize('delete', Invention::class);
+
         $invention_innovation_creative->delete();
         InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
         return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Invention::class);
+
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

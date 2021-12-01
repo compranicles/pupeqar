@@ -75,14 +75,15 @@ class ResearchController extends Controller
             'nature_of_involvement' => 'required',
             'research_type' => 'required',
             'funding_type' => 'required',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
             'start_date' => 'required_unless:status,32|date',
             'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
-            // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $departmentIni = '';
@@ -260,6 +261,7 @@ class ResearchController extends Controller
             'nature_of_involvement' => 'required',
             'research_type' => 'required',
             'funding_type' => 'required',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
             'start_date' => 'required_unless:status,32|date',
@@ -267,7 +269,7 @@ class ResearchController extends Controller
             'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'funding_type']);

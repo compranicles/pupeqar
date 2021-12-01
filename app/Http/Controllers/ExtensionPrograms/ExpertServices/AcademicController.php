@@ -22,6 +22,8 @@ class AcademicController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExpertServiceAcademic::class);
+
         $expertServicesAcademic = ExpertServiceAcademic::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
                                         ->select('expert_service_academics.*', 'dropdown_options.name as classification')
@@ -37,6 +39,8 @@ class AcademicController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ExpertServiceAcademic::class);
+
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
         $colleges = College::all();
@@ -52,18 +56,20 @@ class AcademicController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExpertServiceAcademic::class);
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
             // 'publication_or_audio_visual' => '',
-            // 'copyright_no' => '',
+            'copyright_no' => 'required',
             // 'indexing' => '',
             'level' => 'required',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -105,6 +111,8 @@ class AcademicController extends Controller
      */
     public function show(ExpertServiceAcademic $expert_service_in_academic)
     {
+        $this->authorize('view', ExpertServiceAcademic::class);
+
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
@@ -130,6 +138,8 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
+        $this->authorize('update', ExpertServiceAcademic::class);
+
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
@@ -156,18 +166,20 @@ class AcademicController extends Controller
      */
     public function update(Request $request, ExpertServiceAcademic $expert_service_in_academic)
     {
+        $this->authorize('update', ExpertServiceAcademic::class);
+
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
             // 'publication_or_audio_visual' => '',
-            // 'copyright_no' => '',
+            'copyright_no' => 'required',
             // 'indexing' => '',
             'level' => 'required',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -208,12 +220,16 @@ class AcademicController extends Controller
      */
     public function destroy(ExpertServiceAcademic $expert_service_in_academic)
     {
+        $this->authorize('delete', ExpertServiceAcademic::class);
+
         $expert_service_in_academic->delete();
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
         return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExpertServiceAcademic::class);
+
         ExpertServiceAcademicDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

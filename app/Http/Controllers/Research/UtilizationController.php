@@ -65,7 +65,7 @@ class UtilizationController extends Controller
             'organization' => 'required',
             'utilization_description' => 'required',
             'level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -165,7 +165,7 @@ class UtilizationController extends Controller
             'organization' => 'required',
             'utilization_description' => 'required',
             'level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'document']);

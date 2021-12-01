@@ -108,4 +108,19 @@ class UserPolicy
 
         }
     }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function is_super_admin(User $user) {
+        $is_superadmin = UserRole::where('user_roles.user_id', $user->id)
+            ->where('user_roles.user_id', 9)
+            ->get();
+
+            return $is_superadmin !== null ;
+    }
 }

@@ -70,7 +70,7 @@ class CitationController extends Controller
             'page' => 'required|numeric',
             // 'year' => ''
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -176,7 +176,7 @@ class CitationController extends Controller
             'page' => 'required|numeric',
             // 'year' => ''
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

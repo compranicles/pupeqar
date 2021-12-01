@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Add College') }}
+            {{ __('Add Currency') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -14,7 +14,7 @@
           <div class="col-md-7 float-none m-0 m-auto">
             <div class="d-flex align-content-center">
               <h2 class="mr-3">Currencies</h2>
-              <p class="mt-2 mr-3">Add Currencies</p>
+              <p class="mt-2 mr-3">Add Currency.</p>
               <p class="mt-2">
                 <a class="back_link" href="{{ route('currencies.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Currencies</a>
               </p>
