@@ -8,9 +8,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
-                    <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership/ Linkages/ Network</a>
-                </p>
+                <div class="d-flex mr-2">
+                    <p class="mr-auto">
+                    <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages, and Network</a>
+
+                    </p>
+                    <p>
+                        <a href="{{ route('partnership.edit', $partnership->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    </p>
+                    <p>
+                        <button type="button" value="{{ $partnership->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                    </p>
+                </div>
                 @include('show', ['formFields' => $partnershipFields, 'value' => $values])
             </div>
         </div>
