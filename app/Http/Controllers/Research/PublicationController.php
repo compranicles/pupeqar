@@ -105,7 +105,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'publisher' => 'required',
             'journal_name' => 'required',
             // 'editor' => '',
@@ -229,7 +229,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'publisher' => 'required',
             'journal_name' => 'required',
             // 'editor' => '',

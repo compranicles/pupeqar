@@ -120,21 +120,15 @@ class AcademicController extends Controller
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
+
+        $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
         
-        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
+        $documents = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
 
-        $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->classification.")");
-        
-        $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->nature.")");
+        $values = $expert_service_in_academic->toArray();
+         
 
-        $indexing = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->indexing.")");
-
-        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_academic->level.")");
-
-        return view('extension-programs.expert-services.academic.show', compact('expert_service_in_academic', 'expertServiceAcademicDocuments', 
-            'collegeAndDepartment', 'classification', 'nature',
-            'indexing', 'level'));
+        return view('extension-programs.expert-services.academic.show', compact('expertServiceAcademicFields', 'expert_service_in_academic', 'documents', 'values'));
     }
 
     /**

@@ -218,7 +218,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->include_once)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Added Successfully');
     }
 
     /**

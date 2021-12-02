@@ -37,7 +37,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Title</th>
+                                        <th>Publication/ Audio Visual Production</th>
                                         <th>Classification</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
@@ -47,7 +47,7 @@
                                     @foreach ($expertServicesAcademic as $expertServiceAcademic)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
                                         <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->classification }}</td>
                                         <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->updated_at }}</td>
                                         <td>

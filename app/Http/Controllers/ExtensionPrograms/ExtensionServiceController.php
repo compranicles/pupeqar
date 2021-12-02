@@ -76,16 +76,16 @@ class ExtensionServiceController extends Controller
         $request->validate([
             'level' => 'required',
             'status' => 'required',
-            'nature' => 'required',
+            'nature_of_involvement' => 'required',
             'classification' => 'required',
             'type' => 'required',
-            'title_of_extension_program' => '',
-            'title_of_extension_project' => '',
-            'title_of_extension_activity' => '',
+            // 'title_of_extension_program' => '',
+            // 'title_of_extension_project' => '',
+            // 'title_of_extension_activity' => '',
+            'type_of_funding' => 'required',
             'funding_agency' => 'required_if:funding_type, 123',
             'currency_amount_of_funding' => 'required',
             'amount_of_funding' => 'numeric',
-            'type_of_funding' => 'required',
             'status' => 'required',
             'from' => 'required_unless:status, 107|date',
             'to' => 'date|after_or_equal:from',
@@ -148,7 +148,7 @@ class ExtensionServiceController extends Controller
      */
     public function show(ExtensionService $extension_service)
     {
-        $this->authorize('show', ExtensionService::class);
+        $this->authorize('view', ExtensionService::class);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -212,7 +212,7 @@ class ExtensionServiceController extends Controller
         $request->validate([
             'level' => 'required',
             'status' => 'required',
-            'nature' => 'required',
+            'nature_of_involvement' => 'required',
             'classification' => 'required',
             'type' => 'required',
             'title_of_extension_program' => '',
@@ -245,7 +245,7 @@ class ExtensionServiceController extends Controller
             'timeliness_outstanding' => 'numeric',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $extension_service->update($input);
 

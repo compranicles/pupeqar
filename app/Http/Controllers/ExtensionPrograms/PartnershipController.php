@@ -77,7 +77,7 @@ class PartnershipController extends Controller
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
@@ -191,7 +191,7 @@ class PartnershipController extends Controller
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $partnership->update($input);
 

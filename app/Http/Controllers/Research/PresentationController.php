@@ -110,7 +110,7 @@ class PresentationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'conference_title' => 'required',
             // 'organizer' => '',
             // 'venue' => '',
@@ -228,7 +228,7 @@ class PresentationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'conference_title' => 'required',
             // 'organizer' => '',
             // 'venue' => '',

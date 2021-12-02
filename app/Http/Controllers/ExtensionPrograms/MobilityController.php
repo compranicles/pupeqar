@@ -70,7 +70,7 @@ class MobilityController extends Controller
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
@@ -177,7 +177,7 @@ class MobilityController extends Controller
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility->update($input);
 

@@ -63,7 +63,7 @@ class ResearchCopyrightPolicy
      * @param  \App\Models\ResearchCopyright  $researchCopyright
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, ResearchCopyright $researchCopyright)
+    public function update(User $user)
     {
         return $this->viewAny($user);
     }

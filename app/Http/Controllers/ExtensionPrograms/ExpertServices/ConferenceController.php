@@ -116,13 +116,15 @@ class ConferenceController extends Controller
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
         
-        $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->nature.")");
+        $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
-        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->level.")");
 
-        return view('extension-programs.expert-services.conference.show', compact('expert_service_in_conference', 'expertServiceConferenceDocuments', 'nature', 'level'));
+        $documents = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
+        $values = $expert_service_in_conference->toArray();
+        
+
+        return view('extension-programs.expert-services.conference.show', compact('expertServiceConferenceFields','expert_service_in_conference', 'documents', 'values'));
     }
 
     /**

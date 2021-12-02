@@ -18,7 +18,7 @@
                         <form action="{{ route('research.citation.update', [$research['id'], $values['id']]) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('research.form', ['formFields' => $researchFields, 'value' => $values])
+                            @include('form', ['formFields' => $researchFields, 'value' => $values])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

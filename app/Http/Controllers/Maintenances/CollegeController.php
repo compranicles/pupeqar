@@ -126,6 +126,7 @@ class CollegeController extends Controller
     }
 
     public function getCollegeName($id){
+        
         return College::where('id', $id)->pluck('name')->first();
     }
 }
