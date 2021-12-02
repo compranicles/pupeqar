@@ -74,7 +74,7 @@ class UtilizationController extends Controller
             'organization' => 'required',
             'utilization_description' => 'required',
             'level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -186,7 +186,7 @@ class UtilizationController extends Controller
             'organization' => 'required',
             'utilization_description' => 'required',
             'level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'document']);
@@ -218,7 +218,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->include_once)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Added Successfully');
     }
 
     /**

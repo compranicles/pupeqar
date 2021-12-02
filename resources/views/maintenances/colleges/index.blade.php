@@ -11,13 +11,6 @@
         </div>
 
         <div class="col-md-12">
-        <!--<div class="col-md-10 float-none m-0 m-auto"> -->
-          <h2 class="mb-2">Colleges</h2>
-
-          <p class="mb-3">
-            <a href="{{ route('colleges.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add College</a>
-          </p>
-          
           @if ($message = Session::get('edit_college_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
               <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -33,42 +26,42 @@
           @endif 
 
           <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <table id="college_table" class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Actions</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        @foreach ($colleges as $college)
-                          <tr>
-                            <td>{{ $college->name }}</td>
-                            <td>
-                              <div role="group">
-                                  <a href="{{ route('colleges.edit', $college->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
-                                  <button type="button" value="{{ $college->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-college="{{ $college->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
-                              </div>
-                            </td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Name</th>
-                          <th>Actions</th>
-                      </tr>
-                      </tfoot>
-                  </table>
+                    <div class="card-body">
+                        <div class="mb-3 ml-1">
+                            <div class="d-inline mr-2">
+                                <a href="{{ route('colleges.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add College, Branch, or Office</a>
+                            </div>
+                        </div>  
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table" id="college_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($colleges as $college)
+                                    <tr>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $college->name }}</td>
+                                        <td>
+                                          <div role="group">
+                                              <a href="{{ route('colleges.edit', $college->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                              <button type="button" value="{{ $college->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-college="{{ $college->name }}"><i class="bi bi-trash"></i> Delete</button>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     {{-- Delete Modal --}}

@@ -1,4 +1,4 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <td>{{ date('m/d/Y', strtotime($value)) }}</td>
+    <td>{{ ($value == null) ? '' : date('m/d/Y', strtotime($value)) }}</td>
 </tr>

@@ -29,5 +29,6 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->insert(['name' => 'college']);
         DB::table('field_types')->insert(['name' => 'department']);
         DB::table('field_types')->insert(['name' => 'yes-no']);
+        DB::table('field_types')->insert(['name' => 'percentage']);
     }
 }

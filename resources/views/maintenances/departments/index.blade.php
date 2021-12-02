@@ -11,13 +11,6 @@
         </div>
 
         <div class="col-md-12">
-        <!--<div class="col-md-10 float-none m-0 m-auto"> -->
-          <h2 class="mb-2">Departments</h2>
-
-          <p class="mb-3">
-            <a href="{{ route('departments.create') }}" class="btn btn-md btn-primary"><i class="bi bi-plus mr-1"></i>Add Department</a>
-          </p>
-          
           @if ($message = Session::get('edit_department_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
               <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -33,42 +26,42 @@
           @endif 
 
           <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <table id="department_table" class="table table-hover">
-                      <thead>
-                          <tr>
-                              <th>Name</th>
-                              <th>Actions</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        @foreach ($departments as $department)
-                          <tr>
-                            <td>{{ $department->name }}</td>
-                            <td>
-                              <div role="group">
-                                  <a href="{{ route('departments.edit', $department->id) }}"  class="btn btn-outline-success btn-sm mr-3"><i class="bi bi-pencil-square mr-2"></i>Edit</a>
-                                  <button type="button" value="{{ $department->id }}" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash mr-2"></i>Delete</button>
-                              </div>
-                            </td>
-                          </tr>
-                        @endforeach
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Name</th>
-                          <th>Actions</th>
-                      </tr>
-                      </tfoot>
-                  </table>
+                    <div class="card-body">
+                        <div class="mb-3 ml-1">
+                            <div class="d-inline mr-2">
+                                <a href="{{ route('departments.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Department</a>
+                            </div>
+                        </div>  
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table" id="department_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($departments as $department)
+                                    <tr>
+                                        <th>{{ $loop->iteration }}</th>
+                                        <td>{{ $department->name }}</td>
+                                        <td>
+                                          <div role="group">
+                                              <a href="{{ route('departments.edit', $department->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                              <button type="button" value="{{ $department->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash"></i> Delete</button>
+                                          </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
 
     {{-- Delete Modal --}}
@@ -100,7 +93,7 @@
               return NULL;     
             }
         });
-
+        
         //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {

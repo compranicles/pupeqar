@@ -20,6 +20,8 @@ class TechnicalExtensionController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', TechnicalExtension::class);
+
         $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->get();
         return view('academic-development.technical-extension.index', compact('technical_extensions'));
     }
@@ -31,6 +33,8 @@ class TechnicalExtensionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', TechnicalExtension::class);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -46,6 +50,23 @@ class TechnicalExtensionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', TechnicalExtension::class);
+
+        $request->validate([
+            'moa_code' => 'required',
+            'program_title' => 'required',
+            // 'project_title' => '',
+            // 'activity_title' => '',
+            // 'name_of_adoptor' => '',
+            'classification_of_adoptor' => 'required',
+            // 'nature_of_business_enterprise' => '',
+            'has_businesses' => 'required',
+            'is_borrowed' => 'required',
+            'currency_total_profit' => 'required',
+            'total_profit' => 'numeric',
+            // 'description' => 'required',
+        ]);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -87,6 +108,8 @@ class TechnicalExtensionController extends Controller
      */
     public function show(TechnicalExtension $technical_extension)
     {
+        $this->authorize('view', TechnicalExtension::class);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -106,6 +129,8 @@ class TechnicalExtensionController extends Controller
      */
     public function edit(TechnicalExtension $technical_extension)
     {
+        $this->authorize('update', TechnicalExtension::class);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -126,6 +151,23 @@ class TechnicalExtensionController extends Controller
      */
     public function update(Request $request, TechnicalExtension $technical_extension)
     {
+        $this->authorize('update', TechnicalExtension::class);
+
+        $request->validate([
+            'moa_code' => 'required',
+            'program_title' => 'required',
+            // 'project_title' => '',
+            // 'activity_title' => '',
+            // 'name_of_adoptor' => '',
+            'classification_of_adoptor' => 'required',
+            // 'nature_of_business_enterprise' => '',
+            'has_businesses' => 'required',
+            'is_borrowed' => 'required',
+            'currency_total_profit' => 'required',
+            'total_profit' => 'numeric',
+            // 'description' => 'required',
+        ]);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -166,6 +208,8 @@ class TechnicalExtensionController extends Controller
      */
     public function destroy(TechnicalExtension $technical_extension)
     {
+        $this->authorize('delete', TechnicalExtension::class);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
@@ -174,6 +218,8 @@ class TechnicalExtensionController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', TechnicalExtension::class);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         TechnicalExtensionDocument::where('filename', $filename)->delete();

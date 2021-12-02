@@ -23,13 +23,13 @@ class InventionController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Invention::class);
+
         $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
         ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
 
-        $classifications = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
-        ->select('dropdown_options.name as classification_name')->orderBy('inventions.updated_at', 'desc')->get();
 
-        return view('inventions.index', compact('inventions', 'classifications'));
+        return view('inventions.index', compact('inventions'));
 
     }
 
@@ -40,6 +40,7 @@ class InventionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Invention::class);
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -57,6 +58,7 @@ class InventionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Invention::class);
 
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -67,24 +69,28 @@ class InventionController extends Controller
             'title' => 'required',
             // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
-            'funding_amount' => 'numeric',
+            'currency_funding_amount' => 'required',
+            // 'funding_amount' => 'numeric',
             'funding_type' => 'required',
             'status' => 'required',
             'start_date' => 'required_unless:status, 55|date',
             'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            // 'copyright_number' => '',
+            'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
+        $funding_amount = $request->input('funding_amount');    
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $funding_amount = str_replace( ',' , '', $funding_amount);
+
+        $input = $request->except(['_token', '_method', 'document', 'college_id', 'funding_amount']);
 
         $iicw = Invention::create($input);
-        $iicw->update(['user_id' => auth()->id()]);
+        $iicw->update(['user_id' => auth()->id(), 'funding_amount' => $funding_amount]);
 
         if($request->has('document')){
             
@@ -120,24 +126,19 @@ class InventionController extends Controller
      */
     public function show(Invention $invention_innovation_creative)
     {
+        $this->authorize('view', Invention::class);
+
         // dd($fields);
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $classification = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->classification.")");
+        $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
         
-        $funding_type = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->funding_type.")");
+        $values = $invention_innovation_creative->toArray();
 
+        $documents = InventionDocument::where('id', $invention_innovation_creative->id)->get()->toArray();
 
-        $status = DB::select("CALL get_dropdown_name_by_id(".$invention_innovation_creative->status.")");
-
-
-        $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
-
-        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
-
-        return view('inventions.show', compact('invention_innovation_creative', 'classification', 'funding_type',
-                    'status', 'inventionDocuments', 'collegeAndDepartment'));
+        return view('inventions.show', compact('invention_innovation_creative','inventionFields', 'values', 'documents'));
     }
 
     /**
@@ -148,6 +149,7 @@ class InventionController extends Controller
      */
     public function edit(Invention $invention_innovation_creative)
     {
+        $this->authorize('update', Invention::class);
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -176,6 +178,7 @@ class InventionController extends Controller
      */
     public function update(Request $request, Invention $invention_innovation_creative)
     {
+        $this->authorize('update', Invention::class);
 
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -186,23 +189,28 @@ class InventionController extends Controller
             'title' => 'required',
             // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
-            'funding_amount' => 'numeric',
+            'currency_funding_amount' => 'required',
+            // 'funding_amount' => 'numeric',
             'funding_type' => 'required',
             'status' => 'required',
             'start_date' => 'required_unless:status, 55|date',
             'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            // 'copyright_number' => '',
+            'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
+        $funding_amount = $request->input('funding_amount');    
+
+        $funding_amount = str_replace( ',' , '', $funding_amount);
 
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id', 'funding_amount']);
 
         $invention_innovation_creative->update($input);
+        $invention_innovation_creative->update(['funding_amount' => $funding_amount]);
 
         if($request->has('document')){
             
@@ -238,6 +246,7 @@ class InventionController extends Controller
      */
     public function destroy(Invention $invention_innovation_creative)
     {
+        $this->authorize('delete', Invention::class);
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -248,6 +257,8 @@ class InventionController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Invention::class);
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
             

@@ -83,7 +83,7 @@ class CopyrightedController extends Controller
             'copyright_number' => 'required',
             'copyright_year' => 'required',
             'copyright_level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -171,7 +171,7 @@ class CopyrightedController extends Controller
             'copyright_number' => 'required',
             'copyright_year' => 'required',
             'copyright_level' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'document']);

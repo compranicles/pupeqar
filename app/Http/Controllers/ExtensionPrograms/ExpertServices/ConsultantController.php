@@ -21,6 +21,8 @@ class ConsultantController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExpertServiceConsultant::class);
+        
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
@@ -36,6 +38,8 @@ class ConsultantController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ExpertServiceConsultant::class);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
@@ -51,6 +55,7 @@ class ConsultantController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExpertServiceConsultant::class);
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -64,7 +69,7 @@ class ConsultantController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -106,18 +111,16 @@ class ConsultantController extends Controller
      */
     public function show(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('view', ExpertServiceConsultant::class);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
-        
-        $classification = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->classification.")");
 
-        $category = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->category.")");
+        $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
+        $documents = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
+        $values = $expert_service_as_consultant->toArray();
 
-        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_as_consultant->level.")");
-
-        return view('extension-programs.expert-services.consultant.show', compact('expert_service_as_consultant', 'expertServiceConsultantDocuments',
-                    'classification', 'category', 'level'));
+        return view('extension-programs.expert-services.consultant.show', compact('expertServiceConsultantFields','expert_service_as_consultant', 'documents', 'values'));
     }
 
     /**
@@ -128,6 +131,8 @@ class ConsultantController extends Controller
      */
     public function edit(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('update', ExpertServiceConsultant::class);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         // dd($expert_service_as_consultant);
@@ -147,6 +152,7 @@ class ConsultantController extends Controller
      */
     public function update(Request $request, ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('update', ExpertServiceConsultant::class);
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -160,7 +166,7 @@ class ConsultantController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -201,6 +207,8 @@ class ConsultantController extends Controller
      */
     public function destroy(ExpertServiceConsultant $expert_service_as_consultant)
     {
+        $this->authorize('delete', ExpertServiceConsultant::class);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expert_service_as_consultant->delete();
@@ -209,6 +217,8 @@ class ConsultantController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExpertServiceConsultant::class);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();

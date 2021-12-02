@@ -8,9 +8,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
-                    <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
-                </p>
+                <div class="d-flex mr-2">
+                    <p class="mr-auto">
+                        <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
+                    </p>
+                    <p>
+                        <a href="{{ route('outreach-program.edit', $outreach_program->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    </p>
+                    <p>
+                        <button type="button" value="{{ $outreach_program->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                    </p>
+                </div>
                 @include('show', ['formFields' => $outreachFields, 'value' => $values])
             </div>
         </div>

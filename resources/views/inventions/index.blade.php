@@ -35,7 +35,6 @@
                                     <tr>
                                         <th></th>
                                         <th>Title</th>
-                                        <th>Classification</th>
                                         <th>Status</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
@@ -43,11 +42,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($inventions as $invention)
-                                    @foreach ($classifications as $classification)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $classification->classification_name }}</td>
                                         <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->status_name }}</td>
                                         <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->updated_at }}</td>
                                         <td>
@@ -57,7 +54,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    @endforeach
                                     @endforeach
                                 </tbody>
                             </table>

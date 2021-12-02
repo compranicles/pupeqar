@@ -21,6 +21,8 @@ class OutreachProgramController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', OutreachProgram::class);
+
         $outreach_programs = OutreachProgram::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
         return view('extension-programs.outreach-program.index', compact('outreach_programs'));
     }
@@ -32,6 +34,8 @@ class OutreachProgramController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', OutreachProgram::class);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -47,6 +51,16 @@ class OutreachProgramController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', OutreachProgram::class);
+
+        $request->validate([
+            'title_of_the_program' => 'required',
+            'place' => 'required',
+            'date' => 'required|date',
+            'level' => 'required',
+            // 'description' => 'required',
+        ]);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -89,6 +103,8 @@ class OutreachProgramController extends Controller
      */
     public function show(OutreachProgram $outreach_program)
     {
+        $this->authorize('view', OutreachProgram::class);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -108,6 +124,8 @@ class OutreachProgramController extends Controller
      */
     public function edit(OutreachProgram $outreach_program)
     {
+        $this->authorize('update', OutreachProgram::class);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -128,6 +146,16 @@ class OutreachProgramController extends Controller
      */
     public function update(Request $request, OutreachProgram $outreach_program)
     {
+        $this->authorize('update', OutreachProgram::class);
+
+        $request->validate([
+            'title_of_the_program' => 'required',
+            'place' => 'required',
+            'date' => 'required|date',
+            'level' => 'required',
+            // 'description' => 'required',
+        ]);
+        
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -169,6 +197,8 @@ class OutreachProgramController extends Controller
      */
     public function destroy(OutreachProgram $outreach_program)
     {
+        $this->authorize('delete', OutreachProgram::class);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
@@ -177,6 +207,8 @@ class OutreachProgramController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', OutreachProgram::class);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('filename', $filename)->delete();

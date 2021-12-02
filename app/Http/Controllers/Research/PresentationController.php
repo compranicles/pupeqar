@@ -110,13 +110,13 @@ class PresentationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'conference_title' => 'required',
             // 'organizer' => '',
             // 'venue' => '',
             'date_presented' => 'required|date',
             'level' => 'required', 
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -228,13 +228,13 @@ class PresentationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'conference_title' => 'required',
             // 'organizer' => '',
             // 'venue' => '',
             'date_presented' => 'required|date',
             'level' => 'required', 
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);

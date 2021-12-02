@@ -23,6 +23,8 @@ class ExtensionServiceController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExtensionService::class);
+
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
                                         ->select('extension_services.*', 'dropdown_options.name as status')
@@ -38,6 +40,9 @@ class ExtensionServiceController extends Controller
      */
     public function create()
     {
+        
+        $this->authorize('create', ExtensionService::class);
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         // $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
@@ -63,6 +68,7 @@ class ExtensionServiceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExtensionService::class);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -70,15 +76,16 @@ class ExtensionServiceController extends Controller
         $request->validate([
             'level' => 'required',
             'status' => 'required',
-            'nature' => 'required',
+            'nature_of_involvement' => 'required',
             'classification' => 'required',
             'type' => 'required',
-            'title_of_extension_program' => '',
-            'title_of_extension_project' => '',
-            'title_of_extension_activity' => '',
-            'funding_agency' => 'required_if:funding_type, 123',
-            'amount_of_funding' => 'numeric',
+            // 'title_of_extension_program' => '',
+            // 'title_of_extension_project' => '',
+            // 'title_of_extension_activity' => '',
             'type_of_funding' => 'required',
+            'funding_agency' => 'required_if:funding_type, 123',
+            'currency_amount_of_funding' => 'required',
+            'amount_of_funding' => 'numeric',
             'status' => 'required',
             'from' => 'required_unless:status, 107|date',
             'to' => 'date|after_or_equal:from',
@@ -86,10 +93,10 @@ class ExtensionServiceController extends Controller
             'total_no_of_hours' => 'numeric',
             'classification_of_trainees_or_beneficiaries' => 'required',
             // 'place_or_venue' => '',
-            // 'keywords' => '',
+            'keywords' => 'required',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
             'quality_poor' => 'numeric',
             'quality_fair' => 'numeric',
             'quality_satisfactory' => 'numeric',
@@ -141,6 +148,8 @@ class ExtensionServiceController extends Controller
      */
     public function show(ExtensionService $extension_service)
     {
+        $this->authorize('view', ExtensionService::class);
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
@@ -164,6 +173,8 @@ class ExtensionServiceController extends Controller
      */
     public function edit(ExtensionService $extension_service)
     {
+        $this->authorize('update', ExtensionService::class);
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
@@ -192,6 +203,8 @@ class ExtensionServiceController extends Controller
      */
     public function update(Request $request, ExtensionService $extension_service)
     {
+        $this->authorize('update', ExtensionService::class);
+
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -199,13 +212,14 @@ class ExtensionServiceController extends Controller
         $request->validate([
             'level' => 'required',
             'status' => 'required',
-            'nature' => 'required',
+            'nature_of_involvement' => 'required',
             'classification' => 'required',
             'type' => 'required',
             'title_of_extension_program' => '',
             'title_of_extension_project' => '',
             'title_of_extension_activity' => '',
             'funding_agency' => 'required_if:funding_type, 123',
+            'currency_amount_of_funding' => 'required',
             'amount_of_funding' => 'numeric',
             'type_of_funding' => 'required',
             'status' => 'required',
@@ -215,10 +229,10 @@ class ExtensionServiceController extends Controller
             'total_no_of_hours' => 'numeric',
             'classification_of_trainees_or_beneficiaries' => 'required',
             // 'place_or_venue' => '',
-            // 'keywords' => '',
+            'keywords' => 'required',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
             'quality_poor' => 'numeric',
             'quality_fair' => 'numeric',
             'quality_satisfactory' => 'numeric',
@@ -231,7 +245,7 @@ class ExtensionServiceController extends Controller
             'timeliness_outstanding' => 'numeric',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'college_id']);
 
         $extension_service->update($input);
 
@@ -269,6 +283,8 @@ class ExtensionServiceController extends Controller
      */
     public function destroy(ExtensionService $extension_service)
     {
+        $this->authorize('delete', ExtensionService::class);
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extension_service->delete();
@@ -277,6 +293,8 @@ class ExtensionServiceController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExtensionService::class);
+
         ExtensionServiceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;

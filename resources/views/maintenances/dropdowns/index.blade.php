@@ -20,10 +20,11 @@
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <button class="btn btn-success .add-dropdown" data-toggle="modal" data-target="#addModal">
-                                    <i class="fas fa-plus"></i> Add
+                                    <i class="bi bi-plus"></i> Add
                                 </button>
                             </div>
                         </div>
+                        <hr>
 
                         {{-- Success Message --}}
                         @if ($message = Session::get('success'))

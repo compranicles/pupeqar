@@ -22,6 +22,8 @@ class ConferenceController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', ExpertServiceConference::class);
+
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
                                         ->select('expert_service_conferences.*', 'dropdown_options.name as nature')
@@ -37,6 +39,8 @@ class ConferenceController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ExpertServiceConference::class);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
@@ -52,6 +56,7 @@ class ConferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ExpertServiceConference::class);
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -64,7 +69,7 @@ class ConferenceController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
 
@@ -107,15 +112,19 @@ class ConferenceController extends Controller
      */
     public function show(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('view', ExpertServiceConference::class);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
         
-        $nature = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->nature.")");
+        $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
-        $level = DB::select("CALL get_dropdown_name_by_id(".$expert_service_in_conference->level.")");
 
-        return view('extension-programs.expert-services.conference.show', compact('expert_service_in_conference', 'expertServiceConferenceDocuments', 'nature', 'level'));
+        $documents = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
+        $values = $expert_service_in_conference->toArray();
+        
+
+        return view('extension-programs.expert-services.conference.show', compact('expertServiceConferenceFields','expert_service_in_conference', 'documents', 'values'));
     }
 
     /**
@@ -126,6 +135,8 @@ class ConferenceController extends Controller
      */
     public function edit(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('update', ExpertServiceConference::class);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
@@ -144,6 +155,7 @@ class ConferenceController extends Controller
      */
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('update', ExpertServiceConference::class);
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -156,7 +168,7 @@ class ConferenceController extends Controller
             'title' => 'required',
             // 'venue' => '',
             'partner_agency' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -197,6 +209,8 @@ class ConferenceController extends Controller
      */
     public function destroy(ExpertServiceConference $expert_service_in_conference)
     {
+        $this->authorize('delete', ExpertServiceConference::class);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expert_service_in_conference->delete();
@@ -205,6 +219,8 @@ class ConferenceController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', ExpertServiceConference::class);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();

@@ -22,6 +22,8 @@ class SyllabusController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Syllabus::class);
+
         $syllabi = Syllabus::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
                                         ->select('syllabi.*', 'dropdown_options.name as assigned_task_name')
@@ -37,6 +39,8 @@ class SyllabusController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
@@ -53,6 +57,8 @@ class SyllabusController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
       
@@ -62,7 +68,7 @@ class SyllabusController extends Controller
             'date_finished' => 'required|date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -104,6 +110,8 @@ class SyllabusController extends Controller
      */
     public function show(Syllabus $syllabu)
     {
+        $this->authorize('view', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -123,6 +131,8 @@ class SyllabusController extends Controller
      */
     public function edit(Syllabus $syllabu)
     {
+        $this->authorize('update', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
@@ -132,7 +142,7 @@ class SyllabusController extends Controller
         $colleges = College::all();
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
-
+        // dd($collegeOfDepartment);
         $value = $syllabu;
         $value->toArray();
         $value = collect($syllabu);
@@ -150,6 +160,8 @@ class SyllabusController extends Controller
      */
     public function update(Request $request, Syllabus $syllabu)
     {
+        $this->authorize('update', Syllabus::class);
+
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -159,7 +171,7 @@ class SyllabusController extends Controller
             'date_finished' => 'required|date',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => '',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -201,6 +213,8 @@ class SyllabusController extends Controller
      */
     public function destroy(Syllabus $syllabu)
     {
+        $this->authorize('delete', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabu->delete();
@@ -211,6 +225,8 @@ class SyllabusController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Syllabus::class);
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         SyllabusDocument::where('filename', $filename)->delete();

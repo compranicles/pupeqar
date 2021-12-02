@@ -75,19 +75,20 @@ class ResearchController extends Controller
             'category' => 'required',
             'agenda' => 'required',
             'title' => 'required',
-            'researcher' => 'required',
+            // 'researcher' => 'required',
             'keywords' => 'required',
-            'nature_of_involvement' => 'required',
+            // 'nature_of_involvement' => 'required',
             'research_type' => 'required',
             'funding_type' => 'required',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
-            'start_date' => 'required_unless:status,32|date',
-            'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
+            // 'start_date' => 'required_unless:status,32|date',
+            // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
             // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $departmentIni = '';
@@ -232,9 +233,8 @@ class ResearchController extends Controller
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
         $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
-                ->join('currencies', 'currencies.id', 'research.currency')
-                ->select('research.*', 'currencies.code as currency_code')->first()->toArray();
-        
+                ->first()->toArray();
+    
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
 
@@ -266,19 +266,20 @@ class ResearchController extends Controller
             'category' => 'required',
             'agenda' => 'required',
             'title' => 'required',
-            'researcher' => 'required',
+            // 'researcher' => 'required',
             'keywords' => 'required',
-            'nature_of_involvement' => 'required',
+            // 'nature_of_involvement' => 'required',
             'research_type' => 'required',
             'funding_type' => 'required',
+            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
-            'start_date' => 'required_unless:status,32|date',
-            'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
-            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
+            // 'start_date' => 'required_unless:status,32|date',
+            // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
+            // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'funding_type']);

@@ -8,9 +8,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
-                    <a class="back_link" href="{{ route('college-department-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Awards and Recognition Received by the College and Department</a>
-                </p>
+                <div class="d-flex mr-2">
+                    <p class="mr-auto">
+                        <a class="back_link" href="{{ route('college-department-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Awards and Recognition Received by the College and Department</a>
+                    </p>
+                    <p>
+                    <a href="{{ route('college-department-award.edit', $college_department_award->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    </p>
+                    <p>
+                    <button type="button" value="{{ $college_department_award->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                    </p>
+                </div>
                 @include('show', ['formFields' => $awardFields, 'value' => $values])
             </div>
         </div>

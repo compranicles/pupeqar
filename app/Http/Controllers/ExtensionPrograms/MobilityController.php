@@ -22,6 +22,8 @@ class MobilityController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Mobility::class);
+
         $mobilities = Mobility::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
         return view('extension-programs.mobility.index', compact('mobilities'));
     }
@@ -33,6 +35,8 @@ class MobilityController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Mobility::class);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -49,9 +53,24 @@ class MobilityController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Mobility::class);
+
+        $request->validate([
+            'nature_of_engagement' => 'required',
+            'type' => 'required',
+            'host_name' => 'required',
+            // 'host_address' => '',
+            'mobility_description' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            // 'description' => 'required',
+        ]);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
@@ -91,6 +110,8 @@ class MobilityController extends Controller
      */
     public function show(Mobility $mobility)
     {
+        $this->authorize('view', Mobility::class);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -110,6 +131,8 @@ class MobilityController extends Controller
      */
     public function edit(Mobility $mobility)
     {
+        $this->authorize('update', Mobility::class);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -137,9 +160,24 @@ class MobilityController extends Controller
      */
     public function update(Request $request, Mobility $mobility)
     {
+        $this->authorize('update', Mobility::class);
+
+        $request->validate([
+            'nature_of_engagement' => 'required',
+            'type' => 'required',
+            'host_name' => 'required',
+            // 'host_address' => '',
+            'mobility_description' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required',
+            // 'description' => 'required',
+        ]);
+        
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility->update($input);
 
@@ -177,6 +215,8 @@ class MobilityController extends Controller
      */
     public function destroy(Mobility $mobility)
     {
+        $this->authorize('delete', Mobility::class);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
@@ -185,6 +225,8 @@ class MobilityController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', Mobility::class);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         MobilityDocument::where('filename', $filename)->delete();

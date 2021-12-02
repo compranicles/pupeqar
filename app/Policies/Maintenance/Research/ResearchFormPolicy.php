@@ -52,7 +52,8 @@ class ResearchFormPolicy
      */
     public function create(User $user)
     {
-        abort(404);
+        return $this->viewAny($user);
+
     }
 
     /**
@@ -64,7 +65,8 @@ class ResearchFormPolicy
      */
     public function update(User $user, ResearchForm $researchForm)
     {
-        abort(404);
+        return $this->viewAny($user);
+
     }
 
     /**
@@ -76,7 +78,8 @@ class ResearchFormPolicy
      */
     public function delete(User $user, ResearchForm $researchForm)
     {
-        abort(404);
+        return $this->viewAny($user);
+
     }
 
 }

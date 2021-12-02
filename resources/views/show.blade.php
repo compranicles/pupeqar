@@ -17,7 +17,7 @@
                           @include('maintenances.showtemplates.daterange', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                           @break --}}
                       @case("currency-decimal")
-                          @include('maintenances.showtemplates.decimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? '', 'currency' => $value['currency'] ?? ''])    
+                          @include('maintenances.showtemplates.decimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? '', 'currency' => $value['currency_'.$field->name] ?? ''])    
                           @break
                       @case("dropdown")
                           @include('maintenances.showtemplates.dropdown', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])

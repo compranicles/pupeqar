@@ -105,7 +105,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'publisher' => 'required',
             'journal_name' => 'required',
             // 'editor' => '',
@@ -116,7 +116,7 @@ class PublicationController extends Controller
             'volume' => 'numeric',
             'issue' => 'numeric',
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -229,7 +229,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $request->validate([
-            'status' => 'required',
+            // 'status' => 'required',
             'publisher' => 'required',
             'journal_name' => 'required',
             // 'editor' => '',
@@ -240,7 +240,7 @@ class PublicationController extends Controller
             'volume' => 'numeric',
             'issue' => 'numeric',
             // 'indexing_platform' => '',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);

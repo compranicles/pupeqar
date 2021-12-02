@@ -5,7 +5,7 @@
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <select class="custom-select" name="currency" id="currency_select">
+                <select class="custom-select" name="currency_{{ $fieldInfo->name }}" id="currency_select_{{ $fieldInfo->name }}">
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
@@ -38,16 +38,16 @@
 
 @push('scripts')
     <script>
-        $('#currency_select').ready(function (){
+        $('#currency_select_{{ $fieldInfo->name }}').ready(function (){
             $.get("{{ route('currencies.list') }}", function (data){
                 data.forEach(function (item){
-                    $("#currency_select").append(new Option(item.code, item.id));
+                    $("#currency_select_{{ $fieldInfo->name }}").append(new Option(item.code, item.id));
                 });
                 var value = "{{ $currency }}";
                 if (value == ''){
-                    $("#currency_select").val(74);
+                    $("#currency_select_{{ $fieldInfo->name }}").val(74);
                 }else{
-                    $("#currency_select").val(value);
+                    $("#currency_select_{{ $fieldInfo->name }}").val(value);
                 }
             });
         });

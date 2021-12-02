@@ -16,6 +16,8 @@ class DepartmentController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Department::class);
+
         $departments = Department::get();
         return view('maintenances.departments.index', compact('departments'));
     }
@@ -27,6 +29,8 @@ class DepartmentController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Department::class);
+
         $colleges = College::get();
         return view('maintenances.departments.create', compact('colleges'));
     }
@@ -39,6 +43,8 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Department::class);
+
         $request->validate([
             'name' => 'required|max:300',
             'college' => 'required'
@@ -60,7 +66,8 @@ class DepartmentController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->authorize('view', Department::class);
+        
     }
 
     /**
@@ -71,6 +78,8 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
+        $this->authorize('update', Department::class);
+
         $collegeOfDept = $department->college->id;
         $colleges = College::get();
         return view('maintenances.departments.edit', compact('department', 'colleges', 'collegeOfDept'));
@@ -85,6 +94,8 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        $this->authorize('update', Department::class);
+
         //
         $request->validate([
             'name' => 'required|max:300',
@@ -107,6 +118,8 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
+        $this->authorize('delete', Department::class);
+
         //
         $department->delete();
         return redirect()->route('departments.index')->with('edit_department_success', 'Department has been deleted.');
@@ -119,4 +132,6 @@ class DepartmentController extends Controller
     public function getDepartmentName($id){
         return Department::where('id', $id)->pluck('name')->first();
     }
+
+    
 }

@@ -20,6 +20,8 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', CollegeDepartmentAward::class);
+
         $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())->get();
         return view('academic-development.college-department-award.index', compact('college_department_awards'));
     }
@@ -31,6 +33,8 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', CollegeDepartmentAward::class);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
@@ -46,6 +50,17 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', CollegeDepartmentAward::class);
+
+        $request->validate([
+            'name_of_award' => 'required',
+            'certifying_body' => 'required',
+            // 'place' => '',
+            'date' => 'required|date',
+            'level' => 'required',
+            // 'description' => 'required',
+        ]);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -87,6 +102,8 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function show(CollegeDepartmentAward $college_department_award)
     {
+        $this->authorize('view', CollegeDepartmentAward::class);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
@@ -106,6 +123,8 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function edit(CollegeDepartmentAward $college_department_award)
     {
+        $this->authorize('update', CollegeDepartmentAward::class);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
@@ -126,6 +145,17 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function update(Request $request, CollegeDepartmentAward $college_department_award)
     {
+        $this->authorize('update', CollegeDepartmentAward::class);
+
+        $request->validate([
+            'name_of_award' => 'required',
+            'certifying_body' => 'required',
+            // 'place' => '',
+            'date' => 'required|date',
+            'level' => 'required',
+            // 'description' => 'required',
+        ]);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -166,6 +196,8 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function destroy(CollegeDepartmentAward $college_department_award)
     {
+        $this->authorize('delete', CollegeDepartmentAward::class);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
@@ -174,6 +206,8 @@ class CollegeDepartmentAwardController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('delete', CollegeDepartmentAward::class);
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         CollegeDepartmentAwardDocument::where('filename', $filename)->delete();

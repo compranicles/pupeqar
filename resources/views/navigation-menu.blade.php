@@ -1,8 +1,8 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom sticky-top">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand mr-4" href="/dashboard" style="color:maroon">
-            <img src="{{ asset('img/android-chrome-192x192.png') }}" width="36" class="mr-1">
+        <a class="navbar-brand mr-4" href="/dashboard" style="color:white">
+            <img src="{{ URL('storage/logo2.png') }}" width="36" class="mr-1">
             PUP eQAR
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -47,10 +47,19 @@
                 </li>
                 @endcan
 
+                @admin
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
-                    <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*')) active @endif" role="button">Accomplishments</a>
+                    <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('faculty.invention-innovation-creative.*') ||
+                        request()->routeIs('technical-extension.*') || request()->routeIs('college-department-award.*') || 
+                        request()->routeIs('viable-project.*') || request()->routeIs('student-training.*') || 
+                        request()->routeIs('student-award.*') || request()->routeIs('faculty.rtmmi.*') || 
+                        request()->routeIs('faculty.syllabus.*') || request()->routeIs('outreach-program.*') || 
+                        request()->routeIs('mobility.*') || request()->routeIs('partnership.*') || 
+                        request()->routeIs('faculty.extension-service.*')) active @endif 
+                        " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
+                @endadmin
                 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}">
@@ -58,7 +67,7 @@
                     </x-jet-nav-link>
                 </li>
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
@@ -76,7 +85,7 @@
 
                         <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
 
             </ul>

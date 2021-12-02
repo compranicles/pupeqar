@@ -23,9 +23,8 @@
                         <div class="table-responsive">
                           <table class="table table-borderless show_table">
                               <tr>
-                                <th>{{ $referenceFields[0]->label }}</th>
-                                <td>{{ $rtmmi[$referenceFields[0]->name] }}</td>
-
+                                <th>Title</th>
+                                <td>{{ $rtmmi->title }}</td>
                               </tr>
                               <tr>
                                 <th>Authors/Compilers</th>

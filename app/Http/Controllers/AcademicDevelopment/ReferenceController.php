@@ -22,6 +22,8 @@ class ReferenceController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Reference::class);
+
         $allRtmmi = Reference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
                                         ->select('references.*', 'dropdown_options.name as category_name')
@@ -37,6 +39,8 @@ class ReferenceController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
@@ -53,6 +57,8 @@ class ReferenceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
       
@@ -71,7 +77,7 @@ class ReferenceController extends Controller
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -118,6 +124,8 @@ class ReferenceController extends Controller
      */
     public function show(Reference $rtmmi)
     {
+        $this->authorize('view', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
@@ -141,6 +149,8 @@ class ReferenceController extends Controller
      */
     public function edit(Reference $rtmmi)
     {
+        $this->authorize('update', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
@@ -170,6 +180,8 @@ class ReferenceController extends Controller
      */
     public function update(Request $request, Reference $rtmmi)
     {
+        $this->authorize('update', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
       
@@ -188,7 +200,7 @@ class ReferenceController extends Controller
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
             'department_id' => 'required',
-            'description' => 'required',
+            // 'description' => 'required',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'college_id']);
@@ -235,6 +247,8 @@ class ReferenceController extends Controller
      */
     public function destroy(Reference $rtmmi)
     {
+        $this->authorize('delete', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $rtmmi->delete();
@@ -250,6 +264,9 @@ class ReferenceController extends Controller
     }
 
     public function removeDoc($filename){
+        
+        $this->authorize('delete', Reference::class);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         ReferenceDocument::where('filename', $filename)->delete();

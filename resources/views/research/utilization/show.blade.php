@@ -35,7 +35,7 @@
                         </div>
                         <hr>
                         <fieldset id="research">
-                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $values,])
+                            @include('show', ['formFields' => $researchFields, 'value' => $values,])
                         </fieldset>
                     </div>
                 </div>
