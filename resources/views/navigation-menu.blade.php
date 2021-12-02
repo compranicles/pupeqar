@@ -67,7 +67,7 @@
                     </x-jet-nav-link>
                 </li>
 
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
@@ -85,7 +85,7 @@
 
                         <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
 
             </ul>

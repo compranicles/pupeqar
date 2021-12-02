@@ -142,7 +142,7 @@ class SyllabusController extends Controller
         $colleges = College::all();
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
-
+        // dd($collegeOfDepartment);
         $value = $syllabu;
         $value->toArray();
         $value = collect($syllabu);

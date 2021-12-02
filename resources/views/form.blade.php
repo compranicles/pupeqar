@@ -29,7 +29,11 @@
                 @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
             @case("college")
-                @include('maintenances.fieldtemplates.college', ['fieldInfo' => $field, 'colleges' => $colleges ?? '', 'college_id' => $value[$field->name] ?? '', 'department_id' => $value['department_id'] ?? ''])
+                @include('maintenances.fieldtemplates.college', [
+                            'fieldInfo' => $field, 
+                            'colleges' => $colleges ?? '', 
+                            'college_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : ((isset($collegeOfDepartment[0]->id)) ? $collegeOfDepartment[0]->id : '' )) , 
+                            'department_id' => $value['department_id'] ?? ''])
                 @break
             @case("department")
                 @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field])
