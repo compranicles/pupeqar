@@ -58,7 +58,7 @@ class StudentTrainingController extends Controller
             'title' => 'required',
             'classification' => 'required',
             'nature' => 'required',
-            'currency-budget' => 'required',
+            'currency_budget' => 'required',
             'budget' => 'required|numeric',
             // 'source_of_fund' => '',
             'organization' => 'required',
