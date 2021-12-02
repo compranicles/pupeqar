@@ -8,6 +8,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <p>
+                    <a class="back_link" href="{{ route('faculty.invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Invention, Innovation or Creative Work</a>
+                </p>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('faculty.invention-innovation-creative.store') }}" method="post">

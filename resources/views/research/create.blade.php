@@ -8,6 +8,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <p>
+                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Registration</a>
+                </p>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.store') }}" method="post" id="create_research">
