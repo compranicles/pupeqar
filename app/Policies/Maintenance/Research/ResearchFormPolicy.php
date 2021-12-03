@@ -63,7 +63,7 @@ class ResearchFormPolicy
      * @param  \App\Models\FormBuilder\ResearchForm  $researchForm
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, ResearchForm $researchForm)
+    public function update(User $user)
     {
         return $this->viewAny($user);
 

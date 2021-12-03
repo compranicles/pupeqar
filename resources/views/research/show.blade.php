@@ -23,9 +23,9 @@
                             <div class="col-md-6 text-right">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
-                                        @if ($research->nature_of_involvement != 11)
+                                        {{-- @if ($research->nature_of_involvement != 11)
                                             <a href="{{ route('research.retrieve', $research->research_code) }}" class="btn btn-outline-dark btn-sm mr-2">Retrieve Leader's Version</a>
-                                        @endif
+                                        @endif --}}
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement])
                                     </div>
                                 </div>

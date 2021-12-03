@@ -15,11 +15,11 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.update', $research->id) }}" method="post">
+                        <form action="{{ route('research.update-non-lead', $research->id) }}" method="post">
                             @csrf
                             @method('put')
                             <fieldset id="research">
-                            @include('form-view', ['formFields' => $researchFields1, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                            @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
                             </fieldset>
                             <div class="col-md-12">
@@ -184,39 +184,44 @@
             $('#currency_select').on('change', function () {
                 $('#currency_select').attr('disabled', 'disabled'); 
             });
+            $('.document').remove();
 
-            $(function() {
-                $('#title').attr('disabled', 'disabled'); 
-                $('#keywords').attr('disabled', 'disabled'); 
-                // $('#researchers').val(researcher+", "+"{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
-                $('#researchers').attr('disabled', true);
-                $('#currency_select').empty().append('<option selected="selected" value="{{ $values["currency"] }}">{{ $values["currency_code"]}}</option>');
-                $('#currency_select').attr('disabled', true);
-                $('#funding_amount').attr('disabled', true);
-                $('#funding_agency').attr('disabled', true);
+            
+            $('#title').attr('disabled', 'disabled'); 
+            $('#keywords').attr('disabled', 'disabled'); 
+            
+            $('#researchers').attr('disabled', true);
+            
+            // $('#currency_select_funding_amount').empty().append('<option selected="selected" value="{{ $research->currency_funding_amount_code }}">{{ $values["currency_funding_amount"]}}</option>');
+            $('#currency_select_funding_amount').attr('disabled', true);
+            $('#funding_amount').attr('disabled', true);
+            $('#funding_agency').attr('disabled', true);
+            $('#status').empty().append('<option selected="selected" value="{{ $research->status }}">{{ $research->status_name}}</option>');
+            $('#status').attr('disabled', true);
+            $('#description').attr('disabled', true);
+
+            if ({{$research->status}} == 26) {
+                hide_dates();
+                
+            }
+            else if ({{$research->status}} == 27) {
+                $('.start_date').show();
+                $('.target_date').show();
+                $('#status').attr('disabled', true);
+            }
+            else if ({{ $research->status }} > 27) {
                 $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
                 $('#status').attr('disabled', true);
-                $('#description').attr('disabled', true);
+            }
+            var collegeId = $('#college').val();
+            $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+            $.get('/departments/options/'+collegeId, function (data){
 
-                if ({{$research->status}} == 26) {
-                    hide_dates();
+                data.forEach(function (item){
+                    $("#department").append(new Option(item.name, item.id));
                     
-                }
-                else if ({{$research->status}} == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
-                    $('#status').attr('disabled', true);
-                }
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-                    document.getElementById("department").value = "{{ $values['department_id'] }}";
                 });
+                document.getElementById("department").value = "{{ $values['department_id'] }}";
             });
 
             $('#status').on('change', function(){

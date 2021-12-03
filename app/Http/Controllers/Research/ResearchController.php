@@ -232,8 +232,15 @@ class ResearchController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
-                ->first()->toArray();
+        if($research->nature_of_involvement != 11){
+            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                        ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
+                        ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount_code')
+                        ->first()->toArray();
+        }
+        else{
+            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->first()->toArray(); 
+        }
     
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
@@ -243,8 +250,8 @@ class ResearchController extends Controller
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement == 11)
             return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
-        else
-            return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
+
+        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
 
     }
 
@@ -316,6 +323,28 @@ class ResearchController extends Controller
         }
 
         return redirect()->route('research.show', $research->id)->with('success', 'Research Updated Successfully');
+    }
+
+    public function updateNonLead (Request $request, Research $research)
+    {
+        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
+            return view('inactive');
+
+        $request->validate([
+            'nature_of_involvement' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required',
+        ]);
+
+        $input = $request->except(['_token', '_method', 'document', 'funding_type']);
+        $funding_amount = $request->funding_amount;    
+        $funding_amount = str_replace( ',' , '', $funding_amount);
+        $research->update($input);
+        $research->update([
+            'funding_amount' => $funding_amount
+        ]);
+
+        
     }
 
     /**
@@ -401,24 +430,31 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
+        $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        $research = Research::where('research_code', $research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
-            ->join('currencies', 'currencies.id', 'research.currency')
-            ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_code')->first()->toArray();
+        $research = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
+                ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount')
+                ->first()->toArray();
+
         $research = collect($research);
-        $research = $research->except(['nature_of_involvement']);
-        $values = $research;
+        $research = $research->except(['nature_of_involvement', 'college_id', 'department_id']);
+        $values = $research->toArray();
         $research = json_decode(json_encode($research), FALSE);
         // dd($values);
         // $research = collect($research);
         $researchers = Research::where('research_code', $research_code)->pluck('researchers')->all();
 
-        $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
+        $researchDocuments = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 1)->get()->toArray();
 
         $departments = Department::all();
         $colleges = College::all();
-        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'departments', 'colleges'));
+
+        // $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+
+        $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
+
+        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'departments', 'colleges', 'researchStatus'));
     }
 
     public function saveResearch($research_code, Request $request){

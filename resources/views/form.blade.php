@@ -1,3 +1,9 @@
+
+@if(!isset($value))
+    @php
+        $value = [];
+    @endphp
+@endif
 <div class="row">
     @foreach ($formFields as $field)
         @switch($field->field_type_name)
@@ -33,7 +39,8 @@
                             'fieldInfo' => $field, 
                             'colleges' => $colleges ?? '', 
                             'college_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : ((isset($collegeOfDepartment[0]->id)) ? $collegeOfDepartment[0]->id : '' )) , 
-                            'department_id' => $value['department_id'] ?? ''])
+                            'department_id' => $value['department_id'] ?? ''
+                        ])
                 @break
             @case("department")
                 @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field])

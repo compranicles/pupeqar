@@ -1,3 +1,6 @@
+<p>
+    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Registration</a>
+</p>
 <div class="card mb-3 research-tabs">
     <div class="card-body">
         <div class="row">

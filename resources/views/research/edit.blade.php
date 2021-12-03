@@ -162,6 +162,24 @@
 
                 });
             });
+
+            $('#keywords').on('keyup', function(){
+                // var value = $(this).val();
+                var value = $(this).val().replace(/ /g,'');
+                var words = value.split(",");
+                words = words.filter(function(e){return e});
+                // console.log(words);
+                if(words.length < 5){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+                else if (words.length >= 5){
+                    $("#validation-keywords").text('');
+                }
+                else if( words == null){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+            });
+            
         
         </script>
         <script>
@@ -182,6 +200,10 @@
                     $('.target_date').show();
                     $('#status').attr('disabled', true);
                 }
+                else if ({{ $research->status }} > 27) {
+                    $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
+                    $('#status').attr('disabled', true);
+                }
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
                 $.get('/departments/options/'+collegeId, function (data){
@@ -194,7 +216,7 @@
                 });
                 // $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
                 // $('#status').attr('disabled', true);
-                
+                $('#researchers').attr('disabled', true);
             });
 
             $('#nature_of_involvement').on('change', function (){
@@ -261,7 +283,7 @@
 
         </script>
         <script>
-             $('#start_date').on('input', function(){
+            $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();
                 var month = date.getMonth() + 1;

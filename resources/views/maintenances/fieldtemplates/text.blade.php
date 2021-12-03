@@ -19,12 +19,16 @@
                     @default
                         
                 @endswitch>
+                @if ($fieldInfo->name == 'keywords')
+                    <span id="validation-keywords" role="alert">
+                        <strong></strong>
+                    </span>
+                @endif
 
                 @error($fieldInfo->name)
                     <span class='invalid-feedback' role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-
     </div>
 </div>

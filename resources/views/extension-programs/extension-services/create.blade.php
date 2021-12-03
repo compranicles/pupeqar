@@ -48,17 +48,20 @@
             });
 
             $('#keywords').on('keyup', function(){
-                var value = $(this).val();
-                if (value != null){
-                    var count = value.match(/(\w+)/g).length;
-                    if(count < 5)
-                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
-                    else{
-                        $("#validation-keywords").text('');
-                    }
-                }
-                if (value == null)
+                // var value = $(this).val();
+                var value = $(this).val().replace(/ /g,'');
+                var words = value.split(",");
+                words = words.filter(function(e){return e});
+                // console.log(words);
+                if(words.length < 5){
                     $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+                else if (words.length >= 5){
+                    $("#validation-keywords").text('');
+                }
+                else if( words == null){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
             });
             
             $(function () {
