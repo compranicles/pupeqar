@@ -149,24 +149,24 @@
                 $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
 
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
+            // function validateForm() {
+            //     var isValid = true;
+            //     $('.form-validation').each(function() {
+            //         if ( $(this).val() === '' )
+            //             isValid = false;
+            //     });
+            //     return isValid;
+            // }
 
            
-            $('.form-validation').on('change', function(){
-                if(validateForm == true){
-                    $('#submit').removeAttr('disabled');
-                }
-                else{
-                    $('#submit').attr('disabled', true);
-                }
-            });
+            // $('.form-validation').on('change', function(){
+            //     if(validateForm == true){
+            //         $('#submit').removeAttr('disabled');
+            //     }
+            //     else{
+            //         $('#submit').attr('disabled', true);
+            //     }
+            // });
         </script>
     @endpush
 </x-app-layout>

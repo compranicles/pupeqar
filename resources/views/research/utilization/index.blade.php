@@ -33,7 +33,7 @@
                                 @endif
                             </div>
                             <div class="col-md-6 text-md-right">
-                                @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement])
+                                @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                             </div>
                         </div>
                         <div class="row">
