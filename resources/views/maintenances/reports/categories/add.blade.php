@@ -33,6 +33,14 @@
         
                                 <select name="table" id="table" class="form-control custom-select" required>
                                     <option value="" selected disabled>Choose...</option>
+                                    <option value="expert_service_academics">expert_service_academics</option>
+                                    <option value="expert_service_conferences">expert_service_conferences</option>
+                                    <option value="expert_service_consultants">expert_service_consultants</option>
+                                    <option value="extension_services">extension_services</option>
+                                    <option value="inventions">inventions</option>
+                                    <option value="mobilities">mobilities</option>
+                                    <option value="partnerships">partnerships</option>
+                                    <option value="references">references</option>
                                     <option value="research">research</option>
                                     <option value="research_citations">research_citations</option>
                                     <option value="research_completes">research_completes</option>
@@ -41,6 +49,7 @@
                                     <option value="research_presentations">research_presentations</option>
                                     <option value="research_publications">research_publications</option>
                                     <option value="research_utilizations">research_utilizations</option>
+                                    <option value="syllabi">syllabi</option>
                                 </select>
         
                                 <div class="invalid-feedback">

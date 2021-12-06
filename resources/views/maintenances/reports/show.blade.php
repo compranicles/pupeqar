@@ -25,7 +25,7 @@
 
                         {{-- Table for displaying --}}
                         <div class="row justify-content-center">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="table-responsive text-center">
                                     <table id="report_categories_table" class="table">
                                         <thead>
