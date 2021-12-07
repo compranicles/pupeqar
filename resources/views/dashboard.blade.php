@@ -1,89 +1,290 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Dashboard') }}
+            {{ __('Home') }}
         </h2>
     </x-slot>
 
-    <div class="row justify-content-center my-5">
-        <div class="col-md-12">
-            <div class="card shadow bg-light">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card rounded-0 bg-light border-top">
-                            <div class="card-header">
-                                <h4 style="color:maroon" class="m-0">Announcements</h4>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-hover p-0 m-0">
-                                        <tbody>
-                                            @foreach ($announcements as $announcement)
-                                                <tr style="cursor: pointer;" class="mb-1 announce" id="messageRow" data-toggle="modal" data-target="#viewMessage" data-id="{{ $announcement->id }}">
-                                                    <td style="color:maroon" class="text-center">hap@puptfqrs</td>
-                                                    <td>{{ $announcement->title }}</td>
-                                                    <td class="text-truncate">{{ $announcement->subject }}<br></td>
-                                                    <td>{{ date('F j, Y', strtotime($announcement->created_at)) }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+    <p style="font-size: 20px; font-weight: 600 !important; color: gray;">INDIVIDUAL QUARTERLY ACCOMPLISHMENTS</p>
+    
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row justify-content-center">
+                        <div class="d-flex align-content-stretch flex-wrap db-card-group ml-3">
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Accomplishment Based on IPCR</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Attendance in University Function</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Awards and Recognition</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>  
+                                </div>
+                            </div>
+                            @chairperson
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Awards and Recognition Received<br>by the Department</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endchairperson
+                            @director
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Awards and Recognition Received</a>by the College</h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @enddirector
+                            @can('viewAny', \App\Models\OutreachProgram::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Community Relation and Outreach Program</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\Syllabus::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Course Syllabus</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\ExpertServiceConsultant::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Expert Service as Consultant</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\ExpertServiceAcademic::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title"><a href="">Expert Service in Academic Journals, Books, Publications, Newsletter, & Creative Works</a> </h6>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div> 
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\ExpertServiceConference::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title"><a href="">Expert Service in Conference, Workshops, & Training Courses </a></h6>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\ExtensionService::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Extension Services</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\Mobility::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Inter-country Mobility</a> </h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\Invention::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title"><a href="">Invention, Innovation, & Creative Works</a></h6>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @endcan
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Officership/Membership</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @can('viewAny', \App\Models\Partnership::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Partnership, Linkages, & Network </a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Professional Study</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @can('viewAny', \App\Models\Reference::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-title"><a href="">Reference, Textbook, Module, Monographs, & Instructional Materials </a></h6>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\Research::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Research</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            @endcan
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Seminars</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Special Tasks</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @can('viewAny', \App\Models\StudentTraining::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Student Attended Seminars and Trainings</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\StudentAward::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Student Awards and Recognition</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @endcan
+                            @can('viewAny', \App\Models\TechnicalExtension::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Technical Extension Programs/Projects/Activities</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @endcan
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Trainings</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div>
+                            @can('viewAny', \App\Models\ViableProject::class)
+                            <div class="card bg-light text-dark db-card">
+                                <img class="card-img"  src="..." alt="Card image">
+                                <div class="card-img-overlay db-overlay">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title"><a href="">Viable Demonstration Projects</a></h5>
+                                        <h2 class="number_of_entry" style="font-weight: bold">9</h2>
+                                    </div>
+                                     
+                                </div>
+                            </div> 
+                            @endcan    
                         </div>
+                                        
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="modal fade" id="viewMessage" tabindex="-1" aria-labelledby="viewMessageLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewMessageLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                  <div class="col">
-                      <p id="viewSubject"></p>
-                      <p id="viewDatePosted"></p>
-                      <p id="viewSender"></p>
-                      <p id="viewMessagePosted"></p>
-                  </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        $(document).ready( function() {
-            $(".announce").click(function (e){
-                let currID = $(this).data("id");
-                $.get("announcements/view/"+ currID, function(data){
-                    const date = new Date(data.created_at);
-                    document.getElementById('viewMessageLabel').innerHTML = data.title;
-                    document.getElementById('viewSubject').innerHTML = "<b>Subject: </b>"+data.subject;
-                    document.getElementById('viewDatePosted').innerHTML = "<b>Date Posted: </b>"+date.toDateString();
-                    document.getElementById('viewSender').innerHTML = "<b>From: </b>hap@puptfqrs";
-                    document.getElementById('viewMessagePosted').innerHTML = "<b>Message: </b> <br><br>"+ marked(data.message);
-                });
-            });
-        });
-        $('#viewMessage').on('hidden.bs.modal', function(event) {
-            document.getElementById('viewMessageLabel').innerHTML = "";
-            document.getElementById('viewSubject').innerHTML = "";
-            document.getElementById('viewDatePosted').innerHTML = "";
-            document.getElementById('viewSender').innerHTML = "";
-            document.getElementById('viewMessagePosted').innerHTML = "";
-        });
-    </script>
-    @endpush
+
+    
 </x-app-layout>

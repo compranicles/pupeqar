@@ -40,6 +40,21 @@ class PartnershipFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 5,
+            'label' => 'Please specify',
+            'name' => 'other_collab_nature',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         ExtensionProgramField::create([
             'extension_programs_form_id' => 5,
             'label' => 'Type of Partnership Institution',
@@ -49,6 +64,20 @@ class PartnershipFormSeeder extends Seeder
             'field_type_id' => 5,
             'dropdown_id' => 31, 
             'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 5,
+            'label' => 'Please specify',
+            'name' => 'other_partnership_type',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -66,6 +95,21 @@ class PartnershipFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 5,
+            'label' => 'Please specify',
+            'name' => 'other_deliverable',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
         ExtensionProgramField::create([
             'extension_programs_form_id' => 5,
             'label' => 'Name of Organization/ Partner',
@@ -172,7 +216,7 @@ class PartnershipFormSeeder extends Seeder
         ]);
         ExtensionProgramField::create([
             'extension_programs_form_id' => 5,
-            'label' => 'Telephone No.',
+            'label' => 'Telephone No. of Contact Person',
             'name' => 'telephone_number',
             'placeholder' => null,
             'size' => 'col-md-3',
@@ -204,7 +248,7 @@ class PartnershipFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

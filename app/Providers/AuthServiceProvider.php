@@ -148,6 +148,17 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         // $this->generalPolicies();
         //
+
+        // Gate::define('to-do', function (User $user, $permission_name) {
+        //     $checkpermission = UserRole::where('user_roles.user_id', $user->id)
+        //             ->join('role_permissions', 'role_permissions.role_id', 'user_roles.role_id')
+        //             ->join('permissions', 'permissions.id', 'role_permissions.permission_id')
+        //             ->select('role_permissions.*')
+        //             ->where('permissions.name', $permission_name)
+        //             ->get();
+            
+        //     return $checkpermission != null; 
+        // });
     }
 
 }

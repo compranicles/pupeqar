@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('faculty.extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.extension-service.store' ) }}" method="post">
+                        <form action="{{ route('extension-service.store' ) }}" method="post">
                             @csrf
                             @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'colleges' => $colleges])
                             @include('extension-programs.extension-services.no-of-beneficiaries', ['value' => ''])
@@ -35,6 +35,34 @@
     </div>
 
     @push('scripts')
+        <script>
+
+            $('div .other_classification').hide();
+            var other_classification = document.getElementById("other_classification");
+            $('#classification').on('input', function(){
+                var classification_name = $("#classification option:selected").text();
+                if (classification_name == "Others") {
+                    $('div .other_classification').show();
+                    $('#from').focus();
+                }
+                else {
+                    $('div .other_classification').hide();
+                }
+            });
+
+            $('div .other_classification_of_trainees').hide();
+            var other_classification_of_trainees = document.getElementById("other_classification_of_trainees");
+            $('#classification_of_trainees_or_beneficiaries').on('input', function(){
+                var classification_trainees_name = $("#classification_of_trainees_or_beneficiaries option:selected").text();
+                if (classification_trainees_name == "Others") {
+                    $('div .other_classification_of_trainees').show();
+                    $('#other_classification_of_trainees').focus();
+                }
+                else {
+                    $('div .other_classification_of_trainees').hide();
+                }
+            });
+        </script>
         <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());

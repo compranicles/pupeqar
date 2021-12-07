@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResearchCompletesTable extends Migration
+class AddCollegeIdInExpertServiceAcademicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateResearchCompletesTable extends Migration
      */
     public function up()
     {
-        Schema::create('research_completes', function (Blueprint $table) {
-            $table->id();
-            $table->string('research_code');
-            $table->text('description');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('expert_service_academics', function (Blueprint $table) {
+            $table->foreignId('college_id');
         });
     }
 
@@ -29,6 +25,8 @@ class CreateResearchCompletesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('research_completes');
+        Schema::table('expert_service_academics', function (Blueprint $table) {
+            //
+        });
     }
 }

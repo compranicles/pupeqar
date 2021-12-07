@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('faculty.rtmmi.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('rtmmi.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.rtmmi.store') }}" method="post">
+                        <form action="{{ route('rtmmi.store') }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $referenceFields, 'colleges' => $colleges])
                             <div class="col-md-12">
@@ -53,6 +53,17 @@
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
                 document.getElementById('date_completed').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#date_completed').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
+
+            $('#date_completed').on('input', function(){
+                var date = new Date($('#date_completed').val());
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('date_published').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#date_published').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
 

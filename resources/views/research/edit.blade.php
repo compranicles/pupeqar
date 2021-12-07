@@ -263,6 +263,9 @@
                     $('#target_date').attr("required", true);
                     $('#target_date').removeAttr('disabled');
                     $('#start_date').removeAttr('disabled');
+
+                    $('#start_date').focus();
+
                 }
             });
 

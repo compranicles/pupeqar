@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('faculty.expert-service-in-conference.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Conference/Workshop/Training Course</a>
+              <a class="back_link" href="{{ route('expert-service-in-conference.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Conference/Workshop/Training Course</a>
             </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
+                        <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $expertServiceConferenceFields, 'value' => $expert_service_in_conference])
@@ -57,7 +57,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.esconference.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('esconference.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -87,7 +87,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.esconference.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('esconference.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>

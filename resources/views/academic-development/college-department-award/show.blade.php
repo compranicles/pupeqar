@@ -19,7 +19,7 @@
                     <button type="button" value="{{ $college_department_award->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                     </p>
                 </div>
-                @include('show', ['formFields' => $awardFields, 'value' => $values])
+                @include('show', ['value' => $values])
             </div>
         </div>
         <div class="row mt-3">

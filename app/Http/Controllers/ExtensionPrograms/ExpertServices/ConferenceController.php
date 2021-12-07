@@ -101,7 +101,7 @@ class ConferenceController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your Accomplishment in Expert Service in Conference/Workshop/Training Course  has been saved.');
+        return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Your Accomplishment in Expert Service in Conference/Workshop/Training Course  has been saved.');
     }
 
     /**
@@ -198,7 +198,7 @@ class ConferenceController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Course has been updated.');
+        return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Course has been updated.');
     }
 
     /**
@@ -215,7 +215,7 @@ class ConferenceController extends Controller
             return view('inactive');
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
-        return redirect()->route('faculty.expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Cours has been deleted.');
+        return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Your accomplishment in Expert Service in Conference/Workshop/Training Cours has been deleted.');
     }
 
     public function removeDoc($filename){

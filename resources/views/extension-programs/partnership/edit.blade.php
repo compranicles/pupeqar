@@ -131,6 +131,46 @@
     </div>
     @push('scripts')
         <script>
+            $('div .other_collab_nature').hide();
+            var other_collab_nature = document.getElementById("other_collab_nature");
+            $('#collab_nature').on('input', function(){
+                var collab_nature_name = $("#collab_nature option:selected").text();
+                if (collab_nature_name == "Others") {
+                    $('div .other_collab_nature').show();
+                    $('#other_collab_nature').focus();
+                }
+                else {
+                    $('div .other_collab_nature').hide();
+                }
+            });
+
+            $('div .other_partnership_type').hide();
+            var other_partnership_type = document.getElementById("other_partnership_type");
+            $('#partnership_type').on('input', function(){
+                var partnership_type_name = $("#partnership_type option:selected").text();
+                if (partnership_type_name == "Others") {
+                    $('div .other_partnership_type').show();
+                    $('#other_partnership_type').focus();
+                }
+                else {
+                    $('div .other_partnership_type').hide();
+                }
+            });
+
+            $('div .other_deliverable').hide();
+            var other_deliverable = document.getElementById("other_deliverable");
+            $('#deliverable').on('input', function(){
+                var deliverable_name = $("#deliverable option:selected").text();
+                if (deliverable_name == "Others") {
+                    $('div .other_deliverable').show();
+                    $('#other_deliverable').focus();
+                }
+                else {
+                    $('div .other_deliverable').hide();
+                }
+            });
+        </script>
+        <script>
             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){

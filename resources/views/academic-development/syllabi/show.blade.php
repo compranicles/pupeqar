@@ -9,48 +9,20 @@
             <div class="col-lg-9">
             <div class="d-flex mr-2">
                 <p class="mr-auto">
-                  <a class="back_link" href="{{ route('faculty.syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
+                  <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.syllabus.edit', $syllabu->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                  <a href="{{ route('syllabus.edit', $syllabu->id) 
+                  }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
                   <button type="button" value="{{ $syllabu->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
-                <div class="card">
-                    <div class="card-body card_show">
-                        <div class="table-responsive">
-                          <table class="table table-borderless show_table">
-                              <tr>
-                                <th>Course Title</th>
-                                <td>{{ $syllabu->course_title }}</td>
-                              </tr>
-                              <tr>
-                                <th>Assigned Task</th>
-                                <td>{{ $assigned_task[0]->name }}</td>
-                              </tr>
-                              <tr>
-                                <th>Date You Finished the Assigned Task</th>
-                                <td>{{ $syllabu->date_finished }}</td>
-                              </tr>
-                              <tr>
-                                <th>Colleges/Campus/Branch/Office to commit the Accomplishment</th>
-                                <td>{{ $collegeAndDepartment[0]->college_name }}</td>
-
-                              </tr>
-                              <tr>
-                                <th>Department to commit the Accomplishment</th>
-                                <td>{{ $collegeAndDepartment[0]->department_name }}</td>
-
-                              </tr>
-                              <tr>
-                                <th>Description of Supporting Documents</th>
-                                <td>{{ $syllabu->description }}</td>
-                              </tr>
-                          </table>
-                        </div>
-                    </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    @include('show', ['value' => $values])
+                  </div>
                 </div>
                 <div class="row mt-3">
                   <div class="col-md-12">

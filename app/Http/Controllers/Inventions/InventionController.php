@@ -87,7 +87,7 @@ class InventionController extends Controller
 
         $funding_amount = str_replace( ',' , '', $funding_amount);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
 
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id(), 'funding_amount' => $funding_amount]);
@@ -115,7 +115,7 @@ class InventionController extends Controller
             }
         }
 
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been saved.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been saved.');
     }
 
     /**
@@ -207,7 +207,7 @@ class InventionController extends Controller
         $funding_amount = str_replace( ',' , '', $funding_amount);
 
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
 
         $invention_innovation_creative->update($input);
         $invention_innovation_creative->update(['funding_amount' => $funding_amount]);
@@ -235,7 +235,7 @@ class InventionController extends Controller
             }
         }
 
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been updated.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been updated.');
     }
 
     /**
@@ -253,7 +253,7 @@ class InventionController extends Controller
 
         $invention_innovation_creative->delete();
         InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
-        return redirect()->route('faculty.invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){

@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.expert-service-in-academic.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service in Academic Journals, Books, Publication, Newsletter, or Creative Works</a>
+                                <a href="{{ route('expert-service-in-academic.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service in Academic Journals, Books, Publication, Newsletter, or Creative Works</a>
                             </div>
                         </div>  
                         <hr>
@@ -46,13 +46,13 @@
                                 <tbody>
                                     @foreach ($expertServicesAcademic as $expertServiceAcademic)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->classification }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->classification }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' " >{{ $expertServiceAcademic->updated_at }}</td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('faculty.expert-service-in-academic.edit', $expertServiceAcademic) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                                 <button type="button" value="{{ $expertServiceAcademic->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->title }}"><i class="bi bi-trash"></i> Delete</button>
                                             </div>
                                         </td>
@@ -93,7 +93,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = esAcademicTitle
 
-          var url = '{{ route("faculty.expert-service-in-academic.destroy", ":id") }}';
+          var url = '{{ route("expert-service-in-academic.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           

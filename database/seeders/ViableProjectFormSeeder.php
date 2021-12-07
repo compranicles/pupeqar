@@ -16,7 +16,7 @@ class ViableProjectFormSeeder extends Seeder
     {
         AcademicDevelopmentField::create([
             'academic_development_form_id' => 5,
-            'label' => 'Name of Viable Demonstaration Project',
+            'label' => 'Name of Viable Demonstration Project',
             'name' => 'name',
             'placeholder' => null,
             'size' => 'col-md-12',

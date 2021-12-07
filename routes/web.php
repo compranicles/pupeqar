@@ -135,7 +135,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/research/retrieve/{research_code}',  [\App\Http\Controllers\Research\ResearchController::class, 'retrieve'])->name('research.retrieve');
     Route::get('/research/edit-non-lead/{id}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
 
-    //FACULTY: research
+    /************************************RESEARCH FORMS*********************************** */
+    //research
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
     Route::resource('research.publication', \App\Http\Controllers\Research\PublicationController::class);
@@ -144,6 +145,33 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('research.utilization', \App\Http\Controllers\Research\UtilizationController::class);
     Route::resource('research.copyrighted', \App\Http\Controllers\Research\CopyrightedController::class);
     
+    /************************************INVENTION, INNOVATION, CREATIVE WORKS FORMS*********************************** */
+
+    //FACULTY:invention
+    Route::resource('invention-innovation-creative', \App\Http\Controllers\Inventions\InventionController::class);
+    Route::get('/invention-innovation-creative/remove-document/{filename}', [\App\Http\Controllers\Inventions\InventionController::class, 'removeDoc'])->name('iicw.removedoc');
+
+    /************************************EXTENSION PROGRAMS AND EXPERT SERVICES*********************************** */
+
+    //FACULTY: extension-programs
+    Route::resource('/extension-programs/expert-service-as-consultant', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class);
+    Route::get('/extension-programs/expert-service-as-consultant/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class, 'removeDoc'])->name('esconsultant.removedoc');
+    
+    Route::resource('/extension-programs/expert-service-in-conference', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class);
+    Route::get('/extension-programs/expert-service-in-conference/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class, 'removeDoc'])->name('esconference.removedoc');
+    
+    Route::resource('/extension-programs/expert-service-in-academic', \App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class);
+    Route::get('/extension-programs/expert-service-in-academic/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class, 'removeDoc'])->name('esacademic.removedoc');
+    Route::resource('/extension-programs/extension-service', \App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class);
+    
+    /************************************ACADEMIC DEVELOPMENT FORMS*********************************** */
+
+    //FACULTY: academic-development
+    Route::resource('/academic-development/rtmmi', \App\Http\Controllers\AcademicDevelopment\ReferenceController::class);
+    Route::get('/academic-development/rtmmi/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ReferenceController::class, 'removeDoc'])->name('rtmmi.removedoc');
+    Route::resource('/academic-development/syllabus', \App\Http\Controllers\AcademicDevelopment\SyllabusController::class);
+    Route::get('/academic-development/syllabus/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\SyllabusController::class, 'removeDoc'])->name('syllabus.removedoc');
+
     //academics
     Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
 
@@ -247,30 +275,5 @@ Route::group(['middleware' => 'auth'], function() {
         Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
         //users
         Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
-    });
-
-    Route::group(['prefix' => 'faculty', 'as' => 'faculty.'], function(){
-        //FACULTY:invention
-        Route::resource('invention-innovation-creative', \App\Http\Controllers\Inventions\InventionController::class);
-        Route::get('/invention-innovation-creative/remove-document/{filename}', [\App\Http\Controllers\Inventions\InventionController::class, 'removeDoc'])->name('iicw.removedoc');
-
-        //FACULTY: extension-programs
-        Route::resource('/extension-programs/expert-service-as-consultant', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class);
-        Route::get('/extension-programs/expert-service-as-consultant/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class, 'removeDoc'])->name('esconsultant.removedoc');
-        
-        Route::resource('/extension-programs/expert-service-in-conference', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class);
-        Route::get('/extension-programs/expert-service-in-conference/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class, 'removeDoc'])->name('esconference.removedoc');
-        
-        Route::resource('/extension-programs/expert-service-in-academic', \App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class);
-        Route::get('/extension-programs/expert-service-in-academic/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class, 'removeDoc'])->name('esacademic.removedoc');
-        Route::resource('/extension-programs/extension-service', \App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class);
-        
-        //FACULTY: academic-development
-        Route::resource('/academic-development/rtmmi', \App\Http\Controllers\AcademicDevelopment\ReferenceController::class);
-        Route::get('/academic-development/rtmmi/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ReferenceController::class, 'removeDoc'])->name('rtmmi.removedoc');
-        Route::resource('/academic-development/syllabus', \App\Http\Controllers\AcademicDevelopment\SyllabusController::class);
-        Route::get('/academic-development/syllabus/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\SyllabusController::class, 'removeDoc'])->name('syllabus.removedoc');
-
-    
     });
 });

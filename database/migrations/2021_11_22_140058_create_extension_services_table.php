@@ -30,7 +30,7 @@ class CreateExtensionServicesTable extends Migration
             $table->date('from');
             $table->date('to');
             $table->integer('no_of_trainees_or_beneficiaries');
-            $table->decimal('total_no_of_hours', 9, 2);
+            $table->decimal('total_no_of_hours', 9, 1);
             $table->foreignId('classification_of_trainees_or_beneficiaries');
             $table->string('place_or_venue');
             $table->string('keywords');

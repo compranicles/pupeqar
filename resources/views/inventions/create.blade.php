@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('faculty.invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Invention, Innovation or Creative Work</a>
+                    <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Invention, Innovation or Creative Work</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.invention-innovation-creative.store') }}" method="post">
+                        <form action="{{ route('invention-innovation-creative.store') }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $inventionFields, 'colleges' => $colleges])
                             <div class="col-md-12">
@@ -31,18 +31,6 @@
     </div>
 
     @push('scripts')
-        <script>
-            $('#college').on('blur', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                    });
-                });
-            });
-        </script>
         <script>
             $(function() {
                 $('.funding_agency').hide();
@@ -96,6 +84,17 @@
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
                 document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
+
+            $('#end_date').on('input', function(){
+                var date = new Date($('#end_date').val());
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('issue_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#issue_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
     @endpush
