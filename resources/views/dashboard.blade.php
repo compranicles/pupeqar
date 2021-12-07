@@ -5,8 +5,13 @@
         </h2>
     </x-slot>
 
-    <p style="font-size: 20px; font-weight: 600 !important; color: gray;">INDIVIDUAL QUARTERLY ACCOMPLISHMENTS</p>
-    
+        @faculty
+        <p style="font-size: 20px; font-weight: 600 !important; color: gray;">INDIVIDUAL QUARTERLY ACCOMPLISHMENTS</p>
+        @endfaculty
+
+        @admin
+        <p style="font-size: 20px; font-weight: 600 !important; color: gray;">INDIVIDUAL QUARTERLY ACCOMPLISHMENTS</p>
+        @endadmin
 
             <div class="row">
                 <div class="col-md-12">
