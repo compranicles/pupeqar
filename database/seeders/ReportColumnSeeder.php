@@ -73,7 +73,7 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 1,
-            'name' => 'Research Type',
+            'name' => 'Type of Research',
             'table' => 'research',
             'column' => 'research_type',
             'is_active' => 1,
@@ -145,11 +145,1283 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 1,
-            'name' => 'Description of Supporting Documents Submitted',
+            'name' => 'Description of Supporting Documents',
             'table' => 'research',
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
         ]);
+
+        // Research Completed
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Title of Research',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Researcher/s',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'date_completion',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_completes',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Research Publication
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Title of the Published Research/ Article',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Journal Name',
+            'table' => 'research_publications',
+            'column' => 'journal_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Page Number',
+            'table' => 'research_publications',
+            'column' => 'page',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Volume No.',
+            'table' => 'research_publications',
+            'column' => 'volume',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Issue No.',
+            'table' => 'research_publications',
+            'column' => 'issue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Indexing Platform',
+            'table' => 'research_publications',
+            'column' => 'indexing_platform',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Date Published',
+            'table' => 'research_publications',
+            'column' => 'publish_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Publisher',
+            'table' => 'research_publications',
+            'column' => 'publisher',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Editor',
+            'table' => 'research_publications',
+            'column' => 'editor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'ISSN/ISBN',
+            'table' => 'research_publications',
+            'column' => 'issn',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Level of Publication',
+            'table' => 'research_publications',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_publications',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Research Presentations
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Title of the Research',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Conference Title',
+            'table' => 'research_presentations',
+            'column' => 'conference_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Organizer',
+            'table' => 'research_presentations',
+            'column' => 'organizer',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Venue',
+            'table' => 'research_presentations',
+            'column' => 'venue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Date of Presentation',
+            'table' => 'research_presentations',
+            'column' => 'date_presented',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Level',
+            'table' => 'research_presentations',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_presentations',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Research Citation
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Title of Research/ Article Cited',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Title of Article Where Your Research has been cited',
+            'table' => 'research_citations',
+            'column' => 'article_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Author/s Who Cited Your Research',
+            'table' => 'research_citations',
+            'column' => 'article_author',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Title of the Journal/ Books Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'journal_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Volume No. of the Journal/Book Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'volume',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Issue No. of the Journal/Book Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'issue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Page No. of the Journal/Book Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'page',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Year of Publication of the Journal/Book Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'year',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Name of Publisher of the Journal/Book Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'journal_publisher',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Indexing Platform of the Journal Where Your Article has been cited',
+            'table' => 'research_citations',
+            'column' => 'indexing_platform',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_citations',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Research Utilization
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Title of Research',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Agency/Organization that utilized the research output',
+            'table' => 'research_utilizations',
+            'column' => 'organization',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Brief Description of Research Utilization',
+            'table' => 'research_utilizations',
+            'column' => 'utilization_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Level of Utilization',
+            'table' => 'research_utilizations',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_utilizations',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Copyrighted Research Output
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Code',
+            'table' => 'research',
+            'column' => 'research_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Title of the Research',
+            'table' => 'research',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Authors',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Copyright Number (ISSN/ISBN)',
+            'table' => 'research_copyrights',
+            'column' => 'copyright_number',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Copyright Agency',
+            'table' => 'research_copyrights',
+            'column' => 'copyright_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Year the research copyrighted',
+            'table' => 'research_copyrights',
+            'column' => 'copyright_year',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Level',
+            'table' => 'research_copyrights',
+            'column' => 'copyright_level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'research_copyrights',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Faculty invention innovation
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Title of Invention, Innovation, & Creative Works',
+            'table' => 'inventions',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Classification',
+            'table' => 'inventions',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Name of Collaborator/s',
+            'table' => 'inventions',
+            'column' => 'collaborator',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'From',
+            'table' => 'inventions',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'To',
+            'table' => 'inventions',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Nature of Inventions',
+            'table' => 'inventions',
+            'column' => 'nature',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Status',
+            'table' => 'inventions',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Funding Agency',
+            'table' => 'inventions',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Amount of Fund',
+            'table' => 'inventions',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'inventions',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Expert Service Rendered as Consultant
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Classification of Expert services Rendered as a Consultant/Expert',
+            'table' => 'expert_service_consultants',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Title of Expert Services Rendered',
+            'table' => 'expert_service_consultants',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Category of Expert Services',
+            'table' => 'expert_service_consultants',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Partner Agency',
+            'table' => 'expert_service_consultants',
+            'column' => 'partner_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Venue',
+            'table' => 'expert_service_consultants',
+            'column' => 'venue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'From',
+            'table' => 'expert_service_consultants',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'To',
+            'table' => 'expert_service_consultants',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Level',
+            'table' => 'expert_service_consultants',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 9,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'expert_service_consultants',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        // Expert Service in Conferences 
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Nature of services rendered in conferences, workshops, and/or training courses for professionals',
+            'table' => 'expert_service_conferences',
+            'column' => 'nature',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Title of Conference, Workshop, and Training',
+            'table' => 'expert_service_conferences',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Partner Agency',
+            'table' => 'expert_service_conferences',
+            'column' => 'partner_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Venue',
+            'table' => 'expert_service_consultants',
+            'column' => 'venue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'From',
+            'table' => 'expert_service_conferences',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'To',
+            'table' => 'expert_service_conferences',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Level',
+            'table' => 'expert_service_conferences',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 10,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'expert_service_conferences',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+
+        // Expert Service in Academic Journals
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'External Services Rendered in Academic Journals/ Books Publication/ Newsletter/ Creative Works ',
+            'table' => 'expert_service_academics',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Nature of Services Rendered ',
+            'table' => 'expert_service_academics',
+            'column' => 'nature',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Publication/ Audio Visual Production ',
+            'table' => 'expert_service_academics',
+            'column' => 'publication_or_audio_visual',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Indexing (If any)',
+            'table' => 'expert_service_academics',
+            'column' => 'indexing',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Copyright No. (ISSN No. /E-ISSN/ ISBN)',
+            'table' => 'expert_service_academics',
+            'column' => 'copyright_no',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Level',
+            'table' => 'expert_service_academics',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 11,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'expert_service_academics',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Extension Program Project Activity
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Title of Extension Program',
+            'table' => 'extension_services',
+            'column' => 'title_of_extension_program',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Title of Extension Project',
+            'table' => 'extension_services',
+            'column' => 'title_of_extension_project',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Title of Extension Activity',
+            'table' => 'extension_services',
+            'column' => 'title_of_extension_activity',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Nature of Involvement',
+            'table' => 'extension_services',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Source of Fund',
+            'table' => 'extension_services',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Amount of Fund',
+            'table' => 'extension_services',
+            'column' => 'amount_of_funding',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Classification of Extension Activity',
+            'table' => 'extension_services',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Partnership Levels',
+            'table' => 'extension_services',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'From',
+            'table' => 'extension_services',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'To',
+            'table' => 'extension_services',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Status',
+            'table' => 'extension_services',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Place/Venue',
+            'table' => 'extension_services',
+            'column' => 'place_or_venue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'No. of Trainees',
+            'table' => 'extension_services',
+            'column' => 'no_of_trainees_or_beneficiaries',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Classificiation of Trainees',
+            'table' => 'extension_services',
+            'column' => 'classification_of_trainees_or_beneficiaries',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Quality - Poor',
+            'table' => 'extension_services',
+            'column' => 'quality_poor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Quality - Fair',
+            'table' => 'extension_services',
+            'column' => 'quality_fair',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Quality - Satisfactory',
+            'table' => 'extension_services',
+            'column' => 'quality_satisfactory',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Quality - Very Satisfactory',
+            'table' => 'extension_services',
+            'column' => 'quality_very_satisfactory',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Quality - Outstanding',
+            'table' => 'extension_services',
+            'column' => 'quality_outstanding',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Timeliness - Poor',
+            'table' => 'extension_services',
+            'column' => 'timeliness_poor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Timeliness - Fair',
+            'table' => 'extension_services',
+            'column' => 'timeliness_fair',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Timeliness - Satisfactory',
+            'table' => 'extension_services',
+            'column' => 'timeliness_satisfactory',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Timeliness - Very Satisfactory',
+            'table' => 'extension_services',
+            'column' => 'timeliness_very_satisfactory',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Timeliness - Outstanding',
+            'table' => 'extension_services',
+            'column' => 'timeliness_outstanding',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Number of Hours',
+            'table' => 'extension_services',
+            'column' => 'total_no_of_hours',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 12,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'extension_services',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Partnerships
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Code',
+            'table' => 'partnerships',
+            'column' => 'moa_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Title',
+            'table' => 'partnerships',
+            'column' => 'title_of_partnership',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Name of Organization',
+            'table' => 'partnerships',
+            'column' => 'name_of_partner',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Type of Partner Institution',
+            'table' => 'partnerships',
+            'column' => 'partnership_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Nature of Collaboration',
+            'table' => 'partnerships',
+            'column' => 'collab_nature',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Deliverable/Desired Output',
+            'table' => 'partnerships',
+            'column' => 'deliverable',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Target Beneficiaries',
+            'table' => 'partnerships',
+            'column' => 'beneficiaries',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Level',
+            'table' => 'partnerships',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'From',
+            'table' => 'partnerships',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'To',
+            'table' => 'partnerships',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Name of Contact Person',
+            'table' => 'partnerships',
+            'column' => 'name_of_contact_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Tel. No. of Contact Person',
+            'table' => 'partnerships',
+            'column' => 'telephone_number',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 13,
+            'name' => 'Address of Contact Person',
+            'table' => 'partnerships',
+            'column' => 'address_of_contact_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Faculty involvement in inter-country mobility
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'Nature of Engagement',
+            'table' => 'mobilities',
+            'column' => 'nature_of_engagement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'Host Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'host_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'Address of Host Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'Type',
+            'table' => 'mobilities',
+            'column' => 'type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'From',
+            'table' => 'mobilities',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'To',
+            'table' => 'mobilities',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'mobilities',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //IM, Reference/book
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Category',
+            'table' => 'references',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Level',
+            'table' => 'references',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Title',
+            'table' => 'references',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Author/s/Compiler/s',
+            'table' => 'references',
+            'column' => 'authors_compilers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Editor Name',
+            'table' => 'references',
+            'column' => 'editor_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Editor Profession',
+            'table' => 'references',
+            'column' => 'editor_profession',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Volume No.',
+            'table' => 'references',
+            'column' => 'volume_no',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Issue No.',
+            'table' => 'references',
+            'column' => 'issue_no',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Date of Publication',
+            'table' => 'references',
+            'column' => 'date_published',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Copyright Registration',
+            'table' => 'references',
+            'column' => 'copyright_regi_no',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Date Started',
+            'table' => 'references',
+            'column' => 'date_started',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Date Completed',
+            'table' => 'references',
+            'column' => 'date_completed',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 15,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'references',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        
+        //syllabi
+        ReportColumn::create([
+            'report_category_id' => 16,
+            'name' => 'Course Title',
+            'table' => 'syllabi',
+            'column' => 'course_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 16,
+            'name' => 'Date Developed/Revised/Reviewed/Enhanced',
+            'table' => 'syllabi',
+            'column' => 'date_finished',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 16,
+            'name' => 'Assigned Task',
+            'table' => 'syllabi',
+            'column' => 'assigned_task',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 16,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'syllabi',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
     }
 }

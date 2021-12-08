@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <form action="{{ route('research.update-non-lead', $research->id) }}" method="post">
                             @csrf
-                            @method('put')
+                            {{-- @method('put') --}}
                             <fieldset id="research">
                             @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 

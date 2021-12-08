@@ -57,5 +57,59 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 7,
         ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Faculty Invention, Innovation, and Creative Works',
+            'is_active' => 1,
+            'order' => 8
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Expert Service Rendered as Consultant',
+            'is_active' => 1,
+            'order' => 9
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Expert Service Rendered in Conference, Workshops, and/or training course for Professional',
+            'is_active' => 1,
+            'order' => 10
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Expert Service Rendered in Academic Journals/Books/Publication/NewsLetter/Creative Works',
+            'is_active' => 1,
+            'order' => 11
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Expert Program, Project, and Active (Ongoing and Completed)',
+            'is_active' => 1,
+            'order' => 12
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Partnership/Linkages/Network',
+            'is_active' => 1,
+            'order' => 13
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Faculty Involvement in Inter-Country Mobility',
+            'is_active' => 1,
+            'order' => 14
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Instructional Material, Reference/Text Book, Module, Monographs',
+            'is_active' => 1,
+            'order' => 15
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Course Syllabus/ Guide Developed/Revised/Enhanced',
+            'is_active' => 1,
+            'order' => 16
+        ]);
     }
 }

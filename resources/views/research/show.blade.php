@@ -23,10 +23,13 @@
                             <div class="col-md-6 text-right">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
-                                        {{-- @if ($research->nature_of_involvement != 11)
-                                            <a href="{{ route('research.retrieve', $research->research_code) }}" class="btn btn-outline-dark btn-sm mr-2">Retrieve Leader's Version</a>
+                                        {{-- @if ($research->nature_of_involvement == 11)
+                                            <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}">Manage Researchers</a>
+                                        @else --}}
+                                            {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
                                         @endif --}}
-                                        @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement])
+                                        
+                                        @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>
                                 </div>
                             </div>

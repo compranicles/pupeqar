@@ -35,7 +35,7 @@ class ResearchController extends Controller
         $this->authorize('viewAny', Research::class);
 
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
-        $researches = Research::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->orderBy('research.updated_at', 'desc')->get();
         return view('research.index', compact('researches', 'researchStatus'));
     }
@@ -269,7 +269,7 @@ class ResearchController extends Controller
 
         $request->validate([
             'classification' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
             'category' => 'required',
             'agenda' => 'required',
             'title' => 'required',
@@ -290,10 +290,13 @@ class ResearchController extends Controller
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'funding_type']);
+        $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_type', 'college_id', 'department_id', 'nature_of_involvement']);
         $funding_amount = $request->funding_amount;    
         $funding_amount = str_replace( ',' , '', $funding_amount);
+
         $research->update($input);
-        $research->update([
+        Research::where('research_code', $research->research_code)->update($inputOtherResearchers);
+        Research::where('research_code', $research->research_code)->update([
             'funding_amount' => $funding_amount
         ]);
         
@@ -335,16 +338,11 @@ class ResearchController extends Controller
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
+        // dd($request);
+        $input = $request->except(['_token', '_method', 'document']);
+        Research::where('id', $research->id)->update($input);
 
-        $input = $request->except(['_token', '_method', 'document', 'funding_type']);
-        $funding_amount = $request->funding_amount;    
-        $funding_amount = str_replace( ',' , '', $funding_amount);
-        $research->update($input);
-        $research->update([
-            'funding_amount' => $funding_amount
-        ]);
-
-        
+        return redirect()->route('research.show', $research)->with('success', 'Research Updated Successfully');
     }
 
     /**
@@ -418,6 +416,9 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         
+        if(Research::where('research_code', $request->input('code'))->where('user_id', auth()->id())->exists()){
+            return redirect()->route('research.index')->with('code-missing', 'Research Already added. If it is not displayed, you are already removed by the Lead Researcher/ Team Leader');
+        }
         if (Research::where('research_code', $request->code)->exists())
             return redirect()->route('research.code.create', $request->code);
         else
@@ -549,4 +550,103 @@ class ResearchController extends Controller
         }
         return redirect()->route('faculty.index')->with('success', 'Document added successfully');
     }
+
+    public function manageResearchers($research_code){
+        $research = Research::where('research_code', $research_code)->where('user_id', auth()->id())->first();
+        if($research->nature_of_involvement != 11)
+            abort('404');
+        $researchers = Research::select('research.id', 'research.user_id',  'research.nature_of_involvement', 'dropdown_options.name as nature_of_involvement_name', 'users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->join('dropdown_options', 'dropdown_options.id', 'research.nature_of_involvement')
+                ->where('research.research_code', $research_code)->where('is_active_member', 1)
+                ->get();
+        $inactive_researchers = Research::select('research.id', 'research.user_id',  'research.nature_of_involvement', 'dropdown_options.name as nature_of_involvement_name', 'users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->join('dropdown_options', 'dropdown_options.id', 'research.nature_of_involvement')
+                ->where('research.research_code', $research_code)->where('is_active_member', 0)
+                ->get();
+        // dd($researchers);
+        $nature_of_involvement_dropdown = DropdownOption::where('dropdown_id', 4)->where('is_active', 1)->orderBy('order')->get();
+        return view('research.manage-researchers.index', compact('research', 'research_code', 'researchers', 'inactive_researchers','nature_of_involvement_dropdown'));
+    }
+
+    public function saveResearchRole($research_code, Request $request){
+        Research::where('research_code', $research_code)->where('user_id', $request->input('user_id'))->update([
+            'nature_of_involvement' => $request->input('nature_of_involvement')
+        ]);
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Updated successfully');
+    }
+
+    public function removeResearcher($research_code, Request $request){
+        Research::where('research_code', $research_code)->where('user_id', $request->input('user_id'))->update([
+            'is_active_member' => 0
+        ]);
+        $researchers = Research::select('users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->where('research.research_code', $research_code)->where('is_active_member', 1)
+                ->get();
+
+        $researcherNewName = '';
+        foreach($researchers as $researcher){
+            if(count($researchers) == 1)
+                $researcherNewName = $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name;
+            else
+                $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
+        }
+        
+        Research::where('research_code', $research_code)->update([
+            'researchers' => $researcherNewName
+        ]);
+
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher removed successfully');
+    }
+
+    public function returnResearcher($research_code, Request $request){
+        Research::where('research_code', $research_code)->where('user_id', $request->input('user_id'))->update([
+            'is_active_member' => 1
+        ]);
+        $researchers = Research::select('users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->where('research.research_code', $research_code)->where('is_active_member', 1)
+                ->get();
+
+        $researcherNewName = '';
+        foreach($researchers as $researcher){
+            if(count($researchers) == 1)
+                $researcherNewName = $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name;
+            else
+                $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
+        }
+        
+        Research::where('research_code', $research_code)->update([
+            'researchers' => $researcherNewName
+        ]);
+
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher added successfully');
+    }
+
+    public function removeSelf($research_code){
+        Research::where('research_code', $research_code)->where('user_id', auth()->id())->update([
+            'is_active_member' => 0
+        ]);
+        $researchers = Research::select('users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->where('research.research_code', $research_code)->where('is_active_member', 1)
+                ->get();
+
+        $researcherNewName = '';
+        foreach($researchers as $researcher){
+            if(count($researchers) == 1)
+                $researcherNewName = $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name;
+            else
+                $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
+        }
+        
+        Research::where('research_code', $research_code)->update([
+            'researchers' => $researcherNewName
+        ]);
+
+        return redirect()->route('research.index')->with('success', 'Research removed successfully');
+    }
 }
+
