@@ -16,7 +16,7 @@ class CreateResearchCompletesTable extends Migration
         Schema::create('research_completes', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->string('description');
+            $table->text('description');
             $table->timestamps();
             $table->softDeletes();
         });

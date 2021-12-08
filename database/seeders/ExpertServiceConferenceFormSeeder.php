@@ -73,7 +73,7 @@ class ExpertServiceConferenceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 2,
-            'label' => 'Title',
+            'label' => 'Title of Conference, Workshop, or Training Course',
             'name' => 'title',
             'placeholder' => null,
             'size' => 'col-md-12',

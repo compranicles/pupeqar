@@ -66,6 +66,7 @@ class AcademicController extends Controller
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
+            'other_nature' => 'required_if:nature,86',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
             // 'publication_or_audio_visual' => '',
@@ -73,14 +74,15 @@ class AcademicController extends Controller
             // 'indexing' => '',
             'level' => 'required',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => '',
             // 'description' => 'required',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document', 'other_nature']);
 
         $esAcademic = ExpertServiceAcademic::create($input);
         $esAcademic->update(['user_id' => auth()->id()]);
+        $esAcademic->update(['other_nature' => $request->input('other_nature')]);
 
         if($request->has('document')){
             
@@ -105,7 +107,7 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your Accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been saved.');
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your Accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been saved.');
     }
 
     /**
@@ -177,6 +179,7 @@ class AcademicController extends Controller
         $request->validate([
             'classification' => 'required',
             'nature' => 'required',
+            'other_nature' => 'required_if:nature,86',
             'from' => 'required|date',
             'to' => 'required|date|after_or_equal:from',
             // 'publication_or_audio_visual' => '',
@@ -184,13 +187,14 @@ class AcademicController extends Controller
             // 'indexing' => '',
             'level' => 'required',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => '',
             // 'description' => 'required',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
-
+        $input = $request->except(['_token', '_method', 'document', 'other_nature']);
+        
         $expert_service_in_academic->update($input);
+        $expert_service_in_academic->update(['other_nature' => $request->input('other_nature')]);
 
         if($request->has('document')){
             
@@ -215,7 +219,7 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been updated.');
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been updated.');
     }
 
     /**
@@ -232,7 +236,7 @@ class AcademicController extends Controller
             return view('inactive');
         $expert_service_in_academic->delete();
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
-        return redirect()->route('faculty.expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
     }
 
     public function removeDoc($filename){

@@ -162,32 +162,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
-            'research_form_id' => 1,
-            'label' => 'Actual Date Started',
-            'name' => 'start_date',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 4,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        ResearchField::create([
-            'research_form_id' => 1,
-            'label' => 'Target Date of Completion',
-            'name' => 'target_date',
-            'placeholder' => null,
-            'size' => 'col-md-3',
-            'field_type_id' => 4,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
+        
         // ResearchField::create([
         //     'research_form_id' => 1,
         //     'label' => 'Date Completed',
@@ -217,6 +192,33 @@ class ResearchRegistrationFormSeeder extends Seeder
 
         ResearchField::create([
             'research_form_id' => 1,
+            'label' => 'Actual Date Started',
+            'name' => 'start_date',
+            'placeholder' => null,
+            'size' => 'col-md-3',
+            'field_type_id' => 4,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        ResearchField::create([
+            'research_form_id' => 1,
+            'label' => 'Target Date of Completion',
+            'name' => 'target_date',
+            'placeholder' => null,
+            'size' => 'col-md-3',
+            'field_type_id' => 4,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ResearchField::create([
+            'research_form_id' => 1,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
             'placeholder' => null,
@@ -236,7 +238,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

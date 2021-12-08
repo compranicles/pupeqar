@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Registration</a>
+                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
@@ -108,8 +108,8 @@
                     hide_dates();
                 }
                 else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
+                    $('div .start_date').show();
+                    $('div .target_date').show();
                     
                     $('#start_date').attr("required", true);
                     $('#target_date').attr("required", true);
@@ -117,22 +117,28 @@
                     $('#target_date').removeAttr('disabled');
                     $('#start_date').addClass('form-validation');
                     $('#target_date').addClass('form-validation');
+
+                    $('#start_date').focus();
                 }
             });
 
             $('#keywords').on('keyup', function(){
-                var value = $(this).val();
-                if (value != null){
-                    var count = value.match(/(\w+)/g).length;
-                    if(count < 5)
-                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
-                    else{
-                        $("#validation-keywords").text('');
-                    }
-                }
-                if (value == null)
+                // var value = $(this).val();
+                var value = $(this).val().replace(/ /g,'');
+                var words = value.split(",");
+                words = words.filter(function(e){return e});
+                // console.log(words);
+                if(words.length < 5){
                     $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+                else if (words.length >= 5){
+                    $("#validation-keywords").text('');
+                }
+                else if( words == null){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
             });
+            
 
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
@@ -145,15 +151,16 @@
                 $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
 
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
+            // function validateForm() {
+            //     var isValid = true;
+            //     $('.form-validation').each(function() {
+            //         if ( $(this).val() === '' )
+            //             isValid = false;
+            //     });
+            //     return isValid;
+            // }
 
+           
             // $('.form-validation').on('change', function(){
             //     if(validateForm == true){
             //         $('#submit').removeAttr('disabled');

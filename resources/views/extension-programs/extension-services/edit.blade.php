@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.extension-service.update', $value['id'] ) }}" method="post">
+                        <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post">
                             @csrf
                             @method('put')
                             @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
@@ -56,7 +56,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                            <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -86,7 +86,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -134,6 +134,33 @@
 
     @push('scripts')
         <script>
+            $('div .other_classification').hide();
+            var other_classification = document.getElementById("other_classification");
+            $('#classification').on('input', function(){
+                var classification_name = $("#classification option:selected").text();
+                if (classification_name == "Others") {
+                    $('div .other_classification').show();
+                    $('#other_classification').focus();
+                }
+                else {
+                    $('div .other_classification').hide();
+                }
+            });
+
+            $('div .other_classification_of_trainees').hide();
+            var other_classification_of_trainees = document.getElementById("other_classification_of_trainees");
+            $('#classification_of_trainees_or_beneficiaries').on('input', function(){
+                var classification_trainees_name = $("#classification_of_trainees_or_beneficiaries option:selected").text();
+                if (classification_trainees_name == "Others") {
+                    $('div .other_classification_of_trainees').show();
+                    $('#other_classification_of_trainees').focus();
+                }
+                else {
+                    $('div .other_classification_of_trainees').hide();
+                }
+            });
+        </script>
+        <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());
                 var day = date.getDate();
@@ -173,6 +200,24 @@
                     $('#funding_agency').addClass('form-validation');
                 }
             });
+
+            $('#keywords').on('keyup', function(){
+                // var value = $(this).val();
+                var value = $(this).val().replace(/ /g,'');
+                var words = value.split(",");
+                words = words.filter(function(e){return e});
+                // console.log(words);
+                if(words.length < 5){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+                else if (words.length >= 5){
+                    $("#validation-keywords").text('');
+                }
+                else if( words == null){
+                    $("#validation-keywords").text('The number of keywords must be five (5)');
+                }
+            });
+            
 
             function validateForm() {
                 var isValid = true;

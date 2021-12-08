@@ -72,7 +72,7 @@ class ReferenceController extends Controller
             // 'editor_name' => ''
             // 'editor_profession' => ''
             'volume_no' => 'integer',
-            'issue_no' => 'required|integer',
+            'issue_no' => 'integer',
             'date_published' => 'date|after:date_completed',
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
@@ -80,7 +80,7 @@ class ReferenceController extends Controller
             // 'description' => 'required',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $rtmmi = Reference::create($input);
         $rtmmi->update(['user_id' => auth()->id()]);
@@ -113,7 +113,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('faculty.rtmmi.index')->with(['edit_rtmmi_success' => strtolower($accomplishment[0]), 'action' => 'saved.' ]);
+        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtolower($accomplishment[0]), 'action' => 'saved.' ]);
     }
 
     /**
@@ -132,13 +132,11 @@ class ReferenceController extends Controller
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $level = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->level.")");
-
-        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
-
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
-        return view('academic-development.references.show', compact('rtmmi', 'referenceDocuments', 'category', 'level', 'collegeAndDepartment', 'referenceFields'));
+        $values = $rtmmi->toArray();
+
+        return view('academic-development.references.show', compact('rtmmi', 'referenceDocuments', 'category', 'referenceFields', 'values'));
     }
 
     /**
@@ -195,7 +193,7 @@ class ReferenceController extends Controller
             // 'editor_name' => ''
             // 'editor_profession' => ''
             'volume_no' => 'integer',
-            'issue_no' => 'required|integer',
+            'issue_no' => 'integer',
             'date_published' => 'date|after:date_completed',
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
@@ -203,7 +201,7 @@ class ReferenceController extends Controller
             // 'description' => 'required',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $rtmmi->update($input);
 
@@ -235,7 +233,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('faculty.rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
                                 ->with('action', 'updated.');
     }
 
@@ -259,7 +257,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('faculty.rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0])
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0])
                             ->with('action', 'deleted.'));
     }
 

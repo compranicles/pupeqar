@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('faculty.expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.expert-service-in-academic.store' ) }}" method="post">
+                        <form action="{{ route('expert-service-in-academic.store' ) }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $expertServiceAcademicFields, 'colleges' => $colleges])
                             <div class="row">
@@ -33,6 +33,21 @@
     </div>
 
     @push('scripts')
+        <script>
+
+            $('div .other_nature').hide();
+            var other_nature = document.getElementById("other_nature");
+            $('#nature').on('input', function(){
+                var nature_name = $("#nature option:selected").text();
+                if (nature_name == "Others") {
+                    $('div .other_nature').show();
+                    $('#other_nature').focus();
+                }
+                else {
+                    $('div .other_nature').hide();
+                }
+            });
+        </script>
         <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());

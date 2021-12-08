@@ -15,31 +15,7 @@
                     <div class="card-body">
                         <form action="{{ route('research.code.save', $research->research_code) }}" method="post">
                             @csrf
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Colleges/Campus/Branch/Office where you commit the research</label>
-    
-                                        <select name="college_id" id="college" class="form-control custom-select"  required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            @foreach ($colleges as $college)
-                                            <option value="{{ $college->id }}">{{ $college->name }}</option>
-                                            @endforeach
-                                           
-                                        </select>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Department where you commit the research</label>
-
-                                    <select name="department_id" id="department" class="form-control custom-select" required>
-                                        <option value="" selected disabled>Choose...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            @include('research.form-view', ['formFields' => $researchFields, 'value' => $values])
+                            @include('form', ['formFields' => $researchFields, 'value' => $values, ])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -167,8 +143,8 @@
                 var researcher = $('#researchers').val();
                 $('#researchers').val(researcher+", "+"{{ auth()->user()->first_name.' '.auth()->user()->last_name }}");
                 $('#researchers').attr('disabled', true);
-                $('#currency_select').empty().append('<option selected="selected" value="{{ $research->currency }}">{{ $research->currency_code}}</option>');
-                $('#currency_select').attr('disabled', true);
+                $('#currency_select_funding_amount').empty().append('<option selected="selected" value="{{ $research->currency_funding_amount }}">{{ $research->currency_funding_amount}}</option>');
+                $('#currency_select_funding_amount').attr('disabled', true);
                 $('#funding_amount').attr('disabled', true);
                 $('#funding_agency').attr('disabled', true);
                 $('#status').empty().append('<option selected="selected" value="{{ $research->status }}">{{ $research->status_name}}</option>');

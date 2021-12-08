@@ -34,6 +34,20 @@
 
     @push('scripts')
         <script>
+            $('div .other_type').hide();
+            var other_type = document.getElementById("other_type");
+            $('#type').on('input', function(){
+                var type_name = $("#type option:selected").text();
+                if (type_name == "Others") {
+                    $('div .other_type').show();
+                    $('#other_type').focus();
+                }
+                else {
+                    $('div .other_type').hide();
+                }
+            });
+        </script>
+        <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 var day = date.getDate();
@@ -42,7 +56,7 @@
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
                 document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#start_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
 
             function validateForm() {

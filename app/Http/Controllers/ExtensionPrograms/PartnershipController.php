@@ -59,8 +59,11 @@ class PartnershipController extends Controller
         $request->validate([
             'moa_code' => 'required',
             'collab_nature' => 'required',
+            'other_collab_nature' => 'required_if:collab_nature,138',
             'partnership_type' => 'required',
+            'other_partnership_type' => 'required_if:partnership_type,149',
             'deliverable' => 'required',
+            'other_deliverable' => 'required_if:deliverable, 157',
             // 'name_of_partner' => '',
             'title_of_partnership' => 'required',
             'beneficiaries' => 'required',
@@ -71,16 +74,22 @@ class PartnershipController extends Controller
             // 'address_of_contact_person' => '',
             // 'telephone_number' => '',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
 
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
+        $partnership->update([
+            'other_collab_nature' => $request->input('other_collab_nature'),
+            'other_partnership_type' => $request->input('other_partnership_type'),
+            'other_deliverable' => $request->input('other_deliverable'),
+        ]);
+
 
         
         if($request->has('document')){
@@ -173,8 +182,11 @@ class PartnershipController extends Controller
         $request->validate([
             'moa_code' => 'required',
             'collab_nature' => 'required',
+            'other_collab_nature' => 'required_if:collab_nature,138',
             'partnership_type' => 'required',
+            'other_partnership_type' => 'required_if:partnership_type,149',
             'deliverable' => 'required',
+            'other_deliverable' => 'required_if:deliverable, 157',
             // 'name_of_partner' => '',
             'title_of_partnership' => 'required',
             'beneficiaries' => 'required',
@@ -185,15 +197,21 @@ class PartnershipController extends Controller
             // 'address_of_contact_person' => '',
             // 'telephone_number' => '',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        
+        $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
 
         $partnership->update($input);
+        $partnership->update([
+            'other_collab_nature' => $request->input('other_collab_nature'),
+            'other_partnership_type' => $request->input('other_partnership_type'),
+            'other_deliverable' => $request->input('other_deliverable'),
+        ]);
 
         if($request->has('document')){
             

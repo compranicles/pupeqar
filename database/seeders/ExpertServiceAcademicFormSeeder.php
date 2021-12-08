@@ -45,6 +45,20 @@ class ExpertServiceAcademicFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 3,
+            'label' => 'Please specify:',
+            'name' => 'other_nature',
+            'placeholder' => null,
+            'size' => 'col-md-3',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 3,
             'label' => 'From',
             'name' => 'from',
             'placeholder' => null,
@@ -148,7 +162,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

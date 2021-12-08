@@ -71,7 +71,7 @@ class SyllabusController extends Controller
             // 'description' => 'required',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $syllabus = Syllabus::create($input);
         $syllabus->update(['user_id' => auth()->id()]);
@@ -98,7 +98,7 @@ class SyllabusController extends Controller
                 }
             }
         }
-        return redirect()->route('faculty.syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
                                 ->with('action', 'saved.');
     }
 
@@ -174,7 +174,7 @@ class SyllabusController extends Controller
             // 'description' => '',
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'college_id']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $syllabu->update($input);
 
@@ -201,7 +201,7 @@ class SyllabusController extends Controller
             }
         }
 
-        return redirect()->route('faculty.syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
                                     ->with('action', 'updated.');
     }
 
@@ -220,7 +220,7 @@ class SyllabusController extends Controller
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 
-        return redirect()->route('faculty.syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
                                 ->with('action', 'deleted.');
     }
 
