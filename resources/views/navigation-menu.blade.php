@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark border-bottom sticky-top" style="background-color: #012c4f">
+<nav class="navbar navbar-expand-md navbar-dark border-bottom sticky-top" style="background-color: #212529">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="/dashboard" style="color:white">

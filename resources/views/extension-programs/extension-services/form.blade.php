@@ -1,3 +1,9 @@
+
+@if(!isset($value))
+    @php
+        $value = [];
+    @endphp
+@endif
 <div class="row">
     @foreach ($formFields as $field)
         @switch($field->field_type_name)
@@ -19,6 +25,9 @@
             @case("dropdown")
                 @include('maintenances.fieldtemplates.dropdown', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("decimal")
+                @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
             @case("college")
                 @include('maintenances.fieldtemplates.college', [
                             'fieldInfo' => $field, 
@@ -30,8 +39,11 @@
             @case("department")
                 @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field])
                 @break
-            @case("decimal")
-                @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])    
+            @case("yes-no")
+                @include('maintenances.fieldtemplates.yes-no', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
+            @case("percentage")
+                @include('maintenances.fieldtemplates.percentage', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
         @endswitch
     @endforeach

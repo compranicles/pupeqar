@@ -13167,4 +13167,19 @@ table tr .padding_left_show {
 
 }
 
+.box {
+  height: 40px;
+  width: 40px;
+  background-color: hotpink;
+  border-radius: 3px 3px 3px 3px;
+}
 
+.container.db-container {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+
+.db-card {
+  flex: 0 1 auto;
+}

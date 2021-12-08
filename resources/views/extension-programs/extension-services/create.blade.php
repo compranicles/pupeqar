@@ -43,7 +43,7 @@
                 var classification_name = $("#classification option:selected").text();
                 if (classification_name == "Others") {
                     $('div .other_classification').show();
-                    $('#from').focus();
+                    $('#other_classification').focus();
                 }
                 else {
                     $('div .other_classification').hide();
