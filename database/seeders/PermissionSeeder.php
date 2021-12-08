@@ -62,15 +62,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'manage expert service as consultant']);
         Permission::create(['name' => 'manage extension services']);
         Permission::create(['name' => 'manage inter-country mobility']);
-        Permission::create(['name' => 'manage community relations and outreach programs']);
-        Permission::create(['name' => 'manage partnerships/linkages/networks']); //32
+        Permission::create(['name' => 'manage partnerships/linkages/networks']); 
+        Permission::create(['name' => 'manage community relations and outreach programs']); //32
         
         /* ************************ACADEMIC DEVELOPMENT********************************** */
-        Permission::create(['name' => 'manage awards received by college and department']);
         Permission::create(['name' => 'manage reference, textbook, module, monographs, IMs']);
+        Permission::create(['name' => 'manage course syllabus']); //34
+        
+        Permission::create(['name' => 'manage awards received by college, department, or office']);
         Permission::create(['name' => 'manage student awards and recognition']);
         Permission::create(['name' => 'manage attended seminars and trainings by students']);
-        Permission::create(['name' => 'manage course syllabus']);
         Permission::create(['name' => 'manage technical extension']);
         Permission::create(['name' => 'manage viable demonstration projects']); //39
 

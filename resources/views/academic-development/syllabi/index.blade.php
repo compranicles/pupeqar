@@ -24,7 +24,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.syllabus.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Course Syllabus</a>
+                                <a href="{{ route('syllabus.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Course Syllabus</a>
                             </div>
                         </div>  
                         <hr>
@@ -42,13 +42,13 @@
                                 <tbody>
                                     @foreach ($syllabi as $syllabus)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('faculty.syllabus.show', $syllabus->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.syllabus.show', $syllabus->id) }}' " >{{ $syllabus->course_title }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.syllabus.show', $syllabus->id) }}' " >{{ $syllabus->assigned_task_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.syllabus.show', $syllabus->id) }}' " >{{ $syllabus->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->course_title }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->assigned_task_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->updated_at }}</td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('faculty.syllabus.edit', $syllabus->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('syllabus.edit', $syllabus->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                                 <button type="button" value="{{ $syllabus->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}"><i class="bi bi-trash"></i> Delete</button>
                                             </div>
                                         </td>
@@ -89,7 +89,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = syllabusTitle
 
-          var url = '{{ route("faculty.syllabus.destroy", ":id") }}';
+          var url = '{{ route("syllabus.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           

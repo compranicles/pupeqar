@@ -22,4 +22,5 @@ class Role extends Model
     public function rolepermission() {
         return $this->hasMany(\App\Models\Authentication\RolePermission::class);
     }
+
 }

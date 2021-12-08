@@ -73,6 +73,20 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
+            'label' => 'Please specify',
+            'name' => 'other_classification',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 4,
             'label' => 'Type',
             'name' => 'type',
             'placeholder' => null,
@@ -93,7 +107,7 @@ class ExtensionServiceFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 1,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -241,6 +255,20 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
+            'label' => 'Please specify',
+            'name' => 'other_classification_of_trainees',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ExtensionProgramField::create([
+            'extension_programs_form_id' => 4,
             'label' => 'Place/Venue',
             'name' => 'place_or_venue',
             'placeholder' => null,
@@ -288,7 +316,7 @@ class ExtensionServiceFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

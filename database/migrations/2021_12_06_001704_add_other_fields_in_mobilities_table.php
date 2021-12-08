@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateResearchCompletesTable extends Migration
+class AddOtherFieldsInMobilitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateResearchCompletesTable extends Migration
      */
     public function up()
     {
-        Schema::create('research_completes', function (Blueprint $table) {
-            $table->id();
-            $table->string('research_code');
-            $table->text('description');
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('mobilities', function (Blueprint $table) {
+            $table->string('other_type')->after('type');
+            
         });
     }
 
@@ -29,6 +26,8 @@ class CreateResearchCompletesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('research_completes');
+        Schema::table('mobilities', function (Blueprint $table) {
+            //
+        });
     }
 }

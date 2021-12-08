@@ -9,10 +9,10 @@
             <div class="col-lg-12">
             <div class="d-flex mr-2">
                 <p class="mr-auto">
-                  <a class="back_link" href="{{ route('faculty.expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals, Books, Publication, Newsletter, Creative Works</a>
+                  <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals, Books, Publication, Newsletter, Creative Works</a>
                 </p>
                 <p>
-                  <a href="{{ route('faculty.expert-service-in-academic.edit', $expert_service_in_academic->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                  <a href="{{ route('expert-service-in-academic.edit', $expert_service_in_academic->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
                   <button type="button" value="{{ $expert_service_in_academic->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>

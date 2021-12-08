@@ -87,7 +87,7 @@ class ResearchController extends Controller
             // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
             // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
@@ -285,7 +285,7 @@ class ResearchController extends Controller
             // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
             // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 

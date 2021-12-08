@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('faculty.invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation and Creative Works</a>
+              <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation and Creative Works</a>
             </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('faculty.invention-innovation-creative.update', $value['id']) }}" method="post">
+                        <form action="{{ route('invention-innovation-creative.update', $value['id']) }}" method="post">
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $inventionFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
@@ -57,7 +57,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -87,7 +87,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('faculty.iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('iicw.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -175,8 +175,19 @@
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
+
+            $('#end_date').on('input', function(){
+                var date = new Date($('#end_date').val());
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('issue_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#issue_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
     @endpush

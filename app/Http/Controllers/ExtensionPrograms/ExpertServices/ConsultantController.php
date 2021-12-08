@@ -100,7 +100,7 @@ class ConsultantController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your Accomplishment in Expert Service as Consultant has been saved.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your Accomplishment in Expert Service as Consultant has been saved.');
     }
 
     /**
@@ -196,7 +196,7 @@ class ConsultantController extends Controller
             }
         }
 
-        return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been updated.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been updated.');
     }
 
     /**
@@ -213,7 +213,7 @@ class ConsultantController extends Controller
             return view('inactive');
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
-        return redirect()->route('faculty.expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
     }
 
     public function removeDoc($filename){

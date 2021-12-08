@@ -33,34 +33,27 @@
 
 @push('scripts')
     <script>
-        $('#college_id').on('input', function(){
+        $("div .department_id").hide();
+        $('#college_id').on('change', function(){
             var collegeId = $('#college_id').val();
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/departments/options/'+collegeId, function (data){
-
-                data.forEach(function (item){
-                    $("#department_id").append(new Option(item.name, item.id));
-                });
-            });
-        });
-
-        $(function() {
-            
-            var collegeId = $('#college_id').val();
-            $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/departments/options/'+collegeId, function (data){
-
-                data.forEach(function (item){
-                    $("#department_id").append(new Option(item.name, item.id));
-                    
-                });
+                if (data != '') {
+                    $("div .department_id").show();
+                    data.forEach(function (item){
+                        $("#department_id").append(new Option(item.name, item.id));
+                        
+                    });
+                }
+                else {
+                    $("div .department_id").hide();
+                }
                 <?php if (old($fieldInfo->name) == '') { ?>
                     document.getElementById("department_id").value = "{{ $department_id }}";
                 <?php } else { ?>
                     document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
                 <?php } ?>
             });
-        
         });
     </script>
 @endpush

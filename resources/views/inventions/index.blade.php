@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.invention-innovation-creative.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Invention, Innovation, or Creative Work</a>
+                                <a href="{{ route('invention-innovation-creative.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Invention, Innovation, or Creative Work</a>
                             </div>
                         </div>  
                         <hr>
@@ -43,13 +43,13 @@
                                 <tbody>
                                     @foreach ($inventions as $invention)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->status_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->status_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->updated_at }}</td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('faculty.invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                                 <button type="button" value="{{ $invention->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-iicw="{{ $invention->title }}"><i class="bi bi-trash"></i> Delete</button>
                                             </div>
                                         </td>
@@ -90,7 +90,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = iicwTitle
 
-          var url = '{{ route("faculty.invention-innovation-creative.destroy", ":id") }}';
+          var url = '{{ route("invention-innovation-creative.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           

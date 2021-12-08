@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark border-bottom sticky-top">
+<nav class="navbar navbar-expand-md navbar-dark border-bottom sticky-top" style="background-color: #212529">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="/dashboard" style="color:white">
@@ -14,7 +14,7 @@
             <ul class="navbar-nav mr-auto">
                 <li class="main-nav-item">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
                     </x-jet-nav-link>
                 </li>
 
@@ -47,19 +47,17 @@
                 </li>
                 @endcan
 
-                @admin
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
-                    <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('faculty.invention-innovation-creative.*') ||
+                    <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('invention-innovation-creative.*') ||
                         request()->routeIs('technical-extension.*') || request()->routeIs('college-department-award.*') || 
                         request()->routeIs('viable-project.*') || request()->routeIs('student-training.*') || 
-                        request()->routeIs('student-award.*') || request()->routeIs('faculty.rtmmi.*') || 
-                        request()->routeIs('faculty.syllabus.*') || request()->routeIs('outreach-program.*') || 
+                        request()->routeIs('student-award.*') || request()->routeIs('rtmmi.*') || 
+                        request()->routeIs('syllabus.*') || request()->routeIs('outreach-program.*') || 
                         request()->routeIs('mobility.*') || request()->routeIs('partnership.*') || 
-                        request()->routeIs('faculty.extension-service.*')) active @endif 
+                        request()->routeIs('extension-service.*')) active @endif 
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
-                @endadmin
                 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}">

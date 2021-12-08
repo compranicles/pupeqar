@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Registration</a>
+                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
@@ -108,8 +108,8 @@
                     hide_dates();
                 }
                 else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
+                    $('div .start_date').show();
+                    $('div .target_date').show();
                     
                     $('#start_date').attr("required", true);
                     $('#target_date').attr("required", true);
@@ -117,6 +117,8 @@
                     $('#target_date').removeAttr('disabled');
                     $('#start_date').addClass('form-validation');
                     $('#target_date').addClass('form-validation');
+
+                    $('#start_date').focus();
                 }
             });
 

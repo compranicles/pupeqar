@@ -110,9 +110,11 @@ class CompletedController extends Controller
         $research->update($input);
 
 
-        ResearchComplete::create([
+        $completed = ResearchComplete::create([
             'research_code' => $research->research_code,
-            'description' => $request->input('description')
+        ]);
+        $completed->update([
+            'description' => $request->input('description'),
         ]);
 
         if($request->has('document')){

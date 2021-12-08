@@ -86,7 +86,7 @@ class ExpertServiceConsultantFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 1,
-            'label' => 'Title',
+            'label' => 'Title of Expert Service Rendered',
             'name' => 'title',
             'placeholder' => null,
             'size' => 'col-md-12',

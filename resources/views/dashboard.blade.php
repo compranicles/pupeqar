@@ -1,34 +1,119 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Dashboard') }}
+            {{ __('Home') }}
         </h2>
     </x-slot>
 
-    <div class="row justify-content-center my-5">
-        <div class="col-md-12">
-            <div class="card shadow bg-light">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card rounded-0 bg-light border-top">
-                            <div class="card-header">
-                                <h4 style="color:maroon" class="m-0">Announcements</h4>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-borderless table-hover p-0 m-0">
-                                        <tbody>
-                                            @foreach ($announcements as $announcement)
-                                                <tr style="cursor: pointer;" class="mb-1 announce" id="messageRow" data-toggle="modal" data-target="#viewMessage" data-id="{{ $announcement->id }}">
-                                                    <td style="color:maroon" class="text-center">hap@puptfqrs</td>
-                                                    <td>{{ $announcement->title }}</td>
-                                                    <td class="text-truncate">{{ $announcement->subject }}<br></td>
-                                                    <td>{{ date('F j, Y', strtotime($announcement->created_at)) }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+    <div class="container db-container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="db-card my-3 p-3 bg-body rounded shadow-sm" style="background-color: white;">
+                            <div class="d-flex text-muted pt-3">
+                                <div class="box mr-2">
                                 </div>
+                                <h4 class="pb-3 mb-0 lh-sm border-bottom pt-2">
+                                    <strong class="d-block text-gray-dark">
+                                        Personnel
+                                    </strong>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Professional Study</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Attendance in University Functions</h6></a>
+                                    </div>
+                                </h4>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="db-card my-3 p-3 bg-body rounded shadow-sm" style="background-color: white;">
+                            <div class="d-flex text-muted pt-3">
+                                <div class="box mr-2">
+                                </div>
+                                <h4 class="pb-3 mb-0 lh-sm border-bottom pt-2">
+                                    <strong class="d-block text-gray-dark">
+                                        Employee Development
+                                    </strong>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Awards & Recognition</h6></a><br>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Officership/Membership</h6></a><br>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Seminars</h6></a><br>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Training</h6></a><br>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="db-card my-3 p-3 bg-body rounded shadow-sm" style="background-color: white;">
+                            <div class="d-flex text-muted pt-3">
+                                <div class="box mr-2">
+                                </div>
+                                <h4 class="pb-3 mb-0 lh-sm border-bottom pt-2">
+                                    <strong class="d-block text-gray-dark">
+                                        Requests & Queries
+                                    </strong>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Requests and Queries Acted Upon</h6></a><br>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="db-card my-3 p-3 bg-body rounded shadow-sm" style="background-color: white;">
+                            <div class="d-flex text-muted pt-3">
+                                <div class="box mr-2">
+                                </div>
+                                <h4 class="pb-3 mb-0 lh-sm border-bottom pt-2">
+                                    <strong class="d-block text-gray-dark">
+                                        IPCR
+                                    </strong>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Accomplishment based on OPCR</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Accomplishment Based on IPCR</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Special Tasks</h6></a>
+                                    </div>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        <div class="db-card my-3 p-3 bg-body rounded shadow-sm" style="background-color: white;">
+                            <div class="d-flex text-muted pt-3">
+                                <div class="box mr-2">
+                                </div>
+                                <h4 class="pb-3 mb-0 lh-sm border-bottom pt-2">
+                                    <strong class="d-block text-gray-dark">
+                                        Research & Book Chapter
+                                    </strong>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Registered</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Completed</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Presented</h6></a>
+                                    </div>
+                                    <div class="d-flex mt-1">
+                                        <h6 class="font-weight-bold ml-3">9</h6> <a href=""><h6 class="ml-3">Published</h6></a>
+                                    </div>
+                                </h4>
                             </div>
                         </div>
                     </div>
@@ -36,54 +121,4 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="viewMessage" tabindex="-1" aria-labelledby="viewMessageLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="viewMessageLabel">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                  <div class="col">
-                      <p id="viewSubject"></p>
-                      <p id="viewDatePosted"></p>
-                      <p id="viewSender"></p>
-                      <p id="viewMessagePosted"></p>
-                  </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script>
-        $(document).ready( function() {
-            $(".announce").click(function (e){
-                let currID = $(this).data("id");
-                $.get("announcements/view/"+ currID, function(data){
-                    const date = new Date(data.created_at);
-                    document.getElementById('viewMessageLabel').innerHTML = data.title;
-                    document.getElementById('viewSubject').innerHTML = "<b>Subject: </b>"+data.subject;
-                    document.getElementById('viewDatePosted').innerHTML = "<b>Date Posted: </b>"+date.toDateString();
-                    document.getElementById('viewSender').innerHTML = "<b>From: </b>hap@puptfqrs";
-                    document.getElementById('viewMessagePosted').innerHTML = "<b>Message: </b> <br><br>"+ marked(data.message);
-                });
-            });
-        });
-        $('#viewMessage').on('hidden.bs.modal', function(event) {
-            document.getElementById('viewMessageLabel').innerHTML = "";
-            document.getElementById('viewSubject').innerHTML = "";
-            document.getElementById('viewDatePosted').innerHTML = "";
-            document.getElementById('viewSender').innerHTML = "";
-            document.getElementById('viewMessagePosted').innerHTML = "";
-        });
-    </script>
-    @endpush
 </x-app-layout>

@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Service</a>
+                                <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Service</a>
                             </div>
                         </div>  
                         <hr>
@@ -43,13 +43,13 @@
                                 <tbody>
                                     @foreach ($extensionServices as $extensionService)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('faculty.extension-service.show', $extensionService->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.extension-service.show', $extensionService->id) }}' " >{{ $extensionService->title_of_extension_program }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.extension-service.show', $extensionService->id) }}' " >{{ $extensionService->status }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.extension-service.show', $extensionService->id) }}' " >{{ $extensionService->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->title_of_extension_program }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->status }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->updated_at }}</td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('faculty.extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                                 <button type="button" value="{{ $extensionService->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ $extensionService->title_of_extension_program }}"><i class="bi bi-trash"></i> Delete</button>
                                             </div>
                                         </td>
@@ -90,7 +90,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = eServiceTitle
 
-          var url = '{{ route("faculty.extension-service.destroy", ":id") }}';
+          var url = '{{ route("extension-service.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           

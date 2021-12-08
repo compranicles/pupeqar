@@ -58,24 +58,25 @@ class MobilityController extends Controller
         $request->validate([
             'nature_of_engagement' => 'required',
             'type' => 'required',
+            'other_type' => 'required_if:type,173',
             'host_name' => 'required',
             // 'host_address' => '',
             'mobility_description' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'other_type']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
+        $mobility->update(['other_type' => $request->input('other_type')]);
 
-        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -165,21 +166,26 @@ class MobilityController extends Controller
         $request->validate([
             'nature_of_engagement' => 'required',
             'type' => 'required',
+            'other_type' => 'required_if:type,173',
             'host_name' => 'required',
             // 'host_address' => '',
             'mobility_description' => 'required',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'other_type']);
 
         $mobility->update($input);
+        $mobility->update([
+            'other_type' => $request->input('other_type'),
+        ]);
+
 
         if($request->has('document')){
             

@@ -131,6 +131,20 @@
     </div>
     @push('scripts')
         <script>
+            $('div .other_type').hide();
+            var other_type = document.getElementById("other_type");
+            $('#type').on('input', function(){
+                var type_name = $("#type option:selected").text();
+                if (type_name == "Others") {
+                    $('div .other_type').show();
+                    $('#other_type').focus();
+                }
+                else {
+                    $('div .other_type').hide();
+                }
+            });
+        </script>
+        <script>
             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){

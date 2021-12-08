@@ -28,7 +28,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('faculty.expert-service-as-consultant.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service as Consultant</a>
+                                <a href="{{ route('expert-service-as-consultant.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Expert Service as Consultant</a>
                             </div>
                         </div>  
                         <hr>
@@ -46,13 +46,13 @@
                                 <tbody>
                                     @foreach ($expertServicesConsultant as $expertServiceConsultant)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->classification_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('faculty.expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->classification_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->updated_at }}</td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('faculty.expert-service-as-consultant.edit', $expertServiceConsultant) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                                 <button type="button" value="{{ $expertServiceConsultant->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconsultant="{{ $expertServiceConsultant->title }}"><i class="bi bi-trash"></i> Delete</button>
                                             </div>
                                         </td>
@@ -93,7 +93,7 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = esConsultantTitle
 
-          var url = '{{ route("faculty.expert-service-as-consultant.destroy", ":id") }}';
+          var url = '{{ route("expert-service-as-consultant.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           
