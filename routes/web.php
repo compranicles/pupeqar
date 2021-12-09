@@ -142,7 +142,7 @@ Route::group(['middleware' => 'auth'], function() {
     
     //FACULTY: research
 
-    Route::get('/research/edit-non-lead/{id}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
+    // Route::get('/research/edit-non-lead/{id}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
 
     /************************************RESEARCH FORMS*********************************** */
     //research

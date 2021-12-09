@@ -54,7 +54,9 @@
                         request()->routeIs('student-award.*') || request()->routeIs('rtmmi.*') || 
                         request()->routeIs('syllabus.*') || request()->routeIs('outreach-program.*') || 
                         request()->routeIs('mobility.*') || request()->routeIs('partnership.*') || 
-                        request()->routeIs('extension-service.*')) active @endif 
+                        request()->routeIs('extension-service.*')) || request()->routeIs('expert-service-as-consultant.*') ||
+                        request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*')
+                        active @endif 
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
