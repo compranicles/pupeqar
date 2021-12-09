@@ -12754,7 +12754,7 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
 }
 
 .card {
-  border-radius: 0;
+  border-radius: 5px;
   border: 0;
 }
 

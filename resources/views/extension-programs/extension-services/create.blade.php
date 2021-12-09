@@ -38,17 +38,17 @@
         <script>
 
             $('div .other_classification').hide();
-            var other_classification = document.getElementById("other_classification");
-            $('#classification').on('input', function(){
-                var classification_name = $("#classification option:selected").text();
-                if (classification_name == "Others") {
-                    $('div .other_classification').show();
-                    $('#other_classification').focus();
-                }
-                else {
-                    $('div .other_classification').hide();
-                }
-            });
+                var other_classification = document.getElementById("other_classification");
+                $('#classification').on('input', function(){
+                    var classification_name = $("#classification option:selected").text();
+                    if (classification_name == "Others") {
+                        $('div .other_classification').show();
+                        $('#other_classification').focus();
+                    }
+                    else {
+                        $('div .other_classification').hide();
+                    }
+                });
 
             $('div .other_classification_of_trainees').hide();
             var other_classification_of_trainees = document.getElementById("other_classification_of_trainees");

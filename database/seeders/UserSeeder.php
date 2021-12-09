@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
         User::truncate();
         User::create([
             'email' => 'mugomec@mailinator.com',
-            'password'=> Hash::make('primogems#2022-letsgo'),
+            'password'=> Hash::make('mugomec@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Eru',
             'middle_name' => null,
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'candy@mailinator.com',
-            'password'=> Hash::make('primogems#2022-letsgo'),
+            'password'=> Hash::make('candy@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Candy',
             'middle_name' => null,
@@ -40,7 +40,7 @@ class UserSeeder extends Seeder
         //Faculty
         User::create([
             'email' => 'cozy@mailinator.com',
-            'password'=> Hash::make('facultyaccount#2022-letsgo'),
+            'password'=> Hash::make('cozy@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Cozy',
             'middle_name' => null,
@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'kyhogo@mailinator.com',
-            'password'=> Hash::make('facultyaccount#2022-letsgo'),
+            'password'=> Hash::make('kyhogo@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Taylor',
             'middle_name' => null,
@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
         //Faculty with designation
         User::create([
             'email' => 'loey@mailinator.com',
-            'password'=> Hash::make('chairpersonaccount#2022-letsgo'),
+            'password'=> Hash::make('loey@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Loey',
             'middle_name' => null,
@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'miro@mailinator.com',
-            'password'=> Hash::make('chairpersonaccount#2022-letsgo'),
+            'password'=> Hash::make('miro@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Miro',
             'middle_name' => null,
@@ -82,7 +82,7 @@ class UserSeeder extends Seeder
         //Admin Employee
         User::create([
             'email' => 'harry@mailinator.com',
-            'password'=> Hash::make('adminemployee#2022-letsgo'),
+            'password'=> Hash::make('harry@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Harry',
             'middle_name' => null,
@@ -92,7 +92,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'mira@mailinator.com',
-            'password'=> Hash::make('adminemployee#2022-letsgo'),
+            'password'=> Hash::make('mira@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Mira',
             'middle_name' => null,
@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
         //Admin with Teaching Load
         User::create([
             'email' => 'gola@mailinator.com',
-            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'password'=> Hash::make('gola@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Gola',
             'middle_name' => null,
@@ -113,7 +113,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'sorita@mailinator.com',
-            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'password'=> Hash::make('sorita@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Sorita',
             'middle_name' => null,
@@ -124,7 +124,7 @@ class UserSeeder extends Seeder
         //Chairperson
         User::create([
             'email' => 'lucas@mailinator.com',
-            'password'=> Hash::make('chairperson#2022-letsgo'),
+            'password'=> Hash::make('lucas@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Lucas',
             'middle_name' => null,
@@ -134,7 +134,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'miku@mailinator.com',
-            'password'=> Hash::make('adminteaching#2022-letsgo'),
+            'password'=> Hash::make('miku@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Miku',
             'middle_name' => null,
@@ -145,7 +145,7 @@ class UserSeeder extends Seeder
         //Director/Dean
         User::create([
             'email' => 'direk@mailinator.com',
-            'password'=> Hash::make('directordean#2022-letsgo'),
+            'password'=> Hash::make('direk@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Direk',
             'middle_name' => null,
@@ -155,7 +155,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'teresita@mailinator.com',
-            'password'=> Hash::make('directordean#2022-letsgo'),
+            'password'=> Hash::make('teresita@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Teresita',
             'middle_name' => null,
@@ -166,7 +166,7 @@ class UserSeeder extends Seeder
         //VP/Sector head
         User::create([
             'email' => 'yulo@mailinator.com',
-            'password'=> Hash::make('sectorhead#2022-letsgo'),
+            'password'=> Hash::make('yulo@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Yulo',
             'middle_name' => null,
@@ -176,7 +176,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'ramen@mailinator.com',
-            'password'=> Hash::make('sectorhead#2022-letsgo'),
+            'password'=> Hash::make('ramen@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Ramen',
             'middle_name' => null,
@@ -187,7 +187,7 @@ class UserSeeder extends Seeder
         //IPQMSO
         User::create([
             'email' => 'goya@mailinator.com',
-            'password'=> Hash::make('ipqmso#2022-letsgo'),
+            'password'=> Hash::make('goya@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Goya',
             'middle_name' => null,
@@ -197,7 +197,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'email' => 'lego@mailinator.com',
-            'password'=> Hash::make('ipqmso#2022-letsgo'),
+            'password'=> Hash::make('lego@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Lego',
             'middle_name' => null,
