@@ -4641,6 +4641,7 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/finder/tree/v5.4.0"
+
             },
             "funding": [
                 {
@@ -4657,6 +4658,7 @@
                 }
             ],
             "time": "2021-11-28T15:25:38+00:00"
+
         },
         {
             "name": "symfony/http-foundation",
