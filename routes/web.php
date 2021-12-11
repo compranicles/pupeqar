@@ -257,7 +257,9 @@ Route::group(['middleware' => 'auth'], function() {
     //view all reports
     Route::get('/reports/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
 
-
+    /**********************************SUBMISSIONS************************************* */
+    Route::get('/submissions/incomplete', [\App\Http\Controllers\Submissions\SubmissionController::class, 'incomplete'])->name('submissions.incomplete');
+    
     // admin routes
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 

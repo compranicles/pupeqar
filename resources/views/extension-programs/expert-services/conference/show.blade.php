@@ -9,7 +9,7 @@
             <div class="col-lg-12">
             <div class="d-flex mr-2">
                 <p class="mr-auto">
-                <a class="back_link" href="{{ route('expert-service-in-conference.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Conference/Workshop/Training Course</a>
+                <a class="back_link" href="{{ route('expert-service-in-conference.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Conference, Workshop, & Training Course</a>
                 </p>
                 <p>
                   <a href="{{ route('expert-service-in-conference.edit', $expert_service_in_conference->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>

@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
@@ -36,10 +36,9 @@
 
     @push('scripts')
         <script>
-
             $('div .other_classification').hide();
                 var other_classification = document.getElementById("other_classification");
-                $('#classification').on('input', function(){
+                $('#classification').on('change', function(){
                     var classification_name = $("#classification option:selected").text();
                     if (classification_name == "Others") {
                         $('div .other_classification').show();

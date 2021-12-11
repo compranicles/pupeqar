@@ -4683,6 +4683,7 @@ input[type=button].btn-block {
 
 .badge {
   display: inline-block;
+  color: white;
   padding: 0.25em 0.4em;
   font-size: 75%;
   font-weight: 700;
@@ -13016,6 +13017,11 @@ body {
   border-bottom: 2px solid #eeb510;
 }
 
+.nav-item.sub.active {
+  font-weight: bolder;
+
+}
+
 /*************SHOW BLADES************/
 
 .show_table {
@@ -13182,4 +13188,30 @@ table tr .padding_left_show {
 
 .db-card {
   flex: 0 1 auto;
+}
+
+.submission_links {
+  color: black;
+}
+
+.submission_links:hover {
+  color: black;
+  filter: brightness(0.85);
+}
+
+.submission_links.active {
+  border-bottom: 2px solid #eeb510;
+  
+}
+
+.submission-categories {
+  font-weight: bolder;
+}
+
+.jumptarget::before {
+    display: block; 
+    content: " "; 
+    margin-top: -75px; 
+    height: 75px; 
+    visibility: hidden; 
 }

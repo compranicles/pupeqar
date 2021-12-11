@@ -67,7 +67,7 @@ class SyllabusController extends Controller
             'assigned_task' => 'required',
             'date_finished' => 'required|date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
@@ -170,7 +170,7 @@ class SyllabusController extends Controller
             'assigned_task' => 'required',
             'date_finished' => 'required|date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => '',
         ]);
 

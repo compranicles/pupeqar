@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
                 </p>
                 <div class="card">
                     <div class="card-body">

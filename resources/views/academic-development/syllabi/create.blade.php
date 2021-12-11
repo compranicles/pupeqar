@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                    <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
                 </p>
                 <div class="card">
                     <div class="card-body">

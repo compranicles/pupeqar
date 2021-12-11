@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals/Books/Publication/Newsletter/Creative Works</a>
+              <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals, Books, Publication, Newsletter, & Creative Works</a>
             </p>
                 <div class="card">
                     <div class="card-body">

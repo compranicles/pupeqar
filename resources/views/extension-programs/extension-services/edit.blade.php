@@ -8,6 +8,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <p>
+                    <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
+                </p>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post">
