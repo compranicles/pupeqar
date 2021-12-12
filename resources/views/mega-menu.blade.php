@@ -18,14 +18,11 @@
         </div>
         <div class="col-md-3">
             <ul>
-                <h6 class="menu-category">Requests & Queries</h6>
-                <li><a href="">Requests and Queries Acted Upon</a></li>
-            </ul>
-            <ul>
                 <h6 class="menu-category">IPCR</h6>
                 <li><a href="">Accomplishment based on OPCR</a></li>
                 <li><a href="">Accomplishment Based on IPCR</a></li>
                 <li><a href="">Special Tasks</a></li>
+                <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
             </ul>
             @can('viewAny', \App\Models\Research::class)
             <ul>

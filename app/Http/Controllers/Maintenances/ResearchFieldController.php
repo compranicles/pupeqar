@@ -97,7 +97,7 @@ class ResearchFieldController extends Controller
                 });
             default: 
         }
-        return redirect()->route('research-forms.show', $research_form->id)->with('sucess', 'Research field added sucessfully.');
+        return redirect()->route('research-forms.show', $research_form->id)->with('success', 'Research field added sucessfully.');
     }
 
     /**
@@ -136,7 +136,7 @@ class ResearchFieldController extends Controller
         $input = $request->except(['_token', '_method']);
 
         ResearchField::where('research_form_id', $research_form->id)->where('id', $research_field->id)->update($input);
-        return redirect()->route('research-forms.show', $research_form->id)->with('sucess', 'Research field updated sucessfully.');
+        return redirect()->route('research-forms.show', $research_form->id)->with('success', 'Research field updated sucessfully.');
     }
 
     /**

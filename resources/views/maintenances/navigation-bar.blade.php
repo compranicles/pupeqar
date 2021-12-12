@@ -70,6 +70,11 @@
                             {{ __('Academic Module') }}
                         </x-jet-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('ipcr-forms.index') }}" class="text-dark" :active="request()->routeIs('ipcr-forms.*')">
+                            {{ __('IPCR') }}
+                        </x-jet-nav-link>
+                    </li>
                 </ul>
             </div>
         </div>

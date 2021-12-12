@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             InventionFormSeeder::class,
             ExtensionFormSeeder::class,
             AcademicDevelopmentFormSeeder::class,
+            IPCRFormSeeder::class,
 
 
             //FIELD Seeder
