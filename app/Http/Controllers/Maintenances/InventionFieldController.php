@@ -99,7 +99,7 @@ class InventionFieldController extends Controller
                 });
             default: 
         }
-        return redirect()->route('invention-forms.show', $invention_form->id)->with('sucess', 'Invention field added sucessfully.');
+        return redirect()->route('invention-forms.show', $invention_form->id)->with('success', 'Invention field added sucessfully.');
     }
 
     /**
@@ -138,7 +138,7 @@ class InventionFieldController extends Controller
         $input = $request->except(['_token', '_method']);
 
         InventionField::where('invention_form_id', $invention_form->id)->where('id', $invention_field->id)->update($input);
-        return redirect()->route('invention-forms.show', $invention_form->id)->with('sucess', 'Invention field updated sucessfully.');
+        return redirect()->route('invention-forms.show', $invention_form->id)->with('success', 'Invention field updated sucessfully.');
     }
 
     /**

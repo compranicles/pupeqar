@@ -23,6 +23,7 @@ class DropdownSeeder extends Seeder
             InventionDropdownSeeder::class,
             ExtensionDropdownSeeder::class,
             AcademicDevelopmentDropdownSeeder::class,
+            IPCRDropdownSeeder::class,
         ]);
     }
 }

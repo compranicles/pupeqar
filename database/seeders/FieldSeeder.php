@@ -37,6 +37,9 @@ class FieldSeeder extends Seeder
             ViableProjectFormSeeder::class,
             TechnicalExtensionFormSeeder::class,
             CollegeDepartmentAwardFormSeeder::class,
+
+            //IPCR Field Seeders
+            RequestFormSeeder::class,
         ]);
     }
 }

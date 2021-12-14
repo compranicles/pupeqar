@@ -120,6 +120,17 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/academic-module-fields/arrange', [\App\Http\Controllers\Maintenances\AcademicModuleFieldController::class, 'arrange']);
     Route::resource('academic-module-forms.academic-module-fields', \App\Http\Controllers\Maintenances\AcademicModuleFieldController::class);
 
+    //ipcrForms
+    Route::get('/ipcr-forms/activate/{id}', [\App\Http\Controllers\Maintenances\IPCRFormController::class, 'activate']);
+    Route::get('/ipcr-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\IPCRFormController::class, 'inactivate']);
+    Route::resource('ipcr-forms', \App\Http\Controllers\Maintenances\IPCRFormController::class);
+
+    //ipcrFields
+    Route::get('/ipcr-fields/activate/{id}', [\App\Http\Controllers\Maintenances\IPCRFieldController::class, 'activate']);
+    Route::get('/ipcr-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\IPCRFieldController::class, 'inactivate']);
+    Route::post('/ipcr-fields/arrange', [\App\Http\Controllers\Maintenances\IPCRFieldController::class, 'arrange']);
+    Route::resource('ipcr-forms.ipcr-fields', \App\Http\Controllers\Maintenances\IPCRFieldController::class);
+
     //researchSubmissions
     Route::get('/research/complete/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'complete'])->name('research.complete');
     Route::get('/research/publication/{id}', [\App\Http\Controllers\Research\ResearchController::class, 'publication'])->name('research.publication');
@@ -215,6 +226,10 @@ Route::group(['middleware' => 'auth'], function() {
     //Technical Extension Programs/ Projects/ Activities
     Route::get('/technical-extension/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class, 'removeDoc'])->name('technical-extension.removedoc');
     Route::resource('technical-extension', \App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class);
+
+    /************************************IPCR*********************************** */
+    Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');
+    Route::resource('ipcr/request', \App\Http\Controllers\IPCR\RequestController::class);
 
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
