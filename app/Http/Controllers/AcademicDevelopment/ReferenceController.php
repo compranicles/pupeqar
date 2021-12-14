@@ -76,7 +76,7 @@ class ReferenceController extends Controller
             'date_published' => 'date|after:date_completed',
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
@@ -197,7 +197,7 @@ class ReferenceController extends Controller
             'date_published' => 'date|after:date_completed',
             // 'copyright_regi_no' => ''
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 

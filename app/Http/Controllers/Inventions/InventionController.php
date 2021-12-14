@@ -79,7 +79,7 @@ class InventionController extends Controller
             'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
 
@@ -199,7 +199,7 @@ class InventionController extends Controller
             'copyright_number' => 'required',
             'issue_date' => 'date|after_or_equal:end_date',
             'college_id' => 'required',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
             // 'description' => 'required',
         ]);
         $funding_amount = $request->input('funding_amount');    

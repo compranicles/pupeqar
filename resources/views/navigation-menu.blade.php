@@ -62,6 +62,12 @@
                 </li>
                 
                 <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('submissions.incomplete') }}" :active="request()->routeIs('submissions.incomplete')">
+                        {{ __('Submissions') }}
+                    </x-jet-nav-link>
+                </li>
+
+                <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}">
                         {{ __('Reports') }}
                     </x-jet-nav-link>

@@ -20,7 +20,7 @@
                         
                 @endswitch>
                 @if ($fieldInfo->name == 'keywords')
-                    <span id="validation-keywords" role="alert">
+                    <span id="validation-keywords" role="alert" style="color: red;">
                         <strong></strong>
                     </span>
                 @endif

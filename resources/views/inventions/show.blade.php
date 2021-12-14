@@ -9,7 +9,7 @@
             <div class="col-lg-9">
             <div class="d-flex mr-2">
                 <p class="mr-auto">
-                  <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation and Creative Works</a>
+                  <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
                 </p>
                 <p>
                   <a href="{{ route('invention-innovation-creative.edit', $invention_innovation_creative->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
