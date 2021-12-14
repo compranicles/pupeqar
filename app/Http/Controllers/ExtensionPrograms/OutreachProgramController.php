@@ -179,7 +179,7 @@ class OutreachProgramController extends Controller
                     $temporaryFile->delete();
 
                     OutreachProgramDocument::create([
-                        'outreach_program_id' => $outreach->id,
+                        'outreach_program_id' => $outreach_program->id,
                         'filename' => $fileName,
                     ]);
                 }

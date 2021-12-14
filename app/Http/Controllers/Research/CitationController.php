@@ -230,7 +230,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.show', [$research->id, $citation->id])->with('success', 'Research Citation Updated Successfully');
     }
 
     /**

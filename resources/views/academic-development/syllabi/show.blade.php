@@ -21,7 +21,7 @@
               </div>
                 <div class="row">
                   <div class="col-md-12">
-                    @include('show', ['value' => $values])
+                    @include('show', ['formFields' => $syllabusFields, 'value' => $values])
                   </div>
                 </div>
                 <div class="row mt-3">

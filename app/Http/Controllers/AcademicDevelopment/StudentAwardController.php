@@ -107,13 +107,13 @@ class StudentAwardController extends Controller
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        // $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
+        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
 
         $values = $student_award->toArray();
 
-        return view('academic-development.student-awards.show', compact('student_award', 'documents', 'values'));
+        return view('academic-development.student-awards.show', compact('student_award', 'documents', 'values', 'studentFields'));
     }
 
     /**
