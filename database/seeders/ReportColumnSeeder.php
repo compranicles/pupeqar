@@ -229,7 +229,7 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 2,
             'name' => 'Date Completed',
             'table' => 'research',
-            'column' => 'date_completion',
+            'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
         ]);

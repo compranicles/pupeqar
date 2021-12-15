@@ -242,6 +242,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getRejectDetails']);
 
     //faculty Reports
+    Route::get('/reports/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'addDocument'])->name('faculty.adddoc');
+    Route::post('/reports/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'saveDocument'])->name('faculty.savedoc');
     Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
 
     //chairperson Reports

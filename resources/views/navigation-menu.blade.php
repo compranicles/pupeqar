@@ -69,7 +69,7 @@
 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}">
-                        {{ __('Reports') }}
+                        {{ __('Review') }}
                     </x-jet-nav-link>
                 </li>
 
