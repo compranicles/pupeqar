@@ -141,7 +141,7 @@ class CompletedController extends Controller
             }
         }
 
-        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research Completed Successfully');
+        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been added.');
     }
 
     /**
@@ -239,7 +239,7 @@ class CompletedController extends Controller
             }
         }
 
-        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research Completed Successfully');
+        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
         
 
     }

@@ -45,7 +45,7 @@
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
-        @if((!Request::is('dashboard')) and (!Route::is('submissions.incomplete')))
+        @if((!Request::is('dashboard')))
         <!-- Page Heading -->
         <header class="d-flex py-3 bg-white shadow-sm border-bottom">
             <div class="container">

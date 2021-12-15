@@ -113,7 +113,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtolower($accomplishment[0]), 'action' => 'saved.' ]);
+        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtolower($accomplishment[0]), 'action' => 'added.' ]);
     }
 
     /**

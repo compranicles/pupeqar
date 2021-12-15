@@ -160,7 +160,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Added Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been added.');
     }
 
     /**
@@ -265,7 +265,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Updated Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been updated.');
     }
 
     /**

@@ -132,7 +132,18 @@
     </div>
 
     @push('scripts')
+        <script>
+            $('#college').on('blur', function(){
+                var collegeId = $('#college').val();
+                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+                $.get('/departments/options/'+collegeId, function (data){
 
+                    data.forEach(function (item){
+                        $("#department").append(new Option(item.name, item.id));
+                    });
+                });
+            });
+        </script>
         {{-- <script>
             function hide_dates() {
                 $('.start_date').hide();

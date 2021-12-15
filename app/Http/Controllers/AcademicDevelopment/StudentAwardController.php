@@ -91,7 +91,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been saved.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been added.');
     }
 
     /**
@@ -107,13 +107,13 @@ class StudentAwardController extends Controller
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        // $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
+        $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
 
         $values = $student_award->toArray();
 
-        return view('academic-development.student-awards.show', compact('student_award', 'documents', 'values'));
+        return view('academic-development.student-awards.show', compact('student_award', 'documents', 'values', 'studentFields'));
     }
 
     /**
@@ -186,7 +186,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been updated.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
 
     /**
@@ -201,7 +201,7 @@ class StudentAwardController extends Controller
 
         StudentAwardDocument::where('student_award_id', $student_award->id)->delete();
         $student_award->delete();
-        return redirect()->route('student-award.index')->with('student_success', 'Your accomplishment in Student Award and Recognition has been deleted.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
 
     public function removeDoc($filename){

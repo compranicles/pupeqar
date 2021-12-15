@@ -12840,7 +12840,7 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
 }
 
 body {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/storage/cover.jpg) no-repeat;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/storage/cover.jpg) no-repeat;
 
   /* Center and scale the image nicely */
   background-position: top;
@@ -13211,7 +13211,7 @@ table tr .padding_left_show {
 .jumptarget::before {
     display: block; 
     content: " "; 
-    margin-top: -75px; 
+    margin-top: -55px; 
     height: 75px; 
     visibility: hidden; 
 }
@@ -13233,3 +13233,40 @@ table tr .padding_left_show {
   font-weight: bolder;
 
 }
+
+.submission-menu {
+  /* color: #820202; */
+  margin-right: 15px;
+  font-size: 15px;
+  color: #212529;
+}
+
+.submission-menu.active {
+  color: #212529;
+  border-bottom: 2px solid #eeb510;
+  padding-bottom: 12px;
+  font-weight: bolder;
+}
+
+.submission-menu:hover {
+  color: #212529;
+  text-decoration: none;
+}
+
+
+/**********************SUBMISSION MODULE*****************************/
+/* .submission_links {
+  color: black;
+}
+
+.submission_links:hover {
+  color: black;
+  filter: brightness(0.85);
+}
+
+.submission_links.active {
+  border-bottom: 2px solid #eeb510;
+  
+} */
+
+

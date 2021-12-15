@@ -181,7 +181,7 @@ class ResearchController extends Controller
             }
         }
 
-        return redirect()->route('research.index')->with('success', 'Research Registered Successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been registered');
     }
 
     /**
@@ -325,7 +325,7 @@ class ResearchController extends Controller
             }
         }
 
-        return redirect()->route('research.show', $research->id)->with('success', 'Research Updated Successfully');
+        return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated');
     }
 
     public function updateNonLead (Request $request, Research $research)
@@ -475,7 +475,7 @@ class ResearchController extends Controller
         Research::where('research_code', $research_code)->update([
             'researchers' => $research['researchers'].', '.auth()->user()->first_name.' '.auth()->user()->last_name
         ]);
-        return redirect()->route('research.index')->with('success', 'Research Added Successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been saved');
     }
 
     public function retrieve($research_code){

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Inter-Country Mobility') }}
+            {{ __('View Inter-Country Mobility') }}
         </h2>
     </x-slot>
 

@@ -2,7 +2,7 @@
     <button class="btn btn-dark btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         Options
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
     @if ($involvement != 11)
         <a class="dropdown-item" href="{{ route('research.edit', $research_id) }}">Edit Research Info</a>
         <button class="dropdown-item text-danger" href="{{ route('research.manage-researchers', $research->research_code) }}"

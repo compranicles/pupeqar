@@ -20,8 +20,8 @@
                             <div class="col-md-12">
                                 {{-- Success Message --}}
                                 @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index mx-3">
-                                    {{ $message }}
+                                <div class="alert alert-success alert-index">
+                                    <i class="bi bi-check-circle"></i> {{ $message }}
                                 </div>
                                 @endif
                             </div>

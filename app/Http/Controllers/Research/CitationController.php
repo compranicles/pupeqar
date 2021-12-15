@@ -112,7 +112,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been added.');
     }
 
     /**
@@ -230,7 +230,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been updated.');
     }
 
     /**
@@ -249,6 +249,6 @@ class CitationController extends Controller
 
         $citation->delete();
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Deleted Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been deleted.');
     }
 }

@@ -92,7 +92,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been saved.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
     }
 
     /**
@@ -186,7 +186,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been updated.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
     }
 
     /**
@@ -203,7 +203,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
         $outreach_program->delete();
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your accomplishment in Community Relations and Outreach Program has been deleted.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been deleted.');
     }
 
     public function removeDoc($filename){

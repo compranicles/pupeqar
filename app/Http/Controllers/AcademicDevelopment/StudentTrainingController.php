@@ -101,7 +101,7 @@ class StudentTrainingController extends Controller
             }
         }
 
-        return redirect()->route('student-training.index')->with('student_success', 'Your Accomplishment in Student Attended Seminars and Trainings has been saved.');
+        return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been added.');
     }
 
     /**
@@ -204,7 +204,7 @@ class StudentTrainingController extends Controller
             }
         }
 
-        return redirect()->route('student-training.index')->with('student_success', 'Your Accomplishment in Student Attended Seminars and Trainings has been updated.');
+        return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been updated.');
     }
 
     /**
@@ -221,7 +221,7 @@ class StudentTrainingController extends Controller
             return view('inactive');
         StudentTrainingDocument::where('student_training_id', $student_training->id)->delete();
         $student_training->delete();
-        return redirect()->route('student-training.index')->with('student_success', 'Your accomplishment in Student Attended Seminars and Trainings has been deleted.');
+        return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been deleted.');
     }
 
     public function removeDoc($filename){

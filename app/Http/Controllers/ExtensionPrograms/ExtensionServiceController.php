@@ -144,7 +144,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your Accomplishment in Extension Service has been saved.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been added.');
     }
 
     /**
@@ -161,9 +161,11 @@ class ExtensionServiceController extends Controller
             return view('inactive');
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
-        $values = $expert_service_in_academic->toArray();
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id('4')");
         
-        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values'));
+        $values = $extension_service->toArray();
+        
+        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values', 'extensionServiceFields'));
     }
 
     /**
@@ -280,7 +282,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been updated.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been updated.');
     }
 
     /**
@@ -297,7 +299,7 @@ class ExtensionServiceController extends Controller
             return view('inactive');
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been deleted.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been deleted.');
     }
 
     public function removeDoc($filename){

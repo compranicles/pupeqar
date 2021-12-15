@@ -98,7 +98,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        return redirect()->route('viable-project.index')->with('project_success', 'Your Accomplishment in Viable Demonstration Project has been saved.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
     }
 
     /**
@@ -115,6 +115,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
+        // dd($viable_project);
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
         $values = $viable_project->toArray();
@@ -138,8 +139,10 @@ class ViableProjectController extends Controller
 
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
+        $viable_project->rate_of_return = $viable_project->rate_of_return * 100;
         $values = $viable_project->toArray();
 
+        // dd($values);
         return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values'));
     }
 
@@ -194,7 +197,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        return redirect()->route('viable-project.index')->with('project_success', 'Your Accomplishment in Viable Demonstration Project has been updated.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
     }
 
     /**
@@ -211,7 +214,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
-        return redirect()->route('viable-project.index')->with('project_success', 'Your accomplishment in Viable Demonstration Project has been deleted.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been deleted.');
     }
 
     public function removeDoc($filename){

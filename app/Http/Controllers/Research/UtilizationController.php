@@ -106,7 +106,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been added.');
     }
 
     /**
@@ -218,7 +218,7 @@ class UtilizationController extends Controller
             }
         }
 
-        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Added Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization has been updated.');
     }
 
     /**
@@ -236,6 +236,6 @@ class UtilizationController extends Controller
             return view('inactive');
 
         $utilization->delete();
-        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research Utilization Deleted Successfully');
+        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been deleted.');
     }
 }

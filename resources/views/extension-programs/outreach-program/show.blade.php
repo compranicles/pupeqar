@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Community Relations and Outreach Program') }}
+            {{ __('View Community Relations and Outreach Program') }}
         </h2>
     </x-slot>
 

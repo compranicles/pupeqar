@@ -1,12 +1,10 @@
 <x-app-layout>
 
+    <x-slot name="header">
+            <a href="{{ route('submissions.incomplete') }}" class="submission-menu {{ request()->routeIs('submissions.incomplete') ? 'active' : ''}} ml-3">Incomplete</a>
+            <a href="" class="submission-menu">Denied</a>
+    </x-slot>
     <div class="container">
-        
-        <nav class="nav">
-            <a class="nav-link submission_links {{ request()->routeIs('submissions.incomplete') ? 'active' : ''}}" aria-current="page" href="{{ route('submissions.incomplete') }}">Incomplete</a>
-            <a class="nav-link submission_links" href="#">Denied</a>
-        </nav>
-        <br>
         @if ($researches->isEmpty() && $inventions->isEmpty() && $syllabi->isEmpty() && $allRtmmi->isEmpty() && $student_awards->isEmpty() &&
             $student_trainings->isEmpty() && $viable_projects->isEmpty() &&
             $college_department_awards->isEmpty() && $technical_extensions->isEmpty() &&
@@ -169,7 +167,7 @@
         @endif
         @if(! $researches->isEmpty())
         <br>
-        <h3 id="research" class="submission-categories jump-target">Research & Book Chapter</h3>
+        <h3 id="research" class="submission-categories jumptarget">Research & Book Chapter</h3>
         <div class="card h-100">
             <div class="card-body">
                 <div class="row">
@@ -207,10 +205,11 @@
                 </div>
             </div>
         </div>
+        <br>
+        <hr>
         @endif
         @if(! $inventions->isEmpty())
         <br>
-        <hr>
         <div class="row">
             <div class="col-md-12">
                 <h3 id="invention" class="submission-categories jumptarget">Inventions, Innovation, & Creativity</h3>
@@ -248,16 +247,16 @@
                 </div>
             </div>
         </div>
+        <br>
+        <hr>
         @endif
         @if(! $syllabi->isEmpty() || ! $allRtmmi->isEmpty() || ! $student_awards->isEmpty() ||
             ! $student_trainings->isEmpty() || ! $viable_projects->isEmpty() ||
             ! $college_department_awards->isEmpty() || ! $technical_extensions->isEmpty())
-        <br>
-        <hr>
         <h3 class="submission-categories">Academic Program Development</h3>
         @endif
         @if(! $syllabi->isEmpty())
-        <h4 id="syllabus" class="jumptarget mt-3">Course Syllabus</h4>
+        <h4 id="syllabus" class="jumptarget">Course Syllabus</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -293,7 +292,7 @@
         @endif
         @if(! $allRtmmi->isEmpty())
         <br>
-        <h4  id="rtmmi" class="jumptarget mt-3">Reference, Textbooks, Module, Monographs, & Instructional Materials</h4>
+        <h4 id="rtmmi" class="jumptarget">Reference, Textbooks, Module, Monographs, & Instructional Materials</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -317,7 +316,6 @@
                                 <td>
                                     <div role="group">
                                         <a href="{{ route('rtmmi.edit', $rtmmi->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                        <button type="button" value="{{ $rtmmi->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-rtmmi="{{ $rtmmi->title }}"><i class="bi bi-trash"></i> Delete</button>
                                     </div>
                                 </td>
                             </tr>
@@ -330,7 +328,7 @@
         @endif
         @if(! $student_awards->isEmpty())
         <br>
-        <h4 id="student-awards" class="jumptarget mt-3">Student Awards & Recognition</h4>
+        <h4 id="student-awards" class="jumptarget">Student Awards & Recognition</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -367,7 +365,7 @@
         @endif
         @if(! $student_trainings->isEmpty())
         <br>
-        <h4 id="student-trainings" class="jumptarget mt-3">Student Attended Seminars & Trainings</h4>
+        <h4 id="student-trainings" class="jumptarget">Student Attended Seminars & Trainings</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -406,7 +404,7 @@
         @endif
         @if(! $viable_projects->isEmpty())
         <br>
-        <h4 id="viable-projects" class="jumptarget mt-3">Viable Demonstration Projects</h4>
+        <h4 id="viable-projects" class="jumptarget">Viable Demonstration Projects</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -441,8 +439,8 @@
         @endif
         @if(! $college_department_awards->isEmpty())
         <br>
-        <h4 id="college-awards" class="jumptarget mt-3">Awards and Recognition Received by the College</h4>
-        <!-- <h4 id="department-awards" class="jumptarget mt-3">Awards and Recognition Received by the College</h4> -->
+        <h4 id="college-awards" class="jumptarget">Awards and Recognition Received by the College</h4>
+        <!-- <h4 id="department-awards" class="jumptarget">Awards and Recognition Received by the College</h4> -->
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -479,7 +477,7 @@
         @endif
         @if(! $technical_extensions->isEmpty())
         <br>
-        <h4 id="technical-extensions" class="jumptarget mt-3">Technical Extension Programs, Projects, & Activities</h4>
+        <h4 id="technical-extensions" class="jumptarget">Technical Extension Programs, Projects, & Activities</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -511,16 +509,16 @@
                 </div>
             </div>
         </div>
+        <br>
+        <hr>
         @endif
         @if(! $expertServicesConsultant->isEmpty() || ! $expertServicesConference->isEmpty() || ! $expertServicesAcademic->isEmpty() ||
             ! $extensionServices->isEmpty() || ! $partnerships->isEmpty() ||
             ! $mobilities->isEmpty() || ! $outreach_programs->isEmpty())
-        <br>
-        <hr>
         <h3 class="submission-categories">Extension Programs & Expert Services</h3>
         @endif
         @if(! $expertServicesConsultant->isEmpty())
-        <h4 id="expert-service-consultant" class="jumptarget mt-3">Expert Service Rendered as Consultant</h4>
+        <h4 id="expert-service-consultant" class="jumptarget">Expert Service Rendered as Consultant</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -557,7 +555,7 @@
         @endif
         @if(! $expertServicesConference->isEmpty())
         <br>
-        <h4 id="expert-service-conference" class="jumptarget mt-3">Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</h4>
+        <h4 id="expert-service-conference" class="jumptarget">Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -594,7 +592,7 @@
         @endif
         @if(! $expertServicesAcademic->isEmpty())
         <br>
-        <h4 id="expert-service-academic" class="jumptarget mt-3">Expert Service Rendered in Academic Journals, Books, Publication, Newsletter, & Creative Works</h4>
+        <h4 id="expert-service-academic" class="jumptarget">Expert Service Rendered in Academic Journals, Books, Publication, Newsletter, & Creative Works</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -631,7 +629,7 @@
         @endif
         @if(! $extensionServices->isEmpty())
         <br>
-        <h4 id="extension-services" class="jumptarget mt-3">Extension Services</h4>
+        <h4 id="extension-services" class="jumptarget">Extension Services</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -668,7 +666,7 @@
         @endif
         @if(! $partnerships->isEmpty())
         <br>
-        <h4 id="partnerships" class="jumptarget mt-3">Partnership, Linkages, & Network</h4>
+        <h4 id="partnerships" class="jumptarget">Partnership, Linkages, & Network</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -707,7 +705,7 @@
         @endif
         @if(! $mobilities->isEmpty())
         <br>
-        <h4 id="inter-country-mobility" class="jumptarget mt-3">Inter-country Mobility</h4>
+        <h4 id="inter-country-mobility" class="jumptarget">Inter-country Mobility</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -742,7 +740,7 @@
         @endif
         @if(! $outreach_programs->isEmpty())
         <br>
-        <h4 id="outreach" class="jumptarget mt-3">Community Relation and Outreach Program</h4>
+        <h4 id="outreach" class="jumptarget">Community Relation and Outreach Program</h4>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
