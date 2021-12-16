@@ -107,7 +107,9 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your Accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been saved.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
     }
 
     /**
@@ -219,7 +221,9 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been updated.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
     }
 
     /**
@@ -236,7 +240,7 @@ class AcademicController extends Controller
             return view('inactive');
         $expert_service_in_academic->delete();
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been deleted.');
     }
 
     public function removeDoc($filename){

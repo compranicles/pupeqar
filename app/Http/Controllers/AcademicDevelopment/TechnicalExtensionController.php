@@ -97,7 +97,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        return redirect()->route('technical-extension.index')->with('extension_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been saved.');
+        return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been added.');
     }
 
     /**
@@ -197,7 +197,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        return redirect()->route('technical-extension.index')->with('extension_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been updated.');
+        return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been updated.');
     }
 
     /**
@@ -214,7 +214,7 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
         $technical_extension->delete();
-        return redirect()->route('technical-extension.index')->with('award_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been deleted.');
+        return redirect()->route('technical-extension.index')->with('award_success', 'Technical extension program, project, or activity has been deleted.');
     }
 
     public function removeDoc($filename){

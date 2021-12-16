@@ -34,7 +34,7 @@
 @push('scripts')
     <script>
         $("div .department_id").hide();
-        $('#college_id').on('change', function(){
+        $('#college_id').on('input', function(){
             var collegeId = $('#college_id').val();
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/departments/options/'+collegeId, function (data){
@@ -54,6 +54,26 @@
                     document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
                 <?php } ?>
             });
+        });
+    </script>
+    <script>
+        var collegeId = $('#college_id').val();
+        $.get('/departments/options/'+collegeId, function (data){
+            if (data != '') {
+                $("div .department_id").show();
+                data.forEach(function (item){
+                    $("#department_id").append(new Option(item.name, item.id));
+                    
+                });
+            }
+            else {
+                $("div .department_id").hide();
+            }
+            <?php if (old($fieldInfo->name) == '') { ?>
+                document.getElementById("department_id").value = "{{ $department_id }}";
+            <?php } else { ?>
+                document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
+            <?php } ?>
         });
     </script>
 @endpush

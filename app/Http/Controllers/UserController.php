@@ -133,7 +133,7 @@ class UserController extends Controller
     {
         $this->authorize('update', User::class);
 
-        dd($user);
+        // dd($user);
         // $rolehaspermissions = RolePermission::join('user_roles', 'user_roles.role_id', '=', 'role_permissions.role_id')
         //                                 ->where('user_roles.user_id', '=', $user->id)
         //                                 ->select('role_permissions.role_id')

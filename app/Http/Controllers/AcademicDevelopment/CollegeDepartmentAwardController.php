@@ -20,7 +20,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', CollegeDepartmentAward::class);
+        // $this->authorize('viewAny', CollegeDepartmentAward::class);
 
         $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())->get();
         return view('academic-development.college-department-award.index', compact('college_department_awards'));
@@ -33,7 +33,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', CollegeDepartmentAward::class);
+        // $this->authorize('create', CollegeDepartmentAward::class);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -50,7 +50,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', CollegeDepartmentAward::class);
+        // $this->authorize('create', CollegeDepartmentAward::class);
 
         $request->validate([
             'name_of_award' => 'required',
@@ -91,7 +91,7 @@ class CollegeDepartmentAwardController extends Controller
             }
         }
 
-        return redirect()->route('college-department-award.index')->with('award_success', 'Your Accomplishment in Awards and Recognition Received by the College and Department has been saved.');
+        return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been added.');
     }
 
     /**
@@ -102,7 +102,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function show(CollegeDepartmentAward $college_department_award)
     {
-        $this->authorize('view', CollegeDepartmentAward::class);
+        // $this->authorize('view', CollegeDepartmentAward::class);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -123,7 +123,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function edit(CollegeDepartmentAward $college_department_award)
     {
-        $this->authorize('update', CollegeDepartmentAward::class);
+        // $this->authorize('update', CollegeDepartmentAward::class);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -145,7 +145,7 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function update(Request $request, CollegeDepartmentAward $college_department_award)
     {
-        $this->authorize('update', CollegeDepartmentAward::class);
+        // $this->authorize('update', CollegeDepartmentAward::class);
 
         $request->validate([
             'name_of_award' => 'required',
@@ -185,7 +185,7 @@ class CollegeDepartmentAwardController extends Controller
             }
         }
 
-        return redirect()->route('college-department-award.index')->with('award_success', 'Your Accomplishment in Awards and Recognition Received by the College and Department has been updated.');
+        return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been updated.');
     }
 
     /**
@@ -196,17 +196,17 @@ class CollegeDepartmentAwardController extends Controller
      */
     public function destroy(CollegeDepartmentAward $college_department_award)
     {
-        $this->authorize('delete', CollegeDepartmentAward::class);
+        // $this->authorize('delete', CollegeDepartmentAward::class);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
-        return redirect()->route('college-department-award.index')->with('award_success', 'Your Accomplishment in Awards and Recognition Received by the College and Department has been deleted.');
+        return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been deleted.');
     }
 
     public function removeDoc($filename){
-        $this->authorize('delete', CollegeDepartmentAward::class);
+        // $this->authorize('delete', CollegeDepartmentAward::class);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -40,6 +40,9 @@
                       @case("yes-no")
                           @include('maintenances.showtemplates.text', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                           @break
+                      @case("percentage")
+                          @include('maintenances.showtemplates.text', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                          @break
                       @default
                           
                   @endswitch

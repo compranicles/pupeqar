@@ -99,7 +99,7 @@ class SyllabusController extends Controller
             }
         }
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
-                                ->with('action', 'saved.');
+                                ->with('action', 'added.');
     }
 
     /**
@@ -116,11 +116,13 @@ class SyllabusController extends Controller
             return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
+        $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
+
         $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
 
-        $assigned_task = DB::select("CALL get_dropdown_name_by_id(".$syllabu->assigned_task.")");
-        
-        return view('academic-development.syllabi.show', compact('syllabu', 'syllabusDocuments', 'assigned_task', 'collegeAndDepartment'));
+        $values = $syllabu->toArray();
+
+        return view('academic-development.syllabi.show', compact('syllabu', 'syllabusDocuments', 'collegeAndDepartment', 'syllabusFields', 'values'));
     }
 
     /**

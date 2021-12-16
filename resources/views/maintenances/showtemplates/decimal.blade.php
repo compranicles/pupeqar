@@ -1,13 +1,13 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <td><span id="currency"></span> {{ number_format($value, 2, '.', ',') }}</td>
+    <td><span id="currency_{{ $fieldInfo->name }}"></span> {{ number_format($value, 2, '.', ',') }}</td>
 </tr>
 
 @push('scripts')
     <script>
-        $('#currency').ready(function (){
+        $('#currency_{{ $fieldInfo->name }}').ready(function (){
             $.get("{{ route('currency.name', $currency) }}", function (data){
-                $('#currency').html(data);
+                $('#currency_{{ $fieldInfo->name }}').html(data);
             });
         });
     </script>

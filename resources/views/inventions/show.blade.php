@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('View Invention, Innovation, or Creative Works') }}
+            {{ __('View '.$classification[0]->name) }}
         </h2>
     </x-slot>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9">
-            <div class="d-flex mr-2">
+              <div class="d-flex mr-2">
                 <p class="mr-auto">
                   <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
                 </p>

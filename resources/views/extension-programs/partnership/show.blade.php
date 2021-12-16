@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Partnership/ Linkages/ Network') }}
+            {{ __('View Partnership, Linkages & Network') }}
         </h2>
     </x-slot>
 
@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="d-flex mr-2">
                     <p class="mr-auto">
-                    <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages, and Network</a>
+                    <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages and Network</a>
 
                     </p>
                     <p>

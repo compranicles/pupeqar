@@ -115,7 +115,10 @@ class InventionController extends Controller
             }
         }
 
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been saved.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
+
+        // dd($classification);
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', $classification[0]->name.' has been added.');
     }
 
     /**
@@ -134,11 +137,13 @@ class InventionController extends Controller
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
         
+        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
+
         $values = $invention_innovation_creative->toArray();
 
-        $documents = InventionDocument::where('id', $invention_innovation_creative->id)->get()->toArray();
+        $documents = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
 
-        return view('inventions.show', compact('invention_innovation_creative','inventionFields', 'values', 'documents'));
+        return view('inventions.show', compact('invention_innovation_creative','inventionFields', 'values', 'documents', 'classification'));
     }
 
     /**
@@ -161,12 +166,14 @@ class InventionController extends Controller
 
         $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
 
+        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
+
         $value = $invention_innovation_creative;
         $value->toArray();
         $value = collect($invention_innovation_creative);
         $value = $value->toArray();
 
-        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment'));
+        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification'));
     }
 
     /**
@@ -235,7 +242,9 @@ class InventionController extends Controller
             }
         }
 
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been updated.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
+
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', $classification[0]->name.' has been updated.');
     }
 
     /**
@@ -253,7 +262,10 @@ class InventionController extends Controller
 
         $invention_innovation_creative->delete();
         InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', 'Your Accomplishment in Invention, Innovation, and Creative Works has been deleted.');
+
+        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
+
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', $classification[0]->name.' has been deleted.');
     }
 
     public function removeDoc($filename){

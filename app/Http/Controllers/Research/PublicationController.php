@@ -162,7 +162,7 @@ class PublicationController extends Controller
             }
         }
 
-        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research Published Successfully');
+        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been added.');
     }
 
     /**
@@ -271,7 +271,7 @@ class PublicationController extends Controller
             }
         }
 
-        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research Published Successfully');
+        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been updated.');
     }
 
     /**

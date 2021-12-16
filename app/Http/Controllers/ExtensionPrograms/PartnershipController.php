@@ -115,7 +115,7 @@ class PartnershipController extends Controller
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your Accomplishment in Partnership/ Linkages/ Network has been saved.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
     }
 
     /**
@@ -236,7 +236,7 @@ class PartnershipController extends Controller
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been updated.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
 
     }
 
@@ -254,7 +254,7 @@ class PartnershipController extends Controller
             return view('inactive');
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been deleted.);
     }
 
     public function removeDoc($filename){

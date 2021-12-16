@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Student Awards and Recognition') }}
+            {{ __('View Student Awards and Recognition') }}
         </h2>
     </x-slot>
 

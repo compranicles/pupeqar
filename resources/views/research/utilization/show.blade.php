@@ -20,20 +20,25 @@
                             <div class="col-md-12">
                                 {{-- Success Message --}}
                                 @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index mx-3">
-                                    {{ $message }}
+                                <div class="alert alert-success alert-index">
+                                    <i class="bi bi-check-circle"></i> {{ $message }}
                                 </div>
                                 @endif
                             </div>
                             <div class="col-md-12">
-                                @if ($research->nature_of_involvement == 11)
-
-                                    <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="btn btn-warning">Update</a>
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                                @endif
+                                
+                                <div class="d-flex mr-2">
+                                    @if ($research->nature_of_involvement == 11)
+                                    <p class="ml-auto">
+                                        <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    </p>
+                                    <p>
+                                        <button type="button" class="action-delete action_buttons_show" data-toggle="modal" data-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                                    </p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <hr>
                         <fieldset id="research">
                             @include('show', ['formFields' => $researchFields, 'value' => $values,])
                         </fieldset>
