@@ -22,7 +22,7 @@ class ViableProjectController extends Controller
     {
         $this->authorize('viewAny', ViableProject::class);
 
-        $viable_projects = ViableProject::where('user_id', auth()->id())->get();
+        $viable_projects = ViableProject::where('user_id', auth()->id())->orderBy('viable_projects.updated_at', 'desc')->get();
         return view('academic-development.viable-project.index', compact('viable_projects'));
     }
 
@@ -53,14 +53,9 @@ class ViableProjectController extends Controller
         $this->authorize('create', ViableProject::class);
 
         $request->validate([
-            'name' => 'required',
-            'currency_revenue' => 'required',
             'revenue' => 'numeric',
-            'currency_cost' => 'required',
             'cost' => 'numeric',
-            'start_date' => 'required|date',
-            'rate_of_return' => 'required|numeric',
-            // 'description' => 'required',
+            'rate_of_return' => 'numeric',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
@@ -98,7 +93,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        return redirect()->route('viable-project.index')->with('project_success', 'Your Accomplishment in Viable Demonstration Project has been saved.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
     }
 
     /**
@@ -115,6 +110,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
+        // dd($viable_project);
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
         $values = $viable_project->toArray();
@@ -138,8 +134,10 @@ class ViableProjectController extends Controller
 
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
+        $viable_project->rate_of_return = $viable_project->rate_of_return * 100;
         $values = $viable_project->toArray();
 
+        // dd($values);
         return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values'));
     }
 
@@ -155,14 +153,9 @@ class ViableProjectController extends Controller
         $this->authorize('update', ViableProject::class);
 
         $request->validate([
-            'name' => 'required',
-            'currency_revenue' => 'required',
             'revenue' => 'numeric',
-            'currency_cost' => 'required',
             'cost' => 'numeric',
-            'start_date' => 'required|date',
-            'rate_of_return' => 'required|numeric',
-            // 'description' => 'required',
+            'rate_of_return' => 'numeric',
         ]);
         
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -194,7 +187,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        return redirect()->route('viable-project.index')->with('project_success', 'Your Accomplishment in Viable Demonstration Project has been updated.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
     }
 
     /**
@@ -211,7 +204,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
-        return redirect()->route('viable-project.index')->with('project_success', 'Your accomplishment in Viable Demonstration Project has been deleted.');
+        return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been deleted.');
     }
 
     public function removeDoc($filename){

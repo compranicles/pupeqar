@@ -14,7 +14,7 @@ class AddCollegeIdInInventionsTable extends Migration
     public function up()
     {
         Schema::table('inventions', function (Blueprint $table) {
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
         });
     }
 

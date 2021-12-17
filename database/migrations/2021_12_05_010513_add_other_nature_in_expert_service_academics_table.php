@@ -14,7 +14,7 @@ class AddOtherNatureInExpertServiceAcademicsTable extends Migration
     public function up()
     {
         Schema::table('expert_service_academics', function (Blueprint $table) {
-            $table->string('other_nature');
+            $table->string('other_nature')->nullable();
         });
     }
 

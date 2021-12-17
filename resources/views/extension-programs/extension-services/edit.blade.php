@@ -137,7 +137,25 @@
 
     @push('scripts')
         <script>
-            $('div .other_classification').hide();
+            $(document).ready(function(){
+                var classification = '{{ $value['classification'] }}'
+                if (classification == 119) {
+                    $('div .other_classification').show();
+                }
+                else {
+                    $('div .other_classification').hide();
+                }
+
+                var classification_of_trainees_or_beneficiaries = '{{ $value['classification_of_trainees_or_beneficiaries'] }}'
+                if (classification_of_trainees_or_beneficiaries == 130) {
+                    $('div .other_classification_of_trainees').show();
+                }
+                else {
+                    $('div .other_classification_of_trainees').hide();
+                }
+            });
+        </script>
+        <script>
             var other_classification = document.getElementById("other_classification");
             $('#classification').on('input', function(){
                 var classification_name = $("#classification option:selected").text();
@@ -150,7 +168,6 @@
                 }
             });
 
-            $('div .other_classification_of_trainees').hide();
             var other_classification_of_trainees = document.getElementById("other_classification_of_trainees");
             $('#classification_of_trainees_or_beneficiaries').on('input', function(){
                 var classification_trainees_name = $("#classification_of_trainees_or_beneficiaries option:selected").text();

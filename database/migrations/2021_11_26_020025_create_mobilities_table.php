@@ -15,17 +15,17 @@ class CreateMobilitiesTable extends Migration
     {
         Schema::create('mobilities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('nature_of_engagement');
-            $table->foreignId('type');
-            $table->string('host_name');
-            $table->string('host_address');
-            $table->string('mobility_description');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->text('description');
-            $table->foreignId('user_id');
-            $table->foreignId('college_id');
-            $table->foreignId('department_id');
+            $table->foreignId('nature_of_engagement')->nullable();
+            $table->foreignId('type')->nullable();
+            $table->string('host_name')->nullable();
+            $table->string('host_address')->nullable();
+            $table->string('mobility_description')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('college_id')->nullable();
+            $table->foreignId('department_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -38,6 +38,6 @@ class CreateMobilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobilities');
+        Schema::dropIfExists('mobilities')->nullable();
     }
 }

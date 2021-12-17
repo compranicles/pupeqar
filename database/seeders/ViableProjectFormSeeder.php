@@ -89,7 +89,7 @@ class ViableProjectFormSeeder extends Seeder
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
-            'order' => 4,
+            'order' => 1,
             'is_active' => 1,
         ]);
         AcademicDevelopmentField::create([
@@ -102,7 +102,7 @@ class ViableProjectFormSeeder extends Seeder
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,
-            'order' => 5,
+            'order' => 1,
             'is_active' => 1,
         ]);
     }

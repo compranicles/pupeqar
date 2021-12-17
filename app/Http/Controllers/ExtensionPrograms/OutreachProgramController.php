@@ -53,14 +53,6 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('create', OutreachProgram::class);
 
-        $request->validate([
-            'title_of_the_program' => 'required',
-            'place' => 'required',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
-
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -92,7 +84,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been saved.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
     }
 
     /**
@@ -148,20 +140,11 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('update', OutreachProgram::class);
 
-        $request->validate([
-            'title_of_the_program' => 'required',
-            'place' => 'required',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
-        
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $outreach_program->update($input);
-
         
         if($request->has('document')){
             
@@ -186,7 +169,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your Accomplishment in Community Relations and Outreach Program has been updated.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
     }
 
     /**
@@ -203,7 +186,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
         $outreach_program->delete();
-        return redirect()->route('outreach-program.index')->with('outreach_success', 'Your accomplishment in Community Relations and Outreach Program has been deleted.');
+        return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been deleted.');
     }
 
     public function removeDoc($filename){

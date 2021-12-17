@@ -70,25 +70,8 @@ class ResearchController extends Controller
         return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'status' => 'required',
-            'category' => 'required',
-            'agenda' => 'required',
-            'title' => 'required',
-            // 'researcher' => 'required',
-            'keywords' => 'required',
-            // 'nature_of_involvement' => 'required',
-            'research_type' => 'required',
-            'funding_type' => 'required',
-            'currency_funding_amount' => 'required',
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
-            // 'start_date' => 'required_unless:status,32|date',
-            // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
-            // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
         ]);
 
         $departmentIni = '';
@@ -181,7 +164,7 @@ class ResearchController extends Controller
             }
         }
 
-        return redirect()->route('research.index')->with('success', 'Research Registered Successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been registered.');
     }
 
     /**
@@ -205,7 +188,7 @@ class ResearchController extends Controller
 
         //$values = Research::where('research_code', $research->research_code)->first()->toArray();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id('{{ $research->department_id }}')");
 
         $value = $research;
         $value->toArray();
@@ -245,7 +228,7 @@ class ResearchController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id('{{ $research->department_id }}')");
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement == 11)
@@ -267,27 +250,11 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            'classification' => 'required',
-            // 'status' => 'required',
-            'category' => 'required',
-            'agenda' => 'required',
-            'title' => 'required',
-            // 'researcher' => 'required',
-            'keywords' => 'required',
-            // 'nature_of_involvement' => 'required',
-            'research_type' => 'required',
-            'funding_type' => 'required',
-            'currency_funding_amount' => 'required',
-            'funding_amount' => 'numeric',
-            'funding_agency' => 'required_if:funding_type,23',
-            // 'start_date' => 'required_unless:status,32|date',
-            // 'target_date' => 'required_unless: status, 28|after_or_equal: start_date|date',
-            // 'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
-        ]);
+            $request->validate([
+                'funding_amount' => 'numeric',
+                'funding_agency' => 'required_if:funding_type,23',
+            ]);
+    
 
         $input = $request->except(['_token', '_method', 'document', 'funding_type']);
         $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_type', 'college_id', 'department_id', 'nature_of_involvement']);
@@ -325,7 +292,7 @@ class ResearchController extends Controller
             }
         }
 
-        return redirect()->route('research.show', $research->id)->with('success', 'Research Updated Successfully');
+        return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated.');
     }
 
     public function updateNonLead (Request $request, Research $research)
@@ -342,7 +309,7 @@ class ResearchController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
 
-        return redirect()->route('research.show', $research)->with('success', 'Research Updated Successfully');
+        return redirect()->route('research.show', $research)->with('success', 'Research has been updated.');
     }
 
     /**
@@ -359,7 +326,7 @@ class ResearchController extends Controller
 
         $research->delete();
 
-        return redirect()->route('research.index')->with('success', 'Research Deleted Successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been deleted.');
     }
 
     public function complete($complete){
@@ -451,8 +418,6 @@ class ResearchController extends Controller
         $departments = Department::all();
         $colleges = College::all();
 
-        // $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
-
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
 
         return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'departments', 'colleges', 'researchStatus'));
@@ -475,7 +440,7 @@ class ResearchController extends Controller
         Research::where('research_code', $research_code)->update([
             'researchers' => $research['researchers'].', '.auth()->user()->first_name.' '.auth()->user()->last_name
         ]);
-        return redirect()->route('research.index')->with('success', 'Research Added Successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been saved');
     }
 
     public function retrieve($research_code){
@@ -487,7 +452,7 @@ class ResearchController extends Controller
         Research::where('research_code', $research_code)->where('user_id', auth()->id())
                 ->update($researchLead->toArray());
         $research = Research::where('research_code', $research_code)->where('user_id', auth()->id())->first();
-        return redirect()->route('research.show', $research->id)->with('success', 'Latest Version Retrieved Successfully');
+        return redirect()->route('research.show', $research->id)->with('success', 'Latest version has been retrieved.');
     }
 
     public function addDocument($research_code, $report_category_id){
@@ -574,7 +539,7 @@ class ResearchController extends Controller
         Research::where('research_code', $research_code)->where('user_id', $request->input('user_id'))->update([
             'nature_of_involvement' => $request->input('nature_of_involvement')
         ]);
-        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Updated successfully');
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher records has been updated.');
     }
 
     public function removeResearcher($research_code, Request $request){
@@ -598,7 +563,7 @@ class ResearchController extends Controller
             'researchers' => $researcherNewName
         ]);
 
-        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher removed successfully');
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher has been removed.');
     }
 
     public function returnResearcher($research_code, Request $request){
@@ -622,7 +587,7 @@ class ResearchController extends Controller
             'researchers' => $researcherNewName
         ]);
 
-        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher added successfully');
+        return redirect()->route('research.manage-researchers', $research_code)->with('success', 'Researcher has been added.');
     }
 
     public function removeSelf($research_code){
@@ -646,7 +611,7 @@ class ResearchController extends Controller
             'researchers' => $researcherNewName
         ]);
 
-        return redirect()->route('research.index')->with('success', 'Research removed successfully');
+        return redirect()->route('research.index')->with('success', 'Research has been removed.');
     }
 }
 

@@ -22,7 +22,7 @@ class StudentAwardController extends Controller
     {
         $this->authorize('viewAny', StudentAward::class);
 
-        $student_awards = StudentAward::where('user_id', auth()->id())->get();
+        $student_awards = StudentAward::where('user_id', auth()->id())->orderBy('student_awards.updated_at', 'desc')->get();
         return view('academic-development.student-awards.index', compact('student_awards'));
     }
 
@@ -51,15 +51,6 @@ class StudentAwardController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', StudentAward::class);
-
-        $request->validate([
-            'name_of_award' => 'required',
-            'certifying_body' => 'required',
-            // 'place' => '',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -91,7 +82,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been saved.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been added.');
     }
 
     /**
@@ -148,15 +139,6 @@ class StudentAwardController extends Controller
     {
         $this->authorize('update', StudentAward::class);
         
-        $request->validate([
-            'name_of_award' => 'required',
-            'certifying_body' => 'required',
-            // 'place' => '',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
-        
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -186,7 +168,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        return redirect()->route('student-award.index')->with('student_success', 'Your Accomplishment in Student Award and Recognition has been updated.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
 
     /**
@@ -201,7 +183,7 @@ class StudentAwardController extends Controller
 
         StudentAwardDocument::where('student_award_id', $student_award->id)->delete();
         $student_award->delete();
-        return redirect()->route('student-award.index')->with('student_success', 'Your accomplishment in Student Award and Recognition has been deleted.');
+        return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
 
     public function removeDoc($filename){

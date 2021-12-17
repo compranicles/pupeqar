@@ -100,9 +100,7 @@ class CompletedController extends Controller
             return view('inactive');
 
         $request->validate([
-            // 'status' => 'required',
-            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            // 'description' => 'required',
+            'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
 
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
@@ -141,7 +139,7 @@ class CompletedController extends Controller
             }
         }
 
-        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research Completed Successfully');
+        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been added.');
     }
 
     /**
@@ -200,9 +198,7 @@ class CompletedController extends Controller
             return view('inactive');
 
         $request->validate([
-            // 'status' => 'required',
-            'completion_date' => 'date|after_or_equal:start_date|required_if:status, 28',
-            // 'description' => 'required',
+            'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
         
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
@@ -239,7 +235,7 @@ class CompletedController extends Controller
             }
         }
 
-        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research Completed Successfully');
+        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
         
 
     }

@@ -15,13 +15,13 @@ class CreateCollegeDepartmentAwardsTable extends Migration
     {
         Schema::create('college_department_awards', function (Blueprint $table) {
             $table->id();
-            $table->string('name_of_award');
-            $table->string('certifying_body');
-            $table->string('place');
-            $table->date('date');
-            $table->foreignId('level');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('name_of_award')->nullable();
+            $table->string('certifying_body')->nullable();
+            $table->string('place')->nullable();
+            $table->date('date')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +34,6 @@ class CreateCollegeDepartmentAwardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('college_department_awards');
+        Schema::dropIfExists('college_department_awards')->nullable();
     }
 }

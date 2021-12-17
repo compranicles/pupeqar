@@ -11,7 +11,7 @@
                 {{-- Success Message --}}
                 @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-index">
-                    <i class="bi bi-check-circle"></i>  {{ $message }}
+                    <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @elseif ($message = Session::get('code-missing'))
                 <div class="alert alert-danger alert-index">

@@ -28,6 +28,7 @@ class AcademicController extends Controller
         $expertServicesAcademic = ExpertServiceAcademic::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
                                         ->select('expert_service_academics.*', 'dropdown_options.name as classification')
+                                        ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
 
         return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic'));
@@ -64,18 +65,9 @@ class AcademicController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'nature' => 'required',
             'other_nature' => 'required_if:nature,86',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            // 'publication_or_audio_visual' => '',
-            'copyright_no' => 'required',
-            // 'indexing' => '',
-            'level' => 'required',
-            'college_id' => 'required',
-            // 'department_id' => '',
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
+            'copyright_no' => 'max:100',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
@@ -107,7 +99,9 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your Accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been saved.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
     }
 
     /**
@@ -176,20 +170,11 @@ class AcademicController extends Controller
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            'classification' => 'required',
-            'nature' => 'required',
-            'other_nature' => 'required_if:nature,86',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            // 'publication_or_audio_visual' => '',
-            'copyright_no' => 'required',
-            // 'indexing' => '',
-            'level' => 'required',
-            'college_id' => 'required',
-            // 'department_id' => '',
-            // 'description' => 'required',
-        ]);
+            $request->validate([
+                'other_nature' => 'required_if:nature,86',
+                'to' => 'after_or_equal:from',
+                'copyright_no' => 'max:100',
+            ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
         
@@ -219,7 +204,9 @@ class AcademicController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been updated.');
+        $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
     }
 
     /**
@@ -235,8 +222,9 @@ class AcademicController extends Controller
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expert_service_in_academic->delete();
+        $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Your accomplishment in Expert Service in Academic Journals/Books/Publication/Newsletter/Creative Works has been deleted.');
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been deleted.');
     }
 
     public function removeDoc($filename){

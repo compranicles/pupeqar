@@ -58,24 +58,11 @@ class PartnershipController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'collab_nature' => 'required',
             'other_collab_nature' => 'required_if:collab_nature,138',
-            'partnership_type' => 'required',
             'other_partnership_type' => 'required_if:partnership_type,149',
-            'deliverable' => 'required',
             'other_deliverable' => 'required_if:deliverable, 157',
-            // 'name_of_partner' => '',
-            'title_of_partnership' => 'required',
-            'beneficiaries' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
-            // 'name_of_contact_person' => '',
-            // 'address_of_contact_person' => '',
-            // 'telephone_number' => '',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -115,7 +102,7 @@ class PartnershipController extends Controller
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your Accomplishment in Partnership/ Linkages/ Network has been saved.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
     }
 
     /**
@@ -181,24 +168,11 @@ class PartnershipController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'collab_nature' => 'required',
             'other_collab_nature' => 'required_if:collab_nature,138',
-            'partnership_type' => 'required',
             'other_partnership_type' => 'required_if:partnership_type,149',
-            'deliverable' => 'required',
             'other_deliverable' => 'required_if:deliverable, 157',
-            // 'name_of_partner' => '',
-            'title_of_partnership' => 'required',
-            'beneficiaries' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
-            // 'name_of_contact_person' => '',
-            // 'address_of_contact_person' => '',
-            // 'telephone_number' => '',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -236,7 +210,7 @@ class PartnershipController extends Controller
             }
         }
 
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been updated.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
 
     }
 
@@ -254,7 +228,7 @@ class PartnershipController extends Controller
             return view('inactive');
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
-        return redirect()->route('partnership.index')->with('partnership_success', 'Your accomplishment in Partnership/ Linkages/ Network has been deleted.');
+        return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been deleted.');
     }
 
     public function removeDoc($filename){

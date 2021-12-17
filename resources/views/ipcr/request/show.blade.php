@@ -6,8 +6,8 @@
     </x-slot>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row justify-content-center">
+            <div class="col-md-9">
                 <div class="d-flex mr-2">
                     <p class="mr-auto">
                     <a class="back_link" href="{{ route('request.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all request, Linkages, and Network</a>
@@ -21,8 +21,7 @@
                     </p>
                 </div>
                 @include('show', ['formFields' => $requestFields, 'value' => $values])
-            </div>
-        </div>
+
         <div class="row mt-3">
             <div class="col-md-12">
                 <div class="card">

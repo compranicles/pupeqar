@@ -14,9 +14,9 @@ class AddOtherFieldsInPartnershipsTable extends Migration
     public function up()
     {
         Schema::table('partnerships', function (Blueprint $table) {
-            $table->string('other_collab_nature')->after('collab_nature');
-            $table->string('other_partnership_type')->after('partnership_type');
-            $table->string('other_deliverable')->after('deliverable');            
+            $table->string('other_collab_nature')->after('collab_nature')->nullable();
+            $table->string('other_partnership_type')->after('partnership_type')->nullable();
+            $table->string('other_deliverable')->after('deliverable')->nullable();            
         });
     }
 

@@ -15,16 +15,16 @@ class CreateExpertServiceAcademicsTable extends Migration
     {
         Schema::create('expert_service_academics', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('classification');
-            $table->foreignId('nature');
-            $table->date('from');
-            $table->date('to');
-            $table->string('publication_or_audio_visual');
-            $table->string('copyright_no', 100);
-            $table->foreignId('indexing');
-            $table->foreignId('level');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->foreignId('classification')->nullable();
+            $table->foreignId('nature')->nullable();
+            $table->date('from')->nullable();
+            $table->date('to')->nullable();
+            $table->string('publication_or_audio_visual')->nullable();
+            $table->string('copyright_no', 100)->nullable();
+            $table->foreignId('indexing')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -37,6 +37,6 @@ class CreateExpertServiceAcademicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expert_service_academics');
+        Schema::dropIfExists('expert_service_academics')->nullable();
     }
 }

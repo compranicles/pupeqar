@@ -33,7 +33,7 @@ class InventionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Creative Works',
+            'name' => 'Creative Work',
             'order' => 2,
             'is_active' => 1,
         ]);

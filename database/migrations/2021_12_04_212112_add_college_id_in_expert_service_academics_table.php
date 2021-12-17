@@ -14,7 +14,7 @@ class AddCollegeIdInExpertServiceAcademicsTable extends Migration
     public function up()
     {
         Schema::table('expert_service_academics', function (Blueprint $table) {
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
         });
     }
 

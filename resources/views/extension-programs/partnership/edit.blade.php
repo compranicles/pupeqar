@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Partnership/ Linkages/ Network') }}
+            {{ __('Edit Partnership, Linkages & Network') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership/ Linkages/ Network</a>
+              <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages & Network</a>
             </p>
                 <div class="card">
                     <div class="card-body">
@@ -131,7 +131,33 @@
     </div>
     @push('scripts')
         <script>
-            $('div .other_collab_nature').hide();
+            $(document).ready(function(){
+                var collab_nature = '{{ $values['collab_nature']; }}'
+                if (collab_nature == 138) {
+                    $('div .other_collab_nature').show();
+                }
+                else {
+                    $('div .other_collab_nature').hide();
+                }
+
+                var partnership_type = '{{ $values['partnership_type']; }}'
+                if (partnership_type == 149) {
+                    $('div .other_partnership_type').show();
+                }
+                else {
+                    $('div .other_partnership_type').hide();
+                }
+
+                var deliverable = '{{ $values['deliverable']; }}'
+                if (deliverable == 157) {
+                    $('div .other_deliverable').show();
+                }
+                else {
+                    $('div .other_deliverable').hide();
+                }
+            });
+        </script>
+        <script>
             var other_collab_nature = document.getElementById("other_collab_nature");
             $('#collab_nature').on('input', function(){
                 var collab_nature_name = $("#collab_nature option:selected").text();
@@ -144,7 +170,6 @@
                 }
             });
 
-            $('div .other_partnership_type').hide();
             var other_partnership_type = document.getElementById("other_partnership_type");
             $('#partnership_type').on('input', function(){
                 var partnership_type_name = $("#partnership_type option:selected").text();
@@ -157,7 +182,6 @@
                 }
             });
 
-            $('div .other_deliverable').hide();
             var other_deliverable = document.getElementById("other_deliverable");
             $('#deliverable').on('input', function(){
                 var deliverable_name = $("#deliverable option:selected").text();

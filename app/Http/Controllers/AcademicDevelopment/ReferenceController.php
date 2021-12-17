@@ -27,6 +27,7 @@ class ReferenceController extends Controller
         $allRtmmi = Reference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
                                         ->select('references.*', 'dropdown_options.name as category_name')
+                                        ->orderBy('references.updated_at', 'desc')
                                         ->get();
         
         return view('academic-development.references.index', compact('allRtmmi'));
@@ -63,21 +64,8 @@ class ReferenceController extends Controller
             return view('inactive');
       
         $request->validate([
-            'category' => 'required',
-            'level' => 'required',
-            'date_started' => 'required|date',
-            'date_completed' => 'required|date|after_or_equal:date_started',
-            'title' => 'required',
-            'authors_compilers' => 'required',
-            // 'editor_name' => ''
-            // 'editor_profession' => ''
-            'volume_no' => 'integer',
-            'issue_no' => 'integer',
-            'date_published' => 'date|after:date_completed',
-            // 'copyright_regi_no' => ''
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'date_completed' => 'after_or_equal:date_started',
+            'date_published' => 'after:date_completed',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -113,7 +101,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtolower($accomplishment[0]), 'action' => 'saved.' ]);
+        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtoupper($accomplishment[0]), 'action' => 'added.' ]);
     }
 
     /**
@@ -233,7 +221,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtoupper($accomplishment[0]))
                                 ->with('action', 'updated.');
     }
 
@@ -257,8 +245,8 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0])
-                            ->with('action', 'deleted.'));
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
+                            ->with('action', 'deleted.');
     }
 
     public function removeDoc($filename){

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Invention, Innovation or Creative Work') }}
+            {{ __('Edit '.$classification[0]->name) }}
         </h2>
     </x-slot>
 

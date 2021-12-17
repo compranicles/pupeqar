@@ -26,6 +26,7 @@ class ConsultantController extends Controller
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
+                                        ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
         
         return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant'));
@@ -61,15 +62,7 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'category' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '',
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -100,7 +93,7 @@ class ConsultantController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your Accomplishment in Expert Service as Consultant has been saved.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
     }
 
     /**
@@ -117,7 +110,9 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
+       
         $documents = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
+        
         $values = $expert_service_as_consultant->toArray();
 
         return view('extension-programs.expert-services.consultant.show', compact('expertServiceConsultantFields','expert_service_as_consultant', 'documents', 'values'));
@@ -158,15 +153,7 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'category' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '',
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -196,7 +183,7 @@ class ConsultantController extends Controller
             }
         }
 
-        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been updated.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been updated.');
     }
 
     /**
@@ -213,7 +200,7 @@ class ConsultantController extends Controller
             return view('inactive');
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
-        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Your accomplishment in Expert Service as Consultant has been deleted.');
+        return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been deleted.');
     }
 
     public function removeDoc($filename){

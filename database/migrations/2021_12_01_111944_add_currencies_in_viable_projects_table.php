@@ -14,8 +14,8 @@ class AddCurrenciesInViableProjectsTable extends Migration
     public function up()
     {
         Schema::table('viable_projects', function (Blueprint $table) {
-            $table->foreignId('currency_revenue')->after('name');
-            $table->foreignId('currency_cost')->after('revenue');
+            $table->foreignId('currency_revenue')->after('name')->nullable();
+            $table->foreignId('currency_cost')->after('revenue')->nullable();
         });
     }
 

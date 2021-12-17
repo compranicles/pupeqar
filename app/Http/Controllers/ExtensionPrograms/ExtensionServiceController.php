@@ -28,6 +28,7 @@ class ExtensionServiceController extends Controller
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
                                         ->select('extension_services.*', 'dropdown_options.name as status')
+                                        ->orderBy('extension_services.updated_at', 'desc')
                                         ->get();
 
         return view('extension-programs.extension-services.index', compact('extensionServices'));
@@ -74,41 +75,14 @@ class ExtensionServiceController extends Controller
             return view('inactive');
 
         $request->validate([
-            'level' => 'required',
-            'status' => 'required',
-            'nature_of_involvement' => 'required',
-            'classification' => 'required',
             'other_classification' => 'required_if:classification,119',
-            'type' => 'required',
-            // 'title_of_extension_program' => '',
-            // 'title_of_extension_project' => '',
-            // 'title_of_extension_activity' => '',
-            'type_of_funding' => 'required',
             'funding_agency' => 'required_if:funding_type,123',
-            'currency_amount_of_funding' => 'required',
             'amount_of_funding' => 'numeric',
-            'status' => 'required',
-            'from' => 'required_unless:status, 107|date',
-            'to' => 'date|after_or_equal:from',
-            'no_of_trainees_or_beneficiaries' => 'numeric',
+            'from' => 'required_unless:status, 107',
+            'to' => 'after_or_equal:from',
             'total_no_of_hours' => 'numeric',
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
-            // 'place_or_venue' => '',
-            'keywords' => 'required',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
-            'quality_poor' => 'numeric',
-            'quality_fair' => 'numeric',
-            'quality_satisfactory' => 'numeric',
-            'quality_very_satisfactory' => 'numeric',
-            'quality_outstanding' => 'numeric',
-            'timeliness_poor' => 'numeric',
-            'timeliness_fair' => 'numeric',
-            'timeliness_satisfactory' => 'numeric',
-            'timeliness_very_satisfactory' => 'numeric',
-            'timeliness_outstanding' => 'numeric',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
@@ -144,7 +118,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your Accomplishment in Extension Service has been saved.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been added.');
     }
 
     /**
@@ -163,9 +137,11 @@ class ExtensionServiceController extends Controller
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id('4')");
+        
         $values = $extension_service->toArray();
         
-        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceFields', 'extensionServiceDocuments', 'values'));
+        return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values', 'extensionServiceFields'));
     }
 
     /**
@@ -213,41 +189,14 @@ class ExtensionServiceController extends Controller
             return view('inactive');
       
             $request->validate([
-                'level' => 'required',
-                'status' => 'required',
-                'nature_of_involvement' => 'required',
-                'classification' => 'required',
                 'other_classification' => 'required_if:classification,119',
-                'type' => 'required',
-                // 'title_of_extension_program' => '',
-                // 'title_of_extension_project' => '',
-                // 'title_of_extension_activity' => '',
-                'type_of_funding' => 'required',
                 'funding_agency' => 'required_if:funding_type,123',
-                'currency_amount_of_funding' => 'required',
                 'amount_of_funding' => 'numeric',
-                'status' => 'required',
-                'from' => 'required_unless:status, 107|date',
-                'to' => 'date|after_or_equal:from',
-                'no_of_trainees_or_beneficiaries' => 'numeric',
+                'from' => 'required_unless:status, 107',
+                'to' => 'after_or_equal:from',
                 'total_no_of_hours' => 'numeric',
                 'classification_of_trainees_or_beneficiaries' => 'required',
                 'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
-                // 'place_or_venue' => '',
-                'keywords' => 'required',
-                'college_id' => 'required',
-                // 'department_id' => 'required',
-                // 'description' => 'required',
-                'quality_poor' => 'numeric',
-                'quality_fair' => 'numeric',
-                'quality_satisfactory' => 'numeric',
-                'quality_very_satisfactory' => 'numeric',
-                'quality_outstanding' => 'numeric',
-                'timeliness_poor' => 'numeric',
-                'timeliness_fair' => 'numeric',
-                'timeliness_satisfactory' => 'numeric',
-                'timeliness_very_satisfactory' => 'numeric',
-                'timeliness_outstanding' => 'numeric',
             ]);
     
             $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
@@ -282,7 +231,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been updated.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been updated.');
     }
 
     /**
@@ -299,7 +248,7 @@ class ExtensionServiceController extends Controller
             return view('inactive');
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
-        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Your accomplishment in Extension Service has been deleted.');
+        return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been deleted.');
     }
 
     public function removeDoc($filename){

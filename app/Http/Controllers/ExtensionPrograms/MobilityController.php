@@ -56,17 +56,8 @@ class MobilityController extends Controller
         $this->authorize('create', Mobility::class);
 
         $request->validate([
-            'nature_of_engagement' => 'required',
-            'type' => 'required',
             'other_type' => 'required_if:type,173',
-            'host_name' => 'required',
-            // 'host_address' => '',
-            'mobility_description' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'end_date' => 'after_or_equal:start_date',
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -100,7 +91,7 @@ class MobilityController extends Controller
             }
         }
 
-        return redirect()->route('mobility.index')->with('mobility_success', 'Your Accomplishment in Inter-Country Mobility has been saved.');
+        return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been added.');
     }
 
     /**
@@ -164,17 +155,8 @@ class MobilityController extends Controller
         $this->authorize('update', Mobility::class);
 
         $request->validate([
-            'nature_of_engagement' => 'required',
-            'type' => 'required',
             'other_type' => 'required_if:type,173',
-            'host_name' => 'required',
-            // 'host_address' => '',
-            'mobility_description' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'end_date' => 'after_or_equal:start_date',
         ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -210,7 +192,7 @@ class MobilityController extends Controller
             }
         }
 
-        return redirect()->route('mobility.index')->with('mobility_success', 'Your accomplishment in Inter-Country Mobility has been updated.');
+        return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been updated.');
     }
 
     /**
@@ -227,7 +209,7 @@ class MobilityController extends Controller
             return view('inactive');
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
         $mobility->delete();
-        return redirect()->route('mobility.index')->with('mobility_success', 'Your accomplishment in Inter-Country Mobility has been deleted.');
+        return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been deleted.');
     }
 
     public function removeDoc($filename){

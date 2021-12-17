@@ -6,8 +6,14 @@
             <div class="form-group">
                 <label for="qpoor">Poor</label>
                 <input @if ($value!='') value="{{ (old('quality_poor') == '') ?  $value['quality_poor'] : old('quality_poor') }}" @endif type="number" class="form-control form-validation" id="qpoor" name="quality_poor">
+                @error('quality_poor')
+                    <span class='invalid-feedback' role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
         </div>
+
         <div class="col-md-2">
             <div class="form-group">
                 <label for="qfair">Fair</label>

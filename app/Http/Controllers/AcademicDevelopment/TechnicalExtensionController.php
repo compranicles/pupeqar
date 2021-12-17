@@ -22,7 +22,7 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
-        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->get();
+        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->orderBy('technical_extensions.updated_at', 'desc')->get();
         return view('academic-development.technical-extension.index', compact('technical_extensions'));
     }
 
@@ -54,17 +54,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'program_title' => 'required',
-            // 'project_title' => '',
-            // 'activity_title' => '',
-            // 'name_of_adoptor' => '',
-            'classification_of_adoptor' => 'required',
-            // 'nature_of_business_enterprise' => '',
-            'has_businesses' => 'required',
-            'is_borrowed' => 'required',
-            'currency_total_profit' => 'required',
             'total_profit' => 'numeric',
-            // 'description' => 'required',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -97,7 +87,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        return redirect()->route('technical-extension.index')->with('extension_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been saved.');
+        return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been added.');
     }
 
     /**
@@ -155,17 +145,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'program_title' => 'required',
-            // 'project_title' => '',
-            // 'activity_title' => '',
-            // 'name_of_adoptor' => '',
-            'classification_of_adoptor' => 'required',
-            // 'nature_of_business_enterprise' => '',
-            'has_businesses' => 'required',
-            'is_borrowed' => 'required',
-            'currency_total_profit' => 'required',
             'total_profit' => 'numeric',
-            // 'description' => 'required',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -197,7 +177,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        return redirect()->route('technical-extension.index')->with('extension_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been updated.');
+        return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been updated.');
     }
 
     /**
@@ -214,7 +194,7 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
         $technical_extension->delete();
-        return redirect()->route('technical-extension.index')->with('award_success', 'Your Accomplishment in Technical Extension Programs/ Projects/ Activities has been deleted.');
+        return redirect()->route('technical-extension.index')->with('award_success', 'Technical extension program, project, or activity has been deleted.');
     }
 
     public function removeDoc($filename){

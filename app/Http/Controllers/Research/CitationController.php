@@ -30,7 +30,7 @@ class CitationController extends Controller
         $this->authorize('viewAny', ResearchCitation::class);
  
 
-        $researchcitations = ResearchCitation::where('research_code', $research->research_code)->get();
+        $researchcitations = ResearchCitation::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -70,19 +70,6 @@ class CitationController extends Controller
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            'article_title' => 'required',
-            'article_author' => 'required',
-            // 'journal_title' => '',
-            // 'journal_publisher' => '',
-            'volume' => 'numeric',
-            'issue' => 'numeric',
-            'page' => 'required|numeric',
-            // 'year' => ''
-            // 'indexing_platform' => '',
-            // 'description' => 'required',
-        ]);
-
         $input = $request->except(['_token', '_method', 'document']);
 
         $id = ResearchCitation::insertGetId($input);
@@ -112,7 +99,7 @@ class CitationController extends Controller
             }
         }
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Added Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been added.');
     }
 
     /**
@@ -188,19 +175,6 @@ class CitationController extends Controller
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            'article_title' => 'required',
-            'article_author' => 'required',
-            // 'journal_title' => '',
-            // 'journal_publisher' => '',
-            'volume' => 'numeric',
-            'issue' => 'numeric',
-            'page' => 'required|numeric',
-            // 'year' => ''
-            // 'indexing_platform' => '',
-            // 'description' => 'required',
-        ]);
-
         $input = $request->except(['_token', '_method', 'document']);
 
         $citation->update($input);
@@ -249,6 +223,6 @@ class CitationController extends Controller
 
         $citation->delete();
 
-        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research Citation Deleted Successfully');
+        return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been deleted.');
     }
 }

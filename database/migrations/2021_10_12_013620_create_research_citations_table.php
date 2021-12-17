@@ -16,16 +16,16 @@ class CreateResearchCitationsTable extends Migration
         Schema::create('research_citations', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->string('article_title');
-            $table->string('article_author');
-            $table->string('journal_title');
-            $table->string('journal_publisher');
-            $table->string('volume');
-            $table->string('issue');
-            $table->string('page');
-            $table->integer('year');
-            $table->foreignId('indexing_platform');
-            $table->text('description');
+            $table->string('article_title')->nullable();
+            $table->string('article_author')->nullable();
+            $table->string('journal_title')->nullable();
+            $table->string('journal_publisher')->nullable();
+            $table->string('volume')->nullable();
+            $table->string('issue')->nullable();
+            $table->string('page')->nullable();
+            $table->integer('year')->nullable();
+            $table->foreignId('indexing_platform')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

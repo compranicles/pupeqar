@@ -109,16 +109,6 @@ class PresentationController extends Controller
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            // 'status' => 'required',
-            'conference_title' => 'required',
-            // 'organizer' => '',
-            // 'venue' => '',
-            'date_presented' => 'required|date',
-            'level' => 'required', 
-            // 'description' => 'required',
-        ]);
-
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
@@ -160,7 +150,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Added Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been added.');
     }
 
     /**
@@ -226,16 +216,6 @@ class PresentationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-
-        $request->validate([
-            // 'status' => 'required',
-            'conference_title' => 'required',
-            // 'organizer' => '',
-            // 'venue' => '',
-            'date_presented' => 'required|date',
-            'level' => 'required', 
-            // 'description' => 'required',
-        ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
@@ -265,7 +245,7 @@ class PresentationController extends Controller
             }
         }
 
-        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research Presentation Updated Successfully');
+        return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been updated.');
     }
 
     /**

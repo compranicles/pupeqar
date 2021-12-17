@@ -14,7 +14,7 @@ class AddCurrencyInInventionsTable extends Migration
     public function up()
     {
         Schema::table('inventions', function (Blueprint $table) {
-            $table->foreignId('currency_funding_amount')->after('funding_agency');
+            $table->foreignId('currency_funding_amount')->after('funding_agency')->nullable();
         });
     }
 
