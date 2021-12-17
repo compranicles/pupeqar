@@ -28,7 +28,6 @@ class InventionController extends Controller
         $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
         ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
 
-
         return view('inventions.index', compact('inventions'));
 
     }
@@ -64,23 +63,12 @@ class InventionController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'nature' => 'required',
-            'title' => 'required',
-            // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
-            'currency_funding_amount' => 'required',
-            // 'funding_amount' => 'numeric',
-            'funding_type' => 'required',
-            'status' => 'required',
-            'start_date' => 'required_unless:status, 55|date',
-            'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
+            'funding_amount' => 'numeric',
+            'start_date' => 'required_unless:status, 55',
+            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            'copyright_number' => 'required',
-            'issue_date' => 'date|after_or_equal:end_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'issue_date' => 'after_or_equal:end_date',
         ]);
 
         $funding_amount = $request->input('funding_amount');    
@@ -191,23 +179,12 @@ class InventionController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'nature' => 'required',
-            'title' => 'required',
-            // 'collaborator' => '',
             'funding_agency' => 'required_if:funding_type, 49',
-            'currency_funding_amount' => 'required',
-            // 'funding_amount' => 'numeric',
-            'funding_type' => 'required',
-            'status' => 'required',
-            'start_date' => 'required_unless:status, 55|date',
-            'end_date' => 'required_if:status, 54|date|after_or_equal:start_date',
+            'funding_amount' => 'numeric',
+            'start_date' => 'required_unless:status, 55',
+            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
-            'copyright_number' => 'required',
-            'issue_date' => 'date|after_or_equal:end_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'issue_date' => 'after_or_equal:end_date',
         ]);
         $funding_amount = $request->input('funding_amount');    
 

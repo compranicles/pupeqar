@@ -15,37 +15,37 @@ class CreateExtensionServicesTable extends Migration
     {
         Schema::create('extension_services', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('level');
-            $table->foreignId('status');
-            $table->foreignId('nature_of_involvement');
-            $table->foreignId('classification');
-            $table->foreignId('type');
-            $table->string('title_of_extension_program');
-            $table->string('title_of_extension_project');
-            $table->string('title_of_extension_activity');
-            $table->string('funding_agency');
-            $table->foreignId('currency');
-            $table->decimal('amount_of_funding', 9, 2);
-            $table->foreignId('type_of_funding');
-            $table->date('from');
-            $table->date('to');
-            $table->integer('no_of_trainees_or_beneficiaries');
-            $table->decimal('total_no_of_hours', 9, 1);
-            $table->foreignId('classification_of_trainees_or_beneficiaries');
-            $table->string('place_or_venue');
-            $table->string('keywords');
-            $table->integer('quality_poor');
-            $table->integer('quality_fair');
-            $table->integer('quality_satisfactory');
-            $table->integer('quality_very_satisfactory');
-            $table->integer('quality_outstanding');
-            $table->integer('timeliness_poor');
-            $table->integer('timeliness_fair');
-            $table->integer('timeliness_satisfactory');
-            $table->integer('timeliness_very_satisfactory');
-            $table->integer('timeliness_outstanding');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->foreignId('level')->nullable();
+            $table->foreignId('status')->nullable();
+            $table->foreignId('nature_of_involvement')->nullable();
+            $table->foreignId('classification')->nullable();
+            $table->foreignId('type')->nullable();
+            $table->string('title_of_extension_program')->nullable();
+            $table->string('title_of_extension_project')->nullable();
+            $table->string('title_of_extension_activity')->nullable();
+            $table->string('funding_agency')->nullable();
+            $table->foreignId('currency')->nullable();
+            $table->decimal('amount_of_funding', 9, 2)->nullable();
+            $table->foreignId('type_of_funding')->nullable();
+            $table->date('from')->nullable();
+            $table->date('to')->nullable();
+            $table->integer('no_of_trainees_or_beneficiaries')->nullable();
+            $table->decimal('total_no_of_hours', 9, 1)->nullable();
+            $table->foreignId('classification_of_trainees_or_beneficiaries')->nullable();
+            $table->string('place_or_venue')->nullable();
+            $table->string('keywords')->nullable();
+            $table->integer('quality_poor')->nullable();
+            $table->integer('quality_fair')->nullable();
+            $table->integer('quality_satisfactory')->nullable();
+            $table->integer('quality_very_satisfactory')->nullable();
+            $table->integer('quality_outstanding')->nullable();
+            $table->integer('timeliness_poor')->nullable();
+            $table->integer('timeliness_fair')->nullable();
+            $table->integer('timeliness_satisfactory')->nullable();
+            $table->integer('timeliness_very_satisfactory')->nullable();
+            $table->integer('timeliness_outstanding')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -58,6 +58,6 @@ class CreateExtensionServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('extension_services');
+        Schema::dropIfExists('extension_services')->nullable();
     }
 }

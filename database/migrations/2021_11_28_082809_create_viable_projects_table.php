@@ -15,13 +15,13 @@ class CreateViableProjectsTable extends Migration
     {
         Schema::create('viable_projects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->decimal('revenue', 9, 2);
-            $table->decimal('cost', 9, 2);
-            $table->date('start_date');
-            $table->string('rate_of_return');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('name')->nullable();
+            $table->decimal('revenue', 9, 2)->nullable();
+            $table->decimal('cost', 9, 2)->nullable();
+            $table->date('start_date')->nullable();
+            $table->string('rate_of_return')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -34,6 +34,6 @@ class CreateViableProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('viable_projects');
+        Schema::dropIfExists('viable_projects')->nullable();
     }
 }

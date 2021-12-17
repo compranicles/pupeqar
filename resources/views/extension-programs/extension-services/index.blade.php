@@ -26,7 +26,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Title of Extension Program</th>
+                                        <th>Title</th>
                                         <th>Status</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
@@ -36,7 +36,7 @@
                                     @foreach ($extensionServices as $extensionService)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->title_of_extension_program }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->status }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->updated_at }}</td>
                                         <td>

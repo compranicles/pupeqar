@@ -56,17 +56,8 @@ class MobilityController extends Controller
         $this->authorize('create', Mobility::class);
 
         $request->validate([
-            'nature_of_engagement' => 'required',
-            'type' => 'required',
             'other_type' => 'required_if:type,173',
-            'host_name' => 'required',
-            // 'host_address' => '',
-            'mobility_description' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'end_date' => 'after_or_equal:start_date',
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -164,17 +155,8 @@ class MobilityController extends Controller
         $this->authorize('update', Mobility::class);
 
         $request->validate([
-            'nature_of_engagement' => 'required',
-            'type' => 'required',
             'other_type' => 'required_if:type,173',
-            'host_name' => 'required',
-            // 'host_address' => '',
-            'mobility_description' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
+            'end_date' => 'after_or_equal:start_date',
         ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)

@@ -81,11 +81,7 @@ class CopyrightedController extends Controller
         $date_parts = explode('-', $research->completion_date);
 
         $request->validate([
-            'copyright_agency' => 'required',
-            'copyright_number' => 'required',
-            'copyright_year' => 'required|after_or_equal:'.$date_parts[0],
-            'copyright_level' => 'required',
-            // 'description' => 'required',
+            'copyright_year' => 'after_or_equal:'.$date_parts[0],
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -171,11 +167,7 @@ class CopyrightedController extends Controller
         $date_parts = explode('-', $research->completion_date);
 
         $request->validate([
-            'copyright_agency' => 'required',
-            'copyright_number' => 'required',
-            'copyright_year' => 'required|after_or_equal:'.$date_parts[0],
-            'copyright_level' => 'required',
-            // 'description' => 'required',
+            'copyright_year' => 'after_or_equal:'.$date_parts[0],
         ]);
         
         $input = $request->except(['_token', '_method', 'document']);

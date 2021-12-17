@@ -15,24 +15,24 @@ class CreatePartnershipsTable extends Migration
     {
         Schema::create('partnerships', function (Blueprint $table) {
             $table->id();
-            $table->string('moa_code');
-            $table->foreignId('collab_nature');
-            $table->foreignId('partnershp_type');
-            $table->foreignId('deliverable');
-            $table->string('name_of_partner');
-            $table->string('title_of_partnership');
-            $table->string('partnership_type');
-            $table->string('beneficiaries');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->foreignId('level');
-            $table->string('name_of_contact_person');
-            $table->string('address_of_contact_person');
-            $table->string('telephone_number');
-            $table->string('description');
-            $table->foreignId('user_id');
-            $table->foreignId('college_id');
-            $table->foreignId('department_id');
+            $table->string('moa_code')->nullable();
+            $table->foreignId('collab_nature')->nullable();
+            $table->foreignId('partnershp_type')->nullable();
+            $table->foreignId('deliverable')->nullable();
+            $table->string('name_of_partner')->nullable();
+            $table->string('title_of_partnership')->nullable();
+            $table->string('partnership_type')->nullable();
+            $table->string('beneficiaries')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->string('name_of_contact_person')->nullable();
+            $table->string('address_of_contact_person')->nullable();
+            $table->string('telephone_number')->nullable();
+            $table->string('description')->nullable();
+            $table->foreignId('user_id')->nullable();
+            $table->foreignId('college_id')->nullable();
+            $table->foreignId('department_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -45,7 +45,7 @@ class CreatePartnershipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('partnerships');
+        Schema::dropIfExists('partnerships')->nullable();
     }
 }
 

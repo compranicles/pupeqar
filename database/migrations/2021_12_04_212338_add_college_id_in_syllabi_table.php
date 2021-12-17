@@ -14,7 +14,7 @@ class AddCollegeIdInSyllabiTable extends Migration
     public function up()
     {
         Schema::table('syllabi', function (Blueprint $table) {
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
         });
     }
 

@@ -20,7 +20,7 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = RequestModel::where('user_id', auth()->id())->get();
+        $requests = RequestModel::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
         return view('ipcr.request.index', compact('requests'));
     }
 
@@ -48,12 +48,6 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'no_of_request' => 'required',
-            'description_of_request' => 'required',
-            'processing_time' => 'required',
-            'category' => 'required',
-        ]);
 
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -142,13 +136,6 @@ class RequestController extends Controller
      */
     public function update(Request $requestdata, RequestModel $request)
     {
-        $requestdata->validate([
-            'no_of_request' => 'required',
-            'description_of_request' => 'required',
-            'processing_time' => 'required',
-            'category' => 'required',
-        ]);
-
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         

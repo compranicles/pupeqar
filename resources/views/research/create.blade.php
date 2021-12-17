@@ -34,17 +34,6 @@
 
     @push('scripts')
         <script>
-            $('#college').on('blur', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                    });
-                });
-            });
-
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
@@ -151,14 +140,14 @@
                 $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
 
-            // function validateForm() {
-            //     var isValid = true;
-            //     $('.form-validation').each(function() {
-            //         if ( $(this).val() === '' )
-            //             isValid = false;
-            //     });
-            //     return isValid;
-            // }
+            function validateForm() {
+                var isValid = true;
+                $('.form-validation').each(function() {
+                    if ( $(this).val() === '' )
+                        isValid = false;
+                });
+                return isValid;
+            }
 
            
             // $('.form-validation').on('change', function(){

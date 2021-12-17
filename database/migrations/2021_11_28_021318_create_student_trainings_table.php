@@ -15,21 +15,21 @@ class CreateStudentTrainingsTable extends Migration
     {
         Schema::create('student_trainings', function (Blueprint $table) {
             $table->id();
-            $table->string('name_of_student');
-            $table->string('title');
-            $table->string('classification');
-            $table->string('nature');
-            $table->foreignId('currency');
-            $table->decimal('budget', 9, 2);
-            $table->foreignId('source_of_fund');
-            $table->string('organization');
-            $table->foreignId('level');
-            $table->string('venue');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->integer('total_hours');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('name_of_student')->nullable();
+            $table->string('title')->nullable();
+            $table->string('classification')->nullable();
+            $table->string('nature')->nullable();
+            $table->foreignId('currency')->nullable();
+            $table->decimal('budget', 9, 2)->nullable();
+            $table->foreignId('source_of_fund')->nullable();
+            $table->string('organization')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->string('venue')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->integer('total_hours')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -42,6 +42,6 @@ class CreateStudentTrainingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_trainings');
+        Schema::dropIfExists('student_trainings')->nullable();
     }
 }

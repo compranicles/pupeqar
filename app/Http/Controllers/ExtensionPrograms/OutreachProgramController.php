@@ -53,14 +53,6 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('create', OutreachProgram::class);
 
-        $request->validate([
-            'title_of_the_program' => 'required',
-            'place' => 'required',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
-
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -148,20 +140,11 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('update', OutreachProgram::class);
 
-        $request->validate([
-            'title_of_the_program' => 'required',
-            'place' => 'required',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
-        
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $outreach_program->update($input);
-
         
         if($request->has('document')){
             

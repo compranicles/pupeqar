@@ -15,20 +15,20 @@ class CreateReferencesTable extends Migration
     {
         Schema::create('references', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category');
-            $table->foreignId('level');
-            $table->date('date_started');
-            $table->date('date_completed');
-            $table->string('title');
-            $table->string('authors_compilers');
-            $table->string('editor_name');
-            $table->string('editor_profession');
-            $table->integer('volume_no');
-            $table->integer('issue_no');
-            $table->date('date_published');
-            $table->string('copyright_regi_no');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->foreignId('category')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->date('date_started')->nullable();
+            $table->date('date_completed')->nullable();
+            $table->string('title')->nullable();
+            $table->string('authors_compilers')->nullable();
+            $table->string('editor_name')->nullable();
+            $table->string('editor_profession')->nullable();
+            $table->integer('volume_no')->nullable();
+            $table->integer('issue_no')->nullable();
+            $table->date('date_published')->nullable();
+            $table->string('copyright_regi_no')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -41,6 +41,6 @@ class CreateReferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('references');
+        Schema::dropIfExists('references')->nullable();
     }
 }

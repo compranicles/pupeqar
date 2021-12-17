@@ -14,7 +14,7 @@ class AddCollegeIdInExtensionServicesTable extends Migration
     public function up()
     {
         Schema::table('extension_services', function (Blueprint $table) {
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
         });
     }
 

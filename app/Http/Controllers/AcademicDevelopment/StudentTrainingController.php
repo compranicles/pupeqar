@@ -22,7 +22,7 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('viewAny', StudentTraining::class);
 
-        $student_trainings = StudentTraining::where('user_id', auth()->id())->get();
+        $student_trainings = StudentTraining::where('user_id', auth()->id())->orderBy('student_trainings.updated_at', 'desc')->get();
 
         return view('academic-development.student-training.index', compact('student_trainings'));
     }
@@ -54,20 +54,9 @@ class StudentTrainingController extends Controller
         $this->authorize('create', StudentTraining::class);
 
         $request->validate([
-            'name_of_student' => 'required',
-            'title' => 'required',
-            'classification' => 'required',
-            'nature' => 'required',
-            'currency_budget' => 'required',
-            'budget' => 'required|numeric',
-            // 'source_of_fund' => '',
-            'organization' => 'required',
-            'level' => 'required',
-            // 'venue' => '',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'total_hours' => 'required|numeric',
-            // 'description' => 'required',
+            'budget' => 'numeric',
+            'end_date' => 'after_or_equal:start_date',
+            'total_hours' => 'numeric',
         ]);
         
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -159,20 +148,9 @@ class StudentTrainingController extends Controller
         $this->authorize('update', StudentTraining::class);
 
         $request->validate([
-            'name_of_student' => 'required',
-            'title' => 'required',
-            'classification' => 'required',
-            'nature' => 'required',
-            'currency_budget' => 'required',
-            'budget' => 'required|numeric',
-            // 'source_of_fund' => '',
-            'organization' => 'required',
-            'level' => 'required',
-            // 'venue' => '',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'total_hours' => 'required|numeric',
-            // 'description' => 'required',
+            'budget' => 'numeric',
+            'end_date' => 'after_or_equal:start_date',
+            'total_hours' => 'numeric',
         ]);
         
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)

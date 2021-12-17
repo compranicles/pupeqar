@@ -109,16 +109,6 @@ class PresentationController extends Controller
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $request->validate([
-            // 'status' => 'required',
-            'conference_title' => 'required',
-            // 'organizer' => '',
-            // 'venue' => '',
-            'date_presented' => 'required|date',
-            'level' => 'required', 
-            // 'description' => 'required',
-        ]);
-
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
@@ -226,16 +216,6 @@ class PresentationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-
-        $request->validate([
-            // 'status' => 'required',
-            'conference_title' => 'required',
-            // 'organizer' => '',
-            // 'venue' => '',
-            'date_presented' => 'required|date',
-            'level' => 'required', 
-            // 'description' => 'required',
-        ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);
 

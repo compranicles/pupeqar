@@ -131,7 +131,17 @@
     </div>
     @push('scripts')
         <script>
-            $('div .other_nature').hide();
+            $(document).ready(function(){
+                var nature = '{{ $values['nature']; }}'
+                if (nature == 86) {
+                    $('div .other_nature').show();
+                }
+                else {
+                    $('div .other_nature').hide();
+                }
+            });
+        </script>
+        <script>
             var other_nature = document.getElementById("other_nature");
             $('#nature').on('input', function(){
                 var nature_name = $("#nature option:selected").text();

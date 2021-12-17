@@ -15,12 +15,12 @@ class CreateOutreachProgramsTable extends Migration
     {
         Schema::create('outreach_programs', function (Blueprint $table) {
             $table->id();
-            $table->string('title_of_the_program');
-            $table->string('place');
-            $table->date('date');
-            $table->foreignId('level');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('title_of_the_program')->nullable();
+            $table->string('place')->nullable();
+            $table->date('date')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +33,6 @@ class CreateOutreachProgramsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outreach_programs');
+        Schema::dropIfExists('outreach_programs')->nullable();
     }
 }

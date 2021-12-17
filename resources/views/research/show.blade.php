@@ -14,6 +14,12 @@
 
         <div class="row">
             <div class="col-md-12">
+                {{-- Success Message --}}
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -32,14 +38,6 @@
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                {{-- Success Message --}}
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index mx-3">
-                                    {{ $message }}
-                                </div>
-                                @endif
                             </div>
                         </div>
                         <hr>

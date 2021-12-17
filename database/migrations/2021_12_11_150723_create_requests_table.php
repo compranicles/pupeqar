@@ -15,12 +15,12 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->integer('no_of_request');
-            $table->string('description_of_request');
-            $table->string('processing_time');
-            $table->foreignId('category');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->integer('no_of_request')->nullable();
+            $table->string('description_of_request')->nullable();
+            $table->string('processing_time')->nullable();
+            $table->foreignId('category')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +33,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests');
+        Schema::dropIfExists('requests')->nullable();
     }
 }
