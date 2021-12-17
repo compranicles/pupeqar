@@ -13,17 +13,15 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                {{-- Success Message --}}
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                {{-- Success Message --}}
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index">
-                                    <i class="bi bi-check-circle"></i> {{ $message }}
-                                </div>
-                                @endif
-                            </div>
                             <div class="col-md-6">
                                 {{-- ADD Fields --}}
                                 @if ($research->nature_of_involvement == 11)

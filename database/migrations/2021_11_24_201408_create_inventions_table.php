@@ -16,23 +16,23 @@ class CreateInventionsTable extends Migration
         Schema::dropIfExists('inventions');
         Schema::create('inventions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('college_id');
-            $table->foreignId('department_id');
-            $table->foreignId('classification');
-            $table->string('nature');
-            $table->string('title');
-            $table->string('collaborator');
-            $table->string('funding_agency');
-            $table->decimal('funding_amount', 9, 2);
-            $table->foreignId('funding_type');
-            $table->foreignId('status');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('utilization');
-            $table->string('copyright_number');
-            $table->date('issue_date');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->foreignId('college_id')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->foreignId('classification')->nullable();
+            $table->string('nature')->nullable();
+            $table->string('title')->nullable();
+            $table->string('collaborator')->nullable();
+            $table->string('funding_agency')->nullable();
+            $table->decimal('funding_amount', 9, 2)->nullable();
+            $table->foreignId('funding_type')->nullable();
+            $table->foreignId('status')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('utilization')->nullable();
+            $table->string('copyright_number')->nullable();
+            $table->date('issue_date')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -45,6 +45,6 @@ class CreateInventionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventions');
+        Schema::dropIfExists('inventions')->nullable();
     }
 }

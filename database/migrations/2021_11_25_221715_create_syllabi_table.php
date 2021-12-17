@@ -15,12 +15,12 @@ class CreateSyllabiTable extends Migration
     {
         Schema::create('syllabi', function (Blueprint $table) {
             $table->id();
-            $table->string('course_title');
-            $table->foreignId('assigned_task');
-            $table->date('date_finished');
-            $table->foreignId('department_id');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('course_title')->nullable();
+            $table->foreignId('assigned_task')->nullable();
+            $table->date('date_finished')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +33,6 @@ class CreateSyllabiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('syllabi');
+        Schema::dropIfExists('syllabi')->nullable();
     }
 }

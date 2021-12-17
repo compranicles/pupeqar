@@ -22,7 +22,7 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
-        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->get();
+        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->orderBy('technical_extensions.updated_at', 'desc')->get();
         return view('academic-development.technical-extension.index', compact('technical_extensions'));
     }
 
@@ -54,17 +54,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'program_title' => 'required',
-            // 'project_title' => '',
-            // 'activity_title' => '',
-            // 'name_of_adoptor' => '',
-            'classification_of_adoptor' => 'required',
-            // 'nature_of_business_enterprise' => '',
-            'has_businesses' => 'required',
-            'is_borrowed' => 'required',
-            'currency_total_profit' => 'required',
             'total_profit' => 'numeric',
-            // 'description' => 'required',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -155,17 +145,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'program_title' => 'required',
-            // 'project_title' => '',
-            // 'activity_title' => '',
-            // 'name_of_adoptor' => '',
-            'classification_of_adoptor' => 'required',
-            // 'nature_of_business_enterprise' => '',
-            'has_businesses' => 'required',
-            'is_borrowed' => 'required',
-            'currency_total_profit' => 'required',
             'total_profit' => 'numeric',
-            // 'description' => 'required',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)

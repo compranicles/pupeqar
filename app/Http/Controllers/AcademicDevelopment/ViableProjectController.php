@@ -22,7 +22,7 @@ class ViableProjectController extends Controller
     {
         $this->authorize('viewAny', ViableProject::class);
 
-        $viable_projects = ViableProject::where('user_id', auth()->id())->get();
+        $viable_projects = ViableProject::where('user_id', auth()->id())->orderBy('viable_projects.updated_at', 'desc')->get();
         return view('academic-development.viable-project.index', compact('viable_projects'));
     }
 
@@ -53,14 +53,9 @@ class ViableProjectController extends Controller
         $this->authorize('create', ViableProject::class);
 
         $request->validate([
-            'name' => 'required',
-            'currency_revenue' => 'required',
             'revenue' => 'numeric',
-            'currency_cost' => 'required',
             'cost' => 'numeric',
-            'start_date' => 'required|date',
-            'rate_of_return' => 'required|numeric',
-            // 'description' => 'required',
+            'rate_of_return' => 'numeric',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
@@ -158,14 +153,9 @@ class ViableProjectController extends Controller
         $this->authorize('update', ViableProject::class);
 
         $request->validate([
-            'name' => 'required',
-            'currency_revenue' => 'required',
             'revenue' => 'numeric',
-            'currency_cost' => 'required',
             'cost' => 'numeric',
-            'start_date' => 'required|date',
-            'rate_of_return' => 'required|numeric',
-            // 'description' => 'required',
+            'rate_of_return' => 'numeric',
         ]);
         
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)

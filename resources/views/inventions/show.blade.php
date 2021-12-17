@@ -6,7 +6,7 @@
     </x-slot>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-md-9">
               <div class="d-flex mr-2">
                 <p class="mr-auto">
                   <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
@@ -90,6 +90,25 @@
             </div>
         </div>
     </div>
-
+    {{-- Delete Modal --}}
+    @include('delete')
   
+    @push('scripts')
+    <script type="text/javascript">
+        //Item to delete to display in delete modal
+        var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var iicwTitle = '{{$values['title']; }}'
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = iicwTitle
+
+          var url = '{{ route("invention-innovation-creative.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
+        });
+    </script>
+    @endpush
 </x-app-layout>

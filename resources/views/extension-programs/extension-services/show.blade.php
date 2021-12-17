@@ -93,5 +93,25 @@
         </div>
     </div>
 
-  
+    {{-- Delete Modal --}}
+    @include('delete')
+
+    @push('scripts')
+    <script>
+       var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var eServiceTitle = '{{ ($values['title_of_extension_program'] != null ? $values['title_of_extension_program'] : ($values['title_of_extension_project'] != null ? $values['title_of_extension_project'] : ($values['title_of_extension_activity'] != null ? $values['title_of_extension_activity'] : ''))) }}'
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = eServiceTitle
+
+          var url = '{{ route("extension-service.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
+        });
+    </script>
+    @endpush
+
 </x-app-layout>

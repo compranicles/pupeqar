@@ -29,7 +29,7 @@ class UtilizationController extends Controller
     {
         $this->authorize('viewAny', ResearchUtilization::class);;
 
-        $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->get();
+        $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -69,13 +69,6 @@ class UtilizationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-
-        $request->validate([
-            'organization' => 'required',
-            'utilization_description' => 'required',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -181,13 +174,6 @@ class UtilizationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-
-        $request->validate([
-            'organization' => 'required',
-            'utilization_description' => 'required',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
         
         $input = $request->except(['_token', '_method', 'document']);
 

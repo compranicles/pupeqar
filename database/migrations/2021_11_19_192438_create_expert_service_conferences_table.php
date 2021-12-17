@@ -15,15 +15,15 @@ class CreateExpertServiceConferencesTable extends Migration
     {
         Schema::create('expert_service_conferences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('nature');
-            $table->foreignId('level');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('title', 500);
-            $table->string('venue');
-            $table->string('partner');
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->foreignId('nature')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('title', 500)->nullable();
+            $table->string('venue')->nullable();
+            $table->string('partner')->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -36,6 +36,6 @@ class CreateExpertServiceConferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expert_service_conferences');
+        Schema::dropIfExists('expert_service_conferences')->nullable();
     }
 }

@@ -15,19 +15,19 @@ class CreateTechnicalExtensionsTable extends Migration
     {
         Schema::create('technical_extensions', function (Blueprint $table) {
             $table->id();
-            $table->string('moa_code');
-            $table->string('program_title');
-            $table->string('project_title');
-            $table->string('activity_title');
-            $table->string('name_of_adoptor');
-            $table->foreignId('classification_of_adoptor');
-            $table->string('nature_of_business_enterprise');
-            $table->string('has_businesses');
-            $table->foreignId('is_borrowed');
-            $table->foreignId('currency');
-            $table->decimal('total_profit', 9, 2 );
-            $table->text('description');
-            $table->foreignId('user_id');
+            $table->string('moa_code')->nullable();
+            $table->string('program_title')->nullable();
+            $table->string('project_title')->nullable();
+            $table->string('activity_title')->nullable();
+            $table->string('name_of_adoptor')->nullable();
+            $table->foreignId('classification_of_adoptor')->nullable();
+            $table->string('nature_of_business_enterprise')->nullable();
+            $table->string('has_businesses')->nullable();
+            $table->foreignId('is_borrowed')->nullable();
+            $table->foreignId('currency')->nullable();
+            $table->decimal('total_profit', 9, 2 )->nullable();
+            $table->text('description')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -40,6 +40,6 @@ class CreateTechnicalExtensionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('technical_extensions');
+        Schema::dropIfExists('technical_extensions')->nullable();
     }
 }

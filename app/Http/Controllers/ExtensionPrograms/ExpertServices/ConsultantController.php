@@ -26,6 +26,7 @@ class ConsultantController extends Controller
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
+                                        ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
         
         return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant'));
@@ -61,15 +62,7 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'category' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '',
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -160,15 +153,7 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $request->validate([
-            'classification' => 'required',
-            'category' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '',
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

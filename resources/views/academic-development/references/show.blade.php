@@ -108,6 +108,22 @@
         
         });
       </script>
+      <script>
+         //Item to delete to display in delete modal
+         var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var rtmmiTitle = '{{ $values['title'] }}';
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = rtmmiTitle
+
+          var url = '{{ route("rtmmi.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
+        });
+      </script>
     @endpush
   
 </x-app-layout>

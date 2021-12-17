@@ -131,7 +131,17 @@
     </div>
     @push('scripts')
         <script>
-            $('div .other_type').hide();
+            $(document).ready(function(){
+                var type = '{{ $values['type']; }}'
+                if (type == 173) {
+                    $('div .other_type').show();
+                }
+                else {
+                    $('div .other_type').hide();
+                }
+            });
+        </script>
+        <script>
             var other_type = document.getElementById("other_type");
             $('#type').on('input', function(){
                 var type_name = $("#type option:selected").text();

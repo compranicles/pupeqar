@@ -16,12 +16,12 @@ class CreateResearchPresentationsTable extends Migration
         Schema::create('research_presentations', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->string('conference_title');
-            $table->string('organizer');
-            $table->string('venue');
-            $table->date('date_presented');
-            $table->foreignId('level');
-            $table->text('description');
+            $table->string('conference_title')->nullable();
+            $table->string('organizer')->nullable();
+            $table->string('venue')->nullable();
+            $table->date('date_presented')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

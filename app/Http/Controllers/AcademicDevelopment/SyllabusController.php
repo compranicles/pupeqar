@@ -27,6 +27,7 @@ class SyllabusController extends Controller
         $syllabi = Syllabus::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
                                         ->select('syllabi.*', 'dropdown_options.name as assigned_task_name')
+                                        ->orderBy('syllabi.updated_at', 'desc')
                                         ->get();
         
         return view('academic-development.syllabi.index', compact('syllabi'));
@@ -61,15 +62,6 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-      
-        $request->validate([
-            'course_title' => 'required',
-            'assigned_task' => 'required',
-            'date_finished' => 'required|date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
-        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -167,14 +159,6 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $request->validate([
-            'course_title' => 'required',
-            'assigned_task' => 'required',
-            'date_finished' => 'required|date',
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => '',
-        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 

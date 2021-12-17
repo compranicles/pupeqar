@@ -27,6 +27,7 @@ class ConferenceController extends Controller
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
                                         ->select('expert_service_conferences.*', 'dropdown_options.name as nature')
+                                        ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
 
         return view('extension-programs.expert-services.conference.index', compact('expertServicesConference'));
@@ -62,14 +63,8 @@ class ConferenceController extends Controller
             return view('inactive');
 
         $request->validate([
-            'nature' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '' ?? null,
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
+            'title' => 'max:500',
         ]);
 
 
@@ -161,14 +156,8 @@ class ConferenceController extends Controller
             return view('inactive');
 
         $request->validate([
-            'nature' => 'required',
-            'level' => 'required',
-            'from' => 'required|date',
-            'to' => 'required|date|after_or_equal:from',
-            'title' => 'required',
-            // 'venue' => '',
-            'partner_agency' => '' ?? null,
-            // 'description' => 'required',
+            'to' => 'after_or_equal:from',
+            'title' => 'max:500',
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

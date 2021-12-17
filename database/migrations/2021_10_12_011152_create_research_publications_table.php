@@ -16,17 +16,17 @@ class CreateResearchPublicationsTable extends Migration
         Schema::create('research_publications', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->string('publisher');
-            $table->string('journal_name');
-            $table->string('editor');
-            $table->foreignId('level');
-            $table->date('publish_date');
-            $table->string('issn');
-            $table->string('page');
-            $table->string('volume');
-            $table->string('issue');
-            $table->foreignId('indexing_platform');
-            $table->text('description');
+            $table->string('publisher')->nullable();
+            $table->string('journal_name')->nullable();
+            $table->string('editor')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->date('publish_date')->nullable();
+            $table->string('issn')->nullable();
+            $table->string('page')->nullable();
+            $table->string('volume')->nullable();
+            $table->string('issue')->nullable();
+            $table->foreignId('indexing_platform')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

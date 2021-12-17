@@ -14,7 +14,7 @@ class AddOtherFieldsInMobilitiesTable extends Migration
     public function up()
     {
         Schema::table('mobilities', function (Blueprint $table) {
-            $table->string('other_type')->after('type');
+            $table->string('other_type')->after('type')->nullable();
             
         });
     }

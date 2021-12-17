@@ -16,10 +16,10 @@ class CreateResearchUtilizationsTable extends Migration
         Schema::create('research_utilizations', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->string('organization');
-            $table->string('utilization_description');
-            $table->foreignId('level');
-            $table->text('description');
+            $table->string('organization')->nullable();
+            $table->string('utilization_description')->nullable();
+            $table->foreignId('level')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

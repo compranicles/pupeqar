@@ -14,8 +14,8 @@ class AddOtherFieldsInExtensionServicesTable extends Migration
     public function up()
     {
         Schema::table('extension_services', function (Blueprint $table) {
-            $table->string('other_classification')->after('classification');
-            $table->string('other_classification_of_trainees')->after('classification_of_trainees_or_beneficiaries');
+            $table->string('other_classification')->after('classification')->nullable();
+            $table->string('other_classification_of_trainees')->after('classification_of_trainees_or_beneficiaries')->nullable();
         });
     }
 

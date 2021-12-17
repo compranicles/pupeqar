@@ -14,7 +14,7 @@ class AddCollegeIdInReferencesTable extends Migration
     public function up()
     {
         Schema::table('references', function (Blueprint $table) {
-            $table->foreignId('college_id');
+            $table->foreignId('college_id')->nullable();
             
         });
     }

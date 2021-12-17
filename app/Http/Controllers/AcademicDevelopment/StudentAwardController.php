@@ -22,7 +22,7 @@ class StudentAwardController extends Controller
     {
         $this->authorize('viewAny', StudentAward::class);
 
-        $student_awards = StudentAward::where('user_id', auth()->id())->get();
+        $student_awards = StudentAward::where('user_id', auth()->id())->orderBy('student_awards.updated_at', 'desc')->get();
         return view('academic-development.student-awards.index', compact('student_awards'));
     }
 
@@ -51,15 +51,6 @@ class StudentAwardController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', StudentAward::class);
-
-        $request->validate([
-            'name_of_award' => 'required',
-            'certifying_body' => 'required',
-            // 'place' => '',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -147,15 +138,6 @@ class StudentAwardController extends Controller
     public function update(Request $request, StudentAward $student_award)
     {
         $this->authorize('update', StudentAward::class);
-        
-        $request->validate([
-            'name_of_award' => 'required',
-            'certifying_body' => 'required',
-            // 'place' => '',
-            'date' => 'required|date',
-            'level' => 'required',
-            // 'description' => 'required',
-        ]);
         
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
