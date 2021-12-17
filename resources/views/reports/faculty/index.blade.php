@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Reports') }}
+            {{ __('Review') }}
         </h2>
     </x-slot>
 
@@ -33,9 +33,7 @@
                                         {{ $message }}
                                     </div>
                                     @endif
-                                    @if (!empty(array_filter(collect($report_array)->toArray())) && !empty(array_filter(collect($report_document_checker)->toArray())))
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#submitReportModal" id="submitReport">Submit Report</button>
-                                    @endif
+                                    <button class="btn btn-primary" data-toggle="modal" data-target="#submitReportModal" id="submitReport">Submit to Review</button>
                                     <hr>
                                 </div>
                             </div>
@@ -64,20 +62,51 @@
                                                                 <table class="table table-sm table-bordered table-hover">
                                                                     <thead>
                                                                         <tr>
-                                                                            <td>#</td>
-                                                                            <td>Research Code</td>
-                                                                            <td>Reporting Status</td>
+                                                                            <th>#</th>
+                                                                            @if($table->id <= 7)
+                                                                            <th>Research Code</th>
+                                                                            @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 13 || $table->id == 15)
+                                                                            <th>Title</th>
+                                                                            @elseif($table->id == 12)
+                                                                            <th>Title of Extension Program</th>
+                                                                            <th>Title of Extension Project</th>
+                                                                            <th>Title of Extension Activity</th>
+                                                                            @elseif($table->id == 14)
+                                                                            <th>Host Name</th>
+                                                                            @elseif($table->id == 16)
+                                                                            <th>Course Title</th>
+                                                                            @endif
+                                                                            <th>Reporting Status</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         @forelse ($report_array[$table->id] as $row)
-                                                                            <tr class="report-view" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.download', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">
+                                                                            <tr>
                                                                                 <td>{{ $loop->iteration }}</td>
+                                                                                @if($table->id <= 7)
                                                                                 <td>{{ $row->research_code }}</td>
+                                                                                @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 15)
+                                                                                <td>{{ $row->title }}</td>
+                                                                                @elseif($table->id == 12)
+                                                                                <td>{{ $row->title_of_extension_program }}</td>
+                                                                                <td>{{ $row->title_of_extension_project }}</td>
+                                                                                <td>{{ $row->title_of_extension_activity }}</td>
+                                                                                @elseif($table->id == 13)
+                                                                                <td>{{ $row->title_of_partnership }}</td>
+                                                                                @elseif($table->id == 14)
+                                                                                <td>{{ $row->host_name }}</td>
+                                                                                @elseif($table->id == 16)
+                                                                                <td>{{ $row->course_title }}</td>
+                                                                                @endif
                                                                                 <td>
+                                                                                    <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">View Data</button>
                                                                                     @isset($row->id)
                                                                                         @if ( count($report_document_checker[$table->id][$row->id]) == 0)
+                                                                                            @if($table->id >= 1 && $table->id <= 7)
                                                                                             <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
+                                                                                            @else
+                                                                                            <a href="{{ route('faculty.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
+                                                                                            @endif
                                                                                         @else
                                                                                             <span class="btn btn-sm btn-success doc-complete">Completed</span>
                                                                                         @endif
@@ -173,7 +202,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <table class="table table-sm table-borderless" id="columns_value_table">
+                        <table class="table table-sm table-borderless table-hover" id="columns_value_table">
                         </table>
                     </div>
                 </div>
@@ -208,7 +237,15 @@
                     @csrf
                     @foreach ( $report_tables as $table)
                         @foreach ($report_array[$table->id] as $row)
-                            <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                            @isset($row->id)
+                                @if ( count($report_document_checker[$table->id][$row->id]) > 0)
+                                    <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                @endif
+                            @else
+                                @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
+                                    <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                @endif
+                            @endisset
                         @endforeach                        
                     @endforeach
                 </div>
@@ -269,7 +306,7 @@
                 data.forEach(function (item){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-right">'+item.name+':</td>');
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-left">'+item.name+':</td>');
                 });
             });
             $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
@@ -282,10 +319,15 @@
                 });
             });
             $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
-                data.forEach(function (item){
-                    var newlink = link.replace(':filename', item)
-                    $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 btn btn-success m-1">'+item+'<a/>');
-                });
+                if(data == false){
+                    $('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
+                }
+                else{
+                    data.forEach(function (item){
+                        var newlink = link.replace(':filename', item)
+                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 btn btn-success m-1">'+item+'</a>');
+                    });
+                }
             });
         });
 
@@ -312,8 +354,8 @@
         });
 
         $(function(){
-            if( $('.doc-incomplete').length != 0)
-                $('#submitReport').remove();
+            // if( $('.doc-incomplete').length != 0)
+            //     $('#submitReport').remove();
             $('#report_denied').DataTable();
         });
     </script>

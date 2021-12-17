@@ -102,7 +102,8 @@ class SubmissionController extends Controller
                                         ->select('extension_services.*', 'dropdown_options.name as status')
                                         ->get();
         
-        $partnerships = Partnership::leftJoin('partnership_documents', 'partnership_documents.partnership_id', 'partnerships.id')
+        $partnerships = Partnership::select('partnerships.*')
+                                    ->join('partnership_documents', 'partnership_documents.partnership_id', 'partnerships.id')
                                     ->where('partnership_documents.partnership_id', null)
                                     ->where('user_id', auth()->id())
                                     ->orderBy('partnerships.updated_at', 'desc')

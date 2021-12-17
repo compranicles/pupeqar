@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <ul class="nav justify-content-center m-n3">
-                            <!-- <li class="nav-item">
+                            {{-- <!-- <li class="nav-item">
                                 <x-jet-nav-link href="" class="text-dark"  class="text-dark">
                                     {{ __('Personnel') }}
                                 </x-jet-nav-link>
@@ -44,7 +44,7 @@
                                 <x-jet-nav-link href="" class="text-dark" >
                                     {{ __('IPCR') }}
                                 </x-jet-nav-link>
-                            </li> -->
+                            </li> --> --}}
                             @if(! $researches->isEmpty())
                             <li class="nav-item">
                                 <x-jet-nav-link href="#research" class="text-dark">
@@ -99,7 +99,7 @@
                             <li class="nav-item">
                                 <x-jet-nav-link href="#college-awards" class="text-dark">
                                     {{ __('Awards and Recognition Received by the College') }} <span class="badge bg-danger">{{ count($college_department_awards) }}</span>
-                                    <!-- {{ __('Awards and Recognition Received by the Department') }} -->
+                                    {{-- <!-- {{ __('Awards and Recognition Received by the Department') }} --> --}}
                                 </x-jet-nav-link>
                             </li>
                             @endif
@@ -193,7 +193,7 @@
                                             <td>{{ $research->status_name }}</td>
                                             <td>
                                             <div role="group">
-                                                <a href="{{ route('rtmmi.edit', $rtmmi->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                                                <a href="{{ route('research.edit', $research->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                             </div>
                                         </td>
                                         </tr>

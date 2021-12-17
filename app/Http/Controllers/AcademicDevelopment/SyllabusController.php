@@ -107,6 +107,7 @@ class SyllabusController extends Controller
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
+        $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 

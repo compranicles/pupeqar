@@ -133,6 +133,8 @@ class ExtensionServiceController extends Controller
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
+        
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id('4')");
