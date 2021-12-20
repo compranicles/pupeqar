@@ -3,7 +3,6 @@
         <a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') ? 'active' : ''}} ml-3">To Finalize</a>
         <a href="{{ route('submissions.denied.index') }}" class="submission-menu {{ request()->routeIs('submissions.denied.index') ? 'active' : ''}}">Denied</a>
     </x-slot>
-
     <?php $ctr = 0; ?>
     @foreach ( $report_tables as $table)
         @if (count($report_array[$table->id]) == 0)
@@ -75,7 +74,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-hover" id="submissions_table">
+                            <table class="table table-hover submissions_table">
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -128,8 +127,10 @@
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         @if($table->id >= 1 && $table->id <= 7)
                                                         <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <script>doc_checker(0);</script>
                                                         @else
                                                         <a href="{{ route('submissions.faculty.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <script>doc_checker(0);</script>
                                                         @endif
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
@@ -137,6 +138,7 @@
                                                 @else
                                                     @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
                                                         <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <script>doc_checker(0);</script>
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
                                                     @endif
@@ -181,7 +183,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- <form action="" id="adddoc" method="GET"> -->
                 <div class="modal-footer">
+                    <!-- <button type="submit" id="adddocbutton" class="btn btn-primary mr-2">Add Document</button>
+                </form> -->
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -232,6 +237,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
+        $('#adddocbutton').remove();
         $('.report-view').on('click', function(){
             let catID = $(this).data('id');
             let rowID = $(this).data('code');
@@ -243,16 +249,16 @@
                 data.forEach(function (item){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-left">'+item.name+':</td>');
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold text-left">'+item.name+'</td>');
                 });
             });
             $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
                 data.forEach(function (item){
                     countValues = countValues + 1;
                     if(item == null)
-                        $('#row-'+countValues).append('<td class="report-content h5 text-left">-  </td>');
+                        $('#row-'+countValues).append('<td class="report-content text-left">-  </td>');
                     else
-                        $('#row-'+countValues).append('<td class="report-content h5 text-left">'+item+'</td>');
+                        $('#row-'+countValues).append('<td class="report-content text-left">'+item+'</td>');
                 });
             });
             $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
@@ -261,21 +267,45 @@
                 }
                 else{
                     data.forEach(function (item){
-                        console.log(item);
                         var newlink = link.replace(':filename', item)
-                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 btn btn-success m-1">'+item+'</a>');
+                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-success m-1">'+item+'</a>');
                     });
                 }
+            });
+            
+        });
+
+
+        $('.button-deny').on('click', function () {
+            var catID = $(this).data('id');
+            
+            var countColumns = 1;
+            $.get('/reports/reject-details/'+catID, function(data){
+                $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.position_name+'</td>');
+                countColumns = countColumns + 1;
+                $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.time+'</td>');
+                countColumns = countColumns + 1;
+                $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.reason+'</td>');
             });
         });
 
         $('#viewReport').on('hidden.bs.modal', function(event) {
             $('.report-content').remove();
         });
+
+        $('#viewDeny').on('hidden.bs.modal', function(event) {
+            $('.deny-details').remove();
+        });
+
+        $(function(){
+            // if( $('.doc-incomplete').length != 0)
+            //     $('#submitReport').remove();
+            $('#report_denied').DataTable();
+        });
     </script>
     <script>
         $(document).ready(function() {
-          $('#submissions_table').DataTable({
+          $('.submissions_table').DataTable({
             'aoColumnDefs': [{
                   'bSortable': false,
                   'aTargets': [0], /* 1st one, start by the right */
@@ -312,6 +342,22 @@
             });
         }, 4000);
     </script>
+    <!-- <script>
+        function doc_checker(i)
+        if (i == 0) {
+            $('#adddocbutton').show();
+            $('#viewReport').on('show.bs.modal', function(event) {
+            var button = event.relatedTarget
+            
+                    var id = button.getAttribute('data-id')
+                    var code = button.getAttribute('data-code')
+        
+                    var url = '/submissions/faculty/add-document/' + code + '/' + id;
+                    document.getElementById('adddoc').action = url;
+            
+            });
+        }
+    </script> -->
     @endpush
 
 </x-app-layout>
