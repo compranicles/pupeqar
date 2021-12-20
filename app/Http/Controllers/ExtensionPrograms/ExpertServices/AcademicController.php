@@ -145,7 +145,12 @@ class AcademicController extends Controller
         
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
+        if ($expert_service_in_academic->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
 
         $value = $expert_service_in_academic;
         $value->toArray();

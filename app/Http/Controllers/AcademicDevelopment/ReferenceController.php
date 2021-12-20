@@ -146,9 +146,14 @@ class ReferenceController extends Controller
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
         $colleges = College::all();
-
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
         
+        if ($rtmmi->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
+
         $value = $rtmmi;
         $value->toArray();
         $value = collect($rtmmi);

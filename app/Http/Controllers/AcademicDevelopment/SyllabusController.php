@@ -111,11 +111,9 @@ class SyllabusController extends Controller
 
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
-        $collegeAndDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
-
         $values = $syllabu->toArray();
 
-        return view('academic-development.syllabi.show', compact('syllabu', 'syllabusDocuments', 'collegeAndDepartment', 'syllabusFields', 'values'));
+        return view('academic-development.syllabi.show', compact('syllabu', 'syllabusDocuments', 'syllabusFields', 'values'));
     }
 
     /**
@@ -136,8 +134,13 @@ class SyllabusController extends Controller
 
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
-        // dd($collegeOfDepartment);
+        if ($syllabu->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
+
         $value = $syllabu;
         $value->toArray();
         $value = collect($syllabu);
