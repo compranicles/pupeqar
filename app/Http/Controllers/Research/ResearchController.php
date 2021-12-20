@@ -188,8 +188,12 @@ class ResearchController extends Controller
 
         //$values = Research::where('research_code', $research->research_code)->first()->toArray();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id('{{ $research->department_id }}')");
-
+        if ($research->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
         $value = $research;
         $value->toArray();
         $value = collect($research);
@@ -228,8 +232,12 @@ class ResearchController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id('{{ $research->department_id }}')");
-
+        if ($research->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement == 11)
             return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));

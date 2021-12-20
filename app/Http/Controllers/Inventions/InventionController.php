@@ -152,7 +152,12 @@ class InventionController extends Controller
         
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
+        if ($invention_innovation_creative->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
