@@ -59,7 +59,7 @@
                                                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                                 <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                                                 <td>
-                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -210,7 +210,7 @@
             $.get('/reports/docs/'+catID, function (data) {
                 data.forEach(function (item){
                     var newlink = link.replace(':filename', item)
-                    $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
+                    $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                 });
             });
             

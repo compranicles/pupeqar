@@ -70,7 +70,7 @@ class ResearchController extends Controller
         return view('inactive');
 
         $request->validate([
-            'funding_amount' => 'numeric',
+            // 'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
         ]);
 
@@ -130,14 +130,14 @@ class ResearchController extends Controller
 
         $funding_amount = str_replace( ',' , '', $funding_amount);
 
-        Research::create([
+        $research_id = Research::insertGetId([
             'research_code' => $researchCode, 
             'user_id' => auth()->id(), 
             'funding_amount' => $funding_amount,
             'nature_of_involvement' => 11
         ]);
 
-        Research::where('research_code', $researchCode)->update($input);
+        Research::where('id', $research_id)->update($input);
 
         if($request->has('document')){
             
@@ -251,7 +251,7 @@ class ResearchController extends Controller
             return view('inactive');
 
             $request->validate([
-                'funding_amount' => 'numeric',
+                // 'funding_amount' => 'numeric',
                 'funding_agency' => 'required_if:funding_type,23',
             ]);
     

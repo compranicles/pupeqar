@@ -1,8 +1,10 @@
 <x-guest-layout>
     <x-jet-authentication-card>
-
+        <x-slot name="logo">
+            <x-jet-authentication-card-logo />
+        </x-slot>
         <div class="card-body">
-            <div class="row mt-1 mb-5">
+            {{-- <div class="row mt-1 mb-5">
                 <div class="col-md-12">
                     <a href="{{ route('home') }}" class="text-decoration-none">
                         <div class="d-flex flex-row">
@@ -12,7 +14,7 @@
                     </a>
                     <hr>
                 </div>
-            </div>
+            </div> --}}
             <div class="row mt-5 mb-5 justify-content-center">
                 <div class="col-md-8">
                     <h2 class="h3 font-weight-bold text-center mb-3" id="textHome">Reset Password</h2>

@@ -49,7 +49,7 @@ class FacultyController extends Controller
         foreach($report_tables as $table){
             switch($table->id){
                 case '1':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())
+                    $data = Research::select('research.id', 'research.research_code')->where('user_id', auth()->id())
                             ->whereNotIn('research.research_code', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_code')->all() )->orderBy('updated_at', 'desc')->get();
                     if($data != null){
                         foreach($data as $row){
@@ -63,7 +63,7 @@ class FacultyController extends Controller
         
                     break;
                 case '2':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
+                    $data = Research::select('research_completes.id', 'research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_code')->all() )
                             ->join('research_completes', 'research_completes.research_code', 'research.research_code')->get();
                     if($data != null){
@@ -77,7 +77,7 @@ class FacultyController extends Controller
                     $checker_array = [];
                     break;
                 case '3':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
+                    $data = Research::select('research_publications.id','research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
                     if($data != null){
@@ -91,7 +91,7 @@ class FacultyController extends Controller
                     $checker_array = [];
                     break;
                 case '4':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
+                    $data = Research::select('research_presentations.id','research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             join('research_presentations', 'research_presentations.research_code', 'research.research_code')->get();
                     if($data != null){
@@ -137,7 +137,7 @@ class FacultyController extends Controller
                     $checker_array = [];
                     break;
                 case '7':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
+                    $data = Research::select('research_copyrights.id', 'research.research_code')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')->get();
                     if($data != null){
@@ -275,7 +275,8 @@ class FacultyController extends Controller
                     ->where('reports.user_id', auth()->id())->join('colleges', 'reports.college_id', 'colleges.id')->join('departments', 'reports.department_id', 'departments.id')
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->where('reports.chairperson_approval', 0)->orWhere('reports.dean_approval', 0)
                     ->orWhere('reports.sector_approval', 0)->orWhere('reports.ipqmso_approval', 0)->get();
-    
+        // dd($report_array);
+        // dd($report_document_checker);
         // dd($reported_accomplishments);
         return view('reports.faculty.index', compact('report_tables', 'report_array' , 'report_document_checker', 'reported_accomplishments'));
     }
@@ -500,7 +501,7 @@ class FacultyController extends Controller
                             'filename' => $fileName,
                         ]);
                     }
-                    elseif($report_category_id == 9){
+                    elseif($report_category_id == 16){
                         SyllabusDocument::create([
                             'syllabus_id' => $id,
                             'filename' => $fileName,
