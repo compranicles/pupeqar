@@ -195,7 +195,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/academic-development/syllabus/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\SyllabusController::class, 'removeDoc'])->name('syllabus.removedoc');
 
     //academics
-    Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
+    // Route::resource('academics', \App\Http\Controllers\Academics\AcademicController::class);
 
     //partnership, linkages, network
     Route::get('/partnership/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\PartnershipController::class, 'removeDoc'])->name('partnership.removedoc');
@@ -277,8 +277,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
 
     /**********************************SUBMISSIONS************************************* */
-    Route::get('/submissions/incomplete', [\App\Http\Controllers\Submissions\SubmissionController::class, 'incomplete'])->name('submissions.incomplete');
-    
+    Route::resource('/submissions/to-finalize', \App\Http\Controllers\Submissions\SubmissionController::class);
+    Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');;
+    Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
+    Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
+
     // admin routes
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 

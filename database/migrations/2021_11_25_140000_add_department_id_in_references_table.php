@@ -14,7 +14,7 @@ class AddDepartmentIdInReferencesTable extends Migration
     public function up()
     {
         Schema::table('references', function (Blueprint $table) {
-            $table->foreignId('department_id');
+            $table->foreignId('department_id')->nullable();
         });
     }
 

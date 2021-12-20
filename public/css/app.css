@@ -13192,16 +13192,18 @@ table tr .padding_left_show {
 
 .submission_links {
   color: black;
+  font-size: 17px;
 }
 
 .submission_links:hover {
   color: black;
   filter: brightness(0.85);
+  text-decoration: none;
 }
 
 .submission_links.active {
   border-bottom: 2px solid #eeb510;
-  
+  margin-bottom: 5px;
 }
 
 .submission-categories {
@@ -13211,7 +13213,7 @@ table tr .padding_left_show {
 .jumptarget::before {
     display: block; 
     content: " "; 
-    margin-top: -55px; 
+    margin-top: -35px; 
     height: 75px; 
     visibility: hidden; 
 }
@@ -13255,18 +13257,26 @@ table tr .padding_left_show {
 
 
 /**********************SUBMISSION MODULE*****************************/
-/* .submission_links {
-  color: black;
+.doc-incomplete:hover {
+  color: white;
 }
 
-.submission_links:hover {
-  color: black;
-  filter: brightness(0.85);
+#scrollUpButton {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 3rem; 
+  color: #212529;
 }
 
-.submission_links.active {
-  border-bottom: 2px solid #eeb510;
-  
-} */
-
+.submission-list ul{
+  -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+}
 

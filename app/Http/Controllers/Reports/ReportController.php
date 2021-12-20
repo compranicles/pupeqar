@@ -144,33 +144,34 @@ class ReportController extends Controller
             $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', $report_category_id)->where('research_utilization_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 8){
-            $report_docs = InventionDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = InventionDocument::where('invention_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 9){
-            $report_docs = ExpertServiceConsultantDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 10){
-            $report_docs = ExpertServiceConferenceDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = ExpertServiceConferenceDocument::where('expert_service_conference_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 11){
-            $report_docs = ExpertServiceAcademicDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = ExpertServiceAcademicDocument::where('expert_service_academic_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 12){
-            $report_docs = ExtensionServiceDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = ExtensionServiceDocument::where('extension_service_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 13){
-            $report_docs = PartnershipDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = PartnershipDocument::where('partnership_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 14){
-            $report_docs = MobilityDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = MobilityDocument::where('mobility_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 15){
-            $report_docs = ReferenceDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = ReferenceDocument::where('reference_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 16){
-            $report_docs = SyllabusDocument::where('id', $id)->pluck('filename')->all();
+            $report_docs = SyllabusDocument::where('syllabus_id', $id)->pluck('filename')->all();
         }
         return $report_docs;
+        
     }
 
     public function getReportData($report_id){

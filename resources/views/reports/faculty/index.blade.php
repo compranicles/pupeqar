@@ -100,19 +100,19 @@
                                                                                 @endif
                                                                                 <td>
                                                                                     <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">View Data</button>
-                                                                                    @isset($row->id)
-                                                                                        @if ( count($report_document_checker[$table->id][$row->id]) == 0)
-                                                                                            @if($table->id >= 1 && $table->id <= 7)
-                                                                                            <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
-                                                                                            @else
-                                                                                            <a href="{{ route('faculty.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
-                                                                                            @endif
+                                                                                    @isset($row->research_code)
+                                                                                         @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
+                                                                                            <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
                                                                                         @else
                                                                                             <span class="btn btn-sm btn-success doc-complete">Completed</span>
                                                                                         @endif
                                                                                     @else
-                                                                                        @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
-                                                                                            <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
+                                                                                        @if ( count($report_document_checker[$table->id][$row->id]) == 0)
+                                                                                            @if($table->id >= 1 && $table->id <= 7)
+                                                                                                <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
+                                                                                            @else
+                                                                                                <a href="{{ route('faculty.adddoc', [$row->id, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
+                                                                                            @endif
                                                                                         @else
                                                                                             <span class="btn btn-sm btn-success doc-complete">Completed</span>
                                                                                         @endif
@@ -171,7 +171,7 @@
                                                     <td>{{ $row->report_date }}</td>
                                                     <td>
                                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                                        <button class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Manage</button>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
                                                     </td>
                                                 </tr>
                                                 @empty
@@ -237,12 +237,12 @@
                     @csrf
                     @foreach ( $report_tables as $table)
                         @foreach ($report_array[$table->id] as $row)
-                            @isset($row->id)
-                                @if ( count($report_document_checker[$table->id][$row->id]) > 0)
+                            @isset($row->research_code)
+                                @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
                                     <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
                                 @endif
                             @else
-                                @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
+                                @if ( count($report_document_checker[$table->id][$row->id]) > 0)
                                     <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
                                 @endif
                             @endisset
@@ -320,7 +320,7 @@
             });
             $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
                 if(data == false){
-                    $('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
+                    $('#data_documents').append('<a class="report-content btn-link text-dazrk">No Document Attached</a>');
                 }
                 else{
                     data.forEach(function (item){

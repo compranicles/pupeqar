@@ -147,8 +147,13 @@ class ReferenceController extends Controller
 
         $colleges = College::all();
 
-        $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
-        
+        if ($rtmmi->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
+
         $value = $rtmmi;
         $value->toArray();
         $value = collect($rtmmi);
@@ -245,7 +250,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtoupper($accomplishment[0]))
                             ->with('action', 'deleted.');
     }
 

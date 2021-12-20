@@ -41,7 +41,12 @@
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->title }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->classification_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >
+                                            <?php $updated_at = strtotime( $expertServiceConsultant->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>    
+                                             {{ $updated_at }}
+                                            
+                                        </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
