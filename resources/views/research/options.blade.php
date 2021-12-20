@@ -81,6 +81,7 @@
     </div>
 </div>
 
+{{-- Remove Form Modal --}}
 <div class="modal fade" id="removeModal" data-backdrop="static" tabindex="-1" aria-labelledby="removeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
@@ -93,6 +94,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">No</button>
                 <a href="{{ route('research.remove-self', $research_code) }}" class="btn btn-danger mb-2 mr-2">YES</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+ {{-- Delete Form Modal --}}
+ <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-center">Are you sure you want to delete this research?</h5>
+                <form action="{{ route('research.destroy', $research->id) }}" method="post">
+                    @csrf
+                    @method('delete')
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
+            </form>
             </div>
         </div>
     </div>

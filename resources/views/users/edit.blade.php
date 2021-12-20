@@ -69,6 +69,7 @@
                             </label>
                           </div>
                         @endforeach
+      
                         </div>
                       </div>
         
@@ -81,6 +82,17 @@
                             @endforeach
                         </select>
                         <x-jet-input-error for="department"></x-jet-input-error>
+                      </div>  
+
+                      <div class="form-group college-input" style="@if($dean == null) display: none; @endif">
+                        <x-jet-label value="{{ __('College') }}" />
+                        <select name="college" id="college" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                            @foreach ($colleges as $college)
+                                <option value="{{ $college->id }}" {{ (old('college', $dean) == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>  
+                            @endforeach
+                        </select>
+                        <x-jet-input-error for="college"></x-jet-input-error>
                       </div>  
 
                     </div>
@@ -106,13 +118,32 @@
           $("#department").selectize({
               sortField: "text",
           });
+          $("#college").selectize({
+              sortField: "text",
+          });
 
           $('.role-checkbox').on('change', function() {
               var id = $(this).data('id');
               if(id == 5){
                 changeDeptDisp(id);
               }
+              if(id == 6){
+                changeCollegeDisp(id);
+              }
           });
+
+          function changeCollegeDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.college-input').show();
+                 $('#college').removeAttr('disabled');
+                 $('#college').attr('required', true);
+              }
+              else{
+                $('.college-input').hide();
+                $('#college').removeAttr('required');
+                $('#college').attr('disabled', true);
+              }
+          }
 
           function changeDeptDisp(id){
               if( $('#role-'+id).is(':checked')){
@@ -126,6 +157,15 @@
                 $('#department').attr('disabled', true);
               }
           }
+
+          $(function (){
+              if($('#role-5').is(':checked')){
+                  changeDeptDisp(5);
+              }
+              if($('#role-6').is(':checked')){
+                  changeCollegeDisp(6);
+              }
+          });
       </script>
       <script>
         window.setTimeout(function() {

@@ -67,20 +67,21 @@
                     </x-jet-nav-link>
                 </li>
 
-                <li class="navbar-nav mr-auto main-nav-item">
+                {{-- <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('faculty.index') }}">
                         {{ __('Review') }}
                     </x-jet-nav-link>
-                </li>
+                </li> --}}
 
-                {{-- <li class="nav-item dropdown">
-                    <a class="nav-link @if (request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
+                <li class="nav-item dropdown mr-auto main-nav-item">
+                    <a class="nav-link @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                         Reports
                     </a>
                     <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Faculty</a></li>
-
+                       
+                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Individual</a></li>
+                       
                         <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
 
                         <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
@@ -91,7 +92,7 @@
 
                         <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
                     </ul>
-                </li> --}}
+                </li>
 
 
             </ul>

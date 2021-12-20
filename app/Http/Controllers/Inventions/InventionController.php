@@ -74,7 +74,7 @@ class InventionController extends Controller
         $funding_amount = $request->input('funding_amount');    
 
         $funding_amount = str_replace( ',' , '', $funding_amount);
-
+        // dd($request);
         $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
 
         $iicw = Invention::create($input);
@@ -160,6 +160,7 @@ class InventionController extends Controller
         $value->toArray();
         $value = collect($invention_innovation_creative);
         $value = $value->toArray();
+        // dd($value);
 
         return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification'));
     }
