@@ -146,7 +146,7 @@ class ReferenceController extends Controller
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
         $colleges = College::all();
-        
+      
         if ($rtmmi->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
         }
@@ -250,7 +250,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtolower($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtoupper($accomplishment[0]))
                             ->with('action', 'deleted.');
     }
 

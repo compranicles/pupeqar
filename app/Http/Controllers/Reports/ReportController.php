@@ -172,6 +172,7 @@ class ReportController extends Controller
             $report_docs = SyllabusDocument::where('syllabus_id', $id)->pluck('filename')->all();
         }
         return $report_docs;
+        
     }
 
     public function getReportData($report_id){

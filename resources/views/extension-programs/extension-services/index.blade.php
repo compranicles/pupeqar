@@ -38,7 +38,10 @@
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->status }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >
+                                            <?php $updated_at = strtotime( $extensionService->updated_at );
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
+                                            {{ $updated_at }} </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>

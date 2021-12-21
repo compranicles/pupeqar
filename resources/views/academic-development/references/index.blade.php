@@ -37,7 +37,11 @@
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->title }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
+                                            <?php $updated_at = strtotime( $rtmmi->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                            {{ $updated_at }}
+                                        </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('rtmmi.edit', $rtmmi->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>

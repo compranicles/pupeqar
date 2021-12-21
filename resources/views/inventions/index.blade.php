@@ -38,7 +38,11 @@
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->title }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->status_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >
+                                            <?php $updated_at = strtotime( $invention->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                            {{ $updated_at }}
+                                    </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>

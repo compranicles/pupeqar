@@ -60,16 +60,11 @@
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
-                
-                <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('submissions.incomplete') }}" :active="request()->routeIs('submissions.incomplete')">
-                        {{ __('Submissions') }}
-                    </x-jet-nav-link>
-                </li>
 
-                {{-- <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('faculty.index') }}">
-                        {{ __('Review') }}
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link :active="request()->routeIs('to-finalize.index') || request()->routeIs('submissions.denied.index')" href="{{ route('to-finalize.index') }}">
+                        {{ __('Submissions') }}
+
                     </x-jet-nav-link>
                 </li> --}}
 

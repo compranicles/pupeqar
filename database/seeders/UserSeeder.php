@@ -58,6 +58,18 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        for ($f = 1; $f <= 11; $f++) {
+            User::create([
+                'email' => 'faculty'.$f.'@mailinator.com',
+                'password'=> Hash::make('faculty'.$f.'@mailinator.com'),
+                'date_of_birth' => 1992-04-24,
+                'first_name' => 'Ana',
+                'middle_name' => null,
+                'last_name' => 'Miguel',
+                'suffix' => null,
+            ]);
+        }
+
         //Faculty with designation
         User::create([
             'email' => 'loey@mailinator.com',
@@ -78,6 +90,18 @@ class UserSeeder extends Seeder
             'last_name' => 'Sales',
             'suffix' => null,
         ]);
+
+        for ($i = 1; $i <= 11; $i++) {
+            User::create([
+                'email' => 'facultydesignate'.$i.'@mailinator.com',
+                'password'=> Hash::make('facultydesignate'.$i.'@mailinator.com'),
+                'date_of_birth' => 1992-04-24,
+                'first_name' => 'Ana',
+                'middle_name' => null,
+                'last_name' => 'Miguel',
+                'suffix' => null,
+            ]);
+        }
 
         //Admin Employee
         User::create([
@@ -100,6 +124,18 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        for ($a = 1; $a <= 11; $a++) {
+            User::create([
+                'email' => 'admin'.$a.'@mailinator.com',
+                'password'=> Hash::make('admin'.$a.'@mailinator.com'),
+                'date_of_birth' => 1992-04-24,
+                'first_name' => 'Ana',
+                'middle_name' => null,
+                'last_name' => 'Miguel',
+                'suffix' => null,
+            ]);
+        }
+
         //Admin with Teaching Load
         User::create([
             'email' => 'gola@mailinator.com',
@@ -120,6 +156,18 @@ class UserSeeder extends Seeder
             'last_name' => 'Sen',
             'suffix' => null,
         ]);
+
+        for ($at = 3; $at <= 11; $at++) {
+            User::create([
+                'email' => 'facultydesignate'.$at.'@mailinator.com',
+                'password'=> Hash::make('facultydesignate'.$at.'@mailinator.com'),
+                'date_of_birth' => 1992-04-24,
+                'first_name' => 'Ana',
+                'middle_name' => null,
+                'last_name' => 'Miguel',
+                'suffix' => null,
+            ]);
+        }
 
         //Chairperson
         User::create([

@@ -98,8 +98,10 @@
                                                                                 @elseif($table->id == 16)
                                                                                 <td>{{ $row->course_title }}</td>
                                                                                 @endif
-                                                                                <td>
-                                                                                    <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->research_code){{ $row->research_code }}@else{{ $row->row_id }}@endisset">View Data</button>
+                                                                                <td>}}" data-code="@isset($row->research_code){{ $row->research_code }}@else{{ $row->row_id }}@endisset">View Data</button>
+                                                                                
+                                                                                    <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') 
+
                                                                                     @isset($row->research_code)
                                                                                          @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
                                                                                             <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="btn btn-sm btn-danger doc-incomplete">Missing Supporting Document</a>
@@ -320,7 +322,7 @@
             });
             $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
                 if(data == false){
-                    $('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
+                    $('#data_documents').append('<a class="report-content btn-link text-dazrk">No Document Attached</a>');
                 }
                 else{
                     data.forEach(function (item){

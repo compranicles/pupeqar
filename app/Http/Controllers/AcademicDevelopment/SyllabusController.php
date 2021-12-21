@@ -90,7 +90,7 @@ class SyllabusController extends Controller
                 }
             }
         }
-        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'added.');
     }
 
@@ -191,7 +191,7 @@ class SyllabusController extends Controller
             }
         }
 
-        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                     ->with('action', 'updated.');
     }
 
@@ -210,7 +210,7 @@ class SyllabusController extends Controller
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 
-        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'course syllabus')
+        return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'deleted.');
     }
 

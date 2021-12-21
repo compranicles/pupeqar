@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('college_id');
-            $table->foreignId('department_id');
+            $table->foreignId('department_id')->nullable();
             $table->foreignId('report_category_id');
             $table->string('report_code')->nullable();
             $table->integer('report_reference_id')->nullable();

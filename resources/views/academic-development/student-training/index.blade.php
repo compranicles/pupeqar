@@ -39,7 +39,11 @@
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->name_of_student }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
+                                            <?php $updated_at = strtotime( $row->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                {{ $updated_at }}
+                                        </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('student-training.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>

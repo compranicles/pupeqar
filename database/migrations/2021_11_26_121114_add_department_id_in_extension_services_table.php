@@ -14,7 +14,7 @@ class AddDepartmentIdInExtensionServicesTable extends Migration
     public function up()
     {
         Schema::table('extension_services', function (Blueprint $table) {
-            $table->foreignId('department_id')->after('user_id');
+            $table->foreignId('department_id')->after('user_id')->nullable();
         });
     }
 
