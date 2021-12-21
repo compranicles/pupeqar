@@ -74,7 +74,7 @@ class InventionController extends Controller
         $funding_amount = $request->input('funding_amount');    
 
         $funding_amount = str_replace( ',' , '', $funding_amount);
-
+        // dd($request);
         $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
 
         $iicw = Invention::create($input);
@@ -158,13 +158,14 @@ class InventionController extends Controller
         else {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
-        
+      
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
         $value = $invention_innovation_creative;
         $value->toArray();
         $value = collect($invention_innovation_creative);
         $value = $value->toArray();
+        // dd($value);
 
         return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification'));
     }

@@ -168,7 +168,7 @@ class ExtensionServiceController extends Controller
         else {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
-        
+
         $value = $extension_service;
         $value->toArray();
         $value = collect($extension_service);

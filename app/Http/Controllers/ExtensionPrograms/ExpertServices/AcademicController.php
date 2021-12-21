@@ -151,7 +151,7 @@ class AcademicController extends Controller
         else {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
-        
+      
         $value = $expert_service_in_academic;
         $value->toArray();
         $value = collect($expert_service_in_academic);

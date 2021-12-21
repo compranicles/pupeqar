@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Report;
+use App\Models\Research;
 use App\Models\DenyReason;
 use Illuminate\Http\Request;
 use App\Models\MobilityDocument;
@@ -198,5 +199,80 @@ class ReportController extends Controller
         $newtime = strtotime($deny_details->created_at);
         $deny_details->time = date("F j, Y, g:i a", $newtime);
         return $deny_details;
+    }
+
+    public function viewReportOrigin($report_id, $report_category_id){
+        switch($report_category_id){
+            case 1: 
+                $id = Report::where('id', $report_id)->pluck('report_reference_id')->all();
+                return redirect()->route('research.edit', $id);
+                break;
+            case 2:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.completed.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 3:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.publication.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 4:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.presentation.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 5:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.citation.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 6:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.utilization.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 7:
+                $report = Report::where('id', $report_id)->first();
+                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                return redirect()->route('research.copyrighted.edit', [$research_id, $report->report_reference_id]);
+                break;
+            case 8:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('invention-innovation-creative.edit', $report->report_reference_id);
+                break;
+            case 9:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('expert-service-as-consultant.edit', $report->report_reference_id);
+                break;
+            case 10:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('expert-service-as-conference.edit', $report->report_reference_id);
+                break;
+            case 11:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('expert-service-as-academic.edit', $report->report_reference_id);
+                break;
+            case 12:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('extension-service.edit', $report->report_reference_id);
+                break;
+            case 13:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('partnership.edit', $report->report_reference_id);
+                break;
+            case 14:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('mobility.edit', $report->report_reference_id);
+                break;
+            case 15:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('reference.edit', $report->report_reference_id);
+                break;
+            case 16:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('syllabus.edit', $report->report_reference_id);
+                break;
+        }
     }
 }

@@ -142,9 +142,10 @@ class UserController extends Controller
         $yourroles = $user->userrole()->pluck('role_id')->all();
         $permissions = Permission::get();
         $departments = Department::select('departments.*', 'colleges.name as college_name')->join('colleges', 'departments.college_id', 'colleges.id')->get();
-        $chairperson = Chairperson::where('user_id', $user->id)->pluck('id')->first();
-
-        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson'));
+        $chairperson = Chairperson::where('user_id', $user->id)->pluck('department_id')->first();
+        $colleges = College::all();
+        $dean = Dean::where('user_id', $user->id)->pluck('college_id')->first();
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean'));
     }
 
     /**
@@ -158,6 +159,9 @@ class UserController extends Controller
     {
         $this->authorize('update', User::class);
 
+        $request->validate([
+            'roles' => 'required'
+        ]);
         $checkedroles = $request->input('roles');
 
         $allroles = $user->userrole()->pluck('role_id')->all();
@@ -165,6 +169,8 @@ class UserController extends Controller
 
         if ($checkedroles == null) {
             $user->userrole()->delete();
+            Chairperson::where('user_id', $user->id)->delete();
+            Dean::where('user_id', $user->id)->delete();
         }
 
         else {
@@ -196,12 +202,35 @@ class UserController extends Controller
             }
         }
 
-        Chairperson::where('user_id', $user->id)->update([
-            'department_id' => $request->input('department') ?? null
-        ]);
-        Dean::where('user_id', $user->id)->update([
-            'college_id' => $request->input('college') ?? null
-        ]);
+        if(!in_array(5, $checkedroles)){
+            Chairperson::where('user_id', $user->id)->delete();
+        }
+        else{
+           Chairperson::updateOrCreate(
+                [
+                    'user_id' => $user->id
+                ],
+                [
+                    'department_id' => $request->input('department')
+                ]
+            );
+        }
+        if(!in_array(6, $checkedroles)){
+            Dean::where('user_id', $user->id)->delete();
+        }
+        else{
+           Dean::updateOrCreate(
+                [ 
+                    'user_id' => $user->id, 
+                ],
+                [ 
+                    'college_id' => $request->input('college'), 
+                ]
+            );
+        }
+        
+        
+        
 
 
         return redirect()->route('admin.users.index')->with('edit_user_success','User record updated successfully.');
