@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Award and Recognition Received by the College and Department') }}
+            {{ __('Edit Awards and Recognition Received by the College/Branch/Office/Department') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('college-department-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Awards and Recognition Received by the College and Department</a>
+              <a class="back_link" href="{{ route('college-department-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Awards and Recognition Received by the College/Branch/Office/Department</a>
             </p>
                 <div class="card">
                     <div class="card-body">
