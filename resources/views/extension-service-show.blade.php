@@ -45,9 +45,20 @@
                           @break
                       @default
                           
-                  @endswitch
-              @endforeach
+                      @endswitch
+                      
+                      @endforeach
+                    
+                    
+
+
           </table>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    if ()
+</script>
+@endpush

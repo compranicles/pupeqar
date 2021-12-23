@@ -283,7 +283,7 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
-            'label' => 'Keywords',
+            'label' => 'Keywords (at least five (5) keywords)',
             'name' => 'keywords',
             'placeholder' => null,
             'size' => 'col-md-6',

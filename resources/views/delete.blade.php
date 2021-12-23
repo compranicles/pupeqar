@@ -6,7 +6,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-                <h5 class="text-center">Are you sure you want to delete this form?</h5>
+                <h5 class="text-center">Are you sure you want to delete this accomplishment?</h5>
                 <p id="itemToDelete" class="text-center h4"></p>
                 <form action="" id="delete_item" method="POST">
                     @csrf

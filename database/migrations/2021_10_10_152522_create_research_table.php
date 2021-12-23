@@ -28,7 +28,7 @@ class CreateResearchTable extends Migration
             $table->foreignId('research_type')->nullable();
             $table->foreignId('funding_type')->nullable();
             $table->foreignId('currency')->nullable();
-            $table->decimal('funding_amount', 9, 2)->nullable();
+            $table->decimal('funding_amount', 15, 2)->nullable();
             $table->string('funding_agency')->nullable();
             $table->date('start_date')->nullable();
             $table->date('target_date')->nullable();

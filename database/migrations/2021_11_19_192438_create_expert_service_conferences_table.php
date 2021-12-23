@@ -19,7 +19,7 @@ class CreateExpertServiceConferencesTable extends Migration
             $table->foreignId('level')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->string('title', 500)->nullable();
+            $table->string('title')->nullable();
             $table->string('venue')->nullable();
             $table->string('partner')->nullable();
             $table->text('description')->nullable();

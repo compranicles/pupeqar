@@ -25,7 +25,7 @@ class CreateExtensionServicesTable extends Migration
             $table->string('title_of_extension_activity')->nullable();
             $table->string('funding_agency')->nullable();
             $table->foreignId('currency')->nullable();
-            $table->decimal('amount_of_funding', 9, 2)->nullable();
+            $table->decimal('amount_of_funding', 15, 2)->nullable();
             $table->foreignId('type_of_funding')->nullable();
             $table->date('from')->nullable();
             $table->date('to')->nullable();

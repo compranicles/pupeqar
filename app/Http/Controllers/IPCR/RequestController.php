@@ -20,7 +20,11 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $requests = RequestModel::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
+        $requests = RequestModel::where('user_id', auth()->id())
+        ->join('dropdown_options', 'dropdown_options.id', 'requests.category')
+        ->select('requests.*', 'dropdown_options.name as category')
+        ->orderBy('requests.updated_at', 'desc')
+        ->get();
         return view('ipcr.request.index', compact('requests'));
     }
 

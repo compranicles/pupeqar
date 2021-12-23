@@ -25,7 +25,7 @@ class CreateTechnicalExtensionsTable extends Migration
             $table->string('has_businesses')->nullable();
             $table->foreignId('is_borrowed')->nullable();
             $table->foreignId('currency')->nullable();
-            $table->decimal('total_profit', 9, 2 )->nullable();
+            $table->decimal('total_profit', 15, 2 )->nullable();
             $table->text('description')->nullable();
             $table->foreignId('user_id')->nullable();
             $table->timestamps();

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ExpertServiceAcademicDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Models\FormBuilder\DropdownOption;
 
 class AcademicController extends Controller
 {
@@ -25,13 +26,21 @@ class AcademicController extends Controller
     {
         $this->authorize('viewAny', ExpertServiceAcademic::class);
 
+        $classifications = DropdownOption::where('dropdown_id', 19)->get();
+
         $expertServicesAcademic = ExpertServiceAcademic::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
-                                        ->select('expert_service_academics.*', 'dropdown_options.name as classification')
+                                        ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')
+                                        ->select('expert_service_academics.*', 'dropdown_options.name as classification', 'colleges.name as college_name')
                                         ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
 
-        return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic'));
+        $esacademic_in_colleges = ExpertServiceAcademic::join('colleges', 'expert_service_academics.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
+
+        return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic', 'esacademic_in_colleges', 'classifications'));
     }
 
     /**

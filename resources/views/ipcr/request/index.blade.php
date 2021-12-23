@@ -9,17 +9,9 @@
 
             <div class="col-lg-12">
                 @if ($message = Session::get('request_success'))
-                    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                    <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                    </symbol>
-                    </svg>
-                    <div class="alert alert-success d-flex align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-                    <div class="ml-2">
-                        {{ $message }}
-                    </div>
-                    </div>            
+                    <div class="alert alert-success alert-index">
+                        <i class="bi bi-check-circle"></i> {{ $message }}
+                    </div>         
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -35,6 +27,8 @@
                                     <tr>
                                         <th></th>
                                         <th>Brief Description of Request</th>
+                                        <th>Ave. Days/Time of Processing</th>
+                                        <th>Category</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -44,11 +38,17 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->description_of_request }}</td>
-                                        <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->updated_at }}</td>
+                                        <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->processing_time }}</td>
+                                        <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->category }}</td>
+                                        <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
+                                        <?php $updated_at = strtotime( $row->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                {{ $updated_at }}
+                                        </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('request.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->title_of_request }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('request.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->description_of_request }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>

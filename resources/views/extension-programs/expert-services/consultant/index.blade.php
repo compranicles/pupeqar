@@ -38,10 +38,10 @@
                                 <tbody>
                                     @foreach ($expertServicesConsultant as $expertServiceConsultant)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >{{ $expertServiceConsultant->classification_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' " >
+                                        <td><a href="{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $expertServiceConsultant->title }}</td>
+                                        <td>{{ $expertServiceConsultant->classification_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $expertServiceConsultant->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>    
                                              {{ $updated_at }}
@@ -49,8 +49,8 @@
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $expertServiceConsultant->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconsultant="{{ $expertServiceConsultant->title }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $expertServiceConsultant->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconsultant="{{ $expertServiceConsultant->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -95,6 +95,11 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#esconsultant_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
      </script>
      @endpush
 </x-app-layout>

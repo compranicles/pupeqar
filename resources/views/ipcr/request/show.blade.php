@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show Request & Queries Acted Upon') }}
+            {{ __('View Request & Queries Acted Upon') }}
         </h2>
     </x-slot>
 
@@ -17,7 +17,7 @@
                         <a href="{{ route('request.edit', $request->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     </p>
                     <p>
-                        <button type="button" value="{{ $request->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                        <button type="button" value="{{ $request->id }}"  data-bs-request="{{ $request->description_of_request }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                     </p>
                 </div>
                 @include('show', ['formFields' => $requestFields, 'value' => $values])
@@ -89,6 +89,9 @@
         </div>
     </div>
 
+    {{-- Delete Modal --}}
+    @include('delete')
+
     @push('scripts')
     <script>
         $("#document").remove();
@@ -96,6 +99,22 @@
             $("input").prop("disabled", true);
             $("textarea").prop("disabled", true);
             $("select").prop("disabled", true);
+        });
+    </script>
+    <script>
+        //Item to delete to display in delete modal
+        var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var requestTitle = button.getAttribute('data-bs-request')
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = requestTitle
+
+          var url = '{{ route("request.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
         });
     </script>
     @endpush
