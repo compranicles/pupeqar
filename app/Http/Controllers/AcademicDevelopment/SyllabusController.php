@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Models\FormBuilder\DropdownOption;
 
 class SyllabusController extends Controller
 {
@@ -24,13 +25,20 @@ class SyllabusController extends Controller
     {
         $this->authorize('viewAny', Syllabus::class);
 
+        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
         $syllabi = Syllabus::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                                        ->select('syllabi.*', 'dropdown_options.name as assigned_task_name')
+                                        ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                                        ->select('syllabi.*', 'dropdown_options.name as assigned_task_name', 'colleges.name as college_name')
                                         ->orderBy('syllabi.updated_at', 'desc')
                                         ->get();
+
+        $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
         
-        return view('academic-development.syllabi.index', compact('syllabi'));
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges'));
     }
 
     /**

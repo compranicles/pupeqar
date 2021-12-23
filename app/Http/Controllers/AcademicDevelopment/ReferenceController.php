@@ -11,6 +11,7 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class ReferenceController extends Controller
@@ -24,13 +25,20 @@ class ReferenceController extends Controller
     {
         $this->authorize('viewAny', Reference::class);
 
+        $categories = DropdownOption::where('dropdown_id', 37)->get();
         $allRtmmi = Reference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
-                                        ->select('references.*', 'dropdown_options.name as category_name')
+                                        ->join('colleges', 'colleges.id', 'references.college_id')
+                                        ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name')
                                         ->orderBy('references.updated_at', 'desc')
                                         ->get();
         
-        return view('academic-development.references.index', compact('allRtmmi'));
+        $rtmmi_in_colleges = Reference::join('colleges', 'references.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
+
+        return view('academic-development.references.index', compact('allRtmmi', 'rtmmi_in_colleges', 'categories'));
     }
 
     /**
@@ -101,7 +109,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => strtoupper($accomplishment[0]), 'action' => 'added.' ]);
+        return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
     }
 
     /**
@@ -226,7 +234,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtoupper($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');
     }
 
@@ -250,7 +258,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', strtoupper($accomplishment[0]))
+        return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                             ->with('action', 'deleted.');
     }
 

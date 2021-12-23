@@ -20,6 +20,29 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="taskFilter" class="mr-2">Assigned Task: </label>
+                                    <select id="taskFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($syllabiTask as $task)
+                                        <option value="{{ $task->name }}">{{ $task->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($syllabus_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="syllabus_table">
                                 <thead>
@@ -27,6 +50,7 @@
                                         <th></th>
                                         <th>Course Title</th>
                                         <th>Assigned Task</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -34,18 +58,19 @@
                                 <tbody>
                                     @foreach ($syllabi as $syllabus)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->course_title }}</td>
-                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->assigned_task_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >
+                                        <td><a href="{{ route('syllabus.show', $syllabus->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $syllabus->course_title }}</td>
+                                        <td>{{ $syllabus->assigned_task_name }}</td>
+                                        <td>{{ $syllabus->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $syllabus->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('syllabus.edit', $syllabus->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $syllabus->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('syllabus.edit', $syllabus->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $syllabus->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -90,6 +115,62 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#syllabus_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+     </script>
+     <script>
+         var table =  $("#syllabus_table").DataTable();
+
+          var taskIndex = 0;
+            $("#syllabus_table th").each(function (i) {
+                if ($($(this)).html() == "Assigned Task") {
+                    taskIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#taskFilter').val()
+                    var task = data[taskIndex];
+                    if (selectedItem === "" || task.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#syllabus_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#taskFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

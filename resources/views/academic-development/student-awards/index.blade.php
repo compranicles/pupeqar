@@ -44,8 +44,8 @@
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('student-award.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->name_of_award }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('student-award.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->name_of_award }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>

@@ -49,8 +49,8 @@
                                         <td>{{ $department->name }}</td>
                                         <td>
                                           <div role="group">
-                                              <a href="{{ route('departments.edit', $department->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                              <button type="button" value="{{ $department->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash"></i> Delete</button>
+                                              <a href="{{ route('departments.edit', $department->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                              <button type="button" value="{{ $department->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                           </div>
                                         </td>
                                     </tr>

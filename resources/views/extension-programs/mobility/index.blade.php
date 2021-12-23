@@ -21,12 +21,28 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-12">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($mobility_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="mobility_table">
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Hosting Institution/ Organization/ Agency</th>
+                                        <th>Description</th>
+                                        <th>Hosting Institution/Organization/Agency</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -34,17 +50,19 @@
                                 <tbody>
                                     @foreach ($mobilities as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' " >{{ $row->host_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' " >
+                                        <td><a href="{{ route('mobility.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $row->mobility_description }}</td>
+                                        <td>{{ $row->host_name }}</td>
+                                        <td>{{ $row->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('mobility.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-mobility="{{ $row->host_name }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('mobility.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-mobility="{{ $row->host_name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -89,6 +107,43 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#mobility_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+     </script>
+     <script>
+         var table =  $("#mobility_table").DataTable();
+
+            var collegeIndex = 0;
+            $("#mobility_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#taskFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

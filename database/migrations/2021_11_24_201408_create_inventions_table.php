@@ -23,7 +23,7 @@ class CreateInventionsTable extends Migration
             $table->string('title')->nullable();
             $table->string('collaborator')->nullable();
             $table->string('funding_agency')->nullable();
-            $table->decimal('funding_amount', 9, 2)->nullable();
+            $table->decimal('funding_amount', 15, 2)->nullable();
             $table->foreignId('funding_type')->nullable();
             $table->foreignId('status')->nullable();
             $table->date('start_date')->nullable();

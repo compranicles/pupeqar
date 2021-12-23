@@ -20,6 +20,31 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-12">
+                                    <label for="catFilter" class="mr-2">Category: </label>
+                                    <select id="catFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($categories as $category)
+                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-flex mr-2">
+                                <div class="col-md-12">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($rtmmi_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="rtmmi_table">
                                 <thead>
@@ -27,6 +52,7 @@
                                         <th></th>
                                         <th>Title</th>
                                         <th>Category</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -34,18 +60,19 @@
                                 <tbody>
                                     @foreach ($allRtmmi as $rtmmi)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
+                                        <td><a href="{{ route('rtmmi.show', $rtmmi->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $rtmmi->title }}</td>
+                                        <td>{{ $rtmmi->category_name }}</td>
+                                        <td>{{ $rtmmi->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $rtmmi->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('rtmmi.edit', $rtmmi->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $rtmmi->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-rtmmi="{{ $rtmmi->title }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('rtmmi.edit', $rtmmi->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $rtmmi->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-rtmmi="{{ $rtmmi->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -90,6 +117,61 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#rtmmi_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+     </script>
+     <script>
+         var table =  $("#rtmmi_table").DataTable();
+         var catIndex = 0;
+            $("#rtmmi_table th").each(function (i) {
+                if ($($(this)).html() == "Category") {
+                    catIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#catFilter').val()
+                    var category = data[catIndex];
+                    if (selectedItem === "" || category.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+         var collegeIndex = 0;
+            $("#rtmmi_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#catFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

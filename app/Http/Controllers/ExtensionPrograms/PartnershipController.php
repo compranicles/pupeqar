@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\ExtensionProgramField;
 
 class PartnershipController extends Controller
@@ -24,9 +25,19 @@ class PartnershipController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Partnership::class);
+        $collaborations = DropdownOption::where('dropdown_id', 30)->get();
 
-        $partnerships = Partnership::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
-        return view('extension-programs.partnership.index', compact('partnerships'));
+        $partnerships = Partnership::where('user_id', auth()->id())
+                            ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
+                            ->join('colleges', 'colleges.id', 'partnerships.college_id')
+                            ->select('partnerships.*', 'dropdown_options.name as collab', 'colleges.name as college_name')
+                            ->orderBy('updated_at', 'desc')->get();
+
+        $partnership_in_colleges = Partnership::join('colleges', 'partnerships.college_id', 'colleges.id')
+                            ->select('colleges.name')
+                            ->distinct()
+                            ->get();
+        return view('extension-programs.partnership.index', compact('partnerships', 'collaborations', 'partnership_in_colleges'));
     }
 
     /**
