@@ -54,7 +54,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'total_profit' => 'numeric',
+            // 'total_profit' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -145,7 +145,7 @@ class TechnicalExtensionController extends Controller
 
         $request->validate([
             'moa_code' => 'required',
-            'total_profit' => 'numeric',
+            // 'total_profit' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)

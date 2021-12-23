@@ -53,8 +53,8 @@ class ViableProjectController extends Controller
         $this->authorize('create', ViableProject::class);
 
         $request->validate([
-            'revenue' => 'numeric',
-            'cost' => 'numeric',
+            // 'revenue' => 'numeric',
+            // 'cost' => 'numeric',
             'rate_of_return' => 'numeric',
         ]);
 
@@ -153,8 +153,8 @@ class ViableProjectController extends Controller
         $this->authorize('update', ViableProject::class);
 
         $request->validate([
-            'revenue' => 'numeric',
-            'cost' => 'numeric',
+            // 'revenue' => 'numeric',
+            // 'cost' => 'numeric',
             'rate_of_return' => 'numeric',
         ]);
         

@@ -77,7 +77,7 @@ class ExtensionServiceController extends Controller
         $request->validate([
             'other_classification' => 'required_if:classification,119',
             'funding_agency' => 'required_if:funding_type,123',
-            'amount_of_funding' => 'numeric',
+            // 'amount_of_funding' => 'numeric',
             'from' => 'required_unless:status, 107',
             'to' => 'after_or_equal:from',
             'total_no_of_hours' => 'numeric',
@@ -196,7 +196,7 @@ class ExtensionServiceController extends Controller
             $request->validate([
                 'other_classification' => 'required_if:classification,119',
                 'funding_agency' => 'required_if:funding_type,123',
-                'amount_of_funding' => 'numeric',
+                // 'amount_of_funding' => 'numeric',
                 'from' => 'required_unless:status, 107',
                 'to' => 'after_or_equal:from',
                 'total_no_of_hours' => 'numeric',

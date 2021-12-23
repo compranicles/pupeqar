@@ -54,7 +54,7 @@ class StudentTrainingController extends Controller
         $this->authorize('create', StudentTraining::class);
 
         $request->validate([
-            'budget' => 'numeric',
+            // 'budget' => 'numeric',
             'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);
@@ -148,7 +148,7 @@ class StudentTrainingController extends Controller
         $this->authorize('update', StudentTraining::class);
 
         $request->validate([
-            'budget' => 'numeric',
+            // 'budget' => 'numeric',
             'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);

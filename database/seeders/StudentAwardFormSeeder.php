@@ -16,6 +16,19 @@ class StudentAwardFormSeeder extends Seeder
     {
         AcademicDevelopmentField::create([
             'academic_development_form_id' => 3,
+            'label' => 'Name of Student',
+            'name' => 'name_of_student',
+            'placeholder' => 'Surname, First Name, Middle Initial',
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        AcademicDevelopmentField::create([
+            'academic_development_form_id' => 3,
             'label' => 'Name of Award',
             'name' => 'name_of_award',
             'placeholder' => null,
@@ -42,13 +55,13 @@ class StudentAwardFormSeeder extends Seeder
         ]);
         AcademicDevelopmentField::create([
             'academic_development_form_id' => 3,
-            'label' => 'Place',
+            'label' => 'Place/Venue',
             'name' => 'place',
             'placeholder' => null,
             'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
-            'required' => 0,
+            'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
