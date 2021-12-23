@@ -66,8 +66,8 @@ class ViableProjectController extends Controller
         ]);
 
         $request->validate([
-            'revenue' => 'numeric',
-            'cost' => 'numeric',
+            // 'revenue' => 'numeric',
+            // 'cost' => 'numeric',
             'rate_of_return' => 'numeric',
         ]);
 
@@ -179,8 +179,8 @@ class ViableProjectController extends Controller
         ]);
 
         $request->validate([
-            'revenue' => 'numeric',
-            'cost' => 'numeric',
+            // 'revenue' => 'numeric',
+            // 'cost' => 'numeric',
             'rate_of_return' => 'numeric',
         ]);
         

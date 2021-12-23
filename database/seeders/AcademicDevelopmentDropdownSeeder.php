@@ -126,7 +126,13 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Local',
+            'name' => 'Regional',
+            'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'University-Wide',
             'order' => 3,
             'is_active' => 1,
         ]);
@@ -250,6 +256,62 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Other University Projects',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+
+        //Addition for Student attended Seminars and Trainings
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Student Seminars and Trainings Classification'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Seminar/Webinar',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Fora',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Conference',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Training',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Student Seminars and Trainings Nature'
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'GAD Related',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Inclusivity and Diversity',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Professional',
+            'order' => 2,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Skills/Technical',
             'order' => 2,
             'is_active' => 1,
         ]);
