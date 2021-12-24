@@ -101,14 +101,10 @@ class InventionController extends Controller
             'issue_date' => 'after_or_equal:end_date',
         ]);
 
-        $funding_amount = $request->input('funding_amount');    
-
-        $funding_amount = str_replace( ',' , '', $funding_amount);
-        // dd($request);
-        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $iicw = Invention::create($input);
-        $iicw->update(['user_id' => auth()->id(), 'funding_amount' => $funding_amount]);
+        $iicw->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
             
@@ -230,15 +226,10 @@ class InventionController extends Controller
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
         ]);
-        $funding_amount = $request->input('funding_amount');    
 
-        $funding_amount = str_replace( ',' , '', $funding_amount);
-
-
-        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $invention_innovation_creative->update($input);
-        $invention_innovation_creative->update(['funding_amount' => $funding_amount]);
 
         if($request->has('document')){
             

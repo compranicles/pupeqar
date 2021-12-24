@@ -84,18 +84,31 @@ class ExtensionServiceController extends Controller
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $value = $request->input('amount_of_funding');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'amount_of_funding' => $value,
+        ]);
+
         $request->validate([
             'other_classification' => 'required_if:classification,119',
             'funding_agency' => 'required_if:funding_type,123',
             'amount_of_funding' => 'numeric',
             'from' => 'required_unless:status, 107',
             'to' => 'after_or_equal:from',
-            'total_no_of_hours' => 'numeric',
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
             'keywords' => new Keyword,
         ]);
         
+        if ($request->input('total_no_of_hours') != '') {
+            $request->validate([
+                'total_no_of_hours' => 'numeric',
+            ]);
+        }
+
         $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
 
         $eService = ExtensionService::create($input);
@@ -204,17 +217,30 @@ class ExtensionServiceController extends Controller
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
       
+            $value = $request->input('amount_of_funding');
+            $value = (float) str_replace(",", "", $value);
+            $value = number_format($value,2,'.','');
+
+            $request->merge([
+                'amount_of_funding' => $value,
+            ]);
+
             $request->validate([
                 'other_classification' => 'required_if:classification,119',
                 'funding_agency' => 'required_if:funding_type,123',
                 'amount_of_funding' => 'numeric',
                 'from' => 'required_unless:status, 107',
                 'to' => 'after_or_equal:from',
-                'total_no_of_hours' => 'numeric',
                 'classification_of_trainees_or_beneficiaries' => 'required',
                 'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
                 'keywords' => new Keyword,
             ]);
+
+            if ($request->input('total_no_of_hours') != '') {
+                $request->validate([
+                    'total_no_of_hours' => 'numeric',
+                ]);
+            }
     
             $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
             

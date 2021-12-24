@@ -83,6 +83,7 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        // dd($request->input('start_date'));
         $request->merge([
             'funding_amount' => $value,
         ]);
