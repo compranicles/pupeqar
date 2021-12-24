@@ -20,6 +20,20 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-12">
+                                    <label for="classFilter" class="mr-2">Classification: </label>
+                                    <select id="classFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($trainingClassifications as $classification)
+                                        <option value="{{ $classification->name }}">{{ $classification->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="student_training_table">
                                 <thead>
@@ -27,6 +41,7 @@
                                         <th></th>
                                         <th>Name of Student</th>
                                         <th>Title</th>
+                                        <th>Classification</th>
                                         <th>Organization</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
@@ -35,11 +50,12 @@
                                 <tbody>
                                     @foreach ($student_trainings as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->name_of_student }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
+                                        <td><a href="{{ route('student-training.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $row->name_of_student }}</td>
+                                        <td>{{ $row->title }}</td>
+                                        <td>{{ $row->classification_name }}</td>
+                                        <td>{{ $row->organization }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                                 {{ $updated_at }}
@@ -92,6 +108,39 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#student_training_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+            
+     </script>
+     <script>
+         var table =  $("#student_training_table").DataTable();
+          var classIndex = 0;
+            $("#student_training_table th").each(function (i) {
+                if ($($(this)).html() == "Classification") {
+                    classIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#classFilter').val()
+                    var classification = data[classIndex];
+                    if (selectedItem === "" || classification.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#classFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

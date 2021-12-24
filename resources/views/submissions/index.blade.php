@@ -80,13 +80,13 @@
                                         <th></th>
                                         <th>#</th>
                                         @if($table->id <= 7)
-                                        <th>Research Code</th>
+                                        <th>Code</th>
+                                        <th>Title</th>
+                                        <th>Status</th>
                                         @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 13 || $table->id == 15)
                                         <th>Title</th>
                                         @elseif($table->id == 12)
-                                        <th>Title of Extension Program</th>
-                                        <th>Title of Extension Project</th>
-                                        <th>Title of Extension Activity</th>
+                                        <th>Title</th>
                                         @elseif($table->id == 14)
                                         <th>Host Name</th>
                                         @elseif($table->id == 16)
@@ -103,12 +103,11 @@
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $loop->iteration }}</td>
                                             @if($table->id <= 7)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->research_code }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
                                             @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 15)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
                                             @elseif($table->id == 12)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_program }}</td>
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_project }}</td>
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_activity }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ ($row->title_of_extension_program != null ? $row->title_of_extension_program : ($row->title_of_extension_project != null ? $row->title_of_extension_project : ($row->title_of_extension_activity != null ? $row->title_of_extension_activity : ''))) }}</td>
                                             @elseif($table->id == 13)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_partnership }}</td>
                                             @elseif($table->id == 14)
@@ -127,10 +126,10 @@
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         @if($table->id >= 1 && $table->id <= 7)
                                                         <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
+                                                        
                                                         @else
                                                         <a href="{{ route('submissions.faculty.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
+                                                        
                                                         @endif
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
@@ -138,7 +137,7 @@
                                                 @else
                                                     @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
                                                         <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
+                                                        
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
                                                     @endif
@@ -342,22 +341,6 @@
             });
         }, 4000);
     </script>
-    <!-- <script>
-        function doc_checker(i)
-        if (i == 0) {
-            $('#adddocbutton').show();
-            $('#viewReport').on('show.bs.modal', function(event) {
-            var button = event.relatedTarget
-            
-                    var id = button.getAttribute('data-id')
-                    var code = button.getAttribute('data-code')
-        
-                    var url = '/submissions/faculty/add-document/' + code + '/' + id;
-                    document.getElementById('adddoc').action = url;
-            
-            });
-        }
-    </script> -->
     @endpush
 
 </x-app-layout>

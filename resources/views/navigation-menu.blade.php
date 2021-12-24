@@ -66,30 +66,14 @@
                         {{ __('Submissions') }}
 
                     </x-jet-nav-link>
-                </li> --}}
-
-                <li class="nav-item dropdown mr-auto main-nav-item">
-                    <a class="nav-link @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
-                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                        Reports
-                    </a>
-                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
-                       
-                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Individual</a></li>
-                       
-                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
-                    </ul>
                 </li>
 
+                <li class="nav-item dropdown mr-auto main-nav-item">
+                <x-jet-nav-link :active="request()->routeIs('to-finalize.index') || request()->routeIs('submissions.denied.index')" href="{{ route('reports.chairperson') }}">
+                        {{ __('Consolidation') }}
 
+                    </x-jet-nav-link>
+                </li>
             </ul>
             
             <!-- Right Side Of Navbar -->

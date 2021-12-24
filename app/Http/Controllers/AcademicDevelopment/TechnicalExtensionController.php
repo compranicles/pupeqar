@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TechnicalExtensionDocument;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class TechnicalExtensionController extends Controller
@@ -22,8 +23,14 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
-        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->orderBy('technical_extensions.updated_at', 'desc')->get();
-        return view('academic-development.technical-extension.index', compact('technical_extensions'));
+        $classifications = DropdownOption::where('dropdown_id', 44)->get();
+
+        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
+                        ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
+                        ->select('technical_extensions.*', 'dropdown_options.name as classification_name')
+                        ->orderBy('technical_extensions.updated_at', 'desc')
+                        ->get();
+        return view('academic-development.technical-extension.index', compact('technical_extensions', 'classifications'));
     }
 
     /**

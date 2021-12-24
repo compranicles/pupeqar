@@ -43,6 +43,9 @@
                 $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
     </script>
+    <script>
+        $('#currency_select_budget').prop('disabled', true);
+    </script>
 @endpush 
 </x-app-layout>
 

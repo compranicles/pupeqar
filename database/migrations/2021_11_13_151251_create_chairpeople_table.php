@@ -13,7 +13,7 @@ class CreateChairpeopleTable extends Migration
      */
     public function up()
     {
-        Schema::create('chairpeople', function (Blueprint $table) {
+        Schema::create('chairpersons', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('department_id');

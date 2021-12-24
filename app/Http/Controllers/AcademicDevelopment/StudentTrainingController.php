@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
 
 class StudentTrainingController extends Controller
@@ -21,10 +22,15 @@ class StudentTrainingController extends Controller
     public function index()
     {
         $this->authorize('viewAny', StudentTraining::class);
+        $trainingClassifications = DropdownOption::where('dropdown_id', 46)->get();
 
-        $student_trainings = StudentTraining::where('user_id', auth()->id())->orderBy('student_trainings.updated_at', 'desc')->get();
+        $student_trainings = StudentTraining::where('user_id', auth()->id())
+                    ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
+                    ->select('student_trainings.*', 'dropdown_options.name as classification_name')
+                    ->orderBy('student_trainings.updated_at', 'desc')
+                    ->get();
 
-        return view('academic-development.student-training.index', compact('student_trainings'));
+        return view('academic-development.student-training.index', compact('student_trainings', 'trainingClassifications'));
     }
 
     /**

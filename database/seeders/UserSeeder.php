@@ -170,7 +170,7 @@ class UserSeeder extends Seeder
         }
 
         //Chairperson
-        User::create([
+        $cp1 = User::create([
             'email' => 'lucas@mailinator.com',
             'password'=> Hash::make('lucas@mailinator.com'),
             'date_of_birth' => 2000-04-24,
@@ -180,7 +180,12 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
-        User::create([
+        Chairperson::create([
+            'user_id' => $cp1->id,
+            'department_id' => 1,
+        ]);
+
+        $cp2 = User::create([
             'email' => 'miku@mailinator.com',
             'password'=> Hash::make('miku@mailinator.com'),
             'date_of_birth' => 1998-04-24,
@@ -188,6 +193,11 @@ class UserSeeder extends Seeder
             'middle_name' => null,
             'last_name' => 'Reyes',
             'suffix' => null,
+        ]);
+
+        Chairperson::create([
+            'user_id' => $cp2->id,
+            'department_id' => ,
         ]);
 
         //Director/Dean

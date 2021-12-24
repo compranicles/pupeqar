@@ -74,7 +74,7 @@ class StudentTrainingFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 3,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -94,8 +94,8 @@ class StudentTrainingFormSeeder extends Seeder
         ]);
         AcademicDevelopmentField::create([
             'academic_development_form_id' => 4,
-            'label' => 'Organization',
-            'name' => 'organization',
+            'label' => 'Organizer',
+            'name' => 'organizer',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,

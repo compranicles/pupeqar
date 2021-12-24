@@ -33,9 +33,13 @@
                                 <tbody>
                                     @foreach ($viable_projects as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $row->name }}</td>
-                                        <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $row->updated_at }}</td>
+                                        <td><a href="{{ route('viable-project.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $row->name }}</td>
+                                        <td>
+                                             <?php $updated_at = strtotime( $row->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                {{ $updated_at }}
+                                        </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('viable-project.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
@@ -84,6 +88,12 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#project_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+            
      </script>
      @endpush
 </x-app-layout>

@@ -125,6 +125,7 @@ class FacultyController extends Controller
                             whereNotIn('research.research_code', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )->
                             orWhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->
                             join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())->get();
+                            
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->
@@ -278,7 +279,7 @@ class FacultyController extends Controller
         // dd($report_array);
         // dd($report_document_checker);
         // dd($reported_accomplishments);
-        return view('reports.faculty.index', compact('report_tables', 'report_array' , 'report_document_checker', 'reported_accomplishments'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'reported_accomplishments'));
     }
 
     /**
