@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ExtensionServiceDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Models\FormBuilder\DropdownOption;
+use App\Rules\Keyword;
 
 class ExtensionServiceController extends Controller
 {
@@ -25,13 +27,21 @@ class ExtensionServiceController extends Controller
     {
         $this->authorize('viewAny', ExtensionService::class);
 
+        $status = DropdownOption::where('dropdown_id', 24)->get();
+
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
-                                        ->select('extension_services.*', 'dropdown_options.name as status')
+                                        ->join('colleges', 'colleges.id', 'extension_services.college_id')
+                                        ->select('extension_services.*', 'dropdown_options.name as status', 'colleges.name as college_name')
                                         ->orderBy('extension_services.updated_at', 'desc')
                                         ->get();
 
-        return view('extension-programs.extension-services.index', compact('extensionServices'));
+        $eservice_in_colleges = ExtensionService::join('colleges', 'extension_services.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
+
+        return view('extension-programs.extension-services.index', compact('extensionServices', 'eservice_in_colleges', 'status'));
     }
 
     /**
@@ -74,16 +84,30 @@ class ExtensionServiceController extends Controller
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $value = $request->input('amount_of_funding');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'amount_of_funding' => $value,
+        ]);
+
         $request->validate([
             'other_classification' => 'required_if:classification,119',
             'funding_agency' => 'required_if:funding_type,123',
             // 'amount_of_funding' => 'numeric',
             'from' => 'required_unless:status, 107',
             'to' => 'after_or_equal:from',
-            'total_no_of_hours' => 'numeric',
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
+            'keywords' => new Keyword,
         ]);
+        
+        if ($request->input('total_no_of_hours') != '') {
+            $request->validate([
+                'total_no_of_hours' => 'numeric',
+            ]);
+        }
 
         $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
 
@@ -193,16 +217,30 @@ class ExtensionServiceController extends Controller
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
       
+            $value = $request->input('amount_of_funding');
+            $value = (float) str_replace(",", "", $value);
+            $value = number_format($value,2,'.','');
+
+            $request->merge([
+                'amount_of_funding' => $value,
+            ]);
+
             $request->validate([
                 'other_classification' => 'required_if:classification,119',
                 'funding_agency' => 'required_if:funding_type,123',
                 // 'amount_of_funding' => 'numeric',
                 'from' => 'required_unless:status, 107',
                 'to' => 'after_or_equal:from',
-                'total_no_of_hours' => 'numeric',
                 'classification_of_trainees_or_beneficiaries' => 'required',
                 'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
+                'keywords' => new Keyword,
             ]);
+
+            if ($request->input('total_no_of_hours') != '') {
+                $request->validate([
+                    'total_no_of_hours' => 'numeric',
+                ]);
+            }
     
             $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
             

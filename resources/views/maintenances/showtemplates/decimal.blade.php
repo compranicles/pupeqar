@@ -1,6 +1,6 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <td><span id="currency_{{ $fieldInfo->name }}"></span> {{ number_format($value, 2, '.', ',') }}</td>
+    <td><span id="currency_{{ $fieldInfo->name }}"></span> {{ $value == null ? 'N/A' : number_format($value, 2, '.', ',') }}</td>
 </tr>
 
 @push('scripts')

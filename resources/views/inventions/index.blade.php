@@ -10,7 +10,7 @@
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_iicw_success'))
                 <div class="alert alert-success alert-index">
-                    <i class="bi bi-check-circle"></i>  {{ $message }}
+                    <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>          
                 @endif
                 <div class="card">
@@ -21,13 +21,42 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="statusFilter" class="mr-2">Current Status: </label>
+                                    <select id="statusFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($inventionStatus as $status)
+                                        <option value="{{ $status->name }}">{{ $status->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($iicw_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                        </div>
                         <div class="table-responsive">
                             <table class="table" id="invention_table">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>Title</th>
+                                        <th>Classification</th>
                                         <th>Status</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -35,18 +64,20 @@
                                 <tbody>
                                     @foreach ($inventions as $invention)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >{{ $invention->status_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " >
+                                        <td><a href="{{ route('invention-innovation-creative.show', $invention->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $invention->title }}</td>
+                                        <td id="classification-iicw-{{$invention->id}}"></td>
+                                        <td>{{ $invention->status_name }}</td>
+                                        <td>{{ $invention->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $invention->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
                                     </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $invention->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-iicw="{{ $invention->title }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $invention->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-iicw="{{ $invention->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -91,6 +122,62 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#invention_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+            
+     </script>
+     <script>
+         var table =  $("#invention_table").DataTable();
+          var statusIndex = 0;
+            $("#invention_table th").each(function (i) {
+                if ($($(this)).html() == "Status") {
+                    statusIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#statusFilter').val()
+                    var status = data[statusIndex];
+                    if (selectedItem === "" || status.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#invention_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#statusFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

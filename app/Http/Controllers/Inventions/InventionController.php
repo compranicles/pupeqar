@@ -13,6 +13,7 @@ use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\InventionForm;
 use App\Models\FormBuilder\InventionField;
+use App\Models\FormBuilder\DropdownOption;
 
 class InventionController extends Controller
 {
@@ -25,10 +26,31 @@ class InventionController extends Controller
     {
         $this->authorize('viewAny', Invention::class);
 
-        $inventions = Invention::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
-        ->select('inventions.*', 'dropdown_options.name as status_name')->orderBy('inventions.updated_at', 'desc')->get();
+        $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
 
-        return view('inventions.index', compact('inventions'));
+        $inventions = Invention::where('user_id', auth()->id())
+                                ->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
+                                ->join('colleges', 'colleges.id', 'inventions.college_id')
+                                ->select('inventions.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
+                                ->orderBy('inventions.updated_at', 'desc')->get();
+
+        $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
+
+        // $classifications = [];
+        // $i = 0;
+        // foreach ($inventions as $invention) {
+        //     $classifications[$i] = Invention::join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
+        //                             ->orderBy('inventions.updated_at', 'desc')
+        //                             ->where('inventions.id', $invention->id)
+        //                             ->pluck('dropdown_options.name as name')
+        //                             ->all();
+        //                     $i++;        
+        // }
+
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus'));
 
     }
 
@@ -62,6 +84,14 @@ class InventionController extends Controller
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $value = $request->input('funding_amount');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'funding_amount' => $value,
+        ]);
+
         $request->validate([
             'funding_agency' => 'required_if:funding_type, 49',
             // 'funding_amount' => 'numeric',
@@ -71,14 +101,10 @@ class InventionController extends Controller
             'issue_date' => 'after_or_equal:end_date',
         ]);
 
-        $funding_amount = $request->input('funding_amount');    
-
-        $funding_amount = str_replace( ',' , '', $funding_amount);
-        // dd($request);
-        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $iicw = Invention::create($input);
-        $iicw->update(['user_id' => auth()->id(), 'funding_amount' => $funding_amount]);
+        $iicw->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
             
@@ -106,7 +132,7 @@ class InventionController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
 
         // dd($classification);
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', strtoupper($classification[0]->name).' has been added.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
     }
 
     /**
@@ -184,6 +210,14 @@ class InventionController extends Controller
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $value = $request->input('funding_amount');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'funding_amount' => $value,
+        ]);
+
         $request->validate([
             'funding_agency' => 'required_if:funding_type, 49',
             // 'funding_amount' => 'numeric',
@@ -192,15 +226,10 @@ class InventionController extends Controller
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
         ]);
-        $funding_amount = $request->input('funding_amount');    
 
-        $funding_amount = str_replace( ',' , '', $funding_amount);
-
-
-        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $invention_innovation_creative->update($input);
-        $invention_innovation_creative->update(['funding_amount' => $funding_amount]);
 
         if($request->has('document')){
             
@@ -227,7 +256,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', strtoupper($classification[0]->name).' has been updated.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }
 
     /**
@@ -248,7 +277,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', strtoupper($classification[0]->name).' has been deleted.');
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been deleted.');
     }
 
     public function removeDoc($filename){

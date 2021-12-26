@@ -16,7 +16,7 @@
                   }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>
                 <p>
-                  <button type="button" value="{{ $syllabu->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                  <button type="button" value="{{ $syllabu->id }}" data-bs-syllabus="{{ $syllabu->course_title }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
                 <div class="row">
@@ -93,6 +93,28 @@
             </div>
         </div>
     </div>
+
+    {{-- Delete Modal --}}
+    @include('delete')
+
+    @push('scripts')
+    <script>
+      //Item to delete to display in delete modal
+      var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var syllabusTitle = button.getAttribute('data-bs-syllabus')
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = syllabusTitle
+
+          var url = '{{ route("syllabus.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
+        });
+    </script>
+    @endpush
 
   
 </x-app-layout>

@@ -21,6 +21,29 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="statusFilter" class="mr-2">Current Status: </label>
+                                    <select id="statusFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($status as $row)
+                                        <option value="{{ $row->name }}">{{ $row->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($eservice_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="eservice_table">
                                 <thead>
@@ -28,6 +51,7 @@
                                         <th></th>
                                         <th>Title</th>
                                         <th>Status</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -35,17 +59,18 @@
                                 <tbody>
                                     @foreach ($extensionServices as $extensionService)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >{{ $extensionService->status }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' " >
+                                        <td><a href="{{ route('extension-service.show', $extensionService->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
+                                        <td>{{ $extensionService->status }}</td>
+                                        <td>{{ $extensionService->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $extensionService->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
                                             {{ $updated_at }} </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $extensionService->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ $extensionService->title_of_extension_program }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $extensionService->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ $extensionService->title_of_extension_program }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -90,6 +115,62 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#eservice_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+     </script>
+     <script>
+         var table =  $("#eservice_table").DataTable();
+
+          var statusIndex = 0;
+            $("#eservice_table th").each(function (i) {
+                if ($($(this)).html() == "Status") {
+                    statusIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#statusFilter').val()
+                    var status = data[statusIndex];
+                    if (selectedItem === "" || status.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#eservice_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#statusFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

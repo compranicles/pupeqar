@@ -34,17 +34,28 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="offset-md-3 col-md-2 mt-2">
-                                <label for="statusFilter">Select Research Status: </label>
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="statusFilter" class="mr-2">Current Status: </label>
+                                    <select id="statusFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($researchStatus as $status)
+                                        <option value="{{ $status->name }}">{{ $status->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($research_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <select id="statusFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                    @foreach ($researchStatus as $status)
-                                    <option value="{{ $status->name }}">{{ $status->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12">
                                 <hr>
                             </div>
@@ -53,13 +64,14 @@
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     
-                                    <table class="table my-3 text-center table-hover" id="researchTable" >
+                                    <table class="table my-3 table-hover" id="researchTable" >
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>Research Code</th>
                                                 <th>Research Title</th>
                                                 <th>Status</th>
+                                                <th>College/Branch/Office</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -69,6 +81,7 @@
                                                     <td>{{ $research->research_code }}</td>
                                                     <td>{{ $research->title }}</td>
                                                     <td>{{ $research->status_name }}</td>
+                                                    <td>{{ $research->college_name }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -113,7 +126,30 @@
                 }
             );
 
+            var collegeIndex = 0;
+            $("#researchTable th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
             $("#statusFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
                 table.draw();
             });
 

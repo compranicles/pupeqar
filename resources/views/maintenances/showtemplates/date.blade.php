@@ -1,4 +1,6 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <td>{{ ($value == null) ? 'n/a' : date('m/d/Y', strtotime($value)) }}</td>
+    <?php $date = strtotime( $value );
+        $date = date( 'M d, Y', $date ); ?>  
+    <td>{{ ($value == null) ? 'N/A' : $date }}</td>
 </tr>

@@ -52,6 +52,13 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('create', TechnicalExtension::class);
 
+        $value = $request->input('total_profit');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'total_profit' => $value,
+        ]);
         $request->validate([
             'moa_code' => 'required',
             // 'total_profit' => 'numeric',
@@ -143,6 +150,14 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('update', TechnicalExtension::class);
 
+        $value = $request->input('total_profit');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'total_profit' => $value,
+        ]);
+        
         $request->validate([
             'moa_code' => 'required',
             // 'total_profit' => 'numeric',
@@ -194,7 +209,7 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
         $technical_extension->delete();
-        return redirect()->route('technical-extension.index')->with('award_success', 'Technical extension program, project, or activity has been deleted.');
+        return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been deleted.');
     }
 
     public function removeDoc($filename){

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Technical Extension Programs/ Projects/ Activities') }}
+            {{ __('Technical Extension Programs/Projects/Activities') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -34,7 +34,7 @@
                                     @foreach ($technical_extensions as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $row->name_of_adoptor }}</td>
+                                        <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ ($row->program_title != null ? $row->program_title : ($row->project_title != null ? $row->project_title : ($row->activity_title != null ? $row->activity_title : ''))) }}</td></td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
@@ -42,8 +42,8 @@
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('technical-extension.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-extension="{{ $row->name_of_adoptor }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('technical-extension.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-extension="{{ $row->name_of_adoptor }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>

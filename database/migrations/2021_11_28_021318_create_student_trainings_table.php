@@ -20,7 +20,7 @@ class CreateStudentTrainingsTable extends Migration
             $table->foreignId('classification')->nullable();
             $table->foreignId('nature')->nullable();
             $table->foreignId('currency')->nullable();
-            $table->decimal('budget', 9, 2)->nullable();
+            $table->decimal('budget', 15, 2)->nullable();
             $table->foreignId('source_of_fund')->nullable();
             $table->string('organization')->nullable();
             $table->foreignId('level')->nullable();

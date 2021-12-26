@@ -9,7 +9,7 @@
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
-            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
+            <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} step="0.01" placeholder="{{ $fieldInfo->placeholder }}"
                 @switch($fieldInfo->visibility)
                     @case(2)

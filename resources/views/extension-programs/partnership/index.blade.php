@@ -21,6 +21,29 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="collabFilter" class="mr-2">Collaboration: </label>
+                                    <select id="collabFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($collaborations as $collaboration)
+                                        <option value="{{ $collaboration->name }}">{{ $collaboration->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($partnership_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="partnership_table">
                                 <thead>
@@ -28,7 +51,9 @@
                                         <th></th>
                                         <th>MOA/MOU Code</th>
                                         <th>Title</th>
-                                        <th>Name of Organization/ Partner</th>
+                                        <th>Organization/Partner</th>
+                                        <th>Collaboration</th>
+                                        <th>College/Branch/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -36,19 +61,21 @@
                                 <tbody>
                                     @foreach ($partnerships as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' " >{{ $row->moa_code }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' " >{{ $row->title_of_partnership }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' " >{{ $row->name_of_partner }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' " >
+                                        <td><a href="{{ route('partnership.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $row->moa_code }}</td>
+                                        <td>{{ $row->title_of_partnership }}</td>
+                                        <td>{{ $row->name_of_partner }}</td>
+                                        <td>{{ $row->collab }}</td>
+                                        <td>{{ $row->college_name }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('partnership.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-partnership="{{ $row->title_of_partnership }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('partnership.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-partnership="{{ $row->title_of_partnership }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -93,6 +120,62 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#partnership_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
+     </script>
+     <script>
+         var table =  $("#partnership_table").DataTable();
+
+          var collabIndex = 0;
+            $("#partnership_table th").each(function (i) {
+                if ($($(this)).html() == "Collaboration") {
+                    collabIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collabFilter').val()
+                    var collaboration = data[collabIndex];
+                    if (selectedItem === "" || collaboration.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#partnership_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#collabFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

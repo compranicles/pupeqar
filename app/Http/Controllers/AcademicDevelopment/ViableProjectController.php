@@ -52,6 +52,19 @@ class ViableProjectController extends Controller
     {
         $this->authorize('create', ViableProject::class);
 
+        $value = $request->input('revenue');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $value2 = $request->input('cost');
+        $value2 = (float) str_replace(",", "", $value2);
+        $value2 = number_format($value2,2,'.','');
+
+        $request->merge([
+            'revenue' => $value,
+            'cost' => $value2
+        ]);
+
         $request->validate([
             // 'revenue' => 'numeric',
             // 'cost' => 'numeric',
@@ -151,6 +164,19 @@ class ViableProjectController extends Controller
     public function update(Request $request, ViableProject $viable_project)
     {
         $this->authorize('update', ViableProject::class);
+
+        $value = $request->input('revenue');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $value2 = $request->input('cost');
+        $value2 = (float) str_replace(",", "", $value2);
+        $value2 = number_format($value2,2,'.','');
+
+        $request->merge([
+            'revenue' => $value,
+            'cost' => $value2
+        ]);
 
         $request->validate([
             // 'revenue' => 'numeric',

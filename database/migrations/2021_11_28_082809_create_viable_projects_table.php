@@ -16,8 +16,8 @@ class CreateViableProjectsTable extends Migration
         Schema::create('viable_projects', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->decimal('revenue', 9, 2)->nullable();
-            $table->decimal('cost', 9, 2)->nullable();
+            $table->decimal('revenue', 15, 2)->nullable();
+            $table->decimal('cost', 15, 2)->nullable();
             $table->date('start_date')->nullable();
             $table->string('rate_of_return')->nullable();
             $table->text('description')->nullable();

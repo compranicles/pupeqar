@@ -16,7 +16,7 @@
                         <a href="{{ route('mobility.edit', $mobility->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     </p>
                     <p>
-                        <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                        <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $mobility->host_name }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                     </p>
                 </div>
                 @include('show', ['formFields' => $mobilityFields, 'value' => $values])
@@ -91,6 +91,9 @@
         </div>
     </div>
 
+    {{-- Delete Modal --}}
+    @include('delete')
+
     @push('scripts')
     <script>
         $("#document").remove();
@@ -98,6 +101,22 @@
             $("input").prop("disabled", true);
             $("textarea").prop("disabled", true);
             $("select").prop("disabled", true);
+        });
+    </script>
+    <script>
+         //Item to delete to display in delete modal
+         var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var mobilityTitle = button.getAttribute('data-bs-mobility')
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = mobilityTitle
+
+          var url = '{{ route("mobility.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
         });
     </script>
     @endpush

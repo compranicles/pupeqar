@@ -77,9 +77,9 @@ class StudentTrainingPolicy
      * @param  \App\Models\StudentTraining  $studentTraining
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, StudentTraining $studentTraining)
+    public function delete(User $user)
     {
-        //
+        return $this->viewAny($user);
     }
 
     /**

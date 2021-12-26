@@ -16,7 +16,7 @@
                     <a href="{{ route('student-award.edit', $student_award->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     </p>
                     <p>
-                    <button type="button" value="{{ $student_award->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                    <button type="button" value="{{ $student_award->id }}" data-bs-student="{{ $student_award->name_of_award }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                     </p>
                 </div>
                 @include('show', ['formFields' => $studentFields, 'value' => $values])
@@ -90,4 +90,26 @@
             </div>
         </div>
     </div>
+
+    {{-- Delete Modal --}}
+    @include('delete')
+
+    @push('scripts')
+     <script>
+         //Item to delete to display in delete modal
+        var deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+          var button = event.relatedTarget
+          var id = button.getAttribute('value')
+          var rtmmiTitle = button.getAttribute('data-bs-student')
+          var itemToDelete = deleteModal.querySelector('#itemToDelete')
+          itemToDelete.textContent = rtmmiTitle
+
+          var url = '{{ route("student-award.destroy", ":id") }}';
+          url = url.replace(':id', id);
+          document.getElementById('delete_item').action = url;
+          
+        });
+     </script>
+     @endpush
 </x-app-layout>

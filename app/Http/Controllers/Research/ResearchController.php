@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Rules\Keyword;
 
 
 class ResearchController extends Controller
@@ -36,8 +37,17 @@ class ResearchController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
         $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                ->select('research.*', 'dropdown_options.name as status_name')->orderBy('research.updated_at', 'desc')->get();
-        return view('research.index', compact('researches', 'researchStatus'));
+                ->join('colleges', 'colleges.id', 'research.college_id')
+                ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
+                ->orderBy('research.updated_at', 'desc')
+                ->get();
+
+        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
+
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges'));
     }
 
     /**
@@ -69,9 +79,21 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 
+        $value = $request->input('funding_amount');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        // dd($request->input('start_date'));
+        $request->merge([
+            'funding_amount' => $value,
+        ]);
+
+        // $request->validate([]);
+
         $request->validate([
-            // 'funding_amount' => 'numeric',
+            'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
+            'keywords' => new Keyword,
         ]);
 
         $departmentIni = '';
@@ -260,9 +282,18 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+            $value = $request->input('funding_amount');
+            $value = (float) str_replace(",", "", $value);
+            $value = number_format($value,2,'.','');
+
+            $request->merge([
+                'funding_amount' => $value,
+            ]);
+
             $request->validate([
-                // 'funding_amount' => 'numeric',
+                'funding_amount' => 'numeric',
                 'funding_agency' => 'required_if:funding_type,23',
+                'keywords' => new Keyword,
             ]);
     
 

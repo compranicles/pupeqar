@@ -53,6 +53,14 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('create', StudentTraining::class);
 
+        $value = $request->input('budget');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'budget' => $value,
+        ]);
+
         $request->validate([
             // 'budget' => 'numeric',
             'end_date' => 'after_or_equal:start_date',
@@ -147,6 +155,14 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('update', StudentTraining::class);
 
+        $value = $request->input('budget');
+        $value = (float) str_replace(",", "", $value);
+        $value = number_format($value,2,'.','');
+
+        $request->merge([
+            'budget' => $value,
+        ]);
+        
         $request->validate([
             // 'budget' => 'numeric',
             'end_date' => 'after_or_equal:start_date',

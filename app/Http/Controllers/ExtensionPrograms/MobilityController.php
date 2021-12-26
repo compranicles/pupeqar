@@ -24,8 +24,16 @@ class MobilityController extends Controller
     {
         $this->authorize('viewAny', Mobility::class);
 
-        $mobilities = Mobility::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
-        return view('extension-programs.mobility.index', compact('mobilities'));
+        $mobilities = Mobility::where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'mobilities.college_id')
+                                ->select('mobilities.*', 'colleges.name as college_name')
+                                ->orderBy('updated_at', 'desc')->get();
+
+        $mobility_in_colleges = Mobility::join('colleges', 'mobilities.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
+        return view('extension-programs.mobility.index', compact('mobilities', 'mobility_in_colleges'));
     }
 
     /**

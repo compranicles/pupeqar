@@ -38,18 +38,18 @@
                                 <tbody>
                                     @foreach ($expertServicesConference as $expertServiceConference)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' " >{{ $expertServiceConference->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' " >{{ $expertServiceConference->nature }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' " >
+                                        <td><a href="{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}"></a>{{ $loop->iteration }}</td>
+                                        <td>{{ $expertServiceConference->title }}</td>
+                                        <td>{{ $expertServiceConference->nature }}</td>
+                                        <td>
                                             <?php $updated_at = strtotime( $expertServiceConference->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>        
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
-                                                <a href="{{ route('expert-service-in-conference.edit', $expertServiceConference) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                <button type="button" value="{{ $expertServiceConference->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconference="{{ $expertServiceConference->title }}"><i class="bi bi-trash"></i> Delete</button>
+                                                <a href="{{ route('expert-service-in-conference.edit', $expertServiceConference) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $expertServiceConference->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconference="{{ $expertServiceConference->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>
@@ -94,6 +94,11 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         $('#esconference_table').on('click', 'tbody td', function(){
+                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
+            });
      </script>
      @endpush
 </x-app-layout>
