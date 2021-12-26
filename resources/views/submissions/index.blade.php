@@ -1,15 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') ? 'active' : ''}} ml-3">To Finalize</a>
-        <a href="{{ route('submissions.denied.index') }}" class="submission-menu {{ request()->routeIs('submissions.denied.index') ? 'active' : ''}}">Denied</a>
+        @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
     <?php $ctr = 0; ?>
     @foreach ( $report_tables as $table)
-        @if (count($report_array[$table->id]) == 0)
-            <?php $ctr = 0; ?>
-        @else  
-            <?php $ctr = 1; ?>
-            @break
+        @if(array_key_exists($table->id, $report_array))
+            @if (count($report_array[$table->id]) == 0)
+                <?php $ctr = 0; ?>
+            @else  
+                <?php $ctr = 1; ?>
+                @break
+            @endif
         @endif
     @endforeach
 
@@ -43,8 +44,10 @@
                                 <div class="col-md-12 ml-2"> -->
                                         <ul class="nav justify-content-center m-n3">
                                             @foreach ( $report_tables as $table)
-                                                @if (count($report_array[$table->id]) == 0)
-                                                    @continue
+                                                @if(array_key_exists($table->id, $report_array))
+                                                    @if (count($report_array[$table->id]) == 0)
+                                                        @continue
+                                                    @endif
                                                 @endif
                                             <li class="nav-item">
                                                 <x-jet-nav-link href="#{{$table->name}}" class="text-dark"  class="text-dark">
@@ -65,6 +68,9 @@
 
         @endif
         @foreach ( $report_tables as $table)
+            @if(!array_key_exists($table->id, $report_array))
+                @continue
+            @endif
             @if (count($report_array[$table->id]) == 0)
                 @continue
             @endif
@@ -117,12 +123,9 @@
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->course_title }}</td>
                                             @endif
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">
-                                                <?php $updated_at = strtotime( $row->updated_at );
-                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
-                                                {{ $updated_at }}
+                                                {{ date( 'M d, Y h:i A', strtotime($row->updated_at) ) }}
                                             </td>
                                             <td>
-                                                <!-- -->
                                                 @isset($row->id)
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         @if($table->id >= 1 && $table->id <= 7)
@@ -210,6 +213,9 @@
                     <form action="{{ route('to-finalize.store') }}" class="needs-validation" method="POST" novalidate>
                         @csrf
                         @foreach ( $report_tables as $table)
+                            @if(!array_key_exists($table->id, $report_array))
+                                @continue
+                            @endif
                             @foreach ($report_array[$table->id] as $row)
                                 @isset($row->id)
                                     @if ( count($report_document_checker[$table->id][$row->id]) > 0)

@@ -25,17 +25,19 @@ class SectorController extends Controller
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', null)->get();
         
-
-        $reportsDenied = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            ->join('departments', 'reports.department_id', 'departments.id')
-            ->join('colleges', 'reports.college_id', 'colleges.id')
-            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-            ->join('users', 'reports.user_id', 'users.id')
-            ->where('chairperson_approval', 1)->where('dean_approval', 1)
-            ->where('sector_approval', 1)->where('ipqmso_approval', 0)->get();
-        
+        //role and department/ college id
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        $department_id = '';
+        $college_id = '';
+        if(in_array(5, $roles)){
+            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+        }
+        // dd($department_id);
+        if(in_array(6, $roles)){
+            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+        }
             
-        return view('reports.sector.index', compact('reportsToReview', 'reportsDenied'));
+        return view('reports.sector.index', compact('reportsToReview', 'roles', 'department_id', 'college_id'));
     }
 
     /**

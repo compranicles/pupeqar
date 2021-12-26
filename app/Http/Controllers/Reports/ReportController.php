@@ -126,7 +126,6 @@ class ReportController extends Controller
             }
         }
         
-        
         return $report_data_array;
     }
 

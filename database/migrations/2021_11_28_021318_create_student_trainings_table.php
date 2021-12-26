@@ -17,8 +17,8 @@ class CreateStudentTrainingsTable extends Migration
             $table->id();
             $table->string('name_of_student')->nullable();
             $table->string('title')->nullable();
-            $table->string('classification')->nullable();
-            $table->string('nature')->nullable();
+            $table->foreignId('classification')->nullable();
+            $table->foreignId('nature')->nullable();
             $table->foreignId('currency')->nullable();
             $table->decimal('budget', 9, 2)->nullable();
             $table->foreignId('source_of_fund')->nullable();

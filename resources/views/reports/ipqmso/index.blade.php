@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Reports') }}
-        </h2>
+            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
 
 <div class="container-fluid">
@@ -29,49 +27,35 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a class="nav-link active" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">To Review</a>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
-                                    {{-- To Review Table --}}
-                                    <div class="row mt-2">
-                                        <div class="col-md-12">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>College</th>
-                                                            <th>Department</th>
-                                                            <th>Report Category</th>
-                                                            <th>Faculty</th>
-                                                            <th>Report Date</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($reportsToReview as $row)
-                                                            <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $row->college_name }}</td>
-                                                                <td>{{ $row->department_name }}</td>
-                                                                <td>{{ $row->report_category }}</td>
-                                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
-                                                                <td>
-                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>College</th>
+                                            <th>Department</th>
+                                            <th>Report Category</th>
+                                            <th>Faculty</th>
+                                            <th>Report Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($reportsToReview as $row)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $row->college_name }}</td>
+                                                <td>{{ $row->department_name }}</td>
+                                                <td>{{ $row->report_category }}</td>
+                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

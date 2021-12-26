@@ -50,6 +50,13 @@
                                     <option value="research_publications">research_publications</option>
                                     <option value="research_utilizations">research_utilizations</option>
                                     <option value="syllabi">syllabi</option>
+                                    <option value="requests">requests</option>
+                                    <option value="student_awards">student_awards</option>
+                                    <option value="student_trainings">student_trainings</option>
+                                    <option value="viable_projects">viable_projects</option>
+                                    <option value="college_department_awards">college_department_awards</option>
+                                    <option value="outreach_programs">outreach_programs</option>
+                                    <option value="technical_extensions">technical_extensions</option>
                                 </select>
         
                                 <div class="invalid-feedback">

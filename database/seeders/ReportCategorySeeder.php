@@ -111,5 +111,49 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 16
         ]);
+
+        // 2
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Request & Queries Acted Upon',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Students Awards/ Recognitions from Reputable Organizations',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Students Trainings and Seminars',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Viable Demonstration Project',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Awards/ Recognitions Received by College/Branch/Campus from  Reputable Organizations',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Community Relation and Outreach Program',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 2,
+            'name' => 'Technical Extension Program/Project/Activity',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
     }
 }

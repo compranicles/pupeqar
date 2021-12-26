@@ -159,8 +159,8 @@ class UserSeeder extends Seeder
 
         for ($at = 3; $at <= 11; $at++) {
             User::create([
-                'email' => 'facultydesignate'.$at.'@mailinator.com',
-                'password'=> Hash::make('facultydesignate'.$at.'@mailinator.com'),
+                'email' => 'adminwithload'.$at.'@mailinator.com',
+                'password'=> Hash::make('adminwithload'.$at.'@mailinator.com'),
                 'date_of_birth' => 1992-04-24,
                 'first_name' => 'Ana',
                 'middle_name' => null,

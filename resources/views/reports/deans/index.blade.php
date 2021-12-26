@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Reports') }}
+            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
         </h2>
     </x-slot>
 
@@ -29,90 +29,33 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <nav>
-                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                    <a class="nav-link active" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">To Review</a>
-                                    <a class="nav-link" id="nav-denied-tab" data-toggle="tab" href="#nav-denied" role="tab" aria-controls="nav-denied" aria-selected="false">Denied</a>
-                                </div>
-                            </nav>
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
-                                    {{-- To Review Table --}}
-                                    <div class="row mt-2">
-                                        <div class="col-md-12">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Department</th>
-                                                            <th>Report Category</th>
-                                                            <th>Faculty</th>
-                                                            <th>Report Date</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($reportsToReview as $row)
-                                                            <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $row->department_name }}</td>
-                                                                <td>{{ $row->report_category }}</td>
-                                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
-                                                                <td>
-                                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="nav-denied" role="tabpanel" aria-labelledby="nav-denied-tab">
-                                    <div class="row">
-                                        <div class="col-md-12 mt-3">
-                                            <h3 class="text-center">
-                                                Denied Reports
-                                            </h3>
-                                            <hr>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="table-responive">
-                                                <table class="table table-sm table-hover table-bordered text-center" id="report_denied">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Department</th>
-                                                            <th>Report Category</th>
-                                                            <th>Faculty</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @forelse ($reportsDenied as $row)
-                                                        <tr>
-                                                            <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $row->department_name }}</td>
-                                                            <td>{{ $row->report_category }}</td>
-                                                            <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                           
-                                                            <td>
-                                                                <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                                                <a href="{{ route('dean.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
-                                                            </td>
-                                                        </tr>
-                                                        @empty
-                                                            
-                                                        @endforelse
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover table-bordered text-center" id="to_review_table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Department</th>
+                                            <th>Report Category</th>
+                                            <th>Faculty</th>
+                                            <th>Report Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($reportsToReview as $row)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $row->department_name }}</td>
+                                                <td>{{ $row->report_category }}</td>
+                                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td>
+                                                    <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

@@ -1423,5 +1423,436 @@ class ReportColumnSeeder extends Seeder
             'order' => 1,
         ]);
 
+
+        // Request
+        ReportColumn::create([
+            'report_category_id' => 17,
+            'name' => 'Number of Written Request Acten Upon',
+            'table' => 'requests',
+            'column' => 'no_of_request',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 17,
+            'name' => 'Brief Description of Request',
+            'table' => 'requests',
+            'column' => 'description_of_request',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 17,
+            'name' => 'Average Days/ Time or Processing',
+            'table' => 'requests',
+            'column' => 'processing_time',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 17,
+            'name' => 'Category',
+            'table' => 'requests',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 17,
+            'name' => 'Proof of Compliance',
+            'table' => 'requests',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Student Awards and Recognition             
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Student Name',
+            'table' => 'student_awards',
+            'column' => 'name_of_student',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Name of Award',
+            'table' => 'student_awards',
+            'column' => 'name_of_award',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Certifying Body',
+            'table' => 'student_awards',
+            'column' => 'certifying_body',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Place',
+            'table' => 'student_awards',
+            'column' => 'place',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Date',
+            'table' => 'student_awards',
+            'column' => 'date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Level',
+            'table' => 'student_awards',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);                                                                                     
+        ReportColumn::create([
+            'report_category_id' => 18,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'student_awards',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);        
+        
+        // Student trainings and seminars
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Name of Student',
+            'table' => 'student_trainings',
+            'column' => 'name_of_student',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Title',
+            'table' => 'student_trainings',
+            'column' => 'title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Classification',
+            'table' => 'student_trainings',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Nature',
+            'table' => 'student_trainings',
+            'column' => 'nature',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Budget',
+            'table' => 'student_trainings',
+            'column' => 'budget',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Source of Fund',
+            'table' => 'student_trainings',
+            'column' => 'source_of_fund',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Organizer',
+            'table' => 'student_trainings',
+            'column' => 'organizer',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Level',
+            'table' => 'student_trainings',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Venue',
+            'table' => 'student_trainings',
+            'column' => 'venue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'From',
+            'table' => 'student_trainings',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'To',
+            'table' => 'student_trainings',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Total No. of Hours.',
+            'table' => 'student_trainings',
+            'column' => 'total_hours',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+        ReportColumn::create([
+            'report_category_id' => 19,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'student_trainings',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);    
+
+        //Viable Demonstration PRoject
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Name of Viable Demonstration Projects',
+            'table' => 'viable_projects',
+            'column' => 'name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Revenues',
+            'table' => 'viable_projects',
+            'column' => 'revenue',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Cost',
+            'table' => 'viable_projects',
+            'column' => 'cost',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Date Started',
+            'table' => 'viable_projects',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Internal Rate of Return',
+            'table' => 'viable_projects',
+            'column' => 'rate_of_return',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 20,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'viable_projects',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+
+        //Awards of CBC from ROs
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Name of Award',
+            'table' => 'college_department_awards',
+            'column' => 'name_of_award',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Certifying Body',
+            'table' => 'college_department_awards',
+            'column' => 'certifying_body',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Place',
+            'table' => 'college_department_awards',
+            'column' => 'place',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Date',
+            'table' => 'college_department_awards',
+            'column' => 'date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Level',
+            'table' => 'college_department_awards',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 21,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'college_department_awards',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+
+        // community relation and Outreach Program
+        ReportColumn::create([
+            'report_category_id' => 22,
+            'name' => 'Title of the Program',
+            'table' => 'outreach_programs',
+            'column' => 'title_of_the_program',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 22,
+            'name' => 'Date',
+            'table' => 'outreach_programs',
+            'column' => 'place',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 22,
+            'name' => 'Level',
+            'table' => 'outreach_programs',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 22,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'outreach_programs',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+
+        //Technical Extensions
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Title of the Program',
+            'table' => 'technical_extensions',
+            'column' => 'program_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Title of the Project',
+            'table' => 'technical_extensions',
+            'column' => 'project_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Title of the Activities',
+            'table' => 'technical_extensions',
+            'column' => 'activity_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Name of Adoptor',
+            'table' => 'technical_extensions',
+            'column' => 'name_of_adoptor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Classification',
+            'table' => 'technical_extensions',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Nature of Business Enterprise',
+            'table' => 'technical_extensions',
+            'column' => 'nature_of_business_enterprise',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Adoptors have established profitable businesses in the last three years?',
+            'table' => 'technical_extensions',
+            'column' => 'has_businesses',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Extension project by the university or borrowed from other institutions?',
+            'table' => 'technical_extensions',
+            'column' => 'is_borrowed',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Total Profit/ Income of the Adoptors',
+            'table' => 'technical_extensions',
+            'column' => 'total_profit',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Total Profit/ Income of the Adoptors',
+            'table' => 'technical_extensions',
+            'column' => 'total_profit',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 23,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'technical_extensions',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+
     }
 }

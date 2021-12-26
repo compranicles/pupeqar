@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Submissions;
 
+use App\Models\Dean;
 use App\Models\Report;
 use App\Models\Mobility;
 use App\Models\Research;
 use App\Models\Syllabus;
 use App\Models\Invention;
 use App\Models\Reference;
+use App\Models\Chairperson;
 use App\Models\Partnership;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -23,6 +25,7 @@ use App\Models\PartnershipDocument;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceAcademic;
+use App\Models\Authentication\UserRole;
 use App\Models\ExpertServiceConference;
 use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
@@ -271,13 +274,20 @@ class SubmissionController extends Controller
             
         }
 
-        $reported_accomplishments = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category')
-                    ->where('reports.user_id', auth()->id())->join('colleges', 'reports.college_id', 'colleges.id')->join('departments', 'reports.department_id', 'departments.id')
-                    ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->where('reports.chairperson_approval', 0)->orWhere('reports.dean_approval', 0)
-                    ->orWhere('reports.sector_approval', 0)->orWhere('reports.ipqmso_approval', 0)->get();
+        //role and department/ college id
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        $department_id = '';
+        $college_id = '';
+        if(in_array(5, $roles)){
+            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+        }
+        // dd($department_id);
+        if(in_array(6, $roles)){
+            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+        }
     
         // dd($reported_accomplishments);
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'reported_accomplishments'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id'));
     }
 
     /**
