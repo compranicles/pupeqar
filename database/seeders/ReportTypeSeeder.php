@@ -17,8 +17,8 @@ class ReportTypeSeeder extends Seeder
         ReportType::truncate();
         ReportType::insert([
             ['name' => 'Individual'],
-            ['name' => 'Department'],
-            ['name' => 'College']
+            ['name' => 'College/Office/Department/Branch'],
+            // ['name' => 'College']
         ]);
     }
 }

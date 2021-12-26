@@ -1,11 +1,14 @@
 <x-app-layout>   
     <x-slot name="header">
-            <a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') ? 'active' : ''}} ml-3">To Finalize</a>
-            <a href="{{ route('submissions.denied.index') }}" class="submission-menu {{ request()->routeIs('submissions.denied.index') ? 'active' : ''}}">Denied</a>
+            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
+                <div class="col-md-12">
+                    <h5>Submitted By You</h5>
+                    <hr>
+                </div>
                 <div class="col-md-12">
                     <div class="table-responive ">
                         <table class="table table-hover table-sm text-center" id="report_denied">
@@ -45,6 +48,138 @@
             </div>
         </div>
     </div>
+    @if (in_array(5, $roles))
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied By Dean</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive">
+                        <table class="table table-hover table-sm table-bordered text-center" id="report_denied_by_dean">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Report Category</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($higher_denied_accomplishments as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                   
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <a href="{{ route('chairperson.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    @if (in_array(6, $roles))
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied By Sector Head</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive">
+                        <table class="table table-sm table-hover table-bordered text-center" id="report_denied_by_sector">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Department</th>
+                                    <th>Report Category</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($higher_denied_accomplishments as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->department_name }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                   
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <a href="{{ route('dean.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    @if (in_array(7, $roles))
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied By IPQMSO</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive ">
+                        <table class="table table-sm table-hover table-bordered text-center" id="report_denied_by_ipqmso">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>College</th>
+                                    <th>Department</th>
+                                    <th>Report Category</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($higher_denied_accomplishments as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->college_name }}</td>
+                                    <td>{{ $row->department_name }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                   
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <a href="{{ route('sector.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <div class="modal fade" id="viewDeny" tabindex="-1" aria-labelledby="viewDenyLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
@@ -108,6 +243,9 @@
             // if( $('.doc-incomplete').length != 0)
             //     $('#submitReport').remove();
             $('#report_denied').DataTable();
+            $('#report_denied_by_dean').DataTable();
+            $('#report_denied_by_sector').DataTable();
+            $('#report_denied_by_ipqmso').DataTable();
         });
     </script>
     <script>

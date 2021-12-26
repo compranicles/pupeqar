@@ -23,8 +23,20 @@ class IpqmsoController extends Controller
             ->join('users', 'reports.user_id', 'users.id')
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', 1)->where('ipqmso_approval', null)->get();
+        
+        //role and department/ college id
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        $department_id = '';
+        $college_id = '';
+        if(in_array(5, $roles)){
+            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+        }
+        // dd($department_id);
+        if(in_array(6, $roles)){
+            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+        }
 
-        return view('reports.ipqmso.index', compact('reportsToReview'));
+        return view('reports.ipqmso.index', compact('reportsToReview', 'roles', 'department_id', 'college_id'));
     }
 
     /**

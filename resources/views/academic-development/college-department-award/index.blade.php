@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Awards and Recognition Received by the College/Branch/Office/Department') }}
+            {{ __('Awards and Recognition Received by the College/Branch/Campus/Office/Department') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('college-department-award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Awards and Recognition Received by the College/Branch/Office/Department</a>
+                                <a href="{{ route('college-department-award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Awards and Recognition Received by the College/Branch/Campus/Office/Department</a>
                             </div>
                         </div>  
                         <hr>

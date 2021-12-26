@@ -62,12 +62,12 @@
                 </li>
 
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link :active="request()->routeIs('to-finalize.index') || request()->routeIs('submissions.denied.index')" href="{{ route('to-finalize.index') }}">
+                    <x-jet-nav-link :active="request()->routeIs('to-finalize.index') || request()->routeIs('submissions.denied.index') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*')" href="{{ route('to-finalize.index') }}">
                         {{ __('Submissions') }}
 
                     </x-jet-nav-link>
-                </li> --}}
-
+                </li>
+{{-- 
                 <li class="nav-item dropdown mr-auto main-nav-item">
                     <a class="nav-link @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
                         id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
@@ -87,7 +87,7 @@
 
                         <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
                     </ul>
-                </li>
+                </li> --}}
 
 
             </ul>
