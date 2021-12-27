@@ -33,7 +33,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>College</th>
-                                            <th>Department</th>
                                             <th>Report Category</th>
                                             <th>Faculty</th>
                                             <th>Report Date</th>
@@ -45,7 +44,6 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->college_name }}</td>
-                                                <td>{{ $row->department_name }}</td>
                                                 <td>{{ $row->report_category }}</td>
                                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                 <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>

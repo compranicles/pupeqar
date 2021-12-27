@@ -8,4 +8,10 @@
 @if (in_array(7, $roles))
 <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">To Review</a>   
 @endif
+@if (in_array(8, $roles))
+<a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Review</a>   
+@endif
 <a href="{{ route('submissions.denied.index') }}" class="submission-menu {{ request()->routeIs('submissions.denied.index') ? 'active' : ''}}">Denied</a>
+@if (in_array(8, $roles))
+    <a href="{{ route('reports.all') }}" class="submission-menu {{ request()->routeIs('reports.all') ? 'active' : ''}}">All Accomplishments</a>   
+@endif

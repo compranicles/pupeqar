@@ -12,8 +12,13 @@ use App\Models\Reference;
 use App\Models\Chairperson;
 use App\Models\Partnership;
 use Illuminate\Support\Arr;
+use App\Models\StudentAward;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use App\Models\ViableProject;
+use App\Models\OutreachProgram;
+use App\Models\RequestDocument;
+use App\Models\StudentTraining;
 use App\Models\ExtensionService;
 use App\Models\MobilityDocument;
 use App\Models\ResearchCitation;
@@ -21,27 +26,30 @@ use App\Models\ResearchDocument;
 use App\Models\SyllabusDocument;
 use App\Models\InventionDocument;
 use App\Models\ReferenceDocument;
+use App\Models\TechnicalExtension;
 use App\Models\PartnershipDocument;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
+use App\Models\StudentAwardDocument;
 use App\Models\ExpertServiceAcademic;
+use App\Models\ViableProjectDocument;
+use App\Models\CollegeDepartmentAward;
+use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use App\Models\ExpertServiceConference;
 use App\Models\ExpertServiceConsultant;
+use App\Models\OutreachProgramDocument;
+use App\Models\Request as RequestModel;
+use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ExtensionServiceDocument;
 use App\Models\Maintenance\ReportCategory;
+use App\Models\TechnicalExtensionDocument;
 use App\Models\ExpertServiceAcademicDocument;
+use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Http\Controllers\Reports\ReportController;
-use App\Models\Request as RequestModel;
-use App\Models\StudentAward;
-use App\Models\StudentTraining;
-use App\Models\ViableProject;
-use App\Models\CollegeDepartmentAward;
-use App\Models\OutreachProgram;
-use App\Models\TechnicalExtension;
 
 
 
@@ -336,7 +344,7 @@ class SubmissionController extends Controller
                             whereNotIn('college_department_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = CollegeDepartmentAwardDocument::where('viable_project_id', $row->id)->get();
+                            $checker = CollegeDepartmentAwardDocument::where('college_department_award_id', $row->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -491,6 +499,52 @@ class SubmissionController extends Controller
                             'report_documents' => json_encode($report_documents),
                             'report_date' => date("Y-m-d", time()),
                         ]);
+                    break;
+                    case 17: case 18: case 19: case 20: case 21: case 22: case 23:
+                        //role and department/ college id
+                        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+                        $department_id = '';
+                        $college_id = '';
+                        if(in_array(5, $roles)){
+                            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+                            $college_id = Department::where('id', $department_id)->pluck('college_id')->first();
+                        }
+                        if(in_array(6, $roles)){
+                            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+                        }
+                        $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
+                        $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
+                        $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
+                        $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
+                        if(in_array(5, $roles)){
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $college_id ?? null,
+                                'department_id' => $department_id ?? null,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'chairperson_approval' => 1                                
+                            ]);
+                        }
+                        if(in_array(6, $roles)){
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $college_id ?? null,
+                                'department_id' => $department_id ?? null,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'chairperson_approval' => 1,
+                                'dean_approval' => 1
+                            ]);
+                        }
                     break;
                 }
                 

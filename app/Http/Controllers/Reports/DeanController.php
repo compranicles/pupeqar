@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Reports;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\DenyReason;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Authentication\UserRole;
 
 class DeanController extends Controller
 {
@@ -133,6 +135,6 @@ class DeanController extends Controller
 
     public function relay($report_id){
         Report::where('id', $report_id)->update(['dean_approval' => 0]);
-        return redirect()->route('dean.index')->with('success', 'Report Denial successfully sent');
+        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
     }
 }

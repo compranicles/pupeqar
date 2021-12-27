@@ -35,7 +35,7 @@
                                             {{ $date_reported }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                        <button class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Manage</button>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
                                     </td>
                                 </tr>
                                 @empty
@@ -76,7 +76,12 @@
                                    
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                        <a href="{{ route('chairperson.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @if ($row->user_id == auth()->id())
+                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        @else
+                                            <a href="{{ route('chairperson.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @endif
+
                                     </td>
                                 </tr>
                                 @empty
@@ -90,6 +95,13 @@
         </div>
     </div>
     @endif
+    <div class="col-md-12">
+        @if ($message = Session::get('deny-success'))
+        <div class="alert alert-success temp-alert">
+            <i class="bi bi-check-circle"></i> {{ $message }}
+        </div>
+        @endif
+    </div>
     @if (in_array(6, $roles))
     <div class="card mb-3">
         <div class="card-body">
@@ -120,7 +132,11 @@
                                    
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                        <a href="{{ route('dean.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @if ($row->user_id == auth()->id())
+                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        @else
+                                            <a href="{{ route('dean.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
@@ -166,7 +182,11 @@
                                    
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                        <a href="{{ route('sector.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @if ($row->user_id == auth()->id())
+                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        @else
+                                            <a href="{{ route('sector.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty
