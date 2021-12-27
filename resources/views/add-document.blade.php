@@ -16,7 +16,7 @@
                                 <hr>
                             </div>
                         </div>
-                        <form action="{{ route('faculty.savedoc', [$id, $report_category_id]) }}" method="post">
+                        <form action="{{ route('submissions.faculty.savedoc', [$id, $report_category_id]) }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
