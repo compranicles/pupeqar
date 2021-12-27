@@ -35,6 +35,15 @@ use App\Models\ExpertServiceAcademicDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Http\Controllers\Reports\ReportController;
+use App\Models\Request as RequestModel;
+use App\Models\StudentAward;
+use App\Models\StudentTraining;
+use App\Models\ViableProject;
+use App\Models\CollegeDepartmentAward;
+use App\Models\OutreachProgram;
+use App\Models\TechnicalExtension;
+
+
 
 class SubmissionController extends Controller
 {
@@ -263,6 +272,97 @@ class SubmissionController extends Controller
                     if($data != null){
                         foreach($data as $row){
                             $checker = SyllabusDocument::where('syllabus_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '17': 
+                    $data = RequestModel::select('requests.*')->where('user_id', auth()->id())->
+                            whereNotIn('requests.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = RequestDocument::where('request_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '18': 
+                        $data = StudentAward::select('student_awards.*')->where('user_id', auth()->id())->
+                                whereNotIn('student_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = StudentAwardDocument::where('student_award_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                case '19': 
+                    $data = StudentTraining::select('student_trainings.*')->where('user_id', auth()->id())->
+                            whereNotIn('student_trainings.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = StudentTrainingDocument::where('student_training_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '20': 
+                    $data = ViableProject::select('viable_projects.*')->where('user_id', auth()->id())->
+                            whereNotIn('viable_projects.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = ViableProjectDocument::where('viable_project_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '21': 
+                    $data = CollegeDepartmentAward::select('college_department_awards.*')->where('user_id', auth()->id())->
+                            whereNotIn('college_department_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = CollegeDepartmentAwardDocument::where('viable_project_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '22': 
+                    $data = OutreachProgram::select('outreach_programs.*')->where('user_id', auth()->id())->
+                            whereNotIn('outreach_programs.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = OutreachProgramDocument::where('outreach_program_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '23': 
+                    $data = TechnicalExtension::select('technical_extensions.*')->where('user_id', auth()->id())->
+                            whereNotIn('technical_extensions.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = TechnicalExtensionDocument::where('technical_extension_id', $row->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -510,9 +610,51 @@ class SubmissionController extends Controller
                             'filename' => $fileName,
                         ]);
                     }
-                    elseif($report_category_id == 9){
+                    elseif($report_category_id == 16){
                         SyllabusDocument::create([
                             'syllabus_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 17){
+                        RequestDocument::create([
+                            'request_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 18){
+                        StudentAwardDocument::create([
+                            'student_award_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 19){
+                        StudentTrainingDocument::create([
+                            'student_training_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 20){
+                        ViableProjectDocument::create([
+                            'viable_project_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 21){
+                        CollegeDepartmentAwardDocument::create([
+                            'college_department_award_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 22){
+                        OutreachProgramDocument::create([
+                            'outreach_program_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                    }
+                    elseif($report_category_id == 23){
+                        TechnicalExtensionDocument::create([
+                            'technical_extension_id' => $id,
                             'filename' => $fileName,
                         ]);
                     }

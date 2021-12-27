@@ -23,6 +23,13 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceAcademicDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
+use App\Models\RequestDocument;
+use App\Models\StudentAwardDocument;
+use App\Models\StudentTrainingDocument;
+use App\Models\ViableProjectDocument;
+use App\Models\CollegeDepartmentAwardDocument;
+use App\Models\OutreachProgramDocument;
+use App\Models\TechnicalExtensionDocument;
 
 class ReportController extends Controller
 {
@@ -169,6 +176,27 @@ class ReportController extends Controller
         }
         elseif($report_category_id == 16){
             $report_docs = SyllabusDocument::where('syllabus_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 17){
+            $report_docs = RequestDocument::where('request_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 18){
+            $report_docs = StudentAwardDocument::where('student_award_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 19){
+            $report_docs = StudentTrainingDocument::where('student_award_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 20){
+            $report_docs = ViableProjectDocument::where('viable_project_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 21){
+            $report_docs = CollegeDepartmentAwardDocument::where('college_department_award_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 22){
+            $report_docs = OutreachProgramDocument::where('outreach_program_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 23){
+            $report_docs = TechnicalExtensionDocument::where('technical_extension_id', $id)->pluck('filename')->all();
         }
         return $report_docs;
         

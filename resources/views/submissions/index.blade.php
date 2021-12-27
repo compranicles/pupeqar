@@ -97,6 +97,8 @@
                                         <th>Host Name</th>
                                         @elseif($table->id == 16)
                                         <th>Course Title</th>
+                                        @else
+                                        <th>ID</th>
                                         @endif
                                         <th>Date Last Accessed</th>
                                         <th>Reporting Status</th>
@@ -121,6 +123,8 @@
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->host_name }}</td>
                                             @elseif($table->id == 16)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->course_title }}</td>
+                                            @else
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->id }}</td>
                                             @endif
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">
                                                 {{ date( 'M d, Y h:i A', strtotime($row->updated_at) ) }}
@@ -130,10 +134,8 @@
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         @if($table->id >= 1 && $table->id <= 7)
                                                         <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
                                                         @else
                                                         <a href="{{ route('submissions.faculty.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
                                                         @endif
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
@@ -141,7 +143,6 @@
                                                 @else
                                                     @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
                                                         <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        <script>doc_checker(0);</script>
                                                     @else
                                                         <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
                                                     @endif
@@ -186,10 +187,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- <form action="" id="adddoc" method="GET"> -->
                 <div class="modal-footer">
-                    <!-- <button type="submit" id="adddocbutton" class="btn btn-primary mr-2">Add Document</button>
-                </form> -->
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -304,8 +302,12 @@
         });
 
         $(function(){
-            // if( $('.doc-incomplete').length != 0)
+            // if( $('.doc-incomplete').length != 0) {
+            //     $('#submitReport').show();
+            // }
+            // else{
             //     $('#submitReport').remove();
+            // }
             $('#report_denied').DataTable();
         });
     </script>
@@ -348,22 +350,6 @@
             });
         }, 4000);
     </script>
-    <!-- <script>
-        function doc_checker(i)
-        if (i == 0) {
-            $('#adddocbutton').show();
-            $('#viewReport').on('show.bs.modal', function(event) {
-            var button = event.relatedTarget
-            
-                    var id = button.getAttribute('data-id')
-                    var code = button.getAttribute('data-code')
-        
-                    var url = '/submissions/faculty/add-document/' + code + '/' + id;
-                    document.getElementById('adddoc').action = url;
-            
-            });
-        }
-    </script> -->
     @endpush
 
 </x-app-layout>
