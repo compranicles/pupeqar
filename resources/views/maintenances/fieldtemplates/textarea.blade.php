@@ -7,29 +7,6 @@
             <i class="far fa-question-circle"></i>
         </button>
         @endif
-<<<<<<< Updated upstream
-        <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" 
-                placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
-                @switch($fieldInfo->visibility)
-                    @case(2)
-                        {{ 'readonly' }}
-                        @break
-                    @case(3)
-                        {{ 'disabled' }}
-                        @break
-                    @case(2)
-                        {{ 'hidden' }}
-                        @break
-                    @default
-                        
-                @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
-
-                @error($fieldInfo->name)
-                    <span class='invalid-feedback' role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-=======
         <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
         <span><small>{{ $fieldInfo->placeholder }}</small></span>
         @error($fieldInfo->name)
@@ -37,7 +14,6 @@
                 <strong>{{ $message }}</strong>
             </span>
         @enderror
->>>>>>> Stashed changes
 
     </div>
 </div>

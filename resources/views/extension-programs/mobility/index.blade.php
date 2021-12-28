@@ -50,11 +50,11 @@
                                 <tbody>
                                     @foreach ($mobilities as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('mobility.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $row->mobility_description }}</td>
-                                        <td>{{ $row->host_name }}</td>
-                                        <td>{{ $row->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->mobility_description }}</td>
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->host_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -107,11 +107,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#mobility_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#mobility_table").DataTable();

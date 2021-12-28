@@ -135,8 +135,8 @@ class AcademicModuleFieldController extends Controller
     {
         $input = $request->except(['_token', '_method']);
 
-        AcademicDevelopmentField::where('academic_module_form_id', $academic_module_form->id)->where('id', $academic_module_field->id)->update($input);
-        return redirect()->route('academic-fields.show', $academic_module_form->id)->with('success', 'Academic Module field updated sucessfully.');
+        AcademicDevelopmentField::where('academic_development_form_id', $academic_module_form->id)->where('id', $academic_module_field->id)->update($input);
+        return redirect()->route('academic-module-forms.show', $academic_module_form->id)->with('success', 'Academic Module field updated sucessfully.');
     }
 
     /**

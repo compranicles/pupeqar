@@ -61,13 +61,13 @@
                                 <tbody>
                                     @foreach ($partnerships as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('partnership.show', $row->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $row->moa_code }}</td>
-                                        <td>{{ $row->title_of_partnership }}</td>
-                                        <td>{{ $row->name_of_partner }}</td>
-                                        <td>{{ $row->collab }}</td>
-                                        <td>{{ $row->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->moa_code }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->title_of_partnership }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->name_of_partner }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->collab }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -120,11 +120,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#partnership_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#partnership_table").DataTable();

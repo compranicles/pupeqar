@@ -38,10 +38,10 @@
                                 <tbody>
                                     @foreach ($expertServicesConference as $expertServiceConference)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $expertServiceConference->title }}</td>
-                                        <td>{{ $expertServiceConference->nature }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->nature }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">
                                             <?php $updated_at = strtotime( $expertServiceConference->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>        
                                             {{ $updated_at }}
@@ -94,11 +94,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#esconference_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      @endpush
 </x-app-layout>

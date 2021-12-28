@@ -30,9 +30,8 @@
                                     <td>{{ $row->department_name }}</td>
                                     <td>{{ $row->report_category }}</td>
                                     <td>
-                                        <?php $date_reported = strtotime( $row->report_date );
-                                            $date_reported = date( 'M d, Y h:i A', $date_reported ); ?>
-                                            {{ $date_reported }}</td>
+                                        {{ date('M d, Y h:i A', strtotime( $row->created_at)) }}
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
                                         <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>

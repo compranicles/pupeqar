@@ -62,11 +62,11 @@
                                 <tbody>
                                     @foreach ($expertServicesAcademic as $expertServiceAcademic)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
-                                        <td>{{ $expertServiceAcademic->classification }}</td>
-                                        <td>{{ $expertServiceAcademic->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->classification }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">
                                         <?php $updated_at = strtotime( $expertServiceAcademic->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -119,11 +119,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#esacademic_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#esacademic_table").DataTable();
