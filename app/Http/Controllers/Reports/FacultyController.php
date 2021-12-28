@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Models\Dean;
 use App\Models\Report;
 use App\Models\Mobility;
 use App\Models\Research;
 use App\Models\Syllabus;
 use App\Models\Invention;
 use App\Models\Reference;
+use App\Models\Chairperson;
 use App\Models\Partnership;
 use Illuminate\Support\Arr;
+use App\Models\StudentAward;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use App\Models\ViableProject;
+use App\Models\OutreachProgram;
+use App\Models\RequestDocument;
+use App\Models\StudentTraining;
 use App\Models\ExtensionService;
 use App\Models\MobilityDocument;
 use App\Models\ResearchCitation;
@@ -19,16 +26,26 @@ use App\Models\ResearchDocument;
 use App\Models\SyllabusDocument;
 use App\Models\InventionDocument;
 use App\Models\ReferenceDocument;
+use App\Models\TechnicalExtension;
 use App\Models\PartnershipDocument;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
+use App\Models\StudentAwardDocument;
 use App\Models\ExpertServiceAcademic;
+use App\Models\ViableProjectDocument;
+use App\Models\CollegeDepartmentAward;
+use App\Models\Maintenance\Department;
+use App\Models\Authentication\UserRole;
 use App\Models\ExpertServiceConference;
 use App\Models\ExpertServiceConsultant;
+use App\Models\OutreachProgramDocument;
+use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ExtensionServiceDocument;
 use App\Models\Maintenance\ReportCategory;
+use App\Models\TechnicalExtensionDocument;
 use App\Models\ExpertServiceAcademicDocument;
+use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Http\Controllers\Reports\ReportController;
@@ -433,12 +450,12 @@ class FacultyController extends Controller
                             case 8:
                                 $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                             break;
-                            // case 9:
-                            //     $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                            // break;
-                            // case 10:
-                            //     $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                            // break;
+                            case 9:
+                                $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                            break;
+                            case 10:
+                                $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                            break;
                             case 11:
                                 $collegeAndDepartment = ExpertServiceAcademic::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                             break;

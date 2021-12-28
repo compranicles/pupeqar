@@ -1577,7 +1577,7 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 19,
             'name' => 'Organizer',
             'table' => 'student_trainings',
-            'column' => 'organizer',
+            'column' => 'organization',
             'is_active' => 1,
             'order' => 1,
         ]);    

@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
-        </h2>
+        @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
 
 <div class="container-fluid">

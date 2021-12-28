@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Models\Dean;
 use App\Models\Report;
 use App\Models\DenyReason;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Authentication\UserRole;
 
 class SectorController extends Controller
 {
@@ -17,8 +20,7 @@ class SectorController extends Controller
     public function index()
     {
 
-        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            ->join('departments', 'reports.department_id', 'departments.id')
+        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('colleges', 'reports.college_id', 'colleges.id')
             ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
             ->join('users', 'reports.user_id', 'users.id')
@@ -32,7 +34,6 @@ class SectorController extends Controller
         if(in_array(5, $roles)){
             $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
         }
-        // dd($department_id);
         if(in_array(6, $roles)){
             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
         }
@@ -132,6 +133,6 @@ class SectorController extends Controller
 
     public function relay($report_id){
         Report::where('id', $report_id)->update(['sector_approval' => 0]);
-        return redirect()->route('sector.index')->with('success', 'Report Denial successfully sent');
+        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
     }
 }

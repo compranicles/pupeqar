@@ -106,7 +106,10 @@ class ReportController extends Controller
                             $column->column == 'issue_no' ||
                             $column->column == 'page' ||
                             $column->column == 'page_no' ||
-                            $column->column =='year' 
+                            $column->column =='year' ||
+                            $column->column == 'rate_of_return' ||
+                            $column->column == 'has_businesses' ||
+                            $column->column == 'is_borrowed'
                         )
                             $data = $data;
                         else{
@@ -184,7 +187,7 @@ class ReportController extends Controller
             $report_docs = StudentAwardDocument::where('student_award_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 19){
-            $report_docs = StudentTrainingDocument::where('student_award_id', $id)->pluck('filename')->all();
+            $report_docs = StudentTrainingDocument::where('student_training_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 20){
             $report_docs = ViableProjectDocument::where('viable_project_id', $id)->pluck('filename')->all();
@@ -299,6 +302,34 @@ class ReportController extends Controller
             case 16:
                 $report = Report::where('id', $report_id)->first();
                 return redirect()->route('syllabus.edit', $report->report_reference_id);
+                break;
+            case 17:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('request.edit', $report->report_reference_id);
+                break;
+            case 18:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('student-award.edit', $report->report_reference_id);
+                break;
+            case 19:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('student-training.edit', $report->report_reference_id);
+                break;
+            case 20:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('viable-project.edit', $report->report_reference_id);
+                break;
+            case 21:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('college-department-award.edit', $report->report_reference_id);
+                break;
+            case 22:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('outreach-program.edit', $report->report_reference_id);
+                break;
+            case 23:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('technical-extension.edit', $report->report_reference_id);
                 break;
         }
     }

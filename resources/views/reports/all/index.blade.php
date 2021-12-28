@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Reports') }}
-        </h2>
+        @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
 
 <div class="container-fluid">
@@ -49,8 +47,8 @@
                                                 @foreach ($reportsToReview as $row)
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $row->college_name }}</td>
-                                                        <td>{{ $row->department_name }}</td>
+                                                        <td>{{ $college_name[$row->id] }}</td>
+                                                        <td>{{ $department_name[$row->id] }}</td>
                                                         <td>{{ $row->report_category }}</td>
                                                         <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                         <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
