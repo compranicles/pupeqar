@@ -70,7 +70,7 @@ class OutreachProgramFormSeeder extends Seeder
             'extension_programs_form_id' => 7,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Special Order (if applicable), *Budget Allocation & Utilization (if applicable), *Pictures/Documentation/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents if applicable",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

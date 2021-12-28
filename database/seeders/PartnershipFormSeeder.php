@@ -257,7 +257,7 @@ class PartnershipFormSeeder extends Seeder
             'extension_programs_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Special Order (if applicable), *Budget Allocation & Utilization (if applicable), *Documentation/Pictures/Other similar documents, *MOA/MOU/Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

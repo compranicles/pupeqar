@@ -172,7 +172,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'extension_programs_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Special Order (if applicable), *MOU/MOA/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents, *Documentation/Pictures/Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

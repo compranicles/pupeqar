@@ -183,7 +183,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'research_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Actual Page(s) with Journal Details, *Journal Title Page and Table of Contents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 
