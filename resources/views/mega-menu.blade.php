@@ -16,31 +16,8 @@
             </ul>
             
         </div>
+        
         <div class="col-md-3">
-            <ul>
-                <h6 class="menu-category">IPCR</h6>
-                <li><a href="">Accomplishment based on OPCR</a></li>
-                <li><a href="">Accomplishment Based on IPCR</a></li>
-                <li><a href="">Special Tasks</a></li>
-                @can('viewAny', \App\Models\Request::class)
-                <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
-                @endcan
-            </ul>
-            @can('viewAny', \App\Models\Research::class)
-            <ul>
-                <h6 class="menu-category">Research & Book Chapter</h6>
-                <li><a href="{{ route('research.index') }}">Research Registration</a></li>
-            </ul>
-            @endcan
-            
-        </div>
-        <div class="col-md-3">
-            @can('viewAny', \App\Models\Invention::class)
-            <ul>
-                <h6 class="menu-category">Inventions, Innovation, & Creativity</h6>
-                <li><a href="{{ route('invention-innovation-creative.index') }}">Inventions, Innovation, and Creativity</a></li>
-            </ul>
-            @endcan
             <ul>
                 <h6 class="menu-category">Academic Program Development</h6>
                 @can('viewAny', \App\Models\Syllabus::class)
@@ -91,6 +68,27 @@
                 <li><a href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
                 @endcan
             </ul>
+        </div>
+        <div class="col-md-3">
+            @can('viewAny', \App\Models\Request::class)
+            <ul>
+                <h6 class="menu-category">Requests & Queries</h6>
+                <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
+            </ul>
+            @endcan
+            @can('viewAny', \App\Models\Research::class)
+            <ul>
+                <h6 class="menu-category">Research & Book Chapter</h6>
+                <li><a href="{{ route('research.index') }}">Research Registration</a></li>
+            </ul>
+            @endcan
+            
+            @can('viewAny', \App\Models\Invention::class)
+            <ul>
+                <h6 class="menu-category">Inventions, Innovation, & Creativity</h6>
+                <li><a href="{{ route('invention-innovation-creative.index') }}">Inventions, Innovation, and Creativity</a></li>
+            </ul>
+            @endcan
         </div>
     </div>
 </div>
