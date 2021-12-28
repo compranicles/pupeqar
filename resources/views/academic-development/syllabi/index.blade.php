@@ -58,11 +58,11 @@
                                 <tbody>
                                     @foreach ($syllabi as $syllabus)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('syllabus.show', $syllabus->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $syllabus->course_title }}</td>
-                                        <td>{{ $syllabus->assigned_task_name }}</td>
-                                        <td>{{ $syllabus->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->course_title }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->assigned_task_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >
                                             <?php $updated_at = strtotime( $syllabus->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -115,11 +115,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#syllabus_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#syllabus_table").DataTable();

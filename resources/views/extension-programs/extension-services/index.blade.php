@@ -59,11 +59,11 @@
                                 <tbody>
                                     @foreach ($extensionServices as $extensionService)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('extension-service.show', $extensionService->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
-                                        <td>{{ $extensionService->status }}</td>
-                                        <td>{{ $extensionService->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ $extensionService->status }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ $extensionService->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                             <?php $updated_at = strtotime( $extensionService->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
                                             {{ $updated_at }} </td>
@@ -115,11 +115,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#eservice_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#eservice_table").DataTable();

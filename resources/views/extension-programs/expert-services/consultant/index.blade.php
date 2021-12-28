@@ -38,10 +38,10 @@
                                 <tbody>
                                     @foreach ($expertServicesConsultant as $expertServiceConsultant)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $expertServiceConsultant->title }}</td>
-                                        <td>{{ $expertServiceConsultant->classification_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $expertServiceConsultant->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $expertServiceConsultant->classification_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">
                                             <?php $updated_at = strtotime( $expertServiceConsultant->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>    
                                              {{ $updated_at }}
@@ -95,11 +95,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#esconsultant_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      @endpush
 </x-app-layout>

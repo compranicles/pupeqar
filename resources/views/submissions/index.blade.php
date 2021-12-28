@@ -64,9 +64,14 @@
             </div>
         </div>
 
-        <button class="btn btn-primary mb-3 mt-3" data-toggle="modal" data-target="#submitReportModal" id="submitReport" style="width: 100%;">Submit All</button>
-
+        
+        <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold">Select All</label>
+        <button class="btn btn-primary mb-3 mt-3" data-toggle="modal" data-target="#submitReportModal" id="submitReport" style="width: 100%;">Submit</button>
         @endif
+        @php
+            $tableCount = 1;
+            $count = 1;
+        @endphp
         @foreach ( $report_tables as $table)
             @if(!array_key_exists($table->id, $report_array))
                 @continue
@@ -83,7 +88,7 @@
                             <table class="table table-hover submissions_table">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th><input type="checkbox" id="table-{{ $tableCount }}" class="select-submit-table" data-id='{{ $tableCount }}' checked></th>
                                         <th>#</th>
                                         @if($table->id <= 7)
                                         <th>Research Code</th>
@@ -107,7 +112,25 @@
                                 <tbody>
                                     @forelse ($report_array[$table->id] as $row)
                                         <tr role="button">
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset"><i class="bi-lg bi-three-dots-vertical" style="font-size: 1.1rem;"></i></td>
+                                            <td><input type="checkbox" class="select-submit table-submit-{{ $tableCount }} all-submit" data-id='{{ $count }}' data-table-id={{ $tableCount }} 
+                                                @isset($row->id)
+                                                    @if ( count($report_document_checker[$table->id][$row->id]) == 0)
+                                                        @if($table->id >= 1 && $table->id <= 7)
+                                                        
+                                                        @else
+                                                        
+                                                        @endif
+                                                    @else
+                                                        checked
+                                                    @endif
+                                                @else
+                                                    @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
+                                                        
+                                                    @else
+                                                        checked
+                                                    @endif
+                                                @endisset
+                                                ></td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $loop->iteration }}</td>
                                             @if($table->id <= 7)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->research_code }}</td>
@@ -149,6 +172,9 @@
                                                 @endisset
                                             </td>
                                         </tr>
+                                        @php
+                                            $count++;
+                                        @endphp
                                     @empty
                                         <tr>
                                             <td colspan="3">Empty</td>
@@ -161,6 +187,9 @@
                 </div>
             </div>
         </div>
+        @php
+            $tableCount++;
+        @endphp
         @endforeach
     </div>
     {{-- VIew Report --}}
@@ -210,6 +239,9 @@
                     </div>
                     <form action="{{ route('to-finalize.store') }}" class="needs-validation" method="POST" novalidate>
                         @csrf
+                        @php
+                            $count2 = 1;
+                        @endphp
                         @foreach ( $report_tables as $table)
                             @if(!array_key_exists($table->id, $report_array))
                                 @continue
@@ -217,13 +249,16 @@
                             @foreach ($report_array[$table->id] as $row)
                                 @isset($row->id)
                                     @if ( count($report_document_checker[$table->id][$row->id]) > 0)
-                                        <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @else
                                     @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
-                                        <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @endisset
+                                @php
+                                    $count2++;
+                                @endphp
                             @endforeach                        
                         @endforeach
                     </div>
@@ -279,6 +314,135 @@
             
         });
 
+        $('.select-submit').on('click', function(){
+            var inputId = $(this).data('id');
+            var tableId = $(this).data('table-id');
+            if(this.checked){
+                $('#report-'+inputId).removeAttr('disabled');
+            }
+            else{
+                $('#report-'+inputId).attr('disabled', true);
+            }
+            var allChecked = 0;
+            var flag = true;
+
+            $(".select-submit").each(function(index, element){
+                if(this.checked){
+                    allChecked++;
+                    flag = true;
+                } 
+                else{
+                    flag = false;
+                    return false;
+                }
+            });
+            if(allChecked == 0){
+                $('#table-'+tableId).prop('checked', false);
+            }
+            if(flag == true){
+                $('#table-'+tableId).prop('checked', true);
+            }else{
+                $('#table-'+tableId).prop('checked', false);
+            }
+
+            var allSubmitChecked = 0;
+            var flagSubmit = true;
+            $(".all-submit").each(function(index, element){
+                if(this.checked){
+                    allSubmitChecked++;
+                    flagSubmit = true;
+                } 
+                else{
+                    flagSubmit = false;
+                    return false;
+                }
+            });
+            if(allSubmitChecked == 0){
+                $('#all-submit').prop('checked', false);
+            }
+            if(flagSubmit == true){
+                $('#all-submit').prop('checked', true);
+            }else{
+                $('#all-submit').prop('checked', false);
+            }
+           
+        });
+        $('.select-submit-table').on('change', function(){
+            var tableId = $(this).data('id');
+            if(this.checked){
+                $('.table-submit-'+tableId).prop('checked', true);
+                $('.table-submit-'+tableId).each(function(){
+                    var inputId = $(this).data('id');
+                    if(this.checked){
+                        $('#report-'+inputId).removeAttr('disabled');
+                    }
+                    else{
+                        $('#report-'+inputId).attr('disabled', true);
+                    }
+                });
+            }
+            else{
+                $('.table-submit-'+tableId).prop('checked', false);
+                $('.table-submit-'+tableId).each(function(){
+                    var inputId = $(this).data('id');
+                    if(this.checked){
+                        $('#report-'+inputId).removeAttr('disabled');
+                    }
+                    else{
+                        $('#report-'+inputId).attr('disabled', true);
+                    }
+                });
+            }
+
+            var allChecked = 0;
+            var flag = true;
+            $(".select-submit-table").each(function(index, element){
+                if(this.checked){
+                    allChecked++;
+                    flag = true;
+                } 
+                else{
+                    flag = false;
+                    return false;
+                }
+            });
+            if(allChecked == 0){
+                $('#all-submit').prop('checked', false);
+            }
+            if(flag == true){
+                $('#all-submit').prop('checked', true);
+            }else{
+                $('#all-submit').prop('checked', false);
+            }
+        });
+        $('#all-submit').on('click', function(){
+            if(this.checked){
+                $('.select-submit-table').prop('checked', true);
+                $('.all-submit').prop('checked', true);
+                $('.all-submit').each(function(){
+                    var inputId = $(this).data('id');
+                    if(this.checked){
+                        $('#report-'+inputId).removeAttr('disabled');
+                    }
+                    else{
+                        $('#report-'+inputId).attr('disabled', true);
+                    }
+                });
+            }
+            else{
+                $('.select-submit-table').prop('checked', false);
+                $('.all-submit').prop('checked', false);
+                $('.all-submit').each(function(){
+                    var inputId = $(this).data('id');
+                    if(this.checked){
+                        $('#report-'+inputId).removeAttr('disabled');
+                    }
+                    else{
+                        $('#report-'+inputId).attr('disabled', true);
+                    }
+                });
+            }
+        });
 
         $('.button-deny').on('click', function () {
             var catID = $(this).data('id');

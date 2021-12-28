@@ -202,7 +202,7 @@
                         $('#dropdown').attr('required', '');
                     }else if(fieldtype === 'date' || fieldtype === 'date-range'){
                         $('#placeholderfield').hide();
-                    } else if(fieldtype === 'text' || fieldtype === 'number' || fieldtype === 'decimal'){
+                    } else if(fieldtype === 'text' || fieldtype === 'number' || fieldtype === 'decimal' || fieldtype === 'textarea'){
                         $("#dropdown_field").hide();
                         $('#placeholderfield').show();
                         $("#dropdown").removeAttr('required');

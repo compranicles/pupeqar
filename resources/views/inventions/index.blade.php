@@ -64,12 +64,12 @@
                                 <tbody>
                                     @foreach ($inventions as $invention)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('invention-innovation-creative.show', $invention->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $invention->title }}</td>
-                                        <td id="classification-iicw-{{$invention->id}}"></td>
-                                        <td>{{ $invention->status_name }}</td>
-                                        <td>{{ $invention->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " id="classification-iicw-{{$invention->id}}" ></td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->status_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">
                                             <?php $updated_at = strtotime( $invention->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -122,12 +122,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#invention_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
-            
      </script>
      <script>
          var table =  $("#invention_table").DataTable();

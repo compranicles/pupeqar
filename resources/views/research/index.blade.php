@@ -77,11 +77,11 @@
                                         <tbody>
                                             @foreach ($researches as $research)
                                                 <tr role="button">
-                                                    <td><a href="{{ route('research.show', $research->id) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
-                                                    <td>{{ $research->research_code }}</td>
-                                                    <td>{{ $research->title }}</td>
-                                                    <td>{{ $research->status_name }}</td>
-                                                    <td>{{ $research->college_name }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' ">{{ $loop->iteration }}</a></td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' ">{{ $research->research_code }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' ">{{ $research->title }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' ">{{ $research->status_name }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' ">{{ $research->college_name }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -154,10 +154,6 @@
             });
 
             table.draw();
-
-            $('#researchTable').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
         });
     </script>
     <script>

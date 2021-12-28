@@ -60,11 +60,11 @@
                                 <tbody>
                                     @foreach ($allRtmmi as $rtmmi)
                                     <tr class="tr-hover" role="button">
-                                        <td><a href="{{ route('rtmmi.show', $rtmmi->id) }}"></a>{{ $loop->iteration }}</td>
-                                        <td>{{ $rtmmi->title }}</td>
-                                        <td>{{ $rtmmi->category_name }}</td>
-                                        <td>{{ $rtmmi->college_name }}</td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->title }}</td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
                                             <?php $updated_at = strtotime( $rtmmi->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                             {{ $updated_at }}
@@ -117,11 +117,6 @@
           document.getElementById('delete_item').action = url;
           
         });
-     </script>
-     <script>
-         $('#rtmmi_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
      </script>
      <script>
          var table =  $("#rtmmi_table").DataTable();

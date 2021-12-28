@@ -297,7 +297,7 @@ class ReportController extends Controller
                 break;
             case 15:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('reference.edit', $report->report_reference_id);
+                return redirect()->route('rtmmi.edit', $report->report_reference_id);
                 break;
             case 16:
                 $report = Report::where('id', $report_id)->first();
