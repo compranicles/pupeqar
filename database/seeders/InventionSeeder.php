@@ -205,7 +205,7 @@ class InventionSeeder extends Seeder
             'invention_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
-            'placeholder' => null,
+            'placeholder' => "*Certificate of Patent, *Full Paper of Invention, *Certificate of Manufacturers/Fabricators",
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 

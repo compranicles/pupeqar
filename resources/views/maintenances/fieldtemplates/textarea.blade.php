@@ -7,27 +7,13 @@
             <i class="far fa-question-circle"></i>
         </button>
         @endif
-        <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" 
-                placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
-                @switch($fieldInfo->visibility)
-                    @case(2)
-                        {{ 'readonly' }}
-                        @break
-                    @case(3)
-                        {{ 'disabled' }}
-                        @break
-                    @case(2)
-                        {{ 'hidden' }}
-                        @break
-                    @default
-                        
-                @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
+        <textarea name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
 
-                @error($fieldInfo->name)
-                    <span class='invalid-feedback' role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+        @error($fieldInfo->name)
+            <span class='invalid-feedback' role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
 
     </div>
 </div>

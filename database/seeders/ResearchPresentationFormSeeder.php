@@ -113,7 +113,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'research_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Abstract, *Certificate of Presentation/Attendance, *Conference Proceedings, *Documentation of Paper Presentation",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

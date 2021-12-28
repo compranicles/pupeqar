@@ -148,7 +148,7 @@ class MobilityFormSeeder extends Seeder
             'extension_programs_form_id' => 6,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Special Order (if applicable), *[For students] Proof of enrollment in the SUC (for both inbound and outbound students), *Documentation/Pictures/Other similar supporting documents, *MOA/MOU/Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 
