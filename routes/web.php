@@ -275,6 +275,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/ipqmso/accept/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
     Route::get('/reports/ipqmso/reject-create/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
     Route::post('/reports/ipqmso/reject/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
+    Route::post('/reports/ipqmso/undo/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
     Route::resource('/reports/ipqmso', \App\Http\Controllers\Reports\IpqmsoController::class);
 
     //view all reports

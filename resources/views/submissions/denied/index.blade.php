@@ -262,7 +262,7 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.sector', ':id') }}" data-id="{{ $row->id }}">Details</button>
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('sector.index', ':id') }}" data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -311,6 +311,49 @@
                                         @else
                                             <a href="{{ route('sector.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
                                         @endif
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+    @if (in_array(8, $roles))
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied By Me</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive">
+                        <table class="table table-hover table-sm table-bordered text-center" id="report_denied_by_me_sector">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Department</th>
+                                    <th>Report Category</th>
+                                    <th>Faculty</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($denied_by_me as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->department_name }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('ipqmso.index', ':id') }}" data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty

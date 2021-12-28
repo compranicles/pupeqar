@@ -91,6 +91,12 @@ class DeniedController extends Controller
                 ->where('chairperson_approval', 1)->where('dean_approval', 1)
                 ->where('sector_approval', 1)->where('ipqmso_approval', 0)->get();
         }
+        if(in_array(8, $roles)){
+            $denied_by_me = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category' , 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+                ->join('colleges', 'reports.college_id', 'colleges.id')->join('departments', 'reports.department_id', 'departments.id')
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->
+                where('reports.sector_approval', 0)->get();
+        }
 
         return view('submissions.denied.index', compact('reported_accomplishments', 'roles', 'department_id', 'college_id', 'higher_denied_accomplishments', 'denied_by_me'));
     }
