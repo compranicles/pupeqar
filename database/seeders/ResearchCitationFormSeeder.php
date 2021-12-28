@@ -153,7 +153,7 @@ class ResearchCitationFormSeeder extends Seeder
             'research_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Print Screen from Goole Scholar/Internet indicating the title of papers citing the paper, *Reference Page highlighting the name of authors and title of research cited, *Pages of books highlighting the citation",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

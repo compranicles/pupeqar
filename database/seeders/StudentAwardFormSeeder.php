@@ -96,7 +96,7 @@ class StudentAwardFormSeeder extends Seeder
             'academic_development_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Citation/Certificate of Award/Other similar supporting documents, *Pictures/Documentation/Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

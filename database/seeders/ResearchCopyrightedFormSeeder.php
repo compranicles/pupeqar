@@ -85,7 +85,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'research_form_id' => 7,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Copy of Copyright Application, *Copy of Approved Copypaper",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

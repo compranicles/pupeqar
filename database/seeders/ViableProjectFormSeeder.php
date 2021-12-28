@@ -83,7 +83,7 @@ class ViableProjectFormSeeder extends Seeder
             'academic_development_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Copy of audited financial statement/certification from VP For Administration and Finance or its equivalent, *Computation of ROI for each project duly signed and certified true and correct by the SUC accountant and attested by the supervisor concerned, *Computation of IRR for each project duly signed and certified true and correct by the SUC accountant and attested by the supervisor concerned, *Certification of utilization in programs offered by the SUC",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 
