@@ -20,6 +20,8 @@ class RequestController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Request::class);
+
         $requests = RequestModel::where('user_id', auth()->id())
         ->join('dropdown_options', 'dropdown_options.id', 'requests.category')
         ->select('requests.*', 'dropdown_options.name as category')
@@ -35,6 +37,8 @@ class RequestController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Request::class);
+
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -52,7 +56,7 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-
+        $this->authorize('create', Request::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -94,6 +98,7 @@ class RequestController extends Controller
      */
     public function show(RequestModel $request)
     {
+        $this->authorize('view', Request::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -116,7 +121,7 @@ class RequestController extends Controller
      */
     public function edit(RequestModel $request)
     {
-
+        $this->authorize('update', Request::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -140,6 +145,7 @@ class RequestController extends Controller
      */
     public function update(Request $requestdata, RequestModel $request)
     {
+        $this->authorize('update', Request::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -181,6 +187,7 @@ class RequestController extends Controller
      */
     public function destroy(RequestModel $request)
     {
+        $this->authorize('delete', Request::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         RequestDocument::where('request_id', $request->id)->delete();
@@ -189,7 +196,6 @@ class RequestController extends Controller
     }
 
     public function removeDoc($filename){
-
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         RequestDocument::where('filename', $filename)->delete();

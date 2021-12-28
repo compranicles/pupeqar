@@ -13144,15 +13144,6 @@ table tr .padding_left_show {
     background-color: white;
 }
 
-.db-card .card-title {
-  margin-top: 15px;
-}
-
-.db-card .number_of_entry {
-  margin-top: 8px;
-  
-}
-
 .card.db-card {
   height: 90px;
   width: 30%;
@@ -13186,9 +13177,6 @@ table tr .padding_left_show {
   height: 100%;
 }
 
-.db-card {
-  flex: 0 1 auto;
-}
 
 .submission_links {
   color: black;
@@ -13279,3 +13267,6 @@ table tr .padding_left_show {
     column-count: 2;
 }
 
+.home-icons { 
+  font-size: 4em;
+}

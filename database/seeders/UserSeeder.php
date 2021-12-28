@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Chairperson;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,9 +22,9 @@ class UserSeeder extends Seeder
             'email' => 'mugomec@mailinator.com',
             'password'=> Hash::make('mugomec@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Eru',
+            'first_name' => 'Super Admin',
             'middle_name' => null,
-            'last_name' => 'Eru',
+            'last_name' => 'Super Admin',
             'suffix' => null,
         ]);
 
@@ -31,9 +32,9 @@ class UserSeeder extends Seeder
             'email' => 'candy@mailinator.com',
             'password'=> Hash::make('candy@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Candy',
+            'first_name' => 'Super Admin',
             'middle_name' => null,
-            'last_name' => 'Candy',
+            'last_name' => 'Super Admin',
             'suffix' => null,
         ]);
 
@@ -42,9 +43,9 @@ class UserSeeder extends Seeder
             'email' => 'cozy@mailinator.com',
             'password'=> Hash::make('cozy@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Cozy',
+            'first_name' => 'Faculty',
             'middle_name' => null,
-            'last_name' => 'Promise',
+            'last_name' => 'Faculty',
             'suffix' => null,
         ]);
 
@@ -52,32 +53,32 @@ class UserSeeder extends Seeder
             'email' => 'kyhogo@mailinator.com',
             'password'=> Hash::make('kyhogo@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Taylor',
+            'first_name' => 'Faculty',
             'middle_name' => null,
-            'last_name' => 'Swift',
+            'last_name' => 'Faculty',
             'suffix' => null,
         ]);
-
+//4
         for ($f = 1; $f <= 11; $f++) {
             User::create([
                 'email' => 'faculty'.$f.'@mailinator.com',
                 'password'=> Hash::make('faculty'.$f.'@mailinator.com'),
                 'date_of_birth' => 1992-04-24,
-                'first_name' => 'Ana',
+                'first_name' => 'Faculty',
                 'middle_name' => null,
-                'last_name' => 'Miguel',
+                'last_name' => 'Faculty',
                 'suffix' => null,
             ]);
         }
-
+//15
         //Faculty with designation
         User::create([
             'email' => 'loey@mailinator.com',
             'password'=> Hash::make('loey@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Loey',
+            'first_name' => 'Faculty Designate',
             'middle_name' => null,
-            'last_name' => 'Well',
+            'last_name' => 'Faculty Designate',
             'suffix' => null,
         ]);
 
@@ -85,9 +86,9 @@ class UserSeeder extends Seeder
             'email' => 'miro@mailinator.com',
             'password'=> Hash::make('miro@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Miro',
+            'first_name' => 'Faculty Designate',
             'middle_name' => null,
-            'last_name' => 'Sales',
+            'last_name' => 'Faculty Designate',
             'suffix' => null,
         ]);
 
@@ -96,21 +97,21 @@ class UserSeeder extends Seeder
                 'email' => 'facultydesignate'.$i.'@mailinator.com',
                 'password'=> Hash::make('facultydesignate'.$i.'@mailinator.com'),
                 'date_of_birth' => 1992-04-24,
-                'first_name' => 'Ana',
+                'first_name' => 'Faculty Designate',
                 'middle_name' => null,
-                'last_name' => 'Miguel',
+                'last_name' => 'Faculty Designate',
                 'suffix' => null,
             ]);
         }
-
+//28
         //Admin Employee
         User::create([
             'email' => 'harry@mailinator.com',
             'password'=> Hash::make('harry@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Harry',
+            'first_name' => 'Admin Employee',
             'middle_name' => null,
-            'last_name' => 'Styles',
+            'last_name' => 'Admin Employee',
             'suffix' => null,
         ]);
 
@@ -118,9 +119,9 @@ class UserSeeder extends Seeder
             'email' => 'mira@mailinator.com',
             'password'=> Hash::make('mira@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Mira',
+            'first_name' => 'Admin Employee',
             'middle_name' => null,
-            'last_name' => 'Sola',
+            'last_name' => 'Admin Employee',
             'suffix' => null,
         ]);
 
@@ -129,21 +130,21 @@ class UserSeeder extends Seeder
                 'email' => 'admin'.$a.'@mailinator.com',
                 'password'=> Hash::make('admin'.$a.'@mailinator.com'),
                 'date_of_birth' => 1992-04-24,
-                'first_name' => 'Ana',
+                'first_name' => 'Admin Employee',
                 'middle_name' => null,
-                'last_name' => 'Miguel',
+                'last_name' => 'Admin Employee',
                 'suffix' => null,
             ]);
         }
-
+//41
         //Admin with Teaching Load
         User::create([
             'email' => 'gola@mailinator.com',
             'password'=> Hash::make('gola@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Gola',
+            'first_name' => 'Admin Teaching',
             'middle_name' => null,
-            'last_name' => 'Bamonos',
+            'last_name' => 'Admin Teaching',
             'suffix' => null,
         ]);
 
@@ -151,53 +152,66 @@ class UserSeeder extends Seeder
             'email' => 'sorita@mailinator.com',
             'password'=> Hash::make('sorita@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Sorita',
+            'first_name' => 'Admin Teaching',
             'middle_name' => null,
-            'last_name' => 'Sen',
+            'last_name' => 'Admin Teaching',
             'suffix' => null,
         ]);
 
-        for ($at = 3; $at <= 11; $at++) {
+        for ($at = 1; $at <= 11; $at++) {
             User::create([
                 'email' => 'adminteaching'.$at.'@mailinator.com',
                 'password'=> Hash::make('adminteaching'.$at.'@mailinator.com'),
                 'date_of_birth' => 1992-04-24,
-                'first_name' => 'Ana',
+                'first_name' => 'Admin Teaching',
                 'middle_name' => null,
-                'last_name' => 'Miguel',
+                'last_name' => 'Admin Teaching',
                 'suffix' => null,
             ]);
         }
-
+//54
         //Chairperson
-        User::create([
+        $cp1 = User::create([
             'email' => 'lucas@mailinator.com',
             'password'=> Hash::make('lucas@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Lucas',
+            'first_name' => 'Chairperson-CAF-Accountancy',
             'middle_name' => null,
-            'last_name' => 'Ynes',
+            'last_name' => 'Chairperson-CAF-Accountancy',
             'suffix' => null,
         ]);
 
-        User::create([
+        Chairperson::create([
+            'user_id' => $cp1->id,
+            'department_id' => 1,
+            'college_id' => 1,
+        ]);
+
+
+        $cp2 = User::create([
             'email' => 'miku@mailinator.com',
             'password'=> Hash::make('miku@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Miku',
+            'first_name' => 'Chairperson-Taguig',
             'middle_name' => null,
-            'last_name' => 'Reyes',
+            'last_name' => 'Chairperson-Taguig',
             'suffix' => null,
         ]);
 
+        Chairperson::create([
+            'user_id' => $cp2->id,
+            'department_id' => 42,
+            'college_id' => 42,
+        ]);
+//56
         //Director/Dean
         User::create([
             'email' => 'direk@mailinator.com',
             'password'=> Hash::make('direk@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Direk',
+            'first_name' => 'Dean-CAF',
             'middle_name' => null,
-            'last_name' => 'Juano',
+            'last_name' => 'Dean-CAF',
             'suffix' => null,
         ]);
 
@@ -205,20 +219,20 @@ class UserSeeder extends Seeder
             'email' => 'teresita@mailinator.com',
             'password'=> Hash::make('teresita@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Teresita',
+            'first_name' => 'Dean-Taguig',
             'middle_name' => null,
-            'last_name' => 'Malo',
+            'last_name' => 'Dean-Taguig',
             'suffix' => null,
         ]);
-
+//58
         //VP/Sector head
         User::create([
             'email' => 'yulo@mailinator.com',
             'password'=> Hash::make('yulo@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Yulo',
+            'first_name' => 'Sector Head',
             'middle_name' => null,
-            'last_name' => 'Maki',
+            'last_name' => 'Sector Head',
             'suffix' => null,
         ]);
 
@@ -226,20 +240,20 @@ class UserSeeder extends Seeder
             'email' => 'ramen@mailinator.com',
             'password'=> Hash::make('ramen@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Ramen',
+            'first_name' => 'Sector Head',
             'middle_name' => null,
-            'last_name' => 'Noodles',
+            'last_name' => 'Sector Head',
             'suffix' => null,
         ]);
-
+//60
         //IPQMSO
         User::create([
             'email' => 'goya@mailinator.com',
             'password'=> Hash::make('goya@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Goya',
+            'first_name' => 'IPQMSO',
             'middle_name' => null,
-            'last_name' => 'Chocolate',
+            'last_name' => 'IPQMSO',
             'suffix' => null,
         ]);
 
@@ -247,10 +261,11 @@ class UserSeeder extends Seeder
             'email' => 'lego@mailinator.com',
             'password'=> Hash::make('lego@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Lego',
+            'first_name' => 'IPQMSO',
             'middle_name' => null,
-            'last_name' => 'Blocks',
+            'last_name' => 'IPQMSO',
             'suffix' => null,
         ]);
+//62
     }
 }

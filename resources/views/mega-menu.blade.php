@@ -22,7 +22,9 @@
                 <li><a href="">Accomplishment based on OPCR</a></li>
                 <li><a href="">Accomplishment Based on IPCR</a></li>
                 <li><a href="">Special Tasks</a></li>
+                @can('viewAny', \App\Models\Request::class)
                 <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
+                @endcan
             </ul>
             @can('viewAny', \App\Models\Research::class)
             <ul>
