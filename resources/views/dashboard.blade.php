@@ -8,12 +8,13 @@
                             <div class="p-3">
                                 <i class="far fa-star home-icons text-right"></i>
                                 <div class="float-right">
-                                    <h2 class="text-right">{{ $facultysum }}</h2>
+                                    <h2 class="text-right">{{ $sum }}</h2>
                                     <p class="text-right" id="quarter"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
