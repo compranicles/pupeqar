@@ -174,7 +174,7 @@ class StudentTrainingFormSeeder extends Seeder
             'academic_development_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Certificate/Other similar supporting documents, *Terminal report (if applicable), *Documentation/Pictures/ Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

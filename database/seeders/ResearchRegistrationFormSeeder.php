@@ -248,7 +248,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'research_form_id' => 1,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*[For externally-funded] MOA/MOU, *[For externally-funded] BOR Resolution, *[For On-going] Abstract, *[For On-going] Research Proposal, *[For On-going] Certification Issued by the Reviewer of the Research Instrument Used/Ethics Clearance",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 

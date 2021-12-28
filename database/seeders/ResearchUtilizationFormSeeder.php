@@ -73,7 +73,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'research_form_id' => 6,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => null,
+            'placeholder' => "*Certification from the industry/beneficiary who utilized the research",
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 
