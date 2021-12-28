@@ -29,6 +29,7 @@ use App\Models\StudentTraining;
 use App\Models\Syllabus;
 use App\Models\TechnicalExtension;
 use App\Models\ViableProject;
+use App\Models\Request;
 
 use App\Models\Announcement;
 use App\Models\Maintenance\College;
@@ -75,6 +76,7 @@ use App\Policies\Maintenance\DropdownPolicy;
 use App\Policies\Maintenance\Research\ResearchFormPolicy;
 use App\Policies\Maintenance\Invention\InventionFormPolicy;
 use App\Policies\Maintenance\ExtensionProgram\ExtensionProgramFormPolicy;
+use App\Policies\Request\RequestPolicy;
 
 
 class AuthServiceProvider extends ServiceProvider
@@ -136,6 +138,8 @@ class AuthServiceProvider extends ServiceProvider
         Syllabus::class => SyllabusPolicy::class,
         TechnicalExtension::class => TechnicalExtensionPolicy::class,
         ViableProject::class => ViableProjectPolicy::class,
+
+        Request::class => RequestPolicy::class,
     ];
 
     /**

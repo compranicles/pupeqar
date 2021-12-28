@@ -19,10 +19,9 @@ Route::get('/', function () {
 })->name('home')->middleware('guest');
 
 // dashboard and homepage display
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    $announcements = \App\Models\Announcement::where('status', 1)->latest()->take(5)->get();
-    return view('dashboard', compact('announcements'));
-})->name('dashboard');
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+});
 
 // upload and remove documents/images
 Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);

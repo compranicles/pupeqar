@@ -65,8 +65,9 @@
         </div>
 
         
-        <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold">Select All</label>
         <button class="btn btn-primary mb-3 mt-3" data-toggle="modal" data-target="#submitReportModal" id="submitReport" style="width: 100%;">Submit</button>
+        <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-1">Select All</label>
+        <hr>
         @endif
         @php
             $tableCount = 1;
@@ -80,7 +81,7 @@
                 @continue
             @endif
         <h3 id="{{ $table->name }}" class="submission-categories jumptarget">{{ $table->name }}</h3>
-        <div class="card h-100">
+        <div class="card h-100 card-submission">
             <div class="card-body">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
@@ -466,12 +467,18 @@
         });
 
         $(function(){
-            // if( $('.doc-incomplete').length != 0) {
-            //     $('#submitReport').show();
-            // }
-            // else{
-            //     $('#submitReport').remove();
-            // }
+            if( ($('.doc-incomplete').length != 0) && ($('.doc-complete').length == 0)) {
+                $('#submitReport').hide();
+                $('#all-submit').hide();
+                $('.all-submit').hide();
+                $('.select-submit-table').hide();
+                $('.select-submit').hide();
+
+            }
+            if(($('.doc-incomplete').length != 0) && ($('.doc-complete').length != 0)){
+                $('#submitReport').show();
+                
+            }
             $('#report_denied').DataTable();
         });
     </script>
