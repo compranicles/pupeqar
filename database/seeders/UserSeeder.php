@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Dean;
 use App\Models\User;
 use App\Models\Chairperson;
 use Illuminate\Database\Seeder;
@@ -18,6 +19,7 @@ class UserSeeder extends Seeder
     {
         //Super Admin
         User::truncate();
+        // 1
         User::create([
             'email' => 'mugomec@mailinator.com',
             'password'=> Hash::make('mugomec@mailinator.com'),
@@ -27,7 +29,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Super Admin',
             'suffix' => null,
         ]);
-
+        // 2
         User::create([
             'email' => 'candy@mailinator.com',
             'password'=> Hash::make('candy@mailinator.com'),
@@ -39,6 +41,7 @@ class UserSeeder extends Seeder
         ]);
 
         //Faculty
+        // 3
         User::create([
             'email' => 'cozy@mailinator.com',
             'password'=> Hash::make('cozy@mailinator.com'),
@@ -49,6 +52,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        // 4
         User::create([
             'email' => 'kyhogo@mailinator.com',
             'password'=> Hash::make('kyhogo@mailinator.com'),
@@ -58,7 +62,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Faculty',
             'suffix' => null,
         ]);
-//4
+        // 5-15
         for ($f = 1; $f <= 11; $f++) {
             User::create([
                 'email' => 'faculty'.$f.'@mailinator.com',
@@ -70,7 +74,8 @@ class UserSeeder extends Seeder
                 'suffix' => null,
             ]);
         }
-//15
+
+        //16
         //Faculty with designation
         User::create([
             'email' => 'loey@mailinator.com',
@@ -81,7 +86,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Faculty Designate',
             'suffix' => null,
         ]);
-
+        //17
         User::create([
             'email' => 'miro@mailinator.com',
             'password'=> Hash::make('miro@mailinator.com'),
@@ -91,7 +96,7 @@ class UserSeeder extends Seeder
             'last_name' => 'Faculty Designate',
             'suffix' => null,
         ]);
-
+        // 18-28
         for ($i = 1; $i <= 11; $i++) {
             User::create([
                 'email' => 'facultydesignate'.$i.'@mailinator.com',
@@ -103,8 +108,8 @@ class UserSeeder extends Seeder
                 'suffix' => null,
             ]);
         }
-//28
-        //Admin Employee
+
+        //Admin Employee 29- 41
         User::create([
             'email' => 'harry@mailinator.com',
             'password'=> Hash::make('harry@mailinator.com'),
@@ -136,7 +141,7 @@ class UserSeeder extends Seeder
                 'suffix' => null,
             ]);
         }
-//41
+//42
         //Admin with Teaching Load
         User::create([
             'email' => 'gola@mailinator.com',
@@ -170,6 +175,8 @@ class UserSeeder extends Seeder
             ]);
         }
 //54
+        Chairperson::truncate();
+
         //Chairperson
         $cp1 = User::create([
             'email' => 'lucas@mailinator.com',
@@ -204,8 +211,9 @@ class UserSeeder extends Seeder
             'college_id' => 42,
         ]);
 //56
+        Dean::truncate();
         //Director/Dean
-        User::create([
+        $dean1 = User::create([
             'email' => 'direk@mailinator.com',
             'password'=> Hash::make('direk@mailinator.com'),
             'date_of_birth' => 2000-04-24,
@@ -215,7 +223,12 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
-        User::create([
+        Dean::create([
+            'user_id' => $dean1->id,
+            'college_id' => 1,
+        ]);
+
+        $dean2 = User::create([
             'email' => 'teresita@mailinator.com',
             'password'=> Hash::make('teresita@mailinator.com'),
             'date_of_birth' => 1998-04-24,
@@ -224,6 +237,12 @@ class UserSeeder extends Seeder
             'last_name' => 'Dean-Taguig',
             'suffix' => null,
         ]);
+
+        Dean::create([
+            'user_id' => $dean2->id,
+            'college_id' => 42,
+        ]);
+
 //58
         //VP/Sector head
         User::create([

@@ -225,7 +225,7 @@ class ReportController extends Controller
     }
 
     public function getRejectDetails($report_id){
-        $deny_details = DenyReason::where('report_id', $report_id)->first();
+        $deny_details = DenyReason::where('report_id', $report_id)->latest()->first();
         $newtime = strtotime($deny_details->created_at);
         $deny_details->time = date("F j, Y, g:i a", $newtime);
         return $deny_details;

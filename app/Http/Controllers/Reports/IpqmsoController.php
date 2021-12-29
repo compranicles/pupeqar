@@ -19,8 +19,8 @@ class IpqmsoController extends Controller
      */
     public function index()
     {
-        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            // ->join('departments', 'reports.department_id', 'departments.id')
+        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            ->join('departments', 'reports.department_id', 'departments.id')
             ->join('colleges', 'reports.college_id', 'colleges.id')
             ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
             ->join('users', 'reports.user_id', 'users.id')
@@ -129,11 +129,11 @@ class IpqmsoController extends Controller
         Report::where('id', $report_id)->update([
             'ipqmso_approval' => 0
         ]);
-        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
+        return redirect()->route('ipqmso.index')->with('deny-success', 'Report Denial successfully sent');
     }
 
     public function undo($report_id){
-        Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
+        Report::where('id', $report_id)->update(['ipqmso_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 }

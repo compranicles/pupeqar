@@ -241,49 +241,49 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getRejectDetails']);
     Route::get('/reports/manage/{report_id}/{report_category_id}', [\App\Http\Controllers\Reports\ReportController::class, 'viewReportOrigin'])->name('report.manage');
 
-    //faculty Reports
-    Route::get('/reports/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'addDocument'])->name('faculty.adddoc');
-    Route::post('/reports/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'saveDocument'])->name('faculty.savedoc');
-    Route::resource('/reports/faculty', \App\Http\Controllers\Reports\FacultyController::class);
+    // //faculty Reports
+    // Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'addDocument'])->name('faculty.adddoc');
+    // Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'saveDocument'])->name('faculty.savedoc');
+    // Route::resource('/submissions/faculty', \App\Http\Controllers\Reports\FacultyController::class);
 
     //chairperson Reports
-    Route::get('/reports/chairperson/accept/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'accept'])->name('chairperson.accept');
-    Route::get('/reports/chairperson/reject-create/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'rejectCreate'])->name('chairperson.reject-create');
-    Route::post('/reports/chairperson/reject/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'reject'])->name('chairperson.reject');
-    Route::get('/reports/chairperson/relay/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'relay'])->name('chairperson.relay');
-    Route::get('/reports/chairperson/undo/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'undo'])->name('chairperson.undo');
-    Route::resource('/reports/chairperson', \App\Http\Controllers\Reports\ChairpersonController::class);
+    Route::get('/submissions/chairperson/accept/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'accept'])->name('chairperson.accept');
+    Route::get('/submissions/chairperson/reject-create/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'rejectCreate'])->name('chairperson.reject-create');
+    Route::post('/submissions/chairperson/reject/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'reject'])->name('chairperson.reject');
+    Route::get('/submissions/chairperson/relay/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'relay'])->name('chairperson.relay');
+    Route::get('/submissions/chairperson/undo/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'undo'])->name('chairperson.undo');
+    Route::resource('/submissions/chairperson', \App\Http\Controllers\Reports\ChairpersonController::class);
 
     //dean reports
-    Route::get('/reports/dean/accept/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'accept'])->name('dean.accept');
-    Route::get('/reports/dean/reject-create/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'rejectCreate'])->name('dean.reject-create');
-    Route::post('/reports/dean/reject/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'reject'])->name('dean.reject');
-    Route::get('/reports/dean/relay/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'relay'])->name('dean.relay');
-    Route::get('/reports/dean/undo/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'undo'])->name('dean.undo');
-    Route::resource('/reports/dean', \App\Http\Controllers\Reports\DeanController::class);
+    Route::get('/submissions/dean/accept/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'accept'])->name('dean.accept');
+    Route::get('/submissions/dean/reject-create/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'rejectCreate'])->name('dean.reject-create');
+    Route::post('/submissions/dean/reject/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'reject'])->name('dean.reject');
+    Route::get('/submissions/dean/relay/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'relay'])->name('dean.relay');
+    Route::get('/submissions/dean/undo/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'undo'])->name('dean.undo');
+    Route::resource('/submissions/dean', \App\Http\Controllers\Reports\DeanController::class);
 
     //sector reports
-    Route::get('/reports/sector/accept/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'accept'])->name('sector.accept');
-    Route::get('/reports/sector/reject-create/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'rejectCreate'])->name('sector.reject-create');
-    Route::post('/reports/sector/reject/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'reject'])->name('sector.reject');
-    Route::get('/reports/sector/relay/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'relay'])->name('sector.relay');
-    Route::get('/reports/sector/undo/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'undo'])->name('sector.undo');
-    Route::resource('/reports/sector', \App\Http\Controllers\Reports\SectorController::class);
+    Route::get('/submissions/sector/accept/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'accept'])->name('sector.accept');
+    Route::get('/submissions/sector/reject-create/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'rejectCreate'])->name('sector.reject-create');
+    Route::post('/submissions/sector/reject/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'reject'])->name('sector.reject');
+    Route::get('/submissions/sector/relay/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'relay'])->name('sector.relay');
+    Route::get('/submissions/sector/undo/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'undo'])->name('sector.undo');
+    Route::resource('/submissions/sector', \App\Http\Controllers\Reports\SectorController::class);
     
     //ipqmso reports
-    Route::get('/reports/ipqmso/accept/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
-    Route::get('/reports/ipqmso/reject-create/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
-    Route::post('/reports/ipqmso/reject/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
-    Route::post('/reports/ipqmso/undo/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
-    Route::resource('/reports/ipqmso', \App\Http\Controllers\Reports\IpqmsoController::class);
+    Route::get('/submissions/ipqmso/accept/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
+    Route::get('/submissions/ipqmso/reject-create/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
+    Route::post('/submissions/ipqmso/reject/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
+    Route::post('/submissions/ipqmso/undo/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
+    Route::resource('/submissions/ipqmso', \App\Http\Controllers\Reports\IpqmsoController::class);
 
     //view all reports
-    Route::get('/reports/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
+    Route::get('/submissions/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
 
     /**********************************SUBMISSIONS************************************* */
     Route::resource('/submissions/to-finalize', \App\Http\Controllers\Submissions\SubmissionController::class);
     Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');
-    Route::get('/submissions/accepted', [\App\Http\Controllers\Submissions\AcceptedController::class, 'index'])->name('submissions.accepted.index');
+    Route::get('/submissions/approved', [\App\Http\Controllers\Submissions\AcceptedController::class, 'index'])->name('submissions.accepted.index');
     Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 

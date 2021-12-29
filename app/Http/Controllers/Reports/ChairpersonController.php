@@ -21,13 +21,6 @@ class ChairpersonController extends Controller
     {
         $departmentHeadOf = Chairperson::select('chairpeople.*', 'departments.name as department_name')->
             join('departments', 'chairpeople.department_id', 'departments.id')->where('user_id', auth()->id())->first();
-
-        
-        $reportsToReview = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-                            ->join('departments', 'reports.department_id', 'departments.id')
-                            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-                            ->join('users', 'reports.user_id', 'users.id')
-                            ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', null)->get();
         
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
@@ -40,6 +33,12 @@ class ChairpersonController extends Controller
         if(in_array(6, $roles)){
             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
         }
+
+        $reportsToReview = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            ->join('departments', 'reports.department_id', 'departments.id')
+            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+            ->join('users', 'reports.user_id', 'users.id')
+            ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', null)->get();
 
         return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview', 'roles', 'department_id', 'college_id'));
     }
@@ -140,7 +139,7 @@ class ChairpersonController extends Controller
     }
 
     public function undo($report_id){
-        Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
+        Report::where('id', $report_id)->update(['chairperson_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 
