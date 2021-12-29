@@ -111,7 +111,8 @@
             </div>
             <div class="modal-body">
                 <h5 class="text-center">Are you sure you want to delete this research?</h5>
-                <form action="{{ route('research.destroy', $research->id) }}" method="post">
+                <p class="text-center h4">{{ $research->title }}</p>
+                <form action="{{ route('research.destroy', $research->id) }}" method="POST">
                     @csrf
                     @method('delete')
             </div>

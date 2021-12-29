@@ -173,5 +173,6 @@
 
             table.draw();
      </script>
+
      @endpush
 </x-app-layout>

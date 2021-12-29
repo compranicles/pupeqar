@@ -69,8 +69,9 @@ class SubmissionController extends Controller
         foreach($report_tables as $table){
             switch($table->id){
                 case '1':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())
-                            ->whereNotIn('research.research_code', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_code')->all() )->orderBy('updated_at', 'desc')->get();
+                    $data = Research::select('research.research_code', 'research.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                        ->join('dropdown_options', 'dropdown_options.id', 'research.classification')    
+                        ->whereNotIn('research.research_code', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_code')->all() )->orderBy('updated_at', 'desc')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
@@ -83,8 +84,9 @@ class SubmissionController extends Controller
         
                     break;
                 case '2':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
+                    $data = Research::select('research.research_code', 'research_completes.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('research_completes', 'research_completes.research_code', 'research.research_code')->get();
                     if($data != null){
                         foreach($data as $row){
@@ -97,9 +99,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '3':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
+                    $data = Research::select('research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
+                            whereNotIn('research.research_code', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                            ->join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
@@ -111,9 +114,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '4':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            join('research_presentations', 'research_presentations.research_code', 'research.research_code')->get();
+                    $data = Research::select('research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
+                            whereNotIn('research.research_code', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                            ->join('research_presentations', 'research_presentations.research_code', 'research.research_code')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
@@ -125,10 +129,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '5':
-                    $data = ResearchCitation::select('research_citations.id','research.research_code')->where('user_id', auth()->id())->
+                    $data = ResearchCitation::select('research_citations.id','research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            orWhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->
-                            join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())->get();
+                            orWhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )
+                            ->join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->
@@ -141,10 +146,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '6':
-                    $data = ResearchUtilization::select('research_utilizations.id','research.research_code')->where('user_id', auth()->id())->
+                    $data = ResearchUtilization::select('research_utilizations.id','research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
                             whereNotIn('research.research_code', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            orWhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->
-                            join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())->get();
+                            orWhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )
+                            ->join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->
@@ -157,9 +163,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '7':
-                    $data = Research::select('research.research_code')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')->get();
+                    $data = Research::select('research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
+                            whereNotIn('research.research_code', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                            ->join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();

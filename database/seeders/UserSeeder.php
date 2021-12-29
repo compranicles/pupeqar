@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
         User::truncate();
         // 1
         User::create([
-            'email' => 'mugomec@mailinator.com',
-            'password'=> Hash::make('mugomec@mailinator.com'),
+            'email' => 'superadmin1@mailinator.com',
+            'password'=> Hash::make('superadmin1@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Super Admin',
             'middle_name' => null,
@@ -31,8 +31,8 @@ class UserSeeder extends Seeder
         ]);
         // 2
         User::create([
-            'email' => 'candy@mailinator.com',
-            'password'=> Hash::make('candy@mailinator.com'),
+            'email' => 'superadmin2@mailinator.com',
+            'password'=> Hash::make('superadmin2@mailinator.com'),
             'date_of_birth' => 1992-04-24,
             'first_name' => 'Super Admin',
             'middle_name' => null,
@@ -179,8 +179,8 @@ class UserSeeder extends Seeder
 
         //Chairperson
         $cp1 = User::create([
-            'email' => 'lucas@mailinator.com',
-            'password'=> Hash::make('lucas@mailinator.com'),
+            'email' => 'chairperson_caf_accountancy@mailinator.com',
+            'password'=> Hash::make('chairperson_caf_accountancy@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Chairperson-CAF-Accountancy',
             'middle_name' => null,
@@ -196,8 +196,8 @@ class UserSeeder extends Seeder
 
 
         $cp2 = User::create([
-            'email' => 'miku@mailinator.com',
-            'password'=> Hash::make('miku@mailinator.com'),
+            'email' => 'chairperson_taguig@mailinator.com',
+            'password'=> Hash::make('chairperson_taguig@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Chairperson-Taguig',
             'middle_name' => null,
@@ -214,8 +214,8 @@ class UserSeeder extends Seeder
         Dean::truncate();
         //Director/Dean
         $dean1 = User::create([
-            'email' => 'direk@mailinator.com',
-            'password'=> Hash::make('direk@mailinator.com'),
+            'email' => 'dean_caf@mailinator.com',
+            'password'=> Hash::make('dean_caf@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Dean-CAF',
             'middle_name' => null,
@@ -229,8 +229,8 @@ class UserSeeder extends Seeder
         ]);
 
         $dean2 = User::create([
-            'email' => 'teresita@mailinator.com',
-            'password'=> Hash::make('teresita@mailinator.com'),
+            'email' => 'dean_taguig@mailinator.com',
+            'password'=> Hash::make('dean_taguig@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Dean-Taguig',
             'middle_name' => null,
@@ -246,8 +246,8 @@ class UserSeeder extends Seeder
 //58
         //VP/Sector head
         User::create([
-            'email' => 'yulo@mailinator.com',
-            'password'=> Hash::make('yulo@mailinator.com'),
+            'email' => 'sectorhead1@mailinator.com',
+            'password'=> Hash::make('sectorhead1@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Sector Head',
             'middle_name' => null,
@@ -256,8 +256,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'ramen@mailinator.com',
-            'password'=> Hash::make('ramen@mailinator.com'),
+            'email' => 'sectorhead2@mailinator.com',
+            'password'=> Hash::make('sectorhead2@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'Sector Head',
             'middle_name' => null,
