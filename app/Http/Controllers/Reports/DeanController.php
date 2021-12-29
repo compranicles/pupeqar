@@ -139,7 +139,7 @@ class DeanController extends Controller
     }
 
     public function undo($report_id){
-        Report::where('id', $report_id)->update(['dean_approval' => 1]);
+        Report::where('id', $report_id)->update(['dean_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 }

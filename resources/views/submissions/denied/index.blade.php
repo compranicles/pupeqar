@@ -2,11 +2,12 @@
     <x-slot name="header">
             @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
     </x-slot>
+    @if (in_array(1, $roles)||in_array(2, $roles)||in_array(3, $roles)||in_array(4, $roles))
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>Submitted By You</h5>
+                    <h5>Individual</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
@@ -33,8 +34,8 @@
                                         {{ date('M d, Y h:i A', strtotime( $row->created_at)) }}
                                     </td>
                                     <td>
-                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
-                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                     </td>
                                 </tr>
                                 @empty
@@ -47,12 +48,54 @@
             </div>
         </div>
     </div>
+    @endif
     @if (in_array(5, $roles))
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>Denied By Me</h5>
+                    <h5>Department's</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive ">
+                        <table class="table table-hover table-sm text-center" id="report_denied">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Report Category</th>
+                                    <th>Date Reported</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($departamental_or_collegiate_accomplishments as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>
+                                        {{ date('M d, Y h:i A', strtotime( $row->created_at)) }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied/Relayed By Me</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
@@ -76,9 +119,7 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.undo', ':id') }}" data-id="{{ $row->id }}">Details</button>
-                                        {{-- view --}}
-
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->dean_approval !== 0 ) data-accept="{{ route('chairperson.undo', ':id') }}" @endif data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -117,11 +158,11 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                    
                                     <td>
-                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
                                         @if ($row->user_id == auth()->id())
-                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                         @else
-                                            <a href="{{ route('chairperson.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                            <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('chairperson.relay', ':id') }}" data-id="{{ $row->id }}">Details</button>
                                         @endif
 
                                     </td>
@@ -149,7 +190,48 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>Denied By Me</h5>
+                    <h5>College's</h5>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responive ">
+                        <table class="table table-hover table-sm text-center" id="report_denied">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Report Category</th>
+                                    <th>Date Reported</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($departamental_or_collegiate_accomplishments as $row)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $row->report_category }}</td>
+                                    <td>
+                                        {{ date('M d, Y h:i A', strtotime( $row->created_at)) }}
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
+                                    </td>
+                                </tr>
+                                @empty
+                                    
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Denied/Relayed By Me</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
@@ -173,7 +255,7 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.undo', ':id') }}" data-id="{{ $row->id }}">Details</button>
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if( $row->sector_approval == null && $row->chairperson_approval == 1) data-accept="{{ route('dean.undo', ':id') }}" @endif data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -214,11 +296,11 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                    
                                     <td>
-                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
                                         @if ($row->user_id == auth()->id())
-                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                         @else
-                                            <a href="{{ route('dean.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                            <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('dean.relay', ':id') }}" data-id="{{ $row->id }}">Details</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -238,7 +320,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>Denied By Me</h5>
+                    <h5>Denied/Relayed By Me</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
@@ -247,7 +329,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Department</th>
+                                    <th>College</th>
                                     <th>Report Category</th>
                                     <th>Faculty</th>
                                     <th>Action</th>
@@ -257,12 +339,12 @@
                                 @forelse ($denied_by_me as $row)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $row->department_name }}</td>
+                                    <td>{{ $row->college_name }}</td>
                                     <td>{{ $row->report_category }}</td>
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('sector.index', ':id') }}" data-id="{{ $row->id }}">Details</button>
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->ipqmso_approval == null && $row->dean_approval == 1) data-accept="{{ route('sector.undo', ':id') }}" @endif data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -289,7 +371,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>College</th>
-                                    <th>Department</th>
                                     <th>Report Category</th>
                                     <th>Faculty</th>
                                     <th>Action</th>
@@ -300,16 +381,16 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $row->college_name }}</td>
-                                    <td>{{ $row->department_name }}</td>
                                     <td>{{ $row->report_category }}</td>
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                    
                                     <td>
-                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">View Reason</button>
+                                        <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
+                                        
                                         @if ($row->user_id == auth()->id())
-                                            <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">View</a>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                         @else
-                                            <a href="{{ route('sector.relay', $row->id) }}" class="btn btn-sm btn-success" id="relay">Relay</a>
+                                            <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('sector.relay', ':id') }}" data-id="{{ $row->id }}">Details</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -329,7 +410,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>Denied By Me</h5>
+                    <h5>Denied</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
@@ -353,7 +434,7 @@
                                     <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('ipqmso.index', ':id') }}" data-id="{{ $row->id }}">Details</button>
+                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->sector_approval == 1 ) data-accept="{{ route('ipqmso.undo', ':id') }}" @endif data-id="{{ $row->id }}">Details</button>
                                     </td>
                                 </tr>
                                 @empty
@@ -372,7 +453,7 @@
         <div class="modal-dialog modal-md">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewDenyLabel">View Details</h5>
+                <h5 class="modal-title" id="viewDenyLabel">Edit Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -407,7 +488,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
+                <h5 class="modal-title" id="viewReportLabel">View Submission</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -427,6 +508,7 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-12 text-center" id="review_btn_undo">
+                    <div class="col-md-12 text-center" id="review_btn_relay">
                     </div>
                 </div>
             </div>
@@ -458,8 +540,8 @@
             var catID = $(this).data('id');
             var link = $(this).data('url');
             var accept = $(this).data('accept');
+            var relay = $(this).data('relay');
             var countColumns = 0;
-            
             $.get('/reports/data/'+catID, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
@@ -474,8 +556,10 @@
                     $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                 });
             });
-            
-            $('#review_btn_undo').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-secondary btn-lg btn-block report-content">UNDO</a>');
+            if(typeof accept == 'undefined' && typeof relay != 'undefined')
+                $('#review_btn_relay').append('<a href="'+relay.replace(':id', catID)+'" class="btn btn-success btn-lg btn-block report-content">RELAY</a>');
+            if(typeof relay == 'undefined' && typeof accept != 'undefined')
+                $('#review_btn_undo').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-secondary btn-lg btn-block report-content">UNDO</a>');
         });
 
 

@@ -39,15 +39,14 @@
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/departments/options/'+collegeId, function (data){
                 if (data != '') {
-                    if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                        $("div .department_id").hide();
-                    } else {
-                        $("div .department_id").show();
-                        data.forEach(function (item){
-                            $("#department_id").append(new Option(item.name, item.id));
-                            
-                        });
-                    }
+                    // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
+                    //     $("div .department_id").hide();
+                    // } else {
+                    $("div .department_id").show();
+                    data.forEach(function (item){
+                        $("#department_id").append(new Option(item.name, item.id));
+                        
+                    });
                 }
                 // else {
                 //     $("div .department_id").hide();
@@ -64,15 +63,15 @@
         var collegeId = $('#college_id').val();
         $.get('/departments/options/'+collegeId, function (data){
             if (data != '') {
-                    if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                        $("div .department_id").hide();
-                    } else {
+                    // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
+                    //     $("div .department_id").hide();
+                    // } else {
                         $("div .department_id").show();
                         data.forEach(function (item){
                             $("#department_id").append(new Option(item.name, item.id));
                             
                         });
-                    }
+                    // }
                 }
             // else {
             //     $("div .department_id").hide();

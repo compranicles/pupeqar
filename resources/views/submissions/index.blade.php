@@ -116,17 +116,13 @@
                                             <td><input type="checkbox" class="select-submit table-submit-{{ $tableCount }} all-submit" data-id='{{ $count }}' data-table-id={{ $tableCount }} 
                                                 @isset($row->id)
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
-                                                        @if($table->id >= 1 && $table->id <= 7)
-                                                        
-                                                        @else
-                                                        
-                                                        @endif
+                                                        disabled
                                                     @else
                                                         checked
                                                     @endif
                                                 @else
                                                     @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
-                                                        
+                                                        disabled
                                                     @else
                                                         checked
                                                     @endif
