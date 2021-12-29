@@ -140,4 +140,35 @@ class SectorController extends Controller
         Report::where('id', $report_id)->update(['sector_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
+
+    public function acceptSelected(Request $request){
+        $reportIds = $request->input('report_id');
+
+        foreach($reportIds as $id){
+            Report::where('id', $id)->update(['sector_approval' => 1]);
+        }
+        return redirect()->route('sector.index')->with('success', 'Report/s Approved Successfully');
+    }
+
+    public function denySelected(Request $request){
+        $reportIds = $request->input('report_id');
+        return view('reports.sector.reject-select', compact('reportIds'));
+    }
+
+    public function rejectSelected(Request $request){
+        $reportIds = $request->input('report_id');
+        foreach($reportIds as $id){
+            if($request->input('reason_'.$id) == null)
+                continue;
+            Report::where('id', $id)->update(['sector_approval' => 0]);
+            DenyReason::create([
+                'report_id' => $id,
+                'user_id' => auth()->id(),
+                'position_name' => 'sector',
+                'reason' => $request->input('reason_'.$id),
+            ]);
+        }
+        return redirect()->route('sector.index')->with('success', 'Report/s Denied Successfully');
+
+    }
 }

@@ -143,4 +143,35 @@ class ChairpersonController extends Controller
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 
+    public function acceptSelected(Request $request){
+        $reportIds = $request->input('report_id');
+
+        foreach($reportIds as $id){
+            Report::where('id', $id)->update(['chairperson_approval' => 1]);
+        }
+        return redirect()->route('chairperson.index')->with('success', 'Report/s Approved Successfully');
+    }
+
+    public function denySelected(Request $request){
+        $reportIds = $request->input('report_id');
+        return view('reports.chairpersons.reject-select', compact('reportIds'));
+    }
+
+    public function rejectSelected(Request $request){
+        $reportIds = $request->input('report_id');
+        foreach($reportIds as $id){
+            if($request->input('reason_'.$id) == null)
+                continue;
+            Report::where('id', $id)->update(['chairperson_approval' => 0]);
+            DenyReason::create([
+                'report_id' => $id,
+                'user_id' => auth()->id(),
+                'position_name' => 'chairperson',
+                'reason' => $request->input('reason_'.$id),
+            ]);
+        }
+        return redirect()->route('chairperson.index')->with('success', 'Report/s Denied Successfully');
+
+    }
+
 }

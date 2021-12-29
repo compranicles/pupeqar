@@ -51,7 +51,7 @@ class DeniedController extends Controller
                 ->whereNotBetween('report_category_id', [17, 23])->where('chairperson_approval', 1)
                 ->where('dean_approval', 0)->get();
         }
-        if(in_array(6, $roles)){
+        elseif(in_array(6, $roles)){
             
             $collegeHeadOf = Dean::select('deans.*', 'colleges.name as college_name')->
             join('colleges', 'deans.college_id', 'colleges.id')->where('user_id', auth()->id())->first();
@@ -76,7 +76,7 @@ class DeniedController extends Controller
                 ->where('reports.college_id', $collegeHeadOf->college_id)->where('chairperson_approval', 1)->where('dean_approval', 1)
                 ->where('sector_approval', 0)->get();
         }
-        if(in_array(7, $roles)){
+        elseif(in_array(7, $roles)){
             $denied_by_me = Report::select('reports.*', 'colleges.name as college_name','report_categories.name as report_category' , 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                     ->join('colleges', 'reports.college_id', 'colleges.id')
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->
@@ -89,7 +89,7 @@ class DeniedController extends Controller
                 ->where('chairperson_approval', 1)->where('dean_approval', 1)
                 ->where('sector_approval', 1)->where('ipqmso_approval', 0)->get();
         }
-        if(in_array(8, $roles)){
+        elseif(in_array(8, $roles)){
             $denied_by_me = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category' , 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('colleges', 'reports.college_id', 'colleges.id')->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->
