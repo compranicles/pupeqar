@@ -252,6 +252,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/chairperson/reject/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'reject'])->name('chairperson.reject');
     Route::get('/submissions/chairperson/relay/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'relay'])->name('chairperson.relay');
     Route::get('/submissions/chairperson/undo/{id}', [\App\Http\Controllers\Reports\ChairpersonController::class, 'undo'])->name('chairperson.undo');
+    Route::post('/submissions/chairperson/accept-selected', [\App\Http\Controllers\Reports\ChairpersonController::class, 'acceptSelected'])->name('chairperson.accept-select');
+    Route::post('/submissions/chairperson/deny-selected', [\App\Http\Controllers\Reports\ChairpersonController::class, 'denySelected'])->name('chairperson.deny-select');
+    Route::post('/submissions/chairperson/reject-selected', [\App\Http\Controllers\Reports\ChairpersonController::class, 'rejectSelected'])->name('chairperson.reject-selected');
     Route::resource('/submissions/chairperson', \App\Http\Controllers\Reports\ChairpersonController::class);
 
     //dean reports
@@ -260,6 +263,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/dean/reject/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'reject'])->name('dean.reject');
     Route::get('/submissions/dean/relay/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'relay'])->name('dean.relay');
     Route::get('/submissions/dean/undo/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'undo'])->name('dean.undo');
+    Route::post('/submissions/dean/accept-selected', [\App\Http\Controllers\Reports\DeanController::class, 'acceptSelected'])->name('dean.accept-select');
+    Route::post('/submissions/dean/deny-selected', [\App\Http\Controllers\Reports\DeanController::class, 'denySelected'])->name('dean.deny-select');
+    Route::post('/submissions/dean/reject-selected', [\App\Http\Controllers\Reports\DeanController::class, 'rejectSelected'])->name('dean.reject-selected');
     Route::resource('/submissions/dean', \App\Http\Controllers\Reports\DeanController::class);
 
     //sector reports
@@ -268,6 +274,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/sector/reject/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'reject'])->name('sector.reject');
     Route::get('/submissions/sector/relay/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'relay'])->name('sector.relay');
     Route::get('/submissions/sector/undo/{id}', [\App\Http\Controllers\Reports\SectorController::class, 'undo'])->name('sector.undo');
+    Route::post('/submissions/sector/accept-selected', [\App\Http\Controllers\Reports\SectorController::class, 'acceptSelected'])->name('sector.accept-select');
+    Route::post('/submissions/sector/deny-selected', [\App\Http\Controllers\Reports\SectorController::class, 'denySelected'])->name('sector.deny-select');
+    Route::post('/submissions/sector/reject-selected', [\App\Http\Controllers\Reports\SectorController::class, 'rejectSelected'])->name('sector.reject-selected');
     Route::resource('/submissions/sector', \App\Http\Controllers\Reports\SectorController::class);
     
     //ipqmso reports
@@ -275,6 +284,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/ipqmso/reject-create/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
     Route::post('/submissions/ipqmso/reject/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
     Route::post('/submissions/ipqmso/undo/{id}', [\App\Http\Controllers\Reports\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
+    Route::post('/submissions/ipqmso/accept-selected', [\App\Http\Controllers\Reports\IpqmsoController::class, 'acceptSelected'])->name('ipqmso.accept-select');
+    Route::post('/submissions/ipqmso/deny-selected', [\App\Http\Controllers\Reports\IpqmsoController::class, 'denySelected'])->name('ipqmso.deny-select');
+    Route::post('/submissions/ipqmso/reject-selected', [\App\Http\Controllers\Reports\IpqmsoController::class, 'rejectSelected'])->name('ipqmso.reject-selected');
     Route::resource('/submissions/ipqmso', \App\Http\Controllers\Reports\IpqmsoController::class);
 
     //view all reports

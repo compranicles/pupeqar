@@ -31,13 +31,13 @@ class AcceptedController extends Controller
          }
          elseif(in_array(7, $roles)){
              $approved_by_me = Report::select('reports.*', 'report_categories.name as report_category', 'colleges.name as college_name', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->join('departments', 'colleges.id', 'reports.college_id')
-                ->where('reports.college_id', $college_id)->where('reports.sector_approval', 1)->get();
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->join('colleges', 'colleges.id', 'reports.college_id')
+                ->where('reports.sector_approval', 1)->get();
          }
          elseif(in_array(8, $roles)){
              $approved_by_me = Report::select('reports.*', 'report_categories.name as report_category', 'colleges.name as college_name', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->join('departments', 'colleges.id', 'reports.college_id')
-                ->where('reports.college_id', $college_id)->where('reports.ipqmso_approval', 1)->get();
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')->join('users', 'users.id', 'reports.user_id')->join('colleges', 'colleges.id', 'reports.college_id')
+                ->where('reports.ipqmso_approval', 1)->get();
          }
          return view('submissions.approved.index', compact('roles', 'approved_by_me'));
     }
