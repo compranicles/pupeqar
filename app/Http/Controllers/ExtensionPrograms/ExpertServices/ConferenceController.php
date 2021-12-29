@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConference;
 use Illuminate\Support\Facades\Storage;
@@ -46,7 +47,9 @@ class ConferenceController extends Controller
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
-        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields'));
+        $colleges = College::all();
+
+        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges'));
     }
 
     /**
@@ -137,8 +140,10 @@ class ConferenceController extends Controller
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
+
+        $colleges = College::all();
         
-        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments'));
+        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges'));
     }
 
     /**

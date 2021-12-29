@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
@@ -45,7 +46,9 @@ class ConsultantController extends Controller
             return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
-        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields'));
+        $colleges = College::all();
+
+        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges'));
     }
 
     /**
@@ -134,8 +137,10 @@ class ConsultantController extends Controller
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
+
+        $colleges = College::all();
         
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments'));
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges'));
     }
 
     /**

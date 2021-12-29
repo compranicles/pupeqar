@@ -16,7 +16,7 @@
                         <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $expertServiceConferenceFields, 'value' => $expert_service_in_conference])
+                            @include('form', ['formFields' => $expertServiceConferenceFields, 'colleges' => $colleges, 'value' => $expert_service_in_conference])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
