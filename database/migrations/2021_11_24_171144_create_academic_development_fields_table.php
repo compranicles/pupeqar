@@ -18,7 +18,7 @@ class CreateAcademicDevelopmentFieldsTable extends Migration
             $table->foreignId('academic_development_form_id');
             $table->string('label');
             $table->string('name');
-            $table->string('placeholder')->nullable();
+            $table->text('placeholder')->nullable();
             $table->string('size');
             $table->foreignId('field_type_id');
             $table->foreignId('dropdown_id')->nullable();

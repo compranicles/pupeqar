@@ -366,6 +366,7 @@ class ResearchController extends Controller
         return view('inactive');
 
         $research->delete();
+        ResearchDocument::where('research_id', $research->id)->delete();
 
         return redirect()->route('research.index')->with('success', 'Research has been deleted.');
     }
