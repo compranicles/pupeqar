@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Research;
-
+use Illuminate\Database\Eloquent\Collection;
 use App\Models\Research;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -34,7 +34,10 @@ class ResearchController extends Controller
     public function index()
     {   
         $this->authorize('viewAny', Research::class);
-
+        $yearStarted = 0;
+        $yearCompleted = 0;
+        $yearPresented = 0;
+        $yearPublished = 0;
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
         $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->join('colleges', 'colleges.id', 'research.college_id')
@@ -47,7 +50,7 @@ class ResearchController extends Controller
                                         ->distinct()
                                         ->get();
 
-        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges'));
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
     }
 
     /**
@@ -94,6 +97,8 @@ class ResearchController extends Controller
             'funding_amount' => 'numeric',
             'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
+            'start_date' => 'required_if:status,27',
+            'target_date' => 'required_if:status,27'
         ]);
 
         $departmentIni = '';
@@ -102,7 +107,8 @@ class ResearchController extends Controller
         $resIni = '';
         
         $year = date("Y").'-';
-        $expr = '/(?<=\s|^)[a-z]/i';
+        $expr = '/(?<=\s|^)[a-z]{0,4}/i';
+        $expr2 = '/(?<=\s|^)[a-z]/i';
         $input = $request->except(['_token', 'document', 'funding_amount']);
 
         if($request->has('classification')){
@@ -113,14 +119,14 @@ class ResearchController extends Controller
         }
         if($request->has('category')){
             $categoryName = DropdownOption::where('id', $input['category'])->pluck('name')->first();
-            preg_match_all($expr, $categoryName, $matches);
+            preg_match_all($expr2, $categoryName, $matches);
             $result = implode('', $matches[0]);
             $catIni = strtoupper($result).'-';
         }
         if($request->has('researchers')){
             $researchers = $input['researchers'];
             $name = preg_split("/\//", $researchers);
-            preg_match_all($expr, $name[0], $matches);
+            preg_match_all($expr2, $name[0], $matches);
             $result = implode('', $matches[0]);
             $resIni = strtoupper($result).'-';
         }
@@ -177,6 +183,7 @@ class ResearchController extends Controller
                     $temporaryFile->delete();
 
                     ResearchDocument::create([
+                        'research_id' => $research_id,
                         'research_code' => $researchCode,
                         'research_form_id' => 1,
                         'filename' => $fileName,
@@ -294,6 +301,8 @@ class ResearchController extends Controller
                 'funding_amount' => 'numeric',
                 'funding_agency' => 'required_if:funding_type,23',
                 'keywords' => new Keyword,
+                'start_date' => 'required_if:status,27',
+                'target_date' => 'required_if:status,27'
             ]);
     
 
@@ -305,7 +314,7 @@ class ResearchController extends Controller
         $research->update($input);
         Research::where('research_code', $research->research_code)->update($inputOtherResearchers);
         Research::where('research_code', $research->research_code)->update([
-            'funding_amount' => $funding_amount
+            'funding_amount' => $funding_amount,
         ]);
         
         if($request->has('document')){
@@ -324,6 +333,7 @@ class ResearchController extends Controller
                     $temporaryFile->delete();
 
                     ResearchDocument::create([
+                        'research_id' => $research->id,
                         'research_code' => $research->research_code,
                         'research_form_id' => 1,
                         'filename' => $fileName,
@@ -342,9 +352,11 @@ class ResearchController extends Controller
             return view('inactive');
 
         $request->validate([
-            'nature_of_involvement' => 'required',
-            'college_id' => 'required',
-            'department_id' => 'required',
+            'funding_amount' => 'numeric',
+            'funding_agency' => 'required_if:funding_type,23',
+            'keywords' => new Keyword,
+            'start_date' => 'required_with:status,27',
+            'target_date' => 'required_with:status,27'
         ]);
         // dd($request);
         $input = $request->except(['_token', '_method', 'document']);
@@ -555,7 +567,7 @@ class ResearchController extends Controller
                 }
             }
         }
-        return redirect()->route('faculty.index')->with('success', 'Document added successfully');
+        return redirect()->route('to-finalize.index')->with('success', 'Document added successfully');
     }
 
     public function manageResearchers($research_code){
@@ -654,6 +666,85 @@ class ResearchController extends Controller
         ]);
 
         return redirect()->route('research.index')->with('success', 'Research has been removed.');
+    }
+
+    public function researchYearFilter(Request $request) {
+        $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
+
+        $yearStarted = $request->input('startFilter');
+        $yearCompleted = $request->input('completeFilter');
+        $yearPublished = $request->input('publishFilter');
+        $yearPresented = $request->input('presentFilter');
+
+        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
+        ->select('colleges.name')
+        ->distinct()
+            ->get();
+        // $researchPresented = '';
+        // $researchStarted = '';
+        // $researchCompleted = '';
+        // $researchPublished = '';
+
+        if ($yearStarted != 0) {
+
+            $researches = Research::
+                    whereYear('start_date', $yearStarted)
+                    ->where('user_id', auth()->id())
+                    ->where('is_active_member', 1)
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->select('research.*', 'dropdown_options.name as status_name', 
+                            'colleges.name as college_name')
+                    ->get();
+            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
+        }
+
+        if ($yearCompleted != 0) {
+            $researches = Research::
+                    whereYear('completion_date', '=', $yearCompleted)
+                    ->where('user_id', auth()->id())
+                    ->where('is_active_member', 1)
+                    ->join('research_completes', 'research.research_code', 'research_completes.research_code')
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->select('research.*', 'dropdown_options.name as status_name', 
+                            'colleges.name as college_name')
+                    ->get();
+            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
+                    // dd($researchCompleted);
+        }
+        
+        if ($yearPublished != 0) {
+            $researches = Research::
+                    whereYear('publish_date', '=', $yearPublished)
+                    ->where('user_id', auth()->id())
+                    ->where('is_active_member', 1)
+                    ->join('research_publications', 'research.research_code', 'research_publications.research_code')
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->select('research.*', 'dropdown_options.name as status_name', 
+                            'colleges.name as college_name')
+                    ->get();
+                return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
+        }
+        
+        if($yearPresented != 0) {
+            $researches = Research::
+                    whereYear('date_presented', '=', $yearPresented)
+                    ->where('user_id', auth()->id())
+                    ->where('is_active_member', 1)
+                    ->join('research_presentations', 'research.research_code', 'research_presentations.research_code')
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->select('research.*', 'dropdown_options.name as status_name', 
+                            'colleges.name as college_name')
+                    ->get();
+            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
+        }
+
+        if ($yearStarted == 0 || $yearCompleted == 0 || $yearPublished == 0 || $yearPresented == 0) {
+            return redirect()->route('research.index');
+        }
     }
 }
 

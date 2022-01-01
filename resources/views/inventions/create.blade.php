@@ -12,7 +12,7 @@
                     <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
                 </p>
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body">research index
                         <form action="{{ route('invention-innovation-creative.store') }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $inventionFields, 'colleges' => $colleges])

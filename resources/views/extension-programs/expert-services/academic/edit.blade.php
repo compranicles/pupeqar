@@ -132,7 +132,7 @@
     @push('scripts')
         <script>
             $(document).ready(function(){
-                var nature = '{{ $values['nature']; }}'
+                var nature = '{{ $value['nature']; }}'
                 if (nature == 86) {
                     $('div .other_nature').show();
                 }

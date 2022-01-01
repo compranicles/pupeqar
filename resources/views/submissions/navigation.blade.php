@@ -1,4 +1,4 @@
-<a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') ? 'active' : ''}} ml-3">To Finalize</a>
+<a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') || request()->routeIs('submissions.getCollege') ? 'active' : ''}} ml-3">To Finalize</a>
 @if (in_array(5, $roles))
     <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Review</a>   
     <a href="{{ route('submissions.accepted.index') }}" class="submission-menu {{ request()->routeIs('submissions.accepted.index') ? 'active' : ''}}">Approved</a>

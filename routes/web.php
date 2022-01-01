@@ -150,6 +150,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/research/manage-researchers/remove-self/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'removeSelf'])->name('research.remove-self');
     Route::post('/research/manage-researchers/return-researcher/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'returnResearcher'])->name('research.return-researcher');
     
+    Route::post('/research/filterByYear/', [\App\Http\Controllers\Research\ResearchController::class, 'researchYearFilter'])->name('research.filterByYear');
     //FACULTY: research
 
     // Route::get('/research/edit-non-lead/{id}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
@@ -292,6 +293,7 @@ Route::group(['middleware' => 'auth'], function() {
     //view all reports
     Route::get('/submissions/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
 
+    
     /**********************************SUBMISSIONS************************************* */
     Route::resource('/submissions/to-finalize', \App\Http\Controllers\Submissions\SubmissionController::class);
     Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');
@@ -299,6 +301,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 
+    Route::get('/submissions/college/{collegeId}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'getCollege'])->name('submissions.getCollege');
     // admin routes
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 

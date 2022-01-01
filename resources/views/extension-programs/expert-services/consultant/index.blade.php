@@ -24,6 +24,29 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="classFilter" class="mr-2">Classification: </label>
+                                    <select id="classFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($classifications as $classification)
+                                        <option value="{{ $classification->name }}">{{ $classification->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($consultant_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="esconsultant_table">
                                 <thead>
@@ -31,6 +54,7 @@
                                         <th></th>
                                         <th>Title</th>
                                         <th>Classification</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,6 +65,8 @@
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $expertServiceConsultant->title }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $expertServiceConsultant->classification_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">{{ $expertServiceConsultant->college_name }}</td>
+
                                         <td onclick="window.location.href = '{{ route('expert-service-as-consultant.show', $expertServiceConsultant->id) }}' ">
                                             <?php $updated_at = strtotime( $expertServiceConsultant->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>    
@@ -95,6 +121,56 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         var table =  $("#esconsultant_table").DataTable();
+          var classIndex = 0;
+            $("#esconsultant_table th").each(function (i) {
+                if ($($(this)).html() == "Classification") {
+                    classIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#classFilter').val()
+                    var classification = data[classIndex];
+                    if (selectedItem === "" || classification.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#esconsultant_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Campus/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#classFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

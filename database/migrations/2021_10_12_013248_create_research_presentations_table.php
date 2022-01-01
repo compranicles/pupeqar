@@ -22,6 +22,7 @@ class CreateResearchPresentationsTable extends Migration
             $table->date('date_presented')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
+            $table->foreignId('research_id');
             $table->timestamps();
             $table->softDeletes();
         });

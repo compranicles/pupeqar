@@ -24,7 +24,7 @@
                         <div class="row">
                             <div class="d-flex mr-2">
                                 <div class="col-md-12">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                     <select id="collegeFilter" class="custom-select">
                                         <option value="">Show All</option>
                                         @foreach($mobility_in_colleges as $college)
@@ -42,7 +42,7 @@
                                         <th></th>
                                         <th>Description</th>
                                         <th>Hosting Institution/Organization/Agency</th>
-                                        <th>College/Branch/Office</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -113,7 +113,7 @@
 
             var collegeIndex = 0;
             $("#mobility_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Office") {
+                if ($($(this)).html() == "College/Branch/Campus/Office") {
                     collegeIndex = i; return false;
 
                 }

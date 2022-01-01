@@ -24,6 +24,29 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="d-flex mr-2">
+                                <div class="col-md-6">
+                                    <label for="natureFilter" class="mr-2">Nature: </label>
+                                    <select id="natureFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($conferenceNature as $nature)
+                                        <option value="{{ $nature->name }}">{{ $nature->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($conference_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="esconference_table">
                                 <thead>
@@ -31,6 +54,7 @@
                                         <th></th>
                                         <th>Title</th>
                                         <th>Nature</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,6 +65,7 @@
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->title }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->nature }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">
                                             <?php $updated_at = strtotime( $expertServiceConference->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>        
@@ -94,6 +119,56 @@
           document.getElementById('delete_item').action = url;
           
         });
+     </script>
+     <script>
+         var table =  $("#esconference_table").DataTable();
+          var natureIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "Nature") {
+                    natureIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#natureFilter').val()
+                    var nature = data[natureIndex];
+                    if (selectedItem === "" || nature.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var collegeIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Campus/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#natureFilter").change(function (e) {
+                table.draw();
+            });
+
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
      </script>
      @endpush
 </x-app-layout>

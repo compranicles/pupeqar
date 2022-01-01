@@ -14,21 +14,18 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
     <hr>
-    <div class="row">
 
-    </div>
     <script>
         const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
         const d = new Date();
-        let month1 = month[d.getMonth()-2];
-        let month2 = month[d.getMonth()];
+        let month1 = month[d.getMonth()];
+        let month2 = month[d.getMonth()+2];
         document.getElementById("quarter").innerHTML = "Accomplishment reports from " + month1 + ' - ' + month2 + ' ' + new Date().getFullYear();
     </script>
 </x-app-layout>

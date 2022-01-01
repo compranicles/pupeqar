@@ -44,37 +44,50 @@ class ReportController extends Controller
         $report_data_array = [];
 
         if($report_category_id <= 7){
-            $research_code = $id;
+            $research_id = $id;
             if($report_category_id == 5){
-                $id = $research_code;
+                $id = $research_id;
                 $research_code = ResearchCitation::where('id', $id)->pluck('research_code')->first();
             }
             elseif($report_category_id == 6){
-                $id = $research_code;
+                $id = $research_id;
                 $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
             }
             foreach($report_columns as $column){
                 if($column->table == 'research_citations'){
-                    $data = DB::table($column->table)->where('research_code', $research_code)->where('id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('research_id', $research_id)->where('id', $id)->value($column->column);
                 }
                 elseif($column->table == 'research_utilizations'){
-                    $data = DB::table($column->table)->where('research_code', $research_code)->where('id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('research_id', $research_id)->where('id', $id)->value($column->column);
                 }
-                else{
-                    $data = DB::table($column->table)->where('research_code', $research_code)->value($column->column);
+                elseif($column->table == 'research'){
+                    $data = DB::table($column->table)->where('id', $research_id)->value($column->column);
+                }
+                else {
+                    $data = DB::table($column->table)->where('research.id', $research_id)->value($column->column);
                 }
                 if($data == null)
                     $data = '-';
                 if(is_int($data))
                     $data = DropdownOption::where('id', $data)->pluck('name')->first();
                 if($column->column == 'funding_amount'){
-                    $curr = DB::table($column->table)->where('research_code', $research_code)->value('currency_funding_amount');
+                    if ($column->table == 'research') {
+                        $curr = DB::table($column->table)->where('id', $research_id)->value('currency_funding_amount');
+                    }
+                    else {
+                        $curr = DB::table($column->table)->where('research_id', $research_id)->value('currency_funding_amount');
+                    }
                     $currName = Currency::where('id', $curr)->pluck('code')->first();
                     $data = number_format($data, 2, '.', ',');
                     $data = $currName.' '.$data;
                 }
                 if($column->column == 'researchers'){
-                    $data = DB::table($column->table)->where('research_code', $research_code)->pluck($column->column)->first();
+                    if ($column->table == 'research') {
+                        $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
+                    }
+                    else {
+                        $data = DB::table($column->table)->where('research_id', $research_id)->pluck($column->column)->first();
+                    }
                 } 
     
                 array_push($report_data_array, $data);

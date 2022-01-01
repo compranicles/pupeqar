@@ -11,6 +11,7 @@ use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\ExtensionProgramField;
 
 class ConsultantController extends Controller
@@ -23,14 +24,22 @@ class ConsultantController extends Controller
     public function index()
     {
         $this->authorize('viewAny', ExpertServiceConsultant::class);
+
+        $classifications = DropdownOption::where('dropdown_id', 14)->get();
         
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
-                                        ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
+                                        ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')
+                                        ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name', 'colleges.name as college_name')
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
+
+        $consultant_in_colleges = ExpertServiceConsultant::join('colleges', 'expert_service_consultants.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
         
-        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant'));
+        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant', 'classifications', 'consultant_in_colleges'));
     }
 
     /**
@@ -139,8 +148,13 @@ class ConsultantController extends Controller
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
 
         $colleges = College::all();
+
+        $value = $expert_service_as_consultant;
+        $value->toArray();
+        $value = collect($expert_service_as_consultant);
+        $value = $value->toArray();
         
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges'));
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value'));
     }
 
     /**

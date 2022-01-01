@@ -36,7 +36,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Office where committed: </label>
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                     <select id="collegeFilter" class="custom-select">
                                         <option value="">Show All</option>
                                         @foreach($esacademic_in_colleges as $college)
@@ -54,7 +54,7 @@
                                         <th></th>
                                         <th>Publication/ Audio Visual Production</th>
                                         <th>Classification</th>
-                                        <th>College/Branch/Office</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -144,7 +144,7 @@
 
             var collegeIndex = 0;
             $("#esacademic_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Office") {
+                if ($($(this)).html() == "College/Branch/Campus/Office") {
                     collegeIndex = i; return false;
 
                 }

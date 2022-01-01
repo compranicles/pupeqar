@@ -25,7 +25,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Name of Adoptor</th>
+                                        <th>Title</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>

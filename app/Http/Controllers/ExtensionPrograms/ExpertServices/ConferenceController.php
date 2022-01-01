@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-
+use App\Models\FormBuilder\DropdownOption;
 
 class ConferenceController extends Controller
 {
@@ -25,13 +25,21 @@ class ConferenceController extends Controller
     {
         $this->authorize('viewAny', ExpertServiceConference::class);
 
+        $conferenceNature = DropdownOption::where('dropdown_id', 17)->get();
+
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
-                                        ->select('expert_service_conferences.*', 'dropdown_options.name as nature')
+                                        ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')
+                                        ->select('expert_service_conferences.*', 'dropdown_options.name as nature', 'colleges.name as college_name')
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
 
-        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference'));
+        $conference_in_colleges = ExpertServiceConference::join('colleges', 'expert_service_conferences.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
+
+        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'conferenceNature', 'conference_in_colleges'));
     }
 
     /**
@@ -143,7 +151,12 @@ class ConferenceController extends Controller
 
         $colleges = College::all();
         
-        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges'));
+        $value = $expert_service_in_conference;
+        $value->toArray();
+        $value = collect($expert_service_in_conference);
+        $value = $value->toArray();
+
+        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value'));
     }
 
     /**

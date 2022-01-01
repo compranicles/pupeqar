@@ -50,6 +50,7 @@ use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Http\Controllers\Reports\ReportController;
+use App\Models\Maintenance\College;
 
 
 
@@ -62,6 +63,7 @@ class SubmissionController extends Controller
      */
     public function index()
     {
+        $collegeID = "all";
         $report_tables = ReportCategory::all();
         $report_array = [];
         $report_document_checker = [];
@@ -69,13 +71,15 @@ class SubmissionController extends Controller
         foreach($report_tables as $table){
             switch($table->id){
                 case '1':
-                    $data = Research::select('research.research_code', 'research.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                    $data = Research::select('research.id','research.research_code', 'research.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
                         ->join('dropdown_options', 'dropdown_options.id', 'research.classification')    
-                        ->whereNotIn('research.research_code', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_code')->all() )->orderBy('updated_at', 'desc')->get();
+                        ->join('colleges', 'colleges.id', 'research.college_id')  
+                        ->whereNotIn('research.id', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')->get();
+
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
-                            $checker_array[$row->research_code] = $checker;
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker_array[$row->id] = $checker;
                         }
                     }
                     $report_array[$table->id] = $data;
@@ -84,14 +88,17 @@ class SubmissionController extends Controller
         
                     break;
                 case '2':
-                    $data = Research::select('research.research_code', 'research_completes.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                    $data = Research::select('research.id','research.research_code', 'research_completes.updated_at', 
+                                'research.title', 'dropdown_options.name as classification_name', 
+                                'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->whereNotIn('research.id', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('research_completes', 'research_completes.research_code', 'research.research_code')->get();
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
+                            ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
-                            $checker_array[$row->research_code] = $checker;
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker_array[$row->id] = $checker;
                         }
                     }
                     $report_array[$table->id] = $data;
@@ -99,14 +106,15 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '3':
-                    $data = Research::select('research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                    $data = Research::select('research.id', 'research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->whereNotIn('research.id', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
+                            ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
-                            $checker_array[$row->research_code] = $checker;
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker_array[$row->id] = $checker;
                         }
                     }
                     $report_array[$table->id] = $data;
@@ -114,14 +122,15 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '4':
-                    $data = Research::select('research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                    $data = Research::select('research.id', 'research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->whereNotIn('research.id', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('research_presentations', 'research_presentations.research_code', 'research.research_code')->get();
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
+                            ->join('research_presentations', 'research_presentations.research_id', 'research.id')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
-                            $checker_array[$row->research_code] = $checker;
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker_array[$row->id] = $checker;
                         }
                     }
                     $report_array[$table->id] = $data;
@@ -129,14 +138,16 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '5':
-                    $data = ResearchCitation::select('research_citations.id','research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            orWhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )
-                            ->join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())
+                    $data = ResearchCitation::select('research.id', 'research_citations.id','research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                            whereNotIn('research.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->orwhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+
+                            ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
                                 where('research_citation_id', $row->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
@@ -146,14 +157,15 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '6':
-                    $data = ResearchUtilization::select('research_utilizations.id','research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )->
-                            orWhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )
-                            ->join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())
+                    $data = ResearchUtilization::select('research.id', 'research_utilizations.id','research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                            whereNotIn('research.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                            ->orwhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                            ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
                                 where('research_utilization_id', $row->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
@@ -163,14 +175,15 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '7':
-                    $data = Research::select('research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.research_code', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                    $data = Research::select('research.id', 'research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->whereNotIn('research.id', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')->get();
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
+                            ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')->get();
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
-                            $checker_array[$row->research_code] = $checker;
+                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker_array[$row->id] = $checker;
                         }
                     }
                     $report_array[$table->id] = $data;
@@ -178,8 +191,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '8': 
-                    $data = Invention::select('inventions.*')->where('user_id', auth()->id())->
-                            whereNotIn('inventions.id', Report::where('report_category_id', 8)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Invention::select('inventions.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                        ->join('colleges', 'colleges.id', 'inventions.college_id')  
+                        ->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
+                        ->whereNotIn('inventions.id', Report::where('report_category_id', 8)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = InventionDocument::where('invention_id', $row->id)->get();
@@ -191,8 +206,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '9': 
-                    $data = ExpertServiceConsultant::select('expert_service_consultants.*')->where('user_id', auth()->id())->
-                            whereNotIn('expert_service_consultants.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = $data = ExpertServiceConsultant::select('expert_service_consultants.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                        ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')  
+                        ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
+                        ->whereNotIn('expert_service_consultants.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $row->id)->get();
@@ -204,8 +221,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '10': 
-                    $data = ExpertServiceConference::select('expert_service_conferences.*')->where('user_id', auth()->id())->
-                            whereNotIn('expert_service_conferences.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = ExpertServiceConference::select('expert_service_conferences.*', 'colleges.name as college_name', 'dropdown_options.name as nature_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
+                            ->whereNotIn('expert_service_conferences.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceConferenceDocument::where('expert_service_conference_id', $row->id)->get();
@@ -217,8 +237,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '11': 
-                    $data = ExpertServiceAcademic::select('expert_service_academics.*')->where('user_id', auth()->id())->
-                            whereNotIn('expert_service_academics.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = ExpertServiceAcademic::select('expert_service_academics.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
+                            ->whereNotIn('expert_service_academics.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceAcademicDocument::where('expert_service_academic_id', $row->id)->get();
@@ -230,8 +253,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '12': 
-                    $data = ExtensionService::select('extension_services.*')->where('user_id', auth()->id())->
-                            whereNotIn('extension_services.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = ExtensionService::select('extension_services.*', 'colleges.name as college_name', 'dropdown_options.name as nature_of_involvement_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'extension_services.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'extension_services.nature_of_involvement')
+                            ->whereNotIn('extension_services.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExtensionServiceDocument::where('extension_service_id', $row->id)->get();
@@ -243,8 +269,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '13': 
-                    $data = Partnership::select('partnerships.*')->where('user_id', auth()->id())->
-                            whereNotIn('partnerships.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Partnership::select('partnerships.*', 'colleges.name as college_name', 'dropdown_options.name as collab_nature_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'partnerships.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
+                            ->whereNotIn('partnerships.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = PartnershipDocument::where('partnership_id', $row->id)->get();
@@ -256,8 +285,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '14': 
-                    $data = Mobility::select('mobilities.*')->where('user_id', auth()->id())->
-                            whereNotIn('mobilities.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Mobility::select('mobilities.*', 'colleges.name as college_name', 'dropdown_options.name as type_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'mobilities.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
+                            ->whereNotIn('mobilities.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all())->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = MobilityDocument::where('mobility_id', $row->id)->get();
@@ -269,8 +301,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '15': 
-                    $data = Reference::select('references.*')->where('user_id', auth()->id())->
-                            whereNotIn('references.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Reference::select('references.*', 'colleges.name as college_name', 'dropdown_options.name as category_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'references.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'references.category')
+                            ->whereNotIn('references.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = ReferenceDocument::where('reference_id', $row->id)->get();
@@ -282,8 +317,11 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '16': 
-                    $data = Syllabus::select('syllabi.*')->where('user_id', auth()->id())->
-                            whereNotIn('syllabi.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Syllabus::select('syllabi.*', 'colleges.name as college_name', 'dropdown_options.name as assigned_task_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'syllabi.college_id')  
+                            ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                            ->whereNotIn('syllabi.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = SyllabusDocument::where('syllabus_id', $row->id)->get();
@@ -295,8 +333,10 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '17': 
-                    $data = RequestModel::select('requests.*')->where('user_id', auth()->id())->
-                            whereNotIn('requests.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = RequestModel::select('requests.*', 'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'requests.college_id')  
+                            ->whereNotIn('requests.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                            ->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = RequestDocument::where('request_id', $row->id)->get();
@@ -321,8 +361,9 @@ class SubmissionController extends Controller
                         $checker_array = [];
                         break;
                 case '19': 
-                    $data = StudentTraining::select('student_trainings.*')->where('user_id', auth()->id())->
-                            whereNotIn('student_trainings.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = StudentTraining::select('student_trainings.*', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                    ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
+                    ->whereNotIn('student_trainings.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = StudentTrainingDocument::where('student_training_id', $row->id)->get();
@@ -373,8 +414,9 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '23': 
-                    $data = TechnicalExtension::select('technical_extensions.*')->where('user_id', auth()->id())->
-                            whereNotIn('technical_extensions.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = TechnicalExtension::select('technical_extensions.*', 'dropdown_options.name as classification_of_adoptor_name')->where('user_id', auth()->id())
+                    ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
+                    ->whereNotIn('technical_extensions.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
                     if($data != null){
                         foreach($data as $row){
                             $checker = TechnicalExtensionDocument::where('technical_extension_id', $row->id)->get();
@@ -400,9 +442,22 @@ class SubmissionController extends Controller
         if(in_array(6, $roles)){
             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
         }
-    
+
+        $colleges = College::select('colleges.name', 'colleges.id')
+                                ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Invention::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceConsultant::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceConference::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceAcademic::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExtensionService::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Reference::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Syllabus::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Partnership::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Mobility::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->get();
         // dd($reported_accomplishments);
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID'));
     }
 
     /**
@@ -434,7 +489,7 @@ class SubmissionController extends Controller
                 $report_values_array = explode(',', $report_value); // 0 => research_code , 1 => report_category, 2 => id
                 switch($report_values_array[1]){
                     case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-                        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('research_code', $report_values_array[0])->first();
+                        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                         if($report_values_array[1] == 5){
                             $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
@@ -445,7 +500,7 @@ class SubmissionController extends Controller
                             $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         }
                         elseif(($report_values_array[1] <= 4 || $report_values_array[1] == 7 )){
-                            $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[0]));
+                            $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
                             $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[0]);
                         }
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
@@ -557,6 +612,7 @@ class SubmissionController extends Controller
                 
             }
         }
+
         return redirect()->route('to-finalize.index')->with('success', 'All accomplishment reports have been submitted.');
     }
 
@@ -724,5 +780,425 @@ class SubmissionController extends Controller
         }
 
         return redirect()->route('to-finalize.index')->with('success', 'Document/s have been added');
+    }
+
+    public function getCollege($collegeID) {
+        if ($collegeID == 'all') {
+            return redirect()->route('to-finalize.index');
+        }
+        
+            $report_tables = ReportCategory::all();
+            $report_array = [];
+            $report_document_checker = [];
+            $checker_array = [];
+            foreach($report_tables as $table){
+                switch($table->id){
+                    case '1':
+                        $data = Research::select('research.id','research.research_code', 'research.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')    
+                            ->join('colleges', 'colleges.id', 'research.college_id')  
+                            ->where('research.college_id', $collegeID)
+                            ->whereNotIn('research.id', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')->get();
+
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+            
+                        break;
+                    case '2':
+                        $data = Research::select('research.id','research.research_code', 'research_completes.updated_at', 
+                                    'research.title', 'dropdown_options.name as classification_name', 
+                                    'colleges.name as college_name')->where('user_id', auth()->id())
+                                ->whereNotIn('research.id', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                ->where('research.college_id', $collegeID)
+                                ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '3':
+                        $data = Research::select('research.id', 'research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                                ->whereNotIn('research.id', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                ->where('research.college_id', $collegeID)
+                                ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '4':
+                        $data = Research::select('research.id', 'research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                                ->whereNotIn('research.id', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                ->join('colleges', 'colleges.id', 'research.college_id') 
+                                ->where('research.college_id', $collegeID)
+                                ->join('research_presentations', 'research_presentations.research_id', 'research.id')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '5':
+                        $data = ResearchCitation::select('research.id', 'research_citations.id','research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                                whereNotIn('research.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                                ->orwhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+
+                                ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                ->where('research.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
+                                    where('research_citation_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '6':
+                        $data = ResearchUtilization::select('research.id', 'research_utilizations.id','research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                                whereNotIn('research.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )
+                                ->orwhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                                ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                ->where('research.college_id', $collegeID)
+
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
+                                    where('research_utilization_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '7':
+                        $data = Research::select('research.id', 'research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                                ->whereNotIn('research.id', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                ->where('research.college_id', $collegeID)
+
+                                ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '8': 
+                        $data = Invention::select('inventions.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'inventions.college_id')  
+                            ->where('inventions.college_id', $collegeID)
+                            ->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
+                            ->whereNotIn('inventions.id', Report::where('report_category_id', 8)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = InventionDocument::where('invention_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '9': 
+                        $data = $data = ExpertServiceConsultant::select('expert_service_consultants.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                            ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')  
+                            ->where('expert_service_consultants.college_id', $collegeID)
+                            ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
+                            ->whereNotIn('expert_service_consultants.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '10': 
+                        $data = ExpertServiceConference::select('expert_service_conferences.*', 'colleges.name as college_name', 'dropdown_options.name as nature_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')  
+                                ->where('expert_service_conferences.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
+                                ->whereNotIn('expert_service_conferences.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ExpertServiceConferenceDocument::where('expert_service_conference_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '11': 
+                        $data = ExpertServiceAcademic::select('expert_service_academics.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')  
+                                ->where('expert_service_academics.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
+                                ->whereNotIn('expert_service_academics.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ExpertServiceAcademicDocument::where('expert_service_academic_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '12': 
+                        $data = ExtensionService::select('extension_services.*', 'colleges.name as college_name', 'dropdown_options.name as nature_of_involvement_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'extension_services.college_id')  
+                                ->where('extension_services.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'extension_services.nature_of_involvement')
+                                ->whereNotIn('extension_services.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ExtensionServiceDocument::where('extension_service_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '13': 
+                        $data = Partnership::select('partnerships.*', 'colleges.name as college_name', 'dropdown_options.name as collab_nature_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'partnerships.college_id')  
+                                ->where('partnerships.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
+                                ->whereNotIn('partnerships.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = PartnershipDocument::where('partnership_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '14': 
+                        $data = Mobility::select('mobilities.*', 'colleges.name as college_name', 'dropdown_options.name as type_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'mobilities.college_id')  
+                                ->where('mobilities.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
+                                ->whereNotIn('mobilities.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all())->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = MobilityDocument::where('mobility_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '15': 
+                        $data = Reference::select('references.*', 'colleges.name as college_name', 'dropdown_options.name as category_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'references.college_id')  
+                                ->where('references.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'references.category')
+                                ->whereNotIn('references.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ReferenceDocument::where('reference_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '16': 
+                        $data = Syllabus::select('syllabi.*', 'colleges.name as college_name', 'dropdown_options.name as assigned_task_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'syllabi.college_id')  
+                                ->where('syllabi.college_id', $collegeID)
+                                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                                ->whereNotIn('syllabi.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = SyllabusDocument::where('syllabus_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '17': 
+                        $data = RequestModel::select('requests.*', 'colleges.name as college_name')->where('user_id', auth()->id())
+                                ->join('colleges', 'colleges.id', 'requests.college_id')  
+                                ->where('requests.college_id', $collegeID)
+                                ->whereNotIn('requests.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
+                                ->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = RequestDocument::where('request_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '18': 
+                            $data = StudentAward::select('student_awards.*')->where('user_id', auth()->id())->
+                                    whereNotIn('student_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                            if($data != null){
+                                foreach($data as $row){
+                                    $checker = StudentAwardDocument::where('student_award_id', $row->id)->get();
+                                    $checker_array[$row->id] = $checker;
+                                }
+                            }
+                            $report_array[$table->id] = $data;
+                            $report_document_checker[$table->id] = $checker_array;
+                            $checker_array = [];
+                            break;
+                    case '19': 
+                        $data = StudentTraining::select('student_trainings.*', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
+                        ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
+                        ->whereNotIn('student_trainings.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = StudentTrainingDocument::where('student_training_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '20': 
+                        $data = ViableProject::select('viable_projects.*')->where('user_id', auth()->id())->
+                                whereNotIn('viable_projects.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = ViableProjectDocument::where('viable_project_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '21': 
+                        $data = CollegeDepartmentAward::select('college_department_awards.*')->where('user_id', auth()->id())->
+                                whereNotIn('college_department_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = CollegeDepartmentAwardDocument::where('college_department_award_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '22': 
+                        $data = OutreachProgram::select('outreach_programs.*')->where('user_id', auth()->id())->
+                                whereNotIn('outreach_programs.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = OutreachProgramDocument::where('outreach_program_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                    case '23': 
+                        $data = TechnicalExtension::select('technical_extensions.*', 'dropdown_options.name as classification_of_adoptor_name')->where('user_id', auth()->id())
+                        ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
+                        ->whereNotIn('technical_extensions.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                        if($data != null){
+                            foreach($data as $row){
+                                $checker = TechnicalExtensionDocument::where('technical_extension_id', $row->id)->get();
+                                $checker_array[$row->id] = $checker;
+                            }
+                        }
+                        $report_array[$table->id] = $data;
+                        $report_document_checker[$table->id] = $checker_array;
+                        $checker_array = [];
+                        break;
+                }
+                
+            }
+
+            //role and department/ college id
+            $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+            $department_id = '';
+            $college_id = '';
+            if(in_array(5, $roles)){
+                $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+            }
+            // dd($department_id);
+            if(in_array(6, $roles)){
+                $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+            }
+
+            $colleges = College::select('colleges.name', 'colleges.id')
+                                ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Invention::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceConsultant::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceConference::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExpertServiceAcademic::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', ExtensionService::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Reference::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Syllabus::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Partnership::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', Mobility::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
+                                ->get();
+
+            return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID'));
     }
 }
