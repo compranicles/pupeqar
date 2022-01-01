@@ -75,6 +75,8 @@ class ConsultantController extends Controller
 
         $request->validate([
             'to' => 'after_or_equal:from',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -173,6 +175,8 @@ class ConsultantController extends Controller
 
         $request->validate([
             'to' => 'after_or_equal:from',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

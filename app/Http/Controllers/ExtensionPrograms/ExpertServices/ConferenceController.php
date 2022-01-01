@@ -76,6 +76,8 @@ class ConferenceController extends Controller
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
 
@@ -176,6 +178,8 @@ class ConferenceController extends Controller
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

@@ -66,6 +66,8 @@ class MobilityController extends Controller
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -165,6 +167,8 @@ class MobilityController extends Controller
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)

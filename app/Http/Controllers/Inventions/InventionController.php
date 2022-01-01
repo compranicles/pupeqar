@@ -35,7 +35,7 @@ class InventionController extends Controller
                                 ->orderBy('inventions.updated_at', 'desc')->get();
 
         $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
-                                ->select('colleges.name')
+                                ->select('colleges.name')->where('inventions.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
 
@@ -99,6 +99,8 @@ class InventionController extends Controller
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -225,6 +227,8 @@ class InventionController extends Controller
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
