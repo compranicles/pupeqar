@@ -16,7 +16,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>College</th>
+                                    <th>College/Branch/Campus/Office</th>
                                     <th>Department</th>
                                     <th>Report Category</th>
                                     <th>Date Reported</th>
@@ -35,7 +35,7 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                     </td>
                                 </tr>
                                 @empty
@@ -78,7 +78,7 @@
                                     </td>
                                     <td>
                                         <button class="btn btn-sm btn-primary button-deny" id="view_accomp_deny" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Reason</button>
-                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
+                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
                                     </td>
                                 </tr>
                                 @empty
