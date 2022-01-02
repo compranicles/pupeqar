@@ -72,11 +72,31 @@ class SubmissionController extends Controller
         foreach($report_tables as $table){
             switch($table->id){
                 case '1':
-                    $data = Research::select('research.id','research.research_code', 'research.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
-                        ->join('dropdown_options', 'dropdown_options.id', 'research.classification')    
-                        ->join('colleges', 'colleges.id', 'research.college_id')  
-                        ->whereNotIn('research.id', Report::where('report_category_id', 1)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')->get();
-
+                    $tempdata = [];
+                    $data = Research::select(
+                                        'research.id',
+                                        'research.research_code', 
+                                        'research.title', 
+                                        'research.updated_at', 
+                                        'dropdown_options.name as classification_name', 
+                                        'colleges.name as college_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'research.classification', 'research.updated_at')    
+                                    ->join('colleges', 'colleges.id', 'research.college_id')->where('research.user_id', auth()->id())
+                                    ->orderBy('research.updated_at', 'desc')->get();
+                    
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 1)->exists()) {
+                            if( 
+                                Report::join('research', 'research.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.report_category_id', 1)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -89,14 +109,33 @@ class SubmissionController extends Controller
         
                     break;
                 case '2':
-                    $data = Research::select('research_completes.id as complete_id', 'research.id','research.research_code', 'research_completes.updated_at', 
-                                'research.title', 'dropdown_options.name as classification_name', 
-                                'colleges.name as college_name')->where('user_id', auth()->id())
-                            ->whereNotIn('research.id', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
-                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('colleges', 'colleges.id', 'research.college_id')  
-                            ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
-                            // dd($data);
+                    $tempdata = [];
+                    $data = Research::select(
+                                        'research_completes.id as id', 
+                                        'research.id as research_id',
+                                        'research.research_code', 
+                                        'research.title', 
+                                        'research_completes.updated_at', 
+                                        'dropdown_options.name as classification_name', 
+                                        'colleges.name as college_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                    ->join('colleges', 'colleges.id', 'research.college_id')  
+                                    ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
+                            
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 2)->exists()) {
+                            if( 
+                                Report::join('research_completes', 'research_completes.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.report_category_id', 2)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -108,11 +147,33 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '3':
-                    $data = Research::select('research_publications.id as publication_id', 'research.id', 'research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
-                            ->whereNotIn('research.id', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
+                    $tempdata = [];
+                    $data = Research::select(
+                                        'research_publications.id as id', 
+                                        'research.id as research_id', 
+                                        'research.research_code', 
+                                        'research_publications.updated_at', 
+                                        'research.title', 
+                                        'dropdown_options.name as classification_name', 
+                                        'colleges.name as college_name'
+                                    )->where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
+                    
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 3)->exists() ) {
+                            if( 
+                                Report::join('research_publications', 'research_publications.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 3)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -124,11 +185,33 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '4':
-                    $data = Research::select('research_presentations.id as presentation_id', 'research.id', 'research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
-                            ->whereNotIn('research.id', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
-                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('colleges', 'colleges.id', 'research.college_id')  
-                            ->join('research_presentations', 'research_presentations.research_id', 'research.id')->get();
+                    $tempdata = [];
+                    $data = Research::select(
+                                        'research_presentations.id as id', 
+                                        'research_presentations.updated_at', 
+                                        'research.id as research_id', 
+                                        'research.research_code', 
+                                        'research.title', 
+                                        'dropdown_options.name as classification_name', 
+                                        'colleges.name as college_name',
+                                    )->where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                    ->join('colleges', 'colleges.id', 'research.college_id')  
+                                    ->join('research_presentations', 'research_presentations.research_id', 'research.id')->get();
+                            
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->exists() ) {
+                            if ( 
+                                Report::join('research_presentations', 'research_presentations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 4)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -140,13 +223,33 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '5':
-                    $data = ResearchCitation::select('research_citations.id as citation_id', 'research.id', 'research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )
-                            ->orwhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
-
+                    $tempdata = [];
+                    $data = ResearchCitation::select(
+                                                'research_citations.id as id', 
+                                                'research.id as research_id', 
+                                                'research.research_code', 
+                                                'research_citations.updated_at', 
+                                                'research.title', 
+                                                'dropdown_options.name as classification_name', 
+                                                'colleges.name as college_name'
+                                            )
                             ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
+
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->exists() ) {
+                            if ( 
+                                Report::join('research_citations', 'research_citations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 5)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
@@ -159,12 +262,31 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '6':
-                    $data = ResearchUtilization::select('research_utilizations.id as utilization_id', 'research.id', 'research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
-                            whereNotIn('research.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )
-                            ->orwhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
-                            ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'research.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
+                    $tempdata = [];
+                    $data = ResearchUtilization::select(
+                                                    'research_utilizations.id as id', 
+                                                    'research.id as research_id', 
+                                                    'research.research_code', 
+                                                    'research_utilizations.updated_at', 
+                                                    'research.title', 
+                                                    'dropdown_options.name as classification_name', 
+                                                    'colleges.name as college_name'
+                                                )
+                                                ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'research.college_id')  
+                                                ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->exists() ) {
+                            if ( 
+                                Report::join('research_utilizations', 'research_utilizations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 6)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->
@@ -177,11 +299,31 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '7':
-                    $data = Research::select('research_copyrights.id as copyright_id', 'research.id', 'research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
-                            ->whereNotIn('research.id', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
-                            ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->join('colleges', 'colleges.id', 'research.college_id')  
-                            ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')->get();
+                    $tempdata = [];
+                    $data = Research::select(
+                                        'research_copyrights.id as id', 
+                                        'research.id as research_id', 
+                                        'research.research_code', 
+                                        'research_copyrights.updated_at', 
+                                        'research.title', 
+                                        'dropdown_options.name as classification_name', 
+                                        'colleges.name as college_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
+                                    ->join('colleges', 'colleges.id', 'research.college_id')  
+                                    ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')->get();
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->exists() ) {
+                            if ( 
+                                Report::join('research_copyrights', 'research_copyrights.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 7)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -193,10 +335,28 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '8': 
-                    $data = Invention::select('inventions.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
-                        ->join('colleges', 'colleges.id', 'inventions.college_id')  
-                        ->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
-                        ->whereNotIn('inventions.id', Report::where('report_category_id', 8)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = Invention::select(
+                                        'inventions.*', 
+                                        'colleges.name as college_name', 
+                                        'dropdown_options.name as classification_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('colleges', 'colleges.id', 'inventions.college_id')  
+                                    ->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
+                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 8)->exists() ) {
+                            if ( 
+                                Report::join('inventions', 'inventions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 8)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    
                     if($data != null){
                         foreach($data as $row){
                             $checker = InventionDocument::where('invention_id', $row->id)->get();
@@ -208,10 +368,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '9': 
-                    $data = $data = ExpertServiceConsultant::select('expert_service_consultants.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
-                        ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')  
-                        ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
-                        ->whereNotIn('expert_service_consultants.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = ExpertServiceConsultant::select(
+                                                        'expert_service_consultants.*', 
+                                                        'colleges.name as college_name', 
+                                                        'dropdown_options.name as classification_name'
+                                                    )->where('user_id', auth()->id())
+                                                    ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')  
+                                                    ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
+                                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 9)->exists() ) {
+                            if ( 
+                                Report::join('expert_service_consultants', 'expert_service_consultants.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 9)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $row->id)->get();
@@ -223,11 +400,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '10': 
-                    $data = ExpertServiceConference::select('expert_service_conferences.*', 'colleges.name as college_name', 'dropdown_options.name as nature_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
-                            ->whereNotIn('expert_service_conferences.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = ExpertServiceConference::select(
+                                                        'expert_service_conferences.*', 
+                                                        'colleges.name as college_name', 
+                                                        'dropdown_options.name as nature_name'
+                                                    )->where('user_id', auth()->id())
+                                                    ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')  
+                                                    ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
+                                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 10)->exists() ) {
+                            if ( 
+                                Report::join('expert_service_conferences', 'expert_service_conferences.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 10)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceConferenceDocument::where('expert_service_conference_id', $row->id)->get();
@@ -239,11 +432,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '11': 
-                    $data = ExpertServiceAcademic::select('expert_service_academics.*', 'colleges.name as college_name', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
-                            ->whereNotIn('expert_service_academics.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = ExpertServiceAcademic::select(
+                                                    'expert_service_academics.*', 
+                                                    'colleges.name as college_name', 
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')  
+                                                ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 11)->exists() ) {
+                            if ( 
+                                Report::join('expert_service_academics', 'expert_service_academics.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 11)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExpertServiceAcademicDocument::where('expert_service_academic_id', $row->id)->get();
@@ -255,11 +464,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '12': 
-                    $data = ExtensionService::select('extension_services.*', 'colleges.name as college_name', 'dropdown_options.name as nature_of_involvement_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'extension_services.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'extension_services.nature_of_involvement')
-                            ->whereNotIn('extension_services.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = ExtensionService::select(
+                                                'extension_services.*', 
+                                                'colleges.name as college_name', 
+                                                'dropdown_options.name as nature_of_involvement_name'
+                                            )->where('user_id', auth()->id())
+                                            ->join('colleges', 'colleges.id', 'extension_services.college_id')  
+                                            ->join('dropdown_options', 'dropdown_options.id', 'extension_services.nature_of_involvement')
+                                            ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 12)->exists() ) {
+                            if ( 
+                                Report::join('extension_services', 'extension_services.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 12)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ExtensionServiceDocument::where('extension_service_id', $row->id)->get();
@@ -271,11 +496,28 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '13': 
-                    $data = Partnership::select('partnerships.*', 'colleges.name as college_name', 'dropdown_options.name as collab_nature_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'partnerships.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
-                            ->whereNotIn('partnerships.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = Partnership::select(
+                                            'partnerships.*', 
+                                            'colleges.name as college_name', 
+                                            'dropdown_options.name as collab_nature_name'
+                                        )->where('user_id', auth()->id())
+                                        ->join('colleges', 'colleges.id', 'partnerships.college_id')  
+                                        ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
+                                        ->get();
+                $tempdata = [];
+                foreach($data as $row){
+                    if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 13)->exists() ) {
+                        if ( 
+                            Report::join('partnerships', 'partnerships.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.report_category_id', 13)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                        )
+                            array_push($tempdata, $row);
+                    }
+                    else
+                        array_push($tempdata, $row);
+                }
+                $data = $tempdata;
+                    
                     if($data != null){
                         foreach($data as $row){
                             $checker = PartnershipDocument::where('partnership_id', $row->id)->get();
@@ -287,11 +529,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '14': 
-                    $data = Mobility::select('mobilities.*', 'colleges.name as college_name', 'dropdown_options.name as type_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'mobilities.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
-                            ->whereNotIn('mobilities.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all())->get();
+                    $data = Mobility::select(
+                                        'mobilities.*', 
+                                        'colleges.name as college_name', 
+                                        'dropdown_options.name as type_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('colleges', 'colleges.id', 'mobilities.college_id')  
+                                    ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
+                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 14)->exists() ) {
+                            if ( 
+                                Report::join('mobilities', 'mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 14)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = MobilityDocument::where('mobility_id', $row->id)->get();
@@ -303,11 +561,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '15': 
-                    $data = Reference::select('references.*', 'colleges.name as college_name', 'dropdown_options.name as category_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'references.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'references.category')
-                            ->whereNotIn('references.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = Reference::select(
+                                            'references.*', 
+                                            'colleges.name as college_name', 
+                                            'dropdown_options.name as category_name'
+                                        )->where('user_id', auth()->id())
+                                        ->join('colleges', 'colleges.id', 'references.college_id')  
+                                        ->join('dropdown_options', 'dropdown_options.id', 'references.category')
+                                        ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 15)->exists() ) {
+                            if ( 
+                                Report::join('references', 'references.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 15)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = ReferenceDocument::where('reference_id', $row->id)->get();
@@ -319,11 +593,27 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '16': 
-                    $data = Syllabus::select('syllabi.*', 'colleges.name as college_name', 'dropdown_options.name as assigned_task_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'syllabi.college_id')  
-                            ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                            ->whereNotIn('syllabi.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = Syllabus::select(
+                                        'syllabi.*', 
+                                        'colleges.name as college_name', 
+                                        'dropdown_options.name as assigned_task_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('colleges', 'colleges.id', 'syllabi.college_id')  
+                                    ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 16)->exists() ) {
+                            if ( 
+                                Report::join('syllabi', 'syllabi.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 16)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = SyllabusDocument::where('syllabus_id', $row->id)->get();
@@ -335,10 +625,25 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '17': 
-                    $data = RequestModel::select('requests.*', 'colleges.name as college_name')->where('user_id', auth()->id())
-                            ->join('colleges', 'colleges.id', 'requests.college_id')  
-                            ->whereNotIn('requests.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())
-                            ->pluck('report_reference_id')->all() )->get();
+                    $data = RequestModel::select(
+                                            'requests.*', 
+                                            'colleges.name as college_name'
+                                        )->where('user_id', auth()->id())
+                                        ->join('colleges', 'colleges.id', 'requests.college_id')  
+                                        ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 17)->exists() ) {
+                            if ( 
+                                Report::join('requests', 'requests.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 17)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
                             $checker = RequestDocument::where('request_id', $row->id)->get();
@@ -350,22 +655,53 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '18': 
-                        $data = StudentAward::select('student_awards.*')->where('user_id', auth()->id())->
-                                whereNotIn('student_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
-                        if($data != null){
-                            foreach($data as $row){
-                                $checker = StudentAwardDocument::where('student_award_id', $row->id)->get();
-                                $checker_array[$row->id] = $checker;
-                            }
+                    $data = StudentAward::select(
+                                            'student_awards.*'
+                                        )->where('user_id', auth()->id())
+                                        ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 18)->exists() ) {
+                            if ( 
+                                Report::join('student_awards', 'student_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 18)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
                         }
-                        $report_array[$table->id] = $data;
-                        $report_document_checker[$table->id] = $checker_array;
-                        $checker_array = [];
-                        break;
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = StudentAwardDocument::where('student_award_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
                 case '19': 
-                    $data = StudentTraining::select('student_trainings.*', 'dropdown_options.name as classification_name')->where('user_id', auth()->id())
-                    ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
-                    ->whereNotIn('student_trainings.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = StudentTraining::select(
+                                                'student_trainings.*', 
+                                                'dropdown_options.name as classification_name'
+                                            )->where('user_id', auth()->id())
+                                            ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
+                                            ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 19)->exists() ) {
+                            if ( 
+                                Report::join('student_trainings', 'student_trainings.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 19)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;        
                     if($data != null){
                         foreach($data as $row){
                             $checker = StudentTrainingDocument::where('student_training_id', $row->id)->get();
@@ -377,8 +713,23 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '20': 
-                    $data = ViableProject::select('viable_projects.*')->where('user_id', auth()->id())->
-                            whereNotIn('viable_projects.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = ViableProject::select(
+                                                'viable_projects.*'
+                                            )->where('user_id', auth()->id())
+                                            ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 20)->exists() ) {
+                            if ( 
+                                Report::join('viable_projects', 'viable_projects.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 20)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
                     if($data != null){
                         foreach($data as $row){
                             $checker = ViableProjectDocument::where('viable_project_id', $row->id)->get();
@@ -390,8 +741,23 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '21': 
-                    $data = CollegeDepartmentAward::select('college_department_awards.*')->where('user_id', auth()->id())->
-                            whereNotIn('college_department_awards.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = CollegeDepartmentAward::select(
+                                                        'college_department_awards.*'
+                                                    )->where('user_id', auth()->id())
+                                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 21)->exists() ) {
+                            if ( 
+                                Report::join('college_department_awards', 'college_department_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 21)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
                     if($data != null){
                         foreach($data as $row){
                             $checker = CollegeDepartmentAwardDocument::where('college_department_award_id', $row->id)->get();
@@ -403,8 +769,23 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '22': 
-                    $data = OutreachProgram::select('outreach_programs.*')->where('user_id', auth()->id())->
-                            whereNotIn('outreach_programs.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = OutreachProgram::select(
+                                                'outreach_programs.*'
+                                            )->where('user_id', auth()->id())
+                                            ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 22)->exists() ) {
+                            if ( 
+                                Report::join('outreach_programs', 'outreach_programs.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 22)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
                     if($data != null){
                         foreach($data as $row){
                             $checker = OutreachProgramDocument::where('outreach_program_id', $row->id)->get();
@@ -416,9 +797,25 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '23': 
-                    $data = TechnicalExtension::select('technical_extensions.*', 'dropdown_options.name as classification_of_adoptor_name')->where('user_id', auth()->id())
-                    ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
-                    ->whereNotIn('technical_extensions.id', Report::where('report_category_id', $table->id)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->get();
+                    $data = TechnicalExtension::select(
+                                                    'technical_extensions.*', 
+                                                    'dropdown_options.name as classification_of_adoptor_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 23)->exists() ) {
+                            if ( 
+                                Report::join('technical_extensions', 'technical_extensions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                    ->where('reports.report_category_id', 23)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
                     if($data != null){
                         foreach($data as $row){
                             $checker = TechnicalExtensionDocument::where('technical_extension_id', $row->id)->get();
@@ -489,6 +886,8 @@ class SubmissionController extends Controller
             $report_details;
             $reportColumns;
             $reportValues;
+            $failedToSubmit = 0;
+            $successToSubmit = 0;
             foreach($request->report_values as $report_value){
                 $report_values_array = explode(',', $report_value); // 0 => research_code , 1 => report_category, 2 => id
                 switch($report_values_array[1]){
@@ -508,29 +907,104 @@ class SubmissionController extends Controller
                             $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[0]);
                         }
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                        Report::create([
-                            'user_id' =>  $user_id,
-                            'college_id' => $collegeAndDepartment->college_id,
-                            'department_id' => $collegeAndDepartment->department_id,
-                            'report_category_id' => $report_values_array[1],
-                            'report_code' => $report_values_array[0] ?? null,
-                            'report_reference_id' => $report_values_array[2] ?? null,
-                            'report_details' => json_encode($report_details),
-                            'report_documents' => json_encode($report_documents),
-                            'report_date' => date("Y-m-d", time()),
-                        ]);
+                        if(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->whereNull('chairperson_approval')
+                                ->whereNull('dean_approval')
+                                ->whereNull('sector_approval')
+                                ->whereNull('ipqmso_approval')
+                                ->exists()
+                        ){
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+                            $successToSubmit++;
+                        }
+                        elseif(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->where('chairperson_approval', 1)
+                                ->orWhere('dean_approval', 1)
+                                ->orWhere('sector_approval', 1)
+                                ->orWhere('ipqmso_approval', 1)
+                                ->exists()
+                        ){
+                            $failedToSubmit++;
+                        }
+                        elseif(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->where('chairperson_approval', 0)
+                                ->orWhere('dean_approval', 0)
+                                ->orWhere('sector_approval', 0)
+                                ->orWhere('ipqmso_approval', 0)
+                                ->exists()
+                        ){
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+                            $successToSubmit++;
+                        }
+                        else{
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+
+                            $successToSubmit++;
+                        }
                     break;
                     case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16:
                         switch($report_values_array[1]){
                             case 8:
                                 $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                             break;
-                            // case 9:
-                            //     $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                            // break;
-                            // case 10:
-                            //     $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                            // break;
+                            case 9:
+                                $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                            break;
+                            case 10:
+                                $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                            break;
                             case 11:
                                 $collegeAndDepartment = ExpertServiceAcademic::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                             break;
@@ -554,17 +1028,92 @@ class SubmissionController extends Controller
                         $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
                         $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                        Report::create([
-                            'user_id' =>  $user_id,
-                            'college_id' => $collegeAndDepartment->college_id ?? null,
-                            'department_id' => $collegeAndDepartment->department_id ?? null,
-                            'report_category_id' => $report_values_array[1],
-                            'report_code' => $report_values_array[0] ?? null,
-                            'report_reference_id' => $report_values_array[2] ?? null,
-                            'report_details' => json_encode($report_details),
-                            'report_documents' => json_encode($report_documents),
-                            'report_date' => date("Y-m-d", time()),
-                        ]);
+                        if(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->whereNull('chairperson_approval')
+                                ->whereNull('dean_approval')
+                                ->whereNull('sector_approval')
+                                ->whereNull('ipqmso_approval')
+                                ->exists()
+                        ){
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+                            $successToSubmit++;
+                        }
+                        elseif(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->where('chairperson_approval', 1)
+                                ->orWhere('dean_approval', 1)
+                                ->orWhere('sector_approval', 1)
+                                ->orWhere('ipqmso_approval', 1)
+                                ->exists()
+                        ){
+                            $failedToSubmit++;
+                        }
+                        elseif(
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->where('chairperson_approval', 0)
+                                ->orWhere('dean_approval', 0)
+                                ->orWhere('sector_approval', 0)
+                                ->orWhere('ipqmso_approval', 0)
+                                ->exists()
+                        ){
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+                            $successToSubmit++;
+                        }
+                        else{
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                            ]);
+
+                            $successToSubmit++;
+                        }
                     break;
                     case 17: case 18: case 19: case 20: case 21: case 22: case 23:
                         //role and department/ college id
@@ -583,33 +1132,192 @@ class SubmissionController extends Controller
                         $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
                         if(in_array(5, $roles)){
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $college_id ?? null,
-                                'department_id' => $department_id ?? null,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                                'chairperson_approval' => 1                                
-                            ]);
+                            if(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->whereNull('dean_approval')
+                                    ->whereNull('sector_approval')
+                                    ->whereNull('ipqmso_approval')
+                                    ->exists()
+                            ){
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->delete();
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1    
+                                ]);
+                                $successToSubmit++;
+                            }
+                            elseif(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->where('dean_approval', 1)
+                                    ->orWhere('sector_approval', 1)
+                                    ->orWhere('ipqmso_approval', 1)
+                                    ->exists()
+                            ){
+                                $failedToSubmit++;
+                            }
+                            elseif(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->where('dean_approval', 1)
+                                    ->orWhere('sector_approval', 0)
+                                    ->orWhere('ipqmso_approval', 0)
+                                    ->exists()
+                            ){
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->delete();
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1    
+                                ]);
+                                $successToSubmit++;
+                            }
+                            else{
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1    
+                                ]);
+    
+                                $successToSubmit++;
+                            }
                         }
                         if(in_array(6, $roles)){
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $college_id ?? null,
-                                'department_id' => $department_id ?? null,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                                'chairperson_approval' => 1,
-                                'dean_approval' => 1
-                            ]);
+                            if(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->where('dean_approval', 1)
+                                    ->whereNull('sector_approval')
+                                    ->whereNull('ipqmso_approval')
+                                    ->exists()
+                            ){
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->delete();
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1,
+                                    'dean_approval' => 1
+
+                                ]);
+                                $successToSubmit++;
+                            }
+                            elseif(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->where('dean_approval', 1)
+                                    ->where('sector_approval', 1)
+                                    ->orWhere('ipqmso_approval', 1)
+                                    ->exists()
+                            ){
+                                $failedToSubmit++;
+                            }
+                            elseif(
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->where('chairperson_approval', 1)
+                                    ->where('dean_approval', 1)
+                                    ->where('sector_approval', 0)
+                                    ->orWhere('ipqmso_approval', 0)
+                                    ->exists()
+                            ){
+                                Report::where('report_reference_id', $report_values_array[2])
+                                    ->where('report_code', $report_values_array[0])
+                                    ->where('report_category_id', $report_values_array[1])
+                                    ->where('user_id', auth()->id())
+                                    ->delete();
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1,
+                                    'dean_approval' => 1
+
+                                ]);
+                                $successToSubmit++;
+                            }
+                            else{
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'college_id' => $college_id ?? null,
+                                    'department_id' => $department_id ?? null,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1,
+                                    'dean_approval' => 1
+                                ]);
+    
+                                $successToSubmit++;
+                            }
+                            
                         }
                     break;
                 }
@@ -617,7 +1325,7 @@ class SubmissionController extends Controller
             }
         }
 
-        return redirect()->route('to-finalize.index')->with('success', 'All accomplishment reports have been submitted.');
+        return redirect()->route('to-finalize.index')->with('success', $successToSubmit.' accomplishment reports have been submitted. '.$failedToSubmit.' accomplishment reports have been failed to submit.');
     }
 
     /**
