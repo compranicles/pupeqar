@@ -228,9 +228,6 @@ class ResearchController extends Controller
 
         $value = $research;
         $value->toArray();
-        $value = collect($research);
-        $value = $value->except(['status']);
-        $value = $value->toArray();
 
         $colleges = College::all();
 
