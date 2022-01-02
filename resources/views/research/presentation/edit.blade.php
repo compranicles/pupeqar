@@ -22,6 +22,7 @@
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
+                                        <a href="{{ route('research.presentation.index', $research['id']) }}" class="btn btn-secondary mr-2">Cancel</a>
                                         <button type="submit" id="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </div>

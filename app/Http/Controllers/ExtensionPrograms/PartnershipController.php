@@ -74,6 +74,8 @@ class PartnershipController extends Controller
             'other_deliverable' => 'required_if:deliverable, 157',
             'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -184,6 +186,8 @@ class PartnershipController extends Controller
             'other_deliverable' => 'required_if:deliverable, 157',
             'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)

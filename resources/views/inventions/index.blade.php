@@ -65,7 +65,6 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' " id="classification-iicw-{{$invention->id}}" ></td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->status_name }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">

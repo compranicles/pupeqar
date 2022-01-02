@@ -70,7 +70,10 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-
+        $request->validate([
+            'college_id' => 'required',
+            'department_id' => 'required'
+        ]);
         $input = $request->except(['_token', '_method', 'document']);
 
         $syllabus = Syllabus::create($input);
