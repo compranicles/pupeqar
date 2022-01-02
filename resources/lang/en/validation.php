@@ -158,6 +158,7 @@ return [
             123 => 'university funded',
             49 => 'university funded',
             23 => 'university funded',
+            51 => 'externally-funded',
         ],
         'status' => [
             107 => 'deferred',

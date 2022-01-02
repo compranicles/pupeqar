@@ -124,8 +124,11 @@ class PresentationController extends Controller
         ]);
         // dd($input);
 
-        ResearchPresentation::create($input);
-
+        $presentation = ResearchPresentation::create($input);
+        $presentation->update([
+            'research_id' => $research->id,
+        ]);
+        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -143,6 +146,7 @@ class PresentationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 4,
                         'filename' => $fileName,
                     ]);
@@ -238,6 +242,7 @@ class PresentationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 4,
                         'filename' => $fileName,
                     ]);

@@ -86,7 +86,10 @@ class CopyrightedController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
-        ResearchCopyright::create($input);
+        $copyright = ResearchCopyright::create($input);
+        $copyright->update([
+            'research_id' => $research->id,
+        ]);
 
         if($request->has('document')){
             
@@ -105,6 +108,7 @@ class CopyrightedController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 7,
                         'filename' => $fileName,
                     ]);
@@ -191,6 +195,7 @@ class CopyrightedController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 7,
                         'filename' => $fileName,
                     ]);

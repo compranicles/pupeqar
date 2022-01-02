@@ -74,7 +74,7 @@
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $expertServiceAcademic->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                                <button type="button" value="{{ $expertServiceAcademic->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->publication_or_audio_visual }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>

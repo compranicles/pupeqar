@@ -93,7 +93,7 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',
@@ -219,7 +219,7 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',

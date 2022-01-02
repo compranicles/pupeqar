@@ -133,30 +133,6 @@
 
     @push('scripts')
         <script>
-            $('#date_started').on('input', function(){
-                var date = new Date($('#date_started').val());
-                var day = date.getDate();
-                var month = date.getMonth() + 1;
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('date_completed').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#date_completed').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-
-            $('#date_completed').on('input', function(){
-                var date = new Date($('#date_completed').val());
-                var day = date.getDate();
-                var month = date.getMonth() + 1;
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('date_published').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#date_published').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-        </script>
-
-        <script>
             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){
@@ -173,42 +149,51 @@
             });
         
         </script>
-        {{-- <script>
-            function hide_dates() {
-                $('.start_date').hide();
-                $('.target_date').hide();
-            }
-
-            $(function() {
-                hide_dates();
-            });
-
-        </script>
         <script>
-            $('#status').on('change', function(){
-                var statusId = $('#status').val();
-                if (statusId == 26) {
-                    hide_dates();
+            $('#date_started').on('input', function(){
+                var date = new Date($('#date_started').val());
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
 
-                    $('#start_date').prop("required", false);
-                    $('#target_date').prop("required", false);
-                }
-                else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
-                }
-            });
-        </script> --}}
-        <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                var day = date.getDate();
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                document.getElementById('date_completed').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#date_completed').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            });
+
+            $('#date_completed').on('input', function(){
+                var date = new Date($('#date_completed').val());
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
+                var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
+                var year = date.getFullYear();
+                // alert([day, month, year].join('-'));
+                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
+                document.getElementById('date_published').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+                $('#date_published').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
     @endpush

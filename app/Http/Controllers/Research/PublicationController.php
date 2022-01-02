@@ -121,8 +121,10 @@ class PublicationController extends Controller
         ]);
 
 
-        ResearchPublication::create($input);
-
+        $publication = ResearchPublication::create($input);
+        $publication->update([
+            'research_id' => $research->id,
+        ]);
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -140,6 +142,7 @@ class PublicationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 3,
                         'filename' => $fileName,
                     ]);
@@ -234,6 +237,7 @@ class PublicationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 3,
                         'filename' => $fileName,
                     ]);

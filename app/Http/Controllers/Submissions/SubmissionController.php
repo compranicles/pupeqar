@@ -65,6 +65,7 @@ class SubmissionController extends Controller
     {
         $collegeID = "all";
         $report_tables = ReportCategory::all();
+        // dd($report_tables);
         $report_array = [];
         $report_document_checker = [];
         $checker_array = [];
@@ -88,13 +89,14 @@ class SubmissionController extends Controller
         
                     break;
                 case '2':
-                    $data = Research::select('research.id','research.research_code', 'research_completes.updated_at', 
+                    $data = Research::select('research_completes.id as complete_id', 'research.id','research.research_code', 'research_completes.updated_at', 
                                 'research.title', 'dropdown_options.name as classification_name', 
                                 'colleges.name as college_name')->where('user_id', auth()->id())
                             ->whereNotIn('research.id', Report::where('report_category_id', 2)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
+                            // dd($data);
                     if($data != null){
                         foreach($data as $row){
                             $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
@@ -106,7 +108,7 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '3':
-                    $data = Research::select('research.id', 'research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                    $data = Research::select('research_publications.id as publication_id', 'research.id', 'research.research_code', 'research_publications.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
                             ->whereNotIn('research.id', Report::where('report_category_id', 3)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
@@ -122,7 +124,7 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '4':
-                    $data = Research::select('research.id', 'research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                    $data = Research::select('research_presentations.id as presentation_id', 'research.id', 'research.research_code', 'research_presentations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
                             ->whereNotIn('research.id', Report::where('report_category_id', 4)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
@@ -138,7 +140,7 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '5':
-                    $data = ResearchCitation::select('research.id', 'research_citations.id','research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                    $data = ResearchCitation::select('research_citations.id as citation_id', 'research.id', 'research.research_code', 'research_citations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
                             whereNotIn('research.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_code')->all() )
                             ->orwhereNotIn('research_citations.id', Report::where('report_category_id', 5)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
 
@@ -157,7 +159,7 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '6':
-                    $data = ResearchUtilization::select('research.id', 'research_utilizations.id','research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
+                    $data = ResearchUtilization::select('research_utilizations.id as utilization_id', 'research.id', 'research.research_code', 'research_utilizations.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())->
                             whereNotIn('research.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_code')->all() )
                             ->orwhereNotIn('research_utilizations.id', Report::where('report_category_id', 6)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
@@ -175,7 +177,7 @@ class SubmissionController extends Controller
                     $checker_array = [];
                     break;
                 case '7':
-                    $data = Research::select('research.id', 'research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
+                    $data = Research::select('research_copyrights.id as copyright_id', 'research.id', 'research.research_code', 'research_copyrights.updated_at', 'research.title', 'dropdown_options.name as classification_name', 'colleges.name as college_name')->where('user_id', auth()->id())
                             ->whereNotIn('research.id', Report::where('report_category_id', 7)->where('user_id', auth()->id())->pluck('report_reference_id')->all() )->orderBy('updated_at', 'desc')
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
@@ -457,6 +459,8 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
         // dd($reported_accomplishments);
+
+        // dd($report_array);
         return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID'));
     }
 

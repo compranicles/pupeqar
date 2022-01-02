@@ -12,7 +12,7 @@
                     <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
                 </p>
                 <div class="card">
-                    <div class="card-body">research index
+                    <div class="card-body">
                         <form action="{{ route('invention-innovation-creative.store') }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $inventionFields, 'colleges' => $colleges])
@@ -36,7 +36,7 @@
                 $('.funding_agency').hide();
                 $('#funding_agency').removeClass('form-validation');
             });
-
+        
             $('#funding_type').on('change', function (){
                 var type = $(this).val();
                 if(type == 49){
@@ -77,8 +77,20 @@
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
@@ -88,8 +100,20 @@
 
             $('#end_date').on('input', function(){
                 var date = new Date($('#end_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));

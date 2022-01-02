@@ -25,6 +25,17 @@
                     </span>
                 @endif
 
+                @if ($fieldInfo->name == 'funding_agency')
+                    <span id="validation-keywords" role="alert">
+                        <small>Required input for externally-funded.</small>
+                    </span>
+                @endif
+                @if ($fieldInfo->label == 'Please Specify')
+                    <span id="validation-keywords" role="alert">
+                        <small>Required if the previous selection is <em>others</em>.</small>
+                    </span>
+                @endif
+
                 @error($fieldInfo->name)
                     <span class='invalid-feedback' role="alert">
                         <strong>{{ $message }}</strong>

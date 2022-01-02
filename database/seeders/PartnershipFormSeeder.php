@@ -261,7 +261,7 @@ class PartnershipFormSeeder extends Seeder
             'size' => 'col-md-12',
             'field_type_id' => 8,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

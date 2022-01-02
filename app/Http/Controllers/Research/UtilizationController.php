@@ -74,6 +74,10 @@ class UtilizationController extends Controller
 
         $id = ResearchUtilization::insertGetId($input);
 
+        ResearchUtilization::where('id', $id)->update([
+            'research_id' => $research->id,
+        ]);
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -91,6 +95,7 @@ class UtilizationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 6,
                         'research_utilization_id' => $id,
                         'filename' => $fileName,
@@ -196,6 +201,7 @@ class UtilizationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 6,
                         'research_utilization_id' => $utilization->id,
                         'filename' => $fileName,

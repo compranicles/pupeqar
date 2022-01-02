@@ -73,6 +73,10 @@ class CitationController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
 
         $id = ResearchCitation::insertGetId($input);
+        
+        ResearchCitation::where('id', $id)->update([
+            'research_id' => $research->id,
+        ]);
 
         if($request->has('document')){
             
@@ -91,6 +95,7 @@ class CitationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 5,
                         'research_citation_id' => $id,
                         'filename' => $fileName,
@@ -196,6 +201,7 @@ class CitationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 5,
                         'research_citation_id' => $citation->id,
                         'filename' => $fileName,

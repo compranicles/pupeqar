@@ -70,7 +70,7 @@
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('extension-service.edit', $extensionService) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $extensionService->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ $extensionService->title_of_extension_program }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                                <button type="button" value="{{ $extensionService->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
                                         </td>
                                     </tr>

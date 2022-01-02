@@ -13248,6 +13248,10 @@ table tr .padding_left_show {
   color: white;
 }
 
+.doc-complete:hover {
+  color: white;
+}
+
 #scrollUpButton {
   display: none;
   position: fixed;

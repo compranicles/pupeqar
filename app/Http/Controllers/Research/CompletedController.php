@@ -110,6 +110,7 @@ class CompletedController extends Controller
 
         $completed = ResearchComplete::create([
             'research_code' => $research->research_code,
+            'research_id' => $research->id
         ]);
         $completed->update([
             'description' => $request->input('description'),
@@ -132,6 +133,7 @@ class CompletedController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 2,
                         'filename' => $fileName,
                     ]);
@@ -228,6 +230,7 @@ class CompletedController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 2,
                         'filename' => $fileName,
                     ]);

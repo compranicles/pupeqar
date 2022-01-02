@@ -69,24 +69,25 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div class="d-flex col-md-12">
-                        <div class="col-md-3">
-                            <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-1">Select All</label>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="d-flex">
-
-                                <p class="mt-2 mr-2">College/Branch/Campus/Office: </p>
-                                <select id="collegeFilter" class="custom-select">
-                                    <option value="all" {{ $collegeID == "all" ? 'selected' : '' }}>All</option>
-                                    @foreach($colleges as $college)
-                                    <option value="{{ $college->id }}" {{ $collegeID == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
-                                    @endforeach
-                                </select>
+                    <div class="col-md-12">
+                        <div class="d-flex flex-row">
+                            <div class="col-md-4 mt-1">
+                                <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-2 mr-4">Select All</label>
+                                <!-- <a href="" role="button" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh Page</a> -->
                             </div>
-                            <!-- <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button> -->
+                            <div class="col-md-8">
+                                <div class="d-flex">
+                                    <p class="mt-2 mr-2">College/Branch/Campus/Office: </p>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="all" {{ $collegeID == "all" ? 'selected' : '' }}>All</option>
+                                        @foreach($colleges as $college)
+                                        <option value="{{ $college->id }}" {{ $collegeID == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <!-- <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button> -->
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -226,7 +227,7 @@
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 12)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ ($row->title_of_extension_program != null ? $row->title_of_extension_program : ($row->title_of_extension_project != null ? $row->title_of_extension_project : ($row->title_of_extension_activity != null ? $row->title_of_extension_activity : ''))) }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->nature_of_involvement_name }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 13)
@@ -279,17 +280,17 @@
                                                         @if($table->id == 1)
                                                         <a href="{{ route('research.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 2)
-                                                        <a href="{{ route('research.completed.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/completed/{{ $row->complete_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 3)
-                                                        <a href="{{ route('research.publication.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/publication/{{ $row->publication_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 4)
-                                                        <a href="{{ route('research.presentation.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/presentation/{{ $row->presentation_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 5)
-                                                        <a href="{{ route('research.citation.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/citation/{{ $row->citation_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 6)
-                                                        <a href="{{ route('research.utilization.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/utilization/{{ $row->utilization_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 7)
-                                                        <a href="{{ route('research.copyrighted.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->id}}/copyrighted/{{ $row->copyright_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 8)
                                                         <a href="{{ route('invention-innovation-creative.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 9)
@@ -310,7 +311,39 @@
                                                         <a href="{{ route('syllabus.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @endif
                                                     @else
-                                                        <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
+                                                        @if($table->id == 1)
+                                                        <a href="{{ route('research.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 2)
+                                                        <a href="{{ route('research.completed.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 3)
+                                                        <a href="{{ route('research.publication.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 4)
+                                                        <a href="{{ route('research.presentation.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 5)
+                                                        <a href="{{ route('research.citation.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 6)
+                                                        <a href="{{ route('research.utilization.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 7)
+                                                        <a href="{{ route('research.copyrighted.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 8)
+                                                        <a href="{{ route('invention-innovation-creative.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 9)
+                                                        <a href="{{ route('expert-service-as-consultant.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 10)
+                                                        <a href="{{ route('expert-service-in-conference.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 11)
+                                                        <a href="{{ route('expert-service-in-academic.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 12)
+                                                        <a href="{{ route('extension-service.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 13)
+                                                        <a href="{{ route('partnership.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 14)
+                                                        <a href="{{ route('mobility.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 15)
+                                                        <a href="{{ route('rtmmi.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 16)
+                                                        <a href="{{ route('syllabus.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @endif
                                                     @endif
 
                                                 @endisset
@@ -664,33 +697,6 @@
             });
         }, 4000);
     </script>
-    <!-- <script>
-         var table =  $("table.submissions_table").DataTable();
-            var collegeIndex = 0;
-            $(".submissions_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Campus/Office") {
-                    collegeIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#collegeFilter').val()
-                    var college = data[collegeIndex];
-                    if (selectedItem === "" || college.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            $("#collegeFilter").change(function (e) {
-                table.draw();
-            });
-
-            table.draw();
-    </script> -->
     <script>
         $('#collegeFilter').on('change', function () {
             var collegeId = $('#collegeFilter').val();
