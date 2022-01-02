@@ -193,7 +193,7 @@
                         .insertBefore('#documentsSection')
                         .delay(3000)
                         .fadeOut(function (){
-                            $this.remove();
+                            $(this).remove();
                         });
 
                     var docCount = $('.documents-display').length

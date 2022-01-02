@@ -127,21 +127,6 @@
     </div>
     @push('scripts')
         <script>
-            var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-                console.log(docId);
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    console.log(data);
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-                });
-            });
-
             $('#college').on('input', function(){
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
