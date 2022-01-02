@@ -49,7 +49,7 @@ class PublicationController extends Controller
         $value = $research;
         $value->toArray();
         $value = collect($research);
-        $value = $value->except(['description', 'status']);
+        $value = $value->except(['description']);
         $value = $value->toArray();
 
         $value = array_merge($value, $values);

@@ -47,13 +47,13 @@ class ReportController extends Controller
             $research_id = $id;
             if($report_category_id == 5){
                 $id = $research_id;
-                $research_code = ResearchCitation::where('id', $id)->pluck('research_code')->first();
-                $research_id = Research::where('research_code', $research_code)->pluck('id')->first();
+                $research_code = ResearchCitation::where('research_id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             elseif($report_category_id == 6){
                 $id = $research_id;
-                $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
-                $research_id = Research::where('research_code', $research_code)->pluck('id')->first();
+                $research_code = ResearchUtilization::where('research_id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             foreach($report_columns as $column){
                 if($column->table == 'research_citations'){
@@ -68,10 +68,51 @@ class ReportController extends Controller
                 else {
                     $data = DB::table($column->table)->where('research_id', $id)->value($column->column);
                 }
+                
                 if($data == null)
                     $data = '-';
-                if(is_int($data))
-                    $data = DropdownOption::where('id', $data)->pluck('name')->first();
+                if(is_int($data)){
+                    if(is_int($data)){
+                        if(   
+                            $column->column == 'no_of_trainees_or_beneficiaries' || 
+                            $column->column == 'quality_poor' || 
+                            $column->column == 'quality_fair' ||
+                            $column->column == 'quality_satisfactory' ||
+                            $column->column == 'quality_very_satisfactory' ||
+                            $column->column == 'quality_outstanding' ||
+                            $column->column == 'timeliness_poor' || 
+                            $column->column == 'timeliness_fair' ||
+                            $column->column == 'timeliness_satisfactory' ||
+                            $column->column == 'timeliness_very_satisfactory' ||
+                            $column->column == 'timeliness_outstanding' ||
+                            $column->column == 'volume' ||
+                            $column->column == 'volume_no' ||
+                            $column->column == 'issue' ||
+                            $column->column == 'issue_no' ||
+                            $column->column == 'page' ||
+                            $column->column == 'page_no' ||
+                            $column->column =='year' ||
+                            $column->column == 'rate_of_return' ||
+                            $column->column == 'has_businesses' ||
+                            $column->column == 'is_borrowed'
+                        )
+                            $data = $data;
+                        else{
+                            $data = DropdownOption::where('id', $data)->pluck('name')->first();
+                        }
+
+                    }
+                }
+                if($column->column == 'college_id'){
+                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
+                        ->join('colleges', 'colleges.id', $column->table.'.college_id')
+                        ->pluck('colleges.name')->first();
+                }
+                if($column->column == 'department_id'){
+                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
+                        ->join('departments', 'departments.id', $column->table.'.department_id')
+                        ->pluck('departments.name')->first();
+                }
                 if($column->column == 'funding_amount'){
                     if ($column->table == 'research') {
                         $curr = DB::table($column->table)->where('id', $research_id)->value('currency_funding_amount');
@@ -117,20 +158,10 @@ class ReportController extends Controller
                 //                 ->pluck('departments.name')->first();
                 //     } 
                 // }
-                if($column->column == 'college_id'){
-                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
-                        ->join('colleges', 'colleges.id', $column->table.'.college_id')
-                        ->pluck('colleges.name')->first();
-                }
-                if($column->column == 'department_id'){
-                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
-                        ->join('departments', 'departments.id', $column->table.'.department_id')
-                        ->pluck('departments.name')->first();
-                }
+                
     
                 array_push($report_data_array, $data);
-            
-            }
+            }  
         }
         else{
             if($report_category_id >= 8){
