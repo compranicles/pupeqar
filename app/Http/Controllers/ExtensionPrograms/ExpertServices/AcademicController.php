@@ -77,6 +77,8 @@ class AcademicController extends Controller
             'other_nature' => 'required_if:nature,86',
             'to' => 'after_or_equal:from',
             'copyright_no' => 'max:100',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
@@ -184,11 +186,13 @@ class AcademicController extends Controller
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-            $request->validate([
-                'other_nature' => 'required_if:nature,86',
-                'to' => 'after_or_equal:from',
-                'copyright_no' => 'max:100',
-            ]);
+        $request->validate([
+            'other_nature' => 'required_if:nature,86',
+            'to' => 'after_or_equal:from',
+            'copyright_no' => 'max:100',
+            'college_id' => 'required',
+            'department_id' => 'required'
+        ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
         

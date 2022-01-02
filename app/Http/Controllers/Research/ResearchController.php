@@ -98,7 +98,9 @@ class ResearchController extends Controller
             'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
             'start_date' => 'required_if:status,27',
-            'target_date' => 'required_if:status,27'
+            'target_date' => 'required_if:status,27',
+            'college_id' => 'required',
+            'department_id' => 'required',
         ]);
 
         $departmentIni = '';
@@ -302,7 +304,9 @@ class ResearchController extends Controller
                 'funding_agency' => 'required_if:funding_type,23',
                 'keywords' => new Keyword,
                 'start_date' => 'required_if:status,27',
-                'target_date' => 'required_if:status,27'
+                'target_date' => 'required_if:status,27',
+                'college_id' => 'required',
+                'department_id' => 'required',
             ]);
     
 
@@ -352,11 +356,8 @@ class ResearchController extends Controller
             return view('inactive');
 
         $request->validate([
-            'funding_amount' => 'numeric',
-            'funding_agency' => 'required_if:funding_type,23',
-            'keywords' => new Keyword,
-            'start_date' => 'required_with:status,27',
-            'target_date' => 'required_with:status,27'
+            'college_id' => 'required',
+            'department_id' => 'required',
         ]);
         // dd($request);
         $input = $request->except(['_token', '_method', 'document']);

@@ -134,23 +134,12 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $(function() {
-            $('#research').prop('disabled', true);
-        });
-    </script>
-    <script>
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $research->status }}">{{ $research->status_name}}</option>');
-            $('#status').attr('disabled', true);
-        });
     </script>
        
 @endpush

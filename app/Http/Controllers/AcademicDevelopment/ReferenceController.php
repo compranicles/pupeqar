@@ -74,6 +74,8 @@ class ReferenceController extends Controller
         $request->validate([
             'date_completed' => 'after_or_equal:date_started',
             'date_published' => 'after:date_completed',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -200,6 +202,7 @@ class ReferenceController extends Controller
             'college_id' => 'required',
             // 'department_id' => 'required',
             // 'description' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
