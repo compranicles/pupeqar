@@ -165,6 +165,7 @@ class ExtensionServiceController extends Controller
         
         $values = $extension_service->toArray();
         
+        // dd($extensionServiceFields);
         return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values', 'extensionServiceFields'));
     }
 

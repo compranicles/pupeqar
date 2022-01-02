@@ -46,19 +46,11 @@
                       @default
                           
                       @endswitch
-                      
                       @endforeach
-                    
-                    
-
-
           </table>
         </div>
     </div>
 </div>
 
 @push('scripts')
-<script>
-    if ()
-</script>
 @endpush
