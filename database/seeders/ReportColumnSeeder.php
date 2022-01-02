@@ -569,6 +569,22 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 5,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'research',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Department',
+            'table' => 'research',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
             'name' => 'Description of Supporting Documents',
             'table' => 'research_citations',
             'column' => 'description',
@@ -1176,7 +1192,7 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 12,
-            'name' => 'Classificiation of Trainees',
+            'name' => 'Classification of Trainees',
             'table' => 'extension_services',
             'column' => 'classification_of_trainees_or_beneficiaries',
             'is_active' => 1,
