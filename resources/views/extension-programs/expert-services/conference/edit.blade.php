@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" id="documentsSection">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -46,7 +46,7 @@
                                     @if (count($expertServiceConferenceDocuments) > 0)
                                         @foreach ($expertServiceConferenceDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-12 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
@@ -66,6 +66,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -79,7 +82,7 @@
                                     @if(count($expertServiceConferenceDocuments) > 0)
                                         @foreach ($expertServiceConferenceDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-6 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
@@ -97,6 +100,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -132,21 +138,30 @@
     </div>
     @push('scripts')
         <script>
-            var url = '';
+             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){
                 url = $(this).data('link');   
                 docId = $(this).data('id');
-                console.log(docId);
             });
             $('#deletedoc').on('click', function(){
                 $.get(url, function (data){
-                    console.log(data);
                     $('#deleteModal .close').click();
                     $('#'+docId).remove();
+
+                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
+                        .insertBefore('#documentsSection')
+                        .delay(3000)
+                        .fadeOut(function (){
+                            $(this).remove();
+                        });
+
+                    var docCount = $('.documents-display').length
+                    if(docCount == 0){
+                        $('.docEmptyMessage').show();
+                    }
                 });
             });
-        
         </script>
         <script>
              $('#from').on('input', function(){
