@@ -6,30 +6,34 @@ use App\Models\Report;
 use App\Models\Research;
 use App\Models\DenyReason;
 use Illuminate\Http\Request;
+use App\Models\RequestDocument;
 use App\Models\MobilityDocument;
 use App\Models\ResearchCitation;
+use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\SyllabusDocument;
 use App\Models\InventionDocument;
 use App\Models\ReferenceDocument;
+use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
 use App\Models\PartnershipDocument;
+use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Currency;
+use App\Models\ResearchPresentation;
+use App\Models\StudentAwardDocument;
+use App\Models\ViableProjectDocument;
+use App\Models\OutreachProgramDocument;
+use App\Models\StudentTrainingDocument;
 use App\Models\ExtensionServiceDocument;
 use App\Models\Maintenance\ReportColumn;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\TechnicalExtensionDocument;
 use App\Models\ExpertServiceAcademicDocument;
+use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
-use App\Models\RequestDocument;
-use App\Models\StudentAwardDocument;
-use App\Models\StudentTrainingDocument;
-use App\Models\ViableProjectDocument;
-use App\Models\CollegeDepartmentAwardDocument;
-use App\Models\OutreachProgramDocument;
-use App\Models\TechnicalExtensionDocument;
 
 class ReportController extends Controller
 {
@@ -45,22 +49,42 @@ class ReportController extends Controller
 
         if($report_category_id <= 7){
             $research_id = $id;
-            if($report_category_id == 5){
+            if($report_category_id == 2){
                 $id = $research_id;
-                $research_code = ResearchCitation::where('research_id', $id)->pluck('research_code')->first();
+                $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+            }
+            if($report_category_id == 3){
+                $id = $research_id;
+                $research_code = ResearchPublication::where('id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+            }
+            if($report_category_id == 4){
+                $id = $research_id;
+                $research_code = ResearchPresentation::where('id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+            }
+            elseif($report_category_id == 5){
+                $id = $research_id;
+                $research_code = ResearchCitation::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             elseif($report_category_id == 6){
                 $id = $research_id;
-                $research_code = ResearchUtilization::where('research_id', $id)->pluck('research_code')->first();
+                $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
+                $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+            }
+            elseif($report_category_id == 7){
+                $id = $research_id;
+                $research_code = ResearchCopyright::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             foreach($report_columns as $column){
                 if($column->table == 'research_citations'){
-                    $data = DB::table($column->table)->where('research_id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
                 }
                 elseif($column->table == 'research_utilizations'){
-                    $data = DB::table($column->table)->where('research_id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
                 }
                 elseif($column->table == 'research'){
                     $data = DB::table($column->table)->where('id', $id)->value($column->column);
@@ -101,7 +125,7 @@ class ReportController extends Controller
                             $column->column == 'issue_no' ||
                             $column->column == 'page' ||
                             $column->column == 'page_no' ||
-                            $column->column =='year' ||
+                            $column->column == 'year' ||
                             $column->column == 'rate_of_return' ||
                             $column->column == 'has_businesses' ||
                             $column->column == 'is_borrowed'
@@ -128,7 +152,7 @@ class ReportController extends Controller
                         $curr = DB::table($column->table)->where('id', $research_id)->value('currency_funding_amount');
                     }
                     else {
-                        $curr = DB::table($column->table)->where('research_id', $research_id)->value('currency_funding_amount');
+                        $curr = DB::table($column->table)->where('id', $research_id)->value('currency_funding_amount');
                     }
                     $currName = Currency::where('id', $curr)->pluck('code')->first();
                     $data = number_format($data, 2, '.', ',');
@@ -139,7 +163,7 @@ class ReportController extends Controller
                         $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
                     }
                     else {
-                        $data = DB::table($column->table)->where('research_id', $research_id)->pluck($column->column)->first();
+                        $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
                     }
                 } 
     

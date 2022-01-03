@@ -91,6 +91,9 @@ class CopyrightedController extends Controller
             'research_id' => $research->id,
         ]);
 
+        $string = str_replace(' ', '-', $copyrighted->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -100,7 +103,7 @@ class CopyrightedController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RCP-'.$request->input('research_code').'-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RCP-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -178,6 +181,9 @@ class CopyrightedController extends Controller
 
         $copyrighted->update($input);
 
+        $string = str_replace(' ', '-', $copyrighted->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -187,7 +193,7 @@ class CopyrightedController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RCR-'.$request->input('research_code').'-'.$copyrighted->description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RCR-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

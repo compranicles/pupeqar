@@ -63,6 +63,9 @@ class RequestController extends Controller
 
         $requestdata = RequestModel::create($input);
         $requestdata->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $requestdata->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -73,7 +76,7 @@ class RequestController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Request-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Request-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -153,6 +156,9 @@ class RequestController extends Controller
 
         $request->update($input);
 
+        $string = str_replace(' ', '-', $request->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
         if($requestdata->has('document')){
             
             $documents = $requestdata->input('document');
@@ -162,7 +168,7 @@ class RequestController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Request-'.$requestdata->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Request-'.$request.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
