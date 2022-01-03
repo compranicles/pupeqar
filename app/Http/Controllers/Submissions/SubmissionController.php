@@ -111,8 +111,8 @@ class SubmissionController extends Controller
                 case '2':
                     $tempdata = [];
                     $data = Research::select(
-                                        'research_completes.id as id', 
-                                        'research.id as research_id',
+                                        'research_completes.id as complete_id', 
+                                        'research.id as id',
                                         'research.research_code', 
                                         'research.title', 
                                         'research_completes.updated_at', 
@@ -149,8 +149,8 @@ class SubmissionController extends Controller
                 case '3':
                     $tempdata = [];
                     $data = Research::select(
-                                        'research_publications.id as id', 
-                                        'research.id as research_id', 
+                                        'research_publications.id as publication_id', 
+                                        'research.id as id', 
                                         'research.research_code', 
                                         'research_publications.updated_at', 
                                         'research.title', 
@@ -187,9 +187,9 @@ class SubmissionController extends Controller
                 case '4':
                     $tempdata = [];
                     $data = Research::select(
-                                        'research_presentations.id as id', 
+                                        'research_presentations.id as presentation_id', 
                                         'research_presentations.updated_at', 
-                                        'research.id as research_id', 
+                                        'research.id as id', 
                                         'research.research_code', 
                                         'research.title', 
                                         'dropdown_options.name as classification_name', 
@@ -225,8 +225,8 @@ class SubmissionController extends Controller
                 case '5':
                     $tempdata = [];
                     $data = ResearchCitation::select(
-                                                'research_citations.id as id', 
-                                                'research.id as research_id', 
+                                                'research_citations.id as citation_id', 
+                                                'research.id as id', 
                                                 'research.research_code', 
                                                 'research_citations.updated_at', 
                                                 'research.title', 
@@ -264,8 +264,8 @@ class SubmissionController extends Controller
                 case '6':
                     $tempdata = [];
                     $data = ResearchUtilization::select(
-                                                    'research_utilizations.id as id', 
-                                                    'research.id as research_id', 
+                                                    'research_utilizations.id as utilization_id', 
+                                                    'research.id as id', 
                                                     'research.research_code', 
                                                     'research_utilizations.updated_at', 
                                                     'research.title', 
@@ -301,8 +301,8 @@ class SubmissionController extends Controller
                 case '7':
                     $tempdata = [];
                     $data = Research::select(
-                                        'research_copyrights.id as id', 
-                                        'research.id as research_id', 
+                                        'research_copyrights.id as copyright_id', 
+                                        'research.id as id', 
                                         'research.research_code', 
                                         'research_copyrights.updated_at', 
                                         'research.title', 
@@ -904,7 +904,7 @@ class SubmissionController extends Controller
                         }
                         elseif(($report_values_array[1] <= 4 || $report_values_array[1] == 7 )){
                             $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
-                            $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[0]);
+                            $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         }
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
                         if(

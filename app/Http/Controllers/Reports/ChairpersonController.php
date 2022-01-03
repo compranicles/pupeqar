@@ -135,12 +135,12 @@ class ChairpersonController extends Controller
 
     public function relay($report_id){
         Report::where('id', $report_id)->update(['chairperson_approval' => 0]);
-        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
+        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial has been sent');
     }
 
     public function undo($report_id){
         Report::where('id', $report_id)->update(['chairperson_approval' => null]);
-        return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
+        return redirect()->route('submissions.denied.index')->with('deny-success', 'Success. You can now review it again.');
     }
 
     public function acceptSelected(Request $request){

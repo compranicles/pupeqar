@@ -206,7 +206,7 @@
                                                 ></td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $loop->iteration }}</td>
                                             @if($table->id <= 7)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->research_code }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="{{ $row->id }}">{{ $row->research_code }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
@@ -276,21 +276,22 @@
                                             </td>
                                             <td>
                                                 @isset($row->id)
+
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         @if($table->id == 1)
                                                         <a href="{{ route('research.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 2)
-                                                        <a href="/research/{{$row->id}}/completed/{{ $row->complete_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/completed/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 3)
-                                                        <a href="/research/{{$row->id}}/publication/{{ $row->publication_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/publication/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 4)
-                                                        <a href="/research/{{$row->id}}/presentation/{{ $row->presentation_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/presentation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 5)
-                                                        <a href="/research/{{$row->id}}/citation/{{ $row->citation_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/citation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 6)
-                                                        <a href="/research/{{$row->id}}/utilization/{{ $row->utilization_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/utilization/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 7)
-                                                        <a href="/research/{{$row->id}}/copyrighted/{{ $row->copyright_id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        <a href="/research/{{$row->research_id}}/copyrighted/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 8)
                                                         <a href="{{ route('invention-innovation-creative.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 9)
@@ -309,22 +310,36 @@
                                                         <a href="{{ route('rtmmi.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @elseif($table->id == 16)
                                                         <a href="{{ route('syllabus.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 17)
+                                                        <a href="{{ route('request.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 18)
+                                                        <a href="{{ route('student-award.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 19)
+                                                        <a href="{{ route('student-training.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 20)
+                                                        <a href="{{ route('viable-project.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 21)
+                                                        <a href="{{ route('college-department-award.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 22)
+                                                        <a href="{{ route('outreach-program.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 23)
+                                                        <a href="{{ route('technical-extension.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @endif
                                                     @else
                                                         @if($table->id == 1)
                                                         <a href="{{ route('research.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 2)
-                                                        <a href="{{ route('research.completed.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/completed/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 3)
-                                                        <a href="{{ route('research.publication.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/publication/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 4)
-                                                        <a href="{{ route('research.presentation.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/presentation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 5)
-                                                        <a href="{{ route('research.citation.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/citation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 6)
-                                                        <a href="{{ route('research.utilization.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/utilization/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 7)
-                                                        <a href="{{ route('research.copyrighted.index', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        <a href="/research/{{$row->research_id}}/copyrighted/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 8)
                                                         <a href="{{ route('invention-innovation-creative.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 9)
@@ -343,6 +358,20 @@
                                                         <a href="{{ route('rtmmi.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @elseif($table->id == 16)
                                                         <a href="{{ route('syllabus.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 17)
+                                                        <a href="{{ route('request.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 18)
+                                                        <a href="{{ route('student-award.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 19)
+                                                        <a href="{{ route('student-training.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 20)
+                                                        <a href="{{ route('viable-project.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 21)
+                                                        <a href="{{ route('college-department-award.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 22)
+                                                        <a href="{{ route('outreach-program.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 23)
+                                                        <a href="{{ route('technical-extension.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
                                                         @endif
                                                     @endif
 

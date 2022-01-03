@@ -29,7 +29,7 @@
                         <div class="col-md-12">
                             <div class="ml-1">
                                 <div class="d-inline mr-2">
-                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mb-2">Accept</button>
+                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mb-2">Approve</button>
                                 </div>
                                 <div class="d-inline mr-2">
                                     <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger mb-2"></i>Deny</a>
@@ -79,7 +79,7 @@
 </div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -89,27 +89,29 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-12 h4 font-weight-bold text-center">Accomplishment Details:</div>
-                <div class="col-md-12">
+                <div class="col-md-11">
                     <table class="table table-sm table-borderless" id="columns_value_table">
                     </table>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 h5 font-weight-bold text-center">Documents:</div>
-                <div class="col-md-12 text-center" id="data_documents">
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12"><hr></div>
-                <div class="col-md-6 text-center" id="review_btn_accept">
-                </div>
-                <div class="col-md-6 text-center" id="review_btn_reject">
+                <div class="col-md-11 h5 font-weight-bold">Documents:</div>
+                <div class="col-md-11" id="data_documents">
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            <div class="ml-auto" id="review_btn_accept">
+            </div>
+            <div class="ml-1" id="review_btn_reject">
+            </div>
+            <span style="display: inline-block;
+                border-left: 1px solid #ccc;
+                margin: 0px 20px 0px 20px;;
+                height: 30px;"></span>
+            <div class="">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
         </div>
     </div>
@@ -262,8 +264,8 @@
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-right">'+k+':</td>');
-                    $('#row-'+countColumns).append('<td class="report-content h5 text-left">'+data[k]+'</td>');
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                    $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                 });
             });
             $.get('/reports/docs/'+catID, function (data) {
@@ -273,8 +275,8 @@
                 });
             });
             
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success btn-lg btn-block report-content">ACCEPT</a>');
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger  btn-lg btn-block report-content">DENY</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success btn-lg btn-block report-content">Approve</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger  btn-lg btn-block report-content">Deny</a>');
             
         });
 

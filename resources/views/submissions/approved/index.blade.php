@@ -26,9 +26,9 @@
                                     @forelse ($approved_by_me as $row)
                                     <tr role="button">
                                         <td class="report-view button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}"><i class="bi bi-three-dots-vertical"></i></td>
-                                        <td class="report-view text-center" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
-                                        <td class="report-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
-                                        <td class="report-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                        <td class="report-view text-center button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
+                                        <td class="report-view button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
+                                        <td class="report-view button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
 
                                     </tr>
                                     @empty
@@ -58,21 +58,18 @@
                                     <th></th>
                                     <th></th>
                                     <th>Department</th>
-                                    <th>Report Category</th>
+                                    <th>Accomplishment Report</th>
                                     <th>Employee</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($approved_by_me as $row)
                                 <tr role="button">
-                                    <td class="report-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}"><i class="bi bi-three-dots-vertical"></i></td>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $row->department_name }}</td>
-                                    <td>{{ $row->report_category }}</td>
-                                    <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-primary button-view" id="viewButton" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">Details</button>
-                                    </td>
+                                    <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}"><i class="bi bi-three-dots-vertical"></i></td>
+                                    <td class="button-view text-center" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
+                                    <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->department_name }}</td>
+                                    <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
+                                    <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
                                     
@@ -201,6 +198,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
             </div>
         </div>
     </div>

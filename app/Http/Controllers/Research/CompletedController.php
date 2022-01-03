@@ -236,6 +236,7 @@ class CompletedController extends Controller
 
                     ResearchDocument::create([
                         'research_id' => $research->id,
+                        'research_code' => $request->input('research_code'),
                         'research_form_id' => 2,
                         'filename' => $fileName,
                     ]);
