@@ -64,9 +64,19 @@ class ReportController extends Controller
                 }
                 elseif($column->table == 'research'){
                     $data = DB::table($column->table)->where('id', $id)->value($column->column);
+
+                    if ($column->column == "start_date" || $column->column == "target_date" || $column->column == "completion_date" ) {
+                        $date = strtotime( $data );
+                        $data = date( 'M d, Y', $date );
+                    }
                 }
                 else {
                     $data = DB::table($column->table)->where('research_id', $id)->value($column->column);
+
+                    if ($column->column == "completion_date" || $column->column == "publish_date" || $column->column == "date_presented") {
+                        $date = strtotime( $data );
+                        $data = date( 'M d, Y', $date );
+                    }
                 }
                 
                 if($data == null)
@@ -132,33 +142,6 @@ class ReportController extends Controller
                         $data = DB::table($column->table)->where('research_id', $research_id)->pluck($column->column)->first();
                     }
                 } 
-                // if($column->column == 'college_id'){
-                //         if($column->table == 'research'){
-                //             $data = DB::table($column->table)->where($column->table.'.id', $research_id)
-                //                 ->join('colleges', 'colleges.id', $column->table.'.college_id')
-                //                 ->pluck('colleges.name')->first();
-                //         }
-                //         else{
-                //             $data = DB::table($column->table)->where($column->table.'.research_id', $research_id)
-                //                     ->join('research', 'research.id', $column->table.'.research_id')
-                //                     ->join('colleges', 'colleges.id', 'research.college_id')
-                //                     ->pluck('colleges.name')->first();
-                //         }
-                // }
-                // if ($column->column == 'department_id'){
-                //     if($column->table == 'research'){
-                //         $data = DB::table($column->table)->where($column->table.'.id', $research_id)
-                //         ->join('departments', 'departments.id', $column->table.'.department_id')
-                //         ->pluck('departments.name')->first();
-                //     }
-                //     else{
-                //         $data = DB::table($column->table)->where($column->table.'.research_id', $research_id)
-                //                 ->join('research', 'research.id', $column->table.'.research_id')
-                //                 ->join('departments', 'departments.id', 'research.department_id')
-                //                 ->pluck('departments.name')->first();
-                //     } 
-                // }
-                
     
                 array_push($report_data_array, $data);
             }  
@@ -167,6 +150,15 @@ class ReportController extends Controller
             if($report_category_id >= 8){
                 foreach($report_columns as $column){
                     $data = DB::table($column->table)->where('id', $id)->value($column->column);
+
+                    if ($column->column == "start_date" || $column->column == "end_date" || $column->column == "issue_date"
+                        || $column->column == "from" || $column->column == "to" || $column->column == "date" 
+                        || $column->column == "date_started" || $column->column == "date_completed" || $column->column == "date_published"
+                        || $column->column == "date_finished") {
+                        $date = strtotime( $data );
+                        $data = date( 'M d, Y', $date );
+                    }
+
                     if($data == null)
                         $data = '-';
                     if(is_int($data)){
@@ -229,6 +221,7 @@ class ReportController extends Controller
             }
         }
         
+        if ($column)
         return $report_data_array;
     }
 
@@ -306,6 +299,21 @@ class ReportController extends Controller
         $new_report_details = [];
         foreach($report_columns as $row){
             $new_report_details[$row->name] = $report_details[$row->column];
+            if ($row->column == "start_date" || $row->column == "target_date" || $row->column == "completion_date" ) {
+                $date = strtotime( $report_details[$row->column] );
+                $new_report_details[$row->name] = date( 'M d, Y', $date );
+            }
+            if ($row->column == "completion_date" || $row->column == "publish_date" || $row->column == "date_presented") {
+                $date = strtotime( $report_details[$row->column] );
+                $new_report_details[$row->name] = date( 'M d, Y', $date );
+            }
+            if ($row->column == "end_date" || $row->column == "issue_date"
+                        || $row->column == "from" || $row->column == "to" || $row->column == "date" 
+                        || $row->column == "date_started" || $row->column == "date_completed" || $row->column == "date_published"
+                        || $row->column == "date_finished") {
+                $date = strtotime( $report_details[$row->column] );
+                $new_report_details[$row->name] = date( 'M d, Y', $date );
+            }
         }
 
         return $new_report_details;
