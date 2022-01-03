@@ -48,63 +48,66 @@ class ReportController extends Controller
         $report_data_array = [];
 
         if($report_category_id <= 7){
-            $research_id = $id;
+            if($report_category_id == 1){
+                $research_id = $id;
+            }
             if($report_category_id == 2){
-                $id = $research_id;
                 $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
-            if($report_category_id == 3){
-                $id = $research_id;
+            elseif($report_category_id == 3){
                 $research_code = ResearchPublication::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
-            if($report_category_id == 4){
-                $id = $research_id;
+            elseif($report_category_id == 4){
                 $research_code = ResearchPresentation::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             elseif($report_category_id == 5){
-                $id = $research_id;
                 $research_code = ResearchCitation::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             elseif($report_category_id == 6){
-                $id = $research_id;
                 $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             elseif($report_category_id == 7){
-                $id = $research_id;
                 $research_code = ResearchCopyright::where('id', $id)->pluck('research_code')->first();
                 $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
             }
             foreach($report_columns as $column){
                 if($column->table == 'research_citations'){
-                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    $data = DB::table('research_citations')->where('id', $id)->value($column->column);
                 }
                 elseif($column->table == 'research_utilizations'){
                     $data = DB::table($column->table)->where('id', $id)->value($column->column);
                 }
                 elseif($column->table == 'research'){
-                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('id', $research_id)->value($column->column);
 
                     if ($column->column == "start_date" || $column->column == "target_date" || $column->column == "completion_date" ) {
-                        $date = strtotime( $data );
-                        $data = date( 'M d, Y', $date );
+                        if($data == null)
+                            $data = '-';
+                        else{
+                            $date = strtotime( $data );
+                            $data = date( 'M d, Y', $date );
+                        }
                     }
                 }
                 else {
-                    $data = DB::table($column->table)->where('research_id', $id)->value($column->column);
+                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
 
                     if ($column->column == "completion_date" || $column->column == "publish_date" || $column->column == "date_presented") {
-                        $date = strtotime( $data );
-                        $data = date( 'M d, Y', $date );
+                        if($data == null)
+                            $data = '-';
+                        else{
+                            $date = strtotime( $data );
+                            $data = date( 'M d, Y', $date );
+                        }
                     }
                 }
                 
-                if($data == null)
-                    $data = '-';
+               
                 if(is_int($data)){
                     if(is_int($data)){
                         if(   
@@ -138,12 +141,12 @@ class ReportController extends Controller
                     }
                 }
                 if($column->column == 'college_id'){
-                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
+                    $data = DB::table('research')->where($column->table.'.id', $research_id)
                         ->join('colleges', 'colleges.id', $column->table.'.college_id')
                         ->pluck('colleges.name')->first();
                 }
                 if($column->column == 'department_id'){
-                    $data = DB::table($column->table)->where($column->table.'.id', $research_id)
+                    $data = DB::table('research')->where($column->table.'.id', $research_id)
                         ->join('departments', 'departments.id', $column->table.'.department_id')
                         ->pluck('departments.name')->first();
                 }
@@ -159,12 +162,7 @@ class ReportController extends Controller
                     $data = $currName.' '.$data;
                 }
                 if($column->column == 'researchers'){
-                    if ($column->table == 'research') {
-                        $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
-                    }
-                    else {
-                        $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
-                    }
+                    $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
                 } 
     
                 array_push($report_data_array, $data);
@@ -179,8 +177,12 @@ class ReportController extends Controller
                         || $column->column == "from" || $column->column == "to" || $column->column == "date" 
                         || $column->column == "date_started" || $column->column == "date_completed" || $column->column == "date_published"
                         || $column->column == "date_finished") {
-                        $date = strtotime( $data );
+                        if($data == null)
+                            $data = '-';
+                        else{
+                            $date = strtotime( $data );
                         $data = date( 'M d, Y', $date );
+                        }
                     }
 
                     if($data == null)
@@ -251,17 +253,33 @@ class ReportController extends Controller
 
     public function getDocuments($report_category_id, $id){
         $report_docs;
-        if($report_category_id <= 4 || $report_category_id == 7){
-            $research_code = $id;
-            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', $report_category_id)->pluck('filename')->all();
+        
+        if($report_category_id == 1){
+            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', 1)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 2){
+            $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 2)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 3){
+            $research_code = ResearchPublication::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 3)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 4){
+            $research_code = ResearchPresentation::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 4)->pluck('filename')->all();
         }
         elseif($report_category_id == 5){
             $research_code = ResearchCitation::where('id', $id)->pluck('research_code')->first();
-            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', $report_category_id)->where('research_citation_id', $id)->pluck('filename')->all();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 5)->where('research_citation_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 6){
             $research_code = ResearchUtilization::where('id', $id)->pluck('research_code')->first();
-            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', $report_category_id)->where('research_utilization_id', $id)->pluck('filename')->all();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 6)->where('research_utilization_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 7){
+            $research_code = ResearchCopyright::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 7)->pluck('filename')->all();
         }
         elseif($report_category_id == 8){
             $report_docs = InventionDocument::where('invention_id', $id)->pluck('filename')->all();
@@ -323,21 +341,6 @@ class ReportController extends Controller
         $new_report_details = [];
         foreach($report_columns as $row){
             $new_report_details[$row->name] = $report_details[$row->column];
-            if ($row->column == "start_date" || $row->column == "target_date" || $row->column == "completion_date" ) {
-                $date = strtotime( $report_details[$row->column] );
-                $new_report_details[$row->name] = date( 'M d, Y', $date );
-            }
-            if ($row->column == "completion_date" || $row->column == "publish_date" || $row->column == "date_presented") {
-                $date = strtotime( $report_details[$row->column] );
-                $new_report_details[$row->name] = date( 'M d, Y', $date );
-            }
-            if ($row->column == "end_date" || $row->column == "issue_date"
-                        || $row->column == "from" || $row->column == "to" || $row->column == "date" 
-                        || $row->column == "date_started" || $row->column == "date_completed" || $row->column == "date_published"
-                        || $row->column == "date_finished") {
-                $date = strtotime( $report_details[$row->column] );
-                $new_report_details[$row->name] = date( 'M d, Y', $date );
-            }
         }
 
         return $new_report_details;
@@ -364,32 +367,32 @@ class ReportController extends Controller
                 break;
             case 2:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.completed.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 3:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.publication.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 4:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.presentation.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 5:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.citation.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 6:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.utilization.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 7:
                 $report = Report::where('id', $report_id)->first();
-                $research_id = Research::where('research_code', $report->report_code)->pluck('id')->first();
+                $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
                 return redirect()->route('research.copyrighted.edit', [$research_id, $report->report_reference_id]);
                 break;
             case 8:

@@ -90,8 +90,6 @@ class ExtensionServiceController extends Controller
 
         $request->merge([
             'amount_of_funding' => $value,
-            'college_id' => 'required',
-            'department_id' => 'required'
         ]);
 
         $request->validate([
@@ -103,6 +101,8 @@ class ExtensionServiceController extends Controller
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
             'keywords' => new Keyword,
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
         
         if ($request->input('total_no_of_hours') != '') {

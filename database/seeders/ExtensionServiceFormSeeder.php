@@ -231,7 +231,7 @@ class ExtensionServiceFormSeeder extends Seeder
             'name' => 'total_no_of_hours',
             'placeholder' => null,
             'size' => 'col-md-3',
-            'field_type_id' => 11,
+            'field_type_id' => 2,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

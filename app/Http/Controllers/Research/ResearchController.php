@@ -94,8 +94,8 @@ class ResearchController extends Controller
         // $request->validate([]);
 
         $request->validate([
-            'funding_amount' => 'numeric',
-            'funding_agency' => 'required_if:funding_type,23',
+            // 'funding_amount' => 'numeric',
+            // 'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
             'start_date' => 'required_if:status,27',
             'target_date' => 'required_if:status,27',
@@ -300,8 +300,8 @@ class ResearchController extends Controller
             ]);
 
             $request->validate([
-                'funding_amount' => 'numeric',
-                'funding_agency' => 'required_if:funding_type,23',
+                // 'funding_amount' => 'numeric',
+                // 'funding_agency' => 'required_if:funding_type,23',
                 'keywords' => new Keyword,
                 'start_date' => 'required_if:status,27',
                 'target_date' => 'required_if:status,27',
