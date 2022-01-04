@@ -75,7 +75,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'manage technical extension']);
         Permission::create(['name' => 'manage viable demonstration projects']); //39
 
-        Permission::create(['name' => 'manage request and queries']);
+        Permission::create(['name' => 'manage request and queries']); //40
         
 
 

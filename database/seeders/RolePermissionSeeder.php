@@ -55,6 +55,16 @@ class RolePermissionSeeder extends Seeder
             RolePermission::create(['role_id' => '6', 'permission_id' => $d]);
         }
 
+        // for ($vp = 16; $vp <= 32; $vp++) {
+        //     RolePermission::create(['role_id' => '7', 'permission_id' => $vp]);
+        // }
+        // RolePermission::create(['role_id' => '7', 'permission_id' => 35]);
+        // RolePermission::create(['role_id' => '7', 'permission_id' => 39]);
+        // RolePermission::create(['role_id' => '7', 'permission_id' => 40]);
+
+
+
+
         
 
 
