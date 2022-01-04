@@ -907,108 +907,25 @@ class SubmissionController extends Controller
                             $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         }
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                        if(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->whereNull('chairperson_approval')
-                                ->whereNull('dean_approval')
-                                ->whereNull('sector_approval')
-                                ->whereNull('ipqmso_approval')
-                                ->exists()
-                        ){
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->delete();
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        elseif(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->where('chairperson_approval', 1)
-                                ->orWhere('dean_approval', 1)
-                                ->orWhere('sector_approval', 1)
-                                ->orWhere('ipqmso_approval', 1)
-                                ->exists()
-                        ){
-                            // Report::where('report_reference_id', $report_values_array[2])
-                            //     ->where('report_code', $report_values_array[0])
-                            //     ->where('report_category_id', $report_values_array[1])
-                            //     ->where('user_id', auth()->id())
-                            //     ->delete();
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        elseif(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->where('chairperson_approval', 0)
-                                ->orWhere('dean_approval', 0)
-                                ->orWhere('sector_approval', 0)
-                                ->orWhere('ipqmso_approval', 0)
-                                ->exists()
-                        ){
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->delete();
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        else{
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-
-                            $successToSubmit++;
-                        }
+                        
+                        Report::where('report_reference_id', $report_values_array[2])
+                            ->where('report_code', $report_values_array[0])
+                            ->where('report_category_id', $report_values_array[1])
+                            ->where('user_id', auth()->id())
+                            ->delete();
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                        ]);
+                        $successToSubmit++;
+                    
                     break;
                     case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16:
                         switch($report_values_array[1]){
@@ -1044,103 +961,24 @@ class SubmissionController extends Controller
                         $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
                         $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                        if(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->whereNull('chairperson_approval')
-                                ->whereNull('dean_approval')
-                                ->whereNull('sector_approval')
-                                ->whereNull('ipqmso_approval')
-                                ->exists()
-                        ){
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->delete();
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        elseif(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->where('chairperson_approval', 1)
-                                ->orWhere('dean_approval', 1)
-                                ->orWhere('sector_approval', 1)
-                                ->orWhere('ipqmso_approval', 1)
-                                ->exists()
-                        ){
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        elseif(
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->where('chairperson_approval', 0)
-                                ->orWhere('dean_approval', 0)
-                                ->orWhere('sector_approval', 0)
-                                ->orWhere('ipqmso_approval', 0)
-                                ->exists()
-                        ){
-                            Report::where('report_reference_id', $report_values_array[2])
-                                ->where('report_code', $report_values_array[0])
-                                ->where('report_category_id', $report_values_array[1])
-                                ->where('user_id', auth()->id())
-                                ->delete();
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-                            $successToSubmit++;
-                        }
-                        else{
-                            Report::create([
-                                'user_id' =>  $user_id,
-                                'college_id' => $collegeAndDepartment->college_id,
-                                'department_id' => $collegeAndDepartment->department_id,
-                                'report_category_id' => $report_values_array[1],
-                                'report_code' => $report_values_array[0] ?? null,
-                                'report_reference_id' => $report_values_array[2] ?? null,
-                                'report_details' => json_encode($report_details),
-                                'report_documents' => json_encode($report_documents),
-                                'report_date' => date("Y-m-d", time()),
-                            ]);
-
-                            $successToSubmit++;
-                        }
+                        Report::where('report_reference_id', $report_values_array[2])
+                            ->where('report_code', $report_values_array[0])
+                            ->where('report_category_id', $report_values_array[1])
+                            ->where('user_id', auth()->id())
+                            ->delete();
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                        ]);
+                        $successToSubmit++;
+                    
                     break;
                     case 17: case 18: case 19: case 20: case 21: case 22: case 23:
                         //role and department/ college id
@@ -1159,210 +997,49 @@ class SubmissionController extends Controller
                         $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
                         if(in_array(5, $roles)){
-                            if(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->whereNull('dean_approval')
-                                    ->whereNull('sector_approval')
-                                    ->whereNull('ipqmso_approval')
-                                    ->exists()
-                            ){
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->delete();
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1    
-                                ]);
-                                $successToSubmit++;
-                            }
-                            elseif(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->where('dean_approval', 1)
-                                    ->orWhere('sector_approval', 1)
-                                    ->orWhere('ipqmso_approval', 1)
-                                    ->exists()
-                            ){
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1    
-                                ]);
-                                $successToSubmit++;
-                            }
-                            elseif(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->where('dean_approval', 0)
-                                    ->orWhere('sector_approval', 0)
-                                    ->orWhere('ipqmso_approval', 0)
-                                    ->exists()
-                            ){
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->delete();
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1    
-                                ]);
-                                $successToSubmit++;
-                            }
-                            else{
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1    
-                                ]);
-    
-                                $successToSubmit++;
-                            }
+                            
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $college_id ?? null,
+                                'department_id' => $department_id ?? null,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'chairperson_approval' => 1    
+                            ]);
+
+                            $successToSubmit++;
                         }
                         if(in_array(6, $roles)){
-                            if(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->where('chairperson_approval', 1)
-                                    ->whereNull('sector_approval')
-                                    ->whereNull('ipqmso_approval')
-                                    ->exists()
-                            ){
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->delete();
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1,
-                                    'dean_approval' => 1
-
-                                ]);
-                                $successToSubmit++;
-                            }
-                            elseif(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->where('sector_approval', 1)
-                                    ->orWhere('ipqmso_approval', 1)
-                                    ->exists()
-                            ){
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1,
-                                    'dean_approval' => 1
-
-                                ]);
-                                $successToSubmit++;
-                            }
-                            elseif(
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->where('sector_approval', 0)
-                                    ->orWhere('ipqmso_approval', 0)
-                                    ->exists()
-                            ){
-                                Report::where('report_reference_id', $report_values_array[2])
-                                    ->where('report_code', $report_values_array[0])
-                                    ->where('report_category_id', $report_values_array[1])
-                                    ->where('user_id', auth()->id())
-                                    ->delete();
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1,
-                                    'dean_approval' => 1
-
-                                ]);
-                                $successToSubmit++;
-                            }
-                            else{
-                                Report::create([
-                                    'user_id' =>  $user_id,
-                                    'college_id' => $college_id ?? null,
-                                    'department_id' => $department_id ?? null,
-                                    'report_category_id' => $report_values_array[1],
-                                    'report_code' => $report_values_array[0] ?? null,
-                                    'report_reference_id' => $report_values_array[2] ?? null,
-                                    'report_details' => json_encode($report_details),
-                                    'report_documents' => json_encode($report_documents),
-                                    'report_date' => date("Y-m-d", time()),
-                                    'chairperson_approval' => 1,
-                                    'dean_approval' => 1
-                                ]);
-    
-                                $successToSubmit++;
-                            }
                             
+                            Report::where('report_reference_id', $report_values_array[2])
+                                ->where('report_code', $report_values_array[0])
+                                ->where('report_category_id', $report_values_array[1])
+                                ->where('user_id', auth()->id())
+                                ->delete();
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'college_id' => $college_id ?? null,
+                                'department_id' => $department_id ?? null,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'chairperson_approval' => 1,
+                                'dean_approval' => 1
+
+                            ]);
+                            $successToSubmit++;
                         }
                     break;
                 }
