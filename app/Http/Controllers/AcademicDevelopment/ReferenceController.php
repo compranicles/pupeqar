@@ -210,6 +210,8 @@ class ReferenceController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $rtmmi->update(['description' => '-clear']);
+
         $rtmmi->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

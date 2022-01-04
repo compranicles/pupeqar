@@ -187,6 +187,8 @@ class ConferenceController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $expert_service_in_conference->update(['description' => '-clear']);
+
         $expert_service_in_conference->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

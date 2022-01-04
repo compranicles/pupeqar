@@ -171,6 +171,8 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $technical_extension->update(['description' => '-clear']);
+
         $technical_extension->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

@@ -199,6 +199,8 @@ class AcademicController extends Controller
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
         
+        $expert_service_in_academic->update(['description' => '-clear']);
+
         $expert_service_in_academic->update($input);
         $expert_service_in_academic->update(['other_nature' => $request->input('other_nature')]);
 

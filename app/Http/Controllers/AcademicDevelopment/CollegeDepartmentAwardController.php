@@ -145,6 +145,8 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $college_department_award->update(['description' => '-clear']);
+
         $college_department_award->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

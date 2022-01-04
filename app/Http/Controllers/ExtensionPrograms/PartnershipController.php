@@ -196,6 +196,8 @@ class PartnershipController extends Controller
         
         $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
 
+        $partnership->update(['description' => '-clear']);
+
         $partnership->update($input);
         $partnership->update([
             'other_collab_nature' => $request->input('other_collab_nature'),

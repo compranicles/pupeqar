@@ -184,6 +184,8 @@ class ConsultantController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $expert_service_as_consultant->update(['description' => '-clear']);
+
         $expert_service_as_consultant->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

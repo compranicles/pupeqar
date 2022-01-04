@@ -314,6 +314,8 @@ class ResearchController extends Controller
         $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_type', 'college_id', 'department_id', 'nature_of_involvement']);
         $funding_amount = $request->funding_amount;    
         $funding_amount = str_replace( ',' , '', $funding_amount);
+        
+        $research->update(['description' => '-clear']);
 
         $research->update($input);
         Research::where('research_code', $research->research_code)->update($inputOtherResearchers);

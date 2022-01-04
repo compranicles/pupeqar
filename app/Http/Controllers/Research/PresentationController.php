@@ -226,6 +226,8 @@ class PresentationController extends Controller
         
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
+        $presentation->update(['description' => '-clear']);
+
         $presentation->update($input);
         
         $string = str_replace(' ', '-', $presentation->description); // Replaces all spaces with hyphens.

@@ -210,6 +210,7 @@ class CompletedController extends Controller
 
         $research->update($input);
 
+        $completed->update(['description' => '-clear']);
 
         $completed->update([
             'research_code' => $research->research_code,

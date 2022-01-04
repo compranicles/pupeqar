@@ -154,6 +154,8 @@ class RequestController extends Controller
         
         $input = $requestdata->except(['_token', '_method', 'document']);
 
+        $request->update(['description' => '-clear']);
+
         $request->update($input);
 
         $string = str_replace(' ', '-', $request->description); // Replaces all spaces with hyphens.

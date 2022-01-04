@@ -146,6 +146,8 @@ class StudentAwardController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $student_award->update(['description' => '-clear']);
+
         $student_award->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

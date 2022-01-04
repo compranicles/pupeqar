@@ -176,6 +176,9 @@ class StudentTrainingController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+
+        $student_training->update(['description' => '-clear']);
+
         $student_training->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

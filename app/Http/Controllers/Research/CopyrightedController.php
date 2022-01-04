@@ -179,6 +179,8 @@ class CopyrightedController extends Controller
         
         $input = $request->except(['_token', '_method', 'document']);
 
+        $copyrighted->update(['description' => '-clear']);
+
         $copyrighted->update($input);
 
         $string = str_replace(' ', '-', $copyrighted->description); // Replaces all spaces with hyphens.

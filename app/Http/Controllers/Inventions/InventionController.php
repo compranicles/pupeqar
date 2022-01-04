@@ -105,6 +105,8 @@ class InventionController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $iicw->update(['description' => '-clear']);
+
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
 

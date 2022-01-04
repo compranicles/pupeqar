@@ -251,6 +251,8 @@ class ExtensionServiceController extends Controller
     
             $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
             
+            $extension_service->update(['description' => '-clear']);
+
             $extension_service->update($input);
             $extension_service->update([
                 'other_classification' => $request->input('other_classification'),

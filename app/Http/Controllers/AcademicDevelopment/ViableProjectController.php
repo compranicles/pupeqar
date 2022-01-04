@@ -192,6 +192,8 @@ class ViableProjectController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $viable_project->update(['description' => '-clear']);
+
         $viable_project->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

@@ -185,6 +185,8 @@ class UtilizationController extends Controller
         
         $input = $request->except(['_token', '_method', 'document']);
 
+        $utilization->update(['description' => '-clear']);
+
         $utilization->update($input);
 
         $string = str_replace(' ', '-', $utilization->description); // Replaces all spaces with hyphens.

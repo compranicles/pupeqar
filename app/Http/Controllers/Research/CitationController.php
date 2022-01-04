@@ -185,6 +185,8 @@ class CitationController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $citation->update(['description' => '-clear']);
+
         $citation->update($input);
 
         $string = str_replace(' ', '-', $citation->description); // Replaces all spaces with hyphens.

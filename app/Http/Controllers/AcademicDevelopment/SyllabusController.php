@@ -180,7 +180,7 @@ class SyllabusController extends Controller
             return view('inactive');
 
         $input = $request->except(['_token', '_method', 'document']);
-
+        $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

@@ -147,6 +147,8 @@ class OutreachProgramController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $outreach_program->update(['description' => '-clear']);
+
         $outreach_program->update($input);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.

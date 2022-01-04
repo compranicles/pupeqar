@@ -222,6 +222,8 @@ class PublicationController extends Controller
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
+        $publication->update(['description' => '-clear']);
+
         $publication->update($input);
 
         $string = str_replace(' ', '-', $publication->description); // Replaces all spaces with hyphens.

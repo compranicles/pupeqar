@@ -178,6 +178,8 @@ class MobilityController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'other_type']);
 
+        $mobility->update(['description' => '-clear']);
+
         $mobility->update($input);
         $mobility->update([
             'other_type' => $request->input('other_type'),
