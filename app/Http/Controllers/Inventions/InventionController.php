@@ -105,8 +105,6 @@ class InventionController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
-        $iicw->update(['description' => '-clear']);
-
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
 
@@ -234,7 +232,7 @@ class InventionController extends Controller
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
-
+        $invention_innovation_creative->update(['description' => '-clear']);
         $invention_innovation_creative->update($input);
 
         if($request->has('document')){

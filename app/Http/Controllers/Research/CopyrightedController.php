@@ -91,7 +91,7 @@ class CopyrightedController extends Controller
             'research_id' => $research->id,
         ]);
 
-        $string = str_replace(' ', '-', $copyrighted->description); // Replaces all spaces with hyphens.
+        $string = str_replace(' ', '-', $copyright->description); // Replaces all spaces with hyphens.
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){

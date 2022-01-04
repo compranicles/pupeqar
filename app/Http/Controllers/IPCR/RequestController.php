@@ -10,6 +10,9 @@ use App\Models\FormBuilder\IPCRForm;
 use App\Models\FormBuilder\IPCRField;
 use App\Models\Request as RequestModel;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Department;
+use App\Models\FormBuilder\DropdownOption;
 
 class RequestController extends Controller
 {
@@ -20,14 +23,22 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Request::class);
+        $this->authorize('viewAny', RequestModel::class);
+
+        $categories = DropdownOption::where('dropdown_id', 48)->get();
 
         $requests = RequestModel::where('user_id', auth()->id())
         ->join('dropdown_options', 'dropdown_options.id', 'requests.category')
-        ->select('requests.*', 'dropdown_options.name as category')
+        ->join('colleges', 'colleges.id', 'requests.college_id')
+        ->select('requests.*', 'dropdown_options.name as category', 'colleges.name as college_name')
         ->orderBy('requests.updated_at', 'desc')
         ->get();
-        return view('ipcr.request.index', compact('requests'));
+
+        $requests_in_colleges = RequestModel::join('colleges', 'requests.college_id', 'colleges.id')
+                                ->select('colleges.name')->where('requests.user_id', auth()->id())
+                                ->distinct()
+                                ->get();
+        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories'));
     }
 
     /**
@@ -37,7 +48,7 @@ class RequestController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Request::class);
+        $this->authorize('create', RequestModel::class);
 
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -45,7 +56,9 @@ class RequestController extends Controller
                         ->where('i_p_c_r_fields.i_p_c_r_form_id', 1)->where('i_p_c_r_fields.is_active', 1)
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
-        return view('ipcr.request.create', compact('requestFields'));
+        $colleges = College::all();
+        
+        return view('ipcr.request.create', compact('requestFields', 'colleges'));
     }
 
     /**
@@ -56,7 +69,7 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', Request::class);
+        $this->authorize('create', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -101,7 +114,7 @@ class RequestController extends Controller
      */
     public function show(RequestModel $request)
     {
-        $this->authorize('view', Request::class);
+        $this->authorize('view', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -124,7 +137,7 @@ class RequestController extends Controller
      */
     public function edit(RequestModel $request)
     {
-        $this->authorize('update', Request::class);
+        $this->authorize('update', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -136,7 +149,9 @@ class RequestController extends Controller
 
         $documents = RequestDocument::where('request_id', $request->id)->get()->toArray();
 
-        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values'));
+        $colleges = College::all();
+
+        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges'));
     }
 
     /**
@@ -148,7 +163,7 @@ class RequestController extends Controller
      */
     public function update(Request $requestdata, RequestModel $request)
     {
-        $this->authorize('update', Request::class);
+        $this->authorize('update', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -170,7 +185,7 @@ class RequestController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Request-'.$request.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Request-'.str_replace("/", "-", $request->description).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -195,7 +210,7 @@ class RequestController extends Controller
      */
     public function destroy(RequestModel $request)
     {
-        $this->authorize('delete', Request::class);
+        $this->authorize('delete', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         RequestDocument::where('request_id', $request->id)->delete();

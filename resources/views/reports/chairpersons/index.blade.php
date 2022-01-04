@@ -34,10 +34,11 @@
                                 <div class="d-inline mr-2">
                                     <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Deny</a>
                                 </div>
+                                
                             </div>  
                         </div>
                     </div>
-                    <hr id="hideSeparator">
+                    <hr>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -292,7 +293,7 @@
         });
 
         $(function () {
-            $('#to_review_table').DataTable({
+            var table = $('#to_review_table').DataTable({
                 order: [[1, 'asc']],
                 columnDefs: [ {
                     targets: 0,
@@ -316,6 +317,7 @@
                 $('#hideSeparator').show();
                 $('#actionButtons').show();
             }
+            
         });
     </script>
     <script>
@@ -326,6 +328,7 @@
             });
         }, 4000);
     </script>
+
 @endpush
 
 </x-app-layout>

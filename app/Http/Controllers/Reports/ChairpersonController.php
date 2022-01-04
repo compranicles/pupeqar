@@ -9,6 +9,7 @@ use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
+use App\Models\User;
 
 class ChairpersonController extends Controller
 {

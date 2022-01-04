@@ -166,6 +166,7 @@ return [
             54 => 'completed',
             32 => 'deferred',
             28 => 'completed', 
+            27 => 'ongoing',
         ],
         'classification' => [
             46 => 'invention',

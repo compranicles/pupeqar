@@ -2065,7 +2065,7 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 23,
             'name' => 'Classification',
             'table' => 'technical_extensions',
-            'column' => 'classification',
+            'column' => 'classification_of_adoptor',
             'is_active' => 1,
             'order' => 1,
         ]);  
@@ -2100,15 +2100,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'total_profit',
             'is_active' => 1,
             'order' => 1,
-        ]);  
-        ReportColumn::create([
-            'report_category_id' => 23,
-            'name' => 'Total Profit/ Income of the Adoptors',
-            'table' => 'technical_extensions',
-            'column' => 'total_profit',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
+        ]);   
         ReportColumn::create([
             'report_category_id' => 23,
             'name' => 'Description of Supporting Documents Submitted',

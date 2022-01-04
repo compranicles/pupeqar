@@ -329,6 +329,7 @@
                     orderable: false
                 } ]
             });
+            });
             
             var allChecked = 0;
             $(".select-box").each(function(index, element){

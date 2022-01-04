@@ -26,10 +26,9 @@ class RequestPolicy
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage request and queries")
-                            ->first();
+                        ->first();
 
             return $permission !== null ;
-
         }
     }
 
