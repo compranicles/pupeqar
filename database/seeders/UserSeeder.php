@@ -43,23 +43,23 @@ class UserSeeder extends Seeder
         //Faculty
         // 3
         User::create([
-            'email' => 'cozy@mailinator.com',
-            'password'=> Hash::make('cozy@mailinator.com'),
+            'email' => 'faculty_taguig@mailinator.com',
+            'password'=> Hash::make('faculty_taguig@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Faculty',
+            'first_name' => 'Faculty-Taguig',
             'middle_name' => null,
-            'last_name' => 'Faculty',
+            'last_name' => 'Faculty-Taguig',
             'suffix' => null,
         ]);
 
         // 4
         User::create([
-            'email' => 'kyhogo@mailinator.com',
-            'password'=> Hash::make('kyhogo@mailinator.com'),
+            'email' => 'faculty_caf_acc@mailinator.com',
+            'password'=> Hash::make('faculty_caf_acc@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Faculty',
+            'first_name' => 'Faculty-Accountancy',
             'middle_name' => null,
-            'last_name' => 'Faculty',
+            'last_name' => 'Faculty-Acountancy',
             'suffix' => null,
         ]);
         // 5-15
@@ -267,8 +267,8 @@ class UserSeeder extends Seeder
 //60
         //IPQMSO
         User::create([
-            'email' => 'goya@mailinator.com',
-            'password'=> Hash::make('goya@mailinator.com'),
+            'email' => 'ipqmso1@mailinator.com',
+            'password'=> Hash::make('ipqmso1@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'IPQMSO',
             'middle_name' => null,
@@ -277,8 +277,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'lego@mailinator.com',
-            'password'=> Hash::make('lego@mailinator.com'),
+            'email' => 'ipqmso2@mailinator.com',
+            'password'=> Hash::make('ipqmso2@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'IPQMSO',
             'middle_name' => null,

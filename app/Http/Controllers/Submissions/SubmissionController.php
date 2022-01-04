@@ -1239,7 +1239,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification', 'research.updated_at')    
                                     ->join('colleges', 'colleges.id', 'research.college_id')->where('research.user_id', auth()->id())
-                                    ->where('research.colleges_id', $collegeID)
+                                    ->where('research.college_id', $collegeID)
                                     ->orderBy('research.updated_at', 'desc')->get();
                     
                     foreach($data as $row){
@@ -1278,7 +1278,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->where('research.colleges_id', $collegeID)
+                                    ->where('research.college_id', $collegeID)
                                     ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
                             
                     foreach($data as $row){
@@ -1317,7 +1317,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')
-                            ->where('research.colleges_id', $collegeID)  
+                            ->where('research.college_id', $collegeID)  
                             ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
                     
                     foreach($data as $row){
@@ -1357,7 +1357,7 @@ class SubmissionController extends Controller
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
                                     ->join('research_presentations', 'research_presentations.research_id', 'research.id')
-                                    ->where('research.colleges_id', $collegeID)->get();
+                                    ->where('research.college_id', $collegeID)->get();
                             
                     foreach($data as $row){
                         if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->exists() ) {
@@ -1396,7 +1396,7 @@ class SubmissionController extends Controller
                             ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                            ->where('research.colleges_id', $collegeID)->get();
+                            ->where('research.college_id', $collegeID)->get();
 
                     foreach($data as $row){
                         if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->exists() ) {
@@ -1436,7 +1436,7 @@ class SubmissionController extends Controller
                                                 ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
                                                 ->join('colleges', 'colleges.id', 'research.college_id')  
                                                 ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
-                                                ->where('research.colleges_id', $collegeID)->get();
+                                                ->where('research.college_id', $collegeID)->get();
                     foreach($data as $row){
                         if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->exists() ) {
                             if ( 
@@ -1474,7 +1474,7 @@ class SubmissionController extends Controller
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
                                     ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')
-                                    ->where('research.colleges_id', $collegeID)->get();
+                                    ->where('research.college_id', $collegeID)->get();
                     foreach($data as $row){
                         if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->exists() ) {
                             if ( 
@@ -1505,7 +1505,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('colleges', 'colleges.id', 'inventions.college_id')  
                                     ->join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
-                                    ->where('inventions.colleges_id', $collegeID)
+                                    ->where('inventions.college_id', $collegeID)
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1539,7 +1539,7 @@ class SubmissionController extends Controller
                                                     )->where('user_id', auth()->id())
                                                     ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')  
                                                     ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
-                                                    ->where('expert_service_consultants.colleges_id', $collegeID)
+                                                    ->where('expert_service_consultants.college_id', $collegeID)
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1572,7 +1572,7 @@ class SubmissionController extends Controller
                                                     )->where('user_id', auth()->id())
                                                     ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')  
                                                     ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
-                                                    ->where('expert_service_conferences.colleges_id', $collegeID)
+                                                    ->where('expert_service_conferences.college_id', $collegeID)
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1605,7 +1605,7 @@ class SubmissionController extends Controller
                                                 )->where('user_id', auth()->id())
                                                 ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')  
                                                 ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
-                                                ->where('expert_service_academics.colleges_id', $collegeID)
+                                                ->where('expert_service_academics.college_id', $collegeID)
                                                 ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1638,7 +1638,7 @@ class SubmissionController extends Controller
                                             )->where('user_id', auth()->id())
                                             ->join('colleges', 'colleges.id', 'extension_services.college_id')  
                                             ->join('dropdown_options', 'dropdown_options.id', 'extension_services.nature_of_involvement')
-                                            ->where('extension_services.colleges_id', $collegeID)
+                                            ->where('extension_services.college_id', $collegeID)
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1671,7 +1671,7 @@ class SubmissionController extends Controller
                                         )->where('user_id', auth()->id())
                                         ->join('colleges', 'colleges.id', 'partnerships.college_id')  
                                         ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
-                                        ->where('partnerships.colleges_id', $collegeID)
+                                        ->where('partnerships.college_id', $collegeID)
 
                                         ->get();
                 $tempdata = [];
@@ -1706,7 +1706,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('colleges', 'colleges.id', 'mobilities.college_id')  
                                     ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
-                                    ->where('mobilities.colleges_id', $collegeID)
+                                    ->where('mobilities.college_id', $collegeID)
 
                                     ->get();
                     $tempdata = [];
@@ -1740,7 +1740,7 @@ class SubmissionController extends Controller
                                         )->where('user_id', auth()->id())
                                         ->join('colleges', 'colleges.id', 'references.college_id')  
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
-                                        ->where('references.colleges_id', $collegeID)
+                                        ->where('references.college_id', $collegeID)
 
                                         ->get();
                     $tempdata = [];
@@ -1774,7 +1774,7 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('colleges', 'colleges.id', 'syllabi.college_id')  
                                     ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                                    ->where('syllabi.colleges_id', $collegeID)
+                                    ->where('syllabi.college_id', $collegeID)
 
                                     ->get();
                     $tempdata = [];
@@ -1806,7 +1806,7 @@ class SubmissionController extends Controller
                                             'colleges.name as college_name'
                                         )->where('user_id', auth()->id())
                                         ->join('colleges', 'colleges.id', 'requests.college_id') 
-                                        ->where('requests.colleges_id', $collegeID)
+                                        ->where('requests.college_id', $collegeID)
 
                                         ->get();
                     $tempdata = [];
@@ -1836,7 +1836,6 @@ class SubmissionController extends Controller
                     $data = StudentAward::select(
                                             'student_awards.*'
                                         )->where('user_id', auth()->id())
-                                        ->where('colleges_id', $collegeID)
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1867,7 +1866,6 @@ class SubmissionController extends Controller
                                                 'dropdown_options.name as classification_name'
                                             )->where('user_id', auth()->id())
                                             ->join('dropdown_options', 'dropdown_options.id', 'student_trainings.classification')
-                                             ->where('student_trainings.colleges_id', $collegeID)
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1896,7 +1894,6 @@ class SubmissionController extends Controller
                     $data = ViableProject::select(
                                                 'viable_projects.*'
                                             )->where('user_id', auth()->id())
-                                            ->where('viable_projects.colleges_id', $collegeID)
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1925,7 +1922,6 @@ class SubmissionController extends Controller
                     $data = CollegeDepartmentAward::select(
                                                         'college_department_awards.*'
                                                     )->where('user_id', auth()->id())
-                                                    ->where('college_department_awards.colleges_id', $collegeID)
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1954,7 +1950,6 @@ class SubmissionController extends Controller
                     $data = OutreachProgram::select(
                                                 'outreach_programs.*'
                                             )->where('user_id', auth()->id())
-                                            ->where('outreach_programs.colleges_id', $collegeID)
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
@@ -1985,7 +1980,6 @@ class SubmissionController extends Controller
                                                     'dropdown_options.name as classification_of_adoptor_name'
                                                 )->where('user_id', auth()->id())
                                                 ->join('dropdown_options', 'dropdown_options.id', 'technical_extensions.classification_of_adoptor')
-                                                ->where('technical_extensions.colleges_id', $collegeID)
 
                                                 ->get();
                     $tempdata = [];

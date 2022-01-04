@@ -162,7 +162,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'size' => 'col-md-6',
             'field_type_id' => 13,
             'dropdown_id' => null, 
-            'required' => 0,
+            'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
