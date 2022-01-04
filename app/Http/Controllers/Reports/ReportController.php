@@ -225,6 +225,24 @@ class ReportController extends Controller
                         $data = number_format($data, 2, '.', ',');
                         $data = $currName.' '.$data;
                     }
+                    if($column->column == 'total_profit'){
+                        $curr = DB::table($column->table)->where('id', $id)->value('currency_total_profit');
+                        $currName = Currency::where('id', $curr)->pluck('code')->first();
+                        $data = number_format($data, 2, '.', ',');
+                        $data = $currName.' '.$data;
+                    }
+                    if($column->column == 'revenue'){
+                        $curr = DB::table($column->table)->where('id', $id)->value('currency_revenue');
+                        $currName = Currency::where('id', $curr)->pluck('code')->first();
+                        $data = number_format($data, 2, '.', ',');
+                        $data = $currName.' '.$data;
+                    }
+                    if($column->column == 'cost'){
+                        $curr = DB::table($column->table)->where('id', $id)->value('currency_cost');
+                        $currName = Currency::where('id', $curr)->pluck('code')->first();
+                        $data = number_format($data, 2, '.', ',');
+                        $data = $currName.' '.$data;
+                    }
                     if($column->column == 'amount_of_funding'){
                         $curr = DB::table($column->table)->where('id', $id)->value('currency_amount_of_funding');
                         $currName = Currency::where('id', $curr)->pluck('code')->first();

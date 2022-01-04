@@ -94,14 +94,6 @@
 
     @push('scripts')
     <script>
-        $("#document").remove();
-        $(document).ready(function(){
-            $("input").prop("disabled", true);
-            $("textarea").prop("disabled", true);
-            $("select").prop("disabled", true);
-        });
-    </script>
-    <script>
         //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
