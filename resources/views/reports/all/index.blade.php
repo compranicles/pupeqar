@@ -31,30 +31,28 @@
                             <div class="row mt-2">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="table table-sm table-hover table-bordered text-center" id="all_table">
+                                        <table class="table table-sm table-hover" id="all_table">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th></th>
+                                                    <th></th>
                                                     <th>College</th>
                                                     <th>Department</th>
                                                     <th>Report Category</th>
                                                     <th>Faculty</th>
                                                     <th>Report Date</th>
-                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($reportsToReview as $row)
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $college_name[$row->id] }}</td>
-                                                        <td>{{ $department_name[$row->id] }}</td>
-                                                        <td>{{ $row->report_category }}</td>
-                                                        <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                        <td>{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm button-view" id="viewButton" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">View</button>
-                                                        </td>
+                                                    <tr role="button">
+                                                        <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
+                                                        <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
+                                                        <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $college_name[$row->id] }}</td>
+                                                        <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $department_name[$row->id] }}</td>
+                                                        <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
+                                                        <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                        <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -80,21 +78,21 @@
             </button>
         </div>
         <div class="modal-body">
-            <div class="row">
-                <div class="col-md-12 h4 font-weight-bold text-center">Accomplishment Details:</div>
-                <div class="col-md-12">
+            <div class="row justify-content-center">
+                <div class="col-md-11">
                     <table class="table table-sm table-borderless" id="columns_value_table">
                     </table>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 h5 font-weight-bold text-center">Documents:</div>
-                <div class="col-md-12 text-center" id="data_documents">
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-md-11 h5 font-weight-bold">Documents:</div>
+                <div class="col-md-11" id="data_documents">
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
         </div>
     </div>
@@ -113,8 +111,8 @@
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-right">'+k+':</td>');
-                    $('#row-'+countColumns).append('<td class="report-content h5 text-left">'+data[k]+'</td>');
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                    $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                 });
             });
             $.get('/reports/docs/'+catID, function (data) {

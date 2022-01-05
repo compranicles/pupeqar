@@ -25,17 +25,25 @@
                             @endif
                         </div>
                     </div>
-                    <div class="row" style="display: none;" id="actionButtons">
+                    <div class="row">
                         <div class="col-md-12">
-                            <div class="ml-1">
-                                <div class="d-inline mr-2">
-                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success"><i class="bi bi-check2"></i> Approve</button>
-                                </div>
-                                <div class="d-inline mr-2">
+                            <div class="d-flex flex-row justify-content-start">
+                                <div class="col-md-6" style="display: none;" id="actionButtons">
+                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Approve</button>
                                     <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Deny</a>
                                 </div>
-                                
-                            </div>  
+                                <div class="col-md-6 ml-auto">
+                                    <div class="d-flex justify-content-start">
+                                        <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
+                                        <select id="employeeFilter" class="custom-select mr-2">
+                                            <option value="">All</option>
+                                            @foreach ($employees as $employee)
+                                            <option value="{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}">{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -55,12 +63,12 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($reportsToReview as $row)
-                                            <tr>
-                                                <td><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
+                                            <tr role="button">
+                                                <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
                                                 <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
                                                 <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
                                                 <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                 <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
@@ -101,7 +109,7 @@
             <div class="modal-footer">
                 <div class="ml-auto" id="review_btn_reject">
                 </div>
-                <div class="ml-1" id="review_btn_accept">
+                <div class="ml-2" id="review_btn_accept">
                 </div>
                 <span style="display: inline-block;
                     border-left: 1px solid #ccc;
@@ -211,10 +219,10 @@
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
                 $('#actionButtons').hide();
-                $('#hideSeparator').hide();
+                
             }
             else{
-                $('#hideSeparator').show();
+                
                 $('#actionButtons').show();
             }
         });
@@ -241,10 +249,10 @@
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
                 $('#actionButtons').hide();
-                $('#hideSeparator').hide();
+                
             }
             else{
-                $('#hideSeparator').show();
+                
                 $('#actionButtons').show();
             }
             if(flag == true){
@@ -278,13 +286,13 @@
                 else{
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
-                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-success m-1">'+item+'</a>');
+                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-dark m-1">'+item+'</a>');
                     });
                 }
             });
             
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content">Approve</a>');
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content">Deny</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Approve</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Deny</a>');
             
         });
 
@@ -310,14 +318,38 @@
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
                 $('#actionButtons').hide();
-                $('#hideSeparator').hide();
+                
 
             }
             else{
-                $('#hideSeparator').show();
+                
                 $('#actionButtons').show();
             }
             
+            var empIndex = 0;
+            $("#to_review_table th").each(function (i) {
+                if ($($(this)).html() == "Employee") {
+                    empIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#employeeFilter').val()
+                    var employee = data[empIndex];
+                    if (selectedItem === "" || employee.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#employeeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
         });
     </script>
     <script>
