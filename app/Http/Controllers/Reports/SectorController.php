@@ -9,6 +9,7 @@ use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
+use App\Models\Maintenance\College;
 
 class SectorController extends Controller
 {
@@ -38,7 +39,10 @@ class SectorController extends Controller
             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
         }
             
-        return view('reports.sector.index', compact('reportsToReview', 'roles', 'department_id', 'college_id'));
+        $colleges = College::select('colleges.id', 'colleges.name')
+                            ->orderBy('colleges.name')
+                            ->get();
+        return view('reports.sector.index', compact('reportsToReview', 'roles', 'department_id', 'college_id', 'colleges'));
     }
 
     /**

@@ -13274,3 +13274,13 @@ table tr .padding_left_show {
 .home-icons { 
   font-size: 4em;
 }
+
+/* #view_deny_details_table th,  #view_deny_details_table td{
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#columns_value_table th, #columns_value_table td {
+  display: table-cell;
+  vertical-align: middle;
+} */

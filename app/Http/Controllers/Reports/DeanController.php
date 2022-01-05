@@ -9,6 +9,7 @@ use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
+use App\Models\Maintenance\Department;
 
 class DeanController extends Controller
 {
@@ -40,7 +41,21 @@ class DeanController extends Controller
             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
         }
 
-        return view('reports.deans.index', compact('collegeHeadOf', 'reportsToReview', 'roles', 'department_id', 'college_id'));
+        $employees = Report::join('users', 'reports.user_id', 'users.id')
+                            ->where('reports.college_id', $collegeHeadOf->college_id)
+                            ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
+                            ->where('reports.dean_approval', null)
+                            ->distinct()
+                            ->orderBy('users.last_name')
+                            ->get();
+        
+        $departments = Department::
+                            where('college_id', $collegeHeadOf->college_id)
+                            ->orderBy('departments.name')
+                            ->select('departments.id', 'departments.name')
+                            ->get();
+
+        return view('reports.deans.index', compact('collegeHeadOf', 'reportsToReview', 'roles', 'department_id', 'college_id', 'employees', 'departments'));
     }
 
     /**

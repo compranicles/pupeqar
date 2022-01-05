@@ -41,7 +41,15 @@ class ChairpersonController extends Controller
             ->join('users', 'reports.user_id', 'users.id')
             ->where('department_id', $departmentHeadOf->department_id)->where('chairperson_approval', null)->get();
 
-        return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview', 'roles', 'department_id', 'college_id'));
+        $employees = Report::join('users', 'reports.user_id', 'users.id')
+                            ->where('reports.department_id', $departmentHeadOf->department_id)
+                            ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
+                            ->where('reports.chairperson_approval', null)
+                            ->distinct()
+                            ->orderBy('users.last_name')
+                            ->get();
+
+        return view('reports.chairpersons.index', compact('departmentHeadOf','reportsToReview', 'roles', 'department_id', 'college_id', 'employees'));
     }
 
     /**
