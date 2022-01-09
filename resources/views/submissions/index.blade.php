@@ -21,6 +21,7 @@
                 <h5>
                     You have no new accomplishments to finalize so far.
                 </h5> 
+                <small>Submissions this quarter {{$quarter}} of <?php echo date('Y'); ?>: {{$totalReports}}</small>
             </div>
         </div>
     </div>
@@ -71,7 +72,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="d-flex flex-row">
-                            <div class="col-md-4 mt-1">
+                            <div class="col-md-4 mt-3">
                                 <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-2 mr-4">Select All</label>
                                 <!-- <a href="" role="button" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh Page</a> -->
                             </div>
@@ -85,8 +86,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <!-- <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button> -->
                             </div>
+                                <!-- <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button> -->
+
                         </div>
                     </div>
                 </div>
@@ -455,11 +457,11 @@
                             @foreach ($report_array[$table->id] as $row)
                                 @isset($row->id)
                                     @if ( count($report_document_checker[$table->id][$row->id]) > 0)
-                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*').','.($row->research_id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @else
                                     @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
-                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*').','.($row->research_id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @endisset
                                 @php

@@ -21,6 +21,7 @@ use App\Models\ViableProject;
 use App\Models\CollegeDepartmentAward;
 use App\Models\TechnicalExtension;
 use App\Models\OutreachProgram;
+use App\Models\Report;
 
 class DashboardController extends Controller
 {
@@ -48,7 +49,30 @@ class DashboardController extends Controller
                     $student_awards + $student_trainings + $viable_projects + $cdawards +
                     $technical_extensions + $outreach_programs;
 
+//Quarter submissions
+        $currentMonth = date('m');
 
-            return view('dashboard', compact('sum'));
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+            $totalReports = Report::whereMonth('report_date', '>=', 1)->whereMonth('report_date', '<=', 3)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+
+        }
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+            $totalReports = Report::whereMonth('report_date', '>=', 4)->whereMonth('report_date', '<=', 6)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+            $totalReports = Report::whereMonth('report_date', '>=', 10)->whereMonth('report_date', '<=', 12)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+            return view('dashboard', compact('sum', 'quarter', 'totalReports'));
     }
 }

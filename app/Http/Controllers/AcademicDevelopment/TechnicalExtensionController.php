@@ -22,7 +22,10 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
-        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->orderBy('technical_extensions.updated_at', 'desc')->get();
+        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
+                                ->select(DB::raw('technical_extensions.*, QUARTER(technical_extensions.updated_at) as quarter'))
+                                ->whereYear('technical_extensions.updated_at', date('Y'))
+                                ->orderBy('technical_extensions.updated_at', 'desc')->get();
         return view('academic-development.technical-extension.index', compact('technical_extensions'));
     }
 

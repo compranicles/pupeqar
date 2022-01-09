@@ -30,7 +30,8 @@ class PartnershipController extends Controller
         $partnerships = Partnership::where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
                             ->join('colleges', 'colleges.id', 'partnerships.college_id')
-                            ->select('partnerships.*', 'dropdown_options.name as collab', 'colleges.name as college_name')
+                            ->whereYear('partnerships.updated_at', date('Y'))
+                            ->select(DB::raw('partnerships.*, dropdown_options.name as collab, colleges.name as college_name, QUARTER(partnerships.updated_at) as quarter'))
                             ->orderBy('updated_at', 'desc')->get();
 
         $partnership_in_colleges = Partnership::join('colleges', 'partnerships.college_id', 'colleges.id')

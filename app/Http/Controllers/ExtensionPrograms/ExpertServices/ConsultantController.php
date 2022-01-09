@@ -30,7 +30,8 @@ class ConsultantController extends Controller
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')
-                                        ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name', 'colleges.name as college_name')
+                                        ->whereYear('expert_service_consultants.updated_at', date('Y'))
+                                        ->select(DB::raw('expert_service_consultants.*, dropdown_options.name as classification_name, colleges.name as college_name, QUARTER(expert_service_consultants.updated_at) as quarter'))
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
 

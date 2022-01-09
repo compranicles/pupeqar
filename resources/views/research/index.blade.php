@@ -33,7 +33,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label for="statusFilter" class="mr-2">Current Status: </label>
                                 <select id="statusFilter" class="custom-select">
                                     <option value="">Show All</option>
@@ -41,6 +41,17 @@
                                     <option value="{{ $status->name }}">{{ $status->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                                <div class="d-flex">
+                                    <select id="quarterFilter" class="custom-select" name="quarter">
+                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
@@ -53,51 +64,54 @@
                             </div>
                         </div>
                         <hr>
-                        <form action="{{ route('research.filterByYear') }}" method="post">
-                            @csrf
                         <div class="row mt-3">
+                            
                             <div class="col-md-2">
-                                <label for="startFilter" class="mr-2">Year Started: </label>
+                                <label for="reportFilter" class="mr-2">Year Registered: <span style="color:red;">*</span> </label>
+                                <div class="d-flex">
+                                    <select id="reportFilter" class="custom-select yearFilter" name="reportFilter">
+                                        <option value="created" {{ $year == "created" ? 'selected' : '' }} class="present_year">--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <span style="display: inline-block;
+                                border-right: 1px solid #ccc;
+                                margin: 0px 20px 0px 20px;;
+                                height: 65px;"></span>
+                            <div class="col-md-2">
+                                <label for="startFilter" class="mr-2">Year Started: <span style="color:red;">*</span></label>
                                 <div class="d-flex">
                                     <select id="startFilter" class="custom-select yearFilter" name="startFilter">
-                                    <option value="0" class="present_year">--</option>
+                                    <option value="started" {{ $year == "started" ? 'selected' : '' }} class="present_year">--</option>
                                     </select>
-                                    <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="completeFilter" class="mr-2">Year Completed: </label>
+                                <label for="completeFilter" class="mr-2">Year Completed: <span style="color:red;">*</span> </label>
                                 <div class="d-flex">
                                     <select id="completeFilter" class="custom-select yearFilter" name="completeFilter">
-                                        <option value="0" class="present_year">--</option>
+                                        <option value="completed" {{ $year == "completed" ? 'selected' : '' }} class="present_year">--</option>
                                     </select>
-                                    <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="publishFilter" class="mr-2">Year Published: </label>
+                                <label for="publishFilter" class="mr-2">Year Published: <span style="color:red;">*</span> </label>
                                 <div class="d-flex">
                                     <select id="publishFilter" class="custom-select yearFilter" name="publishFilter">
-                                        <option value="0" class="present_year">--</option>
+                                        <option value="published" {{ $year == "published" ? 'selected' : '' }} class="present_year">--</option>
                                     </select>
-                                    <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="presentFilter" class="mr-2">Year Presented: </label>
+                                <label for="presentFilter" class="mr-2">Year Presented: <span style="color:red;">*</span> </label>
                                 <div class="d-flex">
                                     <select id="presentFilter" class="custom-select yearFilter" name="presentFilter">
-                                        <option value="0" class="present_year">--</option>
+                                        <option value="presented" {{ $year == "presented" ? 'selected' : '' }} class="present_year">--</option>
                                     </select>
-                                    <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button>
                                 </div>
                             </div>
-                            <div class="col-md-3 mt-auto">
-                                <a type="button" href="{{ route('research.index') }}" class="btn btn-secondary"><i class="bi bi-arrow-counterclockwise"></i> Reset</a>
-                            </div>
                         </div>
-                    </form>
-                        
+                        <small><span style="color:red;">*</span> Selects all records filtered by year.</small>
                         <hr>
                         <div class="row">
                             <div class="col-md-12">
@@ -111,6 +125,8 @@
                                                 <th>Research Title</th>
                                                 <th>Status</th>
                                                 <th>College/Branch/Campus/Office</th>
+                                                <th>Quarter</th>
+                                                <th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -121,6 +137,12 @@
                                                     <td>{{ $research->title }}</td>
                                                     <td>{{ $research->status_name }}</td>
                                                     <td>{{ $research->college_name }}</td>
+                                                    <td>{{ $research->quarter }}</td>
+                                                    <td>
+                                                    <?php $updated_at = strtotime( $research->updated_at );
+                                                        $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                    {{ $updated_at }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -140,7 +162,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function() {
-
             $("#researchTable").dataTable({
                 "searching":true
             });
@@ -159,6 +180,25 @@
                     var selectedItem = $('#statusFilter').val()
                     var status = data[statusIndex];
                     if (selectedItem === "" || status.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var quarterIndex = 0;
+            $("#researchTable th").each(function (i) {
+                if ($($(this)).html() == "Quarter") {
+                    quarterIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#quarterFilter').val()
+                    var quarter = data[quarterIndex];
+                    if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
                     return false;
@@ -188,6 +228,10 @@
                 table.draw();
             });
 
+            $("#quarterFilter").change(function (e) {
+                table.draw();
+            });
+
             $("#collegeFilter").change(function (e) {
                 table.draw();
             });
@@ -209,41 +253,65 @@
             });
     </script>
     <script>
-        var max = new Date().getFullYear(),
-            min = max-2
-            select = document.getElementsByClassName('yearFilter');
-            // select2 = document.getElementById('completeFilter');
+        var max = new Date().getFullYear();
+        var min = 0;
+        var diff = max-2019;
+        min = max-diff;
+        select = document.getElementsByClassName('yearFilter');
 
+        var status = {!! json_encode($statusResearch) !!};
         for (var sel = 0; sel < select.length; sel++) {
             for (var i = max; i >= min; i--) {
-                var opt = document.createElement('option');
-                opt.value = i;
-                opt.innerHTML = i;
-                    select[sel].appendChild(opt);
+                select[sel].append(new Option(i, i));
+                if (sel == 0 && i == "{{$year}}" && status == "created") {
+                    document.getElementById("reportFilter").value = i;
+                }
+                if (sel == 1 && i == "{{$year}}" && status == "started") {
+                    document.getElementById("startFilter").value = i;
+                }
+                if (sel == 2 && i == "{{$year}}" && status == "completed") {
+                    document.getElementById("completeFilter").value = i;
+                }
+                if (sel == 3 && i == "{{$year}}" && status == "published") {
+                    document.getElementById("publishFilter").value = i;
+                }
+                if (sel == 4 && i == "{{$year}}" && status == "presented") {
+                    document.getElementById("presentFilter").value = i;
+                }
             }
         }
-
-        if ({{$yearStarted}} != 0) {
-            if ($("#startFilter option").val("{{$yearStarted}}") != false) {
-                $('#startFilter option:contains(' + "{{$yearStarted}}" + ')').prop({selected: true});
-            }
-        }
-        if ({{$yearCompleted}} != 0) {
-            if ($("#completeFilter option").val("{{$yearCompleted}}") != false) {
-                $('#completeFilter option:contains(' + "{{$yearCompleted}}" + ')').prop({selected: true});
-            }
-        }
-        if ({{$yearPublished}} != 0) {
-            if ($("#publishFilter option").val("{{$yearPublished}}") != false) {
-                $('#publishFilter option:contains(' + "{{$yearPublished}}" + ')').prop({selected: true});
-            }
-        }
-        if ({{$yearPresented}} != 0) {
-            if ($("#presentFilter option").val("{{$yearPresented}}") != false) {
-                $('#presentFilter option:contains(' + "{{$yearPresented}}" + ')').prop({selected: true});
-            }
-        } 
-    
+    </script>
+    <script>
+        $('#startFilter').on('change', function () {
+            var year_started = $('#startFilter').val();
+            var link = "/research/filterByYear/:year/:status";
+            var newLink = link.replace(':year', year_started).replace(':status', 'started');
+            window.location.replace(newLink);
+        });
+        $('#completeFilter').on('change', function () {
+            var year_completed = $('#completeFilter').val();
+            var link = "/research/filterByYear/:year/:status";
+            var newLink = link.replace(':year', year_completed).replace(':status', 'completed');
+            window.location.replace(newLink);
+        });
+        $('#publishFilter').on('change', function () {
+            var year_published = $('#publishFilter').val();
+            var link = "/research/filterByYear/:year/:status";
+            var newLink = link.replace(':year', year_published).replace(':status', 'published');
+            window.location.replace(newLink);
+        });
+        $('#presentFilter').on('change', function () {
+            var year_presented = $('#presentFilter').val();
+            var link = "/research/filterByYear/:year/:status";
+            var newLink = link.replace(':year', year_presented).replace(':status', 'presented');
+            window.location.replace(newLink);
+        });
+        $('#reportFilter').on('change', function () {
+            var year_created = $('#reportFilter').val();
+            var link = "/research/filterByYear/:year/:status";
+            var newLink = link.replace(':year', year_created).replace(':status', 'created');
+            window.location.replace(newLink);
+        });
     </script>
 @endpush
 

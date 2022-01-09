@@ -64,6 +64,31 @@ class SubmissionController extends Controller
     public function index()
     {
         $collegeID = "all";
+
+        $currentMonth = date('m');
+
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+            $totalReports = Report::whereMonth('report_date', '>=', 1)->whereMonth('report_date', '<=', 3)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+
+        }
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+            $totalReports = Report::whereMonth('report_date', '>=', 4)->whereMonth('report_date', '<=', 6)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+            $totalReports = Report::whereMonth('report_date', '>=', 10)->whereMonth('report_date', '<=', 12)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+
         $report_tables = ReportCategory::all();
         // dd($report_tables);
         $report_array = [];
@@ -858,7 +883,7 @@ class SubmissionController extends Controller
         // dd($reported_accomplishments);
 
         // dd($report_array);
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID', 'quarter', 'totalReports'));
     }
 
     /**
@@ -889,10 +914,11 @@ class SubmissionController extends Controller
             $failedToSubmit = 0;
             $successToSubmit = 0;
             foreach($request->report_values as $report_value){
-                $report_values_array = explode(',', $report_value); // 0 => research_code , 1 => report_category, 2 => id
+                $report_values_array = explode(',', $report_value); // 0 => research_code , 1 => report_category, 2 => id, 3 => research_id
+                // dd($report_values_array);
                 switch($report_values_array[1]){
                     case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-                        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[3])->first();
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                         if($report_values_array[1] == 5){
                             $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));

@@ -22,7 +22,10 @@ class CollegeDepartmentAwardController extends Controller
     {
         // $this->authorize('viewAny', CollegeDepartmentAward::class);
 
-        $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())->orderBy('college_department_awards.updated_at', 'desc')->get();
+        $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())
+                                    ->select(DB::raw('college_department_awards.*, QUARTER(college_department_awards.updated_at) as quarter'))
+                                    ->whereYear('college_department_awards.updated_at', date('Y'))
+                                    ->orderBy('college_department_awards.updated_at', 'desc')->get();
         return view('academic-development.college-department-award.index', compact('college_department_awards'));
     }
 

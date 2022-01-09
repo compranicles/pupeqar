@@ -13,9 +13,9 @@ use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\ResearchPublication;
+use App\Models\ResearchPresentation;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
@@ -34,23 +34,34 @@ class ResearchController extends Controller
     public function index()
     {   
         $this->authorize('viewAny', Research::class);
-        $yearStarted = 0;
-        $yearCompleted = 0;
-        $yearPresented = 0;
-        $yearPublished = 0;
+        $year = 'started';
+        $statusResearch = "started";//for filter
+
+        $currentMonth = date('m');
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+        }
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $quarter = 3;
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+        }
+
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
-        $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                ->join('colleges', 'colleges.id', 'research.college_id')
-                ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
-                ->orderBy('research.updated_at', 'desc')
-                ->get();
+
+        $researches = DB::select("CALL get_all_research_by_year_and_user_id(".date('Y').",".auth()->id().")");
 
         $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
                                         ->select('colleges.name')
                                         ->distinct()
                                         ->get();
 
-        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'quarter'));
     }
 
     /**
@@ -678,83 +689,78 @@ class ResearchController extends Controller
         return redirect()->route('research.index')->with('success', 'Research has been removed.');
     }
 
-    public function researchYearFilter(Request $request) {
-        $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
+    public function researchYearFilter($year, $statusResearch) {
 
-        $yearStarted = $request->input('startFilter');
-        $yearCompleted = $request->input('completeFilter');
-        $yearPublished = $request->input('publishFilter');
-        $yearPresented = $request->input('presentFilter');
-
-        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
-        ->select('colleges.name')
-        ->distinct()
-            ->get();
-        // $researchPresented = '';
-        // $researchStarted = '';
-        // $researchCompleted = '';
-        // $researchPublished = '';
-
-        if ($yearStarted != 0) {
-
-            $researches = Research::
-                    whereYear('start_date', $yearStarted)
-                    ->where('user_id', auth()->id())
-                    ->where('is_active_member', 1)
-                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                    ->join('colleges', 'colleges.id', 'research.college_id')
-                    ->select('research.*', 'dropdown_options.name as status_name', 
-                            'colleges.name as college_name')
-                    ->get();
-            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
-        }
-
-        if ($yearCompleted != 0) {
-            $researches = Research::
-                    whereYear('completion_date', '=', $yearCompleted)
-                    ->where('user_id', auth()->id())
-                    ->where('is_active_member', 1)
-                    ->join('research_completes', 'research.research_code', 'research_completes.research_code')
-                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                    ->join('colleges', 'colleges.id', 'research.college_id')
-                    ->select('research.*', 'dropdown_options.name as status_name', 
-                            'colleges.name as college_name')
-                    ->get();
-            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
-                    // dd($researchCompleted);
-        }
-        
-        if ($yearPublished != 0) {
-            $researches = Research::
-                    whereYear('publish_date', '=', $yearPublished)
-                    ->where('user_id', auth()->id())
-                    ->where('is_active_member', 1)
-                    ->join('research_publications', 'research.research_code', 'research_publications.research_code')
-                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                    ->join('colleges', 'colleges.id', 'research.college_id')
-                    ->select('research.*', 'dropdown_options.name as status_name', 
-                            'colleges.name as college_name')
-                    ->get();
-                return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
-        }
-        
-        if($yearPresented != 0) {
-            $researches = Research::
-                    whereYear('date_presented', '=', $yearPresented)
-                    ->where('user_id', auth()->id())
-                    ->where('is_active_member', 1)
-                    ->join('research_presentations', 'research.research_code', 'research_presentations.research_code')
-                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                    ->join('colleges', 'colleges.id', 'research.college_id')
-                    ->select('research.*', 'dropdown_options.name as status_name', 
-                            'colleges.name as college_name')
-                    ->get();
-            return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'yearStarted', 'yearCompleted', 'yearPublished', 'yearPresented'));
-        }
-
-        if ($yearStarted == 0 || $yearCompleted == 0 || $yearPublished == 0 || $yearPresented == 0) {
+        if ($year == "started" || $year == "completed" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
+
+        $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
+
+        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
+                                        ->select('colleges.name')
+                                        ->distinct()
+                                        ->get();
+
+        if ($statusResearch == 'started') {
+            $researches = Research::select(DB::raw('research.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(research.updated_at) as quarter'))
+                    ->where('user_id', auth()->id())
+                    ->where('is_active_member', 1)
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->whereYear('research.start_date', $year)
+                    ->orderBy('research.updated_at', 'desc')
+                    ->get();
+        }       
+
+        elseif ($statusResearch == 'completed') {
+            $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->whereYear('research.completion_date', $year)
+                    ->select(DB::raw('research.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(research.updated_at) as quarter'))
+                    ->orderBy('research.updated_at', 'desc')
+                    ->get();
+        }
+
+        elseif ($statusResearch == 'published') {
+            $researches = ResearchPublication::where('user_id', auth()->id())->where('is_active_member', 1)
+                    ->join('research', 'research.id', 'research_publications.research_id')
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->whereYear('research_publications.publish_date', $year)
+                    ->select(DB::raw('research.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(research.updated_at) as quarter'))
+                    ->orderBy('research.updated_at', 'desc')
+                    ->get();
+        }
+
+        elseif ($statusResearch == 'presented') {
+            $researches = ResearchPresentation::where('user_id', auth()->id())->where('is_active_member', 1)
+                    ->join('research', 'research.id', 'research_presentations.research_id')
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->join('colleges', 'colleges.id', 'research.college_id')
+                    ->whereYear('research_presentations.date_presented', $year)
+                    ->select(DB::raw('research.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(research.updated_at) as quarter'))
+                    ->orderBy('research.updated_at', 'desc')
+                    ->get();
+
+        }
+
+        elseif ($statusResearch == 'created') {
+            $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                        ->join('colleges', 'colleges.id', 'research.college_id')
+                        ->select(DB::raw('research.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(research.updated_at) as quarter'))
+                        ->orderBy('research.updated_at', 'desc')
+                        ->whereYear('research.created_at', $year)
+                        ->get();
+
+        }
+
+        else {
+            return redirect()->route('research.index');
+        }
+
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch'));
+        
     }
 }
 

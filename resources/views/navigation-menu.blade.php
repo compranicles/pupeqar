@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md navbar-dark border-bottom sticky-top" style="background-color: #212529">
     <div class="container">
         <!-- Logo -->
-        <a class="navbar-brand mr-4" href="/home" style="color:white">
+        <a class="navbar-brand mr-4" href="{{ route('dashboard') }}" style="color:white">
             <img src="{{ URL('storage/logo2.png') }}" width="36" class="mr-1">
             PUP eQAR
         </a>
