@@ -95,6 +95,12 @@
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-md-11">
+{{--                        <div class="alert alert-danger alert-index">
+                            @foreach($reportsToReview as $row)
+                            <i class="bi bi-x-circle"></i> Denied by {{ $row->reason }} at <?php $created_at = strtotime( $row->created_at );
+                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  {{ $created_at }}: {{ $row->reason }}
+                            @endforeach
+                        </div>--}}
                         <table class="table table-sm table-borderless" id="columns_value_table">
                         </table>
                     </div>

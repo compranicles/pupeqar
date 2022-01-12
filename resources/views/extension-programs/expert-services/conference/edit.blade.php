@@ -11,6 +11,12 @@
             <p>
               <a class="back_link" href="{{ route('expert-service-in-conference.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Conference, Workshop, & Training Course</a>
             </p>
+            {{-- Denied Details --}}
+            @if ($deniedDetails = Session::get('denied'))
+            <div class="alert alert-danger alert-index">
+                <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+            </div>
+            @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">

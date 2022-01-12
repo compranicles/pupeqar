@@ -11,6 +11,12 @@
             <p>
               <a class="back_link" href="{{ route('request.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Request & Queries Acted Upon</a>
             </p>
+            {{-- Denied Details --}}
+            @if ($deniedDetails = Session::get('denied'))
+            <div class="alert alert-danger alert-index">
+                <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+            </div>
+            @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('request.update', $request->id) }}" method="post">

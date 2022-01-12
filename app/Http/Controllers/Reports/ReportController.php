@@ -381,101 +381,101 @@ class ReportController extends Controller
         switch($report_category_id){
             case 1: 
                 $id = Report::where('id', $report_id)->pluck('report_reference_id')->all();
-                return redirect()->route('research.edit', $id);
+                return redirect()->route('research.edit', $id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 2:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.completed.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.completed.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 3:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.publication.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.publication.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 4:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.presentation.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.presentation.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 5:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.citation.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.citation.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 6:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.utilization.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.utilization.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 7:
                 $report = Report::where('id', $report_id)->first();
                 $research_id = Research::where('research_code', $report->report_code)->where('user_id', $report->user_id)->pluck('id')->first();
-                return redirect()->route('research.copyrighted.edit', [$research_id, $report->report_reference_id]);
+                return redirect()->route('research.copyrighted.edit', [$research_id, $report->report_reference_id])->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 8:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('invention-innovation-creative.edit', $report->report_reference_id);
+                return redirect()->route('invention-innovation-creative.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 9:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('expert-service-as-consultant.edit', $report->report_reference_id);
+                return redirect()->route('expert-service-as-consultant.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 10:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('expert-service-as-conference.edit', $report->report_reference_id);
+                return redirect()->route('expert-service-as-conference.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 11:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('expert-service-as-academic.edit', $report->report_reference_id);
+                return redirect()->route('expert-service-as-academic.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 12:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('extension-service.edit', $report->report_reference_id);
+                return redirect()->route('extension-service.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 13:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('partnership.edit', $report->report_reference_id);
+                return redirect()->route('partnership.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 14:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('mobility.edit', $report->report_reference_id);
+                return redirect()->route('mobility.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 15:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('rtmmi.edit', $report->report_reference_id);
+                return redirect()->route('rtmmi.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 16:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('syllabus.edit', $report->report_reference_id);
+                return redirect()->route('syllabus.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 17:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('request.edit', $report->report_reference_id);
+                return redirect()->route('request.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 18:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('student-award.edit', $report->report_reference_id);
+                return redirect()->route('student-award.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 19:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('student-training.edit', $report->report_reference_id);
+                return redirect()->route('student-training.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 20:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('viable-project.edit', $report->report_reference_id);
+                return redirect()->route('viable-project.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 21:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('college-department-award.edit', $report->report_reference_id);
+                return redirect()->route('college-department-award.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 22:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('outreach-program.edit', $report->report_reference_id);
+                return redirect()->route('outreach-program.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 23:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('technical-extension.edit', $report->report_reference_id);
+                return redirect()->route('technical-extension.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
         }
     }

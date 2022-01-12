@@ -11,6 +11,12 @@
                 @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
+        {{-- Denied Details --}}
+        @if ($deniedDetails = Session::get('denied'))
+        <div class="alert alert-danger alert-index">
+            <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

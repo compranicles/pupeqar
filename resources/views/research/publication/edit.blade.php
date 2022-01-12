@@ -11,6 +11,12 @@
                 @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
             </div>
         </div>
+        {{-- Denied Details --}}
+        @if ($denied != null)
+        <div class="alert alert-danger alert-index">
+            <i class="bi bi-x-circle"></i> Denied by {{ $denied->position_name }}: {{ $denied->reason }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
