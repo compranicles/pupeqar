@@ -73,7 +73,7 @@
                     <div class="col-md-12">
                         <div class="d-flex flex-row">
                             <div class="col-md-4 mt-3">
-                                <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-2 mr-4">Select All</label>
+                                <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mr-4">Select All</label>
                                 <!-- <a href="" role="button" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh Page</a> -->
                             </div>
                             <div class="col-md-8">

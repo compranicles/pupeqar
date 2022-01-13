@@ -14,17 +14,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="db-card p-4 bg-body rounded shadow-sm" style="background-color: white;">
-                            <div class="p-3">
-                                <i class="far fa-star home-icons text-right"></i>
-                                <div class="float-right">
-                                    <h2 class="text-right">{{$totalReports}}</h2>
-                                    <p class="text-right">Submissions this quarter {{$quarter}} of <?php echo date('Y'); ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>

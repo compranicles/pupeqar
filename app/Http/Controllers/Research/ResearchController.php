@@ -691,6 +691,21 @@ class ResearchController extends Controller
 
     public function researchYearFilter($year, $statusResearch) {
 
+        $currentMonth = date('m');
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+        }
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $quarter = 3;
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+        }
+        
         if ($year == "started" || $year == "completed" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
@@ -759,7 +774,7 @@ class ResearchController extends Controller
             return redirect()->route('research.index');
         }
 
-        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch'));
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'quarter'));
         
     }
 }
