@@ -29,7 +29,6 @@ class SyllabusController extends Controller
         $syllabi = Syllabus::where('user_id', auth()->id())
                     ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
                     ->join('colleges', 'colleges.id', 'syllabi.college_id')
-                    ->whereYear('syllabi.updated_at', date('Y'))
                     ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
                     ->orderBy('syllabi.updated_at', 'desc')
                     ->get();

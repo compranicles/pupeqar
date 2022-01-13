@@ -26,7 +26,6 @@ class MobilityController extends Controller
 
         $mobilities = Mobility::where('user_id', auth()->id())
                                 ->join('colleges', 'colleges.id', 'mobilities.college_id')
-                                ->whereYear('mobilities.updated_at', date('Y'))
                                 ->select(DB::raw('mobilities.*, colleges.name as college_name, QUARTER(mobilities.updated_at) as quarter'))
                                 ->orderBy('updated_at', 'desc')->get();
 

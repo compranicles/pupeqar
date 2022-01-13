@@ -35,7 +35,7 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
                                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
@@ -43,6 +43,14 @@
                                         <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
                                         <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="yearFilter" class="mr-2">Year Added:</label>
+                                <div class="d-flex">
+                                    <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        
+                                </select>
                                 </div>
                             </div>
                         </div>
@@ -121,11 +129,46 @@
                 }
             );
 
+            var yearIndex = 0;
+            $("#project_table th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    yearIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#yearFilter').val()
+                    var year = data[yearIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
             $("#quarterFilter").change(function (e) {
+                table.draw();
+            });
+            $("#yearFilter").change(function (e) {
                 table.draw();
             });
 
             table.draw();
+            var max = new Date().getFullYear();
+            var min = 0;
+            var diff = max-2019;
+            min = max-diff;
+            select = document.getElementById('yearFilter');
+            for (var i = max; i >= min; i--) {
+                select.append(new Option(i, i));
+                if (i == "{{ date('Y') }}") {
+                    document.getElementById("yearFilter").value = i;
+                    table.draw();
+                }
+            }
          } );
 
          //Item to delete to display in delete modal

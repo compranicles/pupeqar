@@ -32,7 +32,6 @@ class ExtensionServiceController extends Controller
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
                                         ->join('colleges', 'colleges.id', 'extension_services.college_id')
-                                        ->whereYear('extension_services.updated_at', date('Y'))
                                         ->select(DB::raw('extension_services.*, dropdown_options.name as status, colleges.name as college_name, QUARTER(extension_services.updated_at) as quarter'))
                                         ->orderBy('extension_services.updated_at', 'desc')
                                         ->get();

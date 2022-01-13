@@ -54,7 +54,13 @@ class ResearchController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
 
-        $researches = DB::select("CALL get_all_research_by_year_and_user_id(".date('Y').",".auth()->id().")");
+        $researches = Research::where('research.user_id', auth()->id())
+                                ->where('research.is_active_member', 1)
+                                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                                ->join('colleges', 'colleges.id', 'research.college_id')
+                                ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name', DB::raw('QUARTER(research.updated_at) as quarter'))
+                                ->orderBy('research.updated_at', 'DESC')
+                                ->get();
 
         $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
                                         ->select('colleges.name')
@@ -705,7 +711,7 @@ class ResearchController extends Controller
         if ($currentMonth <= 12 && $currentMonth >= 10) {
             $quarter = 4;
         }
-        
+
         if ($year == "started" || $year == "completed" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
