@@ -26,31 +26,20 @@ class InventionController extends Controller
     {
         $this->authorize('viewAny', Invention::class);
 
+        $year = "created";
+    
+        $inventions = DB::select("CALL get_all_invention_by_year_and_user_id(".date('Y').",".auth()->id().")");
+        
         $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
-
-        $inventions = Invention::where('user_id', auth()->id())
-                                ->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
-                                ->join('colleges', 'colleges.id', 'inventions.college_id')
-                                ->select('inventions.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
-                                ->orderBy('inventions.updated_at', 'desc')->get();
-
         $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
                                 ->select('colleges.name')->where('inventions.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
 
-        // $classifications = [];
-        // $i = 0;
-        // foreach ($inventions as $invention) {
-        //     $classifications[$i] = Invention::join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
-        //                             ->orderBy('inventions.updated_at', 'desc')
-        //                             ->where('inventions.id', $invention->id)
-        //                             ->pluck('dropdown_options.name as name')
-        //                             ->all();
-        //                     $i++;        
-        // }
-
-        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus'));
+        $inventionYears = Invention::selectRaw("YEAR(inventions.created_at) as created")->where('inventions.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'inventionYears', 'year'));
 
     }
 
@@ -293,5 +282,37 @@ class InventionController extends Controller
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;
+    }
+
+    public function inventionYearFilter($year, $filter) {
+    
+        if($filter == "created") {
+            if ($year == "created") {
+                return redirect()->route('invention-innovation-creative.index');
+            }
+            else {
+                $inventions = Invention::where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
+                                    ->join('colleges', 'colleges.id', 'inventions.college_id')
+                                    ->select(DB::raw('inventions.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(inventions.updated_at) as quarter'))
+                                    ->whereYear('inventions.created_at', $year)
+                                    ->orderBy('inventions.updated_at', 'desc')->get();
+            }   
+        }
+        else {
+            return redirect()->route('invention-innovation-creative.index');
+        }
+
+        $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
+        $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
+                                ->select('colleges.name')->where('inventions.user_id', auth()->id())
+                                ->distinct()
+                                ->get();
+
+        $inventionYears = Invention::selectRaw("YEAR(inventions.created_at) as created")->where('inventions.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'inventionYears', 'year'));
     }
 }

@@ -31,7 +31,8 @@ class AcademicController extends Controller
         $expertServicesAcademic = ExpertServiceAcademic::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
                                         ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')
-                                        ->select('expert_service_academics.*', 'dropdown_options.name as classification', 'colleges.name as college_name')
+                                        ->whereYear('expert_service_academics.updated_at', date('Y'))
+                                        ->select(DB::raw('expert_service_academics.*, dropdown_options.name as classification, colleges.name as college_name, QUARTER(expert_service_academics.updated_at) as quarter'))
                                         ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
 

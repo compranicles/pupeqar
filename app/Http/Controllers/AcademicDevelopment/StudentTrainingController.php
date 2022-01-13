@@ -22,7 +22,10 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('viewAny', StudentTraining::class);
 
-        $student_trainings = StudentTraining::where('user_id', auth()->id())->orderBy('student_trainings.updated_at', 'desc')->get();
+        $student_trainings = StudentTraining::where('user_id', auth()->id())
+                        ->select(DB::raw('student_trainings.*, QUARTER(student_trainings.updated_at) as quarter'))
+                        ->whereYear('student_trainings.updated_at', date('Y'))
+                        ->orderBy('student_trainings.updated_at', 'desc')->get();
 
         return view('academic-development.student-training.index', compact('student_trainings'));
     }

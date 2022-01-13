@@ -25,20 +25,31 @@ class SyllabusController extends Controller
     {
         $this->authorize('viewAny', Syllabus::class);
 
-        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        $year = "created";
         $syllabi = Syllabus::where('user_id', auth()->id())
-                                        ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                                        ->join('colleges', 'colleges.id', 'syllabi.college_id')
-                                        ->select('syllabi.*', 'dropdown_options.name as assigned_task_name', 'colleges.name as college_name')
-                                        ->orderBy('syllabi.updated_at', 'desc')
-                                        ->get();
-
+                    ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                    ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                    ->whereYear('syllabi.updated_at', date('Y'))
+                    ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                    ->orderBy('syllabi.updated_at', 'desc')
+                    ->get();
+        // dd($syllabi);
         $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
-                                        ->select('colleges.name')
-                                        ->distinct()
-                                        ->get();
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
         
-        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges'));
+        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        
+        $syllabiYearsAdded = Syllabus::selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+                        // dd($syllabiYearsFinished);
+
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished'));
     }
 
     /**
@@ -241,5 +252,49 @@ class SyllabusController extends Controller
         SyllabusDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;
+    }
+
+    public function syllabusYearFilter($year, $filter) {
+        if($filter == "created") {
+            if ($year == "created") {
+                return redirect()->route('syllabus.index');
+            }
+            else {
+                $syllabi = Syllabus::where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                ->whereYear('syllabi.created_at', $year)
+                ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                ->orderBy('syllabi.updated_at', 'desc')
+                ->get();
+            }   
+        }
+        elseif ($filter == "finished") {
+            $syllabi = Syllabus::where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                ->whereYear('syllabi.date_finished', $year)
+                ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                ->orderBy('syllabi.updated_at', 'desc')
+                ->get();
+        }
+        else {
+            return redirect()->route('syllabus.index');
+        }
+
+        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        
+        $syllabiYearsAdded = Syllabus::selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
+                        ->select('colleges.name')
+                        ->distinct()
+                        ->get();
+
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished'));
     }
 }

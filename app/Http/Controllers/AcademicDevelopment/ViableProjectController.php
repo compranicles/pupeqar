@@ -22,7 +22,10 @@ class ViableProjectController extends Controller
     {
         $this->authorize('viewAny', ViableProject::class);
 
-        $viable_projects = ViableProject::where('user_id', auth()->id())->orderBy('viable_projects.updated_at', 'desc')->get();
+        $viable_projects = ViableProject::where('user_id', auth()->id())
+                            ->select(DB::raw('viable_projects.*, QUARTER(viable_projects.updated_at) as quarter'))
+                            ->whereYear('viable_projects.updated_at', date('Y'))
+                            ->orderBy('viable_projects.updated_at', 'desc')->get();
         return view('academic-development.viable-project.index', compact('viable_projects'));
     }
 

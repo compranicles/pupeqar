@@ -149,8 +149,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/research/manage-researchers/remove-researcher/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'removeResearcher'])->name('research.remove-researcher');
     Route::get('/research/manage-researchers/remove-self/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'removeSelf'])->name('research.remove-self');
     Route::post('/research/manage-researchers/return-researcher/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'returnResearcher'])->name('research.return-researcher');
-    
-    Route::post('/research/filterByYear/', [\App\Http\Controllers\Research\ResearchController::class, 'researchYearFilter'])->name('research.filterByYear');
+
     //FACULTY: research
 
     // Route::get('/research/edit-non-lead/{id}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
@@ -232,6 +231,12 @@ Route::group(['middleware' => 'auth'], function() {
     /************************************IPCR*********************************** */
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');
     Route::resource('ipcr/request', \App\Http\Controllers\IPCR\RequestController::class);
+
+    /***************************FILTERS*************************************** */
+    Route::get('/research/filterByYear/{year_or_quarter}/{status}', [\App\Http\Controllers\Research\ResearchController::class, 'researchYearFilter'])->name('research.filterByYear');
+    Route::get('/invention-innovation-creative/{year_or_quarter}/{filter}', [\App\Http\Controllers\Inventions\InventionController::class, 'inventionYearFilter'])->name('invention.filterByYear');
+    Route::get('/academic-development/syllabus/{year}/{filter}', [\App\Http\Controllers\AcademicDevelopment\SyllabusController::class, 'syllabusYearFilter'])->name('syllabus.filterByYear');
+
 
     // Reports API
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
