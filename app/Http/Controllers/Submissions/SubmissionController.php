@@ -918,7 +918,13 @@ class SubmissionController extends Controller
                 // dd($report_values_array);
                 switch($report_values_array[1]){
                     case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-                        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[3])->first();
+                        if ($report_values_array[1] == 1) {
+
+                            $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        }
+                        else {
+                            $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[3])->first();
+                        }
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                         if($report_values_array[1] == 5){
                             $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));

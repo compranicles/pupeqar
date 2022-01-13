@@ -298,7 +298,7 @@ Route::group(['middleware' => 'auth'], function() {
     //view all reports
     Route::get('/submissions/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
 
-    
+    Route::get('/test', [\App\Http\Controllers\Test\TestController::class, 'index'])->name('test.index');
     /**********************************SUBMISSIONS************************************* */
     Route::resource('/submissions/to-finalize', \App\Http\Controllers\Submissions\SubmissionController::class);
     Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');

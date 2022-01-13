@@ -11,6 +11,12 @@
             <p>
               <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
             </p>
+            {{-- Denied Details --}}
+            @if ($deniedDetails = Session::get('denied'))
+            <div class="alert alert-danger alert-index">
+                <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+            </div>
+            @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('invention-innovation-creative.update', $value['id']) }}" method="post">
