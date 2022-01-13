@@ -25,7 +25,6 @@ class OutreachProgramController extends Controller
 
         $outreach_programs = OutreachProgram::where('user_id', auth()->id())
                                 ->select(DB::raw('outreach_programs.*, QUARTER(outreach_programs.updated_at) as quarter'))
-                                ->whereYear('outreach_programs.updated_at', date('Y'))
                                 ->orderBy('outreach_programs.updated_at', 'desc')->get();
         return view('extension-programs.outreach-program.index', compact('outreach_programs'));
     }

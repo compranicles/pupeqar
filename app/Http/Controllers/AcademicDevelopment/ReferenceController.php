@@ -29,7 +29,6 @@ class ReferenceController extends Controller
         $allRtmmi = Reference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
                                         ->join('colleges', 'colleges.id', 'references.college_id')
-                                        ->whereYear('references.updated_at', date('Y'))
                                         ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name', DB::raw('QUARTER(references.updated_at) as quarter'))
                                         ->orderBy('references.updated_at', 'desc')
                                         ->get();

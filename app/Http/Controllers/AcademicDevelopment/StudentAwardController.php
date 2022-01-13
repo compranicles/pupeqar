@@ -24,7 +24,6 @@ class StudentAwardController extends Controller
 
         $student_awards = StudentAward::where('user_id', auth()->id())
                             ->select(DB::raw('student_awards.*, QUARTER(student_awards.updated_at) as quarter'))
-                            ->whereYear('student_awards.updated_at', date('Y'))
                             ->orderBy('student_awards.updated_at', 'desc')->get();
         return view('academic-development.student-awards.index', compact('student_awards'));
     }

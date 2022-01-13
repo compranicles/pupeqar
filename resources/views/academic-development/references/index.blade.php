@@ -43,8 +43,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                            <div class="col-md-2">
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
                                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
@@ -54,7 +54,15 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
+                                <label for="yearFilter" class="mr-2">Year Added:</label>
+                                <div class="d-flex">
+                                    <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                 <select id="collegeFilter" class="custom-select">
                                     <option value="">Show All</option>
@@ -200,6 +208,25 @@
                 }
             );
 
+            var yearIndex = 0;
+            $("#rtmmi_table th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    yearIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#yearFilter').val()
+                    var year = data[yearIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
             $("#catFilter").change(function (e) {
                 table.draw();
             });
@@ -211,7 +238,26 @@
                 table.draw();
             });
 
+            $("#yearFilter").change(function (e) {
+                table.draw();
+            });
+
             table.draw();
+            
      </script>
+     <script>
+        var max = new Date().getFullYear();
+        var min = 0;
+        var diff = max-2019;
+        min = max-diff;
+        select = document.getElementById('yearFilter');
+        for (var i = max; i >= min; i--) {
+            select.append(new Option(i, i));
+            if (i == "{{ date('Y') }}") {
+                document.getElementById("yearFilter").value = i;
+                table.draw();
+            }
+        }
+    </script>
      @endpush
 </x-app-layout>

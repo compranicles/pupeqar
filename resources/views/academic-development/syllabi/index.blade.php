@@ -43,8 +43,8 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                            <div class="col-md-2">
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
                                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
@@ -54,7 +54,14 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
+                                <label for="yearFilter" class="mr-2">Year Added:</label>
+                                <div class="d-flex">
+                                    <select id="yearFilter" class="custom-select" name="yearFilter">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                 <select id="collegeFilter" class="custom-select">
                                     <option value="">Show All</option>
@@ -66,22 +73,6 @@
                         </div>
                         <hr>
                         <div class="row mt-3">
-                            
-                            <div class="col-md-2">
-                                <label for="reportFilter" class="mr-2">Year Added: <span style="color:red;">*</span> </label>
-                                <div class="d-flex">
-                                    <select id="reportFilter" class="custom-select yearFilter" name="reportFilter">
-                                        <option value="created" {{ $year == "created" ? 'selected' : '' }} class="present_year">--</option>
-                                        @foreach($syllabiYearsAdded as $syllabiAdded)
-                                        <option value="{{ $syllabiAdded->created }}" {{ $year == $syllabiAdded->created ? 'selected' : ''}}>{{ $syllabiAdded->created }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <span style="display: inline-block;
-                                border-right: 1px solid #ccc;
-                                margin: 0px 20px 0px 20px;;
-                                height: 65px;"></span>
                             <div class="col-md-2">
                                 <label for="finishFilter" class="mr-2">Year Finished: <span style="color:red;">*</span></label>
                                 <div class="d-flex">
@@ -231,10 +222,33 @@
                 }
             );
 
+            var yearIndex = 0;
+            $("#syllabus_table th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    yearIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#yearFilter').val()
+                    var year = data[yearIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
             $("#taskFilter").change(function (e) {
                 table.draw();
             });
             $("#quarterFilter").change(function (e) {
+                table.draw();
+            });
+            $("#yearFilter").change(function (e) {
                 table.draw();
             });
             $("#collegeFilter").change(function (e) {
@@ -243,13 +257,21 @@
 
             table.draw();
      </script>
-     <script>
-        $('#reportFilter').on('change', function () {
-            var year = $('#reportFilter').val();
-            var link = "/academic-development/syllabus/:year/:filter";
-            var newLink = link.replace(':year', year).replace(':filter', "created");
-            window.location.replace(newLink);
-        });
+    <script>
+        var max = new Date().getFullYear();
+        var min = 0;
+        var diff = max-2019;
+        min = max-diff;
+        select = document.getElementById('yearFilter');
+        for (var i = max; i >= min; i--) {
+            select.append(new Option(i, i));
+            if (i == "{{ date('Y') }}") {
+                document.getElementById("yearFilter").value = i;
+                table.draw();
+            }
+        }
+    </script>
+    <script>
         $('#finishFilter').on('change', function () {
             var year = $('#finishFilter').val();
             var link = "/academic-development/syllabus/:year/:filter";

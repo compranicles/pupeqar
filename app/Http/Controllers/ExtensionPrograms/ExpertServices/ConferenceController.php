@@ -30,7 +30,6 @@ class ConferenceController extends Controller
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
                                         ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')
-                                        ->whereYear('expert_service_conferences.updated_at', date('Y'))
                                         ->select(DB::raw('expert_service_conferences.*, dropdown_options.name as nature, colleges.name as college_name, QUARTER(expert_service_conferences.updated_at) as quarter'))
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();

@@ -24,7 +24,6 @@ class ViableProjectController extends Controller
 
         $viable_projects = ViableProject::where('user_id', auth()->id())
                             ->select(DB::raw('viable_projects.*, QUARTER(viable_projects.updated_at) as quarter'))
-                            ->whereYear('viable_projects.updated_at', date('Y'))
                             ->orderBy('viable_projects.updated_at', 'desc')->get();
         return view('academic-development.viable-project.index', compact('viable_projects'));
     }
