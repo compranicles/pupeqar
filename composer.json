@@ -17,6 +17,13 @@
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.5",
         "rahulhaque/laravel-filepond": "^1.2",
+        "symfony/css-selector": "5.4.2",
+        "symfony/deprecation-contracts": "2.5.0",
+        "symfony/event-dispatcher": "5.4.0",
+        "symfony/event-dispatcher-contracts": "2.5.0",
+        "symfony/string": "5.4.2",
+        "symfony/translation": "5.4.2",
+        "symfony/translation-contracts": "2.5.0",
         "teamtnt/laravel-scout-tntsearch-driver": "^11.5",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
