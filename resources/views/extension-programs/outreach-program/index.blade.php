@@ -159,6 +159,19 @@
             });
 
             table.draw();
+
+            var max = new Date().getFullYear();
+            var min = 0;
+            var diff = max-2019;
+            min = max-diff;
+            select = document.getElementById('yearFilter');
+            for (var i = max; i >= min; i--) {
+                select.append(new Option(i, i));
+                if (i == "{{ date('Y') }}") {
+                    document.getElementById("yearFilter").value = i;
+                    table.draw();
+                }
+            }
          } );
 
          //Item to delete to display in delete modal

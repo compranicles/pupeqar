@@ -214,7 +214,7 @@ class UserSeeder extends Seeder
         Dean::truncate();
         //Director/Dean
         $dean1 = User::create([
-            'email' => 'dean_caf@mailinator.com',
+            'email' => 'dean_caf@mailPinator.com',
             'password'=> Hash::make('dean_caf@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Dean-CAF',

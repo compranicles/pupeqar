@@ -75,7 +75,7 @@
                                         <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                            {{ updated_at }}
+                                            {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
