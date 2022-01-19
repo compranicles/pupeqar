@@ -28,21 +28,28 @@ class SectorController extends Controller
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', null)->get();
         
-        //role and department/ college id
-        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $department_id = '';
-        $college_id = '';
-        if(in_array(5, $roles)){
-            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
-        }
-        if(in_array(6, $roles)){
-            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
-        }
+       //role and department/ college id
+       $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+       $departments_nav = [];
+       $colleges_nav = [];
+       // $sector_ids = [];
+       
+       if(in_array(5, $roles)){
+           $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+                                       ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
+       }
+       if(in_array(6, $roles)){
+           $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+                           ->join('colleges', 'colleges.id', 'deans.college_id')->get();
+       }
+       // if(in_array(7, $roles)){
+
+       // }
             
         $colleges = College::select('colleges.id', 'colleges.name')
                             ->orderBy('colleges.name')
                             ->get();
-        return view('reports.sector.index', compact('reportsToReview', 'roles', 'department_id', 'college_id', 'colleges'));
+        return view('reports.sector.index', compact('reportsToReview', 'roles', 'departments_nav', 'colleges_nav', 'colleges'));
     }
 
     /**

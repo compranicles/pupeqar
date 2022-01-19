@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
 
 <div class="container-fluid">
@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report - {{ $collegeHeadOf->college_name }}
+                                Quarterly Accomplishment Report - College/Branch/Campus/Office
                             </h3>
                             <hr>
                         </div>
@@ -37,8 +37,8 @@
                                         <label class="mt-2 mr-2" for="deptFilter">Department:</label>
                                         <select id="deptFilter" class="custom-select mr-2">
                                             <option value="">All</option>
-                                            @foreach ($departments as $department)
-                                            <option value="{{ $department->name }}">{{ $department->name }}</option>
+                                            @foreach ($department_list as $department)
+                                            <option value="{{ $department->name }}">{{ $department->college_name }} - {{ $department->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -67,8 +67,9 @@
                                             <th class="text-center"><input type="checkbox" id="select-all"></th>
                                             <th></th>
                                             <th></th>
-                                            <th>Department</th>
                                             <th>Accomplishment Report</th>
+                                            <th>College/Branch/Campus/Office</th>
+                                            <th>Department</th>
                                             <th>Employee</th>
                                             <th>Report Date</th>
                                         </tr>
@@ -77,12 +78,13 @@
                                         @foreach ($reportsToReview as $row)
                                             <tr role="button">
                                                 <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->department_name }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $college_names[$row->id]->name }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $department_names[$row->id]->name }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

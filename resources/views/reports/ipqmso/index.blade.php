@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
 
 <div class="container-fluid">

@@ -1,6 +1,6 @@
 <x-app-layout>   
     <x-slot name="header">
-            @include('submissions.navigation', compact('roles'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
 
     @if (in_array(5, $roles))

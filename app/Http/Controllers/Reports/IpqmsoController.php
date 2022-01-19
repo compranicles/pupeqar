@@ -29,17 +29,23 @@ class IpqmsoController extends Controller
         
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $department_id = '';
-        $college_id = '';
+        $departments = [];
+        $colleges = [];
+        // $sector_ids = [];
+        
         if(in_array(5, $roles)){
-            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+                                        ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
-        // dd($department_id);
         if(in_array(6, $roles)){
-            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+                            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
+        // if(in_array(7, $roles)){
 
-        return view('reports.ipqmso.index', compact('reportsToReview', 'roles', 'department_id', 'college_id'));
+        // }
+
+        return view('reports.ipqmso.index', compact('reportsToReview', 'roles', 'departments', 'colleges'));
     }
 
     /**

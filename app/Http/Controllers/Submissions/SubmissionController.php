@@ -857,15 +857,21 @@ class SubmissionController extends Controller
 
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $department_id = '';
-        $college_id = '';
+        $departments_nav = [];
+        $colleges_nav = [];
+        // $sector_ids = [];
+        
         if(in_array(5, $roles)){
-            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+                                        ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
-        // dd($department_id);
         if(in_array(6, $roles)){
-            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+                            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
+        // if(in_array(7, $roles)){
+
+        // }
 
         $colleges = College::select('colleges.name', 'colleges.id')
                                 ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
@@ -880,10 +886,8 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', Mobility::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
-        // dd($reported_accomplishments);
 
-        // dd($report_array);
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID', 'quarter', 'totalReports'));
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
     }
 
     /**
@@ -1079,7 +1083,7 @@ class SubmissionController extends Controller
             }
         }
 
-        return redirect()->route('to-finalize.index')->with('success', $successToSubmit.' accomplishment reports have been submitted. '.$failedToSubmit.' accomplishment reports have been failed to submit.');
+        return redirect()->route('to-finalize.index')->with('success', $successToSubmit.' accomplishment reports have been submitted. ');
     }
 
     /**
@@ -2067,15 +2071,22 @@ class SubmissionController extends Controller
 
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $department_id = '';
-        $college_id = '';
+        $departments_nav = [];
+        $colleges_nav = [];
+        // $sector_ids = [];
+        
         if(in_array(5, $roles)){
-            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
+            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+                                        ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
-        // dd($department_id);
         if(in_array(6, $roles)){
-            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+                            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
+        // if(in_array(7, $roles)){
+
+        // }
+
 
         $colleges = College::select('colleges.name', 'colleges.id')
                                 ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
@@ -2093,6 +2104,6 @@ class SubmissionController extends Controller
         // dd($reported_accomplishments);
 
         // dd($report_array);
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker', 'roles', 'department_id', 'college_id', 'colleges', 'collegeID', 'quarter', 'totalReports'));
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
     }
 }

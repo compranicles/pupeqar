@@ -7,9 +7,10 @@ use App\Models\Report;
 use App\Models\DenyReason;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
-use App\Models\Authentication\UserRole;
 use App\Models\Maintenance\Department;
+use App\Models\Authentication\UserRole;
 
 class DeanController extends Controller
 {
@@ -20,42 +21,74 @@ class DeanController extends Controller
      */
     public function index()
     {
-        $collegeHeadOf = Dean::select('deans.*', 'colleges.name as college_name')->
-            join('colleges', 'deans.college_id', 'colleges.id')->where('user_id', auth()->id())->first();
         
-        $reportsToReview = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            ->join('departments', 'reports.department_id', 'departments.id')
-            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-            ->join('users', 'reports.user_id', 'users.id')
-            ->where('reports.college_id', $collegeHeadOf->college_id)->where('chairperson_approval', 1)->where('dean_approval', null)->get();
-
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $department_id = '';
-        $college_id = '';
-        if(in_array(5, $roles)){
-            $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
-        }
-        // dd($department_id);
-        if(in_array(6, $roles)){
-            $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
-        }
-
-        $employees = Report::join('users', 'reports.user_id', 'users.id')
-                            ->where('reports.college_id', $collegeHeadOf->college_id)
-                            ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                            ->where('reports.dean_approval', null)
-                            ->distinct()
-                            ->orderBy('users.last_name')
-                            ->get();
+        $departments = [];
+        $colleges = [];
+        // $sector_ids = [];
         
-        $departments = Department::
-                            where('college_id', $collegeHeadOf->college_id)
-                            ->orderBy('departments.name')
-                            ->select('departments.id', 'departments.name')
-                            ->get();
+        if(in_array(5, $roles)){
+            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+            ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
+        }
+        if(in_array(6, $roles)){
+            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
+        }
+        // if(in_array(7, $roles)){
 
-        return view('reports.deans.index', compact('collegeHeadOf', 'reportsToReview', 'roles', 'department_id', 'college_id', 'employees', 'departments'));
+        // }
+
+        $reportsToReview = collect();
+        $employees = collect();
+        $department_list = collect();
+        
+        foreach ($colleges as $row){
+            $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+                ->join('departments', 'reports.department_id', 'departments.id')
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                ->join('users', 'reports.user_id', 'users.id')
+                ->where('reports.college_id', $row->college_id)->where('chairperson_approval', 1)->where('dean_approval', null)->get();
+                        
+            $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
+                ->where('reports.college_id', $row->college_id)
+                ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
+                ->where('reports.chairperson_approval', 1)
+                ->where('reports.dean_approval', null)
+                ->distinct()
+                ->orderBy('users.last_name')
+                ->get();
+
+            $tempDepartment_list = Department::where('college_id', $row->college_id)
+                ->orderBy('departments.name')
+                ->select('departments.id', 'departments.name', 'colleges.name as college_name')
+                ->join('colleges', 'colleges.id', 'departments.college_id')
+                ->get();
+            
+            $reportsToReview = $reportsToReview->concat($tempReports);
+            $employees = $employees->concat($tempEmployees);
+            $department_list = $department_list->concat($tempDepartment_list);
+        }
+        
+        $college_names = [];
+        $department_names = [];
+        foreach($reportsToReview as $row){
+            $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
+            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
+
+
+            if($temp_college_name == null)
+                $college_names[$row->id] = '-';
+            else
+                $college_names[$row->id] = $temp_college_name;
+            if($temp_department_name == null)
+                $department_names[$row->id] = '-';
+            else
+                $department_names[$row->id] = $temp_department_name;
+        }
+
+        return view('reports.deans.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names', 'department_list'));
     }
 
     /**
