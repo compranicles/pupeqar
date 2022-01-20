@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-            @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
 
 <div class="container-fluid">
@@ -29,10 +29,10 @@
                         <div class="col-md-12">
                             <div class="ml-1">
                                 <div class="d-inline mr-2">
-                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Approve</button>
+                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Receive</button>
                                 </div>
                                 <div class="d-inline mr-2">
-                                    <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Deny</a>
+                                    <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Return</a>
                                 </div>
                             </div>  
                         </div>
@@ -120,14 +120,14 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectDenyLabel">Deny Selected</h5>
+                <h5 class="modal-title" id="selectDenyLabel">Return Selected</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">Are you sure you want to  <span class="text-danger font-weight-bold">DENY</span> selected?</div>
+                    <div class="col-md-12">Are you sure you want to  <span class="text-danger font-weight-bold">RETURN</span> selected?</div>
                 </div>
                 <form action="{{ route('ipqmso.deny-select') }}" method="POST">
                     @csrf
@@ -148,14 +148,14 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectApproveLabel">Approve Selected</h5>
+                <h5 class="modal-title" id="selectApproveLabel">Receive Selected</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">APPROVE</span> selected?</div>
+                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">RECEIVE</span> selected?</div>
                 </div>
                 <form action="{{ route('ipqmso.accept-select') }}" method="POST">
                     @csrf
@@ -278,8 +278,8 @@
                 });
             });
             
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Deny</a>');
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Approve</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Return</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Receive</a>');
             
         });
 
