@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Deny') }}
+            {{ __('Return') }}
         </h2>
     </x-slot>
 
@@ -31,7 +31,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
-                                            <button type="submit" id="submit" class="btn btn-danger">DENY</button>
+                                            <button type="submit" id="submit" class="btn btn-danger">RETURN</button>
                                         </div>
                                     </div>
                                 </div>

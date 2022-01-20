@@ -25,13 +25,18 @@
 
 {{-- Sectors/VPs --}}
 @if (in_array(7, $roles))
-    <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">To Receive - Sector</a>  
+    <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">To Receive - Sector</a>
+    <a href="{{ route('submissions.sectoraccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.sectoraccomp.index') ? 'active' : ''}}">
+        Sector - Accomplishments
+    </a>  
 @endif
 
 {{-- IPQMSOs --}}
 @if (in_array(8, $roles))
-    <a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Receive - All</a> 
-    <a href="{{ route('reports.all') }}" class="submission-menu {{ request()->routeIs('reports.all') ? 'active' : ''}}">All Accomplishments</a>   
+    <a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Receive - IPQMSO</a> 
+    <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.index') ? 'active' : ''}}">
+        All Accomplishments
+    </a>  
 @endif
 
 

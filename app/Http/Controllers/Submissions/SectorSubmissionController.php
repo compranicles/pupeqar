@@ -11,9 +11,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 
-class CollegeSubmissionController extends Controller
+class SectorSubmissionController extends Controller
 {
-    public function index($id){
+    public function index(){
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
@@ -31,7 +31,7 @@ class CollegeSubmissionController extends Controller
 
         // }
 
-        $college_accomps = 
+        $sector_accomps = 
             Report::select(
                             'reports.*', 
                             'report_categories.name as report_category', 
@@ -42,12 +42,12 @@ class CollegeSubmissionController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
-                ->where('reports.college_id', $id)->get();
+                ->get();
 
         //get_department_and_college_name
         $college_names = [];
         $department_names = [];
-        foreach($college_accomps as $row){
+        foreach($sector_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
@@ -61,14 +61,12 @@ class CollegeSubmissionController extends Controller
             else
                 $department_names[$row->id] = $temp_department_name;
         }
-        
 
-        //collegedetails
-        $college = College::find($id);
+        //SectorDetails
 
         return view(
-                    'submissions.collegeaccomplishments.index', 
-                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names')
+                    'submissions.sectoraccomplishments.index', 
+                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'department_names', 'college_names')
                 );
     }
 }
