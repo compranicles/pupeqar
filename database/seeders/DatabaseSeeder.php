@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             FieldTypeSeeder::class,
             
             //other maintenance
+            SectorSeeder::class,
             CollegeSeeder::class,
             DepartmentSeeder::class,
             CurrencySeeder::class,

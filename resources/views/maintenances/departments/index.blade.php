@@ -27,19 +27,23 @@
 
           <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
+                        {{-- <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('departments.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Department</a>
+                              <a href="{{ route('departments.create') }}" class="btn btn-success"><i class="fas fa-sync-alt"></i> Sync</a>
+                              <small class="text-sm ml-2"> Last Updated: {{ date("Y-m-d H:i:s", strtotime($departments[0]->created_at)) }}</small>
                             </div>
                         </div>  
-                        <hr>
+                        <hr> --}}
                         <div class="table-responsive">
-                            <table class="table" id="department_table">
+                            <table class="table table-hover" id="department_table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Actions</th>
+                                        <th>Department</th>
+                                        <th>Code</th>
+                                        <th>Sector</th>
+                                        <th>Office/College/Branch/Campus</th>
+                                        {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,12 +51,15 @@
                                     <tr>
                                         <th>{{ $loop->iteration }}</th>
                                         <td>{{ $department->name }}</td>
-                                        <td>
+                                        <td>{{ $department->code }}</td>
+                                        <td>{{ $department->sector_name }}</td>
+                                        <td>{{ $department->college_name }}</td>
+                                        {{-- <td>
                                           <div role="group">
                                               <a href="{{ route('departments.edit', $department->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                               <button type="button" value="{{ $department->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-department="{{ $department->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                           </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>
