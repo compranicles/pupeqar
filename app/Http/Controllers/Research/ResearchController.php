@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Research;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Research;
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -251,7 +252,9 @@ class ResearchController extends Controller
 
         $colleges = College::all();
 
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'colleges', 'collegeOfDepartment'));
+        $people = User::all();
+
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'colleges', 'collegeOfDepartment', 'people'));
     }
 
     /**

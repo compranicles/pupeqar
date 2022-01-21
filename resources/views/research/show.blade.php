@@ -35,6 +35,9 @@
                                             {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
                                         @endif --}}
                                         
+                                        <div>
+                                            <button class="btn btn-sm btn-dark mr-3" data-bs-toggle="modal" data-bs-target="#addResearcher" data-bs-whatever="{{ $research->title }}"><i class="bi bi-person-plus mr-2"></i>Add Co-researchers</button>
+                                        </div>
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>
                                 </div>
@@ -120,7 +123,39 @@
         </div>
         
     </div>
-   
+    <!--Modal for sharing-->
+    <div class="modal fade" id="addResearcher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Share with co-researchers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form action="{{ route('dropdowns.store') }}" class="needs-validation" method="POST" novalidate>
+                <div class="form-group">
+                    <table class="table table-borderless m-n2" id="dynamic_form">
+                        <tr>
+                            <td>
+                                <div id="badges">
+
+                                </div>
+                                <input type="text" class="form-control input-parent" id="coresearcher-1" placeholder="Add co-researchers">
+                                <div id="researcher-list">
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Done</button>
+            </div>
+            </div>
+        </div>
+    </div>
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
@@ -131,6 +166,90 @@
                 $(this).remove(); 
             });
         }, 4000);
+    </script>
+    <script>
+        document.getElementById('researcher-list').style.display = "none";
+
+        var getCoresearcher = (this).value;
+            // console.log(getCoresearcher);
+            <?php
+                for ($i = 0; $i < count($people); $i++){ ?>
+                    if (getCoresearcher === "{{ $people[$i]->last_name.", ".$people[$i]->first_name }}") {
+                        document.getElementById('researcher-list').style.display = "block";
+                        const para = document.createElement("p");
+                        // para.innerText = "This is a paragraph";
+                        para.innerHTML = "{{ $people[$i]->last_name.', '.$people[$i]->first_name.' '.$people[$i]->middle_name.' '.$people[$i]->suffix }}";
+                        document.getElementById('researcher-list').appendChild(para);
+                        console.log(researcher);
+                    }
+            <?php } ?>
+
+        $('input#coresearcher-1').keyup(function () {
+            var getCoresearcher = (this).value;
+            // console.log(getCoresearcher);
+            <?php
+                for ($i = 0; $i < count($people); $i++){ ?>
+                   if (getCoresearcher === "{{ $people[$i]->last_name.", ".$people[$i]->first_name }}") {
+                        document.getElementById('researcher-list').style.display = "block";
+
+                        const para = document.createElement("p");
+                        // para.innerText = "This is a paragraph";
+                        para.innerHTML = "{{ $people[$i]->last_name.', '.$people[$i]->first_name.' '.$people[$i]->middle_name.' '.$people[$i]->suffix }}";
+                        document.getElementById('researcher-list').appendChild(para);
+                        var x = document.querySelectorAll("p");
+                        for (let a = 0; a < x.length; a++) {
+                            x[a].setAttribute("role", "button");
+                        }
+                        // console.log(researcher);
+                    }
+                    if (getCoresearcher === "") {
+                        document.getElementById('researcher-list').style.display = "none";
+                        $('p').remove();
+                    }
+            <?php } ?>
+        });
+
+        $('input#coresearcher-1').on('input', function () {
+            document.getElementById('researcher-list').style.display = "none";
+            $('p').remove();
+        });
+
+    </script>
+    <script>
+        var r = 1;
+        var count = 0;
+        var researchers = [];
+
+        document.querySelector('#researcher-list').addEventListener('click', function(event){
+        if(event.target.nodeName === 'P'){
+            document.getElementById('coresearcher-1').value = "";
+            const badge = document.createElement("span");
+            badge.setAttribute("class", "badge rounded-pill bg-dark mb-2 mr-2");
+            badge.setAttribute("id", "researcher-" + r);
+            badge.innerHTML = event.target.innerHTML + '<i class="bi bi-x ml-2" id="remove-researcher-'+r+'" role="button"></i>';
+            document.getElementById('badges').appendChild(badge);
+            document.getElementById('researcher-list').style.display = "none";
+            $('p').remove();
+
+            researchers[count] = r;
+            count++;
+            r++;
+            remove_researchers(researchers);
+        }
+    });
+    </script>
+    <script>
+        function remove_researchers(researchers) {
+            for (let r = 0; r < researchers.length; r++) {
+                if (document.getElementById('remove-researcher-'+researchers[r])) {
+                    document.getElementById('remove-researcher-'+researchers[r]).addEventListener('click', function(){
+                        $('#researcher-'+researchers[r]+'').remove();
+                        // alert('#researcher-'+researchers[rnum]+'');
+                        console.log(researchers[r]);
+                    });
+                }
+            }
+        }
     </script>
 @endpush
 

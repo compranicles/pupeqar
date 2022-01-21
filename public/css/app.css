@@ -13284,3 +13284,32 @@ table tr .padding_left_show {
   display: table-cell;
   vertical-align: middle;
 } */
+
+/* datalist options */
+.input-parent {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#researcher-list {
+  background-color: var(--gray-dark);
+  height: 33%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  right: 23;
+  top: 23;
+}
+
+#researcher-list p {
+  background-color: var(--gray-dark);
+  padding: 3px;
+  margin: 10px;
+  color: white;
+}
+
+#researcher-list p:hover {
+  border-bottom: 1px solid whitesmoke;
+  /* color: black; */
+}
