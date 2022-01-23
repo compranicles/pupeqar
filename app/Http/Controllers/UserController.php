@@ -7,9 +7,11 @@ use App\Models\Dean;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Invite;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Maintenance\Sector;
 use App\Models\Maintenance\College;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
@@ -35,7 +37,13 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         $users = User::all();
-        return view('users.index', compact('users'));
+
+        $rolesperuser = [];
+
+        foreach($users as $user){
+            $rolesperuser[$user->id] = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')->where('user_roles.user_id',$user->id)->get();
+        }
+        return view('users.index', compact('users', 'rolesperuser'));
     }
 
     /**
@@ -141,11 +149,17 @@ class UserController extends Controller
         $roles = Role::get();
         $yourroles = $user->userrole()->pluck('role_id')->all();
         $permissions = Permission::get();
-        $departments = Department::select('departments.*', 'colleges.name as college_name')->join('colleges', 'departments.college_id', 'colleges.id')->get();
-        $chairperson = Chairperson::where('user_id', $user->id)->pluck('department_id')->first();
-        $colleges = College::all();
-        $dean = Dean::where('user_id', $user->id)->pluck('college_id')->first();
-        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean'));
+
+
+        $departments = Department::select('name as text', 'id as value')->get();
+        $colleges = College::select('name as text', 'id as value')->get();
+        $sectors = Sector::select('name as text', 'id as value')->get();
+
+        $chairperson = Chairperson::join('departments', 'departments.id', 'chairpeople.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
+        $dean = Dean::join('colleges', 'colleges.id', 'deans.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
+        $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
+
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead'));
     }
 
     /**
@@ -206,27 +220,37 @@ class UserController extends Controller
             Chairperson::where('user_id', $user->id)->delete();
         }
         else{
-           Chairperson::updateOrCreate(
-                [
-                    'user_id' => $user->id
-                ],
-                [
-                    'department_id' => $request->input('department')
-                ]
-            );
+            Chairperson::where('user_id', $user->id)->delete();
+            foreach($request->input('department') as $department){
+                Chairperson::create([
+                    'user_id' => $user->id,
+                    'department_id' => $department
+                ]);
+            }
         }
         if(!in_array(6, $checkedroles)){
             Dean::where('user_id', $user->id)->delete();
         }
         else{
-           Dean::updateOrCreate(
-                [ 
+            Dean::where('user_id', $user->id)->delete();
+            foreach($request->input('college') as $college){
+                Dean::updateOrCreate([ 
                     'user_id' => $user->id, 
-                ],
-                [ 
-                    'college_id' => $request->input('college'), 
-                ]
-            );
+                    'college_id' => $college, 
+                ]);
+            }
+        }
+        if(!in_array(7, $checkedroles)){
+            SectorHead::where('user_id', $user->id)->delete();
+        }
+        else{
+            SectorHead::where('user_id', $user->id)->delete();
+            foreach($request->input('sector') as $sector){
+                SectorHead::updateOrCreate([ 
+                    'user_id' => $user->id, 
+                    'sector_id' => $sector, 
+                ]);
+            }
         }
         
         
