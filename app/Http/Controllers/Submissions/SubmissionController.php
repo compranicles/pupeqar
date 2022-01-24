@@ -9,6 +9,7 @@ use App\Models\Research;
 use App\Models\Syllabus;
 use App\Models\Invention;
 use App\Models\Reference;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use App\Models\Partnership;
 use Illuminate\Support\Arr;
@@ -24,9 +25,12 @@ use App\Models\MobilityDocument;
 use App\Models\ResearchCitation;
 use App\Models\ResearchDocument;
 use App\Models\SyllabusDocument;
+use App\Models\FacultyResearcher;
 use App\Models\InventionDocument;
 use App\Models\ReferenceDocument;
 use App\Models\TechnicalExtension;
+use App\Models\FacultyExtensionist;
+use App\Models\Maintenance\College;
 use App\Models\PartnershipDocument;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -50,7 +54,6 @@ use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Http\Controllers\Reports\ReportController;
-use App\Models\Maintenance\College;
 
 
 
@@ -859,19 +862,32 @@ class SubmissionController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments_nav = [];
         $colleges_nav = [];
-        // $sector_ids = [];
+        $sectors_nav = [];
+        $departmentsResearch_nav = [];
+        $departmentsExtension_nav = [];
         
         if(in_array(5, $roles)){
-            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
         if(in_array(6, $roles)){
-            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
-        // if(in_array(7, $roles)){
-
-        // }
+        if(in_array(7, $roles)){
+            $sectors_nav = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->get();
+        }
+        if(in_array(10, $roles)){
+            $departmentsResearch_nav = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
+                                        ->select('faculty_researchers.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+        }
+        if(in_array(11, $roles)){
+            $departmentsExtension_nav = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+        }
 
         $colleges = College::select('colleges.name', 'colleges.id')
                                 ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
@@ -887,7 +903,7 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
 
-        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
     }
 
     /**
@@ -925,9 +941,12 @@ class SubmissionController extends Controller
                         if ($report_values_array[1] == 1) {
 
                             $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                            $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                         }
                         else {
                             $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[3])->first();
+                            $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+
                         }
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                         if($report_values_array[1] == 5){
@@ -951,6 +970,7 @@ class SubmissionController extends Controller
                             ->delete();
                         Report::create([
                             'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
                             'college_id' => $collegeAndDepartment->college_id,
                             'department_id' => $collegeAndDepartment->department_id,
                             'report_category_id' => $report_values_array[1],
@@ -967,30 +987,39 @@ class SubmissionController extends Controller
                         switch($report_values_array[1]){
                             case 8:
                                 $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 9:
                                 $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 10:
                                 $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 11:
                                 $collegeAndDepartment = ExpertServiceAcademic::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 12:
                                 $collegeAndDepartment = ExtensionService::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 13:
                                 $collegeAndDepartment = Partnership::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 14:
                                 $collegeAndDepartment = Mobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 15:
                                 $collegeAndDepartment = Reference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                             case 16:
                                 $collegeAndDepartment = Syllabus::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('college_id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                         }
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
@@ -1004,6 +1033,7 @@ class SubmissionController extends Controller
                             ->delete();
                         Report::create([
                             'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
                             'college_id' => $collegeAndDepartment->college_id,
                             'department_id' => $collegeAndDepartment->department_id,
                             'report_category_id' => $report_values_array[1],
@@ -1024,9 +1054,11 @@ class SubmissionController extends Controller
                         if(in_array(5, $roles)){
                             $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
                             $college_id = Department::where('id', $department_id)->pluck('college_id')->first();
+                            $sector_id = College::where('college_id', $college_id)->pluck('sector_id')->first();
                         }
                         if(in_array(6, $roles)){
                             $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
+                            $sector_id = College::where('college_id', $college_id)->pluck('sector_id')->first();
                         }
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                         $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
@@ -1041,6 +1073,7 @@ class SubmissionController extends Controller
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
+                                '$sector_id' => $sector_id,
                                 'college_id' => $college_id ?? null,
                                 'department_id' => $department_id ?? null,
                                 'report_category_id' => $report_values_array[1],
@@ -1063,6 +1096,7 @@ class SubmissionController extends Controller
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
+                                '$sector_id' => $sector_id ?? null,
                                 'college_id' => $college_id ?? null,
                                 'department_id' => $department_id ?? null,
                                 'report_category_id' => $report_values_array[1],
@@ -2073,19 +2107,32 @@ class SubmissionController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments_nav = [];
         $colleges_nav = [];
-        // $sector_ids = [];
+        $sectors_nav = [];
+        $departmentsResearch_nav = [];
+        $departmentsExtension_nav = [];
         
         if(in_array(5, $roles)){
-            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
         if(in_array(6, $roles)){
-            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
-        // if(in_array(7, $roles)){
-
-        // }
+        if(in_array(7, $roles)){
+            $sectors_nav = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'sector_head.sector_id')->get();
+        }
+        if(in_array(10, $roles)){
+            $departmentsResearch_nav = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
+                                        ->select('faculty_researchers.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+        }
+        if(in_array(11, $roles)){
+            $departmentsExtension_nav = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+        }
 
 
         $colleges = College::select('colleges.name', 'colleges.id')
@@ -2104,6 +2151,6 @@ class SubmissionController extends Controller
         // dd($reported_accomplishments);
 
         // dd($report_array);
-        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
     }
 }

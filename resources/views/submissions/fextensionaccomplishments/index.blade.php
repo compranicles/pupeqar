@@ -7,12 +7,12 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>{{ $sector->name }} - Accomplishments</h5>
+                    <h5>{{ $department->name }} - Extension Accomplishments</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
                     <div class="table-responive">
-                        <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
+                        <table class="table table-hover table-sm table-bordered" id="department_accomplishments_table">
                             <thead class="text-center">
                                 <tr>
                                     <th rowspan="2">#</th>
@@ -32,7 +32,7 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @forelse ($sector_accomps as $row)
+                                @forelse ($department_accomps as $row)
                                 <tr role="button">
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
@@ -101,7 +101,7 @@
                                             @elseif ($row->chairperson_approval === 1)
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
-                                        @endif      
+                                        @endif     
                                     </td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->chairperson_approval === 0)
@@ -320,7 +320,7 @@
                 $('.report-content').remove();
             });
             $(function(){
-                $('#college_accomplishments_table').DataTable();
+                $('#department_accomplishments_table').DataTable();
             });
             // auto hide alert
             window.setTimeout(function() {

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('submissions.navigation', ['roles' => $roles, 'departments' => $departments_nav, 'colleges' => $colleges_nav])
+        @include('submissions.navigation', ['roles' => $roles, 'departments' => $departments_nav, 'colleges' => $colleges_nav, 'sectors' => $sectors_nav, 'departmentsResearch' => $departmentsResearch_nav, 'departmentsExtension' => $departmentsExtension_nav])
     </x-slot>
     <?php $ctr = 0; ?>
     @foreach ( $report_tables as $table)

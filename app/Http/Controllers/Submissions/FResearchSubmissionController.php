@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 
-class DepartmentSubmissionController extends Controller
+class FResearchSubmissionController extends Controller
 {
     public function index($id){
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
@@ -58,8 +58,8 @@ class DepartmentSubmissionController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
+                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
                 ->where('reports.department_id', $id)->get();
-
         //get_department_and_college_name
         $college_names = [];
         $department_names = [];
@@ -77,13 +77,12 @@ class DepartmentSubmissionController extends Controller
             else
                 $department_names[$row->id] = $temp_department_name;
         }
-        
 
         //departmentdetails
         $department = Department::find($id);
 
         return view(
-                    'submissions.departmentaccomplishments.index', 
+                    'submissions.fresearchaccomplishments.index', 
                     compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension')
                 );
     }

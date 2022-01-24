@@ -62,7 +62,7 @@
                 </li>
 
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link :active="request()->routeIs('submissions.*')|| request()->routeIs('chairperson.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')" href="{{ route('to-finalize.index') }}">
+                    <x-jet-nav-link :active="request()->routeIs('submissions.*')|| request()->routeIs('chairperson.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')" href="{{ route('to-finalize.index') }}">
                         {{ __('Submissions') }}
 
                     </x-jet-nav-link>

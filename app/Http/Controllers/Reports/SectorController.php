@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Reports;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\DenyReason;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
+use App\Models\FacultyResearcher;
+use App\Models\FacultyExtensionist;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
-use App\Models\Maintenance\College;
 
 class SectorController extends Controller
 {
@@ -28,28 +31,41 @@ class SectorController extends Controller
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', null)->get();
         
-       //role and department/ college id
-       $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-       $departments_nav = [];
-       $colleges_nav = [];
-       // $sector_ids = [];
+        //role and department/ college id
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        $departments_nav = [];
+        $colleges_nav = [];
+        $sectors = [];
+        $departmentsResearch = [];
+        $departmentsExtension = [];
        
-       if(in_array(5, $roles)){
-           $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
-                                       ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
-       }
-       if(in_array(6, $roles)){
-           $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
-                           ->join('colleges', 'colleges.id', 'deans.college_id')->get();
-       }
-       // if(in_array(7, $roles)){
-
-       // }
+        if(in_array(5, $roles)){
+            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
+        }
+        if(in_array(6, $roles)){
+            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
+                            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
+        }
+        if(in_array(7, $roles)){
+            $sectors = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->get();
+        }
+        if(in_array(10, $roles)){
+            $departmentsResearch = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
+                                        ->select('faculty_researchers.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+        }
+        if(in_array(11, $roles)){
+            $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+        }
             
         $colleges = College::select('colleges.id', 'colleges.name')
                             ->orderBy('colleges.name')
                             ->get();
-        return view('reports.sector.index', compact('reportsToReview', 'roles', 'departments_nav', 'colleges_nav', 'colleges'));
+        return view('reports.sector.index', compact('reportsToReview', 'roles', 'departments_nav', 'colleges_nav', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

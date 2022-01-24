@@ -83,7 +83,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::create([
             'report_type_id' => 1,
-            'name' => 'Expert Program, Project, and Active (Ongoing and Completed)',
+            'name' => 'Extension Program, Project, and Active (Ongoing and Completed)',
             'is_active' => 1,
             'order' => 12
         ]);

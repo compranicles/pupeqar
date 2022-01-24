@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Reports;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\DenyReason;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
+use App\Models\FacultyResearcher;
+use App\Models\FacultyExtensionist;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
 
@@ -31,21 +34,34 @@ class IpqmsoController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
-        // $sector_ids = [];
+        $sectors = [];
+        $departmentsResearch = [];
+        $departmentsExtension = [];
         
         if(in_array(5, $roles)){
-            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
         if(in_array(6, $roles)){
-            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
-        // if(in_array(7, $roles)){
+        if(in_array(7, $roles)){
+            $sectors = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->get();
+        }
+        if(in_array(10, $roles)){
+            $departmentsResearch = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
+                                        ->select('faculty_researchers.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+        }
+        if(in_array(11, $roles)){
+            $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+        }
 
-        // }
-
-        return view('reports.ipqmso.index', compact('reportsToReview', 'roles', 'departments', 'colleges'));
+        return view('reports.ipqmso.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

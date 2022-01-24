@@ -5,7 +5,7 @@
     <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Receive - Department/s</a>   
     @forelse ( $departments as $row)
         <a href="{{ route('submissions.departmentaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.departmentaccomp.index', $row->id) ? 'active' : ''}}">
-            {{ $row->name }} - Accomplishments
+            {{ $row->code }} - Accomplishments
         </a>   
     @empty
 
@@ -17,7 +17,7 @@
     <a href="{{ route('dean.index') }}" class="submission-menu {{ request()->routeIs('dean.index') ? 'active' : ''}}">To Receive - College/Branch/Campus/Office/s</a>   
     @forelse ( $colleges as $row)
         <a href="{{ route('submissions.collegeaccomp.index', $row->college_id) }}" class="submission-menu {{ request()->routeIs('submissions.collegeaccomp.index', $row->id) ? 'active' : ''}}">
-            {{ $row->name }} - Accomplishments
+            {{ $row->code }} - Accomplishments
         </a>   
     @empty
     @endforelse
@@ -26,9 +26,12 @@
 {{-- Sectors/VPs --}}
 @if (in_array(7, $roles))
     <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">To Receive - Sector</a>
-    <a href="{{ route('submissions.sectoraccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.sectoraccomp.index') ? 'active' : ''}}">
-        Sector - Accomplishments
-    </a>  
+    @forelse ( $sectors as $row)
+        <a href="{{ route('submissions.sectoraccomp.index', $row->sector_id) }}" class="submission-menu {{ request()->routeIs('submissions.sectoraccomp.index') ? 'active' : ''}}">
+            {{ $row->code }} - Accomplishments
+        </a>  
+    @empty
+    @endforelse
 @endif
 
 {{-- IPQMSOs --}}
@@ -37,6 +40,28 @@
     <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.index') ? 'active' : ''}}">
         All Accomplishments
     </a>  
+@endif
+
+{{-- Researchers --}}
+@if (in_array(10, $roles))
+    <a href="{{ route('researcher.index') }}" class="submission-menu {{ request()->routeIs('researcher.index') ? 'active' : ''}}">To Receive - Researcher</a> 
+    @forelse ( $departmentsResearch as $row)
+        <a href="{{ route('submissions.researchaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.researchaccomp.index') ? 'active' : ''}}">
+            {{ $row->code }} - Accomplishments
+        </a>  
+    @empty
+    @endforelse
+@endif
+
+{{-- Extensionist --}}
+@if (in_array(11, $roles))
+    <a href="{{ route('extensionist.index') }}" class="submission-menu {{ request()->routeIs('extensionist.index') ? 'active' : ''}}">To Receive - Extensionist</a> 
+    @forelse ( $departmentsExtension as $row)
+        <a href="{{ route('submissions.extensionaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.extensionaccomp.index') ? 'active' : ''}}">
+            {{ $row->code }} - Accomplishments
+        </a>  
+    @empty
+    @endforelse
 @endif
 
 
