@@ -11,7 +11,9 @@ use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\FacultyResearcher;
 use App\Models\Maintenance\Sector;
+use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
@@ -127,8 +129,8 @@ class UserController extends Controller
     {
         $this->authorize('view', User::class);
 
-        $users = User::all();
-        return view('users.show', compact('user'));
+        $roles = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')->where('user_roles.user_id',$user->id)->get();
+        return view('users.show', compact('user', 'roles'));
     }
 
     /**
@@ -158,8 +160,10 @@ class UserController extends Controller
         $chairperson = Chairperson::join('departments', 'departments.id', 'chairpeople.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
         $dean = Dean::join('colleges', 'colleges.id', 'deans.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
+        $researcher = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
+        $extensionist = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
 
-        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead'));
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist'));
     }
 
     /**

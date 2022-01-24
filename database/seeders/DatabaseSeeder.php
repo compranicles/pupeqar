@@ -16,6 +16,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            //other maintenance
+            SectorSeeder::class,
+            CollegeSeeder::class,
+            DepartmentSeeder::class,
+            CurrencySeeder::class,
+
             // authentication
             RoleSeeder::class,
             PermissionSeeder::class,
@@ -25,12 +31,6 @@ class DatabaseSeeder extends Seeder
 
             // Field types
             FieldTypeSeeder::class,
-            
-            //other maintenance
-            SectorSeeder::class,
-            CollegeSeeder::class,
-            DepartmentSeeder::class,
-            CurrencySeeder::class,
 
             //Dropdown Seeders
             DropdownSeeder::class,

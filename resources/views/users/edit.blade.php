@@ -105,6 +105,22 @@
                         </select>
                         <x-jet-input-error for="sector"></x-jet-input-error>
                       </div>  
+
+                      <div class="form-group extension-input" style="@if($extensionist == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Extensionist of:') }}" />
+                        <select name="extension[]" id="extension" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <x-jet-input-error for="extension"></x-jet-input-error>
+                      </div>  
+
+                      <div class="form-group research-input" style="@if($researcher == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Researcher of:') }}" />
+                        <select name="research[]" id="research" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <x-jet-input-error for="research"></x-jet-input-error>
+                      </div>  
                     </div>
                   </div>
                 </div>
@@ -151,6 +167,22 @@
               options: @json($sectors),
               items: @json($sectorhead),
           });
+          $("#extension").selectize({
+              maxItems: null,
+              sortField: "text",
+              valueField: 'value',
+              labelField: 'text',
+              options: @json($departments),
+              items: @json($extensionist),
+          });
+          $("#research").selectize({
+              maxItems: null,
+              sortField: "text",
+              valueField: 'value',
+              labelField: 'text',
+              options: @json($departments),
+              items: @json($researcher),
+          });
 
           $('.role-checkbox').on('change', function() {
               var id = $(this).data('id');
@@ -162,6 +194,12 @@
               }
               if(id == 7){
                 changeSectorDisp(id);
+              }
+              if(id == 10){
+                changeResearchDisp(id);
+              }
+              if(id == 11){
+                changeExtensionDisp(id);
               }
           });
 
@@ -203,6 +241,30 @@
                 $('#sector').attr('disabled', true);
               }
           }
+          function changeExtensionDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.extension-input').show();
+                 $('#extension').removeAttr('disabled');
+                 $('#extension').attr('required', true);
+              }
+              else{
+                $('.extension-input').hide();
+                $('#extension').removeAttr('required');
+                $('#extension').attr('disabled', true);
+              }
+          }
+          function changeResearchDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.research-input').show();
+                 $('#research').removeAttr('disabled');
+                 $('#research').attr('required', true);
+              }
+              else{
+                $('.research-input').hide();
+                $('#research').removeAttr('required');
+                $('#research').attr('disabled', true);
+              }
+          }
 
           $(function (){
               if($('#role-5').is(':checked')){
@@ -213,6 +275,12 @@
               }
               if($('#role-7').is(':checked')){
                   changeSectorDisp(7);
+              }
+              if($('#role-11').is(':checked')){
+                  changeExtensionDisp(11);
+              }
+              if($('#role-10').is(':checked')){
+                  changeResearchDisp(10);
               }
           });
       </script>
