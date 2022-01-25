@@ -17,6 +17,7 @@ use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CitationController extends Controller
 {
@@ -147,6 +148,11 @@ class CitationController extends Controller
     public function edit(Research $research, ResearchCitation $citation)
     {
         $this->authorize('update', ResearchCitation::class);
+
+        if(LockController::isLocked($citation->id, 5)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -230,6 +236,10 @@ class CitationController extends Controller
     public function destroy(Research $research, ResearchCitation $citation)
     {
         $this->authorize('delete', ResearchCitation::class);
+
+        if(LockController::isLocked($citation->id, 5)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)

@@ -78,22 +78,28 @@ class ChairpersonController extends Controller
             $reportsToReview = $reportsToReview->concat($tempReports);
             $employees = $employees->concat($tempEmployees);
         }
+
+
         //filternotyetreceived by researcher and/or extensionist
         $tempReports = collect();
+
         foreach($reportsToReview as $report){
-            if($report->report_category_id >= 1 || $report->report_category_id <= 7){
+            if($report->report_category_id >= 1 && $report->report_category_id <= 7){
                 if($report->researcher_approval === 1){
-                    $tempReports = $tempReports->concat($report);
+                    $tempReports = $tempReports->push($report);
                 }
             }
-            if($report->report_category_id == 12){
+            elseif($report->report_category_id == 12){
                 if($report->extensionist_approval === 1){
-                    $tempReports = $tempReports->concat($report);
+                    $tempReports = $tempReports->push($report);
                 }
+            }
+            else{
+                $tempReports = $tempReports->push($report);
             }
         }
         $reportsToReview = $tempReports;
-        
+
         $college_names = [];
         $department_names = [];
         foreach($reportsToReview as $row){

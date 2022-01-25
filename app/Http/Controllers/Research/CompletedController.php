@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CompletedController extends Controller
 {
@@ -167,6 +168,11 @@ class CompletedController extends Controller
     public function edit(Research $research, ResearchComplete $completed)
     {   
         $this->authorize('update', ResearchComplete::class);
+
+        if(LockController::isLocked($completed->id, 2)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)

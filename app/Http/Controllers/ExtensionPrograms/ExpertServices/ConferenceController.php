@@ -9,10 +9,11 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConference;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ConferenceController extends Controller
 {
@@ -148,6 +149,10 @@ class ConferenceController extends Controller
     {
         $this->authorize('update', ExpertServiceConference::class);
 
+        if(LockController::isLocked($expert_service_in_conference->id, 10)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
@@ -229,6 +234,11 @@ class ConferenceController extends Controller
     public function destroy(ExpertServiceConference $expert_service_in_conference)
     {
         $this->authorize('delete', ExpertServiceConference::class);
+
+        if(LockController::isLocked($expert_service_in_conference->id, 10)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');

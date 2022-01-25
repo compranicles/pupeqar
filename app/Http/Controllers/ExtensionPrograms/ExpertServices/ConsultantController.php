@@ -9,10 +9,11 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ConsultantController extends Controller
 {
@@ -145,6 +146,10 @@ class ConsultantController extends Controller
     {
         $this->authorize('update', ExpertServiceConsultant::class);
 
+        if(LockController::isLocked($expert_service_as_consultant->id, 9)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         // dd($expert_service_as_consultant);
@@ -226,6 +231,10 @@ class ConsultantController extends Controller
     public function destroy(ExpertServiceConsultant $expert_service_as_consultant)
     {
         $this->authorize('delete', ExpertServiceConsultant::class);
+
+        if(LockController::isLocked($expert_service_as_consultant->id, 9)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');

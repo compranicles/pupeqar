@@ -13,6 +13,7 @@ use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ReferenceController extends Controller
 {
@@ -152,6 +153,11 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($rtmmi->id, 15)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
@@ -261,6 +267,11 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+        
+        if(LockController::isLocked($rtmmi->id, 15)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $rtmmi->delete();
         ReferenceDocument::where('reference_id', $rtmmi->id)->delete();
 

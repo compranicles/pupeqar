@@ -12,8 +12,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\InventionForm;
-use App\Models\FormBuilder\InventionField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\InventionField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class InventionController extends Controller
 {
@@ -163,6 +164,10 @@ class InventionController extends Controller
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        if(LockController::isLocked($invention_innovation_creative->id, 8)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
@@ -261,6 +266,11 @@ class InventionController extends Controller
     public function destroy(Invention $invention_innovation_creative)
     {
         $this->authorize('delete', Invention::class);
+
+        if(LockController::isLocked($invention_innovation_creative->id, 8)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 

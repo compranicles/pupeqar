@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OutreachProgramDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class OutreachProgramController extends Controller
 {
@@ -123,6 +124,10 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('update', OutreachProgram::class);
 
+        if(LockController::isLocked($outreach_program->id, 22)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -192,6 +197,10 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('delete', OutreachProgram::class);
 
+        if(LockController::isLocked($outreach_program->id, 22)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();

@@ -19,6 +19,11 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="row">

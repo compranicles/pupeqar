@@ -15,6 +15,11 @@
         {{ $message }}
     </div>
     @endif
+    @if ($message = Session::get('cannot_access'))
+        <div class="alert alert-danger alert-index">
+            {{ $message }}
+        </div>
+    @endif
     <div class="container">
         <div class="row">
             <div class="col-md-12">

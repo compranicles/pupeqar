@@ -8,6 +8,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
+                @if ($message = Session::get('cannot_access'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
                 <div class="d-flex mr-2">
                     <p class="mr-auto">
                     <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages and Network</a>
