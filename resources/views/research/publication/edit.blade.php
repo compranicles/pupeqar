@@ -13,8 +13,8 @@
         </div>
         {{-- Denied Details --}}
         @if ($denied != null)
-        <div class="alert alert-danger alert-index">
-            <i class="bi bi-x-circle"></i> Denied by {{ $denied->position_name }}: {{ $denied->reason }}
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-exclamation-circle"></i> Remarks: {{ $denied->reason }}
         </div>
         @endif
         <div class="row">

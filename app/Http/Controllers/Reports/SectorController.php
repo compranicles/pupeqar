@@ -121,7 +121,7 @@ class SectorController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
-        return redirect()->route('sector.index')->with('success', 'Report Accepted');
+        return redirect()->route('sector.index')->with('success', 'Report has been added in consolidated report.');
     }
 
     public function rejectCreate($report_id){
@@ -139,7 +139,7 @@ class SectorController extends Controller
         Report::where('id', $report_id)->update([
             'sector_approval' => 0
         ]);
-        return redirect()->route('sector.index')->with('success', 'Report Denied');
+        return redirect()->route('sector.index')->with('success', 'Report has been returned.');
     }
 
     public function relay($report_id){

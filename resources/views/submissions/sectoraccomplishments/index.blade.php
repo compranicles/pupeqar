@@ -97,7 +97,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                            <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
+                                            <button class="button-deny action-remarks btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text"></i> Remarks</button>
                                             
                                         @else
                                             -
@@ -117,7 +117,7 @@
     </div>   
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewReportLabel">View Submission</h5>
@@ -198,8 +198,8 @@
                 $.get('/reports/data/'+catID, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
-                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
+                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });

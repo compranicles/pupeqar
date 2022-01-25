@@ -17,6 +17,17 @@ class DepartmentSubmissionController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
+        $currentMonth = date('m');
+        $year = "default";
+        if ($currentMonth <= 3 && $currentMonth >= 1) 
+            $quarter = 1;
+        if ($currentMonth <= 6 && $currentMonth >= 4)
+            $quarter = 2;
+        if ($currentMonth <= 9 && $currentMonth >= 7)
+            $quarter = 3;
+        if ($currentMonth <= 12 && $currentMonth >= 10) 
+            $quarter = 4;
+
         // $sector_ids = [];
         
         if(in_array(5, $roles)){
@@ -68,7 +79,7 @@ class DepartmentSubmissionController extends Controller
 
         return view(
                     'submissions.departmentaccomplishments.index', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'quarter', 'year')
                 );
     }
 }

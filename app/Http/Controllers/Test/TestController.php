@@ -11,8 +11,9 @@ class TestController extends Controller
 {
    public function index() { 
         $db_ext = DB::connection('mysql_external');
-
-        $departments = $db_ext->select(" EXEC GetDepartment");
+        // phpinfo();
+        $departments = $db_ext->select("EXEC GetDepartment");
+        // dd($departments);
 
         $departmentIDs = []; 
         $count = 0;

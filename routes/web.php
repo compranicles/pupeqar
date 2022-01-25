@@ -307,6 +307,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');
     Route::get('/submissions/approved', [\App\Http\Controllers\Submissions\AcceptedController::class, 'index'])->name('submissions.accepted.index');
     Route::get('/submissions/my-accomplishments', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'index'])->name('submissions.myaccomp.index');
+    Route::get('/submissions/my-accomplishments/submissionYearFilter/{year}/{quarter}', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'submissionYearFilter'])->name('submissions.myaccomp.yearFilter');
     Route::get('/submissions/department-accomplishments/{id}', [\App\Http\Controllers\Submissions\DepartmentSubmissionController::class, 'index'])->name('submissions.departmentaccomp.index');
     Route::get('/submissions/college-accomplishments/{id}', [\App\Http\Controllers\Submissions\CollegeSubmissionController::class, 'index'])->name('submissions.collegeaccomp.index');
     Route::get('/submissions/sector-accomplishments', [\App\Http\Controllers\Submissions\SectorSubmissionController::class, 'index'])->name('submissions.sectoraccomp.index');

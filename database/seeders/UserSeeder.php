@@ -190,8 +190,8 @@ class UserSeeder extends Seeder
 
         Chairperson::create([
             'user_id' => $cp1->id,
-            'department_id' => 1,
-            'college_id' => 1,
+            'department_id' => 90,
+            'college_id' => 5,
         ]);
 
 
@@ -207,8 +207,8 @@ class UserSeeder extends Seeder
 
         Chairperson::create([
             'user_id' => $cp2->id,
-            'department_id' => 84,
-            'college_id' => 42,
+            'department_id' => 292,
+            'college_id' => 86,
         ]);
 //56
         Dean::truncate();
@@ -240,7 +240,7 @@ class UserSeeder extends Seeder
 
         Dean::create([
             'user_id' => $dean2->id,
-            'college_id' => 42,
+            'college_id' => 86,
         ]);
 
 //58

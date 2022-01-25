@@ -42,8 +42,15 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-2">
+                                <label for="reportFilter" class="mr-2">Year Registered:</label>
+                                <div class="d-flex">
+                                    <select id="reportFilter" class="custom-select yearFilter" name="reportFilter">
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
                                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
@@ -53,7 +60,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                 <select id="collegeFilter" class="custom-select">
                                     <option value="">Show All</option>
@@ -65,19 +72,6 @@
                         </div>
                         <hr>
                         <div class="row mt-3">
-                            
-                            <div class="col-md-2">
-                                <label for="reportFilter" class="mr-2">Year Registered: <span style="color:red;">*</span> </label>
-                                <div class="d-flex">
-                                    <select id="reportFilter" class="custom-select yearFilter" name="reportFilter">
-                                        <option value="created" {{ $year == "created" ? 'selected' : '' }} class="present_year">--</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <span style="display: inline-block;
-                                border-right: 1px solid #ccc;
-                                margin: 0px 20px 0px 20px;;
-                                height: 65px;"></span>
                             <div class="col-md-2">
                                 <label for="startFilter" class="mr-2">Year Started: <span style="color:red;">*</span></label>
                                 <div class="d-flex">
@@ -116,7 +110,6 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
-                                    
                                     <table class="table my-3 table-hover" id="researchTable" >
                                         <thead>
                                             <tr>
@@ -224,6 +217,26 @@
                 }
             );
 
+            var reportIndex = 0;
+            $("#researchTable th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    reportIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#reportFilter').val()
+                    var year = data[reportIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
             $("#statusFilter").change(function (e) {
                 table.draw();
             });
@@ -236,6 +249,9 @@
                 table.draw();
             });
 
+            $("#reportFilter").change(function (e) {
+                table.draw();
+            });
             table.draw();
         });
     </script>
@@ -304,12 +320,6 @@
             var year_presented = $('#presentFilter').val();
             var link = "/research/filterByYear/:year/:status";
             var newLink = link.replace(':year', year_presented).replace(':status', 'presented');
-            window.location.replace(newLink);
-        });
-        $('#reportFilter').on('change', function () {
-            var year_created = $('#reportFilter').val();
-            var link = "/research/filterByYear/:year/:status";
-            var newLink = link.replace(':year', year_created).replace(':status', 'created');
             window.location.replace(newLink);
         });
     </script>

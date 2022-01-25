@@ -8,6 +8,8 @@ use App\Models\DenyReason;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use App\Models\User;
 
@@ -151,7 +153,7 @@ class ChairpersonController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
 
-        return redirect()->route('chairperson.index')->with('success', 'Report Accepted');
+        return redirect()->route('chairperson.index')->with('success', 'Report has been added in consolidated report.');
     
     }
     public function rejectCreate($report_id){
@@ -169,7 +171,7 @@ class ChairpersonController extends Controller
         Report::where('id', $report_id)->update([
             'chairperson_approval' => 0
         ]);
-        return redirect()->route('chairperson.index')->with('success', 'Report Denied');
+        return redirect()->route('chairperson.index')->with('success', 'Report has been returned.');
     }
 
     public function relay($report_id){

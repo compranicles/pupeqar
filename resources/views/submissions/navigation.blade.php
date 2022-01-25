@@ -41,4 +41,4 @@
 
 
 {{-- My Accomplishments --}}
-<a href="{{ route('submissions.myaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.myaccomp.index') ? 'active' : ''}}">My Accomplishments</a>
+<a href="{{ route('submissions.myaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.myaccomp.*') ? 'active' : '' }} ">My Accomplishments</a>

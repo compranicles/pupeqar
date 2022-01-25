@@ -13,8 +13,8 @@
             </p>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-danger alert-index">
-                <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+            <div class="alert alert-info" role="alert">
+                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
             </div>
             @endif
                 <div class="card">
