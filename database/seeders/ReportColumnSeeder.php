@@ -1468,6 +1468,14 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 14,
+            'name' => 'Description of Inter-Country Mobility',
+            'table' => 'mobilities',
+            'column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 14,
             'name' => 'Type',
             'table' => 'mobilities',
             'column' => 'type',
