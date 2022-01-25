@@ -60,5 +60,13 @@ class UserRoleSeeder extends Seeder
         //IPQMSO user role
         UserRole::create(['user_id' => '61', 'role_id' => '8']);
         UserRole::create(['user_id' => '62', 'role_id' => '8']);
+
+        //FacultyExtensionist User ROles
+        UserRole::create(['user_id' => '63', 'role_id' => '11']);
+        UserRole::create(['user_id' => '64', 'role_id' => '11']);
+
+        //FacultyResearchers UserRoles
+        UserRole::create(['user_id' => '65', 'role_id' => '10']);
+        UserRole::create(['user_id' => '66', 'role_id' => '10']);
     }
 }

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Colleges') }}
+            {{ __('Office/College/Branch/Office') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -27,19 +27,22 @@
 
           <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
+                        {{-- <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('colleges.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add College, Branch, or Office</a>
+                                <a href="{{ route('colleges.create') }}" class="btn btn-success"><i class="fas fa-sync-alt"></i> Sync</a>
+                                <small class="text-sm ml-2"> Last Updated: {{ date("Y-m-d H:i:s", strtotime($colleges[0]->created_at)) }}</small>
                             </div>
                         </div>  
-                        <hr>
+                        <hr> --}}
                         <div class="table-responsive">
-                            <table class="table" id="college_table">
+                            <table class="table table-hover" id="college_table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Name</th>
-                                        <th>Actions</th>
+                                        <th>Office/College/Branch/Campus</th>
+                                        <th>Code</th>
+                                        <th>Sector</th>
+                                        {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,12 +50,14 @@
                                     <tr>
                                         <th>{{ $loop->iteration }}</th>
                                         <td>{{ $college->name }}</td>
-                                        <td>
+                                        <td>{{ $college->code }}</td>
+                                        <td>{{ $college->sector_name }}</td>
+                                        {{-- <td>
                                           <div role="group">
                                               <a href="{{ route('colleges.edit', $college->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                               <button type="button" value="{{ $college->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-college="{{ $college->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                           </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>

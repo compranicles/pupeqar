@@ -75,26 +75,52 @@
         
                       <div class="form-group department-input" style="@if($chairperson == null) display: none; @endif">
                         <x-jet-label value="{{ __('Department') }}" />
-                        <select name="department" id="department" class="form-control form-control-md">
+                        <select name="department[]" id="department" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ (old('department', $chairperson) == $department->id) ? 'selected' : '' }}>{{ $department->college_name.' - '.$department->name }}</option>  
-                            @endforeach
+                            {{-- @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" {{ (old('department', $chairperson) == $department->id) ? 'selected' : '' }}>{{ $department->name }}</option>  
+                            @endforeach --}}
                         </select>
                         <x-jet-input-error for="department"></x-jet-input-error>
                       </div>  
 
                       <div class="form-group college-input" style="@if($dean == null) display: none; @endif">
-                        <x-jet-label value="{{ __('College') }}" />
-                        <select name="college" id="college" class="form-control form-control-md">
+                        <x-jet-label value="{{ __('Office/College/Branch/Campus') }}" />
+                        <select name="college[]" id="college" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
-                            @foreach ($colleges as $college)
+                            {{-- @foreach ($colleges as $college)
                                 <option value="{{ $college->id }}" {{ (old('college', $dean) == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>  
-                            @endforeach
+                            @endforeach --}}
                         </select>
                         <x-jet-input-error for="college"></x-jet-input-error>
                       </div>  
+                      
+                      <div class="form-group sector-input" style="@if($sectorhead == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Sectors') }}" />
+                        <select name="sector[]" id="sector" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                            {{-- @foreach ($sectors as $sector)
+                                <option value="{{ $sector->id }}" {{ (old('sector', $sectorhead) == $sector->id) ? 'selected' : '' }}>{{ $sector->name }}</option>  
+                            @endforeach --}}
+                        </select>
+                        <x-jet-input-error for="sector"></x-jet-input-error>
+                      </div>  
 
+                      <div class="form-group extension-input" style="@if($extensionist == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Extensionist of:') }}" />
+                        <select name="extension[]" id="extension" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <x-jet-input-error for="extension"></x-jet-input-error>
+                      </div>  
+
+                      <div class="form-group research-input" style="@if($researcher == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Researcher of:') }}" />
+                        <select name="research[]" id="research" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <x-jet-input-error for="research"></x-jet-input-error>
+                      </div>  
                     </div>
                   </div>
                 </div>
@@ -115,11 +141,47 @@
     @push('scripts')
       <script src="{{ asset('dist/selectize.min.js') }}"></script>
       <script>
+
           $("#department").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
               sortField: "text",
+              options: @json($departments),
+              items: @json($chairperson),
           });
           $("#college").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
               sortField: "text",
+              options: @json($colleges),
+              items: @json($dean),
+              
+          });
+          $("#sector").selectize({
+              maxItems: null,
+              sortField: "text",
+              valueField: 'value',
+              labelField: 'text',
+              options: @json($sectors),
+              items: @json($sectorhead),
+          });
+          $("#extension").selectize({
+              maxItems: null,
+              sortField: "text",
+              valueField: 'value',
+              labelField: 'text',
+              options: @json($departments),
+              items: @json($extensionist),
+          });
+          $("#research").selectize({
+              maxItems: null,
+              sortField: "text",
+              valueField: 'value',
+              labelField: 'text',
+              options: @json($departments),
+              items: @json($researcher),
           });
 
           $('.role-checkbox').on('change', function() {
@@ -129,6 +191,15 @@
               }
               if(id == 6){
                 changeCollegeDisp(id);
+              }
+              if(id == 7){
+                changeSectorDisp(id);
+              }
+              if(id == 10){
+                changeResearchDisp(id);
+              }
+              if(id == 11){
+                changeExtensionDisp(id);
               }
           });
 
@@ -158,12 +229,58 @@
               }
           }
 
+          function changeSectorDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.sector-input').show();
+                 $('#sector').removeAttr('disabled');
+                 $('#sector').attr('required', true);
+              }
+              else{
+                $('.sector-input').hide();
+                $('#sector').removeAttr('required');
+                $('#sector').attr('disabled', true);
+              }
+          }
+          function changeExtensionDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.extension-input').show();
+                 $('#extension').removeAttr('disabled');
+                 $('#extension').attr('required', true);
+              }
+              else{
+                $('.extension-input').hide();
+                $('#extension').removeAttr('required');
+                $('#extension').attr('disabled', true);
+              }
+          }
+          function changeResearchDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.research-input').show();
+                 $('#research').removeAttr('disabled');
+                 $('#research').attr('required', true);
+              }
+              else{
+                $('.research-input').hide();
+                $('#research').removeAttr('required');
+                $('#research').attr('disabled', true);
+              }
+          }
+
           $(function (){
               if($('#role-5').is(':checked')){
                   changeDeptDisp(5);
               }
               if($('#role-6').is(':checked')){
                   changeCollegeDisp(6);
+              }
+              if($('#role-7').is(':checked')){
+                  changeSectorDisp(7);
+              }
+              if($('#role-11').is(':checked')){
+                  changeExtensionDisp(11);
+              }
+              if($('#role-10').is(':checked')){
+                  changeResearchDisp(10);
               }
           });
       </script>

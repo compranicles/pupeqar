@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\DenyReason;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
+use App\Models\FacultyResearcher;
+use App\Models\FacultyExtensionist;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
-use App\Models\User;
 
 class ChairpersonController extends Controller
 {
@@ -24,19 +29,32 @@ class ChairpersonController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
-        // $sector_ids = [];
+        $sectors = [];
+        $departmentsResearch = [];
+        $departmentsExtension = [];
         
         if(in_array(5, $roles)){
-            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+            $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
         }
         if(in_array(6, $roles)){
-            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+            $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'deans.college_id')->get();
         }
-        // if(in_array(7, $roles)){
-
-        // }
+        if(in_array(7, $roles)){
+            $sectors = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->get();
+        }
+        if(in_array(10, $roles)){
+            $departmentsResearch = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
+                                        ->select('faculty_researchers.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+        }
+        if(in_array(11, $roles)){
+            $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+        }
 
         $reportsToReview = collect();
         $employees = collect();
@@ -60,6 +78,21 @@ class ChairpersonController extends Controller
             $reportsToReview = $reportsToReview->concat($tempReports);
             $employees = $employees->concat($tempEmployees);
         }
+        //filternotyetreceived by researcher and/or extensionist
+        $tempReports = collect();
+        foreach($reportsToReview as $report){
+            if($report->report_category_id >= 1 || $report->report_category_id <= 7){
+                if($report->researcher_approval === 1){
+                    $tempReports = $tempReports->concat($report);
+                }
+            }
+            if($report->report_category_id == 12){
+                if($report->extensionist_approval === 1){
+                    $tempReports = $tempReports->concat($report);
+                }
+            }
+        }
+        $reportsToReview = $tempReports;
         
         $college_names = [];
         $department_names = [];
@@ -79,7 +112,7 @@ class ChairpersonController extends Controller
         }
         
 
-        return view('reports.chairpersons.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names'));
+        return view('reports.chairpersons.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**
@@ -151,7 +184,7 @@ class ChairpersonController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
 
-        return redirect()->route('chairperson.index')->with('success', 'Report Accepted');
+        return redirect()->route('chairperson.index')->with('success', 'Report has been added in consolidated report.');
     
     }
     public function rejectCreate($report_id){
@@ -169,7 +202,7 @@ class ChairpersonController extends Controller
         Report::where('id', $report_id)->update([
             'chairperson_approval' => 0
         ]);
-        return redirect()->route('chairperson.index')->with('success', 'Report Denied');
+        return redirect()->route('chairperson.index')->with('success', 'Report has been returned.');
     }
 
     public function relay($report_id){

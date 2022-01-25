@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
 <div class="container-fluid">
@@ -99,7 +99,7 @@
 </div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -289,8 +289,8 @@
             $.get('/reports/data/'+catID, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
-                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
                     $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                 });
             });
