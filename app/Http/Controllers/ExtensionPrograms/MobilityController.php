@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class MobilityController extends Controller
 {
@@ -138,6 +139,10 @@ class MobilityController extends Controller
     {
         $this->authorize('update', Mobility::class);
 
+        if(LockController::isLocked($mobility->id, 14)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -223,6 +228,10 @@ class MobilityController extends Controller
     public function destroy(Mobility $mobility)
     {
         $this->authorize('delete', Mobility::class);
+
+        if(LockController::isLocked($mobility->id, 14)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');

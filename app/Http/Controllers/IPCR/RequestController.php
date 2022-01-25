@@ -5,14 +5,15 @@ namespace App\Http\Controllers\IPCR;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\RequestDocument;
+use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\IPCRForm;
 use App\Models\FormBuilder\IPCRField;
+use App\Models\Maintenance\Department;
 use App\Models\Request as RequestModel;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class RequestController extends Controller
 {
@@ -138,6 +139,10 @@ class RequestController extends Controller
     public function edit(RequestModel $request)
     {
         $this->authorize('update', RequestModel::class);
+
+        if(LockController::isLocked($request->id, 17)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -211,6 +216,9 @@ class RequestController extends Controller
     public function destroy(RequestModel $request)
     {
         $this->authorize('delete', RequestModel::class);
+        if(LockController::isLocked($request->id, 17)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         RequestDocument::where('request_id', $request->id)->delete();

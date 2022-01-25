@@ -310,7 +310,7 @@ Route::group(['middleware' => 'auth'], function() {
     //researcher Reports
     Route::get('/submissions/researcher/receive', [\App\Http\Controllers\Reports\ResearcherController::class, 'index'])->name('researcher.index');
     Route::get('/submissions/researcher/accept/{id}', [\App\Http\Controllers\Reports\ResearcherController::class, 'accept'])->name('researcher.accept');
-    Route::get('/submissions/researcher/reject-create/{id}', [\App\Http\Controllers\Reports\ResearcherController::class, 'rejectCreate'])->name('researcher.rejectCreate');
+    Route::get('/submissions/researcher/reject-create/{id}', [\App\Http\Controllers\Reports\ResearcherController::class, 'rejectCreate'])->name('researcher.reject-create');
     Route::post('/submissions/researcher/reject/{id}', [\App\Http\Controllers\Reports\ResearcherController::class, 'reject'])->name('researcher.reject');
     Route::post('/submissions/researcher/accept-selected', [\App\Http\Controllers\Reports\ResearcherController::class, 'acceptSelected'])->name('researcher.accept-select');
     Route::post('/submissions/researcher/deny-selected', [\App\Http\Controllers\Reports\ResearcherController::class, 'denySelected'])->name('researcher.deny-select');

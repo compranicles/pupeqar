@@ -143,6 +143,10 @@ class CopyrightedController extends Controller
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
         $this->authorize('update', ResearchCopyright::class);
+        if(LockController::isLocked($copyrighted->id, 7)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)

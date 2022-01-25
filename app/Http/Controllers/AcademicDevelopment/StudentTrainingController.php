@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class StudentTrainingController extends Controller
 {
@@ -138,6 +139,10 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('update', StudentTraining::class);
 
+        if(LockController::isLocked($student_training->id, 19)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
@@ -221,6 +226,10 @@ class StudentTrainingController extends Controller
     public function destroy(StudentTraining $student_training)
     {
         $this->authorize('delete', StudentTraining::class);
+
+        if(LockController::isLocked($student_training->id, 19)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Research;
-use Illuminate\Database\Eloquent\Collection;
+use App\Rules\Keyword;
 use App\Models\Research;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -13,15 +13,16 @@ use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\ResearchPublication;
-use App\Models\ResearchPresentation;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
+use App\Models\ResearchPresentation;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
-use App\Rules\Keyword;
+use Illuminate\Database\Eloquent\Collection;
+use App\Http\Controllers\Maintenances\LockController;
 
 
 class ResearchController extends Controller
@@ -263,6 +264,10 @@ class ResearchController extends Controller
     public function edit(Research $research)
     {
         $this->authorize('update', Research::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 
@@ -397,6 +402,10 @@ class ResearchController extends Controller
     public function destroy(Research $research)
     {
         $this->authorize('delete', Research::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 

@@ -6,6 +6,11 @@
     </x-slot>
     <div class="container">
         <div class="row justify-content-center">
+            @if ($message = Session::get('cannot_access'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+            @endif
             <div class="col-lg-9">
             <div class="d-flex mr-2">
                 <p class="mr-auto">

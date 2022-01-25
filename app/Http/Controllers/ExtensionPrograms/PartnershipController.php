@@ -11,9 +11,10 @@ use App\Models\PartnershipDocument;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class PartnershipController extends Controller
 {
@@ -150,6 +151,10 @@ class PartnershipController extends Controller
     {
         $this->authorize('update', Partnership::class);
 
+        if(LockController::isLocked($partnership->id, 13)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
@@ -244,6 +249,10 @@ class PartnershipController extends Controller
     public function destroy(Partnership $partnership)
     {
         $this->authorize('delete', Partnership::class);
+
+        if(LockController::isLocked($partnership->id, 13)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');

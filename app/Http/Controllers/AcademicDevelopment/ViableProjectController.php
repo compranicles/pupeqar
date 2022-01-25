@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ViableProjectDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ViableProjectController extends Controller
 {
@@ -147,6 +148,10 @@ class ViableProjectController extends Controller
     {
         $this->authorize('update', ViableProject::class);
 
+        if(LockController::isLocked($viable_project->id, 20)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
@@ -237,6 +242,10 @@ class ViableProjectController extends Controller
     public function destroy(ViableProject $viable_project)
     {
         $this->authorize('delete', ViableProject::class);
+
+        if(LockController::isLocked($viable_project->id, 20)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');

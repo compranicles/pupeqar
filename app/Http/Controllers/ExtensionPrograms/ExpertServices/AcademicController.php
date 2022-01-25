@@ -10,10 +10,11 @@ use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceAcademic;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceAcademicDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class AcademicController extends Controller
 {
@@ -151,6 +152,10 @@ class AcademicController extends Controller
     {
         $this->authorize('update', ExpertServiceAcademic::class);
 
+        if(LockController::isLocked($expert_service_in_academic->id, 11)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
@@ -244,6 +249,10 @@ class AcademicController extends Controller
     public function destroy(ExpertServiceAcademic $expert_service_in_academic)
     {
         $this->authorize('delete', ExpertServiceAcademic::class);
+
+        if(LockController::isLocked($expert_service_in_academic->id, 11)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');

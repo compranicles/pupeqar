@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Rules\Keyword;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExtensionService;
@@ -11,10 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ExtensionServiceDocument;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\DropdownOption;
-use App\Rules\Keyword;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ExtensionServiceController extends Controller
 {
@@ -183,6 +184,10 @@ class ExtensionServiceController extends Controller
     {
         $this->authorize('update', ExtensionService::class);
 
+        if(LockController::isLocked($extension_service->id, 12)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
@@ -297,6 +302,10 @@ class ExtensionServiceController extends Controller
     public function destroy(ExtensionService $extension_service)
     {
         $this->authorize('delete', ExtensionService::class);
+
+        if(LockController::isLocked($extension_service->id, 12)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

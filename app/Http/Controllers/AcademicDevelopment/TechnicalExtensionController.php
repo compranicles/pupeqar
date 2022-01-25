@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TechnicalExtensionDocument;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class TechnicalExtensionController extends Controller
 {
@@ -134,6 +135,10 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('update', TechnicalExtension::class);
 
+        if(LockController::isLocked($technical_extension->id, 23)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -216,6 +221,10 @@ class TechnicalExtensionController extends Controller
     public function destroy(TechnicalExtension $technical_extension)
     {
         $this->authorize('delete', TechnicalExtension::class);
+
+        if(LockController::isLocked($technical_extension->id, 23)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');

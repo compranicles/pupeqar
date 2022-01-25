@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StudentAwardDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class StudentAwardController extends Controller
 {
@@ -124,6 +125,11 @@ class StudentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($student_award->id, 18)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
@@ -190,6 +196,10 @@ class StudentAwardController extends Controller
     public function destroy(StudentAward $student_award)
     {
         $this->authorize('delete', StudentAward::class);
+
+        if(LockController::isLocked($student_award->id, 18)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         StudentAwardDocument::where('student_award_id', $student_award->id)->delete();
         $student_award->delete();

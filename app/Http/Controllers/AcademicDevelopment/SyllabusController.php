@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Models\Report;
 use App\Models\Syllabus;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -11,8 +12,9 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class SyllabusController extends Controller
 {
@@ -153,6 +155,11 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($syllabu->id, 16)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -236,6 +243,11 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($syllabu->id, 16)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 

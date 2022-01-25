@@ -10,6 +10,7 @@ use App\Models\CollegeDepartmentAward;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CollegeDepartmentAwardController extends Controller
 {
@@ -123,6 +124,11 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($college_department_award->id, 21)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
         $documents = CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->get()->toArray();
@@ -192,6 +198,11 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($college_department_award->id, 21)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been deleted.');
