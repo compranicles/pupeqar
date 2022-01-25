@@ -14,7 +14,7 @@
         {{-- Denied Details --}}
         @if ($deniedDetails = Session::get('denied'))
         <div class="alert alert-danger alert-index">
-            <i class="bi bi-x-circle"></i> Denied by {{ $deniedDetails->position_name }}: {{ $deniedDetails->reason }}
+            <i class="bi bi-x-circle"></i> Remarks: {{ $deniedDetails->reason }}
         </div>
         @endif
         <div class="row">

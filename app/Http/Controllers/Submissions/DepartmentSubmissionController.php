@@ -23,6 +23,16 @@ class DepartmentSubmissionController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+        $currentMonth = date('m');
+        $year = "default";
+        if ($currentMonth <= 3 && $currentMonth >= 1) 
+            $quarter = 1;
+        if ($currentMonth <= 6 && $currentMonth >= 4)
+            $quarter = 2;
+        if ($currentMonth <= 9 && $currentMonth >= 7)
+            $quarter = 3;
+        if ($currentMonth <= 12 && $currentMonth >= 10) 
+            $quarter = 4;
         
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -84,7 +94,7 @@ class DepartmentSubmissionController extends Controller
 
         return view(
                     'submissions.departmentaccomplishments.index', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'quarter', 'year')
                 );
     }
 }

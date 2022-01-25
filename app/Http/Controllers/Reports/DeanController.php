@@ -176,7 +176,7 @@ class DeanController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
-        return redirect()->route('dean.index')->with('success', 'Report Accepted');
+        return redirect()->route('dean.index')->with('success', 'Report has been added in consolidated report.');
     }
 
     public function rejectCreate($report_id){
@@ -194,7 +194,7 @@ class DeanController extends Controller
         Report::where('id', $report_id)->update([
             'dean_approval' => 0
         ]);
-        return redirect()->route('dean.index')->with('success', 'Report Denied');
+        return redirect()->route('dean.index')->with('success', 'Report has been returned.');
     }
 
     public function relay($report_id){

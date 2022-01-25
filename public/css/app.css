@@ -12910,6 +12910,21 @@ body {
   text-decoration: none;
 }
 
+.action-remarks {
+	background: none;
+	color: #0044ff;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.action-remarks:hover {
+  color: #0044ff;
+  filter: brightness(0.85);
+}
+
 .action-delete {
 	background: none;
 	color: var(--red);
