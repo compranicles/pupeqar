@@ -17,6 +17,7 @@ use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CopyrightedController extends Controller
 {
@@ -54,6 +55,10 @@ class CopyrightedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCopyright::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -144,6 +149,9 @@ class CopyrightedController extends Controller
     {
         $this->authorize('update', ResearchCopyright::class);
         if(LockController::isLocked($copyrighted->id, 7)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
 

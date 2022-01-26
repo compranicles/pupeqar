@@ -114,10 +114,10 @@ class SubmissionController extends Controller
                                     ->orderBy('research.updated_at', 'desc')->get();
                     
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 1)->exists()) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 1)->where('user_id', auth()->id())->exists()) {
                             if( 
                                 Report::join('research', 'research.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 1)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 1)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -127,7 +127,7 @@ class SubmissionController extends Controller
                     $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_id', $row->id)->where('research_form_id', $table->id)->get();
+                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -149,13 +149,13 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
+                                    ->join('research_completes', 'research_completes.research_code', 'research.research_code')->get();
                             
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 2)->exists()) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 2)->where('user_id', auth()->id())->exists()) {
                             if( 
                                 Report::join('research_completes', 'research_completes.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 2)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 2)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -166,7 +166,7 @@ class SubmissionController extends Controller
                     
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_id', $row->research_id)->where('research_form_id', $table->id)->get();
+                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -187,13 +187,13 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')  
-                            ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
+                            ->join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
                     
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 3)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 3)->where('reports.user_id', auth()->id())->exists() ) {
                             if( 
                                 Report::join('research_publications', 'research_publications.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 3)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 3)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -204,7 +204,7 @@ class SubmissionController extends Controller
 
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_id', $row->research_id)->where('research_form_id', $table->id)->get();
+                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -225,13 +225,13 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->join('research_presentations', 'research_presentations.research_id', 'research.id')->get();
+                                    ->join('research_presentations', 'research_presentations.research_code', 'research.research_code')->get();
                             
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_presentations', 'research_presentations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 4)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 4)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -242,7 +242,7 @@ class SubmissionController extends Controller
                     $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_id', $row->research_id)->where('research_form_id', $table->id)->get();
+                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -261,15 +261,15 @@ class SubmissionController extends Controller
                                                 'dropdown_options.name as classification_name', 
                                                 'colleges.name as college_name'
                                             )
-                            ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
+                            ->join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
 
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_citations', 'research_citations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 5)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 5)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -300,14 +300,14 @@ class SubmissionController extends Controller
                                                     'dropdown_options.name as classification_name', 
                                                     'colleges.name as college_name'
                                                 )
-                                                ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
+                                                ->join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())
                                                 ->join('colleges', 'colleges.id', 'research.college_id')  
                                                 ->join('dropdown_options', 'dropdown_options.id', 'research.classification')->get();
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_utilizations', 'research_utilizations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 6)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                    ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 6)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -339,12 +339,12 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')->get();
+                                    ->join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')->get();
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_copyrights', 'research_copyrights.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 7)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 7)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -354,7 +354,7 @@ class SubmissionController extends Controller
                     $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ResearchDocument::where('research_id', $row->research_id)->where('research_form_id', $table->id)->get();
+                            $checker = ResearchDocument::where('research_code', $row->research_code)->where('research_form_id', $table->id)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }
@@ -373,10 +373,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 8)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 8)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('inventions', 'inventions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 8)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 8)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -406,10 +406,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 9)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 9)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('expert_service_consultants', 'expert_service_consultants.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 9)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 9)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -438,10 +438,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 10)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 10)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('expert_service_conferences', 'expert_service_conferences.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 10)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 10)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -470,9 +470,9 @@ class SubmissionController extends Controller
                                                 ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 11)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 11)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
-                                Report::join('expert_service_academics', 'expert_service_academics.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                Report::join('expert_service_academics', 'expert_service_academics.id', 'reports.report_reference_id')->where('reports.user_id', auth()->id())->where('reports.report_reference_id', $row->id)
                                     ->where('reports.report_category_id', 11)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
@@ -502,10 +502,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 12)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 12)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('extension_services', 'extension_services.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 12)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 12)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -534,10 +534,10 @@ class SubmissionController extends Controller
                                         ->get();
                 $tempdata = [];
                 foreach($data as $row){
-                    if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 13)->exists() ) {
+                    if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 13)->where('reports.user_id', auth()->id())->exists() ) {
                         if ( 
                             Report::join('partnerships', 'partnerships.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 13)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 13)->where('reports.created_at', '<=', $row->updated_at)->exists()
                         )
                             array_push($tempdata, $row);
                     }
@@ -567,10 +567,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 14)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 14)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('mobilities', 'mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 14)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 14)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -599,9 +599,9 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 15)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 15)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
-                                Report::join('references', 'references.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                Report::join('references', 'references.id', 'reports.report_reference_id')->where('reports.user_id', auth()->id())->where('reports.report_reference_id', $row->id)
                                     ->where('reports.report_category_id', 15)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
@@ -631,10 +631,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 16)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 16)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('syllabi', 'syllabi.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 16)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 16)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -661,10 +661,10 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 17)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 17)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('requests', 'requests.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 17)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 17)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -689,10 +689,10 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 18)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 18)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('student_awards', 'student_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 18)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 18)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -719,10 +719,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 19)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 19)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('student_trainings', 'student_trainings.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 19)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 19)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -747,10 +747,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 20)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 20)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('viable_projects', 'viable_projects.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 20)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 20)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -775,10 +775,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 21)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 21)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('college_department_awards', 'college_department_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 21)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 21)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -803,10 +803,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 22)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 22)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('outreach_programs', 'outreach_programs.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 22)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 22)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -833,10 +833,10 @@ class SubmissionController extends Controller
                                                 ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 23)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 23)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('technical_extensions', 'technical_extensions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 23)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 23)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1337,10 +1337,10 @@ class SubmissionController extends Controller
                                     ->orderBy('research.updated_at', 'desc')->get();
                     
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 1)->exists()) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 1)->where('reports.user_id', auth()->id())->exists()) {
                             if( 
                                 Report::join('research', 'research.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 1)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 1)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1373,13 +1373,13 @@ class SubmissionController extends Controller
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
                                     ->where('research.college_id', $collegeID)
-                                    ->join('research_completes', 'research_completes.research_id', 'research.id')->get();
+                                    ->join('research_completes', 'research_completes.research_code', 'research.research_code')->get();
                             
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 2)->exists()) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 2)->where('reports.user_id', auth()->id())->exists()) {
                             if( 
                                 Report::join('research_completes', 'research_completes.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 2)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 2)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1412,13 +1412,13 @@ class SubmissionController extends Controller
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->join('colleges', 'colleges.id', 'research.college_id')
                             ->where('research.college_id', $collegeID)  
-                            ->join('research_publications', 'research_publications.research_id', 'research.id')->get();
+                            ->join('research_publications', 'research_publications.research_code', 'research.research_code')->get();
                     
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 3)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 3)->where('reports.user_id', auth()->id())->exists() ) {
                             if( 
                                 Report::join('research_publications', 'research_publications.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 3)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 3)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1450,14 +1450,14 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->join('research_presentations', 'research_presentations.research_id', 'research.id')
+                                    ->join('research_presentations', 'research_presentations.research_code', 'research.research_code')
                                     ->where('research.college_id', $collegeID)->get();
                             
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 4)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_presentations', 'research_presentations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 4)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 4)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1487,16 +1487,16 @@ class SubmissionController extends Controller
                                                 'dropdown_options.name as classification_name', 
                                                 'colleges.name as college_name'
                                             )
-                            ->join('research', 'research.id', 'research_citations.research_id')->where('research.user_id', auth()->id())
+                            ->join('research', 'research.research_code', 'research_citations.research_code')->where('research.user_id', auth()->id())
                             ->join('colleges', 'colleges.id', 'research.college_id')  
                             ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                             ->where('research.college_id', $collegeID)->get();
 
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 5)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_citations', 'research_citations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 5)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 5)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1527,15 +1527,15 @@ class SubmissionController extends Controller
                                                     'dropdown_options.name as classification_name', 
                                                     'colleges.name as college_name'
                                                 )
-                                                ->join('research', 'research.id', 'research_utilizations.research_id')->where('research.user_id', auth()->id())
+                                                ->join('research', 'research.research_code', 'research_utilizations.research_code')->where('research.user_id', auth()->id())
                                                 ->join('colleges', 'colleges.id', 'research.college_id')  
                                                 ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                                 ->where('research.college_id', $collegeID)->get();
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 6)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_utilizations', 'research_utilizations.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 6)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 6)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1567,13 +1567,13 @@ class SubmissionController extends Controller
                                     )->where('user_id', auth()->id())
                                     ->join('dropdown_options', 'dropdown_options.id', 'research.classification')
                                     ->join('colleges', 'colleges.id', 'research.college_id')  
-                                    ->join('research_copyrights', 'research_copyrights.research_id', 'research.id')
+                                    ->join('research_copyrights', 'research_copyrights.research_code', 'research.research_code')
                                     ->where('research.college_id', $collegeID)->get();
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 7)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('research_copyrights', 'research_copyrights.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 7)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 7)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1603,10 +1603,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 8)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 8)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('inventions', 'inventions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 8)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 8)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1637,10 +1637,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 9)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 9)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('expert_service_consultants', 'expert_service_consultants.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 9)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 9)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1670,10 +1670,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 10)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 10)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('expert_service_conferences', 'expert_service_conferences.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 10)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 10)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1703,10 +1703,10 @@ class SubmissionController extends Controller
                                                 ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 11)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 11)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('expert_service_academics', 'expert_service_academics.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 11)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 11)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1736,10 +1736,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 12)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 12)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('extension_services', 'extension_services.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 12)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 12)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1770,10 +1770,10 @@ class SubmissionController extends Controller
                                         ->get();
                 $tempdata = [];
                 foreach($data as $row){
-                    if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 13)->exists() ) {
+                    if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 13)->where('reports.user_id', auth()->id())->exists() ) {
                         if ( 
                             Report::join('partnerships', 'partnerships.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                ->where('reports.report_category_id', 13)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 13)->where('reports.created_at', '<=', $row->updated_at)->exists()
                         )
                             array_push($tempdata, $row);
                     }
@@ -1805,10 +1805,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 14)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 14)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('mobilities', 'mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 14)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 14)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1839,10 +1839,10 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 15)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 15)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('references', 'references.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 15)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 15)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1873,10 +1873,10 @@ class SubmissionController extends Controller
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 16)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 16)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('syllabi', 'syllabi.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 16)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 16)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1905,10 +1905,10 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 17)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 17)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('requests', 'requests.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 17)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 17)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1933,9 +1933,9 @@ class SubmissionController extends Controller
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 18)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 18)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
-                                Report::join('student_awards', 'student_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                Report::join('student_awards', 'student_awards.id', 'reports.report_reference_id')->where('reports.user_id', auth()->id())->where('reports.report_reference_id', $row->id)
                                     ->where('reports.report_category_id', 18)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
@@ -1963,10 +1963,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 19)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 19)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('student_trainings', 'student_trainings.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 19)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 19)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -1991,10 +1991,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 20)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 20)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('viable_projects', 'viable_projects.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 20)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 20)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -2019,10 +2019,10 @@ class SubmissionController extends Controller
                                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 21)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 21)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('college_department_awards', 'college_department_awards.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 21)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 21)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -2047,10 +2047,10 @@ class SubmissionController extends Controller
                                             ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 22)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 22)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('outreach_programs', 'outreach_programs.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 22)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 22)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }
@@ -2078,10 +2078,10 @@ class SubmissionController extends Controller
                                                 ->get();
                     $tempdata = [];
                     foreach($data as $row){
-                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 23)->exists() ) {
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 23)->where('reports.user_id', auth()->id())->exists() ) {
                             if ( 
                                 Report::join('technical_extensions', 'technical_extensions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
-                                    ->where('reports.report_category_id', 23)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 23)->where('reports.created_at', '<=', $row->updated_at)->exists()
                             )
                                 array_push($tempdata, $row);
                         }

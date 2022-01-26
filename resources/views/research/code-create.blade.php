@@ -13,7 +13,7 @@
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.code.save', $research->research_code) }}" method="post">
+                        <form action="{{ route('research.code.save', $research->id) }}" method="post">
                             @csrf
                             @include('form', ['formFields' => $researchFields, 'value' => $values, ])
                             <div class="col-md-12">

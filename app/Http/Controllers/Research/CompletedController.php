@@ -68,6 +68,11 @@ class CompletedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -169,6 +174,9 @@ class CompletedController extends Controller
     {   
         $this->authorize('update', ResearchComplete::class);
 
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(LockController::isLocked($completed->id, 2)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

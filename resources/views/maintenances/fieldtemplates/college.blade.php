@@ -1,7 +1,7 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-            <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+            <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
                         {{ 'readonly' }}
@@ -32,6 +32,12 @@
     </div>
 
 @push('scripts')
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script>
+         $("#college_id").selectize({
+              sortField: "text",
+          });
+    </script>
     <script>
         $('#college_id').on('input', function(){
             var collegeId = $('#college_id').val();

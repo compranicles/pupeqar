@@ -10,9 +10,10 @@ use App\Http\Controllers\Controller;
 class LockController extends Controller
 {
     public static function isLocked($id, $reference){
-        if(Report::where('report_reference_id', $id)->where('report_category_id', $reference)->exists()){
+        if(Report::where('report_reference_id', $id)->where('report_category_id', $reference)->where('user_id', auth()->id())->exists()){
             $data = Report::where('report_reference_id', $id)
                         ->where('report_category_id', $reference)
+                        ->where('user_id', auth()->id())
                         ->select(
                             DB::raw('reports.*, QUARTER(reports.updated_at) as quarter, YEAR(reports.updated_at) as year')
                         )

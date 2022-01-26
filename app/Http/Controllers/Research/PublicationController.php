@@ -66,6 +66,10 @@ class PublicationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPublication::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -181,6 +185,9 @@ class PublicationController extends Controller
         if(LockController::isLocked($publication->id, 3)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -219,6 +226,7 @@ class PublicationController extends Controller
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
+        
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)

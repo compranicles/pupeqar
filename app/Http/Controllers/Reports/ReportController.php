@@ -273,7 +273,8 @@ class ReportController extends Controller
         $report_docs;
         
         if($report_category_id == 1){
-            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', 1)->pluck('filename')->all();
+            $research_code = Research::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 1)->pluck('filename')->all();
         }
         elseif($report_category_id == 2){
             $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
