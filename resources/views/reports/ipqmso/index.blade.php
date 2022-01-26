@@ -25,16 +25,10 @@
                             @endif
                         </div>
                     </div>
-                    <div class="row" style="display: none;" id="actionButtons">
-                        <div class="col-md-12">
-                            <div class="ml-1">
-                                <div class="d-inline mr-2">
-                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Receive</button>
-                                </div>
-                                <div class="d-inline mr-2">
-                                    <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Return</a>
-                                </div>
-                            </div>  
+                    <div class="row">
+                        <div class="col-md-3" style="display: none;" id="actionButtons">
+                            <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Receive</button>
+                            <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
                     </div>
                     <hr id="hideSeparator">
@@ -46,10 +40,11 @@
                                         <tr>
                                             <th class="text-center"><input type="checkbox" id="select-all"></th>
                                             <th></th>
+                                            <th></th>
                                             <th>College</th>
                                             <th>Department</th>
                                             <th>Accomplishment Report</th>
-                                            <th>Faculty</th>
+                                            <th>Employee</th>
                                             <th>Report Date</th>
                                         </tr>
                                     </thead>
@@ -57,12 +52,13 @@
                                         @foreach ($reportsToReview as $row)
                                             <tr role="button">
                                                 <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
+                                                <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
                                                 <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->college_name }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->department_name }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -77,7 +73,7 @@
 </div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -266,8 +262,8 @@
             $.get('/reports/data/'+catID, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
-                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
                     $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                 });
             });
@@ -278,8 +274,8 @@
                 });
             });
             
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Return</a>');
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Receive</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Receive</a>');
             
         });
 

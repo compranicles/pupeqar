@@ -3,7 +3,7 @@
         @include('submissions.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -26,23 +26,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="d-flex flex-row justify-content-start">
-                                <div class="col-md-6" style="display: none;" id="actionButtons">
-                                    <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Receive</button>
-                                    <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Return</a>
-                                </div>
-                                <div class="col-md-6 ml-auto">
-                                    <div class="d-flex justify-content-start">
-                                        <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
-                                        <select id="employeeFilter" class="custom-select mr-2">
-                                            <option value="">All</option>
-                                            @foreach ($employees as $employee)
-                                            <option value="{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}">{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
+                        <div class="col-md-6" style="display: none;" id="actionButtons">
+                            <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Receive</button>
+                            <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
+                        </div>
+                        <div class="col-md-6 ml-auto">
+                            <div class="d-flex justify-content-start">
+                                <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
+                                <select id="employeeFilter" class="custom-select mr-2">
+                                    <option value="">All</option>
+                                    @foreach ($employees as $employee)
+                                    <option value="{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}">{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -73,7 +69,7 @@
                                                 <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $college_names[$row->id]->name }}</td>
                                                 <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $department_names[$row->id]->name }}</td>
                                                 <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -301,8 +297,8 @@
                 }
             });
             
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Receive</a>');
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Return</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Receive</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
             
         });
 
