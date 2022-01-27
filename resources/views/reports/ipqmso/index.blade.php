@@ -26,12 +26,35 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3" style="display: none;" id="actionButtons">
+                        <div class="col-md-3" style="display: none; padding-top: 18px;" id="actionButtons">
                             <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Receive</button>
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
+                        <div class="col-md-3 ml-auto">
+                            <!-- <div class="d-flex justify-content-start"> -->
+                                <label class="mr-2" for="collegeFilter">College/Branch/Campus/Office:</label>
+                                <select id="collegeFilter" class="custom-select mr-2">
+                                    <option value="">Show All</option>
+                                </select>
+                            <!-- </div> -->
+                        </div>
+                        <div class="col-md-3">
+                            <label for="reportFilter" class="mr-2">Accomplishment: </label>
+                            <div class="d-flex">
+                                <!-- @include('submissions.accomplishment-filter') -->
+                                <select name="report" id="reportFilter" class="custom-select">
+                                    <option value="">Show All</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="empFilter" class="mr-2">Employee: </label>
+                                <select name="emp" id="empFilter" class="custom-select">
+                                    <option value="">Show All</option>
+                                </select>
+                        </div>
                     </div>
-                    <hr id="hideSeparator">
+                    <hr>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -290,7 +313,60 @@
                 columnDefs: [ {
                     targets: 0,
                     orderable: false
-                } ]
+                } ],
+                initComplete: function () {
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#collegeFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                this.api().columns(5).every( function () {
+                    var column = this;
+                    var select = $('#reportFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                this.api().columns(6).every( function () {
+                    var column = this;
+                    var select = $('#empFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                }
             });
             });
             

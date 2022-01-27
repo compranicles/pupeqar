@@ -37,7 +37,7 @@
 {{-- IPQMSOs --}}
 @if (in_array(8, $roles))
     <a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Receive - IPQMSO</a> 
-    <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.index') ? 'active' : ''}}">
+    <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.*') ? 'active' : ''}}">
         All Accomplishments
     </a>  
 @endif

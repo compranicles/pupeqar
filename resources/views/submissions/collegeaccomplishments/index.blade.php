@@ -53,11 +53,11 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responive">
+                    <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
                         <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
                             <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
+                                    <th rowspan="2"></th>
                                     <th rowspan="2">Accomplishment Report</th>
                                     <th rowspan="2">Employee</th>
                                     <!-- <th rowspan="2">College/Branch/<br>Campus/Office</th> -->

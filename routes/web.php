@@ -334,6 +334,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/researcher-accomplishments/{id}', [\App\Http\Controllers\Submissions\FResearchSubmissionController::class, 'index'])->name('submissions.researchaccomp.index');
     Route::get('/submissions/extensionist-accomplishments/{id}', [\App\Http\Controllers\Submissions\FExtensionSubmissionController::class, 'index'])->name('submissions.extensionaccomp.index');
     Route::get('/submissions/ipqmso-accomplishments', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'index'])->name('submissions.ipqmsoaccomp.index');
+    Route::get('/submissions/ipqmso-accomplishments/{year}/{quarter}', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'reportYearFilter'])->name('submissions.ipqmsoaccomp.reportYearFilter');
     Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 

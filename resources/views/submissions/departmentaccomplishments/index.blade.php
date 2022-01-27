@@ -63,7 +63,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
                         <table class="table table-hover table-sm table-bordered" id="department_accomplishments_table">
                             <thead>
                                 <tr>
