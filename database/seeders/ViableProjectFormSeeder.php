@@ -71,7 +71,7 @@ class ViableProjectFormSeeder extends Seeder
             'label' => 'Internal Rate of Return',
             'name' => 'rate_of_return',
             'placeholder' => null,
-            'size' => 'col-md-6',
+            'size' => 'col-md-3',
             'field_type_id' => 15,
             'dropdown_id' => null, 
             'required' => 1,

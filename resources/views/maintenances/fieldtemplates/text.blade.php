@@ -52,3 +52,41 @@
                 @enderror
     </div>
 </div>
+@push('scripts')
+<script src="{{ asset('dist/selectize.min.js') }}"></script>
+<script>
+    $("#keywords").selectize({
+        delimiter: ",",
+        persist: false,
+        create: function (input) {
+            return {
+            value: input,
+            text: input,
+            };
+        },
+    });
+</script>
+<script>
+    $("#utilization").selectize({
+        delimiter: ",",
+        persist: false,
+        create: function (input) {
+            return {
+            value: input,
+            text: input,
+            };
+        },
+    });
+
+    $("#name_of_student").selectize({
+        delimiter: "/",
+        persist: false,
+        create: function (input) {
+            return {
+            value: input,
+            text: input,
+            };
+        },
+    });
+</script>
+@endpush
