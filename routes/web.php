@@ -332,11 +332,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/my-accomplishments', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'index'])->name('submissions.myaccomp.index');
     Route::get('/submissions/my-accomplishments/submissionYearFilter/{year}/{quarter}', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'submissionYearFilter'])->name('submissions.myaccomp.yearFilter');
     Route::get('/submissions/department-accomplishments/{id}', [\App\Http\Controllers\Submissions\DepartmentSubmissionController::class, 'index'])->name('submissions.departmentaccomp.index');
+    Route::get('/submissions/department-accomplishments/departmentReportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Submissions\DepartmentSubmissionController::class, 'departmentReportYearFilter'])->name('submissions.departmentaccomp.departmentReportYearFilter');
     Route::get('/submissions/college-accomplishments/{id}', [\App\Http\Controllers\Submissions\CollegeSubmissionController::class, 'index'])->name('submissions.collegeaccomp.index');
+    Route::get('/submissions/college-accomplishments/collegeReportYearFilter/{college}/{year}/{quarter}', [\App\Http\Controllers\Submissions\CollegeSubmissionController::class, 'collegeReportYearFilter'])->name('submissions.collegeaccomp.collegeReportYearFilter');
     Route::get('/submissions/sector-accomplishments/{id}', [\App\Http\Controllers\Submissions\SectorSubmissionController::class, 'index'])->name('submissions.sectoraccomp.index');
     Route::get('/submissions/researcher-accomplishments/{id}', [\App\Http\Controllers\Submissions\FResearchSubmissionController::class, 'index'])->name('submissions.researchaccomp.index');
     Route::get('/submissions/extensionist-accomplishments/{id}', [\App\Http\Controllers\Submissions\FExtensionSubmissionController::class, 'index'])->name('submissions.extensionaccomp.index');
     Route::get('/submissions/ipqmso-accomplishments', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'index'])->name('submissions.ipqmsoaccomp.index');
+    Route::get('/submissions/ipqmso-accomplishments/{year}/{quarter}', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'reportYearFilter'])->name('submissions.ipqmsoaccomp.reportYearFilter');
     Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 

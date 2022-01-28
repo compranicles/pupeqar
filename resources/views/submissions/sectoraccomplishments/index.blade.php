@@ -13,32 +13,32 @@
                 <div class="col-md-12">
                     <div class="table-responive">
                         <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
-                            <thead class="text-center">
+                            <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
+                                    <th rowspan="2"></th>
                                     <th rowspan="2">Accomplishment Report</th>
-                                    <th rowspan="2">College/Branch/Campus/Office</th>
+                                    <th rowspan="2">College/Branch/<br>Campus/Office</th>
                                     <th rowspan="2">Department</th>
-                                    <th colspan="6">Status</th>
-                                    <th rowspan="2">Remarks</th>
+                                    <th class="text-center" colspan="6">Status</th>
+                                    <th rowspan="2"></th>
                                 </tr>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Researcher</th>
                                     <th>Extensionist</th>
                                     <th>Chairperson</th>
-                                    <th>Dean/Director</th>
+                                    <th>Dean/<br>Director</th>
                                     <th>Sector Head</th>
                                     <th>IPQMSO</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
+                            <tbody>
                                 @forelse ($sector_accomps as $row)
                                 <tr role="button">
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if ($row->researcher_approval == null)
                                                 Receiving...
@@ -51,7 +51,7 @@
                                             n/a
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id == 12)
                                             @if ($row->extensionist_approval == null)
                                                 Receiving...
@@ -64,7 +64,7 @@
                                             n/a
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if ($row->researcher_approval == null)
                                                 -
@@ -103,7 +103,7 @@
                                             @endif
                                         @endif      
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->chairperson_approval === 0)
                                             -
                                         @elseif ($row->chairperson_approval === null)
@@ -118,7 +118,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->dean_approval === 0)
                                             -
                                         @elseif ($row->dean_approval === null)
@@ -133,7 +133,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->sector_approval === 0)
                                             -
                                         @elseif ($row->sector_approval === null)
@@ -148,7 +148,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if (
                                                 $row->researcher_approval === 0 ||
@@ -157,7 +157,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
+                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif
@@ -180,8 +180,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
-
+                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif
