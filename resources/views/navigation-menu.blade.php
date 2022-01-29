@@ -97,6 +97,14 @@
 
                 <!-- Settings Dropdown -->
                 @auth
+                    <x-jet-dropdown id="notificationDropdown" class="mr-2">
+                        <x-slot name="trigger">
+                            <i class="fas fa-bell"></i> <span class="badge badge-light" id="notificationCounter">0</span>
+                        </x-slot>
+                        <x-slot name="content">
+                            @include('notification-drawer')
+                        </x-slot>
+                    </x-jet-dropdown>
                     <x-jet-dropdown id="settingsDropdown">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())

@@ -1051,6 +1051,7 @@ class SubmissionController extends Controller
                         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
                         $department_id = '';
                         $college_id = '';
+                        $sector_id = '';
                         if(in_array(5, $roles)){
                             $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
                             $college_id = Department::where('id', $department_id)->pluck('college_id')->first();
@@ -1073,7 +1074,7 @@ class SubmissionController extends Controller
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
-                                '$sector_id' => $sector_id,
+                                'sector_id' => $sector_id,
                                 'college_id' => $college_id ?? null,
                                 'department_id' => $department_id ?? null,
                                 'report_category_id' => $report_values_array[1],
@@ -1096,7 +1097,7 @@ class SubmissionController extends Controller
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
-                                '$sector_id' => $sector_id ?? null,
+                                'sector_id' => $sector_id ?? null,
                                 'college_id' => $college_id ?? null,
                                 'department_id' => $department_id ?? null,
                                 'report_category_id' => $report_values_array[1],

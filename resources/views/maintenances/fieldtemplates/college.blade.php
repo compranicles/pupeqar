@@ -65,25 +65,28 @@
     </script>
     <script>
         var collegeId = $('#college_id').val();
-        $.get('/departments/options/'+collegeId, function (data){
-            if (data != '') {
-                    // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                    //     $("div .department_id").hide();
-                    // } else {
-                        data.forEach(function (item){
-                            $("#department_id").append(new Option(item.name, item.id));
-                            
-                        });
-                    // }
-                }
-            // else {
-            //     $("div .department_id").hide();
-            // }
-            <?php if (old($fieldInfo->name) == '') { ?>
-                document.getElementById("department_id").value = "{{ $department_id }}";
-            <?php } else { ?>
-                document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
-            <?php } ?>
-        });
+        if(collegeId == null){
+
+            $.get('/departments/options/'+collegeId, function (data){
+                if (data != '') {
+                        // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
+                        //     $("div .department_id").hide();
+                        // } else {
+                            data.forEach(function (item){
+                                $("#department_id").append(new Option(item.name, item.id));
+                                
+                            });
+                        // }
+                    }
+                // else {
+                //     $("div .department_id").hide();
+                // }
+                <?php if (old($fieldInfo->name) == '') { ?>
+                    document.getElementById("department_id").value = "{{ $department_id }}";
+                <?php } else { ?>
+                    document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
+                <?php } ?>
+            });
+        }
     </script>
 @endpush

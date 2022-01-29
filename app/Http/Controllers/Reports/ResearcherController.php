@@ -97,6 +97,33 @@ class ResearcherController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['researcher_approval' => 1]);
 
+        $report = Report::find($report_id);
+
+        $receiverData = User::find($report->user_id);
+        $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
+                            ->join('users', 'users.id', 'chairpeople.user_id')
+                            ->where('researchers.department_id', $report->department_id)
+                            ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = route('submissions.myaccomp.index');
+
+
+        $notificationData = [
+            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',
+            'receiver' => $receiverData->first_name,
+            'url' => $url,
+            'category_name' => $report_category_name,
+            'user_id' => $receiverData->id,
+            'accomplishment_type' => 'individual',
+            'date' => date('F j, Y, g:i a'),
+            'databaseOnly' => 1
+        ];
+
+        Notification::send($receiverData, new ReceiveNotification($notificationData));
+
         return redirect()->route('researcher.index')->with('success', 'Report Accepted');
     
     }
@@ -115,14 +142,73 @@ class ResearcherController extends Controller
         Report::where('id', $report_id)->update([
             'researcher_approval' => 0
         ]);
+
+         
+        $report = Report::find($report_id);
+
+        $returnData = User::find($report->user_id);
+        $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
+                        ->join('users', 'users.id', 'chairpeople.user_id')
+                        ->where('researchers.department_id', $report->department_id)
+                        ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                        ->first();
+
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = route('submissions.myaccomp.index');
+
+
+        $notificationData = [
+            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',
+            'receiver' => $returnData->first_name,
+            'url' => $url,
+            'category_name' => $report_category_name,
+            'user_id' => $returnData->id,
+            'reason' => $request->input('reason'),
+            'accomplishment_type' => 'individual',
+            'date' => date('F j, Y, g:i a'),
+            'databaseOnly' => 1
+        ];
+
+        Notification::send($returnData, new ReturnNotification($notificationData));
+
         return redirect()->route('researcher.index')->with('success', 'Report Denied');
     }
 
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
-        foreach($reportIds as $id){
-            Report::where('id', $id)->update(['researcher_approval' => 1]);
+        foreach($reportIds as $report_id){
+            Report::where('id', $report_id)->update(['researcher_approval' => 1]);
+
+            $report = Report::find($report_id);
+
+            $receiverData = User::find($report->user_id);
+            $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
+                                ->join('users', 'users.id', 'chairpeople.user_id')
+                                ->where('researchers.department_id', $report->department_id)
+                                ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = route('submissions.myaccomp.index');
+
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',
+                'receiver' => $receiverData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $receiverData->id,
+                'accomplishment_type' => 'individual',
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1
+            ];
+
+            Notification::send($receiverData, new ReceiveNotification($notificationData));
+
         }
         return redirect()->route('researcher.index')->with('success', 'Report/s Approved Successfully');
     }
@@ -134,16 +220,44 @@ class ResearcherController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
-        foreach($reportIds as $id){
-            if($request->input('reason_'.$id) == null)
+
+        foreach($reportIds as $report_id){
+            if($request->input('reason_'.$report_id) == null)
                 continue;
-            Report::where('id', $id)->update(['researcher_approval' => 0]);
+            Report::where('id', $report_id)->update(['researcher_approval' => 0]);
             DenyReason::create([
-                'report_id' => $id,
+                'report_id' => $report_id,
                 'user_id' => auth()->id(),
                 'position_name' => 'researcher',
-                'reason' => $request->input('reason_'.$id),
+                'reason' => $request->input('reason_'.$report_id),
             ]);
+            
+            $report = Report::find($report_id);
+
+            $returnData = User::find($report->user_id);
+            $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
+                            ->join('users', 'users.id', 'chairpeople.user_id')
+                            ->where('researchers.department_id', $report->department_id)
+                            ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = route('submissions.myaccomp.index');
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',
+                'receiver' => $returnData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $returnData->id,
+                'reason' => $request->input('reason'),
+                'accomplishment_type' => 'individual',
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1
+            ];
+
+            Notification::send($returnData, new ReturnNotification($notificationData));
         }
         return redirect()->route('researcher.index')->with('success', 'Report/s Denied Successfully');
 

@@ -34,6 +34,11 @@ Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileControl
 
 // auth checker
 Route::group(['middleware' => 'auth'], function() {
+            
+    //notifications:
+    Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
+    Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
+
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');

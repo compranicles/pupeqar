@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\DenyReason;
 use App\Models\SectorHead;
@@ -12,6 +13,8 @@ use App\Models\FacultyResearcher;
 use App\Models\FacultyExtensionist;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
+use App\Notifications\ReturnNotification;
+use App\Notifications\ReceiveNotification;
 
 class IpqmsoController extends Controller
 {
@@ -133,6 +136,78 @@ class IpqmsoController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
+        $report = Report::find($report_id);
+        
+        
+        $receiverData = User::find($report->user_id);
+        $senderName = User::where('id', auth()->id())
+                            ->select('users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = '';
+        $acc_type = '';
+        if($report->report_category_id > 16 ){
+
+            if($report->department_id == 0){
+                $url = route('submissions.collegeaccomp.index', $report->college_id);
+                $acc_type="college";
+
+                $college_name = College::where('id', $report->college_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $receiverData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $receiverData->id,
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 0,
+                    'college_name' => $college_name,
+                ];
+            }
+            else{
+                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $acc_type="department";
+
+                $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $receiverData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $receiverData->id,
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 0,
+                    'department_name' => $department_name,
+                ];
+            }
+            
+
+        }
+        else{
+            $url = route('submissions.myaccomp.index');
+            $acc_type = 'individual';
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                'receiver' => $receiverData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $receiverData->id,
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 0
+            ];
+
+        }
+
+        Notification::send($receiverData, new ReceiveNotification($notificationData));
+
         return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
     }
 
@@ -151,6 +226,82 @@ class IpqmsoController extends Controller
         Report::where('id', $report_id)->update([
             'ipqmso_approval' => 0
         ]);
+        
+        $report = Report::find($report_id);
+
+        $returnData = User::find($report->user_id);
+        $senderName = User::where('id', auth()->id())
+                        ->select('users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                        ->first();
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = '';
+        $acc_type = '';
+        if($report->report_category_id > 16 ){
+
+            if($report->department_id == 0){
+                $url = route('submissions.collegeaccomp.index', $report->college_id);
+                $acc_type="college";
+
+                $college_name = College::where('id', $report->college_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $returnData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $returnData->id,
+                    'reason' => $request->input('reason'),
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1,
+                    'college_name' => $college_name,
+
+                ];
+            }
+            else{
+                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $acc_type="department";
+
+                $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $returnData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $returnData->id,
+                    'reason' => $request->input('reason'),
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1,
+                    'department_name' => $department_name,
+
+                ];
+            }
+            
+        }
+        else{
+            $url = route('submissions.myaccomp.index');
+            $acc_type = 'individual';
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $returnData->id,
+                'reason' => $request->input('reason'),
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1
+            ];
+    
+        }
+
+        
+        Notification::send($returnData, new ReturnNotification($notificationData));
+
         return redirect()->route('ipqmso.index')->with('deny-success', 'Report Denial successfully sent');
     }
 
@@ -162,8 +313,79 @@ class IpqmsoController extends Controller
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
-        foreach($reportIds as $id){
-            Report::where('id', $id)->update(['ipqmso_approval' => 1]);
+        foreach($reportIds as $report_id){
+            Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
+
+            $report = Report::find($report_id);
+        
+            $receiverData = User::find($report->user_id);
+            $senderName = User::where('id', auth()->id())
+                                ->select('users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = '';
+            $acc_type = '';
+            if($report->report_category_id > 16 ){
+
+                if($report->department_id == 0){
+                    $url = route('submissions.collegeaccomp.index', $report->college_id);
+                    $acc_type="college";
+
+                    $college_name = College::where('id', $report->college_id)->pluck('name')->first();
+
+                    $notificationData = [
+                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'receiver' => $receiverData->first_name,
+                        'url' => $url,
+                        'category_name' => $report_category_name,
+                        'user_id' => $receiverData->id,
+                        'accomplishment_type' => $acc_type,
+                        'date' => date('F j, Y, g:i a'),
+                        'databaseOnly' => 0,
+                        'college_name' => $college_name,
+                    ];
+                }
+                else{
+                    $url = route('submissions.departmentaccomp.index', $report->department_id);
+                    $acc_type="department";
+
+                    $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                    $notificationData = [
+                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'receiver' => $receiverData->first_name,
+                        'url' => $url,
+                        'category_name' => $report_category_name,
+                        'user_id' => $receiverData->id,
+                        'accomplishment_type' => $acc_type,
+                        'date' => date('F j, Y, g:i a'),
+                        'databaseOnly' => 0,
+                        'department_name' => $department_name,
+                    ];
+                }
+                
+
+            }
+            else{
+                $url = route('submissions.myaccomp.index');
+                $acc_type = 'individual';
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $receiverData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $receiverData->id,
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 0
+                ];
+
+            }
+
+            Notification::send($receiverData, new ReceiveNotification($notificationData));
         }
         return redirect()->route('ipqmso.index')->with('success', 'Report/s Approved Successfully');
     }
@@ -175,16 +397,91 @@ class IpqmsoController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
-        foreach($reportIds as $id){
-            if($request->input('reason_'.$id) == null)
+        foreach($reportIds as $report_id){
+            if($request->input('reason_'.$report_id) == null)
                 continue;
-            Report::where('id', $id)->update(['ipqmso_approval' => 0]);
+            Report::where('id', $report_id)->update(['ipqmso_approval' => 0]);
             DenyReason::create([
-                'report_id' => $id,
+                'report_id' => $report_id,
                 'user_id' => auth()->id(),
                 'position_name' => 'ipqmso',
-                'reason' => $request->input('reason_'.$id),
+                'reason' => $request->input('reason_'.$report_id),
             ]);
+
+            $report = Report::find($report_id);
+
+            $returnData = User::find($report->user_id);
+            $senderName = User::where('id', auth()->id())
+                            ->select('users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = '';
+            $acc_type = '';
+            if($report->report_category_id > 16 ){
+
+                if($report->department_id == 0){
+                    $url = route('submissions.collegeaccomp.index', $report->college_id);
+                    $acc_type="college";
+
+                    $college_name = College::where('id', $report->college_id)->pluck('name')->first();
+
+                    $notificationData = [
+                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'receiver' => $returnData->first_name,
+                        'url' => $url,
+                        'category_name' => $report_category_name,
+                        'user_id' => $returnData->id,
+                        'reason' => $request->input('reason'),
+                        'accomplishment_type' => $acc_type,
+                        'date' => date('F j, Y, g:i a'),
+                        'databaseOnly' => 1,
+                        'college_name' => $college_name,
+
+                    ];
+                }
+                else{
+                    $url = route('submissions.departmentaccomp.index', $report->department_id);
+                    $acc_type="department";
+
+                    $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                    $notificationData = [
+                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'receiver' => $returnData->first_name,
+                        'url' => $url,
+                        'category_name' => $report_category_name,
+                        'user_id' => $returnData->id,
+                        'reason' => $request->input('reason'),
+                        'accomplishment_type' => $acc_type,
+                        'date' => date('F j, Y, g:i a'),
+                        'databaseOnly' => 1,
+                        'department_name' => $department_name,
+
+                    ];
+                }
+                
+            }
+            else{
+                $url = route('submissions.myaccomp.index');
+                $acc_type = 'individual';
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $returnData->id,
+                    'reason' => $request->input('reason'),
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1
+                ];
+        
+            }
+
+            
+            Notification::send($returnData, new ReturnNotification($notificationData));
         }
         return redirect()->route('ipqmso.index')->with('success', 'Report/s Denied Successfully');
 

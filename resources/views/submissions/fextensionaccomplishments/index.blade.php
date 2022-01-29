@@ -274,7 +274,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $('.button-view').on('click', function(){
+            $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
                 
@@ -296,7 +296,7 @@
                 
             });
 
-            $('.button-deny').on('click', function () {
+            $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
             
                 $.get('/reports/reject-details/'+categoryID, function(data){

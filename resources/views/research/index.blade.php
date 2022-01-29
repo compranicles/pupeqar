@@ -36,9 +36,9 @@
                                 </button> --}}
                                 <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
                                     Invites @if (count($invites) != 0)
-                                                <span class="font-weight-bold text-dark">({{ count($invites) }})</span>
+                                                <span class="badge badge-light">{{ count($invites) }}</span>
                                             @else
-                                                (0)
+                                                <span class="badge badge-light">0</span>
                                             @endif
                                 </button>
                                 <hr>

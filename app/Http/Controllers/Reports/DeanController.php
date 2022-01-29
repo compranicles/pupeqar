@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\DenyReason;
 use App\Models\SectorHead;
@@ -14,6 +15,10 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
+use App\Notifications\ReturnNotification;
+use App\Models\Maintenance\ReportCategory;
+use App\Notifications\ReceiveNotification;
+use Illuminate\Support\Facades\Notification;
 
 class DeanController extends Controller
 {
@@ -176,6 +181,58 @@ class DeanController extends Controller
     public function accept($report_id){
         Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
+        $report = Report::find($report_id);
+        
+        
+        $receiverData = User::find($report->user_id);
+        $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                            ->join('users', 'users.id', 'deans.user_id')
+                            ->where('deans.college_id', $report->college_id)
+                            ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = '';
+        $acc_type = '';
+        if($report->report_category_id > 16 ){
+            $url = route('submissions.departmentaccomp.index', $report->department_id);
+            $acc_type="department";
+
+            $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'receiver' => $receiverData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $receiverData->id,
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1,
+                'department_name' => $department_name,
+            ];
+
+        }
+        else{
+            $url = route('submissions.myaccomp.index');
+            $acc_type = 'individual';
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'receiver' => $receiverData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $receiverData->id,
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1
+            ];
+
+        }
+
+        Notification::send($receiverData, new ReceiveNotification($notificationData));
+        
         return redirect()->route('dean.index')->with('success', 'Report has been added in consolidated report.');
     }
 
@@ -194,6 +251,61 @@ class DeanController extends Controller
         Report::where('id', $report_id)->update([
             'dean_approval' => 0
         ]);
+
+        $report = Report::find($report_id);
+
+        $returnData = User::find($report->user_id);
+        $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                            ->join('users', 'users.id', 'deans.user_id')
+                            ->where('deans.college_id', $report->college_id)
+                            ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+
+        $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+        $url = '';
+        $acc_type = '';
+        if($report->report_category_id > 16 ){
+            $url = route('submissions.departmentaccomp.index', $report->department_id);
+            $acc_type="department";
+
+            $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'receiver' => $returnData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $returnData->id,
+                'reason' => $request->input('reason'),
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1,
+                'department_name' => $department_name,
+
+            ];
+        }
+        else{
+            $url = route('submissions.myaccomp.index');
+            $acc_type = 'individual';
+
+            $notificationData = [
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'receiver' => $returnData->first_name,
+                'url' => $url,
+                'category_name' => $report_category_name,
+                'user_id' => $returnData->id,
+                'reason' => $request->input('reason'),
+                'accomplishment_type' => $acc_type,
+                'date' => date('F j, Y, g:i a'),
+                'databaseOnly' => 1
+            ];
+    
+        }
+
+        
+        Notification::send($returnData, new ReturnNotification($notificationData));
+
         return redirect()->route('dean.index')->with('success', 'Report has been returned.');
     }
 
@@ -210,8 +322,61 @@ class DeanController extends Controller
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
-        foreach($reportIds as $id){
-            Report::where('id', $id)->update(['dean_approval' => 1]);
+        foreach($reportIds as $report_id){
+            Report::where('id', $report_id)->update(['dean_approval' => 1]);
+
+            $report = Report::find($report_id);
+        
+        
+            $receiverData = User::find($report->user_id);
+            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                ->join('users', 'users.id', 'deans.user_id')
+                                ->where('deans.college_id', $report->college_id)
+                                ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = '';
+            $acc_type = '';
+            if($report->report_category_id > 16 ){
+                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $acc_type="department";
+
+                $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'receiver' => $receiverData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $receiverData->id,
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1,
+                    'department_name' => $department_name,
+
+                ];
+
+            }
+            else{
+                $url = route('submissions.myaccomp.index');
+                $acc_type = 'individual';
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'receiver' => $receiverData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $receiverData->id,
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1
+                ];
+
+            }
+
+            Notification::send($receiverData, new ReceiveNotification($notificationData));
         }
         return redirect()->route('dean.index')->with('success', 'Report/s Approved Successfully');
     }
@@ -223,16 +388,70 @@ class DeanController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
-        foreach($reportIds as $id){
-            if($request->input('reason_'.$id) == null)
+        foreach($reportIds as $report_id){
+            if($request->input('reason_'.$report_id) == null)
                 continue;
-            Report::where('id', $id)->update(['dean_approval' => 0]);
+            Report::where('id', $report_id)->update(['dean_approval' => 0]);
             DenyReason::create([
-                'report_id' => $id,
+                'report_id' => $report_id,
                 'user_id' => auth()->id(),
                 'position_name' => 'dean',
-                'reason' => $request->input('reason_'.$id),
+                'reason' => $request->input('reason_'.$report_id),
             ]);
+
+            $report = Report::find($report_id);
+
+            $returnData = User::find($report->user_id);
+            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                ->join('users', 'users.id', 'deans.user_id')
+                                ->where('deans.college_id', $report->college_id)
+                                ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+
+            $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
+
+            $url = '';
+            $acc_type = '';
+            if($report->report_category_id > 16 ){
+                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $acc_type="department";
+
+                $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'receiver' => $returnData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $returnData->id,
+                    'reason' => $request->input('reason'),
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1,
+                    'department_name' => $department_name,
+
+                ];
+            }
+            else{
+                $url = route('submissions.myaccomp.index');
+                $acc_type = 'individual';
+
+                $notificationData = [
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'receiver' => $returnData->first_name,
+                    'url' => $url,
+                    'category_name' => $report_category_name,
+                    'user_id' => $returnData->id,
+                    'reason' => $request->input('reason'),
+                    'accomplishment_type' => $acc_type,
+                    'date' => date('F j, Y, g:i a'),
+                    'databaseOnly' => 1
+                ];
+        
+            }
+
+            
+            Notification::send($returnData, new ReturnNotification($notificationData));
         }
         return redirect()->route('dean.index')->with('success', 'Report/s Denied Successfully');
 

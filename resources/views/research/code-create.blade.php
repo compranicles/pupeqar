@@ -15,6 +15,9 @@
                     <div class="card-body">
                         <form action="{{ route('research.code.save', $research->id) }}" method="post">
                             @csrf
+                            @if($notificationID != null)
+                                <input type="hidden" name="notif_id" value="{{ $notificationID }}">
+                            @endif
                             @include('form', ['formFields' => $researchFields, 'value' => $values, ])
                             <div class="col-md-12">
                                 <div class="mb-0">

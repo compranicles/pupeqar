@@ -42,7 +42,7 @@
             var month2 = month[11];
         }
         document.getElementById("quarter").innerHTML = "My accomplishment reports from " + month1 + ' - ' + month2 + ' ' + new Date().getFullYear();
-        document.getElementById("department").innerHTML = "Accomplishments of employees from" + month1 + ' - ' + month2 + ' ' + new Date().getFullYear();
+        // document.getElementById("department").innerHTML = "Accomplishments of employees from" + month1 + ' - ' + month2 + ' ' + new Date().getFullYear();
 
     </script>
 </x-app-layout>

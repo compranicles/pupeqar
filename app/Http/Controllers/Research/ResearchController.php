@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Research;
+use App\Models\User;
 use App\Models\Report;
 use App\Rules\Keyword;
 use App\Models\Research;
@@ -24,6 +25,8 @@ use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ResearchInviteNotification;
 use App\Http\Controllers\Maintenances\LockController;
 
 
@@ -187,18 +190,20 @@ class ResearchController extends Controller
         }
         else{
             $lastIdSplit = preg_split('/-/',$lastID);
-            if($lastIdSplit[2].'-' === $resIni){
+            
+            if($lastIdSplit[count($lastIdSplit) - 3].'-' == $resIni){
                 
                 $lastIdDigit = (int) end($lastIdSplit);
                 $lastIdDigit++;
                 if($lastIdDigit < 10){
                     $lastIdDigit = '0'.$lastIdDigit;
                 }
-                $researchCode = $researchodeIni.$lastIdDigit;
+                $researchCode = $researchCodeIni.$lastIdDigit;
             }
             else{
-                $researchCode = $researchodeIni.'01';
+                $researchCode = $researchCodeIni.'01';
             }
+
         }
 
         $funding_amount = $request->funding_amount;    
@@ -511,8 +516,10 @@ class ResearchController extends Controller
             return redirect()->route('research.index')->with('code-missing', 'Code does not exist');
     }
 
-    public function addResearch($research_id){
+    public function addResearch($research_id, Request $request){
 
+        
+        
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -539,7 +546,9 @@ class ResearchController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
 
-        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'departments', 'colleges', 'researchStatus'));
+        $notificationID = $request->get('id');
+
+        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'departments', 'colleges', 'researchStatus', 'notificationID'));
     }
 
     public function saveResearch($research_id, Request $request){
@@ -551,7 +560,7 @@ class ResearchController extends Controller
         $research = Research::where('id', $research_id)->first()->toArray();
         $research = collect($research);
         $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'researchers', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);
-        $fromRequest = $request->except(['_token', 'document']);
+        $fromRequest = $request->except(['_token', 'document', 'notif_id']);
         $data = array_merge($researchFiltered->toArray(), $fromRequest);
         $data = Arr::add($data, 'user_id', auth()->id());
         // dd($data);
@@ -562,6 +571,30 @@ class ResearchController extends Controller
         ResearchInvite::where('research_id', $research_id)->where('user_id', auth()->id())->update([
             'status' => 1
         ]);
+
+        $receiver_user_id = Research::where("id", $research_id)->pluck('user_id')->first();
+        $receiver = User::find($receiver_user_id);
+        $research_title = Research::where('id', $research_id)->pluck('title')->first();
+        $sender = User::find(auth()->id());
+        $url = route('research.show', $research_id);
+
+        $notificationData = [
+            'receiver' => $receiver->first_name,
+            'title' => $research_title,
+            'sender' => $sender->first_name.' '.$sender->middle_name.' '.$sender->last_name.' '.$sender->suffix,
+            'url' => $url,
+            'date' => date('F j, Y, g:i a'),
+            'type' => 'confirm'
+        ];
+
+        Notification::send($receiver, new ResearchInviteNotification($notificationData));
+
+        $sender->notifications()
+                    ->where('id', $request->input('notif_id')) // and/or ->where('type', $notificationType)
+                    ->where('type', 'App\Notifications\ResearchInviteNotification')
+                    ->get()
+                    ->first()
+                    ->delete();
 
         return redirect()->route('research.index')->with('success', 'Research has been saved');
     }

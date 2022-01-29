@@ -361,7 +361,7 @@ class ReportController extends Controller
         foreach($report_columns as $row){
             $new_report_details[$row->name] = $report_details[$row->column];
         }
-
+        // dd($new_report_details);
         return $new_report_details;
     }
 

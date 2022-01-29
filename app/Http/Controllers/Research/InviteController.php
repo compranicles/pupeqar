@@ -8,6 +8,8 @@ use App\Models\Research;
 use Illuminate\Http\Request;
 use App\Models\ResearchInvite;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ResearchInviteNotification;
 
 class InviteController extends Controller
 {
@@ -38,18 +40,41 @@ class InviteController extends Controller
     }
 
     public function add($research_id, Request $request){
-        foreach($request->input('employees') as $row)
+        foreach($request->input('employees') as $row){
             ResearchInvite::create([
                 'user_id' => $row,
                 'sender_id' => auth()->id(),
                 'research_id' => $research_id
             ]);
 
+            $user = User::find($row);
+            $research_title = Research::where('id', $research_id)->pluck('title')->first();
+            $sender = User::join('research', 'research.user_id', 'users.id')
+                            ->where('research.user_id', auth()->id())
+                            ->where('research.id', $research_id)
+                            ->select('users.first_name', 'users.last_name', 'users.middle_name', 'users.suffix')->first();
+            $url_accept = route('research.invite.confirm', $research_id);
+            $url_deny = route('research.invite.cancel', $research_id);
+
+            $notificationData = [
+                'receiver' => $user->first_name,
+                'title' => $research_title,
+                'sender' => $sender->first_name.' '.$sender->middle_name.' '.$sender->last_name.' '.$sender->suffix,
+                'url_accept' => $url_accept,
+                'url_deny' => $url_deny,
+                'date' => date('F j, Y, g:i a'),
+                'type' => 'invite'
+            ];
+
+            Notification::send($user, new ResearchInviteNotification($notificationData));
+        }
+
         return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited successfully');
     }
 
-    public function confirm($research_id){
-        return redirect()->route('research.code.create', $research_id);
+    public function confirm($research_id, Request $request){
+        
+        return redirect()->route('research.code.create', ['research_id' => $research_id, 'id' => $request->get('id') ]);
     }
     
     public function cancel($research_id){
