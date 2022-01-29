@@ -131,7 +131,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>'+
-                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="noti-message text-dark">'+
+                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
                                 '</a>'+'</td>'
                             );
@@ -142,7 +142,7 @@
                         $('#noti-info-'+countColumns).addClass("font-weight-bold");
                     }
                    
-                    $countALL++;
+                    countALL++;
                 });
 
 

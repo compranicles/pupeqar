@@ -267,7 +267,7 @@ class SectorController extends Controller
                     'reason' => $request->input('reason'),
                     'accomplishment_type' => $acc_type,
                     'date' => date('F j, Y, g:i a'),
-                    'databaseOnly' => 1,
+                    'databaseOnly' => 0 ,
                     'college_name' => $college_name,
 
                 ];
@@ -287,7 +287,7 @@ class SectorController extends Controller
                     'reason' => $request->input('reason'),
                     'accomplishment_type' => $acc_type,
                     'date' => date('F j, Y, g:i a'),
-                    'databaseOnly' => 1,
+                    'databaseOnly' => 0,
                     'department_name' => $department_name,
 
                 ];
@@ -307,7 +307,7 @@ class SectorController extends Controller
                 'reason' => $request->input('reason'),
                 'accomplishment_type' => $acc_type,
                 'date' => date('F j, Y, g:i a'),
-                'databaseOnly' => 1
+                'databaseOnly' => 0
             ];
     
         }
@@ -460,7 +460,7 @@ class SectorController extends Controller
                         'reason' => $request->input('reason'),
                         'accomplishment_type' => $acc_type,
                         'date' => date('F j, Y, g:i a'),
-                        'databaseOnly' => 1,
+                        'databaseOnly' => 0,
                         'college_name' => $college_name,
 
                     ];
@@ -480,7 +480,7 @@ class SectorController extends Controller
                         'reason' => $request->input('reason'),
                         'accomplishment_type' => $acc_type,
                         'date' => date('F j, Y, g:i a'),
-                        'databaseOnly' => 1,
+                        'databaseOnly' => 0,
                         'department_name' => $department_name,
 
                     ];
@@ -500,7 +500,7 @@ class SectorController extends Controller
                     'reason' => $request->input('reason'),
                     'accomplishment_type' => $acc_type,
                     'date' => date('F j, Y, g:i a'),
-                    'databaseOnly' => 1
+                    'databaseOnly' => 0
                 ];
         
             }

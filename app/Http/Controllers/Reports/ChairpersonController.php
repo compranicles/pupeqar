@@ -262,7 +262,7 @@ class ChairpersonController extends Controller
             'reason' => $request->input('reason'),
             'accomplishment_type' => 'individual',
             'date' => date('F j, Y, g:i a'),
-            'databaseOnly' => 1
+            'databaseOnly' => 0
         ];
 
         Notification::send($returnData, new ReturnNotification($notificationData));
@@ -356,7 +356,7 @@ class ChairpersonController extends Controller
                 'reason' => $request->input('reason_'.$report_id),
                 'accomplishment_type' => 'individual',
                 'date' => date('F j, Y, g:i a'),
-                'databaseOnly' => 1
+                'databaseOnly' => 0
             ];
 
             Notification::send($returnData, new ReturnNotification($notificationData));
