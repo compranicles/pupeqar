@@ -71,7 +71,9 @@ class MySubmissionController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->whereYear('reports.updated_at', date('Y'))
                 ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
-                ->where('reports.user_id', auth()->id())->get(); //get my individual accomplishment
+                ->where('reports.user_id', auth()->id())
+                ->orderBy('reports.updated_at')
+                ->get(); //get my individual accomplishment
 
         //get_department_and_college_name
         $college_names = [];

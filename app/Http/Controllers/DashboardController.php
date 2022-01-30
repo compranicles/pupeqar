@@ -23,6 +23,8 @@ use App\Models\TechnicalExtension;
 use App\Models\OutreachProgram;
 use App\Models\Report;
 use App\Models\Chairperson;
+use App\Models\Dean;
+use App\Models\SectorHead;
 use App\Models\Authentication\UserRole;
 
 class DashboardController extends Controller
@@ -51,12 +53,21 @@ class DashboardController extends Controller
         }
 
         //No. of accomplishments received by Chairperson
+        $is_faculty_admin = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [1, 2, 3, 4])
+            ->first();
         $is_cp = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 5)->first();
         $is_dean = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 6)->first();
         $is_vp = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 7)->first();
         $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 8)->first();
 
-        if ($is_cp) {
+        if ($is_faculty_admin) {
+            $department_reported = Report::where('user_id', auth()->id())->distinct('department_id')->count();
+            $cbco_reported = Report::where('user_id', auth()->id())->distinct('college_id')->count();
+        //     dd($department_reported);
+            return view('dashboard', compact('quarter', 'totalReports', 'department_reported', 'cbco_reported'));
+        }
+        elseif ($is_cp) {
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())
                 ->join('departments', 'departments.id', 'chairpeople.department_id')
                 ->pluck('chairpeople.department_id')->all();
@@ -67,7 +78,11 @@ class DashboardController extends Controller
             $chairpersonNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
                     ->where('chairperson_approval', null)
                     ->whereIn('department_id', [$departments])
-                    ->whereYear('report_date', date('Y'))->count();
+                    ->whereYear('report_date', date('Y'))
+ //check for researcher and extensionist                   
+                    ->where('researcher_approval', 1)
+                    ->orWhere('extensionist_approval', 1)
+                    ->count();
             $chairpersonReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
                     ->where('chairperson_approval', 0)
                     ->whereIn('department_id', [$departments])
@@ -82,11 +97,13 @@ class DashboardController extends Controller
         elseif ($is_dean) {
             $colleges = Dean::where('deans.user_id', auth()->id())
                         ->join('colleges', 'colleges.id', 'deans.college_id')->pluck('deans.college_id')->all();
+                        // dd($colleges);
             $deanReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
                     ->where('dean_approval', 1)
                     ->whereIn('college_id', [$colleges])
                     ->whereYear('report_date', date('Y'))->count();
             $deanNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 1)
                     ->where('dean_approval', null)
                     ->whereIn('college_id', [$colleges])
                     ->whereYear('report_date', date('Y'))->count();
@@ -104,11 +121,14 @@ class DashboardController extends Controller
         elseif ($is_vp) {
             $sectors = SectorHead::where('sector_heads.user_id', auth()->id())
                         ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->pluck('sector_heads.sector_id')->all();
+                        // dd($sectors);
             $vpReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-                    ->where('sector_approval', 1)
-                    ->whereIn('sector_id', [$sectors])
-                    ->whereYear('report_date', date('Y'))->count();
+                    ->where('reports.sector_approval', 1)
+                    ->whereIn('reports.sector_id', [$sectors])
+                    ->whereYear('reports.report_date', date('Y'))->count();
             $vpNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 1)
+                    ->where('dean_approval', 1)
                     ->where('sector_approval', null)
                     ->whereIn('sector_id', [$sectors])
                     ->whereYear('report_date', date('Y'))->count();

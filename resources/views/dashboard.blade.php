@@ -21,7 +21,7 @@
                         <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
                             <div class="d-flex p-3">
                                 <div>
-                                    <h4 class="text-left">{{ $totalReports }}</h4>
+                                    <h4 class="text-left">{{ $department_reported }}</h4>
                                     <p class="text-left">Departments you reported with within this quarter</p>
                                 </div>
                                 <i class="far fa-building home-icons" style="padding-left: 90px; padding-top: 8px;"></i>
@@ -32,7 +32,7 @@
                         <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
                             <div class="d-flex p-3">
                                 <div>
-                                    <h4 class="text-left">{{ $totalReports }}</h4>
+                                    <h4 class="text-left">{{ $cbco_reported }}</h4>
                                     <p class="text-left">College/Branch/Campus/Offices you reported with within this quarter</p>
                                 </div>
                                 <i class="far fa-building home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
@@ -141,17 +141,6 @@
                                 <div>
                                     <h4 class="text-left">{{ $vpReturned }}</h4>
                                     <p class="text-left">Accomplishments returned by you this quarter</p>
-                                </div>
-                                <i class="bi bi-arrow-left-square home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    <h4 class="text-left">{{ $ipqmsoReturned }}</h4>
-                                    <p class="text-left" id="sectorReturned"></p>
                                 </div>
                                 <i class="bi bi-arrow-left-square home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
                             </div>
