@@ -25,16 +25,47 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Blade::if('admin', function () {            
-        //     $is_superadmin = UserRole::where('user_roles.user_id', auth()->id())
-        //     ->where('user_roles.role_id', 9)
-        //     ->first();
+        //IsReporting identifies if the user is faculty, admin, chairperson, or dean (because they have accomplishment reports to submit to diff. dept and colleges)
+        Blade::if('IsReporting', function () {            
+            $is_reporting = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [1, 2, 3, 4, 5, 6])
+            ->first();
             
-        //     // dd($is_superadmin);
-        //     if ($is_superadmin == null) {
-        //         return 1;
-        //     }
-        // });
+            // dd($is_superadmin);
+            if ($is_reporting != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+        Blade::if('IsReceiving', function () {            
+            $is_reporting = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [5, 6, 7, 8])
+            ->first();
+            
+            // dd($is_superadmin);
+            if ($is_reporting != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+
+        Blade::if('FacultyAdmin', function () {            
+            $is_reporting = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [1, 2, 3, 4])
+            ->first();
+            
+            // dd($is_superadmin);
+            if ($is_reporting != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
 
         Blade::if('faculty', function () {            
             $is_faculty = UserRole::where('user_roles.user_id', auth()->id())
@@ -85,6 +116,34 @@ class AppServiceProvider extends ServiceProvider
             
             // dd($is_superadmin);
             if ($is_director != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+
+        Blade::if('sectorHead', function () {            
+            $is_vp = UserRole::where('user_roles.user_id', auth()->id())
+            ->where('user_roles.role_id', 7)
+            ->first();
+            
+            // dd($is_superadmin);
+            if ($is_vp != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+
+        Blade::if('ipqmso', function () {            
+            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())
+            ->where('user_roles.role_id', 8)
+            ->first();
+            
+            // dd($is_superadmin);
+            if ($is_ipqmso != null) {
                 return 1;
             }
             else {

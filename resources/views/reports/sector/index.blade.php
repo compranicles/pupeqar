@@ -81,7 +81,7 @@
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->dept_name ?? '-'}}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y g:i a", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -327,7 +327,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                this.api().columns(4).every( function () {
+                this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#reportFilter')
                         .on( 'change', function () {
@@ -344,7 +344,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                this.api().columns(5).every( function () {
+                this.api().columns(6).every( function () {
                     var column = this;
                     var select = $('#empFilter')
                         .on( 'change', function () {

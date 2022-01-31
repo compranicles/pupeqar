@@ -364,5 +364,6 @@ class ChairpersonController extends Controller
         return redirect()->route('chairperson.index')->with('success', 'Report/s Denied Successfully');
 
     }
+    
 
 }

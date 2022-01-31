@@ -47,6 +47,7 @@
                 </li>
                 @endcan
 
+                @IsReporting
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
                     <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('invention-innovation-creative.*') ||
                         request()->routeIs('technical-extension.*') || request()->routeIs('college-department-award.*') || 
@@ -54,12 +55,13 @@
                         request()->routeIs('student-award.*') || request()->routeIs('rtmmi.*') || 
                         request()->routeIs('syllabus.*') || request()->routeIs('outreach-program.*') || 
                         request()->routeIs('mobility.*') || request()->routeIs('partnership.*') || 
-                        request()->routeIs('extension-service.*')) || request()->routeIs('expert-service-as-consultant.*') ||
-                        request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*')
+                        request()->routeIs('extension-service.*') || request()->routeIs('expert-service-as-consultant.*') ||
+                        request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*'))
                         active @endif 
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
+                @endIsReporting
 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link :active="request()->routeIs('to-finalize.*') || request()->routeIs('submissions.*')|| request()->routeIs('chairperson.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')" href="{{ route('to-finalize.index') }}">

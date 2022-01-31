@@ -48,7 +48,6 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
@@ -61,7 +60,6 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">

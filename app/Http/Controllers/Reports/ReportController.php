@@ -352,6 +352,14 @@ class ReportController extends Controller
         
     }
 
+    public function getReportCategory($report_id) {
+        $report_category = Report::where('reports.id', $report_id)
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                ->pluck('report_categories.name')
+                ->all();
+        return $report_category;
+    }
+
     public function getReportData($report_id){
         $report_data = Report::where('id', $report_id)->first();
         $report_details = json_decode($report_data->report_details, true);
