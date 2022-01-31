@@ -10,6 +10,7 @@ use App\Models\CollegeDepartmentAward;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CollegeDepartmentAwardController extends Controller
 {
@@ -22,7 +23,9 @@ class CollegeDepartmentAwardController extends Controller
     {
         // $this->authorize('viewAny', CollegeDepartmentAward::class);
 
-        $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())->orderBy('college_department_awards.updated_at', 'desc')->get();
+        $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())
+                                    ->select(DB::raw('college_department_awards.*, QUARTER(college_department_awards.updated_at) as quarter'))
+                                    ->orderBy('college_department_awards.updated_at', 'desc')->get();
         return view('academic-development.college-department-award.index', compact('college_department_awards'));
     }
 
@@ -58,6 +61,9 @@ class CollegeDepartmentAwardController extends Controller
 
         $college_department_award = CollegeDepartmentAward::create($input);
         $college_department_award->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -68,7 +74,7 @@ class CollegeDepartmentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'CDAward-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'CDAward-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -118,6 +124,11 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($college_department_award->id, 21)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
         $documents = CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->get()->toArray();
@@ -142,7 +153,12 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $college_department_award->update(['description' => '-clear']);
+
         $college_department_award->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -153,7 +169,7 @@ class CollegeDepartmentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'CDAward-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'CDAward-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -182,6 +198,11 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($college_department_award->id, 21)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been deleted.');

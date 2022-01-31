@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class MobilityController extends Controller
 {
@@ -26,7 +27,7 @@ class MobilityController extends Controller
 
         $mobilities = Mobility::where('user_id', auth()->id())
                                 ->join('colleges', 'colleges.id', 'mobilities.college_id')
-                                ->select('mobilities.*', 'colleges.name as college_name')
+                                ->select(DB::raw('mobilities.*, colleges.name as college_name, QUARTER(mobilities.updated_at) as quarter'))
                                 ->orderBy('updated_at', 'desc')->get();
 
         $mobility_in_colleges = Mobility::join('colleges', 'mobilities.college_id', 'colleges.id')
@@ -66,6 +67,8 @@ class MobilityController extends Controller
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -76,6 +79,9 @@ class MobilityController extends Controller
         $mobility->update(['user_id' => auth()->id()]);
         $mobility->update(['other_type' => $request->input('other_type')]);
 
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -85,7 +91,7 @@ class MobilityController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Mobility-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Mobility-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -133,6 +139,10 @@ class MobilityController extends Controller
     {
         $this->authorize('update', Mobility::class);
 
+        if(LockController::isLocked($mobility->id, 14)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -165,17 +175,23 @@ class MobilityController extends Controller
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document', 'other_type']);
 
+        $mobility->update(['description' => '-clear']);
+
         $mobility->update($input);
         $mobility->update([
             'other_type' => $request->input('other_type'),
         ]);
 
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -186,7 +202,7 @@ class MobilityController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Mobility-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Mobility-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -212,6 +228,10 @@ class MobilityController extends Controller
     public function destroy(Mobility $mobility)
     {
         $this->authorize('delete', Mobility::class);
+
+        if(LockController::isLocked($mobility->id, 14)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');

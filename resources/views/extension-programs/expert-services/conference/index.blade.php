@@ -4,6 +4,19 @@
             {{ __('Expert Services Rendered') }}
         </h2>
     </x-slot>
+    @php
+    $currentMonth = date('m');
+
+    $year_or_quarter = 0;
+    if ($currentMonth <= 3 && $currentMonth >= 1) 
+        $quarter = 1;
+    if ($currentMonth <= 6 && $currentMonth >= 4)
+        $quarter = 2;
+    if ($currentMonth <= 9 && $currentMonth >= 7)
+        $quarter = 3;
+    if ($currentMonth <= 12 && $currentMonth >= 10) 
+        $quarter = 4;
+    @endphp
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -16,6 +29,11 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>         
                 @endif
+                @if ($message = Session::get('cannot_access'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3 ml-1">
@@ -24,6 +42,45 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                                <div class="col-md-3">
+                                    <label for="natureFilter" class="mr-2">Nature: </label>
+                                    <select id="natureFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($conferenceNature as $nature)
+                                        <option value="{{ $nature->name }}">{{ $nature->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                            <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                                            <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                                            <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                                            <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($conference_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="esconference_table">
                                 <thead>
@@ -31,6 +88,8 @@
                                         <th></th>
                                         <th>Title</th>
                                         <th>Nature</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        <th>Quarter</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,6 +100,9 @@
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->title }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->nature }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">{{ $expertServiceConference->quarter }}</td>
+
                                         <td onclick="window.location.href = '{{ route('expert-service-in-conference.show', $expertServiceConference->id) }}' ">
                                             <?php $updated_at = strtotime( $expertServiceConference->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>        
@@ -95,5 +157,113 @@
           
         });
      </script>
+     <script>
+         var table =  $("#esconference_table").DataTable();
+          var natureIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "Nature") {
+                    natureIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#natureFilter').val()
+                    var nature = data[natureIndex];
+                    if (selectedItem === "" || nature.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var quarterIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "Quarter") {
+                    quarterIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#quarterFilter').val()
+                    var quarter = data[quarterIndex];
+                    if (selectedItem === "" || quarter.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var yearIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    yearIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#yearFilter').val()
+                    var year = data[yearIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            
+            var collegeIndex = 0;
+            $("#esconference_table th").each(function (i) {
+                if ($($(this)).html() == "College/Branch/Campus/Office") {
+                    collegeIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#collegeFilter').val()
+                    var college = data[collegeIndex];
+                    if (selectedItem === "" || college.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            $("#natureFilter").change(function (e) {
+                table.draw();
+            });
+            $("#quarterFilter").change(function (e) {
+                table.draw();
+            });
+            $("#yearFilter").change(function (e) {
+                table.draw();
+            });
+            $("#collegeFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
+     </script>
+     <script>
+        var max = new Date().getFullYear();
+        var min = 0;
+        var diff = max-2019;
+        min = max-diff;
+        select = document.getElementById('yearFilter');
+        for (var i = max; i >= min; i--) {
+            select.append(new Option(i, i));
+            if (i == "{{ date('Y') }}") {
+                document.getElementById("yearFilter").value = i;
+                table.draw();
+            }
+        }
+    </script>
      @endpush
 </x-app-layout>

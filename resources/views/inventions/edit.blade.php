@@ -11,6 +11,12 @@
             <p>
               <a class="back_link" href="{{ route('invention-innovation-creative.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inventions, Innovation, & Creative Works</a>
             </p>
+            {{-- Denied Details --}}
+            @if ($deniedDetails = Session::get('denied'))
+            <div class="alert alert-info" role="alert">
+                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+            </div>
+            @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('invention-innovation-creative.update', $value['id']) }}" method="post">
@@ -20,7 +26,8 @@
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
-                                        <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                        <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
+                                        <button type="submit" id="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -29,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" id="documentsSection">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -45,7 +52,7 @@
                                     @if (count($inventionDocuments) > 0)
                                         @foreach ($inventionDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-12 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
@@ -65,6 +72,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -78,7 +88,7 @@
                                     @if(count($inventionDocuments) > 0)
                                         @foreach ($inventionDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-6 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
@@ -96,6 +106,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -110,13 +123,41 @@
         </div>
     </div>
 
+
+    {{-- Delete doc Modal --}}
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this document?</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger mb-2 mr-2" id="deletedoc">Delete</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
-    <script>
+        <script>
             $(function() {
                 $('.funding_agency').hide();
                 $('#funding_agency').removeClass('form-validation');
             });
 
+            var fund_type = document.getElementById('#funding_agency').value;
+            if (fund_type == 49) {
+                $('.funding_agency').show();
+            }
+            
             $('#funding_type').on('change', function (){
                 var type = $(this).val();
                 if(type == 49){
@@ -141,37 +182,49 @@
                 }
             });
         </script>
-        {{-- <script>
-            function hide_dates() {
-                $('.start_date').hide();
-                $('.target_date').hide();
-            }
-
-            $(function() {
-                hide_dates();
-            });
-
-        </script>
         <script>
-            $('#status').on('change', function(){
-                var statusId = $('#status').val();
-                if (statusId == 26) {
-                    hide_dates();
-
-                    $('#start_date').prop("required", false);
-                    $('#target_date').prop("required", false);
-                }
-                else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
-                }
+            var url = '';
+            var docId = '';
+            $('.remove-doc').on('click', function(){
+                url = $(this).data('link');   
+                docId = $(this).data('id');
             });
-        </script> --}}
+            $('#deletedoc').on('click', function(){
+                $.get(url, function (data){
+                    $('#deleteModal .close').click();
+                    $('#'+docId).remove();
+
+                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
+                        .insertBefore('#documentsSection')
+                        .delay(3000)
+                        .fadeOut(function (){
+                            $(this).remove();
+                        });
+
+                    var docCount = $('.documents-display').length
+                    if(docCount == 0){
+                        $('.docEmptyMessage').show();
+                    }
+                });
+            });
+        </script>
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
@@ -181,8 +234,20 @@
 
             $('#end_date').on('input', function(){
                 var date = new Date($('#end_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));

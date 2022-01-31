@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Rules\Keyword;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ExtensionService;
@@ -11,10 +12,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ExtensionServiceDocument;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\DropdownOption;
-use App\Rules\Keyword;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ExtensionServiceController extends Controller
 {
@@ -32,7 +33,7 @@ class ExtensionServiceController extends Controller
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
                                         ->join('colleges', 'colleges.id', 'extension_services.college_id')
-                                        ->select('extension_services.*', 'dropdown_options.name as status', 'colleges.name as college_name')
+                                        ->select(DB::raw('extension_services.*, dropdown_options.name as status, colleges.name as college_name, QUARTER(extension_services.updated_at) as quarter'))
                                         ->orderBy('extension_services.updated_at', 'desc')
                                         ->get();
 
@@ -101,6 +102,8 @@ class ExtensionServiceController extends Controller
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
             'keywords' => new Keyword,
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
         
         if ($request->input('total_no_of_hours') != '') {
@@ -118,6 +121,8 @@ class ExtensionServiceController extends Controller
             'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
         ]);
         
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -128,7 +133,7 @@ class ExtensionServiceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'EService-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'EService-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -165,6 +170,7 @@ class ExtensionServiceController extends Controller
         
         $values = $extension_service->toArray();
         
+        // dd($extensionServiceFields);
         return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values', 'extensionServiceFields'));
     }
 
@@ -177,6 +183,10 @@ class ExtensionServiceController extends Controller
     public function edit(ExtensionService $extension_service)
     {
         $this->authorize('update', ExtensionService::class);
+
+        if(LockController::isLocked($extension_service->id, 12)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -234,6 +244,8 @@ class ExtensionServiceController extends Controller
                 'classification_of_trainees_or_beneficiaries' => 'required',
                 'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
                 'keywords' => new Keyword,
+                'college_id' => 'required',
+                'department_id' => 'required'
             ]);
 
             if ($request->input('total_no_of_hours') != '') {
@@ -244,12 +256,16 @@ class ExtensionServiceController extends Controller
     
             $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
             
+            $extension_service->update(['description' => '-clear']);
+
             $extension_service->update($input);
             $extension_service->update([
                 'other_classification' => $request->input('other_classification'),
                 'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
             ]);
 
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -260,7 +276,7 @@ class ExtensionServiceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'EService-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'EService-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -286,6 +302,10 @@ class ExtensionServiceController extends Controller
     public function destroy(ExtensionService $extension_service)
     {
         $this->authorize('delete', ExtensionService::class);
+
+        if(LockController::isLocked($extension_service->id, 12)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

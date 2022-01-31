@@ -12,8 +12,13 @@
                     @endcan
 
                     <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('sectors.maintenance.index') }}" class="text-dark"  :active="request()->routeIs('sectors.*')">
+                            {{ __('Sectors') }}
+                        </x-jet-nav-link>
+                    </li>
+                    <li class="nav-item">
                         <x-jet-nav-link href="{{ route('colleges.index') }}" class="text-dark"  :active="request()->routeIs('colleges.*')">
-                            {{ __('Colleges') }}
+                            {{ __('Office/Colleges/Branch/Campus') }}
                         </x-jet-nav-link>
                     </li>
                     <li class="nav-item">

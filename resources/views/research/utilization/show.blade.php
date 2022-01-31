@@ -24,10 +24,18 @@
                                     <i class="bi bi-check-circle"></i> {{ $message }}
                                 </div>
                                 @endif
+                                @if ($message = Session::get('cannot_access'))
+                                    <div class="alert alert-danger alert-index">
+                                        {{ $message }}
+                                    </div>
+                                @endif
                             </div>
+                            
                             <div class="col-md-12">
-                                
                                 <div class="d-flex mr-2">
+                                    <p>
+                                        <a class="back_link" href="{{ route('research.utilization.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Utilization</a>
+                                    </p>
                                     @if ($research->nature_of_involvement == 11)
                                     <p class="ml-auto">
                                         <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
@@ -142,11 +150,6 @@
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
-    <script>
-        $(function() {
-            $('#research').prop('disabled', true);
-        });
-    </script>
     <script>
         // auto hide alert
         window.setTimeout(function() {

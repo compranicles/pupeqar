@@ -11,6 +11,12 @@
                 <p>
                     <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
                 </p>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post">
@@ -23,7 +29,8 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -31,7 +38,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3" id="documentsSection">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
@@ -47,7 +54,7 @@
                                             @if (count($extensionServiceDocuments) > 0)
                                                 @foreach ($extensionServiceDocuments as $document)
                                                     @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                        <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
+                                                        <div class="col-md-12 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                             <div class="card bg-light border border-maroon rounded-lg">
                                                                 <div class="card-body">
                                                                     <div class="row mb-3">
@@ -67,43 +74,48 @@
                                                         </div>
                                                     @endif
                                                 @endforeach
-                                                @else
-                                                    <div class="col-md-4 offset-md-4">
-                                                        <h6 class="text-center">No Documents Attached</h6>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    <div class="col-md-6">
-                                        <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
-                                        <div class="row">
-                                            @if(count($extensionServiceDocuments) > 0)
-                                                @foreach ($extensionServiceDocuments as $document)
-                                                    @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
-                                                    <div class="card bg-light border border-maroon rounded-lg">
-                                                        <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
-                                                            <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
-                                                        </a>
-                                                        <div class="card-body">
-                                                            <table class="table table-sm my-n3 text-center">
-                                                                <tr>
-                                                                    <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
-                                                                    </th>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                                <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                                    <h6 class="text-center">No Documents Attached</h6>
                                                 </div>
-                                            @endif
-                                            @endforeach
                                             @else
                                                 <div class="col-md-4 offset-md-4">
                                                     <h6 class="text-center">No Documents Attached</h6>
                                                 </div>
                                             @endif
                                         </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
+                                        <div class="row">
+                                            @if(count($extensionServiceDocuments) > 0)
+                                                @foreach ($extensionServiceDocuments as $document)
+                                                    @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
+                                                        <div class="col-md-6 mb-3 documents-display" id="doc-{{ $document['id'] }}">
+                                                            <div class="card bg-light border border-maroon rounded-lg">
+                                                                <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
+                                                                    <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
+                                                                </a>
+                                                                <div class="card-body">
+                                                                    <table class="table table-sm my-n3 text-center">
+                                                                        <tr>
+                                                                            <th>
+                                                                                <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('extension-service.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                            </th>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                            @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
+                                        @else
+                                            <div class="col-md-4 offset-md-4">
+                                                <h6 class="text-center">No Documents Attached</h6>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -113,6 +125,7 @@
             </div>
         </div>
     </div>
+</div>
 
     {{-- Delete doc Modal --}}
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -181,10 +194,48 @@
             });
         </script>
         <script>
+            var url = '';
+            var docId = '';
+            $('.remove-doc').on('click', function(){
+                url = $(this).data('link');   
+                docId = $(this).data('id');
+            });
+            $('#deletedoc').on('click', function(){
+                $.get(url, function (data){
+                    $('#deleteModal .close').click();
+                    $('#'+docId).remove();
+
+                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
+                        .insertBefore('#documentsSection')
+                        .delay(3000)
+                        .fadeOut(function (){
+                            $(this).remove();
+                        });
+
+                    var docCount = $('.documents-display').length
+                    if(docCount == 0){
+                        $('.docEmptyMessage').show();
+                    }
+                });
+            });
+        </script>
+        <script>
             $('#from').on('input', function(){
                 var date = new Date($('#from').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
@@ -239,14 +290,14 @@
             });
             
 
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
+            // function validateForm() {
+            //     var isValid = true;
+            //     $('.form-validation').each(function() {
+            //         if ( $(this).val() === '' )
+            //             isValid = false;
+            //     });
+            //     return isValid;
+            // }
         </script>
     @endpush
 </x-app-layout>

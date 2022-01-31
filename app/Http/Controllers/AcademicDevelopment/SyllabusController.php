@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Models\Report;
 use App\Models\Syllabus;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -11,8 +12,9 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class SyllabusController extends Controller
 {
@@ -25,20 +27,30 @@ class SyllabusController extends Controller
     {
         $this->authorize('viewAny', Syllabus::class);
 
-        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        $year = "created";
         $syllabi = Syllabus::where('user_id', auth()->id())
-                                        ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                                        ->join('colleges', 'colleges.id', 'syllabi.college_id')
-                                        ->select('syllabi.*', 'dropdown_options.name as assigned_task_name', 'colleges.name as college_name')
-                                        ->orderBy('syllabi.updated_at', 'desc')
-                                        ->get();
-
+                    ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                    ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                    ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                    ->orderBy('syllabi.updated_at', 'desc')
+                    ->get();
+        // dd($syllabi);
         $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
-                                        ->select('colleges.name')
-                                        ->distinct()
-                                        ->get();
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
         
-        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges'));
+        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        
+        $syllabiYearsAdded = Syllabus::selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+                        // dd($syllabiYearsFinished);
+
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished'));
     }
 
     /**
@@ -70,11 +82,18 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-
+        $request->validate([
+            'college_id' => 'required',
+            'department_id' => 'required'
+        ]);
         $input = $request->except(['_token', '_method', 'document']);
 
         $syllabus = Syllabus::create($input);
         $syllabus->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
 
         if($request->has('document')){
             
@@ -85,7 +104,7 @@ class SyllabusController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Syllabus-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Syllabus-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -136,6 +155,11 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($syllabu->id, 16)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -173,8 +197,12 @@ class SyllabusController extends Controller
             return view('inactive');
 
         $input = $request->except(['_token', '_method', 'document']);
-
+        $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
 
         if($request->has('document')){
             
@@ -185,7 +213,7 @@ class SyllabusController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Syllabus-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Syllabus-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -215,6 +243,11 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($syllabu->id, 16)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $syllabu->delete();
         SyllabusDocument::where('syllabus_id', $syllabu->id)->delete();
 
@@ -230,5 +263,49 @@ class SyllabusController extends Controller
         SyllabusDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;
+    }
+
+    public function syllabusYearFilter($year, $filter) {
+        if($filter == "created") {
+            if ($year == "created") {
+                return redirect()->route('syllabus.index');
+            }
+            else {
+                $syllabi = Syllabus::where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                ->whereYear('syllabi.created_at', $year)
+                ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                ->orderBy('syllabi.updated_at', 'desc')
+                ->get();
+            }   
+        }
+        elseif ($filter == "finished") {
+            $syllabi = Syllabus::where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
+                ->join('colleges', 'colleges.id', 'syllabi.college_id')
+                ->whereYear('syllabi.date_finished', $year)
+                ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name, QUARTER(syllabi.updated_at) as quarter'))
+                ->orderBy('syllabi.updated_at', 'desc')
+                ->get();
+        }
+        else {
+            return redirect()->route('syllabus.index');
+        }
+
+        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
+        
+        $syllabiYearsAdded = Syllabus::selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
+                        ->select('colleges.name')
+                        ->distinct()
+                        ->get();
+
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished'));
     }
 }

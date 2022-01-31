@@ -15,7 +15,7 @@ class AcceptedController extends Controller
          //role and department/ college id
          $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
          $approved_by_me = '';
-
+        
          if(in_array(5, $roles)){
              $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
 

@@ -12910,6 +12910,21 @@ body {
   text-decoration: none;
 }
 
+.action-remarks {
+	background: none;
+	color: #0044ff;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.action-remarks:hover {
+  color: #0044ff;
+  filter: brightness(0.55);
+}
+
 .action-delete {
 	background: none;
 	color: var(--red);
@@ -13248,6 +13263,10 @@ table tr .padding_left_show {
   color: white;
 }
 
+.doc-complete:hover {
+  color: white;
+}
+
 #scrollUpButton {
   display: none;
   position: fixed;
@@ -13268,5 +13287,10 @@ table tr .padding_left_show {
 }
 
 .home-icons { 
-  font-size: 4em;
+  font-size: 3.5em;
+}
+
+/**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/
+#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table {
+  font-size: 12.5px;
 }

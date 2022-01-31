@@ -20,6 +20,11 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -34,7 +39,11 @@
                                         @else --}}
                                             {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
                                         @endif --}}
-                                        
+                                        @if ($research->nature_of_involvement == 11)
+                                            @if ($exists == 1)
+                                                <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-1">Invite Co-Researcher</a>
+                                            @endif
+                                        @endif
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>
                                 </div>
@@ -125,37 +134,12 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        // $(function() {
-        //     $('#research').prop('disabled', true);
-        // });
-    </script>
-    <script>
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $research->status }}">{{ $research->status_name}}</option>');
-            $('#status').attr('disabled', true);
-        });
-    </script>
-            <script>
-
-        if ( {{$research->status}} ==26 ){
-            $('.start_date').hide();
-            $('.target_date').hide();
-        }
-    </script>
-    <script>
-        $(document).ready(function(){
-            $("input").prop("disabled", true);
-            $("textarea").prop("disabled", true);
-            $("select").prop("disabled", true);
-        });
     </script>
 @endpush
 

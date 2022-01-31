@@ -10,10 +10,11 @@ use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceAcademic;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceAcademicDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class AcademicController extends Controller
 {
@@ -31,7 +32,7 @@ class AcademicController extends Controller
         $expertServicesAcademic = ExpertServiceAcademic::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_academics.classification')
                                         ->join('colleges', 'colleges.id', 'expert_service_academics.college_id')
-                                        ->select('expert_service_academics.*', 'dropdown_options.name as classification', 'colleges.name as college_name')
+                                        ->select(DB::raw('expert_service_academics.*, dropdown_options.name as classification, colleges.name as college_name, QUARTER(expert_service_academics.updated_at) as quarter'))
                                         ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
 
@@ -77,6 +78,8 @@ class AcademicController extends Controller
             'other_nature' => 'required_if:nature,86',
             'to' => 'after_or_equal:from',
             'copyright_no' => 'max:100',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
@@ -84,6 +87,9 @@ class AcademicController extends Controller
         $esAcademic = ExpertServiceAcademic::create($input);
         $esAcademic->update(['user_id' => auth()->id()]);
         $esAcademic->update(['other_nature' => $request->input('other_nature')]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -94,7 +100,7 @@ class AcademicController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESAcademic-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESAcademic-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -146,6 +152,10 @@ class AcademicController extends Controller
     {
         $this->authorize('update', ExpertServiceAcademic::class);
 
+        if(LockController::isLocked($expert_service_in_academic->id, 11)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
@@ -184,16 +194,23 @@ class AcademicController extends Controller
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-            $request->validate([
-                'other_nature' => 'required_if:nature,86',
-                'to' => 'after_or_equal:from',
-                'copyright_no' => 'max:100',
-            ]);
+        $request->validate([
+            'other_nature' => 'required_if:nature,86',
+            'to' => 'after_or_equal:from',
+            'copyright_no' => 'max:100',
+            'college_id' => 'required',
+            'department_id' => 'required'
+        ]);
 
         $input = $request->except(['_token', '_method', 'document', 'other_nature']);
         
+        $expert_service_in_academic->update(['description' => '-clear']);
+
         $expert_service_in_academic->update($input);
         $expert_service_in_academic->update(['other_nature' => $request->input('other_nature')]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -204,7 +221,7 @@ class AcademicController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESAcademic-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESAcademic-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -232,6 +249,10 @@ class AcademicController extends Controller
     public function destroy(ExpertServiceAcademic $expert_service_in_academic)
     {
         $this->authorize('delete', ExpertServiceAcademic::class);
+
+        if(LockController::isLocked($expert_service_in_academic->id, 11)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');

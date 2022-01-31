@@ -12,8 +12,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\InventionForm;
-use App\Models\FormBuilder\InventionField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\InventionField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class InventionController extends Controller
 {
@@ -26,31 +27,20 @@ class InventionController extends Controller
     {
         $this->authorize('viewAny', Invention::class);
 
+        $year = "created";
+    
+        $inventions = DB::select("CALL get_all_invention_by_year_and_user_id(".date('Y').",".auth()->id().")");
+        
         $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
-
-        $inventions = Invention::where('user_id', auth()->id())
-                                ->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
-                                ->join('colleges', 'colleges.id', 'inventions.college_id')
-                                ->select('inventions.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
-                                ->orderBy('inventions.updated_at', 'desc')->get();
-
         $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
-                                ->select('colleges.name')
+                                ->select('colleges.name')->where('inventions.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
 
-        // $classifications = [];
-        // $i = 0;
-        // foreach ($inventions as $invention) {
-        //     $classifications[$i] = Invention::join('dropdown_options', 'dropdown_options.id', 'inventions.classification')
-        //                             ->orderBy('inventions.updated_at', 'desc')
-        //                             ->where('inventions.id', $invention->id)
-        //                             ->pluck('dropdown_options.name as name')
-        //                             ->all();
-        //                     $i++;        
-        // }
-
-        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus'));
+        $inventionYears = Invention::selectRaw("YEAR(inventions.created_at) as created")->where('inventions.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'inventionYears', 'year'));
 
     }
 
@@ -93,12 +83,14 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -115,7 +107,7 @@ class InventionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'IICW-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'IICW-'.str_replace("/", "-", $request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -172,6 +164,10 @@ class InventionController extends Controller
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        if(LockController::isLocked($invention_innovation_creative->id, 8)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
@@ -219,16 +215,18 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 49',
+            'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
             'end_date' => 'required_if:status, 54|after_or_equal:start_date',
             'utilization' => 'required_if:classification, 46',
             'issue_date' => 'after_or_equal:end_date',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
-
+        $invention_innovation_creative->update(['description' => '-clear']);
         $invention_innovation_creative->update($input);
 
         if($request->has('document')){
@@ -240,7 +238,7 @@ class InventionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'IICW-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'IICW-'.str_replace("/", "-", $invention_innovation_creative->description).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -268,6 +266,11 @@ class InventionController extends Controller
     public function destroy(Invention $invention_innovation_creative)
     {
         $this->authorize('delete', Invention::class);
+
+        if(LockController::isLocked($invention_innovation_creative->id, 8)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -289,5 +292,37 @@ class InventionController extends Controller
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
         return true;
+    }
+
+    public function inventionYearFilter($year, $filter) {
+    
+        if($filter == "created") {
+            if ($year == "created") {
+                return redirect()->route('invention-innovation-creative.index');
+            }
+            else {
+                $inventions = Invention::where('user_id', auth()->id())
+                                    ->join('dropdown_options', 'dropdown_options.id', 'inventions.status')
+                                    ->join('colleges', 'colleges.id', 'inventions.college_id')
+                                    ->select(DB::raw('inventions.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(inventions.updated_at) as quarter'))
+                                    ->whereYear('inventions.created_at', $year)
+                                    ->orderBy('inventions.updated_at', 'desc')->get();
+            }   
+        }
+        else {
+            return redirect()->route('invention-innovation-creative.index');
+        }
+
+        $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
+        $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
+                                ->select('colleges.name')->where('inventions.user_id', auth()->id())
+                                ->distinct()
+                                ->get();
+
+        $inventionYears = Invention::selectRaw("YEAR(inventions.created_at) as created")->where('inventions.user_id', auth()->id())
+                        ->distinct()
+                        ->get();
+
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'inventionYears', 'year'));
     }
 }

@@ -11,9 +11,10 @@ use App\Models\PartnershipDocument;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\DropdownOption;
+use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class PartnershipController extends Controller
 {
@@ -30,7 +31,7 @@ class PartnershipController extends Controller
         $partnerships = Partnership::where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
                             ->join('colleges', 'colleges.id', 'partnerships.college_id')
-                            ->select('partnerships.*', 'dropdown_options.name as collab', 'colleges.name as college_name')
+                            ->select(DB::raw('partnerships.*, dropdown_options.name as collab, colleges.name as college_name, QUARTER(partnerships.updated_at) as quarter'))
                             ->orderBy('updated_at', 'desc')->get();
 
         $partnership_in_colleges = Partnership::join('colleges', 'partnerships.college_id', 'colleges.id')
@@ -74,6 +75,8 @@ class PartnershipController extends Controller
             'other_deliverable' => 'required_if:deliverable, 157',
             'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -88,7 +91,8 @@ class PartnershipController extends Controller
             'other_deliverable' => $request->input('other_deliverable'),
         ]);
 
-
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -99,7 +103,7 @@ class PartnershipController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Partnership-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Partnership-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -147,6 +151,10 @@ class PartnershipController extends Controller
     {
         $this->authorize('update', Partnership::class);
 
+        if(LockController::isLocked($partnership->id, 13)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
@@ -184,6 +192,8 @@ class PartnershipController extends Controller
             'other_deliverable' => 'required_if:deliverable, 157',
             'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -191,12 +201,17 @@ class PartnershipController extends Controller
         
         $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
 
+        $partnership->update(['description' => '-clear']);
+
         $partnership->update($input);
         $partnership->update([
             'other_collab_nature' => $request->input('other_collab_nature'),
             'other_partnership_type' => $request->input('other_partnership_type'),
             'other_deliverable' => $request->input('other_deliverable'),
         ]);
+
+        $string = str_replace(' ', '-', $partnership->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -207,7 +222,7 @@ class PartnershipController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'Partnership-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'Partnership-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -234,6 +249,10 @@ class PartnershipController extends Controller
     public function destroy(Partnership $partnership)
     {
         $this->authorize('delete', Partnership::class);
+
+        if(LockController::isLocked($partnership->id, 13)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class PublicationController extends Controller
 {
@@ -49,7 +50,7 @@ class PublicationController extends Controller
         $value = $research;
         $value->toArray();
         $value = collect($research);
-        $value = $value->except(['description', 'status']);
+        $value = $value->except(['description']);
         $value = $value->toArray();
 
         $value = array_merge($value, $values);
@@ -65,6 +66,10 @@ class PublicationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPublication::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -121,7 +126,13 @@ class PublicationController extends Controller
         ]);
 
 
-        ResearchPublication::create($input);
+        $publication = ResearchPublication::create($input);
+        $publication->update([
+            'research_id' => $research->id,
+        ]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -132,7 +143,7 @@ class PublicationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RPub-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -140,6 +151,7 @@ class PublicationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 3,
                         'filename' => $fileName,
                     ]);
@@ -170,6 +182,12 @@ class PublicationController extends Controller
     public function edit(Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
+        if(LockController::isLocked($publication->id, 3)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -208,6 +226,7 @@ class PublicationController extends Controller
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
+        
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -215,7 +234,12 @@ class PublicationController extends Controller
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
+        $publication->update(['description' => '-clear']);
+
         $publication->update($input);
+
+        $string = str_replace(' ', '-', $publication->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -226,7 +250,7 @@ class PublicationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RPub-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -234,6 +258,7 @@ class PublicationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 3,
                         'filename' => $fileName,
                     ]);

@@ -11,6 +11,12 @@
                 @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
+        {{-- Denied Details --}}
+        @if ($deniedDetails = Session::get('denied'))
+        <div class="alert alert-danger alert-index">
+            <i class="bi bi-x-circle"></i> Remarks: {{ $deniedDetails->reason }}
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -25,6 +31,7 @@
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
+                                        <a href="{{ route('research.show', $research->id) }}" class="btn btn-secondary mr-2">Cancel</a>
                                         <button type="submit" id="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
@@ -126,21 +133,6 @@
     </div>
     @push('scripts')
         <script>
-            var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-                console.log(docId);
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    console.log(data);
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-                });
-            });
-
             $('#college').on('input', function(){
                 var collegeId = $('#college').val();
                 $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -257,8 +249,20 @@
         <script>
              $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));

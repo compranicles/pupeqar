@@ -2,12 +2,21 @@
 
 namespace App\Models;
 
+use App\Models\Syllabus;
+use App\Models\Invention;
+use App\Models\Reference;
+use App\Models\ExtensionService;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\ExpertServiceAcademic;
 use Laravel\Jetstream\HasProfilePhoto;
+use App\Models\Authentication\UserRole;
+use App\Models\ExpertServiceConference;
+use App\Models\ExpertServiceConsultant;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -96,5 +105,12 @@ class User extends Authenticatable
 
     public function syllabus() {
         return $this->hasMany(\App\Models\Syllabus::class);
+    }
+
+    public function notifications()
+    {
+        return $this->morphMany(DatabaseNotification::class, 'notifiable')
+            ->orderBy('created_at', 'desc')
+            ->limit(10);
     }
 }

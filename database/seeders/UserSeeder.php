@@ -4,8 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Dean;
 use App\Models\User;
+use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Database\Seeder;
+use App\Models\FacultyResearcher;
+use App\Models\FacultyExtensionist;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -43,23 +46,23 @@ class UserSeeder extends Seeder
         //Faculty
         // 3
         User::create([
-            'email' => 'cozy@mailinator.com',
-            'password'=> Hash::make('cozy@mailinator.com'),
+            'email' => 'faculty_taguig@mailinator.com',
+            'password'=> Hash::make('faculty_taguig@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Faculty',
+            'first_name' => 'Faculty-Taguig',
             'middle_name' => null,
-            'last_name' => 'Faculty',
+            'last_name' => 'Faculty-Taguig',
             'suffix' => null,
         ]);
 
         // 4
         User::create([
-            'email' => 'kyhogo@mailinator.com',
-            'password'=> Hash::make('kyhogo@mailinator.com'),
+            'email' => 'faculty_caf_acc@mailinator.com',
+            'password'=> Hash::make('faculty_caf_acc@mailinator.com'),
             'date_of_birth' => 1992-04-24,
-            'first_name' => 'Faculty',
+            'first_name' => 'Faculty-Accountancy',
             'middle_name' => null,
-            'last_name' => 'Faculty',
+            'last_name' => 'Faculty-Acountancy',
             'suffix' => null,
         ]);
         // 5-15
@@ -182,16 +185,16 @@ class UserSeeder extends Seeder
             'email' => 'chairperson_caf_accountancy@mailinator.com',
             'password'=> Hash::make('chairperson_caf_accountancy@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Chairperson-CAF-Accountancy',
+            'first_name' => 'Chairperson ',
             'middle_name' => null,
-            'last_name' => 'Chairperson-CAF-Accountancy',
+            'last_name' => 'CAF-DA',
             'suffix' => null,
         ]);
 
         Chairperson::create([
             'user_id' => $cp1->id,
-            'department_id' => 1,
-            'college_id' => 1,
+            'department_id' => 60,
+            'college_id' => 5,
         ]);
 
 
@@ -199,63 +202,68 @@ class UserSeeder extends Seeder
             'email' => 'chairperson_taguig@mailinator.com',
             'password'=> Hash::make('chairperson_taguig@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Chairperson-Taguig',
+            'first_name' => 'Chairperson',
             'middle_name' => null,
-            'last_name' => 'Chairperson-Taguig',
+            'last_name' => 'Taguig',
             'suffix' => null,
         ]);
 
         Chairperson::create([
             'user_id' => $cp2->id,
-            'department_id' => 84,
-            'college_id' => 42,
+            'department_id' => 292,
+            'college_id' => 86,
         ]);
 //56
         Dean::truncate();
         //Director/Dean
         $dean1 = User::create([
-            'email' => 'dean_caf@mailinator.com',
+            'email' => 'dean_caf@mailPinator.com',
             'password'=> Hash::make('dean_caf@mailinator.com'),
             'date_of_birth' => 2000-04-24,
-            'first_name' => 'Dean-CAF',
+            'first_name' => 'Dean',
             'middle_name' => null,
-            'last_name' => 'Dean-CAF',
+            'last_name' => 'CAF',
             'suffix' => null,
         ]);
 
         Dean::create([
             'user_id' => $dean1->id,
-            'college_id' => 1,
+            'college_id' => 5,
         ]);
 
         $dean2 = User::create([
             'email' => 'dean_taguig@mailinator.com',
             'password'=> Hash::make('dean_taguig@mailinator.com'),
             'date_of_birth' => 1998-04-24,
-            'first_name' => 'Dean-Taguig',
+            'first_name' => 'Dean',
             'middle_name' => null,
-            'last_name' => 'Dean-Taguig',
+            'last_name' => 'Taguig',
             'suffix' => null,
         ]);
 
         Dean::create([
             'user_id' => $dean2->id,
-            'college_id' => 42,
+            'college_id' => 86,
         ]);
 
 //58
         //VP/Sector head
-        User::create([
+        $head1 = User::create([
             'email' => 'sectorhead1@mailinator.com',
             'password'=> Hash::make('sectorhead1@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'Sector Head',
             'middle_name' => null,
-            'last_name' => 'Sector Head',
+            'last_name' => 'OVPAA',
             'suffix' => null,
         ]);
 
-        User::create([
+        SectorHead::create([
+            'user_id' => $head1->id,
+            'sector_id' => 3,
+        ]);
+
+        $head2 = User::create([
             'email' => 'sectorhead2@mailinator.com',
             'password'=> Hash::make('sectorhead2@mailinator.com'),
             'date_of_birth' => 1998-04-24,
@@ -264,11 +272,16 @@ class UserSeeder extends Seeder
             'last_name' => 'Sector Head',
             'suffix' => null,
         ]);
+
+        SectorHead::create([
+            'user_id' => $head2->id,
+            'sector_id' => 8,
+        ]);
 //60
         //IPQMSO
         User::create([
-            'email' => 'goya@mailinator.com',
-            'password'=> Hash::make('goya@mailinator.com'),
+            'email' => 'ipqmso1@mailinator.com',
+            'password'=> Hash::make('ipqmso1@mailinator.com'),
             'date_of_birth' => 2000-04-24,
             'first_name' => 'IPQMSO',
             'middle_name' => null,
@@ -277,8 +290,8 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'email' => 'lego@mailinator.com',
-            'password'=> Hash::make('lego@mailinator.com'),
+            'email' => 'ipqmso2@mailinator.com',
+            'password'=> Hash::make('ipqmso2@mailinator.com'),
             'date_of_birth' => 1998-04-24,
             'first_name' => 'IPQMSO',
             'middle_name' => null,
@@ -286,5 +299,67 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 //62
+        //Faculty Extensionist
+        $ext1 = User::create([
+            'email' => 'facultyext1@mailinator.com',
+            'password'=> Hash::make('facultyext1@mailinator.com'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Extensionist',
+            'middle_name' => null,
+            'last_name' => 'CAF-DA',
+            'suffix' => null,
+        ]);
+
+        FacultyExtensionist::create([
+            'user_id' => $ext1->id,
+            'department_id' => 60,
+        ]);
+
+        $ext2 = User::create([
+            'email' => 'facultyext2@mailinator.com',
+            'password'=> Hash::make('facultyext2@mailinator.com'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Extensionist',
+            'middle_name' => null,
+            'last_name' => 'TG',
+            'suffix' => null,
+        ]);
+
+        FacultyExtensionist::create([
+            'user_id' => $ext2->id,
+            'department_id' => 292,
+        ]);
+
+        //FAculty researchers
+        $res1 = User::create([
+            'email' => 'facultyres1@mailinator.com',
+            'password'=> Hash::make('facultyres1@mailinator.com'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Researcher',
+            'middle_name' => null,
+            'last_name' => 'CAF-DA',
+            'suffix' => null,
+        ]);
+
+        FacultyResearcher::create([
+            'user_id' => $res1->id,
+            'department_id' => 60,
+        ]);
+
+        $res2 = User::create([
+            'email' => 'facultyres2@mailinator.com',
+            'password'=> Hash::make('facultyres2@mailinator.com'),
+            'date_of_birth' => 1998-04-24,
+            'first_name' => 'Researcher',
+            'middle_name' => null,
+            'last_name' => 'TG',
+            'suffix' => null,
+        ]);
+
+        FacultyResearcher::create([
+            'user_id' => $res2->id,
+            'department_id' => 292,
+        ]);
+//66
     }
 }

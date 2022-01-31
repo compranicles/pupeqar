@@ -13,6 +13,7 @@ use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ReferenceController extends Controller
 {
@@ -29,7 +30,7 @@ class ReferenceController extends Controller
         $allRtmmi = Reference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'references.category')
                                         ->join('colleges', 'colleges.id', 'references.college_id')
-                                        ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name')
+                                        ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name', DB::raw('QUARTER(references.updated_at) as quarter'))
                                         ->orderBy('references.updated_at', 'desc')
                                         ->get();
         
@@ -74,12 +75,17 @@ class ReferenceController extends Controller
         $request->validate([
             'date_completed' => 'after_or_equal:date_started',
             'date_published' => 'after:date_completed',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
         $rtmmi = Reference::create($input);
         $rtmmi->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -90,7 +96,7 @@ class ReferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RTMMI-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RTMMI-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -147,6 +153,11 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        if(LockController::isLocked($rtmmi->id, 15)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
@@ -200,11 +211,17 @@ class ReferenceController extends Controller
             'college_id' => 'required',
             // 'department_id' => 'required',
             // 'description' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $rtmmi->update(['description' => '-clear']);
+
         $rtmmi->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -215,7 +232,7 @@ class ReferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RTMMI-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RTMMI-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -250,6 +267,11 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+        
+        if(LockController::isLocked($rtmmi->id, 15)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         $rtmmi->delete();
         ReferenceDocument::where('reference_id', $rtmmi->id)->delete();
 

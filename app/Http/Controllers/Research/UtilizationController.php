@@ -17,6 +17,7 @@ use App\Models\ResearchPresentation;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class UtilizationController extends Controller
 {
@@ -46,6 +47,9 @@ class UtilizationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -74,6 +78,13 @@ class UtilizationController extends Controller
 
         $id = ResearchUtilization::insertGetId($input);
 
+        ResearchUtilization::where('id', $id)->update([
+            'research_id' => $research->id,
+        ]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -83,7 +94,7 @@ class UtilizationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -91,6 +102,7 @@ class UtilizationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 6,
                         'research_utilization_id' => $id,
                         'filename' => $fileName,
@@ -140,6 +152,12 @@ class UtilizationController extends Controller
     public function edit(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('update', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($utilization->id, 6)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -177,7 +195,12 @@ class UtilizationController extends Controller
         
         $input = $request->except(['_token', '_method', 'document']);
 
+        $utilization->update(['description' => '-clear']);
+
         $utilization->update($input);
+
+        $string = str_replace(' ', '-', $utilization->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -188,7 +211,7 @@ class UtilizationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -196,6 +219,7 @@ class UtilizationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 6,
                         'research_utilization_id' => $utilization->id,
                         'filename' => $fileName,
@@ -216,6 +240,12 @@ class UtilizationController extends Controller
     public function destroy(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('delete', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($utilization->id, 6)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)

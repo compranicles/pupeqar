@@ -12,6 +12,9 @@ class College extends Model
 
     protected $fillable = [
         'name',
+        'code',
+        'sector_id',
+        'hris_code'
     ];
 
     public function department() {

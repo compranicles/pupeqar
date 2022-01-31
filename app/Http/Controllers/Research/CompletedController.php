@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class CompletedController extends Controller
 {
@@ -52,7 +53,7 @@ class CompletedController extends Controller
         $value = $research;
         $value->toArray();
         $value = collect($research);
-        $value = $value->except(['description', 'status']);
+        $value = $value->except(['description']);
         $value = $value->toArray();
         
         $value = array_merge($value, $values);
@@ -67,6 +68,11 @@ class CompletedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -110,10 +116,14 @@ class CompletedController extends Controller
 
         $completed = ResearchComplete::create([
             'research_code' => $research->research_code,
+            'research_id' => $research->id
         ]);
         $completed->update([
             'description' => $request->input('description'),
         ]);
+
+        $string = str_replace(' ', '-', $completed->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -124,7 +134,7 @@ class CompletedController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RCP-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -132,6 +142,7 @@ class CompletedController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 2,
                         'filename' => $fileName,
                     ]);
@@ -162,6 +173,14 @@ class CompletedController extends Controller
     public function edit(Research $research, ResearchComplete $completed)
     {   
         $this->authorize('update', ResearchComplete::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($completed->id, 2)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -205,11 +224,15 @@ class CompletedController extends Controller
 
         $research->update($input);
 
+        $completed->update(['description' => '-clear']);
 
         $completed->update([
             'research_code' => $research->research_code,
             'description' => $request->input('description')
         ]);
+
+        $string = str_replace(' ', '-', $completed->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -220,13 +243,14 @@ class CompletedController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RCP-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
                     ResearchDocument::create([
+                        'research_id' => $research->id,
                         'research_code' => $request->input('research_code'),
                         'research_form_id' => 2,
                         'filename' => $fileName,

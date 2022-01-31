@@ -7,6 +7,11 @@
     <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-9">
+            @if ($message = Session::get('cannot_access'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+            @endif
             <div class="d-flex mr-2">
                 <p class="mr-auto">
                   <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals, Books, Publication, Newsletter, & Creative Works</a>

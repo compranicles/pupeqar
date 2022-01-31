@@ -158,6 +158,7 @@ return [
             123 => 'university funded',
             49 => 'university funded',
             23 => 'university funded',
+            51 => 'externally-funded',
         ],
         'status' => [
             107 => 'deferred',
@@ -165,6 +166,7 @@ return [
             54 => 'completed',
             32 => 'deferred',
             28 => 'completed', 
+            27 => 'ongoing',
         ],
         'classification' => [
             46 => 'invention',

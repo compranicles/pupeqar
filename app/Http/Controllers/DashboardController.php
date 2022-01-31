@@ -21,34 +21,143 @@ use App\Models\ViableProject;
 use App\Models\CollegeDepartmentAward;
 use App\Models\TechnicalExtension;
 use App\Models\OutreachProgram;
+use App\Models\Report;
+use App\Models\Chairperson;
+use App\Models\Dean;
+use App\Models\SectorHead;
+use App\Models\Authentication\UserRole;
 
 class DashboardController extends Controller
 {
     public function index() {
-        $research = Research::select()->where('research.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $inventions = Invention::select()->where('inventions.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $syllabus = Syllabus::select()->where('syllabi.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $references = Reference::select()->where('references.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $esconsultant = ExpertServiceConsultant::select()->where('expert_service_consultants.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $esconference = ExpertServiceConference::select()->where('expert_service_conferences.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $esacademic = ExpertServiceAcademic::select()->where('expert_service_academics.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $es = ExtensionService::select()->where('extension_services.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $partnerships = Partnership::select()->where('partnerships.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $mobilities = Mobility::select()->where('mobilities.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $requests = RequestModel::select()->where('requests.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $student_awards = StudentAward::select()->where('student_awards.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $student_trainings = StudentTraining::select()->where('student_trainings.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $viable_projects = ViableProject::select()->where('viable_projects.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $cdawards = CollegeDepartmentAward::select()->where('college_department_awards.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $technical_extensions = TechnicalExtension::select()->where('technical_extensions.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
-        $outreach_programs = OutreachProgram::select()->where('outreach_programs.user_id', auth()->id())->where("updated_at", '>=', 'DATEADD(MONTH, -3, GETDATE())')->count();
+        $currentMonth = date('m');
 
-        $sum = $research + $inventions + $syllabus + $references + $esconsultant + 
-                    $esconference + $esacademic + $es + $partnerships +$mobilities + $requests+
-                    $student_awards + $student_trainings + $viable_projects + $cdawards +
-                    $technical_extensions + $outreach_programs;
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+            $totalReports = Report::whereMonth('report_date', '>=', 1)->whereMonth('report_date', '<=', 3)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+            $totalReports = Report::whereMonth('report_date', '>=', 4)->whereMonth('report_date', '<=', 6)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+            $totalReports = Report::whereMonth('report_date', '>=', 10)->whereMonth('report_date', '<=', 12)
+                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        }
 
+        //No. of accomplishments received by Chairperson
+        $is_faculty_admin = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [1, 2, 3, 4])
+            ->first();
+        $is_cp = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 5)->first();
+        $is_dean = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 6)->first();
+        $is_vp = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 7)->first();
+        $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 8)->first();
 
-            return view('dashboard', compact('sum'));
+        if ($is_faculty_admin) {
+            $department_reported = Report::where('user_id', auth()->id())->distinct('department_id')->count();
+            $cbco_reported = Report::where('user_id', auth()->id())->distinct('college_id')->count();
+        //     dd($department_reported);
+            return view('dashboard', compact('quarter', 'totalReports', 'department_reported', 'cbco_reported'));
+        }
+        elseif ($is_cp) {
+            $departments = Chairperson::where('chairpeople.user_id', auth()->id())
+                ->join('departments', 'departments.id', 'chairpeople.department_id')
+                ->pluck('chairpeople.department_id')->all();
+            $chairpersonReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 1)
+                    ->whereIn('department_id', [$departments])
+                    ->whereYear('report_date', date('Y'))->count();
+            $chairpersonNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', null)
+                    ->whereIn('department_id', [$departments])
+                    ->whereYear('report_date', date('Y'))
+ //check for researcher and extensionist                   
+                    ->where('researcher_approval', 1)
+                    ->orWhere('extensionist_approval', 1)
+                    ->count();
+            $chairpersonReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 0)
+                    ->whereIn('department_id', [$departments])
+                    ->whereYear('report_date', date('Y'))->count();
+            $deanReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('dean_approval', 0)
+                    ->where('user_id', auth()->id())
+                    ->whereYear('report_date', date('Y'))->count();
+            return view('dashboard', compact('quarter', 'totalReports', 'chairpersonReceived', 'chairpersonNotReceived', 'chairpersonReturned', 'deanReturned'));
+            
+        }
+        elseif ($is_dean) {
+            $colleges = Dean::where('deans.user_id', auth()->id())
+                        ->join('colleges', 'colleges.id', 'deans.college_id')->pluck('deans.college_id')->all();
+                        // dd($colleges);
+            $deanReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('dean_approval', 1)
+                    ->whereIn('college_id', [$colleges])
+                    ->whereYear('report_date', date('Y'))->count();
+            $deanNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 1)
+                    ->where('dean_approval', null)
+                    ->whereIn('college_id', [$colleges])
+                    ->whereYear('report_date', date('Y'))->count();
+            $deanReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('dean_approval', 0)
+                    ->whereIn('college_id', [$colleges])
+                    ->whereYear('report_date', date('Y'))->count();
+            $sectorReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('sector_approval', 0)
+                    ->where('user_id', auth()->id())
+                    ->whereYear('report_date', date('Y'))->count();
+            return view('dashboard', compact('quarter', 'totalReports', 'deanReceived', 'deanNotReceived', 'deanReturned', 'sectorReturned'));
+            
+        }
+        elseif ($is_vp) {
+            $sectors = SectorHead::where('sector_heads.user_id', auth()->id())
+                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->pluck('sector_heads.sector_id')->all();
+                        // dd($sectors);
+            $vpReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('reports.sector_approval', 1)
+                    ->whereIn('reports.sector_id', [$sectors])
+                    ->whereYear('reports.report_date', date('Y'))->count();
+            $vpNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('chairperson_approval', 1)
+                    ->where('dean_approval', 1)
+                    ->where('sector_approval', null)
+                    ->whereIn('sector_id', [$sectors])
+                    ->whereYear('report_date', date('Y'))->count();
+            $vpReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('sector_approval', 0)
+                    ->whereIn('sector_id', [$sectors])
+                    ->whereYear('report_date', date('Y'))->count();
+            $ipqmsoReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('ipqmso_approval', 0)
+                    ->where('user_id', auth()->id())
+                    ->whereYear('report_date', date('Y'))->count();
+            return view('dashboard', compact('quarter', 'totalReports', 'vpReceived', 'vpNotReceived', 'vpReturned', 'ipqmsoReturned'));
+            
+        }
+        elseif ($is_ipqmso) {
+            $ipqmsoReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('ipqmso_approval', 1)
+                    ->whereYear('report_date', date('Y'))->count();
+            $ipqmsoNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('ipqmso_approval', null)
+                    ->whereYear('report_date', date('Y'))->count();
+            $ipqmsoReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
+                    ->where('ipqmso_approval', 0)
+                    ->whereYear('report_date', date('Y'))->count();
+            return view('dashboard', compact('quarter', 'totalReports', 'ipqmsoReceived', 'ipqmsoNotReceived', 'ipqmsoReturned'));
+            
+        }
+    }
+
+        return view('dashboard', compact('quarter', 'totalReports'));
     }
 }

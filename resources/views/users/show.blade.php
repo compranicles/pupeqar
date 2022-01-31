@@ -21,7 +21,7 @@
                                 </tr>
                                 <tr>
                                     <th>Middle Name</th>
-                                    <td>{{ $user->middle_name }}</td>
+                                    <td>{{ $user->middle_name ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Last Name</th>
@@ -29,7 +29,7 @@
                                 </tr>
                                 <tr>
                                     <th>Suffix</th>
-                                    <td>{{ $user->suffix }}</td>
+                                    <td>{{ $user->suffix ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>
@@ -42,13 +42,15 @@
                                 <tr>
                                     <th>Role</th>
                                     <td>
-                                        @if ($user->role_id == 1)
-                                            {{ __('Admin') }}
-                                        @elseif ($user->role_id == 2)
-                                            {{ __('HAP') }}
-                                        @elseif($user->role_id == 3)
-                                            {{ __('Professor') }}
-                                        @endif
+                                        @forelse ($roles as $role)
+                                            @if ($loop->last)
+                                                {{ $role->name }}
+                                            @else
+                                                {{ $role->name }},
+                                            @endif
+                                        @empty
+                                            -
+                                        @endforelse
                                     </td>
                                 </tr>
                             </table>

@@ -26,6 +26,7 @@ class CreateResearchCitationsTable extends Migration
             $table->integer('year')->nullable();
             $table->foreignId('indexing_platform')->nullable();
             $table->text('description')->nullable();
+            $table->foreignId('research_id');
             $table->timestamps();
             $table->softDeletes();
         });

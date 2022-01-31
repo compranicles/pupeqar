@@ -4,6 +4,19 @@
             {{ __('Student Attended Seminars and Trainings') }}
         </h2>
     </x-slot>
+    @php
+    $currentMonth = date('m');
+
+    $year_or_quarter = 0;
+    if ($currentMonth <= 3 && $currentMonth >= 1) 
+        $quarter = 1;
+    if ($currentMonth <= 6 && $currentMonth >= 4)
+        $quarter = 2;
+    if ($currentMonth <= 9 && $currentMonth >= 7)
+        $quarter = 3;
+    if ($currentMonth <= 12 && $currentMonth >= 10) 
+        $quarter = 4;
+    @endphp
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -11,6 +24,11 @@
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>              
+                @endif
+                @if ($message = Session::get('cannot_access'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -20,6 +38,28 @@
                             </div>
                         </div>  
                         <hr>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                <div class="d-flex">
+                                    <select id="quarterFilter" class="custom-select" name="quarter">
+                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="yearFilter" class="mr-2">Year Added:</label>
+                                <div class="d-flex">
+                                    <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
                         <div class="table-responsive">
                             <table class="table" id="student_training_table">
                                 <thead>
@@ -28,6 +68,7 @@
                                         <th>Name of Student</th>
                                         <th>Title</th>
                                         <th>Organization</th>
+                                        <th>Quarter</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -39,6 +80,8 @@
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->name_of_student }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->quarter }}</td>
+
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
@@ -75,7 +118,67 @@
         }, 4000);
 
          $(document).ready( function () {
-             $('#student_training_table').DataTable();
+             var table = $('#student_training_table').DataTable();
+
+            var quarterIndex = 0;
+            $("#student_training_table th").each(function (i) {
+                if ($($(this)).html() == "Quarter") {
+                    quarterIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#quarterFilter').val()
+                    var quarter = data[quarterIndex];
+                    if (selectedItem === "" || quarter.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            var yearIndex = 0;
+            $("#student_training_table th").each(function (i) {
+                if ($($(this)).html() == "Date Modified") {
+                    yearIndex = i; return false;
+
+                }
+            });
+
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    let selectedItem = $('#yearFilter').val()
+                    var year = data[yearIndex].substring(8, 12);
+                    console.log(year);
+                    if (selectedItem === "" || year.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            $("#quarterFilter").change(function (e) {
+                table.draw();
+            });
+            $("#yearFilter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
+
+            var max = new Date().getFullYear();
+            var min = 0;
+            var diff = max-2019;
+            min = max-diff;
+            select = document.getElementById('yearFilter');
+            for (var i = max; i >= min; i--) {
+                select.append(new Option(i, i));
+                if (i == "{{ date('Y') }}") {
+                    document.getElementById("yearFilter").value = i;
+                    table.draw();
+                }
+            }
          } );
 
          //Item to delete to display in delete modal

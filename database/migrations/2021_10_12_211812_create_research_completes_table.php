@@ -17,6 +17,7 @@ class CreateResearchCompletesTable extends Migration
             $table->id();
             $table->string('research_code');
             $table->text('description')->nullable();
+            $table->foreignId('research_id');
             $table->timestamps();
             $table->softDeletes();
         });

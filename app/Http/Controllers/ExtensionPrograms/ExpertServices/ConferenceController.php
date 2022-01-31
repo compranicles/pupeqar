@@ -9,10 +9,11 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConference;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
-
+use App\Http\Controllers\Maintenances\LockController;
 
 class ConferenceController extends Controller
 {
@@ -25,13 +26,21 @@ class ConferenceController extends Controller
     {
         $this->authorize('viewAny', ExpertServiceConference::class);
 
+        $conferenceNature = DropdownOption::where('dropdown_id', 17)->get();
+
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
-                                        ->select('expert_service_conferences.*', 'dropdown_options.name as nature')
+                                        ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')
+                                        ->select(DB::raw('expert_service_conferences.*, dropdown_options.name as nature, colleges.name as college_name, QUARTER(expert_service_conferences.updated_at) as quarter'))
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
 
-        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference'));
+        $conference_in_colleges = ExpertServiceConference::join('colleges', 'expert_service_conferences.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
+
+        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'conferenceNature', 'conference_in_colleges'));
     }
 
     /**
@@ -68,6 +77,8 @@ class ConferenceController extends Controller
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
 
@@ -75,6 +86,9 @@ class ConferenceController extends Controller
 
         $esConference = ExpertServiceConference::create($input);
         $esConference->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -85,7 +99,7 @@ class ConferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConference-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESConference-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -135,6 +149,10 @@ class ConferenceController extends Controller
     {
         $this->authorize('update', ExpertServiceConference::class);
 
+        if(LockController::isLocked($expert_service_in_conference->id, 10)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
@@ -143,7 +161,12 @@ class ConferenceController extends Controller
 
         $colleges = College::all();
         
-        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges'));
+        $value = $expert_service_in_conference;
+        $value->toArray();
+        $value = collect($expert_service_in_conference);
+        $value = $value->toArray();
+
+        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value'));
     }
 
     /**
@@ -163,11 +186,18 @@ class ConferenceController extends Controller
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $expert_service_in_conference->update(['description' => '-clear']);
+
         $expert_service_in_conference->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -178,7 +208,7 @@ class ConferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConference-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESConference-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -204,6 +234,11 @@ class ConferenceController extends Controller
     public function destroy(ExpertServiceConference $expert_service_in_conference)
     {
         $this->authorize('delete', ExpertServiceConference::class);
+
+        if(LockController::isLocked($expert_service_in_conference->id, 10)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');

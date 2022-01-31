@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Maintenance\College;
+use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Artisan;
 
 class CollegeController extends Controller
 {
@@ -18,7 +19,7 @@ class CollegeController extends Controller
     {
         $this->authorize('viewAny', College::class);
 
-        $colleges = College::get();
+        $colleges = College::join('sectors', 'sectors.id', 'colleges.sector_id')->select('colleges.*', 'sectors.name as sector_name')->get();
         return view('maintenances.colleges.index', compact('colleges'));
     }
 
@@ -31,7 +32,10 @@ class CollegeController extends Controller
     {
         $this->authorize('create', College::class);
 
-        return view('maintenances.colleges.create');
+        // return view('maintenances.colleges.create');
+        Artisan::call('db:seed', ['--class' => 'CollegeSeeder']); 
+
+        return redirect()->route('colleges.index')->with('edit_college_success', 'Office/College/Branch/Campus data synced successfully');
     }
 
     /**

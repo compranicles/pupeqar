@@ -11,6 +11,12 @@
             <p>
               <a class="back_link" href="{{ route('request.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Request & Queries Acted Upon</a>
             </p>
+            {{-- Denied Details --}}
+            @if ($deniedDetails = Session::get('denied'))
+            <div class="alert alert-info" role="alert">
+                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+            </div>
+            @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('request.update', $request->id) }}" method="post">
@@ -20,6 +26,7 @@
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
+                                        <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
                                         <button type="submit" id="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
@@ -29,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-3" id="documentsSection">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -45,7 +52,7 @@
                                     @if (count($documents) > 0)
                                         @foreach ($documents as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-12 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-12 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <div class="card-body">
                                                             <div class="row mb-3">
@@ -65,6 +72,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -78,7 +88,7 @@
                                     @if(count($documents) > 0)
                                         @foreach ($documents as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
-                                                <div class="col-md-6 mb-3" id="doc-{{ $document['id'] }}">
+                                                <div class="col-md-6 mb-3 documents-display" id="doc-{{ $document['id'] }}">
                                                     <div class="card bg-light border border-maroon rounded-lg">
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
@@ -96,6 +106,9 @@
                                                 </div>
                                             @endif
                                         @endforeach
+                                        <div class="col-md-4 offset-md-4 docEmptyMessage" style="display: none;">
+                                            <h6 class="text-center">No Documents Attached</h6>
+                                        </div>
                                     @else
                                         <div class="col-md-4 offset-md-4">
                                             <h6 class="text-center">No Documents Attached</h6>
@@ -171,18 +184,28 @@
             });
         </script>
         <script>
-            var url = '';
+             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){
                 url = $(this).data('link');   
                 docId = $(this).data('id');
-                console.log(docId);
             });
             $('#deletedoc').on('click', function(){
                 $.get(url, function (data){
-                    console.log(data);
                     $('#deleteModal .close').click();
                     $('#'+docId).remove();
+
+                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
+                        .insertBefore('#documentsSection')
+                        .delay(3000)
+                        .fadeOut(function (){
+                            $(this).remove();
+                        });
+
+                    var docCount = $('.documents-display').length
+                    if(docCount == 0){
+                        $('.docEmptyMessage').show();
+                    }
                 });
             });
         

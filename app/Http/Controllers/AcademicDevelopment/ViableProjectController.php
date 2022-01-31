@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ViableProjectDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ViableProjectController extends Controller
 {
@@ -22,7 +23,9 @@ class ViableProjectController extends Controller
     {
         $this->authorize('viewAny', ViableProject::class);
 
-        $viable_projects = ViableProject::where('user_id', auth()->id())->orderBy('viable_projects.updated_at', 'desc')->get();
+        $viable_projects = ViableProject::where('user_id', auth()->id())
+                            ->select(DB::raw('viable_projects.*, QUARTER(viable_projects.updated_at) as quarter'))
+                            ->orderBy('viable_projects.updated_at', 'desc')->get();
         return view('academic-development.viable-project.index', compact('viable_projects'));
     }
 
@@ -83,6 +86,10 @@ class ViableProjectController extends Controller
         
         $viable_project->update(['rate_of_return' => $return_rate]);
 
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
+
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -92,7 +99,7 @@ class ViableProjectController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ViableProject-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ViableProject-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -141,6 +148,10 @@ class ViableProjectController extends Controller
     {
         $this->authorize('update', ViableProject::class);
 
+        if(LockController::isLocked($viable_project->id, 20)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
@@ -188,7 +199,13 @@ class ViableProjectController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $viable_project->update(['description' => '-clear']);
+
         $viable_project->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
         
         if($request->has('document')){
             
@@ -199,7 +216,7 @@ class ViableProjectController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ViableProject-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ViableProject-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -225,6 +242,10 @@ class ViableProjectController extends Controller
     public function destroy(ViableProject $viable_project)
     {
         $this->authorize('delete', ViableProject::class);
+
+        if(LockController::isLocked($viable_project->id, 20)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');

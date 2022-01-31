@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\StudentTrainingDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class StudentTrainingController extends Controller
 {
@@ -22,7 +23,9 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('viewAny', StudentTraining::class);
 
-        $student_trainings = StudentTraining::where('user_id', auth()->id())->orderBy('student_trainings.updated_at', 'desc')->get();
+        $student_trainings = StudentTraining::where('user_id', auth()->id())
+                        ->select(DB::raw('student_trainings.*, QUARTER(student_trainings.updated_at) as quarter'))
+                        ->orderBy('student_trainings.updated_at', 'desc')->get();
 
         return view('academic-development.student-training.index', compact('student_trainings'));
     }
@@ -74,6 +77,9 @@ class StudentTrainingController extends Controller
 
         $student_training = StudentTraining::create($input);
         $student_training->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -84,7 +90,7 @@ class StudentTrainingController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'StudentTraining-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'StudentTraining-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -133,6 +139,10 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('update', StudentTraining::class);
 
+        if(LockController::isLocked($student_training->id, 19)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
@@ -173,7 +183,13 @@ class StudentTrainingController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+
+        $student_training->update(['description' => '-clear']);
+
         $student_training->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -184,7 +200,7 @@ class StudentTrainingController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'StudentTraining-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'StudentTraining-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -210,6 +226,10 @@ class StudentTrainingController extends Controller
     public function destroy(StudentTraining $student_training)
     {
         $this->authorize('delete', StudentTraining::class);
+
+        if(LockController::isLocked($student_training->id, 19)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

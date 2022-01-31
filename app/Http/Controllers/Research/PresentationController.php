@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class PresentationController extends Controller
 {
@@ -50,7 +51,7 @@ class PresentationController extends Controller
         $value = $research;
         $value->toArray();
         $value = collect($research);
-        $value = $value->except(['description', 'status']);
+        $value = $value->except(['description']);
         $value = $value->toArray();
         
         $value = array_merge($value, $values);
@@ -66,6 +67,10 @@ class PresentationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPresentation::class);
+
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -124,7 +129,13 @@ class PresentationController extends Controller
         ]);
         // dd($input);
 
-        ResearchPresentation::create($input);
+        $presentation = ResearchPresentation::create($input);
+        $presentation->update([
+            'research_id' => $research->id,
+        ]);
+        
+        $string = str_replace(' ', '-', $presentation->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -135,7 +146,7 @@ class PresentationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RPres-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -143,6 +154,7 @@ class PresentationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 4,
                         'filename' => $fileName,
                     ]);
@@ -173,6 +185,12 @@ class PresentationController extends Controller
     public function edit( Research $research, ResearchPresentation $presentation)
     {
         $this->authorize('update', ResearchPresentation::class);
+        if(LockController::isLocked($presentation->id, 4)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -219,7 +237,12 @@ class PresentationController extends Controller
         
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
+        $presentation->update(['description' => '-clear']);
+
         $presentation->update($input);
+        
+        $string = str_replace(' ', '-', $presentation->description); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -230,7 +253,7 @@ class PresentationController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$request->input('research_code').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RPres-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -238,6 +261,7 @@ class PresentationController extends Controller
 
                     ResearchDocument::create([
                         'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
                         'research_form_id' => 4,
                         'filename' => $fileName,
                     ]);

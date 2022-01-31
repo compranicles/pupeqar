@@ -20,11 +20,25 @@
     </div>
 </div>
 
+<script src="{{ asset('dist/selectize.min.js') }}"></script>
+
 <script>
-    $('textarea').keypress(function(e){
+    $('#description').keypress(function(e){
         if (e.keyCode == 13) {
             // alert($('textarea').val());
             $('textarea').val($('textarea').val() + ', ');
         }
+    });
+</script>
+<script>
+    $("#description").selectize({
+        delimiter: ",",
+        persist: false,
+        create: function (input) {
+            return {
+            value: input,
+            text: input,
+            };
+        },
     });
 </script>

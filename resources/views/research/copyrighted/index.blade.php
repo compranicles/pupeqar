@@ -20,6 +20,11 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -133,11 +138,6 @@
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
-    <script>
-        $(function() {
-            $('#research').prop('disabled', true);
-        });
-    </script>
     <script>
         // auto hide alert
         window.setTimeout(function() {

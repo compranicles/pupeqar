@@ -12,6 +12,7 @@ class Report extends Model
 
     protected $fillable = [
         'user_id',
+        'sector_id',
         'college_id',
         'department_id',
         'report_category_id',
@@ -20,6 +21,8 @@ class Report extends Model
         'report_details',
         'report_documents',
         'report_date',
+        'researcher_approval',
+        'extensionist_approval',
         'chairperson_approval',
         'dean_approval',
         'sector_approval',

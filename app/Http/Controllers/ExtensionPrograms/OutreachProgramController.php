@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OutreachProgramDocument;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class OutreachProgramController extends Controller
 {
@@ -23,7 +24,9 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('viewAny', OutreachProgram::class);
 
-        $outreach_programs = OutreachProgram::where('user_id', auth()->id())->orderBy('updated_at', 'desc')->get();
+        $outreach_programs = OutreachProgram::where('user_id', auth()->id())
+                                ->select(DB::raw('outreach_programs.*, QUARTER(outreach_programs.updated_at) as quarter'))
+                                ->orderBy('outreach_programs.updated_at', 'desc')->get();
         return view('extension-programs.outreach-program.index', compact('outreach_programs'));
     }
 
@@ -60,6 +63,9 @@ class OutreachProgramController extends Controller
         $outreach = OutreachProgram::create($input);
         $outreach->update(['user_id' => auth()->id()]);
 
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -70,7 +76,7 @@ class OutreachProgramController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'OutreachProgram-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'OutreachProgram-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -118,6 +124,10 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('update', OutreachProgram::class);
 
+        if(LockController::isLocked($outreach_program->id, 22)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -144,7 +154,12 @@ class OutreachProgramController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $outreach_program->update(['description' => '-clear']);
+
         $outreach_program->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
         
         if($request->has('document')){
             
@@ -155,7 +170,7 @@ class OutreachProgramController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'OutreachProgram-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'OutreachProgram-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -182,6 +197,10 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('delete', OutreachProgram::class);
 
+        if(LockController::isLocked($outreach_program->id, 22)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+        
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();

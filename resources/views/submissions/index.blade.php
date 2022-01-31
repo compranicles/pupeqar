@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('submissions.navigation', compact('roles', 'department_id', 'college_id'))
+        @include('submissions.navigation', ['roles' => $roles, 'departments' => $departments_nav, 'colleges' => $colleges_nav, 'sectors' => $sectors_nav, 'departmentsResearch' => $departmentsResearch_nav, 'departmentsExtension' => $departmentsExtension_nav])
     </x-slot>
     <?php $ctr = 0; ?>
     @foreach ( $report_tables as $table)
@@ -21,6 +21,7 @@
                 <h5>
                     You have no new accomplishments to finalize so far.
                 </h5> 
+                <small>Submissions this quarter {{$quarter}} of <?php echo date('Y'); ?>: {{$totalReports}}</small>
             </div>
         </div>
     </div>
@@ -63,11 +64,37 @@
                 </div>
             </div>
         </div>
-
-        
-        <button class="btn btn-primary mb-3 mt-3" data-toggle="modal" data-target="#submitReportModal" id="submitReport" style="width: 100%;">Submit</button>
-        <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mt-1">Select All</label>
         <hr>
+        <button class="btn btn-primary mb-3 mt-3" data-toggle="modal" data-target="#submitReportModal" id="submitReport" style="width: 100%;">Submit</button>
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex flex-row">
+                            <div class="col-md-4 mt-3">
+                                <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mr-4">Select All</label>
+                                <!-- <a href="" role="button" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh Page</a> -->
+                            </div>
+                            <div class="col-md-8">
+                                <div class="d-flex">
+                                    <p class="mt-2 mr-2">College/Branch/Campus/Office: </p>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="all" {{ $collegeID == "all" ? 'selected' : '' }}>All</option>
+                                        @foreach($colleges as $college)
+                                        <option value="{{ $college->id }}" {{ $collegeID == $college->id ? 'selected' : '' }}>{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                                <!-- <button class="btn btn-secondary ml-1"><i class="bi bi-filter"></i></button> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         @endif
         @php
             $tableCount = 1;
@@ -92,19 +119,70 @@
                                         <th><input type="checkbox" id="table-{{ $tableCount }}" class="select-submit-table" data-id='{{ $tableCount }}' checked></th>
                                         <th>#</th>
                                         @if($table->id <= 7)
-                                        <th>Research Code</th>
-                                        @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 13 || $table->id == 15)
+                                        <th>Code</th>
                                         <th>Title</th>
+                                        <th>Classification</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 8)
+                                        <th>Title</th>
+                                        <th>Classification</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 9)
+                                        <th>Title</th>
+                                        <th>Classification</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 10)
+                                        <th>Publication/AVP</th>
+                                        <th>Classification</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 11)
+                                        <th>Title</th>
+                                        <th>Nature</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         @elseif($table->id == 12)
-                                        <th>Title of Extension Program</th>
-                                        <th>Title of Extension Project</th>
-                                        <th>Title of Extension Activity</th>
+                                        <th>Title</th>
+                                        <th>Nature of Involvement</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 13)
+                                        <th>Title</th>
+                                        <th>Nature of Collaboration</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         @elseif($table->id == 14)
-                                        <th>Host Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 15)
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>College/Branch/Campus/Office</th>
                                         @elseif($table->id == 16)
                                         <th>Course Title</th>
-                                        @else
-                                        <th>ID</th>
+                                        <th>Assigned Task</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 17)
+                                        <th>No. of Request</th>
+                                        <th>Description</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        @elseif($table->id == 18)
+                                        <th>Student Name</th>
+                                        <th>Award Name</th>
+                                        <th>Certifying Body</th>
+                                        @elseif($table->id == 19)
+                                        <th>Student Name</th>
+                                        <th>Title</th>
+                                        <th>Classification</th>
+                                        @elseif($table->id == 20)
+                                        <th>Name</th>
+                                        <th>Start Date</th>
+                                        @elseif($table->id == 21)
+                                        <th>Award Name</th>
+                                        <th>Certifying Body</th>
+                                        @elseif($table->id == 22)
+                                        <th>Program Title</th>
+                                        <th>Date</th>
+                                        @elseif($table->id == 23)
+                                        <th>Title</th>
+                                        <th>Classification of Adoptor</th>
                                         @endif
                                         <th>Date Last Accessed</th>
                                         <th>Reporting Status</th>
@@ -130,42 +208,175 @@
                                                 ></td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $loop->iteration }}</td>
                                             @if($table->id <= 7)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->research_code }}</td>
-                                            @elseif(($table->id >= 8 && $table->id <= 10) || $table->id == 15)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="{{ $row->id }}">{{ $row->research_code }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 8 )
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 9 )
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 10 )
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->nature_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 11 )
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->publication_or_audio_visual }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 12)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_program }}</td>
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_project }}</td>
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_extension_activity }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ ($row->title_of_extension_program != null ? $row->title_of_extension_program : ($row->title_of_extension_project != null ? $row->title_of_extension_project : ($row->title_of_extension_activity != null ? $row->title_of_extension_activity : ''))) }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->nature_of_involvement_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 13)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_partnership }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->collab_nature_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 14)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->host_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->mobility_description }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->type_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 15)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->category_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
                                             @elseif($table->id == 16)
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->course_title }}</td>
-                                            @else
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->id }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->assigned_task_name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 17)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->no_of_request }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->description_of_request }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->college_name }}</td>
+                                            @elseif($table->id == 18)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_student }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_award }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->certifying_body }}</td>
+                                            @elseif($table->id == 19)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_student }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
+                                            @elseif($table->id == 20)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->start_date }}</td>
+                                            @elseif($table->id == 21)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_award }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->certifying_body }}</td>
+                                            @elseif($table->id == 22)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title_of_the_program }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->date }}</td>
+                                            @elseif($table->id == 23)
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ ($row->program_title != null ? $row->program_title : ($row->project_title != null ? $row->project_title : ($row->activity_title != null ? $row->activity_title : ''))) }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_of_adoptor_name }}</td>
                                             @endif
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">
                                                 {{ date( 'M d, Y h:i A', strtotime($row->updated_at) ) }}
                                             </td>
                                             <td>
                                                 @isset($row->id)
+
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
-                                                        @if($table->id >= 1 && $table->id <= 7)
-                                                        <a href="{{ route('research.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                        @else
-                                                        <a href="{{ route('submissions.faculty.adddoc', [$row->id, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @if($table->id == 1)
+                                                        <a href="{{ route('research.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 2)
+                                                        <a href="/research/{{$row->research_id}}/completed/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 3)
+                                                        <a href="/research/{{$row->research_id}}/publication/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 4)
+                                                        <a href="/research/{{$row->research_id}}/presentation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 5)
+                                                        <a href="/research/{{$row->research_id}}/citation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 6)
+                                                        <a href="/research/{{$row->research_id}}/utilization/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 7)
+                                                        <a href="/research/{{$row->research_id}}/copyrighted/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 8)
+                                                        <a href="{{ route('invention-innovation-creative.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 9)
+                                                        <a href="{{ route('expert-service-as-consultant.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 10)
+                                                        <a href="{{ route('expert-service-in-conference.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 11)
+                                                        <a href="{{ route('expert-service-in-academic.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 12)
+                                                        <a href="{{ route('extension-service.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 13)
+                                                        <a href="{{ route('partnership.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 14)
+                                                        <a href="{{ route('mobility.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 15)
+                                                        <a href="{{ route('rtmmi.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 16)
+                                                        <a href="{{ route('syllabus.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 17)
+                                                        <a href="{{ route('request.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 18)
+                                                        <a href="{{ route('student-award.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 19)
+                                                        <a href="{{ route('student-training.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 20)
+                                                        <a href="{{ route('viable-project.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 21)
+                                                        <a href="{{ route('college-department-award.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 22)
+                                                        <a href="{{ route('outreach-program.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
+                                                        @elseif($table->id == 23)
+                                                        <a href="{{ route('technical-extension.edit', $row->id) }}#upload-document" target="_blank" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
                                                         @endif
                                                     @else
-                                                        <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
+                                                        @if($table->id == 1)
+                                                        <a href="{{ route('research.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 2)
+                                                        <a href="/research/{{$row->research_id}}/completed/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 3)
+                                                        <a href="/research/{{$row->research_id}}/publication/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 4)
+                                                        <a href="/research/{{$row->research_id}}/presentation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 5)
+                                                        <a href="/research/{{$row->research_id}}/citation/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 6)
+                                                        <a href="/research/{{$row->research_id}}/utilization/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 7)
+                                                        <a href="/research/{{$row->research_id}}/copyrighted/{{ $row->id }}/edit#upload-document" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 8)
+                                                        <a href="{{ route('invention-innovation-creative.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 9)
+                                                        <a href="{{ route('expert-service-as-consultant.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 10)
+                                                        <a href="{{ route('expert-service-in-conference.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 11)
+                                                        <a href="{{ route('expert-service-in-academic.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 12)
+                                                        <a href="{{ route('extension-service.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 13)
+                                                        <a href="{{ route('partnership.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 14)
+                                                        <a href="{{ route('mobility.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 15)
+                                                        <a href="{{ route('rtmmi.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 16)
+                                                        <a href="{{ route('syllabus.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 17)
+                                                        <a href="{{ route('request.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 18)
+                                                        <a href="{{ route('student-award.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 19)
+                                                        <a href="{{ route('student-training.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 20)
+                                                        <a href="{{ route('viable-project.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 21)
+                                                        <a href="{{ route('college-department-award.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 22)
+                                                        <a href="{{ route('outreach-program.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @elseif($table->id == 23)
+                                                        <a href="{{ route('technical-extension.show', $row->id) }}" target="_blank" class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</a>
+                                                        @endif
                                                     @endif
-                                                @else
-                                                    @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
-                                                        <a href="{{ route('research.adddoc', [$row->research_code, $table->id]) }}" class="badge rounded-pill bg-danger doc-incomplete" style="padding: 0.50rem; font-size: 0.75rem;">Missing Supporting Document</a>
-                                                    @else
-                                                        <span class="badge rounded-pill bg-success doc-complete" style="padding: 0.50rem; font-size: 0.75rem;">Completed</span>
-                                                    @endif
+
                                                 @endisset
                                             </td>
                                         </tr>
@@ -246,11 +457,11 @@
                             @foreach ($report_array[$table->id] as $row)
                                 @isset($row->id)
                                     @if ( count($report_document_checker[$table->id][$row->id]) > 0)
-                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*').','.($row->research_id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @else
                                     @if ( count($report_document_checker[$table->id][$row->research_code]) > 0)
-                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
+                                        <input id="report-{{ $count2 }}" type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*').','.($row->research_id ?? '*') }}" name="report_values[]">
                                     @endif
                                 @endisset
                                 @php
@@ -274,7 +485,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $('#adddocbutton').remove();
-        $('.report-view').on('click', function(){
+        $(document).on('click', '.report-view', function(){
             let catID = $(this).data('id');
             let rowID = $(this).data('code');
             let link = $(this).data('url');
@@ -516,6 +727,14 @@
                 $(this).remove(); 
             });
         }, 4000);
+    </script>
+    <script>
+        $('#collegeFilter').on('change', function () {
+            var collegeId = $('#collegeFilter').val();
+            var link = "{{ route('submissions.getCollege', ':collegeId') }}";
+            var newLink = link.replace(':collegeId', collegeId);
+            window.location.replace(newLink);
+        });
     </script>
     @endpush
 

@@ -25,7 +25,7 @@ class CollegeDepartmentAwardPolicy
         foreach ($roles as $role) {
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                            ->where('permissions.name', "manage awards received by college and department")
+                            ->where('permissions.name', "manage awards received by college, department, or office")
                         ->first();
 
             return $permission !== null ;

@@ -9,9 +9,11 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Models\ExpertServiceConsultantDocument;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Http\Controllers\Maintenances\LockController;
 
 class ConsultantController extends Controller
 {
@@ -23,14 +25,22 @@ class ConsultantController extends Controller
     public function index()
     {
         $this->authorize('viewAny', ExpertServiceConsultant::class);
+
+        $classifications = DropdownOption::where('dropdown_id', 14)->get();
         
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
-                                        ->select('expert_service_consultants.*', 'dropdown_options.name as classification_name')
+                                        ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')
+                                        ->select(DB::raw('expert_service_consultants.*, dropdown_options.name as classification_name, colleges.name as college_name, QUARTER(expert_service_consultants.updated_at) as quarter'))
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
+
+        $consultant_in_colleges = ExpertServiceConsultant::join('colleges', 'expert_service_consultants.college_id', 'colleges.id')
+                                ->select('colleges.name')
+                                ->distinct()
+                                ->get();
         
-        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant'));
+        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant', 'classifications', 'consultant_in_colleges'));
     }
 
     /**
@@ -66,12 +76,17 @@ class ConsultantController extends Controller
 
         $request->validate([
             'to' => 'after_or_equal:from',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConsultant = ExpertServiceConsultant::create($input);
         $esConsultant->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -82,7 +97,7 @@ class ConsultantController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConsultant-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESConsultant-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -131,6 +146,10 @@ class ConsultantController extends Controller
     {
         $this->authorize('update', ExpertServiceConsultant::class);
 
+        if(LockController::isLocked($expert_service_as_consultant->id, 9)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         // dd($expert_service_as_consultant);
@@ -139,8 +158,13 @@ class ConsultantController extends Controller
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
 
         $colleges = College::all();
+
+        $value = $expert_service_as_consultant;
+        $value->toArray();
+        $value = collect($expert_service_as_consultant);
+        $value = $value->toArray();
         
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges'));
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value'));
     }
 
     /**
@@ -159,11 +183,18 @@ class ConsultantController extends Controller
 
         $request->validate([
             'to' => 'after_or_equal:from',
+            'college_id' => 'required',
+            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
+        $expert_service_as_consultant->update(['description' => '-clear']);
+
         $expert_service_as_consultant->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -174,7 +205,7 @@ class ConsultantController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConsultant-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESConsultant-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -200,6 +231,10 @@ class ConsultantController extends Controller
     public function destroy(ExpertServiceConsultant $expert_service_as_consultant)
     {
         $this->authorize('delete', ExpertServiceConsultant::class);
+
+        if(LockController::isLocked($expert_service_as_consultant->id, 9)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -1,4 +1,4 @@
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3" id="upload-document">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
@@ -7,8 +7,8 @@
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
             multiple
-            data-max-file-size="5MB"
-            data-max-files="10"
+            data-max-file-size="50MB"
+            data-max-files="50"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             >
 
@@ -17,7 +17,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        <p class="mt-1"><small>Maximum size per file: 5MB. Maximum number of files: 10.</small></p>
+        <p class="mt-1"><small>Maximum size per file: 50MB. Maximum number of files: 50.</small></p>
         <p class="mt-n4"><small>Accepts PDF, JPEG, and PNG file formats.</small></p>
 
     </div>

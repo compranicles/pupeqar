@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TechnicalExtensionDocument;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
 
 class TechnicalExtensionController extends Controller
 {
@@ -22,7 +23,9 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
-        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())->orderBy('technical_extensions.updated_at', 'desc')->get();
+        $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
+                                ->select(DB::raw('technical_extensions.*, QUARTER(technical_extensions.updated_at) as quarter'))
+                                ->orderBy('technical_extensions.updated_at', 'desc')->get();
         return view('academic-development.technical-extension.index', compact('technical_extensions'));
     }
 
@@ -70,6 +73,10 @@ class TechnicalExtensionController extends Controller
 
         $technical_extension = TechnicalExtension::create($input);
         $technical_extension->update(['user_id' => auth()->id()]);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
         
         if($request->has('document')){
             
@@ -80,7 +87,7 @@ class TechnicalExtensionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'TechExtnPPA-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'TechExtnPPA-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -128,6 +135,10 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('update', TechnicalExtension::class);
 
+        if(LockController::isLocked($technical_extension->id, 23)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -167,7 +178,13 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
+        $technical_extension->update(['description' => '-clear']);
+
         $technical_extension->update($input);
+
+        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
+        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+        
         
         if($request->has('document')){
             
@@ -178,7 +195,7 @@ class TechnicalExtensionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'TechExtnPPA-'.$request->input('description').'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'TechExtnPPA-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -204,6 +221,10 @@ class TechnicalExtensionController extends Controller
     public function destroy(TechnicalExtension $technical_extension)
     {
         $this->authorize('delete', TechnicalExtension::class);
+
+        if(LockController::isLocked($technical_extension->id, 23)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');

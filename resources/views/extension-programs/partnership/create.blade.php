@@ -20,6 +20,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
+                                            <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
                                             <button type="submit" id="submit" class="btn btn-success">Submit</button>
                                         </div>
                                     </div>
@@ -77,8 +78,20 @@
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
-                var day = date.getDate();
+                if (date.getDate() <= 9) {
+                        var day = "0" + date.getDate();
+                }
+                else {
+                    var day = date.getDate();
+                }
+
                 var month = date.getMonth() + 1;
+                if (month <= 9) {
+                    month = "0" + month;
+                }
+                else {
+                    month = date.getMonth() + 1;
+                }
                 var year = date.getFullYear();
                 // alert([day, month, year].join('-'));
                 // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
