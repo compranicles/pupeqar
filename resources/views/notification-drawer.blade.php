@@ -2,6 +2,10 @@
     <tbody>
     </tbody>
 </table>
+</div>
+<div class="col-md-12 text-center see_all_div" style="border-top: 2px ridge rgba(169,169,169,0.1); padding-top: 10px;">
+    <a href="{{ route('notif.all') }}" id="see_all_notif_link">See all notifications</a>
+</div>
 
 {{-- Data that Can be Displayed --}}
     {{-- 
@@ -57,7 +61,7 @@
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">received</span> your '+item.data.category_name+' accomplishment.'+
                                 '</a>' +
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
@@ -66,7 +70,7 @@
                         else if(item.data.accomplishment_type == 'department'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
                                 '</a>'+
@@ -76,7 +80,7 @@
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '</a>'+
@@ -88,7 +92,7 @@
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">returned</span> your '+item.data.category_name+' accomplishment.'+
                                 '</a>' +
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
@@ -97,7 +101,7 @@
                         else if(item.data.accomplishment_type == 'department'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
                                 '</a>' +
@@ -107,7 +111,7 @@
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '</a>'+
@@ -119,7 +123,7 @@
                     else if(item.data.type == 'invite'){
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' invited you as Co-Researcher in a Research titled : "'+item.data.title+'"'+
                                 '</a>'+
                                 '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm btn-primary mr-2">Confirm</a>'+
@@ -130,7 +134,7 @@
                     else if(item.data.type == 'confirm'){
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message " style="color: #EDE9E8;">'+
+                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
                                 item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
                                 '</a>'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
@@ -150,7 +154,8 @@
                 if(countALL == 0){
                     $('#notification_nav_table').append('<tr id="notification-empty" class="notification-content"></tr>');
                     $('#notification-empty')
-                        .append('<td class="notification-content text-center " style="color: #EDE9E8;">No Notifications</td>');
+                        .append('<td class="notification-content text-center text-dark">No Notifications</td>');
+                        $('.see_all_div').remove();
                 }
 
                 $('#notificationCounter').text(countUnread);

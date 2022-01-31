@@ -13320,7 +13320,7 @@ table tr .padding_left_show {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
-  background-color: #212528;
+  background-color: #fff;
 }
 
 /* nav li:hover .menu-sub {
@@ -13343,22 +13343,53 @@ table tr .padding_left_show {
 .notif-scrollable {
   max-height: calc(80vh - 3.5rem);
   overflow: auto;
+  scrollbar-width: thin;
 }
 .notif-scrollable .notification-content {
   max-height: calc(100vh - 3.5rem);
 }
 
 #see_all_notif_link {
-  color: var(--white);
+  color: #343a40;
 }
 
 
 #see_all_notif_link:hover {
-  color: var(--white);
+  color: #343a40;
   filter: brightness(0.85);
 }
 
 #notificationLink.active {
   border: none;
   color: #eeb510;
+}
+
+/* .notif-scrollable::-webkit-scrollbar {
+  display: none;
+} */
+
+/* Hide scrollbar for IE, Edge and Firefox */
+/* .notif-scrollable {
+  -ms-overflow-style: none;  
+} */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #EDE9E8; 
+  border-radius: 0.40em;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #999; 
 }

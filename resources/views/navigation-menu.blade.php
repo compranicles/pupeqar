@@ -103,10 +103,7 @@
                             <div class="row">
                                 <div class="col-md-12 notif-scrollable">
                                     @include('notification-drawer')
-                                </div>
-                                <div class="col-md-12 text-center" style="border-top: 2px ridge rgba(169,169,169,0.1); padding-top: 10px;">
-                                    <a href="{{ route('notif.all') }}" id="see_all_notif_link">See all notifications</a>
-                                </div>
+                                
                             </div>
                         </div>
                     </li>
