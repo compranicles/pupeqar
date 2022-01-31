@@ -13337,7 +13337,7 @@ table tr .padding_left_show {
 
 .notifDiv table tbody tr:hover {
   border-radius: 0.25rem;
-  background-color: rgba(169,169,169,0.1);
+  background-color: rgba(169,169,169,0.16);
 }
 
 .notif-scrollable {
