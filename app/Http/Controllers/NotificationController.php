@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Notification\ReturnNotification;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends Controller
 {
@@ -24,5 +26,11 @@ class NotificationController extends Controller
         $user->unreadNotifications()->update(['read_at' => now()]);
         
         return true;
+    }
+
+    public function seeAll() {
+        // $notifications = DB::table('notifications')->where('notifiable_id', auth()->id())->orderBy('created_at')->get();
+        // dd($notifications);
+        return view('notification-see-all');
     }
 }

@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function() {
     //notifications:
     Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
     Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
+    Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
 
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
@@ -350,6 +351,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 
     Route::get('/submissions/college/{collegeId}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'getCollege'])->name('submissions.getCollege');
+
     // admin routes
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
 

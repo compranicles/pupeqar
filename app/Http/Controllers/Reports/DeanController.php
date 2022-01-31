@@ -266,7 +266,8 @@ class DeanController extends Controller
         $url = '';
         $acc_type = '';
         if($report->report_category_id > 16 ){
-            $url = route('submissions.departmentaccomp.index', $report->department_id);
+            $url = route('report.manage', [$report_id, $report->report_category_id]);
+            // $url = route('submissions.departmentaccomp.index', $report->department_id);
             $acc_type="department";
 
             $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -286,7 +287,8 @@ class DeanController extends Controller
             ];
         }
         else{
-            $url = route('submissions.myaccomp.index');
+            $url = route('report.manage', [$report_id, $report->report_category_id]);
+            // $url = route('submissions.myaccomp.index');
             $acc_type = 'individual';
 
             $notificationData = [
@@ -413,7 +415,8 @@ class DeanController extends Controller
             $url = '';
             $acc_type = '';
             if($report->report_category_id > 16 ){
-                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $url = route('report.manage', [$report_id, $report->report_category_id]);
+                // $url = route('submissions.departmentaccomp.index', $report->department_id);
                 $acc_type="department";
 
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -433,7 +436,8 @@ class DeanController extends Controller
                 ];
             }
             else{
-                $url = route('submissions.myaccomp.index');
+                $url = route('report.manage', [$report_id, $report->report_category_id]);
+                // $url = route('submissions.myaccomp.index');
                 $acc_type = 'individual';
 
                 $notificationData = [
