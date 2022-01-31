@@ -250,7 +250,9 @@ class ChairpersonController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+
+        $url = route('report.manage', [$report_id, $report->report_category_id]);
+        // $url = route('submissions.myaccomp.index');
 
 
         $notificationData = [
@@ -344,7 +346,8 @@ class ChairpersonController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('report.manage', [$report_id, $report->report_category_id]);
+            // $url = route('submissions.myaccomp.index');
 
 
             $notificationData = [

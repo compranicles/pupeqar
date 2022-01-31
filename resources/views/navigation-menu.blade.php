@@ -97,14 +97,20 @@
 
                 <!-- Settings Dropdown -->
                 @auth
-                    <x-jet-dropdown id="notificationDropdown" class="mr-2">
-                        <x-slot name="trigger">
-                            <i class="fas fa-bell"></i> <span class="badge badge-light" id="notificationCounter">0</span>
-                        </x-slot>
-                        <x-slot name="content">
-                            @include('notification-drawer')
-                        </x-slot>
-                    </x-jet-dropdown>
+                    <li class="nav-item" id="notificationDropdown">
+                        <a id="notificationLink" class="nav-link" role="button"><i class="fas fa-bell"></i> <span class="badge badge-light" id="notificationCounter">0</span></a>
+                        <div class="notifDiv animate slideIn dropdown-menu-right">
+                            <div class="row">
+                                <div class="col-md-12 notif-scrollable">
+                                    @include('notification-drawer')
+                                </div>
+                                <div class="col-md-12 text-center" style="border-top: 2px ridge rgba(169,169,169,0.1); padding-top: 10px;">
+                                    <a href="{{ route('notif.all') }}" id="see_all_notif_link">See all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
                     <x-jet-dropdown id="settingsDropdown">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -177,6 +183,41 @@
                     // the click occured outside
                     if (!$(event.target).closest('.menu-sub').length) {
                         menuContent.style.display="";
+                    }      
+                }  
+            });
+        </script>
+        <script>
+            let notifBtn = document.querySelector('#notificationDropdown');
+            let notifContent = document.querySelector('.notifDiv');
+            let notifTable = document.querySelectorAll('.notifDiv td');
+            notifBtn.addEventListener('click',()=>{
+                if (notifContent.style.display===""){
+                    notifContent.style.display="block";
+                    notifContent.style.cssFloat="none";
+                } else {
+                    notifContent.style.display="";
+                }
+            });
+            notifContent.addEventListener('click', ()=>{
+                if (notifContent.style.display===""){
+                    notifContent.style.display="block";
+                } else {
+                    notifContent.style.display="";
+                }
+            });
+
+            for(var i=0; i < notifTable.length; i++) {
+                notifTable[i].addEventListener('click', ()=>{
+                    notifContent.style.display="";
+                });
+            }
+
+            $(document).click((event) => {
+                if (!$(event.target).closest('#notificationDropdown').length) {
+                    // the click occured outside
+                    if (!$(event.target).closest('.notifDiv').length) {
+                        notifContent.style.display="";
                     }      
                 }  
             });

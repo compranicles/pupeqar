@@ -241,7 +241,8 @@ class IpqmsoController extends Controller
         if($report->report_category_id > 16 ){
 
             if($report->department_id == 0){
-                $url = route('submissions.collegeaccomp.index', $report->college_id);
+                $url = route('report.manage', [$report_id, $report->report_category_id]);
+                // $url = route('submissions.collegeaccomp.index', $report->college_id);
                 $acc_type="college";
 
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -261,7 +262,8 @@ class IpqmsoController extends Controller
                 ];
             }
             else{
-                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $url = route('report.manage', [$report_id, $report->report_category_id]);
+                // $url = route('submissions.departmentaccomp.index', $report->department_id);
                 $acc_type="department";
 
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -283,7 +285,8 @@ class IpqmsoController extends Controller
             
         }
         else{
-            $url = route('submissions.myaccomp.index');
+            $url = route('report.manage', [$report_id, $report->report_category_id]);
+            // $url = route('submissions.myaccomp.index');
             $acc_type = 'individual';
 
             $notificationData = [
@@ -422,7 +425,8 @@ class IpqmsoController extends Controller
             if($report->report_category_id > 16 ){
 
                 if($report->department_id == 0){
-                    $url = route('submissions.collegeaccomp.index', $report->college_id);
+                    $url = route('report.manage', [$report_id, $report->report_category_id]);
+                    // $url = route('submissions.collegeaccomp.index', $report->college_id);
                     $acc_type="college";
 
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -442,7 +446,8 @@ class IpqmsoController extends Controller
                     ];
                 }
                 else{
-                    $url = route('submissions.departmentaccomp.index', $report->department_id);
+                    $url = route('report.manage', [$report_id, $report->report_category_id]);
+                    // $url = route('submissions.departmentaccomp.index', $report->department_id);
                     $acc_type="department";
 
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -464,7 +469,8 @@ class IpqmsoController extends Controller
                 
             }
             else{
-                $url = route('submissions.myaccomp.index');
+                $url = route('report.manage', [$report_id, $report->report_category_id]);
+                // $url = route('submissions.myaccomp.index');
                 $acc_type = 'individual';
 
                 $notificationData = [

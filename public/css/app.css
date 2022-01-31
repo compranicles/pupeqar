@@ -13294,3 +13294,71 @@ table tr .padding_left_show {
 #my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table {
   font-size: 12.5px;
 }
+
+/**********************NOTIFICATION*****************************/
+.nav-link #notificationDropdown {
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  
+}
+
+.nav-link #notificationDropdown:hover {
+  color: rgba(0, 0, 0, 0.7);
+  border-radius: 0.25rem;
+}
+
+.notifDiv {
+  position: absolute;
+  background: white;
+  width: 25%;
+  display: none;
+  padding: 1em;
+  /* left: 0; */
+  float: right;
+  margin-right: 4.50em;
+  margin-top: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2);
+  border-radius: 0.25rem;
+  background-color: #212528;
+}
+
+/* nav li:hover .menu-sub {
+  display: block;
+  float: none;
+} */
+
+.notifDiv table tbody tr td {
+  display: block;
+  padding-bottom: .70em;
+  font-size: 14px;
+  /* color: gray; */
+}
+
+.notifDiv table tbody tr:hover {
+  border-radius: 0.25rem;
+  background-color: rgba(169,169,169,0.1);
+}
+
+.notif-scrollable {
+  max-height: calc(80vh - 3.5rem);
+  overflow: auto;
+}
+.notif-scrollable .notification-content {
+  max-height: calc(100vh - 3.5rem);
+}
+
+#see_all_notif_link {
+  color: var(--white);
+}
+
+
+#see_all_notif_link:hover {
+  color: var(--white);
+  filter: brightness(0.85);
+}
+
+#notificationLink.active {
+  border: none;
+  color: #eeb510;
+}
