@@ -21,66 +21,78 @@
                     <h5>{{ $department->name }} - Consolidated Accomplishments</h5>
                     <hr>
                 </div>
-                <hr>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="reportFilter" class="mr-2">Accomplishment: </label>
-                        <div class="d-flex">
-                            @include('submissions.accomplishment-filter')
-                        </div>
-                    </div>
-                    <span style="display: inline-block;
-                            border-right: 1px solid #ccc;
-                            margin: 0px 20px 0px 20px;;
-                            height: 65px;"></span>
-                    <div class="col-md-3">
-                        <label for="yearFilter" class="mr-2">Year Reported: </label>
-                        <select id="yearFilter" class="custom-select">
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="reportFilter" class="mr-2">Accomplishment: </label>
+                    <div class="d-flex">
+                        <!-- @include('submissions.accomplishment-filter') -->
+                        <select name="report" id="reportFilter" class="custom-select">
+                            <option value="">Show All</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                        <div class="d-flex">
-                            <select id="quarterFilter" class="custom-select" name="quarter">
-                                <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
-                            </select>
-                            <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="empFilter" class="mr-2">Employee: </label>
+                        <select name="emp" id="empFilter" class="custom-select">
+                            <option value="">Show All</option>
+                        </select>
+                </div>
+                <span style="display: inline-block;
+                        border-right: 1px solid #ccc;
+                        margin: 0px 20px 0px 20px;;
+                        height: 65px;"></span>
+                <div class="col-md-2">
+                    <label for="yearFilter" class="mr-2">Year Reported: </label>
+                    <select id="yearFilter" class="custom-select">
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                    <div class="d-flex">
+                        <select id="quarterFilter" class="custom-select" name="quarter">
+                            <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                            <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                            <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                            <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                        </select>
+                        <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
                     </div>
                 </div>
-                <hr>
+            </div>
+            <hr>
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responive">
+                    <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
                         <table class="table table-hover table-sm table-bordered" id="department_accomplishments_table">
-                            <thead class="text-center">
+                            <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
+                                    <th rowspan="2"></th>
                                     <th rowspan="2">Accomplishment Report</th>
-                                    <th rowspan="2">College/Branch/Campus/Office</th>
-                                    <th rowspan="2">Department</th>
-                                    <th colspan="6">Status</th>
-                                    <th rowspan="2">Remarks</th>
+                                    <th rowspan="2">Employee</th>
+                                    <th rowspan="2">College/Branch/<br>Campus/Office</th>
+                                    <!-- <th rowspan="2">Department</th> -->
+                                    <th class="text-center" colspan="6">Status</th>
+                                    <th rowspan="2"></th>
                                 </tr>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Researcher</th>
                                     <th>Extensionist</th>
                                     <th>Chairperson</th>
-                                    <th>Dean/Director</th>
+                                    <th>Dean/<br>Director</th>
                                     <th>Sector Head</th>
                                     <th>IPQMSO</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
+                            <tbody>
                                 @forelse ($department_accomps as $row)
                                 <tr role="button">
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name ?? '-' }}</td>
+                                    {{--<td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name }}</td>--}}
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if ($row->researcher_approval == null)
                                                 Receiving...
@@ -90,10 +102,9 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id == 12)
                                             @if ($row->extensionist_approval == null)
                                                 Receiving...
@@ -103,10 +114,9 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if ($row->researcher_approval == null)
                                                 -
@@ -145,7 +155,7 @@
                                             @endif
                                         @endif     
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->chairperson_approval === 0)
                                             -
                                         @elseif ($row->chairperson_approval === null)
@@ -160,7 +170,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->dean_approval === 0)
                                             -
                                         @elseif ($row->dean_approval === null)
@@ -175,7 +185,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->sector_approval === 0)
                                             -
                                         @elseif ($row->sector_approval === null)
@@ -190,7 +200,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if (
                                                 $row->researcher_approval === 0 ||
@@ -199,7 +209,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
+                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif
@@ -211,7 +221,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
+                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif
@@ -222,32 +232,20 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny btn btn-primary btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
-
+                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
-                                        @if (
-                                                $row->chairperson_approval === 0 ||
-                                                $row->dean_approval === 0 ||
-                                                $row->sector_approval === 0 ||
-                                                $row->ipqmso_approval === 0
-                                            )
-                                            <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text"></i> Remarks</button>
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-
-                            </tr>
+                                </tr>
                             @empty
                                 
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
                 </div>
             </div>
         </div>
@@ -327,7 +325,47 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $('.button-view').on('click', function(){
+            var table = $('#department_accomplishments_table').DataTable({
+                initComplete: function () {
+                this.api().columns(2).every( function () {
+                    var column = this;
+                    var select = $('#empFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(1).every( function () {
+                    var column = this;
+                    var select = $('#reportFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                }
+            });
+
+            $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
                 
@@ -349,7 +387,7 @@
                 
             });
 
-            $('.button-deny').on('click', function () {
+            $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
             
                 $.get('/reports/reject-details/'+categoryID, function(data){
@@ -372,9 +410,6 @@
                 $('#deny-details').remove();
                 $('.report-content').remove();
             });
-            $(function(){
-                $('#department_accomplishments_table').DataTable();
-            });
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -396,6 +431,58 @@
                     document.getElementById("yearFilter").value = i;
                 }
             }
+        </script>
+        <script>
+            function received() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        // table.columns().search('').draw();
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Received")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+
+            }
+        </script>
+        <script>
+             function showall() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                table.draw();
+            }
+        </script>
+        <script>
+            function returned() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Returned")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+            }
+        </script>
+        <script>
+            $('#filter').on('click', function () {
+                var year_reported = $('#yearFilter').val();
+                var quarter = $('#quarterFilter').val();
+                var link = "/submissions/department-accomplishments/departmentReportYearFilter/:department/:year/:quarter";
+                var newLink = link.replace(':department', "{{$departments[0]->department_id}}").replace(':year', year_reported).replace(':quarter', quarter);
+                window.location.replace(newLink);
+            });
         </script>
     @endpush
 </x-app-layout>

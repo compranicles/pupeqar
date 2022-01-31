@@ -31,8 +31,15 @@
                                 <a href="{{ route('research.create') }}" class="btn btn-success mr-1">
                                     <i class="fas fa-plus"></i> Add Research
                                 </a>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+                                {{-- <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#addModal">
                                      Use Research Code
+                                </button> --}}
+                                <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
+                                    Invites @if (count($invites) != 0)
+                                                <span class="badge badge-light">{{ count($invites) }}</span>
+                                            @else
+                                                <span class="badge badge-light">0</span>
+                                            @endif
                                 </button>
                                 <hr>
                             </div>
@@ -155,6 +162,8 @@
     </div>
 
     @include('research.research-code')
+    @include('research.invite-researchers.modal', compact('invites'))
+
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>

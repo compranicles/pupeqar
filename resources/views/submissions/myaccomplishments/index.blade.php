@@ -28,7 +28,9 @@
                         <div class="col-md-3">
                             <label for="reportFilter" class="mr-2">Accomplishment: </label>
                             <div class="d-flex">
-                                @include('submissions.accomplishment-filter')
+                                <select name="report" id="reportFilter" class="custom-select">
+                                    <option value="">Show All</option>
+                                </select>
                             </div>
                         </div>
                         <span style="display: inline-block;
@@ -54,198 +56,200 @@
                         </div>
                     </div>
                     <hr>
-                </div>
-                <div class="col-md-12">
-                    <div class="table-responive">
-                        <table class="table table-hover table-sm table-bordered" id="my_accomplishments_table">
-                            <thead class="text-center">
-                                <tr>
-                                    <th rowspan="2">#</th>
-                                    <th rowspan="2">Accomplishment Report</th>
-                                    <th rowspan="2">College/Branch/Campus/Office</th>
-                                    <th rowspan="2">Department</th>
-                                    <th colspan="6">Status</th>
-                                    <th rowspan="2">Remarks</th>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
+                                <table class="table table-hover table-sm table-bordered" id="my_accomplishments_table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" rowspan="2"></th>
+                                            <th rowspan="2">Accomplishment Report</th>
+                                            <th rowspan="2">College/Branch/<br>Campus/Office</th>
+                                            <th rowspan="2">Department</th>
+                                            <th class="text-center" colspan="6">Status</th>
+                                            <th rowspan="2"></th>
 
-                                </tr>
-                                <tr>
-                                    <th>Researcher</th>
-                                    <th>Extensionist</th>
-                                    <th>Chairperson</th>
-                                    <th>Dean/Director</th>
-                                    <th>Sector Head</th>
-                                    <th>IPQMSO</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-center">
-                                @forelse ($my_accomplishments as $row)
-                                <tr role="button">
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
-                                            @if ($row->researcher_approval === null)
-                                                Receiving...
-                                            @elseif ($row->researcher_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->researcher_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @else
-                                            n/a
-                                        @endif
-                                    </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id == 12)
-                                            @if ($row->extensionist_approval === null)
-                                                Receiving...
-                                            @elseif ($row->extensionist_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->extensionist_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @else
-                                            n/a
-                                        @endif
-                                    </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
-                                            @if ($row->researcher_approval === null)
-                                                -
-                                            @elseif ($row->researcher_approval === 0)
-                                                -
-                                            @else
-                                                @if ($row->chairperson_approval === null)
-                                                    Receiving...
-                                                @elseif ($row->chairperson_approval === 0)
-                                                    <span class="text-danger font-weight-bold">Returned</span>
-                                                @elseif ($row->chairperson_approval === 1)
-                                                    <span class="text-success font-weight-bold">Received</span>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th>Researcher</th>
+                                            <th>Extensionist</th>
+                                            <th>Chairperson</th>
+                                            <th>Dean/<br>Director</th>
+                                            <th>Sector Head</th>
+                                            <th>IPQMSO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse ($my_accomplishments as $row)
+                                        <tr role="button">
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name ?? '-' }}</td>
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                                    @if ($row->researcher_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->researcher_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->researcher_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @else
+                                                    
                                                 @endif
-                                            @endif
-                                        @elseif ($row->report_category_id == 12)
-                                            @if ($row->extensionist_approval === null)
-                                                -
-                                            @elseif ($row->extensionist_approval === 0)
-                                                -
-                                            @else
-                                                @if ($row->chairperson_approval === null)
-                                                    Receiving...
-                                                @elseif ($row->chairperson_approval === 0)
-                                                    <span class="text-danger font-weight-bold">Returned</span>
-                                                @elseif ($row->chairperson_approval === 1)
-                                                    <span class="text-success font-weight-bold">Received</span>
+                                            </td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->report_category_id == 12)
+                                                    @if ($row->extensionist_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->extensionist_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->extensionist_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @else
+                                                    
                                                 @endif
-                                            @endif
-                                        @else
-                                            @if ($row->chairperson_approval === null)
-                                                Receiving...
-                                            @elseif ($row->chairperson_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->chairperson_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @endif          
-                                    </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->chairperson_approval === 0)
-                                            -
-                                        @elseif ($row->chairperson_approval === null)
-                                            -
-                                        @else
-                                            @if ($row->dean_approval === null)
-                                                Receiving...
-                                            @elseif ($row->dean_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->dean_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->dean_approval === 0)
-                                            -
-                                        @elseif ($row->dean_approval === null)
-                                            -
-                                        @else
-                                            @if ($row->sector_approval === null)
-                                                Receiving...
-                                            @elseif ($row->sector_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->sector_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->sector_approval === 0)
-                                            -
-                                        @elseif ($row->sector_approval === null)
-                                            -
-                                        @else
-                                            @if ($row->ipqmso_approval === null)
-                                                Receiving...
-                                            @elseif ($row->ipqmso_approval === 0)
-                                                <span class="text-danger font-weight-bold">Returned</span>
-                                            @elseif ($row->ipqmso_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
-                                            @endif
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
-                                            @if (
-                                                $row->researcher_approval === 0 ||
-                                                $row->chairperson_approval === 0 ||
-                                                $row->dean_approval === 0 ||
-                                                $row->sector_approval === 0 ||
-                                                $row->ipqmso_approval === 0
-                                            )
-                                                <button class="button-deny btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
-                                                <br>
-                                                <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="btn btn-warning btn-sm text-dark" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
-                                            @else
-                                                -
-                                            @endif
-                                        @elseif ($row->report_category_id == 12)
-                                            @if (
-                                                $row->extensionist_approval === 0 ||
-                                                $row->chairperson_approval === 0 ||
-                                                $row->dean_approval === 0 ||
-                                                $row->sector_approval === 0 ||
-                                                $row->ipqmso_approval === 0
-                                            )
-                                                <button class="button-deny btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
-                                                <br>
-                                                <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="btn btn-warning btn-sm text-dark" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
-                                            @else
-                                                -
-                                            @endif
-                                        @else
-                                            @if (
-                                                $row->chairperson_approval === 0 ||
-                                                $row->dean_approval === 0 ||
-                                                $row->sector_approval === 0 ||
-                                                $row->ipqmso_approval === 0
-                                            )
-                                                <button class="button-deny btn btn-primary btn-sm mb-1" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}">Remarks</button>
-                                                <br>
-                                                <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="btn btn-warning btn-sm text-dark" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
-                                            @else
-                                                -
-                                            @endif
-                                        @endif
-                                        
-                                    </td>
+                                            </td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                                    @if ($row->researcher_approval === null)
+                                                        -
+                                                    @elseif ($row->researcher_approval === 0)
+                                                        -
+                                                    @else
+                                                        @if ($row->chairperson_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->chairperson_approval === 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->chairperson_approval === 1)
+                                                            <span class="text-success font-weight-bold">Received</span>
+                                                        @endif
+                                                    @endif
+                                                @elseif ($row->report_category_id == 12)
+                                                    @if ($row->extensionist_approval === null)
+                                                        -
+                                                    @elseif ($row->extensionist_approval === 0)
+                                                        -
+                                                    @else
+                                                        @if ($row->chairperson_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->chairperson_approval === 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->chairperson_approval === 1)
+                                                            <span class="text-success font-weight-bold">Received</span>
+                                                        @endif
+                                                    @endif
+                                                @else
+                                                    @if ($row->chairperson_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->chairperson_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->chairperson_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @endif          
+                                            </td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->chairperson_approval === 0)
+                                                    -
+                                                @elseif ($row->chairperson_approval === null)
+                                                    -
+                                                @else
+                                                    @if ($row->dean_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->dean_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->dean_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->dean_approval === 0)
+                                                    -
+                                                @elseif ($row->dean_approval === null)
+                                                    -
+                                                @else
+                                                    @if ($row->sector_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->sector_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->sector_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                                @if ($row->sector_approval === 0)
+                                                    -
+                                                @elseif ($row->sector_approval === null)
+                                                    -
+                                                @else
+                                                    @if ($row->ipqmso_approval === null)
+                                                        Receiving...
+                                                    @elseif ($row->ipqmso_approval === 0)
+                                                        <span class="text-danger font-weight-bold">Returned</span>
+                                                    @elseif ($row->ipqmso_approval === 1)
+                                                        <span class="text-success font-weight-bold">Received</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                                    @if (
+                                                        $row->researcher_approval === 0 ||
+                                                        $row->chairperson_approval === 0 ||
+                                                        $row->dean_approval === 0 ||
+                                                        $row->sector_approval === 0 ||
+                                                        $row->ipqmso_approval === 0
+                                                    )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        <br>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                    @else
+                                                        -
+                                                    @endif
+                                                @elseif ($row->report_category_id == 12)
+                                                    @if (
+                                                        $row->extensionist_approval === 0 ||
+                                                        $row->chairperson_approval === 0 ||
+                                                        $row->dean_approval === 0 ||
+                                                        $row->sector_approval === 0 ||
+                                                        $row->ipqmso_approval === 0
+                                                    )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        <br>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                    @else
+                                                        -
+                                                    @endif
+                                                @else
+                                                    @if (
+                                                        $row->chairperson_approval === 0 ||
+                                                        $row->dean_approval === 0 ||
+                                                        $row->sector_approval === 0 ||
+                                                        $row->ipqmso_approval === 0
+                                                    )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        <br>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                    @else
+                                                        -
+                                                    @endif
+                                                @endif
+                                                
+                                            </td>
 
-                                </tr>
-                                @empty
-                                    
-                                @endforelse
-                            </tbody>
-                        </table>
+                                        </tr>
+                                        @empty
+                                            
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>   
@@ -327,7 +331,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $('.button-view').on('click', function(){
+             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
                 
@@ -349,7 +353,7 @@
                 
             });
 
-            $('.button-deny').on('click', function () {
+            $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
             
                 $.get('/reports/reject-details/'+categoryID, function(data){
@@ -407,47 +411,69 @@
             });
         </script>
         <script>
-            var table =  $("#my_accomplishments_table").DataTable();
-
-            var reportIndex = 0;
-            $("#my_accomplishments_table th").each(function (i) {
-                if ($($(this)).html() == "Accomplishment Report") {
-                    reportIndex = i; return false;
-
+            var table =  $("#my_accomplishments_table").DataTable({
+                initComplete: function () {
+                this.api().columns(1).every( function () {
+                    var column = this;
+                    var select = $('#reportFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
                 }
             });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    let selectedItem = $('#reportFilter').val();
-                    var report = data[reportIndex];
-                    if (selectedItem === "" || report.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            $("#reportFilter").change(function (e) {
-                table.draw();
-            });
-
-            table.draw();
-            
         </script>
         <script>
             function received() {
-                table.columns(5).search("Received", true, false, true).draw();
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        // table.columns().search('').draw();
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Received")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+
             }
         </script>
         <script>
              function showall() {
-                table.columns().search('').draw();
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                table.draw();
             }
         </script>
         <script>
             function returned() {
-                table.columns(5).search("Returned", true, false, true).draw();
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Returned")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
             }
         </script>
     @endpush

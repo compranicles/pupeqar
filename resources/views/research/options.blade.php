@@ -9,7 +9,7 @@
             data-toggle="modal" data-target="#removeModal">Remove Research</button>
         {{-- <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button> --}}
     @else
-        <a class="dropdown-item" href="{{ route('research.manage-researchers', $research->research_code) }}">Manage Researchers</a>
+        {{-- <a class="dropdown-item" href="{{ route('research.manage-researchers', $research->research_code) }}">Manage Researchers</a> --}}
         @switch($research_status)
             @case('26')
                 <a class="dropdown-item" href="{{ route('research.edit', $research_id) }}">Edit Research Info</a>

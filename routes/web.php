@@ -34,6 +34,11 @@ Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileControl
 
 // auth checker
 Route::group(['middleware' => 'auth'], function() {
+            
+    //notifications:
+    Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
+    Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
+
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');
@@ -143,8 +148,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/research/remove-document/{filename}', [\App\Http\Controllers\Research\ResearchController::class, 'removeDoc'])->name('research.removedoc');
     
     Route::post('/research/with-code', [\App\Http\Controllers\Research\ResearchController::class, 'useResearchCode'])->name('research.code');
-    Route::get('/research/with-code/create/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'addResearch'])->name('research.code.create');
-    Route::post('/research/with-code/save/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'saveResearch'])->name('research.code.save');
+    Route::get('/research/with-code/create/{research_id}', [\App\Http\Controllers\Research\ResearchController::class, 'addResearch'])->name('research.code.create');
+    Route::post('/research/with-code/save/{research_id}', [\App\Http\Controllers\Research\ResearchController::class, 'saveResearch'])->name('research.code.save');
     Route::get('/research/retrieve/{research_code}',  [\App\Http\Controllers\Research\ResearchController::class, 'retrieve'])->name('research.retrieve');
     Route::post('/research/edit-non-lead/{research}',  [\App\Http\Controllers\Research\ResearchController::class, 'updateNonLead'])->name('research.update-non-lead');
     Route::get('/research/manage-researchers/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'manageResearchers'])->name('research.manage-researchers');
@@ -152,6 +157,11 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/research/manage-researchers/remove-researcher/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'removeResearcher'])->name('research.remove-researcher');
     Route::get('/research/manage-researchers/remove-self/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'removeSelf'])->name('research.remove-self');
     Route::post('/research/manage-researchers/return-researcher/{research_code}', [\App\Http\Controllers\Research\ResearchController::class, 'returnResearcher'])->name('research.return-researcher');
+    Route::get('/research/{research_id}/invite', [\App\Http\Controllers\Research\InviteController::class, 'index'])->name('research.invite.index');
+    Route::post('/research/{research_id}/invite/add', [\App\Http\Controllers\Research\InviteController::class, 'add'])->name('research.invite.add');
+    Route::post('/research/{research_id}/invite/remove', [\App\Http\Controllers\Research\InviteController::class, 'remove'])->name('research.invite.remove');
+    Route::get('/research/{research_id}/invite/cancel', [\App\Http\Controllers\Research\InviteController::class, 'cancel'])->name('research.invite.cancel');
+    Route::get('/research/{research_id}/invite/confirm', [\App\Http\Controllers\Research\InviteController::class, 'confirm'])->name('research.invite.confirm');
 
     //FACULTY: research
 
@@ -245,6 +255,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getColumnDataPerReportCategory']);
     Route::get('/reports/tables/data/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getTableDataPerColumnCategory']);
     Route::get('/reports/tables/data/documents/{id}/{code}', [\App\Http\Controllers\Reports\ReportController::class, 'getDocuments']);
+    Route::get('/reports/report-category/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getReportCategory']);
     Route::get('/reports/data/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getReportData']);
     Route::get('/reports/docs/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getDocumentsUsingId']);
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getRejectDetails']);
@@ -327,11 +338,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/my-accomplishments', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'index'])->name('submissions.myaccomp.index');
     Route::get('/submissions/my-accomplishments/submissionYearFilter/{year}/{quarter}', [\App\Http\Controllers\Submissions\MySubmissionController::class, 'submissionYearFilter'])->name('submissions.myaccomp.yearFilter');
     Route::get('/submissions/department-accomplishments/{id}', [\App\Http\Controllers\Submissions\DepartmentSubmissionController::class, 'index'])->name('submissions.departmentaccomp.index');
+    Route::get('/submissions/department-accomplishments/departmentReportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Submissions\DepartmentSubmissionController::class, 'departmentReportYearFilter'])->name('submissions.departmentaccomp.departmentReportYearFilter');
     Route::get('/submissions/college-accomplishments/{id}', [\App\Http\Controllers\Submissions\CollegeSubmissionController::class, 'index'])->name('submissions.collegeaccomp.index');
+    Route::get('/submissions/college-accomplishments/collegeReportYearFilter/{college}/{year}/{quarter}', [\App\Http\Controllers\Submissions\CollegeSubmissionController::class, 'collegeReportYearFilter'])->name('submissions.collegeaccomp.collegeReportYearFilter');
     Route::get('/submissions/sector-accomplishments/{id}', [\App\Http\Controllers\Submissions\SectorSubmissionController::class, 'index'])->name('submissions.sectoraccomp.index');
     Route::get('/submissions/researcher-accomplishments/{id}', [\App\Http\Controllers\Submissions\FResearchSubmissionController::class, 'index'])->name('submissions.researchaccomp.index');
     Route::get('/submissions/extensionist-accomplishments/{id}', [\App\Http\Controllers\Submissions\FExtensionSubmissionController::class, 'index'])->name('submissions.extensionaccomp.index');
     Route::get('/submissions/ipqmso-accomplishments', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'index'])->name('submissions.ipqmsoaccomp.index');
+    Route::get('/submissions/ipqmso-accomplishments/{year}/{quarter}', [\App\Http\Controllers\Submissions\IpqmsoSubmissionController::class, 'reportYearFilter'])->name('submissions.ipqmsoaccomp.reportYearFilter');
     Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
 

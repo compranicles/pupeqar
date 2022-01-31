@@ -4,7 +4,7 @@
 @if (in_array(5, $roles))
     <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Receive - Department/s</a>   
     @forelse ( $departments as $row)
-        <a href="{{ route('submissions.departmentaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.departmentaccomp.index', $row->id) ? 'active' : ''}}">
+        <a href="{{ route('submissions.departmentaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.departmentaccomp.*') ? 'active' : ''}}">
             {{ $row->code }} - Accomplishments
         </a>   
     @empty
@@ -37,7 +37,7 @@
 {{-- IPQMSOs --}}
 @if (in_array(8, $roles))
     <a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Receive - IPQMSO</a> 
-    <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.index') ? 'active' : ''}}">
+    <a href="{{ route('submissions.ipqmsoaccomp.index') }}" class="submission-menu {{ request()->routeIs('submissions.ipqmsoaccomp.*') ? 'active' : ''}}">
         All Accomplishments
     </a>  
 @endif

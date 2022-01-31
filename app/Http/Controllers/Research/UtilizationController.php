@@ -47,6 +47,9 @@ class UtilizationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -149,6 +152,9 @@ class UtilizationController extends Controller
     public function edit(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('update', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(LockController::isLocked($utilization->id, 6)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
@@ -234,6 +240,9 @@ class UtilizationController extends Controller
     public function destroy(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('delete', ResearchUtilization::class);
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+        }
         if(LockController::isLocked($utilization->id, 6)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

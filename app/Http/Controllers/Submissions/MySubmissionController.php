@@ -71,7 +71,9 @@ class MySubmissionController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->whereYear('reports.updated_at', date('Y'))
                 ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
-                ->where('reports.user_id', auth()->id())->get(); //get my individual accomplishment
+                ->where('reports.user_id', auth()->id())
+                ->orderBy('reports.updated_at')
+                ->get(); //get my individual accomplishment
 
         //get_department_and_college_name
         $college_names = [];
@@ -121,11 +123,11 @@ class MySubmissionController extends Controller
             $departmentsExtension = [];
             
             if(in_array(5, $roles)){
-                $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name')
+                $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name', 'departments.code')
                                             ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
             }
             if(in_array(6, $roles)){
-                $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name')
+                $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name', 'colleges.code')
                                 ->join('colleges', 'colleges.id', 'deans.college_id')->get();
             }
             if(in_array(7, $roles)){

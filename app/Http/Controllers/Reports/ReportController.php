@@ -273,7 +273,8 @@ class ReportController extends Controller
         $report_docs;
         
         if($report_category_id == 1){
-            $report_docs = ResearchDocument::where('research_id', $id)->where('research_form_id', 1)->pluck('filename')->all();
+            $research_code = Research::where('id', $id)->pluck('research_code')->first();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 1)->pluck('filename')->all();
         }
         elseif($report_category_id == 2){
             $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
@@ -351,6 +352,14 @@ class ReportController extends Controller
         
     }
 
+    public function getReportCategory($report_id) {
+        $report_category = Report::where('reports.id', $report_id)
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                ->pluck('report_categories.name')
+                ->all();
+        return $report_category;
+    }
+
     public function getReportData($report_id){
         $report_data = Report::where('id', $report_id)->first();
         $report_details = json_decode($report_data->report_details, true);
@@ -360,7 +369,7 @@ class ReportController extends Controller
         foreach($report_columns as $row){
             $new_report_details[$row->name] = $report_details[$row->column];
         }
-
+        // dd($new_report_details);
         return $new_report_details;
     }
 

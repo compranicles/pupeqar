@@ -485,7 +485,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $('#adddocbutton').remove();
-        $('.report-view').on('click', function(){
+        $(document).on('click', '.report-view', function(){
             let catID = $(this).data('id');
             let rowID = $(this).data('code');
             let link = $(this).data('url');

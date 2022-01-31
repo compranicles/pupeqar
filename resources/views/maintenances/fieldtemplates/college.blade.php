@@ -1,7 +1,7 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-            <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+            <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
                         {{ 'readonly' }}
@@ -32,6 +32,12 @@
     </div>
 
 @push('scripts')
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script>
+         $("#college_id").selectize({
+              sortField: "text",
+          });
+    </script>
     <script>
         $('#college_id').on('input', function(){
             var collegeId = $('#college_id').val();
@@ -59,25 +65,28 @@
     </script>
     <script>
         var collegeId = $('#college_id').val();
-        $.get('/departments/options/'+collegeId, function (data){
-            if (data != '') {
-                    // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                    //     $("div .department_id").hide();
-                    // } else {
-                        data.forEach(function (item){
-                            $("#department_id").append(new Option(item.name, item.id));
-                            
-                        });
-                    // }
-                }
-            // else {
-            //     $("div .department_id").hide();
-            // }
-            <?php if (old($fieldInfo->name) == '') { ?>
-                document.getElementById("department_id").value = "{{ $department_id }}";
-            <?php } else { ?>
-                document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
-            <?php } ?>
-        });
+        if(collegeId == null){
+
+            $.get('/departments/options/'+collegeId, function (data){
+                if (data != '') {
+                        // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
+                        //     $("div .department_id").hide();
+                        // } else {
+                            data.forEach(function (item){
+                                $("#department_id").append(new Option(item.name, item.id));
+                                
+                            });
+                        // }
+                    }
+                // else {
+                //     $("div .department_id").hide();
+                // }
+                <?php if (old($fieldInfo->name) == '') { ?>
+                    document.getElementById("department_id").value = "{{ $department_id }}";
+                <?php } else { ?>
+                    document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
+                <?php } ?>
+            });
+        }
     </script>
 @endpush
