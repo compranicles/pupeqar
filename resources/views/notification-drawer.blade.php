@@ -4,7 +4,7 @@
 </table>
 </div>
 <div class="col-md-12 text-center see_all_div" style="border-top: 2px ridge rgba(169,169,169,0.1); padding-top: 10px;">
-    <a href="{{ route('notif.all') }}" id="see_all_notif_link">See all notifications</a>
+    <a href="{{ route('notif.all') }}" id="see-all-notif-link">See all notifications</a>
 </div>
 
 {{-- Data that Can be Displayed --}}
@@ -179,11 +179,12 @@
     <script>
         $('#notificationLink').on('click', function() {
             $( this ).toggleClass("active");
+            $('#notificationCounter').text("0");
         });
     </script>
     <script>
         $(document).click((event) => {
-                if (!$(event.target).closest('#notificationDropdown').length) {
+                if (!$(event.target).closest('#notification-dropdown').length) {
                     // the click occured outside
                     if (!$(event.target).closest('.notifDiv').length) {
                         document.getElementById('notificationLink').classList.remove('active'); 

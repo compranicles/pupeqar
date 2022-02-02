@@ -13296,18 +13296,18 @@ table tr .padding_left_show {
 }
 
 /**********************NOTIFICATION*****************************/
-.nav-link #notificationDropdown {
+.nav-link #notification-dropdown {
   color: rgba(0, 0, 0, 0.5);
   text-decoration: none;
   
 }
 
-.nav-link #notificationDropdown:hover {
+.nav-link #notification-dropdown:hover {
   color: rgba(0, 0, 0, 0.7);
   border-radius: 0.25rem;
 }
 
-.notifDiv {
+.notif-div {
   position: absolute;
   background: white;
   width: 25%;
@@ -13323,19 +13323,14 @@ table tr .padding_left_show {
   background-color: #fff;
 }
 
-/* nav li:hover .menu-sub {
-  display: block;
-  float: none;
-} */
-
-.notifDiv table tbody tr td {
+.notif-div table tbody tr td {
   display: block;
   padding-bottom: .70em;
   font-size: 14px;
   /* color: gray; */
 }
 
-.notifDiv table tbody tr:hover {
+.notif-div table tbody tr:hover {
   border-radius: 0.25rem;
   background-color: rgba(169,169,169,0.16);
 }
@@ -13349,12 +13344,12 @@ table tr .padding_left_show {
   max-height: calc(100vh - 3.5rem);
 }
 
-#see_all_notif_link {
+#see-all-notif-link {
   color: #343a40;
 }
 
 
-#see_all_notif_link:hover {
+#see-all-notif-link:hover {
   color: #343a40;
   filter: brightness(0.85);
 }

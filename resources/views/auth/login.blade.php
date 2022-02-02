@@ -45,11 +45,13 @@
 
                         <div class="mb-0">
                             <div class="d-flex justify-content-end align-items-baseline">
+                                {{--
                                 @if (Route::has('password.request'))
                                     <a class="text-muted mr-3" href="{{ route('password.request') }}">
                                         {{ __('Forgot your password?') }}
                                     </a>
                                 @endif
+                                --}}
 
                                 <x-jet-button class="rounded-0">
                                     {{ __('Log in') }}

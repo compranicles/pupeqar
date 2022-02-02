@@ -99,9 +99,9 @@
 
                 <!-- Settings Dropdown -->
                 @auth
-                    <li class="nav-item" id="notificationDropdown">
+                    <li class="nav-item" id="notification-dropdown">
                         <a id="notificationLink" class="nav-link" role="button"><i class="fas fa-bell"></i> <span class="badge badge-light" id="notificationCounter">0</span></a>
-                        <div class="notifDiv animate slideIn dropdown-menu-right">
+                        <div class="notif-div animate slideIn dropdown-menu-right">
                             <div class="row">
                                 <div class="col-md-12 notif-scrollable">
                                     @include('notification-drawer')
@@ -187,9 +187,9 @@
             });
         </script>
         <script>
-            let notifBtn = document.querySelector('#notificationDropdown');
-            let notifContent = document.querySelector('.notifDiv');
-            let notifTable = document.querySelectorAll('.notifDiv td');
+            let notifBtn = document.querySelector('#notification-dropdown');
+            let notifContent = document.querySelector('.notif-div');
+            let notifTable = document.querySelectorAll('.notif-div td');
             notifBtn.addEventListener('click',()=>{
                 if (notifContent.style.display===""){
                     notifContent.style.display="block";
@@ -213,9 +213,9 @@
             }
 
             $(document).click((event) => {
-                if (!$(event.target).closest('#notificationDropdown').length) {
+                if (!$(event.target).closest('#notification-dropdown').length) {
                     // the click occured outside
-                    if (!$(event.target).closest('.notifDiv').length) {
+                    if (!$(event.target).closest('.notif-div').length) {
                         notifContent.style.display="";
                     }      
                 }  
