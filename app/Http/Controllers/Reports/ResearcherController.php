@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\DenyReason;
 use App\Models\SectorHead;
@@ -14,6 +15,10 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
+use App\Notifications\ReturnNotification;
+use App\Models\Maintenance\ReportCategory;
+use App\Notifications\ReceiveNotification;
+use Illuminate\Support\Facades\Notification;
 
 class ResearcherController extends Controller
 {
@@ -44,9 +49,9 @@ class ResearcherController extends Controller
                                         ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
         }
         if(in_array(11, $roles)){
-            $departmentsExtension = FacultyExtensionist::where('faculty_researchers.user_id', auth()->id())
-                                        ->select('faculty_researchers.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+            $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
+                                        ->select('faculty_extensionists.department_id', 'departments.code')
+                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
         }
 
         $reportsToReview = collect();
@@ -100,9 +105,9 @@ class ResearcherController extends Controller
         $report = Report::find($report_id);
 
         $receiverData = User::find($report->user_id);
-        $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
-                            ->join('users', 'users.id', 'chairpeople.user_id')
-                            ->where('researchers.department_id', $report->department_id)
+        $senderName = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')
+                            ->join('users', 'users.id', 'faculty_researchers.user_id')
+                            ->where('faculty_researchers.department_id', $report->department_id)
                             ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
@@ -147,9 +152,9 @@ class ResearcherController extends Controller
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
-        $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
-                        ->join('users', 'users.id', 'chairpeople.user_id')
-                        ->where('researchers.department_id', $report->department_id)
+        $senderName = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')
+                        ->join('users', 'users.id', 'faculty_researchers.user_id')
+                        ->where('faculty_researchers.department_id', $report->department_id)
                         ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                         ->first();
 
@@ -185,9 +190,9 @@ class ResearcherController extends Controller
             $report = Report::find($report_id);
 
             $receiverData = User::find($report->user_id);
-            $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
-                                ->join('users', 'users.id', 'chairpeople.user_id')
-                                ->where('researchers.department_id', $report->department_id)
+            $senderName = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')
+                                ->join('users', 'users.id', 'faculty_researchers.user_id')
+                                ->where('faculty_researchers.department_id', $report->department_id)
                                 ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
@@ -235,9 +240,9 @@ class ResearcherController extends Controller
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
-            $senderName = Researchers::join('departments', 'researchers.id', 'researchers.department_id')
-                            ->join('users', 'users.id', 'chairpeople.user_id')
-                            ->where('researchers.department_id', $report->department_id)
+            $senderName = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')
+                            ->join('users', 'users.id', 'faculty_researchers.user_id')
+                            ->where('faculty_researchers.department_id', $report->department_id)
                             ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 

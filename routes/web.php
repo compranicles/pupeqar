@@ -59,6 +59,15 @@ Route::group(['middleware' => 'auth'], function() {
     //Route::get('/maintenances/departments/{department}/delete', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'delete']);
     Route::get('/maintenances/sectors', [\App\Http\Controllers\Maintenances\SectorController::class , 'index'])->name('sectors.maintenance.index');
     Route::get('/maintenances/sectors/sync', [\App\Http\Controllers\Maintenances\SectorController::class, 'sync'])->name('sectors.maintenance.sync');
+    Route::get('/maintenances/generate/types', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'index'])->name('maintenance.generate.type');
+    Route::get('/maintenances/generate/type/{type}/manage', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'view'])->name('maintenance.generate.view');
+    Route::get('/maintenances/generate/type/{type_id}/manage/{table_id}', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'edit'])->name('maintenance.generate.edit');
+    Route::get('/maintenances/generate/type/{type_id}/manage/{table_id}/{column_id}/rename', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'editColumn'])->name('maintenance.generate.edit-column');
+    Route::post('/maintenances/generate/type/{type_id}/manage/{table_id}/save', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'save'])->name('maintenance.generate.save');
+    Route::post('/maintenances/generate/type/{type_id}/manage/{table_id}/{column_id}/rename/save', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'saveColumn'])->name('maintenance.generate.save-column');
+    Route::get('/maintenances/generate/{column_id}/activate', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'activate']);
+    Route::get('/maintenances/generate/{column_id}/inactivate', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'inactivate']);
+    Route::post('/maintenances/generate/arrange', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'arrange']);
 
 
     //Currency
@@ -261,7 +270,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/docs/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getDocumentsUsingId']);
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportController::class, 'getRejectDetails']);
     Route::get('/reports/manage/{report_id}/{report_category_id}', [\App\Http\Controllers\Reports\ReportController::class, 'viewReportOrigin'])->name('report.manage');
-
+    Route::post('/reports/generate/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'index'])->name('report.generate.index');
+    
     // //faculty Reports
     // Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'addDocument'])->name('faculty.adddoc');
     // Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'saveDocument'])->name('faculty.savedoc');
@@ -313,7 +323,7 @@ Route::group(['middleware' => 'auth'], function() {
     //extensionist reports
     Route::get('/submissions/extensionist/receive', [\App\Http\Controllers\Reports\ExtensionistController::class, 'index'])->name('extensionist.index');
     Route::get('/submissions/extensionist/accept/{id}', [\App\Http\Controllers\Reports\ExtensionistController::class, 'accept'])->name('extensionist.accept');
-    Route::get('/submissions/extensionist/reject-create/{id}', [\App\Http\Controllers\Reports\ExtensionistController::class, 'rejectCreate'])->name('extensionist.rejectCreate');
+    Route::get('/submissions/extensionist/reject-create/{id}', [\App\Http\Controllers\Reports\ExtensionistController::class, 'rejectCreate'])->name('extensionist.reject-create');
     Route::post('/submissions/extensionist/reject/{id}', [\App\Http\Controllers\Reports\ExtensionistController::class, 'reject'])->name('extensionist.reject');
     Route::post('/submissions/extensionist/accept-selected', [\App\Http\Controllers\Reports\ExtensionistController::class, 'acceptSelected'])->name('extensionist.accept-select');
     Route::post('/submissions/extensionist/deny-selected', [\App\Http\Controllers\Reports\ExtensionistController::class, 'denySelected'])->name('extensionist.deny-select');
@@ -330,6 +340,8 @@ Route::group(['middleware' => 'auth'], function() {
 
     //view all reports
     Route::get('/submissions/view/all', [\App\Http\Controllers\Reports\AllController::class, 'index'])->name('reports.all');
+
+    //generate reports
 
     Route::get('/test', [\App\Http\Controllers\Test\TestController::class, 'index'])->name('test.index');
     /**********************************SUBMISSIONS************************************* */

@@ -243,9 +243,11 @@
             });
 
             $('#nature_of_involvement').on('change', function (){
-                $('#nature_of_involvement option[value=11]').attr('selected','selected');
+                // $('#nature_of_involvement option[value=11]').attr('selected','selected');
                 // console.log(11);
-                $('#nature_of_involvement').attr('disabled', true); 
+                // $('#nature_of_involvement').attr('disabled', true); 
+                $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
+                $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
             });
 
             $('#funding_type').on('change', function (){

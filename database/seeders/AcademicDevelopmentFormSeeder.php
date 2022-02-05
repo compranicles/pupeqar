@@ -32,7 +32,7 @@ class AcademicDevelopmentFormSeeder extends Seeder
             'is_active' => 1
         ]);
         AcademicDevelopmentForm::insert([
-            'label' => 'Student Awards and Recognition',
+            'label' => 'STUDENTS TRAININGS AND SEMINARS',
             'table_name' => 'student_trainings',
             'is_active' => 1
         ]);

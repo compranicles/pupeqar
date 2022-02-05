@@ -58,7 +58,7 @@ class FExtensionSubmissionController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
-                ->where('reports.report_category_id', 12)
+                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
                 ->where('reports.department_id', $id)->get();
 
         //get_department_and_college_name

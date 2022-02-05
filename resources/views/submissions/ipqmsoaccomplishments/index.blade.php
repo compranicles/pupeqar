@@ -107,7 +107,7 @@
                                                 @endif
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                                @if ($row->report_category_id == 12)
+                                                @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                                     @if ($row->extensionist_approval == null)
                                                         Receiving...
                                                     @elseif ($row->extensionist_approval == 0)
@@ -133,7 +133,7 @@
                                                             <span class="text-success font-weight-bold">Received</span>
                                                         @endif
                                                     @endif
-                                                @elseif ($row->report_category_id == 12)
+                                                @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                                     @if ($row->extensionist_approval == null)
                                                         -
                                                     @elseif ($row->extensionist_approval == 0)
@@ -215,7 +215,7 @@
                                                     @else
                                                         -
                                                     @endif
-                                                @elseif ($row->report_category_id == 12)
+                                                @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                                     @if (
                                                         $row->extensionist_approval === 0 ||
                                                         $row->chairperson_approval === 0 ||

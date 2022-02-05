@@ -179,4 +179,8 @@ class DepartmentSubmissionController extends Controller
                 compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'quarter', 'year')
             );
     }
+
+
+
+    
 }

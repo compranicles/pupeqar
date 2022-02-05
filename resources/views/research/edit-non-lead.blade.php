@@ -166,6 +166,7 @@
             });
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
+                $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
             });
             $('#research_type').on('change', function () {
                 $('#research_type').attr('disabled', 'disabled'); 

@@ -129,20 +129,20 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 1,
-            'name' => 'Date Completed',
-            'table' => 'research',
-            'column' => 'completion_date',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
-        ReportColumn::create([
-            'report_category_id' => 1,
             'name' => 'Status',
             'table' => 'research',
             'column' => 'status',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 1,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 1,
             'name' => 'College/Branch/Campus/Office',
@@ -179,6 +179,30 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 2,
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
             'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
@@ -203,14 +227,6 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 2,
-            'name' => 'Keywords',
-            'table' => 'research',
-            'column' => 'keywords',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
-        ReportColumn::create([
-            'report_category_id' => 2,
             'name' => 'Type of Research',
             'table' => 'research',
             'column' => 'research_type',
@@ -219,9 +235,41 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 2,
-            'name' => 'Category',
+            'name' => 'Keywords',
             'table' => 'research',
-            'column' => 'category',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 2,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -235,9 +283,9 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 2,
-            'name' => 'Date Started',
+            'name' => 'Status',
             'table' => 'research',
-            'column' => 'start_date',
+            'column' => 'status',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -248,7 +296,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]);
+        ]); 
         ReportColumn::create([
             'report_category_id' => 2,
             'name' => 'College/Branch/Campus/Office',
@@ -285,12 +333,116 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 3,
-            'name' => 'Title of the Published Research/ Article',
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Researcher/s',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 3,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 3,
             'name' => 'Journal Name',
@@ -407,12 +559,116 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 4,
-            'name' => 'Title of the Research',
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Researcher/s',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 4,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 4,
             'name' => 'Conference Title',
@@ -489,12 +745,116 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 5,
-            'name' => 'Title of Research/ Article Cited',
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Researcher/s',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 5,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 5,
             'name' => 'Title of Article Where Your Research has been cited',
@@ -603,12 +963,116 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 6,
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
             'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Researcher/s',
+            'table' => 'research',
+            'column' => 'researchers',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 6,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 6,
             'name' => 'Agency/Organization that utilized the research output',
@@ -669,7 +1133,31 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 7,
-            'name' => 'Title of the Research',
+            'name' => 'Research Classification',
+            'table' => 'research',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Category',
+            'table' => 'research',
+            'column' => 'category',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'University Research Agenda',
+            'table' => 'research',
+            'column' => 'agenda',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',
             'is_active' => 1,
@@ -677,12 +1165,84 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::create([
             'report_category_id' => 7,
-            'name' => 'Authors',
+            'name' => 'Researcher/s',
             'table' => 'research',
             'column' => 'researchers',
             'is_active' => 1,
             'order' => 1,
         ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Nature of Involvement',
+            'table' => 'research',
+            'column' => 'nature_of_involvement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Type of Research',
+            'table' => 'research',
+            'column' => 'research_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Keywords',
+            'table' => 'research',
+            'column' => 'keywords',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Type of Funding',
+            'table' => 'research',
+            'column' => 'funding_type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Amount of Funding',
+            'table' => 'research',
+            'column' => 'funding_amount',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Funding Agency',
+            'table' => 'research',
+            'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Actual Date Started',
+            'table' => 'research',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Target Date of Completion',
+            'table' => 'research',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 7,
+            'name' => 'Date Completed',
+            'table' => 'research',
+            'column' => 'completion_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
         ReportColumn::create([
             'report_category_id' => 7,
             'name' => 'Copyright Number (ISSN/ISBN)',
@@ -802,6 +1362,14 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Funding Agency',
             'table' => 'inventions',
             'column' => 'funding_agency',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::create([
+            'report_category_id' => 8,
+            'name' => 'Funding Type',
+            'table' => 'inventions',
+            'column' => 'funding_type',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -2014,6 +2582,14 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::create([
             'report_category_id' => 22,
             'name' => 'Date',
+            'table' => 'outreach_programs',
+            'column' => 'date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::create([
+            'report_category_id' => 22,
+            'name' => 'Place',
             'table' => 'outreach_programs',
             'column' => 'place',
             'is_active' => 1,

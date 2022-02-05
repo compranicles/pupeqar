@@ -45,6 +45,12 @@
                     
                     <li class="nav-item">
                         <x-jet-nav-link href="{{ route('report-types.index') }}" class="text-dark" :active="request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
+                            {{ __('Submissions') }}
+                        </x-jet-nav-link>
+                    </li>
+
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('maintenance.generate.type') }}" class="text-dark" :active="request()->routeIs('maintenance.generate.*')">
                             {{ __('Reports') }}
                         </x-jet-nav-link>
                     </li>

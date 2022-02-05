@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Submissions;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\SectorHead;
 use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use App\Models\FacultyResearcher;
+use Illuminate\Support\Facades\DB;
 use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use App\Models\Maintenance\ReportCategory;
-use Illuminate\Support\Facades\DB;
 
 
 class MySubmissionController extends Controller
@@ -32,6 +33,7 @@ class MySubmissionController extends Controller
             $quarter = 4;
 
         $year = "default";
+        $user = User::find(auth()->id());
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
@@ -104,7 +106,8 @@ class MySubmissionController extends Controller
                 'college_names', 
                 'department_names', 
                 'sectors', 'departmentsResearch','departmentsExtension',
-                'year', 'quarter', 'report_categories'
+                'year', 'quarter', 'report_categories',
+                'user'
             ));
         
     }
