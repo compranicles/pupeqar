@@ -3,7 +3,7 @@
         Options
     </button>
     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton" style="{white-space: nowrap; }}">
-    @if ($involvement != 11)
+    @if ($involvement == '13' || $involvement == '12')
         <a class="dropdown-item" href="{{ route('research.edit', $research_id) }}">Edit Research Info</a>
         <button class="dropdown-item text-danger" href="{{ route('research.manage-researchers', $research->research_code) }}"
             data-toggle="modal" data-target="#removeModal">Remove Research</button>

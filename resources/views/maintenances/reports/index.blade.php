@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Report Types') }}
+            {{ __('Submission Types') }}
         </h2>
     </x-slot>
      
@@ -24,22 +24,24 @@
                         @endif
 
                         {{-- Table for displaying --}}
-                        <div class="row justify-content-center">
-                            <div class="col-md-6">
-                                <div class="table-responsive text-center">
-                                    <table id="report_type_table" class="table">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table id="report_type_table" class="table table-sm table-hover text-center">
                                         <thead>
                                             <tr>
-                                                <th>Report Type</th>
+                                                <th>#</th>
+                                                <th>Submission Type</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($reporttypes as $reporttype)
                                             <tr>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $reporttype->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('report-types.show', $reporttype->id) }}" class="btn btn-warning edit-row">Manage</a>
+                                                    <a href="{{ route('report-types.show', $reporttype->id) }}" class="btn btn-warning edit-row btn-sm">Manage</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach
@@ -57,5 +59,8 @@
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
+        <script>
+            $("#report_type_table").dataTable();
+        </script>
     @endpush
 </x-app-layout>

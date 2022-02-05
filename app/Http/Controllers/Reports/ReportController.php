@@ -50,6 +50,7 @@ class ReportController extends Controller
         if($report_category_id <= 7){
             if($report_category_id == 1){
                 $research_id = $id;
+                $research_code = Research::where('id', $id)->pluck('research_code')->first();
             }
             if($report_category_id == 2){
                 $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();
@@ -164,6 +165,13 @@ class ReportController extends Controller
                 if($column->column == 'researchers'){
                     $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
                 } 
+                if($column->column == 'description' && $report->report_category_id == 1){
+                    $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
+                    $data = $data.' '.ResearchComplete::where('research_code', $research_code)->pluck('description')->first();
+                }
+                if(is_null($data)){
+                    $data = '-';
+                }
     
                 array_push($report_data_array, $data);
             }  
@@ -209,7 +217,8 @@ class ReportController extends Controller
                             $column->column =='year' ||
                             $column->column == 'rate_of_return' ||
                             $column->column == 'has_businesses' ||
-                            $column->column == 'is_borrowed'
+                            $column->column == 'is_borrowed' ||
+                            $column->column == 'total_hours'
                         )
                             $data = $data;
                         else{
@@ -274,7 +283,7 @@ class ReportController extends Controller
         
         if($report_category_id == 1){
             $research_code = Research::where('id', $id)->pluck('research_code')->first();
-            $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 1)->pluck('filename')->all();
+            $report_docs = ResearchDocument::where('research_code', $research_code)->whereIn('research_form_id', [1, 2])->pluck('filename')->all();
         }
         elseif($report_category_id == 2){
             $research_code = ResearchComplete::where('id', $id)->pluck('research_code')->first();

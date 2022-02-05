@@ -68,7 +68,7 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Provincial, City or Municipal',
+            'name' => 'Provincial/City/Municipal',
             'order' => 4,
             'is_active' => 1,
         ]);
@@ -139,7 +139,7 @@ class AcademicDevelopmentDropdownSeeder extends Seeder
 
         // student attended seminars and trainings
          $dropdownId  = Dropdown::insertGetId([
-            'name' => 'SAST, Source of Fund'
+            'name' => 'Source of Fund'
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,

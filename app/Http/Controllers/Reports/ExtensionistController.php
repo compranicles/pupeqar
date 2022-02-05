@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Models\Dean;
+use App\Models\User;
 use App\Models\Report;
 use App\Models\DenyReason;
 use App\Models\SectorHead;
@@ -14,6 +15,10 @@ use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
+use App\Notifications\ReturnNotification;
+use App\Models\Maintenance\ReportCategory;
+use App\Notifications\ReceiveNotification;
+use Illuminate\Support\Facades\Notification;
 
 class ExtensionistController extends Controller
 {
@@ -52,19 +57,19 @@ class ExtensionistController extends Controller
         $reportsToReview = collect();
         $employees = collect();
 
-        foreach ($departmentsResearch as $row){
+        foreach ($departmentsExtension as $row){
             $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->where('reports.report_category_id', 12)
+                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
                 ->where('department_id', $row->department_id)->where('extensionist_approval', null)->get();
 
                         
             $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
                 ->where('reports.department_id', $row->department_id)
                 ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->where('reports.report_category_id', 12)
+                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
                 ->where('reports.extensionist_approval', null)
                 ->distinct()
                 ->orderBy('users.last_name')
@@ -100,9 +105,9 @@ class ExtensionistController extends Controller
         $report = Report::find($report_id);
 
         $receiverData = User::find($report->user_id);
-        $senderName = Extensionist::join('departments', 'departments.id', 'extensionists.department_id')
-                            ->join('users', 'users.id', 'chairpeople.user_id')
-                            ->where('extensionists.department_id', $report->department_id)
+        $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
+                            ->join('users', 'users.id', 'faculty_extensionists.user_id')
+                            ->where('faculty_extensionists.department_id', $report->department_id)
                             ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
@@ -148,9 +153,9 @@ class ExtensionistController extends Controller
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
-        $senderName = Extensionist::join('departments', 'departments.id', 'extensionists.department_id')
-            ->join('users', 'users.id', 'chairpeople.user_id')
-            ->where('extensionists.department_id', $report->department_id)
+        $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
+            ->join('users', 'users.id', 'faculty_extensionists.user_id')
+            ->where('faculty_extensionists.department_id', $report->department_id)
             ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
             ->first();
 
@@ -185,9 +190,9 @@ class ExtensionistController extends Controller
             $report = Report::find($report_id);
 
             $receiverData = User::find($report->user_id);
-            $senderName = Extensionist::join('departments', 'departments.id', 'extensionists.department_id')
-                                ->join('users', 'users.id', 'chairpeople.user_id')
-                                ->where('extensionists.department_id', $report->department_id)
+            $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
+                                ->join('users', 'users.id', 'faculty_extensionists.user_id')
+                                ->where('faculty_extensionists.department_id', $report->department_id)
                                 ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
@@ -233,9 +238,9 @@ class ExtensionistController extends Controller
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
-            $senderName = Extensionist::join('departments', 'departments.id', 'extensionists.department_id')
-                ->join('users', 'users.id', 'chairpeople.user_id')
-                ->where('extensionists.department_id', $report->department_id)
+            $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
+                ->join('users', 'users.id', 'faculty_extensionists.user_id')
+                ->where('faculty_extensionists.department_id', $report->department_id)
                 ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                 ->first();
 

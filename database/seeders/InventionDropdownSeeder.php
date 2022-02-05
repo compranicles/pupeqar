@@ -33,8 +33,8 @@ class InventionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Creative Work',
-            'order' => 2,
+            'name' => 'Creative WorkS',
+            'order' => 3,
             'is_active' => 1,
         ]);
         
@@ -51,7 +51,7 @@ class InventionDropdownSeeder extends Seeder
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Self Funded',
-            'order' => 2,
+            'order' => 3,
             'is_active' => 1,
         ]);
         DropdownOption::create([
@@ -69,7 +69,7 @@ class InventionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'New Commitment',
             'order' => 1,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,

@@ -46,10 +46,16 @@ class DatabaseSeeder extends Seeder
             //FIELD Seeder
             FieldSeeder::class,
 
-            //Reports
+            //Reports/submissions
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
+
+            //Generate
+            GenerateTypeSeeder::class,
+            GenerateTableSeeder::class,
+            GenerateColumnSeeder::class,
+            GenerateColumn2Seeder::class,
         ]);
     }
 }

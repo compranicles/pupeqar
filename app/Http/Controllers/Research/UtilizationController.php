@@ -56,7 +56,8 @@ class UtilizationController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('6')");
-
+        $research = collect($research);
+        $research = $research->except(['description']);
         return view('research.utilization.create', compact('researchFields', 'research'));
     }
 

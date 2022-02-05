@@ -91,8 +91,8 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Local',
-            'order' => 4,
+            'name' => 'Local-PUP',
+            'order' => 5,
             'is_active' => 1,
         ]);
 
@@ -150,8 +150,8 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Local',
-            'order' => 4,
+            'name' => 'Local-PUP',
+            'order' => 5,
             'is_active' => 1,
         ]);
 
@@ -168,7 +168,7 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Books Publication',
+            'name' => 'Books/ Publication',
             'order' => 2,
             'is_active' => 1,
         ]);
@@ -256,7 +256,7 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'PASUC Accredited Journals',
+            'name' => 'OASUC Accredited Journals',
             'order' => 3,
             'is_active' => 1,
         ]);
@@ -309,8 +309,8 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Local',
-            'order' => 4,
+            'name' => 'Local-PUP',
+            'order' => 5,
             'is_active' => 1,
         ]);
 
@@ -339,8 +339,8 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Local',
-            'order' => 4,
+            'name' => 'Local-PUP',
+            'order' => 5,
             'is_active' => 1,
         ]);
         
@@ -352,19 +352,19 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'New Program',
             'order' => 1,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'New Project',
             'order' => 2,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'New Activity',
             'order' => 3,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
@@ -691,38 +691,38 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Information, Education and Communication',
+            'name' => 'Information',
             'order' => 3,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Research',
-            'order' => 4,
+            'order' => 5,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Consultancy',
-            'order' => 5,
+            'order' => 6,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Linkages',
-            'order' => 5,
+            'order' => 7,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Network',
-            'order' => 5,
+            'order' => 8,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
-            'order' => 5,
+            'order' => 9,
             'is_active' => 1,
         ]);
 
@@ -750,7 +750,7 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Provincial, City or Municipal',
+            'name' => 'Provincial/City/Municipal',
             'order' => 4,
             'is_active' => 1,
         ]);
@@ -767,7 +767,7 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Resource Person/ Speaker/ Panel',
+            'name' => 'Resource Person/Speaker/Panel',
             'order' => 1,
             'is_active' => 1,
         ]);
