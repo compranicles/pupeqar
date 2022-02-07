@@ -9,6 +9,7 @@ use App\Models\FormBuilder\FieldType;
 use Illuminate\Support\Facades\Schema;
 use App\Models\FormBuilder\ResearchForm;
 use App\Models\FormBuilder\ResearchField;
+use App\Models\DocumentDescription;
 use Illuminate\Database\Schema\Blueprint;
 
 class ResearchFieldController extends Controller
@@ -121,7 +122,8 @@ class ResearchFieldController extends Controller
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.research.edit', compact('research_form', 'research_field', 'fieldtypes', 'dropdowns'));
+        $descriptions = DocumentDescription::where('report_category_id', $research_form->id)->get();
+        return view('maintenances.research.edit', compact('research_form', 'research_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**
@@ -136,7 +138,8 @@ class ResearchFieldController extends Controller
         $input = $request->except(['_token', '_method']);
 
         ResearchField::where('research_form_id', $research_form->id)->where('id', $research_field->id)->update($input);
-        return redirect()->route('research-forms.show', $research_form->id)->with('success', 'Research field updated sucessfully.');
+
+        return redirect()->route('research-forms.show', $research_form->id)->with('success', 'Research field has been updated.');
     }
 
     /**

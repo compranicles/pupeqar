@@ -220,7 +220,7 @@ class InventionSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Certificate of Patent, *Full Paper of Invention, *Certificate of Manufacturers/Fabricators",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

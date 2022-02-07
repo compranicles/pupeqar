@@ -14,7 +14,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mb-3">
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
@@ -185,11 +185,68 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <h4>Suggested {{ $invention_field->label }}</h4>
+                                <hr>
+                            </div>
+                            <div class="col-md-12">
+                                <a href="{{ route('document-description.create') }}" role="button" class="btn btn-success">Add</a>
+                                <hr>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-sm" id="description-table">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Active</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($descriptions as $description)
+                                            <tr role="button">
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$description->name}}</td>
+                                                <td>
+                                                    <div class="custom-control custom-switch">
+                                                        <input type="checkbox" class="custom-control-input active-switch" id="is_active_{{ $description->id }}" data-description-id="{{ $description->id }}" data-report-id="{{ $description->report_category_id }}" {{ ($description->is_active == 1) ? 'checked': '' }}>
+                                                        <label class="custom-control-label" for="is_active_{{ $description->id }}"></label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div role="group">
+                                                        <a href="{{route('document-description.edit', $description->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     @push('scripts')
+      <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
       <script>
+          $("#description-table").dataTable({
+                "searching":true
+            });
+          var table =  $("#description-table").DataTable();
          $ (function (){
             $("#placeholderfield").hide();
             $("#dropdown_field").hide();
@@ -202,7 +259,7 @@
                         $('#dropdown').attr('required', '');
                     }else if(fieldtype === 'date' || fieldtype === 'date-range'){
                         $('#placeholderfield').hide();
-                    } else if(fieldtype === 'text' || fieldtype === 'number' || fieldtype === 'decimal' || fieldtype === 'textarea'){
+                    } else if(fieldtype === 'text' || fieldtype === 'number' || fieldtype === 'decimal' || fieldtype === 'textarea' || fieldtype === 'document_description'){
                         $("#dropdown_field").hide();
                         $('#placeholderfield').show();
                         $("#dropdown").removeAttr('required');
@@ -213,5 +270,19 @@
             });
         });
       </script>
+      <script>
+        $('.active-switch').on('change', function(){
+            var optionID = $(this).data('description-id');
+            var reportCategoryID = $(this).data('report-id');
+            if ($(this).is(':checked')) {
+                var isActive = 1;
+            } else {
+                var isActive = 0;
+            }
+            $.ajax({
+                url: '/maintenances/description/isActive/'+reportCategoryID+'/'+optionID+'/'+isActive
+            });
+        });
+    </script>
     @endpush
 </x-app-layout>

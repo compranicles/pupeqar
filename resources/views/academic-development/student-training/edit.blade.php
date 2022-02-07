@@ -143,6 +143,7 @@
         </div>
     </div>
     @push('scripts')
+        <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
@@ -154,7 +155,7 @@
                 document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
-    </script>
+        </script>
         <script>
             var url = '';
             var docId = '';
@@ -180,7 +181,17 @@
                     }
                 });
             });
-        
+        </script>
+        <script>
+            var report_category_id = 19;
+            $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+            $.get('/document-upload/description/'+report_category_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
         </script>
     @endpush
 </x-app-layout>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Models\FormBuilder\ExtensionProgramField;
+use App\Models\DocumentDescription;
 
 class ExtensionProgramFieldController extends Controller
 {
@@ -121,7 +122,28 @@ class ExtensionProgramFieldController extends Controller
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.extension-programs.edit', compact('extension_program_form', 'extension_program_field', 'fieldtypes', 'dropdowns'));
+        if ($extension_program_form->id == 1) {
+            $descriptions = DocumentDescription::where('report_category_id', 9)->get();
+        }
+        elseif ($extension_program_form->id == 2) {
+            $descriptions = DocumentDescription::where('report_category_id', 10)->get();
+        }
+        elseif ($extension_program_form->id == 3) {
+            $descriptions = DocumentDescription::where('report_category_id', 11)->get();
+        }
+        elseif ($extension_program_form->id == 4) {
+            $descriptions = DocumentDescription::where('report_category_id', 12)->get();
+        }
+        elseif ($extension_program_form->id == 5) {
+            $descriptions = DocumentDescription::where('report_category_id', 13)->get();
+        }
+        elseif ($extension_program_form->id == 6) {
+            $descriptions = DocumentDescription::where('report_category_id', 14)->get();
+        }
+        elseif ($extension_program_form->id == 7) {
+            $descriptions = DocumentDescription::where('report_category_id', 22)->get();
+        }
+        return view('maintenances.extension-programs.edit', compact('extension_program_form', 'extension_program_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**

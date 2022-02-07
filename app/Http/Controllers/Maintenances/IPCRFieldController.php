@@ -10,6 +10,7 @@ use App\Models\FormBuilder\FieldType;
 use App\Models\FormBuilder\IPCRField;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use App\Models\DocumentDescription;
 
 class IPCRFieldController extends Controller
 {
@@ -121,7 +122,10 @@ class IPCRFieldController extends Controller
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.ipcr.edit', compact('ipcr_form', 'ipcr_field', 'fieldtypes', 'dropdowns'));
+        if ($ipcr_form->id == 1) {
+            $descriptions = DocumentDescription::where('report_category_id', 17)->get();
+        }
+        return view('maintenances.ipcr.edit', compact('ipcr_form', 'ipcr_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**
@@ -136,7 +140,7 @@ class IPCRFieldController extends Controller
         $input = $request->except(['_token', '_method']);
 
         IPCRField::where('i_p_c_r_form_id', $ipcr_form->id)->where('id', $ipcr_field->id)->update($input);
-        return redirect()->route('ipcr-forms.show', $ipcr_form->id)->with('success', 'IPCR field updated sucessfully.');
+        return redirect()->route('ipcr-forms.show', $ipcr_form->id)->with('success', 'IPCR field has been updated.');
     }
 
     /**

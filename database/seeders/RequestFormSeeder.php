@@ -73,7 +73,7 @@ class RequestFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => null,
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,

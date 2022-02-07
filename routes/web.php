@@ -69,6 +69,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/maintenances/generate/{column_id}/inactivate', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'inactivate']);
     Route::post('/maintenances/generate/arrange', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'arrange']);
 
+    //Document Description
+    Route::get('/document-upload/description/{report_category_id}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'getDescriptionsByReportCategory']);
+    Route::resource('/maintenances/document-description', \App\Http\Controllers\Maintenances\DocumentDescriptionController::class);
+    Route::get('/maintenances/description/isActive/{report_category_id}/{description_id}/{is_active}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'isActive']);
 
     //Currency
     Route::get('/maintenances/currencies/name/{id}', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'getCurrencyName'])->name('currency.name');

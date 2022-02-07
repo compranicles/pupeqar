@@ -115,7 +115,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Abstract, *Certificate of Presentation/Attendance, *Conference Proceedings, *Documentation of Paper Presentation",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

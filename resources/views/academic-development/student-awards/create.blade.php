@@ -30,4 +30,18 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script>
+        var report_category_id = 18;
+        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+        $.get('/document-upload/description/'+report_category_id, function (data){
+            if (data != '') {
+                data.forEach(function (item){
+                    $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                });
+            }
+        });
+    </script>
+    @endpush
 </x-app-layout>
