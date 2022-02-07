@@ -13374,22 +13374,22 @@ table tr .padding_left_show {
 } */
 
 /* width */
-::-webkit-scrollbar {
+.notif-scrollable::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.notif-scrollable::-webkit-scrollbar-track {
   background: #fff; 
 }
  
 /* Handle */
-::-webkit-scrollbar-thumb {
+.notif-scrollable::-webkit-scrollbar-thumb {
   background: #EDE9E8; 
   border-radius: 0.40em;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.notif-scrollable::-webkit-scrollbar-thumb:hover {
   background: #999; 
 }

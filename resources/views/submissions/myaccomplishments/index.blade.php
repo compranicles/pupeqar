@@ -13,7 +13,7 @@
                     <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
+                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
                 </li>
             </ul>
             <div class="card mb-3">
@@ -481,6 +481,19 @@
                     });
                     table.draw();
             }
+
+            // var valueToFind = "Returned";
+  
+            // var duplicateCheck = table.columns(1).data().filter(function (value, index) {
+            //     return value ===  valueToFind ? true : false;
+            // }).length;
+
+            // document.getElementById('badge-returned').innerHTML = duplicateCheck;
+
+            // var count = table.rows( {search: "Returned"}).count();
+            // document.getElementById('badge-returned').innerHTML = count;
+
+
         </script>
     @endpush
 </x-app-layout>
