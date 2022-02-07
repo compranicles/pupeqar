@@ -85,7 +85,7 @@ class ViableProjectFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Copy of audited financial statement/certification from VP For Administration and Finance or its equivalent, *Computation of ROI for each project duly signed and certified true and correct by the SUC accountant and attested by the supervisor concerned, *Computation of IRR for each project duly signed and certified true and correct by the SUC accountant and attested by the supervisor concerned, *Certification of utilization in programs offered by the SUC",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,

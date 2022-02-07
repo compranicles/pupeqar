@@ -51,6 +51,9 @@
             @case("percentage")
                 @include('maintenances.fieldtemplates.percentage', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("document_description")
+                @include('maintenances.fieldtemplates.document_description', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                @break
         @endswitch
     @endforeach
 </div>

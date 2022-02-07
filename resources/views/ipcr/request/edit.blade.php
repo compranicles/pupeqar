@@ -143,6 +143,7 @@
         </div>
     </div>
     @push('scripts')
+        <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
             $('div .other_collab_nature').hide();
             var other_collab_nature = document.getElementById("other_collab_nature");
@@ -211,15 +212,14 @@
         
         </script>
         <script>
-             $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                var day = date.getDate();
-                var month = date.getMonth() + 1;
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            var report_category_id = 17;
+            $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+            $.get('/document-upload/description/'+report_category_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
             });
         </script>
     @endpush

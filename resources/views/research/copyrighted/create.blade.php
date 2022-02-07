@@ -34,6 +34,7 @@
     </div>
 
 @push('scripts')
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
         $(function() {
             $('textarea').val('');
@@ -67,6 +68,17 @@
             $('#start_date').prop("required", false);
             $('#target_date').prop("required", false);
         }
+    </script>
+    <script>
+        var report_category_id = 7;
+        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+        $.get('/document-upload/description/'+report_category_id, function (data){
+            if (data != '') {
+                data.forEach(function (item){
+                    $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                });
+            }
+        });
     </script>
 @endpush
 </x-app-layout>

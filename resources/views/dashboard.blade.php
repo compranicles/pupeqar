@@ -186,6 +186,9 @@
             var month1 = month[9];
             var month4 = month[11];
         }
-        document.getElementById("quarter").innerHTML = "Accomplishments reported this quarter " + {{$quarter}} + " of " + new Date().getFullYear(); //"Reported accomplishments from " + month1 + ' - ' + month4 + ' ' + new Date().getFullYear();
+
+        if (document.getElementById("quarter") != null) {
+            document.getElementById("quarter").innerHTML = "Accomplishments reported this quarter " + {{$quarter}} + " of " + new Date().getFullYear(); //"Reported accomplishments from " + month1 + ' - ' + month4 + ' ' + new Date().getFullYear();
+        }
     </script>
 </x-app-layout>

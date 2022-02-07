@@ -41,7 +41,7 @@
 
                 @can('viewAny', App\Models\Announcement::class)
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
+                    <x-jet-nav-link href="{{ route('maintenances.index') }}" :active="request()->routeIs('maintenances.*') || request()->routeIs('announcements.*') || request()->routeIs('dropdowns.*') || request()->routeIs('research-forms.*') || request()->routeIs('report-types.*') || request()->routeIs('report-categories.*') || request()->routeIs('document-description.*')">
                         {{ __('Maintenances') }}
                     </x-jet-nav-link>
                 </li>
@@ -155,36 +155,39 @@
             let dropdownBtn = document.querySelector('#accomplishmentlink');
             let menuContent = document.querySelector('.menu-sub');
             let menuLink = document.querySelectorAll('.menu-sub a');
-            dropdownBtn.addEventListener('click',()=>{
-                if (menuContent.style.display===""){
-                    menuContent.style.display="block";
-                    menuContent.style.cssFloat="none";
-                } else {
-                    menuContent.style.display="";
-                }
-            });
-            menuContent.addEventListener('click', ()=>{
-                if (menuContent.style.display===""){
-                    menuContent.style.display="block";
-                } else {
-                    menuContent.style.display="";
-                }
-            });
+            if (dropdownBtn != null) {
 
-            for(var i=0; i < menuLink.length; i++) {
-                menuLink[i].addEventListener('click', ()=>{
-                    menuContent.style.display="";
+                dropdownBtn.addEventListener('click',()=>{
+                    if (menuContent.style.display===""){
+                        menuContent.style.display="block";
+                        menuContent.style.cssFloat="none";
+                    } else {
+                        menuContent.style.display="";
+                    }
+                });
+                menuContent.addEventListener('click', ()=>{
+                    if (menuContent.style.display===""){
+                        menuContent.style.display="block";
+                    } else {
+                        menuContent.style.display="";
+                    }
+                });
+
+                for(var i=0; i < menuLink.length; i++) {
+                    menuLink[i].addEventListener('click', ()=>{
+                        menuContent.style.display="";
+                    });
+                }
+
+                $(document).click((event) => {
+                    if (!$(event.target).closest('#accomplishmentlink').length) {
+                        // the click occured outside
+                        if (!$(event.target).closest('.menu-sub').length) {
+                            menuContent.style.display="";
+                        }      
+                    }  
                 });
             }
-
-            $(document).click((event) => {
-                if (!$(event.target).closest('#accomplishmentlink').length) {
-                    // the click occured outside
-                    if (!$(event.target).closest('.menu-sub').length) {
-                        menuContent.style.display="";
-                    }      
-                }  
-            });
         </script>
         <script>
             let notifBtn = document.querySelector('#notificationDropdown');

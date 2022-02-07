@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models\Maintenance;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReportColumn extends Model
+class DocumentDescription extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
-        'report_category_id',
         'name',
-        'table',
-        'column',
+        'purpose',
         'is_active',
-        'order',
+        'report_category_id'
     ];
 }

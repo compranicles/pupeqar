@@ -44,17 +44,11 @@
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/departments/options/'+collegeId, function (data){
                 if (data != '') {
-                    // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                    //     $("div .department_id").hide();
-                    // } else {
                     data.forEach(function (item){
                         $("#department_id").append(new Option(item.name, item.id));
                         
                     });
                 }
-                // else {
-                //     $("div .department_id").hide();
-                // }
                 <?php if (old($fieldInfo->name) == '') { ?>
                     document.getElementById("department_id").value = "{{ $department_id }}";
                 <?php } else { ?>
@@ -65,28 +59,24 @@
     </script>
     <script>
         var collegeId = $('#college_id').val();
-        if(collegeId == null){
 
-            $.get('/departments/options/'+collegeId, function (data){
-                if (data != '') {
-                        // if ($('#college_id').val() <= 43 && $('#college_id').val() >= 15) {
-                        //     $("div .department_id").hide();
-                        // } else {
-                            data.forEach(function (item){
-                                $("#department_id").append(new Option(item.name, item.id));
-                                
-                            });
-                        // }
+            if (collegeId == '') {
+                document.getElementById("department_id").value = "";
+            }
+            else {
+                $.get('/departments/options/'+collegeId, function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#department_id").append(new Option(item.name, item.id));
+                            
+                        });
                     }
-                // else {
-                //     $("div .department_id").hide();
-                // }
-                <?php if (old($fieldInfo->name) == '') { ?>
-                    document.getElementById("department_id").value = "{{ $department_id }}";
-                <?php } else { ?>
-                    document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
-                <?php } ?>
-            });
-        }
+                    <?php if (old($fieldInfo->name) == '') { ?>
+                        document.getElementById("department_id").value = "{{ $department_id }}";
+                    <?php } else { ?>
+                        document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
+                    <?php } ?>
+                });
+            }
     </script>
 @endpush

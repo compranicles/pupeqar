@@ -24,11 +24,12 @@ class FieldTypeSeeder extends Seeder
         DB::table('field_types')->insert(['name' => 'multi-select']);
         DB::table('field_types')->insert(['name' => 'textarea']);
         DB::table('field_types')->insert(['name' => 'file-upload']);
-        DB::table('field_types')->insert(['name' => 'multiple-file-upload']);
+        DB::table('field_types')->insert(['name' => 'multiple-file-upload']); //10
         DB::table('field_types')->insert(['name' => 'decimal']);
         DB::table('field_types')->insert(['name' => 'college']);
         DB::table('field_types')->insert(['name' => 'department']);
         DB::table('field_types')->insert(['name' => 'yes-no']);
         DB::table('field_types')->insert(['name' => 'percentage']);
+        DB::table('field_types')->insert(['name' => 'document_description']); //16
     }
 }

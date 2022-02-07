@@ -60,6 +60,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/maintenances/sectors', [\App\Http\Controllers\Maintenances\SectorController::class , 'index'])->name('sectors.maintenance.index');
     Route::get('/maintenances/sectors/sync', [\App\Http\Controllers\Maintenances\SectorController::class, 'sync'])->name('sectors.maintenance.sync');
 
+    //Document Description
+    Route::get('/document-upload/description/{report_category_id}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'getDescriptionsByReportCategory']);
+    Route::resource('/maintenances/document-description', \App\Http\Controllers\Maintenances\DocumentDescriptionController::class);
+    Route::get('/maintenances/description/isActive/{report_category_id}/{description_id}/{is_active}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'isActive']);
 
     //Currency
     Route::get('/maintenances/currencies/name/{id}', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'getCurrencyName'])->name('currency.name');
