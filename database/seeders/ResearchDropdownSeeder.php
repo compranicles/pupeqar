@@ -62,31 +62,31 @@ class ResearchDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Poverty Reduction, Peace and Security',
+            'name' => 'Poverty Reduction',
             'order' => 1,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Accelerating Infrastructure Development through Science and Technology',
-            'order' => 2,
-            'is_active' => 1,
-        ]);
-        DropdownOption::create([
-            'dropdown_id' => $dropdownId,
-            'name' => 'Competitive Industry and Entrepreneurship',
             'order' => 3,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Social and Cultural Development',
+            'name' => 'Competitive Industry and Entrepreneurship',
             'order' => 4,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Environmental Conservation, Protection and Rehabilitation towards Sustainable Development',
+            'name' => 'Social and Cultural Development',
+            'order' => 7,
+            'is_active' => 0,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Environmental Conservation',
             'order' => 5,
             'is_active' => 1,
         ]);
@@ -97,20 +97,20 @@ class ResearchDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Team Leader/ Lead Researcher/ Independent',
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        DropdownOption::create([
-            'dropdown_id' => $dropdownId,
-            'name' => 'Asst. Team Leader/ Co-Lead Researcher',
+            'name' => 'Lead Researcher',
             'order' => 2,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Associate Researcher',
+            'name' => 'Co-Lead Researcher',
             'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Associate Lead Researcher',
+            'order' => 4,
             'is_active' => 1,
         ]);
 
@@ -180,19 +180,19 @@ class ResearchDropdownSeeder extends Seeder
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'University Funded',
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        DropdownOption::create([
-            'dropdown_id' => $dropdownId,
-            'name' => 'Self Funded',
             'order' => 2,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Externally Funded',
+            'name' => 'Self Funded',
             'order' => 3,
+            'is_active' => 1,
+        ]);
+        DropdownOption::create([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Externally Funded',
+            'order' => 1,
             'is_active' => 1,
         ]);
         
@@ -220,19 +220,19 @@ class ResearchDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Presented',
+            'name' => 'Completed & Presented',
             'order' => 6,
             'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Published',
+            'name' => 'Completed & Published',
             'order' => 7,
             'is_active' => 0,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Presented & Published',
+            'name' => 'Completed, Presented & Published',
             'order' => 8,
             'is_active' => 0,
         ]);
@@ -245,7 +245,7 @@ class ResearchDropdownSeeder extends Seeder
         
         //research publication level
         $dropdownId  = Dropdown::insertGetId([
-            'name' => 'Research Publication Level'
+            'name' => 'Research Presentation Level'
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
@@ -278,7 +278,7 @@ class ResearchDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'PASUC Accredited Journals',
+            'name' => 'OASUC Accredited Journals',
             'order' => 3,
             'is_active' => 1,
         ]);

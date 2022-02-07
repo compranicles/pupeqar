@@ -214,7 +214,7 @@ class ResearchController extends Controller
             'research_code' => $researchCode, 
             'user_id' => auth()->id(), 
             'funding_amount' => $funding_amount,
-            'nature_of_involvement' => 11
+            // 'nature_of_involvement' => 11
         ]);
 
         Research::where('id', $research->id)->update($input);
@@ -311,7 +311,7 @@ class ResearchController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        if($research->nature_of_involvement != 11){
+        if($research->nature_of_involvement != 11 || $research->nature_of_involvement != 224){
             $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                         ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
                         ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount_code')
@@ -332,7 +332,7 @@ class ResearchController extends Controller
         }
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        if ($research->nature_of_involvement == 11)
+        if ($research->nature_of_involvement ==  11 || $research->nature_of_involvement == 224)
             return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
 
         return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
@@ -761,9 +761,7 @@ class ResearchController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
 
-        Research::where('research_code', $research_code)->where('user_id', auth()->id())->update([
-            'is_active_member' => 0
-        ]);
+        Research::where('research_code', $research_code)->where('user_id', auth()->id())->delete();
         $researchers = Research::select('users.first_name', 'users.last_name', 'users.middle_name')
                 ->join('users',  'research.user_id', 'users.id')
                 ->where('research.research_code', $research_code)->where('is_active_member', 1)

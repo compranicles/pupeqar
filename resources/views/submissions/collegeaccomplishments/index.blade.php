@@ -6,12 +6,15 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-11">
                     <h5>{{ $college->name }} - Consolidated Accomplishments</h5>
-                    <hr>
+                </div>
+                {{-- Generate Report Button --}}
+                <div class="col-md-1 ml-auto">
+                    <button id="generate" type="button" class="btn btn-primary btn-sm" data-target="#reportGenerate" data-toggle="modal">Generate Report</button>
                 </div>
             </div>
-            
+            <hr>
             <div class="row">
                 <div class="col-md-3">
                     <label for="reportFilter" class="mr-2">Accomplishment: </label>
@@ -95,7 +98,7 @@
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id == 12)
+                                        @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                             @if ($row->extensionist_approval == null)
                                                 Receiving...
                                             @elseif ($row->extensionist_approval == 0)
@@ -121,7 +124,7 @@
                                                     <span class="text-success font-weight-bold">Received</span>
                                                 @endif
                                             @endif
-                                        @elseif ($row->report_category_id == 12)
+                                        @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                             @if ($row->extensionist_approval == null)
                                                 -
                                             @elseif ($row->extensionist_approval == 0)
@@ -203,7 +206,7 @@
                                             @else
                                                 -
                                             @endif
-                                        @elseif ($row->report_category_id == 12)
+                                        @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                             @if (
                                                 $row->extensionist_approval === 0 ||
                                                 $row->chairperson_approval === 0 ||
@@ -311,6 +314,7 @@
         </div>
     </div>
 
+    @include('reports.generate.index', ['data' => $college, 'source_type' => 'college'])
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>

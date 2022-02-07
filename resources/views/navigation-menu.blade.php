@@ -156,7 +156,6 @@
             let menuContent = document.querySelector('.menu-sub');
             let menuLink = document.querySelectorAll('.menu-sub a');
             if (dropdownBtn != null) {
-
                 dropdownBtn.addEventListener('click',()=>{
                     if (menuContent.style.display===""){
                         menuContent.style.display="block";
@@ -188,6 +187,7 @@
                     }  
                 });
             }
+
         </script>
         <script>
             let notifBtn = document.querySelector('#notificationDropdown');

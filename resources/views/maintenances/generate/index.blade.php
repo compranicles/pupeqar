@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Submission Tables') }}
+            {{ __('Report Types') }}
         </h2>
     </x-slot>
      
@@ -26,22 +26,20 @@
                         {{-- Table for displaying --}}
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="table-responsive ">
-                                    <table id="report_categories_table" class="table table-sm table-hover text-center">
+                                <div class="table-responsive">
+                                    <table id="report_type_table" class="table table-hover table-sm text-center">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Submission Table</th>
+                                                <th>Report Type</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($reportcategories as $reportcategory)
+                                            @foreach ($report_types as $type)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $reportcategory->name }}</td>
+                                                <td>{{ $type->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('report-categories.show', $reportcategory->id) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('maintenance.generate.view', $type->id) }}" class="btn btn-warning btn-sm">Manage</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach
@@ -60,7 +58,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $("#report_categories_table").dataTable();
+            $("#report_type_table").dataTable();
         </script>
     @endpush
 </x-app-layout>

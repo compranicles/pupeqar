@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Submission Tables') }}
+            {{ __('Report Type: '.$type->name) }}
         </h2>
     </x-slot>
      
@@ -26,22 +26,22 @@
                         {{-- Table for displaying --}}
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="table-responsive ">
-                                    <table id="report_categories_table" class="table table-sm table-hover text-center">
+                                <div class="table-responsive">
+                                    <table id="report_table_table" class="table table-sm table-hover text-center">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Submission Table</th>
+                                                <th>Report Table</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($reportcategories as $reportcategory)
-                                            <tr>
+                                            @foreach ($tables as $row)
+                                            <tr class="{{ ($row->is_table == "1")? 'table-secondary' : 'table-primary' }}">
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $reportcategory->name }}</td>
+                                                <td>{{ $row->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('report-categories.show', $reportcategory->id) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('maintenance.generate.edit', ['type_id' => $type->id, 'table_id' => $row->id]) }}" class="btn btn-warning btn-sm">Manage</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach
@@ -60,7 +60,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $("#report_categories_table").dataTable();
+            $("#report_table_table").dataTable();
         </script>
     @endpush
 </x-app-layout>

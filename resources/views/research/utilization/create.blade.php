@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Add Research Utilization') }}
+            {{ __($research['research_code'].' > Add Research Utilization') }}
         </h2>
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
+                @include('research.navigation-bar', ['research_code' => $research['id'], 'research_status' => $research['status']])
             </div>
         </div>
 
