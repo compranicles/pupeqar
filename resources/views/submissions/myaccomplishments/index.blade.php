@@ -385,6 +385,7 @@
             $(function(){
                 $('#my_accomplishments_table').DataTable();
             });
+            
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -457,6 +458,27 @@
                     table.draw();
 
             }
+        </script>
+        <script>
+            $(function(){
+            $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                var count = 0;
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Returned")) {
+                                count++;
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+
+                    document.getElementById('badge-returned').innerHTML = count;
+            });
         </script>
         <script>
              function showall() {
