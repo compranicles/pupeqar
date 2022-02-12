@@ -13291,7 +13291,8 @@ table tr .padding_left_show {
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/
-#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table {
+#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table, 
+#college_accomplishments_in_sector_table {
   font-size: 12.5px;
 }
 
@@ -13392,4 +13393,14 @@ table tr .padding_left_show {
 /* Handle on hover */
 .notif-scrollable::-webkit-scrollbar-thumb:hover {
   background: #999; 
+}
+
+.notif-badge {
+  background-color: #909294;
+  color: black;
+}
+
+.notif-badge:hover {
+  background-color: #c7c8c9;
+  color: black;
 }

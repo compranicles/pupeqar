@@ -3,6 +3,17 @@
         @include('submissions.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch', 'departmentsExtension'))
     </x-slot>
 
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
+        </li>
+    </ul>
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
@@ -320,7 +331,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $('#college_accomplishments_table').DataTable({
+            var table = $('#college_accomplishments_table').DataTable({
                 initComplete: function () {
                 this.api().columns(2).every( function () {
                     var column = this;
@@ -439,6 +450,71 @@
                 var newLink = link.replace(':college', "{{$colleges[0]->college_id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
+        </script>
+        <script>
+            $(function(){
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                table.draw();
+
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#college_accomplishments_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
+            });
+        </script>
+        <script>
+            //Received filter when clicked
+            function received() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#college_accomplishments_table').DataTable().search("");
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        // table.columns().search('').draw();
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Received")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+
+            }
+        </script>
+        <script>
+            //Show all filter when clicked
+             function showall() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#college_accomplishments_table').DataTable().search("");
+                table.draw();
+            }
+        </script>
+        <script>
+            //Returned filter when clicked
+            function returned() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $('#college_accomplishments_table').DataTable().search("");
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Returned")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+            }
         </script>
     @endpush
 </x-app-layout>

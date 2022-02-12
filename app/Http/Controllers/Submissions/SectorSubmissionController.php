@@ -66,9 +66,12 @@ class SectorSubmissionController extends Controller
         $department_names = [];
         foreach($sector_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
-            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
+            // $temp_college_name = College::where('id', $row->college_id)->first();
 
+            $temp_department_name = Department::where('id', $row->department_id)->pluck('name')->first();
 
+            // $temp_department_name = $temp_college_name->department()->where('id', $row->department_id)->pluck('name')->first();
+            // dd($temp_department_name);
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else

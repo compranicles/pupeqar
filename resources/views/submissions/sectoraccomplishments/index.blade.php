@@ -3,16 +3,68 @@
         @include('submissions.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch', 'departmentsExtension'))
     </x-slot>
 
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="false">All</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
+        </li>
+    </ul>
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
                     <h5>{{ $sector->name }} - Accomplishments</h5>
-                    <hr>
                 </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="reportFilter" class="mr-2">Accomplishment: </label>
+                    <div class="d-flex">
+                        <!-- @include('submissions.accomplishment-filter') -->
+                        <select name="report" id="reportFilter" class="custom-select">
+                            <option value="">Show All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="empFilter" class="mr-2">Employee: </label>
+                        <select name="emp" id="empFilter" class="custom-select">
+                            <option value="">Show All</option>
+                        </select>
+                </div>
+                <span style="display: inline-block;
+                        border-right: 1px solid #ccc;
+                        margin: 0px 20px 0px 20px;;
+                        height: 65px;"></span>
+                <div class="col-md-2">
+                    <label for="yearFilter" class="mr-2">Year Reported: </label>
+                    <select id="yearFilter" class="custom-select">
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                    <div class="d-flex">
+                        <select id="quarterFilter" class="custom-select" name="quarter">
+                            <option value="1" class="quarter">1</option>
+                            <option value="2" class="quarter">2</option>
+                            <option value="3" class="quarter">3</option>
+                            <option value="4" class="quarter">4</option>
+                        </select>
+                        <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responive">
-                        <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm table-bordered" id="college_accomplishments_in_sector_table">
                             <thead>
                                 <tr>
                                     <th rowspan="2"></th>
@@ -36,8 +88,8 @@
                                 <tr role="button">
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]['name'] }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id] }}</td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
                                             @if ($row->researcher_approval == null)
@@ -194,6 +246,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </div>   
 
@@ -266,11 +319,50 @@
         </div>
     </div>
 
-
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
+            var table = $('#college_accomplishments_in_sector_table').DataTable({
+                initComplete: function () {
+                this.api().columns(2).every( function () {
+                    var column = this;
+                    var select = $('#empFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(1).every( function () {
+                    var column = this;
+                    var select = $('#reportFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                }
+            });
+
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
@@ -317,7 +409,7 @@
                 $('.report-content').remove();
             });
             $(function(){
-                $('#college_accomplishments_table').DataTable();
+                $('#college_accomplishments_in_sector_table').DataTable();
             });
             // auto hide alert
             window.setTimeout(function() {
@@ -325,6 +417,68 @@
                     $(this).remove(); 
                 });
             }, 4000);
+        </script>
+        <script>
+            function received() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#college_accomplishments_in_sector_table').DataTable().search("");
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        // table.columns().search('').draw();
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Received")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+            }
+        </script>
+        <script>
+             function showall() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#college_accomplishments_in_sector_table').DataTable().search("");
+
+                table.draw();
+            }
+        </script>
+        <script>
+            function returned() {
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $('#college_accomplishments_in_sector_table').DataTable().search("");
+
+                $.fn.dataTable.ext.search.push(
+                    function (settings, data, dataIndex) {
+                        for (let i = 4; i <= 9; i++) {
+                            var report = data[i];
+                            if (report.includes("Returned")) {
+                                return true;
+                            }
+                        }
+                    });
+                    table.draw();
+            }
+        </script>
+        <script>
+            $(function(){
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                table.draw();
+
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#college_accomplishments_in_sector_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
+            });
         </script>
     @endpush
 </x-app-layout>

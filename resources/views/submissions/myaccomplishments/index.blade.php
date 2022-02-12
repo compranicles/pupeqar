@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
+                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="false">All</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
@@ -394,6 +394,7 @@
             }, 4000);
         </script>
         <script>
+            //auto-iteration of years for filter
             var max = new Date().getFullYear();
             var min = 0;
             var diff = max-2022;
@@ -444,6 +445,7 @@
             function received() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#my_accomplishments_table').DataTable().search("");
 
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
@@ -461,29 +463,25 @@
         </script>
         <script>
             $(function(){
-            $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
 
-                var count = 0;
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Returned")) {
-                                count++;
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
+                table.draw();
 
-                    document.getElementById('badge-returned').innerHTML = count;
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#my_accomplishments_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
             });
         </script>
         <script>
              function showall() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#my_accomplishments_table').DataTable().search("");
                 table.draw();
             }
         </script>
@@ -492,6 +490,7 @@
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
 
+                $('#my_accomplishments_table').DataTable().search("");
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
                         for (let i = 4; i <= 9; i++) {
@@ -503,19 +502,6 @@
                     });
                     table.draw();
             }
-
-            // var valueToFind = "Returned";
-  
-            // var duplicateCheck = table.columns(1).data().filter(function (value, index) {
-            //     return value ===  valueToFind ? true : false;
-            // }).length;
-
-            // document.getElementById('badge-returned').innerHTML = duplicateCheck;
-
-            // var count = table.rows( {search: "Returned"}).count();
-            // document.getElementById('badge-returned').innerHTML = count;
-
-
         </script>
     @endpush
 </x-app-layout>
