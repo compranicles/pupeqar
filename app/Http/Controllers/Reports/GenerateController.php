@@ -11,10 +11,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Maintenance\GenerateTable;
 use App\Models\Maintenance\GenerateColumn;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\IndividualAccomplishmentReportExport;
 
 class GenerateController extends Controller
 {
     public function index($id, Request $request){
+        $reportFormat = $request->input("type_generate");
+
         $source_type = '';
         if($request->input("type_generate") == "academic"){
             if($request->input("source_generate") == "department"){
@@ -188,8 +192,16 @@ class GenerateController extends Controller
                 }
             }
         }
-
-
-        return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data'));
+        
+        // dd($table_format);
+        $source_generate = $request->input("source_generate");
+        $year_generate = $request->input('year_generate');
+        $quarter_generate = $request->input('quarter_generate');
+        // new IndividualAccomplishmentReportExport($table_format, $table_columns, $table_contents, $source_type, $data, $reportFormat);
+        // return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'id'));
+        $user = User::where('id', auth()->id())->first('last_name');
+        // $nameUser = $user->last_name.', '.$user->first_name.' '.$user->middle_name; 
+        $nameUser = $user->last_name;
+        return Excel::download(new IndividualAccomplishmentReportExport($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate, $id, json_decode($request->input('table_columns_json'), true), json_decode($request->input('table_contents_json'), true), json_decode($request->input('table_format_json'), true)), $nameUser.'_Individual_Report.xlsx');
     }
 }

@@ -272,6 +272,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/manage/{report_id}/{report_category_id}', [\App\Http\Controllers\Reports\ReportController::class, 'viewReportOrigin'])->name('report.manage');
     Route::post('/reports/generate/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'index'])->name('report.generate.index');
     
+    //Export Reports
+    Route::post('/reports/export/individual-export/{source_type}/{report_format}/{source_generate}/{year_generate}/{quarter_generate}/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'individualExport'])->name('report.individual.export');
     // //faculty Reports
     // Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'addDocument'])->name('faculty.adddoc');
     // Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Reports\FacultyController::class, 'saveDocument'])->name('faculty.savedoc');
