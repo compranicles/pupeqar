@@ -62,14 +62,14 @@ class ResearcherController extends Controller
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('department_id', $row->department_id)->where('researcher_approval', null)->get();
 
                         
             $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
                 ->where('reports.department_id', $row->department_id)
                 ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('reports.researcher_approval', null)
                 ->distinct()
                 ->orderBy('users.last_name')
