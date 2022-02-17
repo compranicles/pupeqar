@@ -221,6 +221,8 @@ class ChairpersonController extends Controller
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
+        \LogActivity::addToLog('Chairperson received an accomplishment.');
+
         return redirect()->route('chairperson.index')->with('success', 'Report has been added in consolidated report.');
     }
     public function rejectCreate($report_id){
@@ -269,6 +271,8 @@ class ChairpersonController extends Controller
 
         Notification::send($returnData, new ReturnNotification($notificationData));
 
+        \LogActivity::addToLog('Chairperson returned an accomplishment.');
+
         return redirect()->route('chairperson.index')->with('success', 'Report has been returned.');
     }
 
@@ -285,6 +289,7 @@ class ChairpersonController extends Controller
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             Report::where('id', $report_id)->update(['chairperson_approval' => 1]);
             $report = Report::find($report_id);
@@ -313,7 +318,12 @@ class ChairpersonController extends Controller
             ];
 
             Notification::send($receiverData, new ReceiveNotification($notificationData));
+
+            $count++;
         }
+
+        \LogActivity::addToLog('Chairperson received '.$count.' accomplishments.');
+
         return redirect()->route('chairperson.index')->with('success', 'Report/s Approved Successfully');
     }
 
@@ -324,6 +334,8 @@ class ChairpersonController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
+
+        $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
@@ -363,7 +375,12 @@ class ChairpersonController extends Controller
             ];
 
             Notification::send($returnData, new ReturnNotification($notificationData));
+
+            $count++;
         }
+
+        \LogActivity::addToLog('Chairperson returned '.$count.' accomplishments.');
+
         return redirect()->route('chairperson.index')->with('success', 'Report/s Denied Successfully');
 
     }

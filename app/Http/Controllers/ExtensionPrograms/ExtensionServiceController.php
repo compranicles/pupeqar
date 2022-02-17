@@ -147,6 +147,9 @@ class ExtensionServiceController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Extension service added.');
+
+
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been added.');
     }
 
@@ -290,6 +293,8 @@ class ExtensionServiceController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Extension service updated.');
+
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been updated.');
     }
 
@@ -311,6 +316,9 @@ class ExtensionServiceController extends Controller
             return view('inactive');
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
+
+        \LogActivity::addToLog('Extension service deleted.');
+
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been deleted.');
     }
 
@@ -318,6 +326,9 @@ class ExtensionServiceController extends Controller
         $this->authorize('delete', ExtensionService::class);
 
         ExtensionServiceDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Extension service document deleted.');
+
         // Storage::delete('documents/'.$filename);
         return true;
     }

@@ -13393,3 +13393,14 @@ table tr .padding_left_show {
 ::-webkit-scrollbar-thumb:hover {
   background: #999; 
 }
+
+.card-vertical {
+    height:20rem;
+}
+
+.fixed_header{
+    display:block;
+    overflow:auto;
+    height:12rem;
+    width:100%;
+}

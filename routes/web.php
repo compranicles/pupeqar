@@ -40,6 +40,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
     Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
 
+    //logs
+    Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);
+
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');

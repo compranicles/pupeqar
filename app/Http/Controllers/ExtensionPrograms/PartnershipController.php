@@ -116,6 +116,8 @@ class PartnershipController extends Controller
                 }
             }
         }
+        \LogActivity::addToLog('Partnership, linkages, and network added.');
+
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
     }
@@ -169,6 +171,8 @@ class PartnershipController extends Controller
         $colleges = College::all();
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
+
+
 
         return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
 
@@ -236,6 +240,9 @@ class PartnershipController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Partnership, linkages, and network updated.');
+
+
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
 
     }
@@ -258,6 +265,9 @@ class PartnershipController extends Controller
             return view('inactive');
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
+
+        \LogActivity::addToLog('Partnership, linkages, and network deleted.');
+
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been deleted.');
     }
 
@@ -267,6 +277,9 @@ class PartnershipController extends Controller
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         PartnershipDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Partnership, linkages, and network document deleted.');
+
         return true;
     }
 }

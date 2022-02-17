@@ -111,6 +111,8 @@ class ConsultantController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Expert service rendered as consultant added');
+
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
     }
 
@@ -219,6 +221,9 @@ class ConsultantController extends Controller
             }
         }
 
+
+        \LogActivity::addToLog('Expert service rendered as consultant updated');
+
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been updated.');
     }
 
@@ -240,6 +245,9 @@ class ConsultantController extends Controller
             return view('inactive');
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
+
+        \LogActivity::addToLog('Expert service rendered as consultant deleted.');
+
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been deleted.');
     }
 
@@ -250,6 +258,8 @@ class ConsultantController extends Controller
             return view('inactive');
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
+        \LogActivity::addToLog('Expert service rendered as consultant document deleted.');
+
         return true;
     }
 }

@@ -90,6 +90,8 @@ class OutreachProgramController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Community relations and outreach program added.');
+
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
     }
 
@@ -184,6 +186,9 @@ class OutreachProgramController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Community relations and outreach program updated.');
+
+
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
     }
 
@@ -205,6 +210,9 @@ class OutreachProgramController extends Controller
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
         $outreach_program->delete();
+
+        \LogActivity::addToLog('Community relations and outreach program deleted.');
+
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been deleted.');
     }
 
@@ -214,6 +222,9 @@ class OutreachProgramController extends Controller
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Community relations and outreach program document deleted.');
+
         return true;
     }
 }

@@ -163,8 +163,35 @@
                 </div>
             </div>
         </div>
+        <hr>
+        @ipqmso
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-vertical">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="h5">Activity Log</div>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="" class="btn btn-link btn-sm">View All</a>                                
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped text-center table-bordered fixed_header" id="log_activity_table">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endipqmso
     </div>
-    <hr>
 
     <script>
         const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
@@ -189,6 +216,41 @@
 
         if (document.getElementById("quarter") != null) {
             document.getElementById("quarter").innerHTML = "Accomplishments reported this quarter " + {{$quarter}} + " of " + new Date().getFullYear(); //"Reported accomplishments from " + month1 + ' - ' + month4 + ' ' + new Date().getFullYear();
+        }
+    </script>
+    <script>
+        $(function(){
+            getLog();
+
+            setInterval(getLog, 60000);
+        });
+
+        function getLog(){
+            $('.activity-log-content').remove();
+
+            $.get('/get-dashboard-list', function (data){
+                var countColumns = 0;
+
+                data.forEach(function(item){
+                    $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class=" activity-log-content"></tr>');
+                    $('#activity-log-'+countColumns)
+                        .append('<td class="activity-log-content">'+
+                                item.name
+                            +'</td>'
+                        );
+                    $('#activity-log-'+countColumns)
+                        .append('<td class="activity-log-content">'+
+                                item.subject
+                            +'</td>'
+                        );
+                    $('#activity-log-'+countColumns)
+                        .append('<td class="activity-log-content">'+
+                                item.created_at
+                            +'</td>'
+                        );
+                    countColumns++;
+                });
+            });
         }
     </script>
 </x-app-layout>
