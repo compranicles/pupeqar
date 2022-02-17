@@ -16,9 +16,6 @@
     {{-- if its not table(0) output only the name else output name and table--}}
     @if ($format->is_table == "0")
     <h2 class="mt-2">{{ $format->name }}</h2>
-        @if ($format->name == "I. ACCOMPLISHMENT REPORT")
-            <p>Please Do Not Abbreviate</p>
-        @endif
     @else
             <h2>{{ $format->name }}</h2>
             <div class="table-responsive">
@@ -100,6 +97,10 @@
                         </tr>
                         <br>
                         @endforeach
+                    @else
+                        <tr>
+                            <td><small></small></td>
+                        </tr>
                     @endif
                     </tfoot>
                 </table>

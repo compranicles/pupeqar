@@ -3,18 +3,19 @@
 namespace App\Exports;
 
 // use Maatwebsite\Excel\Concerns\FromCollection;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
 use App\Models\User;
 use App\Models\Report;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use Illuminate\Contracts\View\View;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Events\AfterSheet;
 use App\Models\Maintenance\GenerateTable;
 use App\Models\Maintenance\GenerateColumn;
-use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class IndividualAccomplishmentReportExport implements FromView, WithEvents
 {
@@ -56,7 +57,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     else
                         $table_columns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
                 }
-                
+
                 $table_contents = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0" || $format->report_category_id == null)
@@ -71,6 +72,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
                 }
+
             }
             elseif($source_generate == "college"){
                 $source_type = "college";
@@ -215,6 +217,10 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 }
             }
         }
+
+        $this->table_format = $table_format;
+        $this->table_columns = $table_columns;
+        $this->table_contents = $table_contents;
         return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'id'));
     }
 
@@ -330,19 +336,66 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     ]
                 ]);
 
-                $count = 9;
-                $table_format = (array) $this->table_format;
-                $table_columns = (array) $this->table_columns;
-                // dd($table_columns[42]);
+                $count = 6;
+                $table_format = $this->table_format;
+                $table_columns = $this->table_columns;
+                $table_contents = $this->table_contents;
                 foreach($table_format as $format) {
-                    if ($format->is_table == 1) {
+                    if($format->is_table == '0'){
+                        
+                        //title
+                        $event->sheet->mergeCells('A'.$count.':K'.$count);
+                        $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
+                        $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF203764");
+                        $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+                        $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        $event->sheet->getStyle('A'.$count)->applyFromArray([
+                            'font' => [
+                                'name' => 'Arial',
+                            ]
+                        ]);
+                        $count++;
+
+                    }
+                    elseif($format->is_table == '1') {
                         $length = count($table_columns[$format->id]);
-                        $letter = chr($length + 64);
-                        //for columns
-                        if ($length > 1) {
-                            // $event->sheet->mergeCells('A'.$count);
+                        if ($length == null){
+                            $length = 2;
+                        }
+                        else{
+                            $length = $length+2;
+                        }
+                        $letter = Coordinate::stringFromColumnIndex($length);
+
+                        // title
+                        $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
+                        $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
+                        $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF203764");
+                        $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+                        $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        $event->sheet->getStyle('A'.$count)->applyFromArray([
+                            'font' => [
+                                'name' => 'Arial',
+                            ]
+                        ]);
+                        $count++;
+
+                        //column
+                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF203764");
+                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
+                            'font' => [
+                                'name' => 'Arial',
+                            ]
+                        ]);
+                        $count++;
+
+                        //contents
+                        foreach($table_contents[$format->id] as $contents){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF203764");
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
@@ -350,10 +403,36 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                                     'name' => 'Arial',
                                 ]
                             ]);
+                            $count++;
                         }
-                        $count++;
+
+                        if($table_contents[$format->id] == null){
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
+                                'font' => [
+                                    'name' => 'Arial',
+                                ]
+                            ]);
+                            $count++;
+                        }
+
+                        $footers = json_decode($format->footers);
+                        if ($footers != null){
+                            foreach ($footers as $footer){
+                                $event->sheet->getStyle('A'.$count)->applyFromArray([
+                                    'font' => [
+                                        'name' => 'Arial',
+                                    ]
+                                ]);
+                                $count++;
+                            }
+                        }
+                        
+                        $count += 2;
                     }
-                    
                 }
             }
         ];
