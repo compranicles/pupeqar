@@ -55,67 +55,67 @@
                     
 
                     countColumns ++;
-                    $('#notification_nav_table').append('<tr id="notification-'+countColumns+'" class="d-flex notif-row notification-content"></tr>');
+                    $('#notification_nav_table').append('<tr role="button" id="notification-'+countColumns+'" class="d-flex notif-row notification-content"></tr>');
 
                     if(item.data.type == 'received'){
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">received</span> your '+item.data.category_name+' accomplishment.'+
-                                '</a>' +
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'department'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
-                                '</a>'+
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
-                                '</a>'+
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                     }
                     else if(item.data.type == 'returned'){
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> your '+item.data.category_name+' accomplishment.'+
-                                '</a>' +
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'department'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
-                                '</a>' +
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
-                                '</a>'+
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                         }
                     }
@@ -133,11 +133,11 @@
                     }
                     else if(item.data.type == 'confirm'){
                         $('#notification-'+countColumns)
-                            .append('<td class="notification-content">'+
-                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                            .append(
+                                '<a href="{{ route("research.index") }}" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark p-2">'+
                                 item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
-                                '</a>'+
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
+                                '</a>'
                             );
                     }
 
