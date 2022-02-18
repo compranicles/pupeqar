@@ -20,4 +20,6 @@ class College extends Model
     public function department() {
         return $this->hasOne(\App\Models\Maintenance\Department::class);
     }
+
+    
 }

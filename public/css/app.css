@@ -13291,7 +13291,8 @@ table tr .padding_left_show {
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/
-#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table {
+#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table, 
+#college_accomplishments_in_sector_table {
   font-size: 12.5px;
 }
 
@@ -13374,24 +13375,34 @@ table tr .padding_left_show {
 } */
 
 /* width */
-::-webkit-scrollbar {
+.notif-scrollable::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.notif-scrollable::-webkit-scrollbar-track {
   background: #fff; 
 }
  
 /* Handle */
-::-webkit-scrollbar-thumb {
+.notif-scrollable::-webkit-scrollbar-thumb {
   background: #EDE9E8; 
   border-radius: 0.40em;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.notif-scrollable::-webkit-scrollbar-thumb:hover {
   background: #999; 
+}
+
+.notif-badge {
+  background-color: #909294;
+  color: black;
+}
+
+.notif-badge:hover {
+  background-color: #c7c8c9;
+  color: black;
 }
 
 .card-vertical {

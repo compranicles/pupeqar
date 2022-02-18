@@ -7,13 +7,13 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
+                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="false">All</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
+                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
                 </li>
             </ul>
             <div class="card mb-3">
@@ -260,7 +260,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $user, 'source_type' => 'my'])
+    @include('reports.generate.index', ['data' => $user, 'source_type' => 'my', 'colleges' => $collegeList])
 
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
@@ -385,6 +385,7 @@
             $(function(){
                 $('#my_accomplishments_table').DataTable();
             });
+            
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -393,6 +394,7 @@
             }, 4000);
         </script>
         <script>
+            //auto-iteration of years for filter
             var max = new Date().getFullYear();
             var min = 0;
             var diff = max-2022;
@@ -443,6 +445,7 @@
             function received() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#my_accomplishments_table').DataTable().search("");
 
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
@@ -459,9 +462,26 @@
             }
         </script>
         <script>
+            $(function(){
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                table.draw();
+
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#my_accomplishments_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
+            });
+        </script>
+        <script>
              function showall() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#my_accomplishments_table').DataTable().search("");
                 table.draw();
             }
         </script>
@@ -470,6 +490,7 @@
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
 
+                $('#my_accomplishments_table').DataTable().search("");
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
                         for (let i = 4; i <= 9; i++) {

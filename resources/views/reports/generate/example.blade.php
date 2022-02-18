@@ -1,31 +1,35 @@
-<x-app-layout>
-    <x-slot name="header">
-        Example
-    </x-slot>
 
-    @if ($source_type == "individual")
-        <h1>QAR of {{ $data->name }}</h1>
-    @else
-        <h1>Consolidated QAR of {{ $data->name }}</h1>
-    @endif
+    @php
+      $table_columns_json = json_encode($table_columns, JSON_FORCE_OBJECT);
+      $table_contents_json = json_encode($table_contents, JSON_FORCE_OBJECT);
+      $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
+    @endphp
+    
+    <!-- These breaks give spaces for the heading formed in the AccomplishmentReportExport -->
+    <!-- HTML & CSS not working with aligning multiple elements in one cell row -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     {{-- foreach through the format --}}
     @foreach ($table_format as $format)
-        {{-- if its not table(0) output only the name else output name and table--}}
-        @if ($format->is_table == "0")
-            <h4 class="mt-2">{{ $format->name }}</h4>
-            
-        @else
-            <h5>{{ $format->name }}</h5>
+    {{-- if its not table(0) output only the name else output name and table--}}
+    @if ($format->is_table == "0")
+    <h2 class="mt-2">{{ $format->name }}</h2>
+    @else
+            <h2>{{ $format->name }}</h2>
             <div class="table-responsive">
                 <table class="table table-bordered table-hover table-sm">
-                    <thead>
+                    <thead> 
                         <tr>
                             @if ($format->is_individual == "1" && $source_type != "individual")
-                                <th>Department</th>
-                                <th>Name of the Employee</th>
+                            <th>Department</th>
+                            <th>Name of the Employee</th>
                             @endif
                             @if ($source_type == "individual")
-                                <th>College</th>
+                                <!-- <th>College</th> -->
                                 <th>Department</th>
                             @endif
                             {{-- load the addtl columns --}}
@@ -52,7 +56,7 @@
                                     </td>
                                 @endif
                                 @if ($source_type == "individual")
-                                    <td>{{ $data['college_id'] ?? '' }}</td>
+                                    {{-- <td>{{ $data['college_id'] ?? '' }}</td> --}}
                                     <td>{{ $data['department_id'] ?? ''}}</td>
                                 @endif
                                 @foreach ($table_columns[$format->id] as $column )
@@ -84,21 +88,27 @@
                         </tr>
                         @endforelse
                     </tbody>
+                    <tfoot>
+                    @php
+                        $footers = json_decode($format->footers);
+                    @endphp
+                    @if ($footers != null)
+                        @foreach ($footers as $footer)
+                        <tr>
+                            <td><small>{{ $footer }}</small></td>
+                        </tr>
+                        <br>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td><small></small></td>
+                        </tr>
+                    @endif
+                    </tfoot>
                 </table>
             </div>
-            @php
-                $footers = json_decode($format->footers);
-            @endphp
-            @if ($footers != null)
-                @foreach ($footers as $footer)
-                    <small>{{ $footer }}</small>
-                    <br>
-                @endforeach
-            @endif
             
         @endif
 
         
     @endforeach
-
-</x-app-layout>

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        
         $this->call([
             //other maintenance
             // SectorSeeder::class,
@@ -41,21 +42,24 @@ class DatabaseSeeder extends Seeder
             ExtensionFormSeeder::class,
             AcademicDevelopmentFormSeeder::class,
             IPCRFormSeeder::class,
-
-
+            
+            
             //FIELD Seeder
             FieldSeeder::class,
-
+            
             //Reports/submissions
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
-
+            
             //Generate
             GenerateTypeSeeder::class,
             GenerateTableSeeder::class,
             GenerateColumnSeeder::class,
             GenerateColumn2Seeder::class,
         ]);
+        
+        \App\Models\Research::truncate();
+        \App\Models\Research::factory()->count(12)->create();
     }
 }

@@ -11,7 +11,7 @@
             <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
+            <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
         </li>
     </ul>
     <div class="card mb-3">
@@ -441,6 +441,7 @@
             function received() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#department_accomplishments_table').DataTable().search("");
 
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
@@ -460,6 +461,8 @@
              function showall() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $('#department_accomplishments_table').DataTable().search("");
+
                 table.draw();
             }
         </script>
@@ -467,6 +470,7 @@
             function returned() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+                $('#department_accomplishments_table').DataTable().search("");
 
                 $.fn.dataTable.ext.search.push(
                     function (settings, data, dataIndex) {
@@ -487,6 +491,22 @@
                 var link = "/submissions/department-accomplishments/departmentReportYearFilter/:department/:year/:quarter";
                 var newLink = link.replace(':department', "{{$departments[0]->department_id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
+            });
+        </script>
+        <script>
+            $(function(){
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                table.draw();
+
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#department_accomplishments_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
             });
         </script>
     @endpush
