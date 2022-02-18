@@ -164,7 +164,7 @@
             </div>
         </div>
         <hr>
-        @ipqmso
+        @if (isset($is_sAdmin))
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-vertical">
@@ -174,7 +174,7 @@
                                 <div class="h5">Activity Log</div>
                             </div>
                             <div class="col-md-2">
-                                <a href="" class="btn btn-link btn-sm">View All</a>                                
+                                <a href="{{ route('logs.all') }}" class="btn btn-link btn-sm">View All</a>                                
                             </div>
                             <div class="col-md-12">
                                 <hr>
@@ -190,7 +190,33 @@
                 </div>
             </div>
         </div>
-        @endipqmso
+        @else
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-vertical">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <div class="h5">Activity Log</div>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{{ route('logs.user') }}" class="btn btn-link btn-sm">View All</a>                                
+                            </div>
+                            <div class="col-md-12">
+                                <hr>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-striped text-center table-bordered fixed_header" id="log_activity_individual_table">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+        @endif
     </div>
 
     <script>
@@ -221,8 +247,10 @@
     <script>
         $(function(){
             getLog();
+            getLogInd();
 
             setInterval(getLog, 60000);
+            setInterval(getLogInd, 60000);
         });
 
         function getLog(){
@@ -232,19 +260,41 @@
                 var countColumns = 0;
 
                 data.forEach(function(item){
-                    $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class=" activity-log-content"></tr>');
+                    $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
                     $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content">'+
+                        .append('<td class="activity-log-content text-small">'+
                                 item.name
                             +'</td>'
                         );
                     $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content">'+
+                        .append('<td class="activity-log-content text-small">'+
                                 item.subject
                             +'</td>'
                         );
                     $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content">'+
+                        .append('<td class="activity-log-content text-small">'+
+                                item.created_at
+                            +'</td>'
+                        );
+                    countColumns++;
+                });
+            });
+        }
+        function getLogInd(){
+            $('.activity-log-indi-content').remove();
+
+            $.get('/get-dashboard-list', function (data){
+                var countColumns = 0;
+
+                data.forEach(function(item){
+                    $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
+                    $('#activity-log-indi-'+countColumns)
+                        .append('<td class="activity-log-indi-content text-small">'+
+                                item.subject
+                            +'</td>'
+                        );
+                    $('#activity-log-indi-'+countColumns)
+                        .append('<td class="activity-log-indi-content text-small">'+
                                 item.created_at
                             +'</td>'
                         );

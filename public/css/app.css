@@ -13404,3 +13404,7 @@ table tr .padding_left_show {
     height:12rem;
     width:100%;
 }
+
+.text-small{
+  font-size: 12px;
+}

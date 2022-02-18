@@ -42,6 +42,9 @@ Route::group(['middleware' => 'auth'], function() {
 
     //logs
     Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);
+    Route::get('get-dashboard-list-indi', [\App\Http\Controllers\ActivityLogController::class, 'getTenIndi']);
+    Route::get('view-logs', [\App\Http\Controllers\ActivityLogController::class, 'getAll'])->name('logs.all');
+    Route::get('view-logs-user', [\App\Http\Controllers\ActivityLogController::class, 'getAllIndi'])->name('logs.user');
 
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);

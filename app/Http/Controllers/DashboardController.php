@@ -60,6 +60,7 @@ class DashboardController extends Controller
         $is_dean = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 6)->first();
         $is_vp = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 7)->first();
         $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 8)->first();
+        $is_sAdmin = UserRole::where('user_roles.user_id', auth()->id())->where('user_roles.role_id', 9)->first();
 
         if ($is_faculty_admin) {
         $department_reported = Report::where('user_id', auth()->id())->distinct('department_id')->count();
@@ -158,8 +159,6 @@ class DashboardController extends Controller
         }
         }
 
-        
-
-        return view('dashboard', compact('quarter', 'totalReports'));
+        return view('dashboard', compact('quarter', 'totalReports', 'is_sAdmin'));
     }
 }
