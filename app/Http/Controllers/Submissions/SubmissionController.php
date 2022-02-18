@@ -1117,6 +1117,7 @@ class SubmissionController extends Controller
                 
             }
         }
+        \LogActivity::addToLog($successToSubmit.' accomplishments submitted.');
 
         return redirect()->route('to-finalize.index')->with('success', $successToSubmit.' accomplishment reports have been submitted. ');
     }

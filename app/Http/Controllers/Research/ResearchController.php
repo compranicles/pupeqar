@@ -248,6 +248,9 @@ class ResearchController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research added.');
+
+
         return redirect()->route('research.index')->with('success', 'Research has been registered.');
     }
 
@@ -412,6 +415,8 @@ class ResearchController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research updated.');
+
         return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated.');
     }
 
@@ -427,6 +432,8 @@ class ResearchController extends Controller
         // dd($request);
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
+
+        \LogActivity::addToLog('Research updated.');
 
         return redirect()->route('research.show', $research)->with('success', 'Research has been updated.');
     }
@@ -449,6 +456,9 @@ class ResearchController extends Controller
 
         $research->delete();
         ResearchDocument::where('research_id', $research->id)->delete();
+
+        \LogActivity::addToLog('Research deleted.');
+
 
         return redirect()->route('research.index')->with('success', 'Research has been deleted.');
     }
@@ -595,6 +605,9 @@ class ResearchController extends Controller
                     ->get()
                     ->first()
                     ->delete();
+
+        \LogActivity::addToLog('Research added.');
+        
 
         return redirect()->route('research.index')->with('success', 'Research has been saved');
     }

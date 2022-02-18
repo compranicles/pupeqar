@@ -112,6 +112,9 @@ class UtilizationController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research utilization added.');
+
+
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been added.');
     }
 
@@ -229,6 +232,8 @@ class UtilizationController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research utilization updated.');
+
         return redirect()->route('research.utilization.show', [$research->id, $utilization->id])->with('success', 'Research Utilization Updated Successfully');
     }
 
@@ -253,6 +258,9 @@ class UtilizationController extends Controller
             return view('inactive');
 
         $utilization->delete();
+
+        \LogActivity::addToLog('Research utilization deleted.');
+
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been deleted.');
     }
 }

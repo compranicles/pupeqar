@@ -40,6 +40,8 @@ class InviteController extends Controller
     }
 
     public function add($research_id, Request $request){
+
+        $count = 0;
         foreach($request->input('employees') as $row){
             ResearchInvite::create([
                 'user_id' => $row,
@@ -67,12 +69,16 @@ class InviteController extends Controller
             ];
 
             Notification::send($user, new ResearchInviteNotification($notificationData));
+            $count++;
         }
+        \LogActivity::addToLog('Added Researcher.');
 
         return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited successfully');
     }
 
     public function confirm($research_id, Request $request){
+
+        \LogActivity::addToLog('Research Invitation Confirmed.');
         
         return redirect()->route('research.code.create', ['research_id' => $research_id, 'id' => $request->get('id') ]);
     }
@@ -81,6 +87,8 @@ class InviteController extends Controller
         ResearchInvite::where('research_id', $research_id)->where('user_id', auth()->id())->update([
             'status' => 0
         ]);
+
+        \LogActivity::addToLog('Research Invitation Cancelled.');
 
         return redirect()->route('research.index')->with('success', 'Invitation cancelled');
     }
@@ -123,6 +131,9 @@ class InviteController extends Controller
         }
         
         ResearchInvite::where('research_id', $research_id)->where('user_id', $request->input('user_id'))->delete();
+
+        \LogActivity::addToLog('Research Involvement removed.');
+
         
         return redirect()->route('research.invite.index', $research_id)->with('success', 'Action successful');
     }

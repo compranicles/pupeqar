@@ -113,6 +113,8 @@ class ConferenceController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course added.');
+
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been added.');
     }
 
@@ -222,6 +224,9 @@ class ConferenceController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course updated.');
+
+
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
     }
 
@@ -244,6 +249,9 @@ class ConferenceController extends Controller
             return view('inactive');
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
+
+        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course deleted.');
+
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been deleted.');
     }
 
@@ -253,6 +261,9 @@ class ConferenceController extends Controller
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course document deleted.');
+
         // Storage::delete('documents/'.$filename);
         return true;
     }

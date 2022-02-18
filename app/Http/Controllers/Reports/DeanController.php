@@ -232,6 +232,8 @@ class DeanController extends Controller
         }
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
+
+        \LogActivity::addToLog('Dean received an accomplishment.');
         
         return redirect()->route('dean.index')->with('success', 'Report has been added in consolidated report.');
     }
@@ -308,6 +310,8 @@ class DeanController extends Controller
         
         Notification::send($returnData, new ReturnNotification($notificationData));
 
+        \LogActivity::addToLog('Dean returned an accomplishment.');
+
         return redirect()->route('dean.index')->with('success', 'Report has been returned.');
     }
 
@@ -324,6 +328,7 @@ class DeanController extends Controller
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
@@ -379,7 +384,11 @@ class DeanController extends Controller
             }
 
             Notification::send($receiverData, new ReceiveNotification($notificationData));
+            $count++;
         }
+
+        \LogActivity::addToLog('Dean received '.$count.' accomplishments.');
+
         return redirect()->route('dean.index')->with('success', 'Report/s Approved Successfully');
     }
 
@@ -390,6 +399,8 @@ class DeanController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
+
+        $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
@@ -456,7 +467,11 @@ class DeanController extends Controller
 
             
             Notification::send($returnData, new ReturnNotification($notificationData));
+            $count++;
         }
+
+        \LogActivity::addToLog('Dean returned '.$count.' accomplishments.');
+
         return redirect()->route('dean.index')->with('success', 'Report/s Denied Successfully');
 
     }

@@ -208,6 +208,8 @@ class IpqmsoController extends Controller
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
+        \LogActivity::addToLog('IPQMSO received an accomplishment.');
+
         return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
     }
 
@@ -305,6 +307,8 @@ class IpqmsoController extends Controller
         
         Notification::send($returnData, new ReturnNotification($notificationData));
 
+        \LogActivity::addToLog('IPQMSO returned an accomplishment.');
+
         return redirect()->route('ipqmso.index')->with('deny-success', 'Report Denial successfully sent');
     }
 
@@ -316,6 +320,7 @@ class IpqmsoController extends Controller
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
@@ -389,7 +394,12 @@ class IpqmsoController extends Controller
             }
 
             Notification::send($receiverData, new ReceiveNotification($notificationData));
+
+            $count++;
         }
+
+        \LogActivity::addToLog('IPQMSO received '.$count.' accomplishments.');
+
         return redirect()->route('ipqmso.index')->with('success', 'Report/s Approved Successfully');
     }
 
@@ -400,6 +410,8 @@ class IpqmsoController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
+
+        $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
@@ -488,7 +500,11 @@ class IpqmsoController extends Controller
 
             
             Notification::send($returnData, new ReturnNotification($notificationData));
+            $count++;
         }
+
+        \LogActivity::addToLog('IPQMSO returned '.$count.' accomplishments.');
+
         return redirect()->route('ipqmso.index')->with('success', 'Report/s Denied Successfully');
 
     }
