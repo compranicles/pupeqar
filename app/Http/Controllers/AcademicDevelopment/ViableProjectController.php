@@ -113,6 +113,9 @@ class ViableProjectController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Viable demonstration project added.');
+
+
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
     }
 
@@ -230,6 +233,9 @@ class ViableProjectController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Viable demonstration project updated.');
+
+
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
     }
 
@@ -251,6 +257,9 @@ class ViableProjectController extends Controller
             return view('inactive');
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
+
+        \LogActivity::addToLog('Viable demonstration project deleted.');
+
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been deleted.');
     }
 
@@ -260,6 +269,9 @@ class ViableProjectController extends Controller
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         ViableProjectDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Viable demonstration project document deleted.');
+
         return true;
     }
 }

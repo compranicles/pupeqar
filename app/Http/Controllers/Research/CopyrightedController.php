@@ -124,6 +124,8 @@ class CopyrightedController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research copyright added.');
+
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been added.');
     }
 
@@ -222,6 +224,8 @@ class CopyrightedController extends Controller
                 }
             }
         }
+
+        \LogActivity::addToLog('Research copyright updated.');
 
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been updated.');
     }

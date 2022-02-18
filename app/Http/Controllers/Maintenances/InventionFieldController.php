@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\FormBuilder\InventionForm;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\FormBuilder\InventionField;
+use App\Models\DocumentDescription;
 
 class InventionFieldController extends Controller
 {
@@ -123,7 +124,10 @@ class InventionFieldController extends Controller
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.invention.edit', compact('invention_form', 'invention_field', 'fieldtypes', 'dropdowns'));
+        if ($invention_form->id == 1) {
+            $descriptions = DocumentDescription::where('report_category_id', 8)->get();
+        }
+        return view('maintenances.invention.edit', compact('invention_form', 'invention_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**
@@ -138,7 +142,7 @@ class InventionFieldController extends Controller
         $input = $request->except(['_token', '_method']);
 
         InventionField::where('invention_form_id', $invention_form->id)->where('id', $invention_field->id)->update($input);
-        return redirect()->route('invention-forms.show', $invention_form->id)->with('success', 'Invention field updated sucessfully.');
+        return redirect()->route('invention-forms.show', $invention_form->id)->with('success', 'Invention field has been updated.');
     }
 
     /**

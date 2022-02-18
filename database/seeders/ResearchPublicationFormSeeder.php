@@ -185,7 +185,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Actual Page(s) with Journal Details, *Journal Title Page and Table of Contents",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

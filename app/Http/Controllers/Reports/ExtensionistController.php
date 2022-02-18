@@ -129,6 +129,7 @@ class ExtensionistController extends Controller
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
+        \LogActivity::addToLog('Extensionist received an accomplishment.');
 
         return redirect()->route('extensionist.index')->with('success', 'Report Accepted');
     
@@ -178,12 +179,16 @@ class ExtensionistController extends Controller
         ];
 
         Notification::send($returnData, new ReturnNotification($notificationData));
+
+        \LogActivity::addToLog('Extensionist returned an accomplishment.');
+
         return redirect()->route('extensionist.index')->with('success', 'Report Denied');
     }
 
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             Report::where('id', $report_id)->update(['extensionist_approval' => 1]);
 
@@ -213,7 +218,12 @@ class ExtensionistController extends Controller
             ];
 
             Notification::send($receiverData, new ReceiveNotification($notificationData));
+
+            $count++;
         }
+
+        \LogActivity::addToLog('Extensionist received '.$count.' accomplishments.');
+
         return redirect()->route('extensionist.index')->with('success', 'Report/s Approved Successfully');
     }
 
@@ -224,6 +234,8 @@ class ExtensionistController extends Controller
 
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
+
+        $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
@@ -263,7 +275,12 @@ class ExtensionistController extends Controller
             ];
 
             Notification::send($returnData, new ReturnNotification($notificationData));
+            
+            $count++;
         }
+
+        \LogActivity::addToLog('Extensionist returned '.$count.' accomplishments.');
+
         return redirect()->route('extensionist.index')->with('success', 'Report/s Denied Successfully');
 
     }

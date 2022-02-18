@@ -104,6 +104,8 @@ class RequestController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Request & Queries Acted Upon added.');
+
         return redirect()->route('request.index')->with('request_success', 'Your Accomplishment in Request & Queries Acted Upon has been saved.');
     }
 
@@ -204,6 +206,8 @@ class RequestController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Request & Queries Acted Upon updated.');
+
         return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been updated.');
     }
 
@@ -223,6 +227,9 @@ class RequestController extends Controller
             return view('inactive');
         RequestDocument::where('request_id', $request->id)->delete();
         $request->delete();
+
+        \LogActivity::addToLog('Request & Queries Acted Upon deleted.');
+
         return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been deleted.');
     }
 
@@ -230,6 +237,9 @@ class RequestController extends Controller
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         RequestDocument::where('filename', $filename)->delete();
+
+        \LogActivity::addToLog('Request & Queries Acted Upon document deleted.');
+
         return true;
     }
 }

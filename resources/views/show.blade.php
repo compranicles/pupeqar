@@ -46,6 +46,9 @@
                       @case("percentage")
                           @include('maintenances.showtemplates.percentage', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                           @break
+                      @case("document_description")
+                          @include('maintenances.showtemplates.text', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
+                          @break
                       @default
                           
                   @endswitch

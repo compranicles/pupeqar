@@ -159,6 +159,8 @@ class PublicationController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Research presentation added.');
+
         return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been added.');
     }
 
@@ -265,6 +267,9 @@ class PublicationController extends Controller
                 }
             }
         }
+
+        \LogActivity::addToLog('Research presentation updated.');
+
 
         return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been updated.');
     }

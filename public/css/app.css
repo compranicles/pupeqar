@@ -13404,3 +13404,18 @@ table tr .padding_left_show {
   background-color: #c7c8c9;
   color: black;
 }
+
+.card-vertical {
+    height:20rem;
+}
+
+.fixed_header{
+    display:block;
+    overflow:auto;
+    height:12rem;
+    width:100%;
+}
+
+.text-small{
+  font-size: 12px;
+}

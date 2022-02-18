@@ -115,6 +115,9 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material added.');
+
+
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
     }
 
@@ -251,6 +254,8 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material updated.');
+
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');
     }
@@ -280,6 +285,8 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material deleted.');
+
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                             ->with('action', 'deleted.');
     }
@@ -292,6 +299,9 @@ class ReferenceController extends Controller
             return view('inactive');
         ReferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
+
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material document deleted.');
+
         return true;
     }
 }

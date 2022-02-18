@@ -123,6 +123,8 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
 
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' added.');
+
         // dd($classification);
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
     }
@@ -254,6 +256,8 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' updated.');
+
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }
 
@@ -280,6 +284,8 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' deleted.');
+
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been deleted.');
     }
 
@@ -291,6 +297,9 @@ class InventionController extends Controller
             
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
+
+        \LogActivity::addToLog('Invention/Innovation/Creative Work document deleted.');
+
         return true;
     }
 

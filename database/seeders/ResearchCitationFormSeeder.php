@@ -155,7 +155,7 @@ class ResearchCitationFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Print Screen from Goole Scholar/Internet indicating the title of papers citing the paper, *Reference Page highlighting the name of authors and title of research cited, *Pages of books highlighting the citation",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

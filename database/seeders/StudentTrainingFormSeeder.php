@@ -176,7 +176,7 @@ class StudentTrainingFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Certificate/Other similar supporting documents, *Terminal report (if applicable), *Documentation/Pictures/ Other similar supporting documents",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

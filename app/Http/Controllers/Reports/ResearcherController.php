@@ -62,14 +62,14 @@ class ResearcherController extends Controller
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('department_id', $row->department_id)->where('researcher_approval', null)->get();
 
                         
             $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
                 ->where('reports.department_id', $row->department_id)
                 ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('reports.researcher_approval', null)
                 ->distinct()
                 ->orderBy('users.last_name')
@@ -129,6 +129,8 @@ class ResearcherController extends Controller
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
+        \LogActivity::addToLog('Researcher received an accomplishment.');
+
         return redirect()->route('researcher.index')->with('success', 'Report Accepted');
     
     }
@@ -178,12 +180,15 @@ class ResearcherController extends Controller
 
         Notification::send($returnData, new ReturnNotification($notificationData));
 
+        \LogActivity::addToLog('Researcher returned an accomplishment.');
+
         return redirect()->route('researcher.index')->with('success', 'Report Denied');
     }
 
     public function acceptSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             Report::where('id', $report_id)->update(['researcher_approval' => 1]);
 
@@ -214,7 +219,11 @@ class ResearcherController extends Controller
 
             Notification::send($receiverData, new ReceiveNotification($notificationData));
 
+            $count++;
         }
+
+        \LogActivity::addToLog('Researcher received '.$count.' accomplishments.');
+
         return redirect()->route('researcher.index')->with('success', 'Report/s Approved Successfully');
     }
 
@@ -226,6 +235,7 @@ class ResearcherController extends Controller
     public function rejectSelected(Request $request){
         $reportIds = $request->input('report_id');
 
+        $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
@@ -263,7 +273,12 @@ class ResearcherController extends Controller
             ];
 
             Notification::send($returnData, new ReturnNotification($notificationData));
+
+            $count++;
         }
+
+        \LogActivity::addToLog('Researcher returned '.$count.' accomplishments.');
+
         return redirect()->route('researcher.index')->with('success', 'Report/s Denied Successfully');
 
     }

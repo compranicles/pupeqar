@@ -40,6 +40,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
     Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
 
+    //logs
+    Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);
+    Route::get('get-dashboard-list-indi', [\App\Http\Controllers\ActivityLogController::class, 'getTenIndi']);
+    Route::get('view-logs', [\App\Http\Controllers\ActivityLogController::class, 'getAll'])->name('logs.all');
+    Route::get('view-logs-user', [\App\Http\Controllers\ActivityLogController::class, 'getAllIndi'])->name('logs.user');
+
     //announcements
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');
@@ -69,6 +75,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/maintenances/generate/{column_id}/inactivate', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'inactivate']);
     Route::post('/maintenances/generate/arrange', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'arrange']);
 
+    //Document Description
+    Route::get('/document-upload/description/{report_category_id}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'getDescriptionsByReportCategory']);
+    Route::resource('/maintenances/document-description', \App\Http\Controllers\Maintenances\DocumentDescriptionController::class);
+    Route::get('/maintenances/description/isActive/{report_category_id}/{description_id}/{is_active}', [\App\Http\Controllers\Maintenances\DocumentDescriptionController::class, 'isActive']);
 
     //Currency
     Route::get('/maintenances/currencies/name/{id}', [\App\Http\Controllers\Maintenances\CurrencyController::class, 'getCurrencyName'])->name('currency.name');

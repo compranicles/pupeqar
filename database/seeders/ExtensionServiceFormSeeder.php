@@ -328,7 +328,7 @@ class ExtensionServiceFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Special Order (if applicable), *Extension Project Proposal, *Extension Program Write-up/Terminal Report, *Documentation/Pictures/Other similar supporting documents, *MOA/MOU/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents, *Survey/Evaluation Instrument Used, *Summary Report of Evaluation Result",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

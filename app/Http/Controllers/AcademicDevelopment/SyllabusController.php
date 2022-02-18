@@ -117,6 +117,9 @@ class SyllabusController extends Controller
                 }
             }
         }
+
+        \LogActivity::addToLog('Course Syllabus added.');
+
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'added.');
     }
@@ -227,6 +230,8 @@ class SyllabusController extends Controller
             }
         }
 
+        \LogActivity::addToLog('Course Syllabus updated.');
+
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                     ->with('action', 'updated.');
     }
@@ -253,6 +258,9 @@ class SyllabusController extends Controller
 
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'deleted.');
+
+        \LogActivity::addToLog('Course Syllabus deleted.');
+
     }
 
     public function removeDoc($filename){
@@ -262,6 +270,9 @@ class SyllabusController extends Controller
             return view('inactive');
         SyllabusDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
+
+        \LogActivity::addToLog('Course Syllabus document deleted.');
+
         return true;
     }
 

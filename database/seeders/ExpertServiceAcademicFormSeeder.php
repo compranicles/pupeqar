@@ -174,7 +174,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'name' => 'description',
             'placeholder' => "*Special Order (if applicable), *MOU/MOA/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents, *Documentation/Pictures/Other similar supporting documents",
             'size' => 'col-md-12',
-            'field_type_id' => 8,
+            'field_type_id' => 16,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

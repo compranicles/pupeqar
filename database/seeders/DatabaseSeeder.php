@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
         
         $this->call([
             //other maintenance
-            SectorSeeder::class,
-            CollegeSeeder::class,
-            DepartmentSeeder::class,
+            // SectorSeeder::class,
+            // CollegeSeeder::class,
+            // DepartmentSeeder::class,
             CurrencySeeder::class,
 
             // authentication

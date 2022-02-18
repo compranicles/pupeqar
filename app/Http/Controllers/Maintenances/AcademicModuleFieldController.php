@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
 use App\Models\FormBuilder\AcademicDevelopmentField;
+use App\Models\DocumentDescription;
 
 class AcademicModuleFieldController extends Controller
 {
@@ -121,7 +122,28 @@ class AcademicModuleFieldController extends Controller
     {
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
-        return view('maintenances.academic-module.edit', compact('academic_module_form', 'academic_module_field', 'fieldtypes', 'dropdowns'));
+        if ($academic_module_form->id == 1) {
+            $descriptions = DocumentDescription::where('report_category_id', 15)->get();
+        }
+        elseif ($academic_module_form->id == 2) {
+            $descriptions = DocumentDescription::where('report_category_id', 16)->get();
+        }
+        elseif ($academic_module_form->id == 3) {
+            $descriptions = DocumentDescription::where('report_category_id', 18)->get();
+        }
+        elseif ($academic_module_form->id == 4) {
+            $descriptions = DocumentDescription::where('report_category_id', 19)->get();
+        }
+        elseif ($academic_module_form->id == 5) {
+            $descriptions = DocumentDescription::where('report_category_id', 20)->get();
+        }
+        elseif ($academic_module_form->id == 6) {
+            $descriptions = DocumentDescription::where('report_category_id', 21)->get();
+        }
+        elseif ($academic_module_form->id == 7) {
+            $descriptions = DocumentDescription::where('report_category_id', 23)->get();
+        }
+        return view('maintenances.academic-module.edit', compact('academic_module_form', 'academic_module_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**

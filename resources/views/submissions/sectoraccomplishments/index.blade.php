@@ -91,7 +91,7 @@
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]['name'] }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id] }}</td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 Receiving...
                                             @elseif ($row->researcher_approval == 0)
@@ -115,7 +115,7 @@
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 -
                                             @elseif ($row->researcher_approval == 0)
@@ -199,7 +199,7 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 7)
+                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if (
                                                 $row->researcher_approval === 0 ||
                                                 $row->chairperson_approval === 0 ||

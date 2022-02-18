@@ -12,6 +12,11 @@
             </div>
         </div>
 
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success alert-index">
+            <i class="bi bi-check-circle"></i> {{ $message }}
+        </div>         
+        @endif
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -76,6 +81,14 @@
 
     @push('scripts')
         <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
+        <script>
+            // auto hide alert
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
+        </script>
         <script>
             $(function() {
                 $('#field_sortable').sortable({
