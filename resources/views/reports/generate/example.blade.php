@@ -3,9 +3,11 @@
       $table_columns_json = json_encode($table_columns, JSON_FORCE_OBJECT);
       $table_contents_json = json_encode($table_contents, JSON_FORCE_OBJECT);
       $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
-
     @endphp
     
+    <!-- These breaks give spaces for the heading formed in the AccomplishmentReportExport -->
+    <!-- HTML & CSS not working with aligning multiple elements in one cell row -->
+    <br>
     <br>
     <br>
     <br>
@@ -27,7 +29,7 @@
                             <th>Name of the Employee</th>
                             @endif
                             @if ($source_type == "individual")
-                                <th>College</th>
+                                <!-- <th>College</th> -->
                                 <th>Department</th>
                             @endif
                             {{-- load the addtl columns --}}
@@ -54,7 +56,7 @@
                                     </td>
                                 @endif
                                 @if ($source_type == "individual")
-                                    <td>{{ $data['college_id'] ?? '' }}</td>
+                                    {{-- <td>{{ $data['college_id'] ?? '' }}</td> --}}
                                     <td>{{ $data['department_id'] ?? ''}}</td>
                                 @endif
                                 @foreach ($table_columns[$format->id] as $column )

@@ -84,7 +84,6 @@ class MySubmissionController extends Controller
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
-
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
@@ -92,10 +91,12 @@ class MySubmissionController extends Controller
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-                $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name;
         }
 
-        
+        //Get distinct colleges from the colleges that had been reported with repeatedly
+        $collegeList = College::get();
+
         return view(   
             'submissions.myaccomplishments.index', 
             compact( 
@@ -107,7 +108,8 @@ class MySubmissionController extends Controller
                 'department_names', 
                 'sectors', 'departmentsResearch','departmentsExtension',
                 'year', 'quarter', 'report_categories',
-                'user'
+                'user',
+                'collegeList'
             ));
         
     }

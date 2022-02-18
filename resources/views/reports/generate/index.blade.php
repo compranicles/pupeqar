@@ -1,3 +1,4 @@
+<!-- Generate Report Modal -->
 <div class="modal fade" id="reportGenerate" tabindex="-1" aria-labelledby="reportGenerateLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -17,6 +18,16 @@
                             <option value="" selected disabled>Choose...</option>
                             <option value="academic">Academic</option>
                             <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <!-- CBCO (College/Branch/Campus/Office) -->
+                    <div class="form-group">
+                        <label for="cbco">College/Branch/Campus/Office</label>
+                        <select name="cbco" id="cbco" class="form-control" required>
+                            <option value="" selected disabled>Choose...</option>
+                            @foreach ($colleges as $college)
+                                <option value="{{ $college->id }}">{{$college->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group">

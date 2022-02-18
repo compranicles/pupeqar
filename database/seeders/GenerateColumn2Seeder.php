@@ -1703,13 +1703,6 @@ class GenerateColumn2Seeder extends Seeder
             'order' => 1,
         ]);
         GenerateColumn::create([
-            'name' => 'Date Developed/Revised/Reviewed/Enhanced',
-            'table_id' => 59,
-            'report_column' => 'date_finished',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
-        GenerateColumn::create([
             'name' => 'Assigned Task',
             'table_id' => 59,
             'report_column' => 'assigned_task',
@@ -1717,16 +1710,9 @@ class GenerateColumn2Seeder extends Seeder
             'order' => 1,
         ]);
         GenerateColumn::create([
-            'name' => 'College/Branch/Campus/Office',
+            'name' => 'Date Developed/Revised/Reviewed/Enhanced',
             'table_id' => 59,
-            'report_column' => 'college_id',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
-        GenerateColumn::create([
-            'name' => 'Department',
-            'table_id' => 59,
-            'report_column' => 'department_id',
+            'report_column' => 'date_finished',
             'is_active' => 1,
             'order' => 1,
         ]);

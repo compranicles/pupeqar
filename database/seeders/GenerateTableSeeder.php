@@ -16,7 +16,7 @@ class GenerateTableSeeder extends Seeder
     {
         GenerateTable::truncate();
 
-        //ACADEMIC
+        //ADMIN - Type_id = 1
         GenerateTable::create([
             'name' => 'I. ACCOMPLISHMENT REPORT',
             'is_table' => 0,

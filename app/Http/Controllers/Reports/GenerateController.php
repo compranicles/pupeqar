@@ -99,9 +99,10 @@ class GenerateController extends Controller
                             ->whereYear('reports.updated_at', $request->input('year_generate'))
                             ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
                             ->where('reports.user_id', $user_id)
+                            ->where('reports.college_id', $request->input('cbco'))
                             ->join('users', 'users.id', 'reports.user_id')
-                            ->join('departments', 'departments.id', 'reports.department_id')
-                            ->join('colleges', 'colleges.id', 'reports.college_id')
+                            // ->join('departments', 'departments.id', 'reports.department_id')
+                            // ->join('colleges', 'colleges.id', 'reports.college_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
                 }
@@ -186,6 +187,7 @@ class GenerateController extends Controller
                             ->whereYear('reports.updated_at', $request->input('year_generate'))
                             ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
                             ->where('reports.user_id', $user_id)
+                            ->where('reports.college_id', $request->input('cbco'))
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
@@ -193,15 +195,25 @@ class GenerateController extends Controller
             }
         }
         
-        // dd($table_format);
         $source_generate = $request->input("source_generate");
         $year_generate = $request->input('year_generate');
         $quarter_generate = $request->input('quarter_generate');
-        // new IndividualAccomplishmentReportExport($table_format, $table_columns, $table_contents, $source_type, $data, $reportFormat);
-        // return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'id'));
+        $cbco = $request->input('cbco');
+
         $user = User::where('id', auth()->id())->first('last_name');
-        // $nameUser = $user->last_name.', '.$user->first_name.' '.$user->middle_name; 
         $nameUser = $user->last_name;
-        return Excel::download(new IndividualAccomplishmentReportExport($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate, $id, json_decode($request->input('table_columns_json'), true), json_decode($request->input('table_contents_json'), true), json_decode($request->input('table_format_json'), true)), $nameUser.'_Individual_Report.xlsx');
+        return Excel::download(new IndividualAccomplishmentReportExport(
+            $source_type, 
+            $reportFormat, 
+            $source_generate,
+            $year_generate,
+            $quarter_generate,
+            $cbco, 
+            $id, 
+            json_decode($request->input('table_columns_json'), true), 
+            json_decode($request->input('table_contents_json'), true), 
+            json_decode($request->input('table_format_json'), true)), 
+            
+            $nameUser.'_Individual_Report.xlsx');
     }
 }

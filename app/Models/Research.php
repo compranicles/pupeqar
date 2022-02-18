@@ -17,4 +17,8 @@ class Research extends Model
     public function department() {
         return $this->belongsTo(\App\Models\Maintenance\Department::class);
     }
+
+    public function document() {
+        return $this->belongsTo(\App\Models\Document::class);
+    }
 }
