@@ -20,8 +20,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        //Super Admin
         User::truncate();
+        SectorHead::truncate();
+        
+        //Super Admin
         // 1
         User::create([
             'email' => 'superadmin1@mailinator.com',
@@ -257,6 +259,7 @@ class UserSeeder extends Seeder
             'last_name' => 'OVPAA',
             'suffix' => null,
         ]);
+
 
         SectorHead::create([
             'user_id' => $head1->id,

@@ -13247,8 +13247,10 @@ table tr .padding_left_show {
 
 .submission-menu.active {
   color: #212529;
-  border-bottom: 2px solid #eeb510;
-  padding-bottom: 12px;
+  /* color: white; */
+  /* border-bottom: 2px solid #eeb510; */
+  background-color: whitesmoke;
+  padding: 20px;
   font-weight: bolder;
 }
 

@@ -2,9 +2,9 @@
 
 {{-- Departments' --}}
 @if (in_array(5, $roles))
-    <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Receive - Department/s</a>   
+    <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Receive - Department</a>   
     @forelse ( $departments as $row)
-        <a href="{{ route('submissions.departmentaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.departmentaccomp.*') ? 'active' : ''}}">
+        <a href="{{ route('submissions.departmentaccomp.index', $row->department_id) }}" class="submission-menu {{ request()->routeIs('submissions.departmentaccomp.*') ? 'active' : ''}}">  
             {{ $row->code }} - Accomplishments
         </a>   
     @empty
