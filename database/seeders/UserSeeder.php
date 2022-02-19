@@ -313,6 +313,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        FacultyExtensionist::truncate();
         FacultyExtensionist::create([
             'user_id' => $ext1->id,
             'department_id' => 60,
@@ -344,6 +345,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        FacultyResearcher::truncate();
         FacultyResearcher::create([
             'user_id' => $res1->id,
             'department_id' => 60,
