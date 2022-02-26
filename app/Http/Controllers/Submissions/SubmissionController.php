@@ -858,37 +858,6 @@ class SubmissionController extends Controller
             
         }
 
-        //role and department/ college id
-        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-        $departments_nav = [];
-        $colleges_nav = [];
-        $sectors_nav = [];
-        $departmentsResearch_nav = [];
-        $departmentsExtension_nav = [];
-        
-        if(in_array(5, $roles)){
-            $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
-        }
-        if(in_array(6, $roles)){
-            $colleges_nav = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
-                            ->join('colleges', 'colleges.id', 'deans.college_id')->get();
-        }
-        if(in_array(7, $roles)){
-            $sectors_nav = SectorHead::where('sector_heads.user_id', auth()->id())->select('sector_heads.sector_id', 'sectors.code')
-                        ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->get();
-        }
-        if(in_array(10, $roles)){
-            $departmentsResearch_nav = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
-                                        ->select('faculty_researchers.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
-        }
-        if(in_array(11, $roles)){
-            $departmentsExtension_nav = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
-                                        ->select('faculty_extensionists.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
-        }
-
         $colleges = College::select('colleges.name', 'colleges.id')
                                 ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->orWhereIn('colleges.id', Invention::where('user_id', auth()->id())->pluck('college_id')->all())
@@ -903,7 +872,7 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
 
-        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
     }
 
     /**

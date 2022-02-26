@@ -20,8 +20,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        //Super Admin
         User::truncate();
+        SectorHead::truncate();
+        
+        //Super Admin
         // 1
         User::create([
             'email' => 'superadmin1@mailinator.com',
@@ -258,6 +260,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+
         SectorHead::create([
             'user_id' => $head1->id,
             'sector_id' => 3,
@@ -310,6 +313,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        FacultyExtensionist::truncate();
         FacultyExtensionist::create([
             'user_id' => $ext1->id,
             'department_id' => 60,
@@ -341,6 +345,7 @@ class UserSeeder extends Seeder
             'suffix' => null,
         ]);
 
+        FacultyResearcher::truncate();
         FacultyResearcher::create([
             'user_id' => $res1->id,
             'department_id' => 60,
