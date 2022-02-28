@@ -17,18 +17,18 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-            //other maintenance
-            // SectorSeeder::class,
-            // CollegeSeeder::class,
-            // DepartmentSeeder::class,
-            CurrencySeeder::class,
-
             // authentication
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
             UserRoleSeeder::class,
             RolePermissionSeeder::class,
+
+            //other maintenance
+            SectorSeeder::class,
+            CollegeSeeder::class,
+            DepartmentSeeder::class,
+            CurrencySeeder::class,
 
             // Field types
             FieldTypeSeeder::class,

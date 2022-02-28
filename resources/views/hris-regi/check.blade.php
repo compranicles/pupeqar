@@ -7,6 +7,9 @@
         <div class="card-body">
             <div class="row mb-3 justify-content-center">
                 <div class="col-md-11">
+                    <h5>Register Using HRIS Credentials</h5>
+                </div>
+                <div class="col-md-11">
 
                     <x-jet-validation-errors class="mb-3 rounded-0" />
 
@@ -15,18 +18,14 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        @if (session('success'))
-                            <div class="alert alert-success mb-3 rounded-0" role="alert">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+                        
                         @if (session('error'))
                             <div class="alert alert-danger mb-3 rounded-0" role="alert">
                                 {{ session('error') }}
                             </div>
                         @endif
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('register.verify') }}">
                         @csrf
                         <div class="form-group">
                             <x-jet-label value="{{ __('Email') }}" />
@@ -44,23 +43,11 @@
                             <x-jet-input-error for="password"></x-jet-input-error>
                         </div>
 
-                        {{-- <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <x-jet-checkbox id="remember_me" name="remember" />
-                                <label class="custom-control-label" for="remember_me">
-                                    {{ __('Remember Me') }}
-                                </label>
-                            </div>
-                        </div> --}}
-
                         <div class="mb-0">
                             <div class="d-flex justify-content-end align-items-baseline">
-                                <a class="text-muted mr-3" href="{{ route('register.hris') }}">
-                                    {{ __('Register with HRIS') }}
-                                </a>
 
                                 <x-jet-button class="rounded-0">
-                                    {{ __('Log in') }}
+                                    {{ __('Check') }}
                                 </x-jet-button>
                             </div>
                         </div>

@@ -43,6 +43,8 @@ class User extends Authenticatable
         'middle_name',
         'last_name',
         'suffix',
+        'emp_code',
+        'emp_id'
     ];
 
     /**

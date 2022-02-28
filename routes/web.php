@@ -23,17 +23,23 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
 
-/* UPLOAD AND REMOVE DOCUMENTS/IMAGES */
-Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
-Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
-
-/* DOCUMENT/IMAGE ACCESS ROUTES */
-Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
-Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
-Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
+/* HRIS REGISTER AND VERIFICATION */
+Route::get('register/hris', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'index'])->name('register.hris');
+Route::post('register/verify', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'verify'])->name('register.verify');
+Route::get('register/create/{key}', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'create'])->name('register.create');
+Route::post('register/save', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'save'])->name('register.save');
 
 /* AUTH CHECKER */
 Route::group(['middleware' => 'auth'], function() {
+
+    /* UPLOAD AND REMOVE DOCUMENTS/IMAGES */
+    Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
+    Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
+
+    /* DOCUMENT/IMAGE ACCESS ROUTES */
+    Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
+    Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
+    Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
             
     /* NOTIFICATIONS */
     Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);

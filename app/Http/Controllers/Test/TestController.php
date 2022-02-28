@@ -11,19 +11,31 @@ class TestController extends Controller
 {
    public function index() { 
         $db_ext = DB::connection('mysql_external');
-        dd($db_ext);
+        // dd($db_ext);
         $departments = $db_ext->select(" EXEC GetDepartment");
 
         $departmentIDs = []; 
         $count = 0;
 
-        foreach($departments as $row){
-            $departmentIDs[$count] = $row->DepartmentID;
-            $count++;
-        }
+        // foreach($departments as $row){
+        //     $departmentIDs[$count] = $row->DepartmentID;
+        //     $count++;
+        // }
         
-        $sectorHRISCode = Sector::pluck('hris_code')->all();
-        $allDepartments = $db_ext->select(" EXEC GetDepartment");
-        dd(Sector::where('hris_code', $allDepartments[282]->DepartmentID)->pluck('id')->first());
+        // $sectorHRISCode = Sector::pluck('hris_code')->all();
+        // $allDepartments = $db_ext->select(" EXEC GetDepartment");
+        // dd(Sector::where('hris_code', $allDepartments[282]->DepartmentID)->pluck('id')->first());
+        $i = 1;
+        $totalcount = 1;
+        do {
+            $data = $db_ext->select(" EXEC GetUserAccount $i");
+            $count++;
+            $i++;
+        }
+        while (count($data) > 0);
+
+        echo $count;
+        echo $i++;
+        var_dump($data);
     }
 }
