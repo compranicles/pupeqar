@@ -23,7 +23,6 @@ class ResearchFactory extends Factory
      */
     public function definition()
     {
-        $user_id = auth()->id();
         return [
             //
             'classification' => rand(1, 3),
@@ -38,7 +37,7 @@ class ResearchFactory extends Factory
             'funding_type' => rand(23, 25),
             'funding_amount' => $this->faker->randomFloat(2),
             'funding_agency' => $this->faker->text(),
-            'status' => rand(26, 27),
+            'status' => 53,
             'start_date' => date("Y-m-d"),
             'target_date' => date("Y-m-d", strtotime("+1 day")),
             'college_id' => 86,
