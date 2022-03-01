@@ -19,6 +19,7 @@ use App\Notifications\ReturnNotification;
 use App\Models\Maintenance\ReportCategory;
 use App\Notifications\ReceiveNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Services\ToReceiveReportAuthorizationService;
 
 class DeanController extends Controller
 {
@@ -29,7 +30,10 @@ class DeanController extends Controller
      */
     public function index()
     {
-        
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
@@ -179,6 +183,11 @@ class DeanController extends Controller
     }
 
     public function accept($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
         $report = Report::find($report_id);
@@ -239,10 +248,20 @@ class DeanController extends Controller
     }
 
     public function rejectCreate($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('reports.deans.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -316,16 +335,31 @@ class DeanController extends Controller
     }
 
     public function relay($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['dean_approval' => 0]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
     }
 
     public function undo($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['dean_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 
     public function acceptSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -393,11 +427,21 @@ class DeanController extends Controller
     }
 
     public function denySelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
         return view('reports.deans.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $reportIds = $request->input('report_id');
 
         $count = 0;
