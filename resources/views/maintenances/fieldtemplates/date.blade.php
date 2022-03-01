@@ -2,10 +2,10 @@
     <div class="form-group">
         <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label> <span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" readonly="readonly" 
+        <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"
             placeholder="mm/dd/yyyy" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" 
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker 
-            form-control form-validation p-3" style="background-color: white;" 
+            form-control form-validation p-3" 
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
