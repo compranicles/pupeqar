@@ -19,10 +19,15 @@ use App\Notifications\ReturnNotification;
 use App\Models\Maintenance\ReportCategory;
 use App\Notifications\ReceiveNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Services\ToReceiveReportAuthorizationService;
 
 class ExtensionistController extends Controller
 {
     public function index(){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
@@ -100,6 +105,11 @@ class ExtensionistController extends Controller
     }
 
     public function accept($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['extensionist_approval' => 1]);
 
         $report = Report::find($report_id);
@@ -135,10 +145,20 @@ class ExtensionistController extends Controller
     
     }
     public function rejectCreate($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('reports.extensionists.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -186,6 +206,11 @@ class ExtensionistController extends Controller
     }
 
     public function acceptSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -228,11 +253,21 @@ class ExtensionistController extends Controller
     }
 
     public function denySelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
         return view('reports.extensionists.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $reportIds = $request->input('report_id');
 
         $count = 0;

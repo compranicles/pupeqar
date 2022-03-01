@@ -80,7 +80,7 @@ class PermissionSeeder extends Seeder
         /* ************************SUBMISSIONS MODULE********************************** */
         //41
         Permission::create(['name' => 'finalize submissions']);
-        Permission::create(['name' => 'manage submitted accomplishments']);  //My Accomplishments tab
+        Permission::create(['name' => 'manage submitted accomplishments']); // My Accomplishments tab
         //43
         Permission::create(['name' => 'receive individual reports (for consolidation by department)']); //To Receive-Department/s tab
         Permission::create(['name' => 'manage consolidated reports (by department)']); //[Department]-Accomplishments tab
@@ -93,5 +93,11 @@ class PermissionSeeder extends Seeder
         //49
         Permission::create(['name' => 'receive consolidated reports by all colleges (for final consolidation)']); //To Receive-IPQMSO tab
         Permission::create(['name' => 'manage consolidated reports (final)']); //All Accomplishments tab
+        //51
+        Permission::create(['name' => 'receive individual reports (for consolidation by research)']); //To Receive-Research tab
+        Permission::create(['name' => 'manage consolidated reports (by research)']); //[Department]-Accomplishments tab
+        //53
+        Permission::create(['name' => 'receive individual reports (for consolidation by extension)']); //To Receive-Extensionist tab
+        Permission::create(['name' => 'manage consolidated reports (by extension)']); //[Department]-Accomplishments tab
     }
 }

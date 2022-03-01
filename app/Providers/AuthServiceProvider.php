@@ -5,53 +5,63 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Research;
-use App\Models\ResearchComplete;
-use App\Models\ResearchPresentation;
-use App\Models\ResearchPublication;
-use App\Models\ResearchCopyright;
-use App\Models\ResearchCitation;
-use App\Models\ResearchUtilization;
-use App\Models\Invention;
-use App\Models\ExpertServiceAcademic;
-use App\Models\ExpertServiceConference;
-use App\Models\ExpertServiceConsultant;
-use App\Models\ExtensionService;
-use App\Models\Mobility;
-use App\Models\OutreachProgram;
-use App\Models\Partnership;
-use App\Models\CollegeDepartmentAward;
-use App\Models\Reference;
-use App\Models\StudentAward;
-use App\Models\StudentTraining;
-use App\Models\Syllabus;
-use App\Models\TechnicalExtension;
-use App\Models\ViableProject;
-use App\Models\Request;
+use App\Models\{
+    User,
+    Role,
+    Research,
+    ResearchComplete,
+    ResearchPresentation,
+    ResearchPublication,
+    ResearchCopyright,
+    ResearchCitation,
+    ResearchUtilization,
+    Invention,
+    ExpertServiceAcademic,
+    ExpertServiceConference,
+    ExpertServiceConsultant,
+    ExtensionService,
+    Mobility,
+    OutreachProgram,
+    Partnership,
+    CollegeDepartmentAward,
+    Reference,
+    StudentAward,
+    StudentTraining,
+    Syllabus,
+    TechnicalExtension,
+    ViableProject,
+    Request,
 
-use App\Models\Announcement;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Department;
-use App\Models\Maintenance\Currency;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\InventionForm;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
+    Announcement,
+};
+use App\Models\Maintenance\{
+    College,
+    Department,
+    Currency,
+};
+use App\Models\FormBuilder\{
+    Dropdown,
+    ResearchForm,
+    InventionForm,
+    ExtensionProgramForm,
+    AcademicDevelopmentForm,
+};
 
 use App\Models\Authentication\Permission;
-use App\Policies\Authentication\RolePolicy;
-use App\Policies\Authentication\PermissionPolicy;
-use App\Policies\Authentication\UserPolicy;
-use App\Policies\Research\ResearchPolicy;
-use App\Policies\Research\ResearchCompletionPolicy;
-use App\Policies\Research\ResearchPresentationPolicy;
-use App\Policies\Research\ResearchPublicationPolicy;
-use App\Policies\Research\ResearchCopyrightPolicy;
-use App\Policies\Research\ResearchUtilizationPolicy;
-use App\Policies\Research\ResearchCitationPolicy;
+use App\Policies\Authentication\{
+    RolePolicy,
+    PermissionPolicy,
+    UserPolicy,
+};
+use App\Policies\Research\{
+    ResearchPolicy,
+    ResearchCompletionPolicy,
+    ResearchPresentationPolicy,
+    ResearchPublicationPolicy,
+    ResearchCopyrightPolicy,
+    ResearchUtilizationPolicy,
+    ResearchCitationPolicy,
+};
 use App\Policies\Invention\InventionPolicy;
 use App\Policies\ExtensionProgram\ExpertService\AcademicPolicy;
 use App\Policies\ExtensionProgram\ExpertService\ConferencePolicy;
@@ -140,6 +150,8 @@ class AuthServiceProvider extends ServiceProvider
         ViableProject::class => ViableProjectPolicy::class,
 
         Request::class => RequestPolicy::class,
+
+        //For authorization of reports (to receive and consolidation), please refer to Services (App/Services)
     ];
 
     /**
@@ -150,19 +162,6 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        // $this->generalPolicies();
-        //
-
-        // Gate::define('to-do', function (User $user, $permission_name) {
-        //     $checkpermission = UserRole::where('user_roles.user_id', $user->id)
-        //             ->join('role_permissions', 'role_permissions.role_id', 'user_roles.role_id')
-        //             ->join('permissions', 'permissions.id', 'role_permissions.permission_id')
-        //             ->select('role_permissions.*')
-        //             ->where('permissions.name', $permission_name)
-        //             ->get();
-            
-        //     return $checkpermission != null; 
-        // });
     }
 
 }

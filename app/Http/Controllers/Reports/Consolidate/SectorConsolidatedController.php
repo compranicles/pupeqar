@@ -14,10 +14,16 @@ use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
+use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class SectorConsolidatedController extends Controller
 {
     public function index($id){
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageConsolidatedReportsBySector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
