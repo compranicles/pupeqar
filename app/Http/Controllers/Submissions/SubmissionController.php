@@ -11,6 +11,7 @@ use App\Models\Invention;
 use App\Models\Reference;
 use App\Models\SectorHead;
 use App\Models\Chairperson;
+use App\Models\LogActivity;
 use App\Models\Partnership;
 use Illuminate\Support\Arr;
 use App\Models\StudentAward;
@@ -53,9 +54,6 @@ use App\Models\ExpertServiceAcademicDocument;
 use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
-use App\Http\Controllers\Reports\ReportController;
-
-
 
 class SubmissionController extends Controller
 {
