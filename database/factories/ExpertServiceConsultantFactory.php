@@ -25,7 +25,7 @@ class ExpertServiceConsultantFactory extends Factory
             'college_id' => 86,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => rand(3, 4)
+            'user_id' => 3
         ];
     }
 }
