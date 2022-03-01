@@ -1,0 +1,15 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+@import "./mixins/dark-theme";
+
+@media (prefers-color-scheme: dark) {
+	[data-theme=auto] {
+		@include dark-theme;
+	}
+}
+
+[data-theme=dark] {
+	@include dark-theme;
+}
