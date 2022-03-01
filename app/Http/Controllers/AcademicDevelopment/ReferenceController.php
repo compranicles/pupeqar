@@ -72,6 +72,16 @@ class ReferenceController extends Controller
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
       
+        $date_started = date("Y-m-d", strtotime($request->input('date_started')));
+        $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
+        $date_published = date("Y-m-d", strtotime($request->input('date_published')));
+        
+        $request->merge([
+            'date_started' => $date_started,
+            'date_completed' => $date_completed,
+            'date_published' => $date_published,
+        ]);
+
         $request->validate([
             'date_completed' => 'after_or_equal:date_started',
             'date_published' => 'after:date_completed',
@@ -197,7 +207,17 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-      
+
+        $date_started = date("Y-m-d", strtotime($request->input('date_started')));
+        $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
+        $date_published = date("Y-m-d", strtotime($request->input('date_published')));
+        
+        $request->merge([
+            'date_started' => $date_started,
+            'date_completed' => $date_completed,
+            'date_published' => $date_published,
+        ]);
+
         $request->validate([
             'category' => 'required',
             'level' => 'required',

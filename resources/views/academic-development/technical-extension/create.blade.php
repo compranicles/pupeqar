@@ -33,6 +33,13 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>
+        <script>
             var report_category_id = 23;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/document-upload/description/'+report_category_id, function (data){

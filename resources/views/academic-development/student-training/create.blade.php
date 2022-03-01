@@ -34,6 +34,13 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>
+    <script>
         $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
                 if (date.getDate() <= 9) {

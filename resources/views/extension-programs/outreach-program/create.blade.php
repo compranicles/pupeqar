@@ -36,6 +36,13 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>   
+        <script>
             function validateForm() {
                 var isValid = true;
                 $('.form-validation').each(function() {

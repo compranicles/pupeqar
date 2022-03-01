@@ -63,9 +63,12 @@ class ViableProjectController extends Controller
         $value2 = (float) str_replace(",", "", $value2);
         $value2 = number_format($value2,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+
         $request->merge([
             'revenue' => $value,
-            'cost' => $value2
+            'cost' => $value2,
+            'start_date' => $start_date,
         ]);
 
         $request->validate([
@@ -187,9 +190,12 @@ class ViableProjectController extends Controller
         $value2 = (float) str_replace(",", "", $value2);
         $value2 = number_format($value2,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+
         $request->merge([
             'revenue' => $value,
-            'cost' => $value2
+            'cost' => $value2,
+            'start_date' => $start_date,
         ]);
 
         $request->validate([

@@ -60,8 +60,13 @@ class StudentTrainingController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
         $request->merge([
             'budget' => $value,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
 
         $request->validate([
@@ -171,8 +176,13 @@ class StudentTrainingController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
         $request->merge([
             'budget' => $value,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
         
         $request->validate([

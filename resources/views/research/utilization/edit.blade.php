@@ -150,6 +150,13 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                format: 'mm/dd/yyyy'
+            });
+        });
+    </script>
+    <script>
         var url = '';
         var docId = '';
         $('.remove-doc').on('click', function(){
