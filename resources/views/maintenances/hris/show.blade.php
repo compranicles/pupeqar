@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('IPCR Forms Manager') }}
+            {{ __('HRIS Forms Manager') }}
         </h2>
     </x-slot>
 
@@ -23,7 +23,7 @@
                     <div class="card-body">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
-                                <h4>{{ $ipcr_form->label }} Fields</h4>
+                                <h4>{{ $hris_form->label }} Fields</h4>
                                 <hr>
                             </div>
                             {{-- ADD Fields --}}
@@ -45,7 +45,7 @@
                                             </tr>
                                         </thead>
                                         <tbody id="field_sortable">
-                                            @foreach ($ipcr_fields as $field)
+                                            @foreach ($hris_fields as $field)
                                             <tr id="{{ $field->id }}">
                                                 <td>{{ $field->label }}</td>
                                                 <td>{{ $field->field_type_name }}</td>
@@ -56,7 +56,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('ipcr-forms.ipcr-fields.edit', [$ipcr_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
+                                                    <a href="{{ route('hris-forms.hris-fields.edit', [$hris_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
                                                         Update
                                                     </a>
                                                 </td>
@@ -73,8 +73,8 @@
         </div>
     </div>
 
-    @include('maintenances.ipcr.add', [
-        'form_id' => $ipcr_form->id,
+    @include('maintenances.hris.add', [
+        'form_id' => $hris_form->id,
         'fieldtypes' => $field_types,
         'dropdowns' => $dropdowns,
     ])
@@ -96,7 +96,7 @@
                         var array_values = $('#field_sortable').sortable('toArray');
                         var array_values = JSON.stringify(array_values);
                         $.ajax({
-                            url: '/ipcr-fields/arrange',
+                            url: '/hris-fields/arrange',
                             type: "POST",
                             data: {data: array_values},
                             dataType: 'json',
@@ -114,11 +114,11 @@
                     var optionID = $(this).data('id');
                     if ($(this).is(':checked')) {
                         $.ajax({
-                            url: '/ipcr-fields/activate/'+optionID
+                            url: '/hris-fields/activate/'+optionID
                         });
                     } else {
                         $.ajax({
-                            url: '/ipcr-fields/inactivate/'+optionID
+                            url: '/hris-fields/inactivate/'+optionID
                         });
                     }
                 });

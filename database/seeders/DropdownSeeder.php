@@ -25,6 +25,7 @@ class DropdownSeeder extends Seeder
             AcademicDevelopmentDropdownSeeder::class,
             IPCRDropdownSeeder::class,
             MoreDropdownSeeder::class,
+            HRISDropdownSeeder::class,
         ]);
     }
 }

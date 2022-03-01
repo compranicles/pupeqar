@@ -1,0 +1,3 @@
+<a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') || request()->routeIs('submissions.getCollege') ? 'active' : ''}} ml-3">eQAR</a>
+
+<a href="{{ route('submissions.educ.index') }}" class="submission-menu {{ request()->routeIs('submissions.educ.*') || request()->routeIs('submissions.development.*') || request()->routeIs('submissions.officership.*')? 'active' : '' }} ml-3">HRIS</a>

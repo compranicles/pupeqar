@@ -150,6 +150,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/ipcr-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\IPCRFieldController::class, 'inactivate']);
     Route::post('/ipcr-fields/arrange', [\App\Http\Controllers\Maintenances\IPCRFieldController::class, 'arrange']);
     Route::resource('ipcr-forms.ipcr-fields', \App\Http\Controllers\Maintenances\IPCRFieldController::class);
+    // 17. HRIS Forms
+    Route::get('/hris-forms/activate/{id}', [\App\Http\Controllers\Maintenances\HRISFormController::class, 'activate']);
+    Route::get('/hris-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\HRISFormController::class, 'inactivate']);
+    Route::resource('hris-forms', \App\Http\Controllers\Maintenances\HRISFormController::class);
+    // 18. HRIS Fields
+    Route::get('/hris-fields/activate/{id}', [\App\Http\Controllers\Maintenances\HRISFieldController::class, 'activate']);
+    Route::get('/hris-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\HRISFieldController::class, 'inactivate']);
+    Route::post('/hris-fields/arrange', [\App\Http\Controllers\Maintenances\HRISFieldController::class, 'arrange']);
+    Route::resource('hris-forms.hris-fields', \App\Http\Controllers\Maintenances\HRISFieldController::class);
 
     /* RESEARCH ACCOMPLISHMENTS */
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
@@ -334,6 +343,13 @@ Route::group(['middleware' => 'auth'], function() {
 
     // Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     // Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
+
+    /* HRIS SUBMISSIONS */
+    Route::get('/submissions/educational-background', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'index'])->name('submissions.educ.index');
+    Route::get('/submissions/educational-background/{educID}/add/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'add'])->name('submissions.educ.add');
+    Route::get('/submissions/educational-background/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'save'])->name('submissions.educ.save');
+    Route::get('/submissions/development', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'index'])->name('submissions.development.index');
+    Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
 
     /* SUPER ADMIN PERMANENT TASKS */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
