@@ -5,7 +5,7 @@
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"
             placeholder="mm/dd/yyyy" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" 
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker 
-            form-control form-validation p-3" 
+            form-control form-validation p-3" autocomplete="off"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)

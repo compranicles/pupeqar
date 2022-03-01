@@ -53,8 +53,7 @@ use App\Models\ExpertServiceAcademicDocument;
 use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
-use App\Http\Controllers\Reports\ReportController;
-
+use App\Http\Controllers\Reports\ReportDataController;
 
 
 class SubmissionController extends Controller
@@ -893,7 +892,7 @@ class SubmissionController extends Controller
      */
     public function store(Request $request)
     {
-        $report_controller = new ReportController;
+        $report_controller = new ReportDataController;
         $user_id = auth()->id();
 
         if($request->has('report_values')){

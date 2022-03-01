@@ -150,7 +150,11 @@
     <script>
             $(document).ready(function() {
                 $('.datepicker').datepicker({
-                    format: 'mm/dd/yyyy'
+                    autoclose: true,
+                    format: 'mm/dd/yyyy',
+                    immediateUpdates: true,
+                    todayBtn: true,
+                    todayHighlight: true
                 });
             });
         </script>
