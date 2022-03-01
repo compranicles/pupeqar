@@ -89,8 +89,13 @@ class ExtensionServiceController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
         $request->merge([
             'amount_of_funding' => $value,
+            'from' => $from,
+            'to' => $to,
         ]);
 
         $request->validate([
@@ -234,8 +239,13 @@ class ExtensionServiceController extends Controller
             $value = (float) str_replace(",", "", $value);
             $value = number_format($value,2,'.','');
 
+            $from = date("Y-m-d", strtotime($request->input('from')));
+            $to = date("Y-m-d", strtotime($request->input('to')));
+    
             $request->merge([
                 'amount_of_funding' => $value,
+                'from' => $from,
+                'to' => $to,
             ]);
 
             $request->validate([

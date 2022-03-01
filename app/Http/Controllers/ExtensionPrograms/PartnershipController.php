@@ -68,6 +68,14 @@ class PartnershipController extends Controller
     {
         $this->authorize('create', Partnership::class);
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
+        $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
+
         $request->validate([
             'moa_code' => 'required',
             'other_collab_nature' => 'required_if:collab_nature,138',
@@ -188,6 +196,14 @@ class PartnershipController extends Controller
     public function update(Request $request, Partnership $partnership)
     {
         $this->authorize('update', Partnership::class);
+        
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
+        $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
 
         $request->validate([
             'moa_code' => 'required',

@@ -78,7 +78,14 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+
         $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'issue_date' => $issue_date,
             'funding_amount' => $value,
         ]);
 
@@ -212,7 +219,14 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+
         $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'issue_date' => $issue_date,
             'funding_amount' => $value,
         ]);
 

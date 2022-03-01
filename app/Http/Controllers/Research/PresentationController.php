@@ -114,6 +114,12 @@ class PresentationController extends Controller
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $date_presented = date("Y-m-d", strtotime($request->input('date_presented')));
+
+        $request->merge([
+            'date_presented' => $date_presented,
+        ]);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
@@ -238,6 +244,12 @@ class PresentationController extends Controller
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         
+        $date_presented = date("Y-m-d", strtotime($request->input('date_presented')));
+
+        $request->merge([
+            'date_presented' => $date_presented,
+        ]);
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $presentation->update(['description' => '-clear']);

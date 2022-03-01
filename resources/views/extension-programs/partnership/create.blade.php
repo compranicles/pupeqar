@@ -36,6 +36,13 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>   
+        <script>
 
             $('div .other_collab_nature').hide();
             var other_collab_nature = document.getElementById("other_collab_nature");

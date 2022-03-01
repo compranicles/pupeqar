@@ -74,6 +74,14 @@ class ConferenceController extends Controller
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
+
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
@@ -185,6 +193,14 @@ class ConferenceController extends Controller
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
+        
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',

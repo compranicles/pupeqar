@@ -74,6 +74,14 @@ class ConsultantController extends Controller
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
+
         $request->validate([
             'to' => 'after_or_equal:from',
             'college_id' => 'required',
@@ -182,6 +190,14 @@ class ConsultantController extends Controller
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
 
         $request->validate([
             'to' => 'after_or_equal:from',

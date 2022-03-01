@@ -151,6 +151,13 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>
+        <script>
             $(document).ready(function(){
                 var classification = '{{ $value['classification'] }}'
                 if (classification == 119) {

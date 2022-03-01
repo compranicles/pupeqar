@@ -36,6 +36,13 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    format: 'mm/dd/yyyy'
+                });
+            });
+        </script>    
+        <script>
             function hide_dates() {
                 $('.start_date').hide();
                 $('.target_date').hide();
@@ -163,15 +170,6 @@
                 return isValid;
             }
 
-           
-            // $('.form-validation').on('change', function(){
-            //     if(validateForm == true){
-            //         $('#submit').removeAttr('disabled');
-            //     }
-            //     else{
-            //         $('#submit').attr('disabled', true);
-            //     }
-            // });
         </script>
         <script>
             var report_category_id = 1;

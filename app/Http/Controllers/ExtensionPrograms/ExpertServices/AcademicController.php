@@ -74,6 +74,14 @@ class AcademicController extends Controller
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
+
         $request->validate([
             'other_nature' => 'required_if:nature,86',
             'to' => 'after_or_equal:from',
@@ -196,6 +204,14 @@ class AcademicController extends Controller
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $from = date("Y-m-d", strtotime($request->input('from')));
+        $to = date("Y-m-d", strtotime($request->input('to')));
+
+        $request->merge([
+            'from' => $from,
+            'to' => $to,
+        ]);
 
         $request->validate([
             'other_nature' => 'required_if:nature,86',

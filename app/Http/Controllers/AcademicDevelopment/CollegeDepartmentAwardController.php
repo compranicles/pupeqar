@@ -57,6 +57,13 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $college_department_award = CollegeDepartmentAward::create($input);
@@ -153,6 +160,13 @@ class CollegeDepartmentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $college_department_award->update(['description' => '-clear']);

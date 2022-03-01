@@ -82,6 +82,13 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date_finished')));
+        
+        $request->merge([
+            'date_finished' => $date,
+        ]);
+
         $request->validate([
             'college_id' => 'required',
             'department_id' => 'required'
@@ -195,10 +202,15 @@ class SyllabusController extends Controller
     {
         $this->authorize('update', Syllabus::class);
 
-
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $date = date("Y-m-d", strtotime($request->input('date_finished')));
+        
+        $request->merge([
+            'date_finished' => $date,
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
         $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);
