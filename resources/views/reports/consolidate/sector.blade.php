@@ -38,7 +38,7 @@
                             <option value="">Show All</option>
                         </select>
                 </div>
-                <span style="display: inline-block;
+                <!-- <span style="display: inline-block;
                         border-right: 1px solid #ccc;
                         margin: 0px 20px 0px 20px;;
                         height: 65px;"></span>
@@ -58,7 +58,7 @@
                         </select>
                         <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
                     </div>
-                </div>
+                </div> -->
             </div>
             <hr>
             <div class="row">

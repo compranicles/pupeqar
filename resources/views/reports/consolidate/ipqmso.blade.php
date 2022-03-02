@@ -13,7 +13,7 @@
                     <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
+                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
                 </li>
             </ul>
             <div class="card mb-3">
@@ -481,6 +481,22 @@
                     });
                     table.draw();
             }
+        </script>
+        <script>
+            $(function(){
+                //show all the accomplishments
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
+
+                table.draw();
+
+                // var returned = $('td:contains(Returned)');
+                // document.getElementById('badge-returned').innerHTML = returned.length;
+                //Count the returned accomplishments shown in badge in Returned tab
+                var tbl =  $('#college_accomplishments_table').DataTable().search("Returned");
+                var count = tbl.$('tr', {"filter":"applied"}).length;
+                document.getElementById('badge-returned').innerHTML = count;
+            });
         </script>
         <script>
             $('#filter').on('click', function () {

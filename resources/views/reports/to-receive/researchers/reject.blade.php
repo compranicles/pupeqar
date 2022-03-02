@@ -10,12 +10,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">BACK</a>
-                                <hr>
-                            </div>
-                        </div>
+                        <p>
+                            <a class="back_link" href="{{ url()->previous() }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                        </p>
+                        <hr>
                         <form action="{{ route('researcher.reject', $report_id) }}" method="post">
                             @csrf
                             <div class="row">
@@ -31,7 +29,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
-                                            <button type="submit" id="submit" class="btn btn-danger">RETURN</button>
+                                            <button type="submit" id="submit" class="btn btn-danger">Return</button>
                                         </div>
                                     </div>
                                 </div>

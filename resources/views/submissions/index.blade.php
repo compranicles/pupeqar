@@ -402,7 +402,7 @@
     </div>
     {{-- VIew Report --}}
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -495,8 +495,8 @@
             $.get('/reports/tables/data/'+catID, function (data){
                 data.forEach(function (item){
                     countColumns = countColumns + 1;
-                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold text-left">'+item.name+'</td>');
+                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content d-flex"></tr>')
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+item.name+':</td>');
                 });
             });
             $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){

@@ -32,7 +32,9 @@ class LogActivity
 	public static function logActivityListsTen()
     {
     	return LogActivityModel::join('users', 'users.id', 'log_activities.user_id')
-					->select('log_activities.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as name"))->latest()->take(10)->get();
+					->select('log_activities.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as name"))
+					->where('user_id', auth()->id())
+					->latest()->take(10)->get();
     }
 
 	public static function logActivityListsPerIdTen()

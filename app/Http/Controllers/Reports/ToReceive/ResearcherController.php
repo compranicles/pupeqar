@@ -124,7 +124,7 @@ class ResearcherController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -151,7 +151,7 @@ class ResearcherController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('reports.researchers.reject', compact('report_id'));
+        return view('reports.to-receive.researchers.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
@@ -184,7 +184,7 @@ class ResearcherController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -229,7 +229,7 @@ class ResearcherController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [
@@ -260,7 +260,7 @@ class ResearcherController extends Controller
         }
 
         $reportIds = $request->input('report_id');
-        return view('reports.researchers.reject-select', compact('reportIds'));
+        return view('reports.to-receive.researchers.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
@@ -294,7 +294,7 @@ class ResearcherController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
             $notificationData = [
                 'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',

@@ -16,6 +16,7 @@ use App\Models\{
 };
 use App\Models\Maintenance\{
     College,
+    Department,
     ReportCategory
 };
 use App\Models\Authentication\UserRole;

@@ -216,7 +216,7 @@ class ChairpersonController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -242,7 +242,7 @@ class ChairpersonController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('reports.chairpersons.reject', compact('report_id'));
+        return view('reports.to-receive.chairpersons.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
@@ -275,7 +275,7 @@ class ChairpersonController extends Controller
 
 
         $url = route('report.manage', [$report_id, $report->report_category_id]);
-        // $url = route('submissions.myaccomp.index');
+        // $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -339,7 +339,7 @@ class ChairpersonController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [
@@ -370,7 +370,7 @@ class ChairpersonController extends Controller
         }
 
         $reportIds = $request->input('report_id');
-        return view('reports.chairpersons.reject-select', compact('reportIds'));
+        return view('reports.to-receive.chairpersons.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
@@ -405,7 +405,7 @@ class ChairpersonController extends Controller
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
             $url = route('report.manage', [$report_id, $report->report_category_id]);
-            // $url = route('submissions.myaccomp.index');
+            // $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [

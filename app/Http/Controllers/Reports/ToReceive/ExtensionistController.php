@@ -123,7 +123,7 @@ class ExtensionistController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -150,7 +150,7 @@ class ExtensionistController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('reports.extensionists.reject', compact('report_id'));
+        return view('reports.to-receive.extensionists.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
@@ -183,7 +183,7 @@ class ExtensionistController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -228,7 +228,7 @@ class ExtensionistController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [
@@ -259,7 +259,7 @@ class ExtensionistController extends Controller
         }
 
         $reportIds = $request->input('report_id');
-        return view('reports.extensionists.reject-select', compact('reportIds'));
+        return view('reports.to-receive.extensionists.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
@@ -294,7 +294,7 @@ class ExtensionistController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [
