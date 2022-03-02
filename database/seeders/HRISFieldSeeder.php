@@ -135,7 +135,7 @@ class HRISFieldSeeder extends Seeder
         HRISField::create([
             'h_r_i_s_form_id' => 1,
             'label' => 'Number of Units Earned',
-            'name' => 'status',
+            'name' => 'units_earned',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 1,
@@ -148,12 +148,12 @@ class HRISFieldSeeder extends Seeder
         HRISField::create([
             'h_r_i_s_form_id' => 1,
             'label' => 'Number of Units Currently Enrolled',
-            'name' => 'status',
+            'name' => 'units_enrolled',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 2,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

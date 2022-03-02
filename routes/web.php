@@ -347,7 +347,7 @@ Route::group(['middleware' => 'auth'], function() {
     /* HRIS SUBMISSIONS */
     Route::get('/submissions/educational-background', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'index'])->name('submissions.educ.index');
     Route::get('/submissions/educational-background/{educID}/add/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'add'])->name('submissions.educ.add');
-    Route::get('/submissions/educational-background/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'save'])->name('submissions.educ.save');
+    Route::post('/submissions/educational-background/{educID}/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'save'])->name('submissions.educ.save');
     Route::get('/submissions/development', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'index'])->name('submissions.development.index');
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
 

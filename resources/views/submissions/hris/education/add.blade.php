@@ -13,9 +13,9 @@
                 </p>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.educ.save' ) }}" method="post">
+                        <form action="{{ route('submissions.educ.save', $educID) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $educFields])
+                            @include('form', ['formFields' => $educFields, 'value' => $values])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
