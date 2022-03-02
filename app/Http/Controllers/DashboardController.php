@@ -31,7 +31,6 @@ class DashboardController extends Controller
 {
     public function index() {
         $currentMonth = date('m');
-
         $quarter = 0;
         if ($currentMonth <= 3 && $currentMonth >= 1) {
             $quarter = 1;

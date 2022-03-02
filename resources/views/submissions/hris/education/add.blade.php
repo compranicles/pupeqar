@@ -8,6 +8,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @endif
                 <p>
                     <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Ongoing Advanced/Professional Studies</a>
                 </p>
@@ -43,6 +48,10 @@
                     $("#description")[0].selectize.addOption({value:item.name, text:item.name});
                 });
             }
+        });
+
+        $(function(){
+            $("input[name='document[]']").attr('required', true);
         });
     </script>
     @endpush

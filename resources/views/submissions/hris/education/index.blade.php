@@ -11,6 +11,11 @@
                         {{ $message }}
                     </div>
                 @endif
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -32,7 +37,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($educationFinal as $education)
-                                                {{-- @if ($education->IsCurrentlyEnrolled == 'Y') --}}
+                                                @if ($education->IsCurrentlyEnrolled == 'Y')
                                                     <tr>
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $education->SchoolName }}</td>
@@ -50,7 +55,7 @@
                                                             <a href="{{ route('submissions.educ.add', $education->EmployeeEducationBackgroundID) }}" class="text-primary h4"><i class="fas fa-plus"></i></i></a>
                                                         </td>
                                                     </tr>
-                                                {{-- @endif --}}
+                                                @endif
                                             @endforeach
                                         </tbody>
                                     </table>

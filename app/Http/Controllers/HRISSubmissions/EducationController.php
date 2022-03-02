@@ -7,6 +7,7 @@ use App\Models\Report;
 use App\Models\HRISDocument;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
@@ -38,10 +39,34 @@ class EducationController extends Controller
         return view('submissions.hris.education.index', compact('educationFinal', 'educationLevel'));
     }
 
-    public function add($educID){
+    public function add(Request $request,$educID){
 
         $user = User::find(auth()->id());
 
+        $currentMonth = date('m');
+        $quarter = 0;
+        if ($currentMonth <= 3 && $currentMonth >= 1) {
+            $quarter = 1;
+        }
+        if ($currentMonth <= 6 && $currentMonth >= 4) {
+            $quarter = 2;
+        }
+        if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $quarter = 3;
+        }
+        if ($currentMonth <= 12 && $currentMonth >= 10) {
+            $quarter = 4;
+        }
+
+        if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
+            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+        }
+        if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
+            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+        }
+        
         $db_ext = DB::connection('mysql_external');
         
         $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code',$educID");
@@ -65,6 +90,9 @@ class EducationController extends Controller
 
     public function save(Request $request, $educID){
 
+        if($request->document[0] == null){
+            return redirect()->back()->with('error', 'Document upload are required');
+        }
 
         $educFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
             ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
