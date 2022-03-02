@@ -253,7 +253,7 @@ class DeanController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        return view('reports.deans.reject', compact('report_id'));
+        return view('reports.to-receive.deans.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
@@ -331,7 +331,7 @@ class DeanController extends Controller
 
         \LogActivity::addToLog('Dean returned an accomplishment.');
 
-        return redirect()->route('dean.index')->with('success', 'Report has been returned.');
+        return redirect()->route('director.index')->with('success', 'Report has been returned.');
     }
 
     public function relay($report_id){
@@ -423,7 +423,7 @@ class DeanController extends Controller
 
         \LogActivity::addToLog('Dean received '.$count.' accomplishments.');
 
-        return redirect()->route('dean.index')->with('success', 'Report/s Approved Successfully');
+        return redirect()->route('director.index')->with('success', 'Report/s Approved Successfully');
     }
 
     public function denySelected(Request $request){
@@ -433,7 +433,7 @@ class DeanController extends Controller
         }
 
         $reportIds = $request->input('report_id');
-        return view('reports.deans.reject-select', compact('reportIds'));
+        return view('reports.to-receive.deans.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){

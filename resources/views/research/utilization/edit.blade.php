@@ -155,7 +155,7 @@
                 autoclose: true,
                     format: 'mm/dd/yyyy',
                     immediateUpdates: true,
-                    todayBtn: true,
+                    todayBtn: "linked",
                     todayHighlight: true
             });
         });

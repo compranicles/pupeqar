@@ -11,7 +11,8 @@ use App\Models\{
 };
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\{
-    College
+    College,
+    Department
 };
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
