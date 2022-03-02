@@ -109,6 +109,12 @@ class PublicationController extends Controller
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $publish_date = date("Y-m-d", strtotime($request->input('publish_date')));
+
+        $request->merge([
+            'publish_date' => $publish_date,
+        ]);
+        
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -234,6 +240,12 @@ class PublicationController extends Controller
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $publish_date = date("Y-m-d", strtotime($request->input('publish_date')));
+
+        $request->merge([
+            'publish_date' => $publish_date,
+        ]);
+        
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publication->update(['description' => '-clear']);

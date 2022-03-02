@@ -105,6 +105,12 @@ class CompletedController extends Controller
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
+
+        $request->merge([
+            'completion_date' => $completion_date,
+        ]);
+
         $request->validate([
             'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
@@ -218,6 +224,12 @@ class CompletedController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
+
+        $request->merge([
+            'completion_date' => $completion_date,
+        ]);
 
         $request->validate([
             'completion_date' => 'after_or_equal:start_date|required_if:status, 28',

@@ -37,6 +37,17 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+            $('.datepicker').datepicker({
+                autoclose: true,
+                format: 'mm/dd/yyyy',
+                immediateUpdates: true,
+                todayBtn: "linked",
+                todayHighlight: true
+            });
+        });
+    </script>   
+    <script>
         $(function() {
             $('textarea').val('');
         });

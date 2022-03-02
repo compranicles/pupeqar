@@ -10,12 +10,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">BACK</a>
-                                <hr>
-                            </div>
-                        </div>
+                        <p>
+                            <a class="back_link" href="{{ url()->previous() }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                        </p>
+                        <hr>
                         <form action="{{ route('extensionist.reject', $report_id) }}" method="post">
                             @csrf
                             <div class="row">

@@ -1,0 +1,164 @@
+// --------------- Defaults ---------------
+
+$gray-950: #101214 !default;
+
+$dark-body-bg: $gray-950 !default;
+$dark-body-color: $gray-100 !default;
+$dark-border-color: $gray-700 !default;
+$dark-headings-color: null !default;
+
+$dark-link-color: $primary !default;
+$dark-link-hover-color: lighten($link-color, 15%) !default;
+
+$dark-component-active-color: $white !default;
+$dark-component-active-bg: $primary !default;
+
+// --------------- Customized ---------------
+
+$dark-alert-bg-level: 10 !default;
+$dark-alert-border-level: 9 !default;
+$dark-alert-color-level: -6 !default;
+
+$dark-btn-link-disabled-color: $gray-600 !default;
+
+$dark-breadcrumb-bg: $gray-800 !default;
+$dark-breadcrumb-divider-color: $gray-400 !default;
+$dark-breadcrumb-active-color: $gray-400 !default;
+
+$dark-close-color: $white !default;
+$dark-close-text-shadow: 0 1px 0 $black !default;
+
+$dark-card-color: null !default;
+$dark-card-bg: $dark-body-bg !default;
+$dark-card-border-color: rgba($white, .125) !default;
+$dark-card-cap-color: null !default;
+$dark-card-cap-bg: rgba($white, .03) !default;
+
+$dark-dropdown-color: $body-color !default;
+$dark-dropdown-bg: $dark-body-bg !default;
+$dark-dropdown-border-color: rgba($white, .15) !default;
+$dark-dropdown-divider-bg: $gray-800 !default;
+$dark-dropdown-link-color: $gray-100 !default;
+$dark-dropdown-link-hover-color: darken($gray-100, 5%) !default;
+$dark-dropdown-link-hover-bg: $gray-800 !default;
+$dark-dropdown-link-active-color: $component-active-color !default;
+$dark-dropdown-link-active-bg: $component-active-bg !default;
+$dark-dropdown-link-disabled-color: $gray-500 !default;
+$dark-dropdown-header-color: $gray-400 !default;
+
+$dark-input-bg: $dark-body-bg !default;
+$dark-input-disabled-bg: $gray-800 !default;
+$dark-input-color: $gray-300 !default;
+$dark-input-border-color: $gray-600 !default;
+$dark-input-focus-bg: $dark-input-bg !default;
+$dark-input-focus-border-color: lighten($dark-component-active-bg, 25%) !default;
+$dark-input-focus-color: $dark-input-color !default;
+$dark-input-placeholder-color: $gray-400 !default;
+$dark-input-plaintext-color: $dark-body-color !default;
+
+$dark-input-group-addon-color: $dark-input-color !default;
+$dark-input-group-addon-bg: $gray-800 !default;
+$dark-input-group-addon-border-color: $dark-input-border-color !default;
+
+$dark-custom-control-indicator-bg: $dark-input-bg !default;
+$dark-custom-control-indicator-border-color: $gray-500 !default;
+$dark-custom-control-label-color: null !default;
+$dark-custom-control-indicator-disabled-bg: $dark-input-disabled-bg !default;
+$dark-custom-control-label-disabled-color: $gray-400 !default;
+$dark-custom-control-indicator-checked-color: $dark-component-active-color !default;
+$dark-custom-control-indicator-checked-bg: $dark-component-active-bg !default;
+$dark-custom-control-indicator-checked-disabled-bg: rgba($primary, .5) !default;
+$dark-custom-control-indicator-checked-border-color: $dark-custom-control-indicator-checked-bg !default;
+$dark-custom-control-indicator-focus-border-color: $dark-input-focus-border-color !default;
+$dark-custom-control-indicator-active-color: $dark-component-active-color !default;
+$dark-custom-control-indicator-active-bg: lighten($dark-component-active-bg, 35%) !default;
+$dark-custom-control-indicator-active-border-color: $dark-custom-control-indicator-active-bg !default;
+$dark-custom-checkbox-indicator-indeterminate-bg: $dark-component-active-bg !default;
+$dark-custom-checkbox-indicator-indeterminate-color: $dark-custom-control-indicator-checked-color !default;
+$dark-custom-checkbox-indicator-indeterminate-border-color: $dark-custom-checkbox-indicator-indeterminate-bg !default;
+$dark-custom-select-color: $dark-input-color !default;
+$dark-custom-select-disabled-color: $gray-400 !default;
+$dark-custom-select-bg: $dark-input-bg !default;
+$dark-custom-select-disabled-bg: $gray-800 !default;
+$dark-custom-select-indicator-color: $gray-200 !default;
+$dark-custom-select-border-color: $dark-input-border-color !default;
+$dark-custom-select-focus-border-color: $dark-input-focus-border-color !default;
+$dark-custom-range-track-bg: $gray-700 !default;
+$dark-custom-range-thumb-bg: $dark-component-active-bg !default;
+$dark-custom-range-thumb-active-bg: lighten($dark-component-active-bg, 35%) !default;
+$dark-custom-range-thumb-disabled-bg: $gray-500 !default;
+$dark-custom-file-focus-border-color: $dark-input-focus-border-color !default;
+$dark-custom-file-disabled-bg: $dark-input-disabled-bg !default;
+$dark-custom-file-color: $dark-input-color !default;
+$dark-custom-file-bg: $dark-input-bg !default;
+$dark-custom-file-border-color: $dark-input-border-color !default;
+$dark-custom-file-button-color: $dark-custom-file-color !default;
+$dark-custom-file-button-bg: $dark-input-group-addon-bg !default;
+
+$dark-jumbotron-color: null !default;
+$dark-jumbotron-bg: $gray-800 !default;
+
+$dark-list-group-color: null !default;
+$dark-list-group-bg: $dark-body-bg !default;
+$dark-list-group-border-color: rgba($white, .125) !default;
+$dark-list-group-hover-bg: $gray-900 !default;
+$dark-list-group-active-color: $component-active-color !default;
+$dark-list-group-active-bg: $component-active-bg !default;
+$dark-list-group-active-border-color: $dark-list-group-active-bg !default;
+$dark-list-group-disabled-color: $gray-400 !default;
+$dark-list-group-disabled-bg: $dark-list-group-bg !default;
+$dark-list-group-action-color: $gray-300 !default;
+$dark-list-group-action-hover-color: $dark-list-group-action-color !default;
+$dark-list-group-action-active-color: $dark-body-color !default;
+$dark-list-group-action-active-bg: $gray-800 !default;
+
+$dark-list-group-color-level: -10 !default;
+$dark-list-group-bg-level: 8 !default;
+
+$dark-modal-content-color: null !default;
+$dark-modal-content-bg: $dark-body-bg !default;
+$dark-modal-content-border-color: rgba($white, .2) !default;
+$dark-modal-backdrop-bg: $black !default;
+$dark-modal-header-border-color: $dark-border-color !default;
+$dark-modal-footer-border-color: $dark-modal-header-border-color !default;
+
+$dark-nav-link-disabled-color: $gray-400 !default;
+$dark-nav-tabs-border-color: $gray-700 !default;
+$dark-nav-tabs-link-hover-border-color: $gray-800 $gray-800 $dark-nav-tabs-border-color !default;
+$dark-nav-tabs-link-active-color: $gray-300 !default;
+$dark-nav-tabs-link-active-bg: $dark-body-bg !default;
+$dark-nav-tabs-link-active-border-color: $gray-700 $gray-700 $dark-nav-tabs-link-active-bg !default;
+$dark-nav-pills-link-active-color: $dark-component-active-color !default;
+$dark-nav-pills-link-active-bg: $dark-component-active-bg !default;
+$dark-nav-divider-color: $gray-800 !default;
+
+$dark-pagination-color: $dark-link-color !default;
+$dark-pagination-bg: $dark-body-bg !default;
+$dark-pagination-border-color: $gray-700 !default;
+$dark-pagination-hover-color: $dark-link-hover-color !default;
+$dark-pagination-hover-bg: $gray-800 !default;
+$dark-pagination-hover-border-color: $gray-700 !default;
+$dark-pagination-active-color: $dark-component-active-color !default;
+$dark-pagination-active-bg: $dark-component-active-bg !default;
+$dark-pagination-active-border-color: $dark-pagination-active-bg !default;
+$dark-pagination-disabled-color: $gray-400 !default;
+$dark-pagination-disabled-bg: $gray-900 !default;
+$dark-pagination-disabled-border-color: $gray-700 !default;
+
+$dark-popover-bg: $dark-body-bg !default;
+$dark-popover-border-color: rgba($white, .2) !default;
+$dark-popover-header-bg: lighten($dark-popover-bg, 3%) !default;
+$dark-popover-header-color: $dark-headings-color !default;
+$dark-popover-header-border-color: lighten($dark-popover-header-bg, 5%) !default;
+$dark-popover-body-color: $dark-body-color !default;
+$dark-popover-arrow-color: $dark-popover-bg !default;
+$dark-popover-arrow-outer-color: fade-in($dark-popover-border-color, .05) !default;
+
+$dark-progress-bg: $gray-800 !default;
+$dark-progress-bar-color: null !default;
+$dark-progress-bar-bg: $primary !default;
+
+// Tables constants use "table-dark-*" instead of "dark-table-*"
+// because many "table-dark-*" variables are already included in Bootstrap.
+$table-dark-bg-level: 9 !default;
+$table-dark-border-level: 6 !default;

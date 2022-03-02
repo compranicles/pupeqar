@@ -14,10 +14,16 @@ use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\DB;
+use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class IpqmsoConsolidatedController extends Controller
 {
     public function index(){
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageAllConsolidatedReports();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
@@ -101,6 +107,11 @@ class IpqmsoConsolidatedController extends Controller
     }
 
     public function reportYearFilter($year, $quarter) {
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageAllConsolidatedReports();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         if ($year == "default") {
             return redirect()->route('reports.consolidate.ipqmso');
         }

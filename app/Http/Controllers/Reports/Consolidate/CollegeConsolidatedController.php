@@ -11,12 +11,19 @@ use App\Models\{
 };
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\{
-    College
+    College,
+    Department
 };
+use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class CollegeConsolidatedController extends Controller
 {
     public function index($id){
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageConsolidatedReportsByCollege();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];

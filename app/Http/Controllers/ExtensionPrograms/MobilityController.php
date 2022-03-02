@@ -64,6 +64,14 @@ class MobilityController extends Controller
     {
         $this->authorize('create', Mobility::class);
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
+        $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
+
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',
@@ -173,6 +181,14 @@ class MobilityController extends Controller
     {
         $this->authorize('update', Mobility::class);
 
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+
+        $request->merge([
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
+        
         $request->validate([
             'other_type' => 'required_if:type,173',
             'end_date' => 'after_or_equal:start_date',

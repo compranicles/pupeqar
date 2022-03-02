@@ -52,6 +52,9 @@ class DatabaseSeeder extends Seeder
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
             ReportColumnSeeder::class,
+
+            //Document Description
+            DocumentDescriptionSeeder::class,
             
             //Generate
             GenerateTypeSeeder::class,
@@ -60,7 +63,7 @@ class DatabaseSeeder extends Seeder
             GenerateColumn2Seeder::class,
         ]);
         
-        \App\Models\Research::truncate();
-        \App\Models\Research::factory()->count(12)->create();
+        // \App\Models\Research::truncate();
+        // \App\Models\Research::factory()->count(12)->create();
     }
 }

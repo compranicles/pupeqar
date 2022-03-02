@@ -120,12 +120,14 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        // dd($request->input('start_date'));
+        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+
         $request->merge([
+            'start_date' => $start_date,
+            'target_date' => $target_date,
             'funding_amount' => $value,
         ]);
-
-        // $request->validate([]);
 
         $request->validate([
             // 'funding_amount' => 'numeric',

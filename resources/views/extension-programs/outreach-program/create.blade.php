@@ -36,6 +36,17 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    autoclose: true,
+                    format: 'mm/dd/yyyy',
+                    immediateUpdates: true,
+                    todayBtn: "linked",
+                    todayHighlight: true
+                });
+            });
+        </script>   
+        <script>
             function validateForm() {
                 var isValid = true;
                 $('.form-validation').each(function() {

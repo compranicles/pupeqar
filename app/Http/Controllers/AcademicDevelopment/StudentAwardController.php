@@ -57,6 +57,13 @@ class StudentAwardController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_award = StudentAward::create($input);
@@ -154,6 +161,13 @@ class StudentAwardController extends Controller
         
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+        
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $student_award->update(['description' => '-clear']);

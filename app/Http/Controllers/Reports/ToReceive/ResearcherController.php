@@ -19,10 +19,16 @@ use App\Notifications\ReturnNotification;
 use App\Models\Maintenance\ReportCategory;
 use App\Notifications\ReceiveNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Services\ToReceiveReportAuthorizationService;
 
 class ResearcherController extends Controller
 {
     public function index(){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        // dd($authorize);
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
@@ -100,6 +106,11 @@ class ResearcherController extends Controller
     }
 
     public function accept($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['researcher_approval' => 1]);
 
         $report = Report::find($report_id);
@@ -113,7 +124,7 @@ class ResearcherController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -135,10 +146,20 @@ class ResearcherController extends Controller
     
     }
     public function rejectCreate($report_id){
-        return view('reports.researchers.reject', compact('report_id'));
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('reports.to-receive.researchers.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -163,7 +184,7 @@ class ResearcherController extends Controller
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-        $url = route('submissions.myaccomp.index');
+        $url = route('reports.consolidate.myaccomplishments');
 
 
         $notificationData = [
@@ -186,6 +207,11 @@ class ResearcherController extends Controller
     }
 
     public function acceptSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -203,7 +229,7 @@ class ResearcherController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
 
             $notificationData = [
@@ -228,11 +254,21 @@ class ResearcherController extends Controller
     }
 
     public function denySelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
-        return view('reports.researchers.reject-select', compact('reportIds'));
+        return view('reports.to-receive.researchers.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -258,7 +294,7 @@ class ResearcherController extends Controller
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
 
             $notificationData = [
                 'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Researcher)',

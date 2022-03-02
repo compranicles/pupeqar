@@ -72,17 +72,18 @@ class DashboardController extends Controller
         $departments = Chairperson::where('chairpeople.user_id', auth()->id())
                 ->join('departments', 'departments.id', 'chairpeople.department_id')
                 ->pluck('chairpeople.department_id')->all();
+                // dd($departments);
         $chairpersonReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-                ->where('chairperson_approval', 1)
-                ->whereIn('department_id', [$departments])
-                ->whereYear('report_date', date('Y'))->count();
+                ->where('reports.chairperson_approval', 1)
+                ->whereIn('reports.department_id', [$departments])
+                ->whereYear('reports.report_date', date('Y'))->count();
         $chairpersonNotReceived = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-                ->where('chairperson_approval', null)
-                ->whereIn('department_id', [$departments])
-                ->whereYear('report_date', date('Y'))
+                ->where('reports.chairperson_approval', null)
+                ->whereIn('reports.department_id', [$departments])
+                ->whereYear('reports.report_date', date('Y'))
         //check for researcher and extensionist                   
-                ->where('researcher_approval', 1)
-                ->orWhere('extensionist_approval', 1)
+                ->where('reports.researcher_approval', 1)
+                ->orWhere('reports.extensionist_approval', 1)
                 ->count();
         // $chairpersonReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
         //         ->where('chairperson_approval', 0)

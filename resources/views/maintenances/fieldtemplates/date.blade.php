@@ -2,7 +2,10 @@
     <div class="form-group">
         <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label> <span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <input type="date" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
+        <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"
+            placeholder="mm/dd/yyyy" value="{{ (old($fieldInfo->name) == '') ?  ($value != null ? date("m/d/Y", strtotime($value)) : '') : date("m/d/Y", strtotime(old($fieldInfo->name))) }}" 
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker 
+            form-control form-validation p-3" autocomplete="off"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -25,4 +28,9 @@
                 @enderror
 
     </div>
-</div>
+</div>  
+<script>
+    if ({{$value}} == []) {
+        document.getElementById
+    }
+</script>

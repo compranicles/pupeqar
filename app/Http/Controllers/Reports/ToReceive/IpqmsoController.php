@@ -13,8 +13,11 @@ use App\Models\FacultyResearcher;
 use App\Models\FacultyExtensionist;
 use App\Http\Controllers\Controller;
 use App\Models\Authentication\UserRole;
+use App\Models\Maintenance\ReportCategory;
 use App\Notifications\ReturnNotification;
 use App\Notifications\ReceiveNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Services\ToReceiveReportAuthorizationService;
 
 class IpqmsoController extends Controller
 {
@@ -25,6 +28,11 @@ class IpqmsoController extends Controller
      */
     public function index()
     {
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('departments', 'reports.department_id', 'departments.id')
             ->join('colleges', 'reports.college_id', 'colleges.id')
@@ -134,6 +142,11 @@ class IpqmsoController extends Controller
     }
 
     public function accept($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['ipqmso_approval' => 1]);
 
         $report = Report::find($report_id);
@@ -151,7 +164,7 @@ class IpqmsoController extends Controller
         if($report->report_category_id > 16 ){
 
             if($report->department_id == 0){
-                $url = route('submissions.collegeaccomp.index', $report->college_id);
+                $url = route('reports.consolidate.college', $report->college_id);
                 $acc_type="college";
 
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -169,7 +182,7 @@ class IpqmsoController extends Controller
                 ];
             }
             else{
-                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $url = route('reports.consolidate.department', $report->department_id);
                 $acc_type="department";
 
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -190,7 +203,7 @@ class IpqmsoController extends Controller
 
         }
         else{
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
             $acc_type = 'individual';
 
             $notificationData = [
@@ -214,10 +227,20 @@ class IpqmsoController extends Controller
     }
 
     public function rejectCreate($report_id){
-        return view('reports.ipqmso.reject', compact('report_id'));
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('reports.to-receive.ipqmso.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -293,6 +316,7 @@ class IpqmsoController extends Controller
 
             $notificationData = [
                 'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
                 'user_id' => $returnData->id,
@@ -313,11 +337,21 @@ class IpqmsoController extends Controller
     }
 
     public function undo($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['ipqmso_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 
     public function acceptSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -338,7 +372,7 @@ class IpqmsoController extends Controller
             if($report->report_category_id > 16 ){
 
                 if($report->department_id == 0){
-                    $url = route('submissions.collegeaccomp.index', $report->college_id);
+                    $url = route('reports.consolidate.college', $report->college_id);
                     $acc_type="college";
 
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -356,7 +390,7 @@ class IpqmsoController extends Controller
                     ];
                 }
                 else{
-                    $url = route('submissions.departmentaccomp.index', $report->department_id);
+                    $url = route('reports.consolidate.department', $report->department_id);
                     $acc_type="department";
 
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -377,7 +411,7 @@ class IpqmsoController extends Controller
 
             }
             else{
-                $url = route('submissions.myaccomp.index');
+                $url = route('reports.consolidate.myaccomplishments');
                 $acc_type = 'individual';
 
                 $notificationData = [
@@ -404,11 +438,21 @@ class IpqmsoController extends Controller
     }
 
     public function denySelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
-        return view('reports.ipqmso.reject-select', compact('reportIds'));
+        return view('reports.to-receive.ipqmso.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToIpqmso();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -487,6 +531,7 @@ class IpqmsoController extends Controller
 
                 $notificationData = [
                     'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
                     'user_id' => $returnData->id,

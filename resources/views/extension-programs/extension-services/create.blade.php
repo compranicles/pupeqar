@@ -38,6 +38,17 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script>
+            $(document).ready(function() {
+                $('.datepicker').datepicker({
+                    autoclose: true,
+                    format: 'mm/dd/yyyy',
+                    immediateUpdates: true,
+                    todayBtn: "linked",
+                    todayHighlight: true
+                });
+            });
+        </script>
+        <script>
             $('div .other_classification').hide();
                 var other_classification = document.getElementById("other_classification");
                 $('#classification').on('change', function(){

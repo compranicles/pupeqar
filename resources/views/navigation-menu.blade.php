@@ -77,14 +77,14 @@
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
-                @endIsReporting
-
+                
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link :active="request()->routeIs('to-finalize.*') || request()->routeIs('submissions.*')" href="{{ route('to-finalize.index') }}">
                         {{ __('Submissions') }}
-
+                        
                     </x-jet-nav-link>
                 </li>
+                @endIsReporting
 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">

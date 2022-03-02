@@ -58,6 +58,13 @@ class OutreachProgramController extends Controller
 
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date')));
+
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $outreach = OutreachProgram::create($input);
@@ -154,6 +161,13 @@ class OutreachProgramController extends Controller
 
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $date = date("Y-m-d", strtotime($request->input('date')));
+        
+        $request->merge([
+            'date' => $date,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $outreach_program->update(['description' => '-clear']);

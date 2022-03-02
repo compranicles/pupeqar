@@ -19,6 +19,7 @@ use App\Notifications\ReturnNotification;
 use App\Models\Maintenance\ReportCategory;
 use App\Notifications\ReceiveNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Services\ToReceiveReportAuthorizationService;
 
 class SectorController extends Controller
 {
@@ -29,6 +30,10 @@ class SectorController extends Controller
      */
     public function index()
     {
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as dept_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('colleges', 'reports.college_id', 'colleges.id')
@@ -142,6 +147,11 @@ class SectorController extends Controller
     }
 
     public function accept($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
         $report = Report::find($report_id);
@@ -150,7 +160,7 @@ class SectorController extends Controller
         $receiverData = User::find($report->user_id);
         $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                             ->join('users', 'users.id', 'sector_heads.user_id')
-                            ->where('sector_heads.college_id', $report->college_id)
+                            ->where('sector_heads.sector_id', $report->sector_id)
                             ->select('sectors.name as sector_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
@@ -161,7 +171,7 @@ class SectorController extends Controller
         if($report->report_category_id > 16 ){
 
             if($report->department_id == 0){
-                $url = route('submissions.collegeaccomp.index', $report->college_id);
+                $url = route('reports.consolidate.college', $report->college_id);
                 $acc_type="college";
 
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -179,7 +189,7 @@ class SectorController extends Controller
                 ];
             }
             else{
-                $url = route('submissions.departmentaccomp.index', $report->department_id);
+                $url = route('reports.consolidate.department', $report->department_id);
                 $acc_type="department";
 
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -200,7 +210,7 @@ class SectorController extends Controller
 
         }
         else{
-            $url = route('submissions.myaccomp.index');
+            $url = route('reports.consolidate.myaccomplishments');
             $acc_type = 'individual';
 
             $notificationData = [
@@ -225,10 +235,20 @@ class SectorController extends Controller
     }
 
     public function rejectCreate($report_id){
-        return view('reports.sector.reject', compact('report_id'));
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return view('reports.to-receive.sector.reject', compact('report_id'));
     }
 
     public function reject($report_id, Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -245,7 +265,7 @@ class SectorController extends Controller
         $returnData = User::find($report->user_id);
         $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                         ->join('users', 'users.id', 'sector_heads.user_id')
-                        ->where('sector_heads.college_id', $report->college_id)
+                        ->where('sector_heads.sector_id', $report->sector_id)
                         ->select('sectors.name as sector_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                         ->first();
 
@@ -328,16 +348,31 @@ class SectorController extends Controller
     }
 
     public function relay($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['sector_approval' => 0]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
     }
 
     public function undo($report_id){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         Report::where('id', $report_id)->update(['sector_approval' => null]);
         return redirect()->route('submissions.denied.index')->with('deny-success', 'Success');
     }
 
     public function acceptSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -350,7 +385,7 @@ class SectorController extends Controller
             $receiverData = User::find($report->user_id);
             $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                                 ->join('users', 'users.id', 'sector_heads.user_id')
-                                ->where('sector_heads.college_id', $report->college_id)
+                                ->where('sector_heads.sector_id', $report->sector_id)
                                 ->select('sectors.name as sector_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
@@ -361,7 +396,7 @@ class SectorController extends Controller
             if($report->report_category_id > 16 ){
 
                 if($report->department_id == 0){
-                    $url = route('submissions.collegeaccomp.index', $report->college_id);
+                    $url = route('reports.consolidate.college', $report->college_id);
                     $acc_type="college";
 
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
@@ -379,7 +414,7 @@ class SectorController extends Controller
                     ];
                 }
                 else{
-                    $url = route('submissions.departmentaccomp.index', $report->department_id);
+                    $url = route('reports.consolidate.department', $report->department_id);
                     $acc_type="department";
 
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
@@ -400,7 +435,7 @@ class SectorController extends Controller
 
             }
             else{
-                $url = route('submissions.myaccomp.index');
+                $url = route('reports.consolidate.myaccomplishments');
                 $acc_type = 'individual';
 
                 $notificationData = [
@@ -427,11 +462,21 @@ class SectorController extends Controller
     }
 
     public function denySelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $reportIds = $request->input('report_id');
-        return view('reports.sector.reject-select', compact('reportIds'));
+        return view('reports.to-receive.sector.reject-select', compact('reportIds'));
     }
 
     public function rejectSelected(Request $request){
+        $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualToSector();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -452,7 +497,7 @@ class SectorController extends Controller
             $returnData = User::find($report->user_id);
             $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                             ->join('users', 'users.id', 'sector_heads.user_id')
-                            ->where('sector_heads.college_id', $report->college_id)
+                            ->where('sector_heads.sector_id', $report->sector_id)
                             ->select('sectors.name as sector_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 

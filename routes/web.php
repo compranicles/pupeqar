@@ -278,7 +278,7 @@ Route::group(['middleware' => 'auth'], function() {
     // Acted By Dean
     Route::get('/reports/director/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'accept'])->name('dean.accept');
     Route::get('/reports/director/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'rejectCreate'])->name('dean.reject-create');
-    Route::post('/reports/director/reject/{id}', [\App\Http\Controllers\Reports\DeanController::class, 'reject'])->name('dean.reject');
+    Route::post('/reports/director/reject/{id}', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'reject'])->name('dean.reject');
     Route::get('/reports/director/relay/{id}', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'relay'])->name('dean.relay');
     Route::get('/reports/director/undo/{id}', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'undo'])->name('dean.undo');
     Route::post('/reports/director/accept-selected', [\App\Http\Controllers\Reports\ToReceive\DeanController::class, 'acceptSelected'])->name('dean.accept-select');
@@ -307,14 +307,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/reports/extensionist/reject/{id}', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'reject'])->name('extensionist.reject');
     Route::post('/reports/extensionist/accept-selected', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'acceptSelected'])->name('extensionist.accept-select');
     Route::post('/reports/extensionist/deny-selected', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'denySelected'])->name('extensionist.deny-select');
-    Route::post('/reports/extensionist/reject-selected', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'rejectSelected'])->name('extensionist.reject-select');
+    Route::post('/reports/extensionist/reject-selected', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'rejectSelected'])->name('extensionist.reject-selected');
     // Acted By Researcher
     Route::get('/reports/researcher/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'accept'])->name('researcher.accept');
     Route::get('/reports/researcher/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'rejectCreate'])->name('researcher.reject-create');
     Route::post('/reports/researcher/reject/{id}', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'reject'])->name('researcher.reject');
     Route::post('/reports/researcher/accept-selected', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'acceptSelected'])->name('researcher.accept-select');
     Route::post('/reports/researcher/deny-selected', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'denySelected'])->name('researcher.deny-select');
-    Route::post('/reports/researcher/reject-selected', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'rejectSelected'])->name('researcher.reject-select');
+    Route::post('/reports/researcher/reject-selected', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'rejectSelected'])->name('researcher.reject-selected');
 
     /* REPORTS TO CONSOLIDATE */
     Route::get('/reports/consolidate/my-accomplishments', [\App\Http\Controllers\Reports\Consolidate\MyAccomplishmentController::class, 'index'])->name('reports.consolidate.myaccomplishments');

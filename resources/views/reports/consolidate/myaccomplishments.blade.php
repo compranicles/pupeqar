@@ -413,7 +413,7 @@
             $('#filter').on('click', function () {
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
-                var link = "/reports/consolidate/my-accomplishments/reportYearFilter/:year/:quarter";
+                var link = "/reports/consolidate/all/:year/:quarter";
                 var newLink = link.replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
