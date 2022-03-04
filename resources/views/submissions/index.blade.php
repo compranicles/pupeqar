@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <a href="{{ route('to-finalize.index') }}" class="submission-menu {{ request()->routeIs('to-finalize.index') || request()->routeIs('submissions.getCollege') ? 'active' : ''}} ml-3">To Finalize</a>
+        @include('submissions.navigation')
     </x-slot>
     <?php $ctr = 0; ?>
     @foreach ( $report_tables as $table)

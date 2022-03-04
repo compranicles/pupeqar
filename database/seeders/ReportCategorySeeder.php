@@ -155,5 +155,14 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 1,
         ]);
+
+
+        //HRIS Report Category Seeder
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Ongoing Advanced/Professional Study',
+            'is_active' => 1,
+            'order' => 17
+        ]);
     }
 }

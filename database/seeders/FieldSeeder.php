@@ -40,6 +40,9 @@ class FieldSeeder extends Seeder
 
             //IPCR Field Seeders
             RequestFormSeeder::class,
+
+            //HRIS Field Seeders
+            HRISFieldSeeder::class,
         ]);
     }
 }

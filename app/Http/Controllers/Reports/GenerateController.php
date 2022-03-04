@@ -200,6 +200,7 @@ class GenerateController extends Controller
         $quarter_generate = $request->input('quarter_generate');
         $cbco = $request->input('cbco');
 
+
         $user = User::where('id', auth()->id())->first('last_name');
         $nameUser = $user->last_name;
         return Excel::download(new IndividualAccomplishmentReportExport(

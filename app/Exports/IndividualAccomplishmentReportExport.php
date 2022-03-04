@@ -43,11 +43,11 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
         $year_generate = $this->year_generate;
         $quarter_generate = $this->quarter_generate;
         $id = $this->id;
-        $table_format = '';
-        $table_columns = '';
-        $table_contents = '';
-        $data = '';
-        $source_type = '';
+        $table_format;
+        $table_columns;
+        $table_contents;
+        $data;
+        $source_type;
         
         if($reportFormat == "academic"){
             if($source_generate == "department"){
@@ -138,7 +138,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 }
             }
         }
-        elseif($source_type == "admin"){
+        elseif($reportFormat == "admin"){
             if($source_generate == "department"){
                 $source_type = "department";
                 $department_id = $id;

@@ -30,7 +30,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 24,
             'footers' => json_encode([
                 '* Level I, II, III, IV, COD, COE, Top 1000 University Ranking',
                 '** Financial Aid, Scholarship, Tuition Fee Discount, Self-Funded',
@@ -396,7 +396,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 24,
             'footers' => json_encode( [
                 '* Level I, II, III, IV, COD, COE, Top 1000 University Ranking',
                 '** Financial Aid, Scholarship, Tuition Fee Discount, Self-Funded',

@@ -22,7 +22,7 @@
                     @case(3)
                         {{ 'disabled' }}
                         @break
-                    @case(2)
+                    @case(4)
                         {{ 'hidden' }}
                         @break
                     @default

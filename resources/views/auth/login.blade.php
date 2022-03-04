@@ -15,6 +15,16 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+                        @if (session('success'))
+                            <div class="alert alert-success mb-3 rounded-0" role="alert">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger mb-3 rounded-0" role="alert">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -45,11 +55,9 @@
 
                         <div class="mb-0">
                             <div class="d-flex justify-content-end align-items-baseline">
-                                @if (Route::has('password.request'))
-                                    <a class="text-muted mr-3" href="{{ route('password.request') }}">
-                                        {{ __('Forgot your password?') }}
-                                    </a>
-                                @endif
+                                <a class="text-muted mr-3" href="{{ route('register.hris') }}">
+                                    {{ __('Register with HRIS') }}
+                                </a>
 
                                 <x-jet-button class="rounded-0">
                                     {{ __('Log in') }}

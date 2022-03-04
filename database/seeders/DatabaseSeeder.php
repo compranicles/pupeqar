@@ -17,18 +17,18 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-            //other maintenance
-            // SectorSeeder::class,
-            // CollegeSeeder::class,
-            // DepartmentSeeder::class,
-            CurrencySeeder::class,
-
             // authentication
             RoleSeeder::class,
             PermissionSeeder::class,
             UserSeeder::class,
             UserRoleSeeder::class,
             RolePermissionSeeder::class,
+
+            //other maintenance
+            SectorSeeder::class,
+            CollegeSeeder::class,
+            DepartmentSeeder::class,
+            CurrencySeeder::class,
 
             // Field types
             FieldTypeSeeder::class,
@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             ExtensionFormSeeder::class,
             AcademicDevelopmentFormSeeder::class,
             IPCRFormSeeder::class,
+            HRISFormSeeder::class,
             
             
             //FIELD Seeder
@@ -60,6 +61,7 @@ class DatabaseSeeder extends Seeder
             GenerateTableSeeder::class,
             GenerateColumnSeeder::class,
             GenerateColumn2Seeder::class,
+            GenerateColumnHRISSeeder::class,
         ]);
         
         // \App\Models\Research::truncate();

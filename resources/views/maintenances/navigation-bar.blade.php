@@ -86,6 +86,11 @@
                             {{ __('IPCR') }}
                         </x-jet-nav-link>
                     </li>
+                    <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('hris-forms.index') }}" class="text-dark" :active="request()->routeIs('hris-forms.*')">
+                            {{ __('HRIS') }}
+                        </x-jet-nav-link>
+                    </li>
                 </ul>
             </div>
         </div>

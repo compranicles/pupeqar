@@ -83,6 +83,7 @@ class SubmissionController extends Controller
                     ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
         }
         if ($currentMonth <= 9 && $currentMonth >= 7) {
+            $quarter = 3;
             $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
                     ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
         }

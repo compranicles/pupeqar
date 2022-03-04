@@ -8,7 +8,6 @@ use App\Models\{
     ResearchCitation,
     ResearchComplete,
     ResearchDocument,
-
     DenyReason,
     RequestDocument,
     MobilityDocument,
@@ -37,6 +36,7 @@ use App\Models\ExpertServiceAcademicDocument;
 use App\Models\CollegeDepartmentAwardDocument;
 use App\Models\ExpertServiceConferenceDocument;
 use App\Models\ExpertServiceConsultantDocument;
+use App\Models\Maintenance\HRISField;
 
 class ReportDataController extends Controller
 {
@@ -357,11 +357,22 @@ class ReportDataController extends Controller
     public function getReportData($report_id){
         $report_data = Report::where('id', $report_id)->first();
         $report_details = json_decode($report_data->report_details, true);
-        $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
-
         $new_report_details = [];
-        foreach($report_columns as $row){
-            $new_report_details[$row->name] = $report_details[$row->column];
+        $report_columns;
+
+        if($report_data->report_category_id <= '23'){
+            $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
+            foreach($report_columns as $row){
+                $new_report_details[$row->name] = $report_details[$row->column];
+            }
+        }
+        elseif($report_data->report_category_id == '24'){
+            $report_columns = HRISField::where('h_r_i_s_form_id', 1)->where('is_active', 1)->orderBy('order')->get();
+            foreach($report_columns as $row){
+                if($row->name == 'document')
+                    continue;
+                $new_report_details[$row->label] = $report_details[$row->name];
+            }
         }
 
         return $new_report_details;
