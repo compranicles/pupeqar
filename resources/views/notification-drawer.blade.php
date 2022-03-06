@@ -166,7 +166,8 @@
             });
         }
 
-        $('#notificationLink').on('click', function(){
+        $('.notif-row').on('click', function(){
+            // alert(1);
             $.get('/notifications/mark-as-read', function (){
                 $('.noti-message').removeClass("font-weight-bold");
                 $('#notificationCounter').text("0");
@@ -183,6 +184,7 @@
     <script>
         $(document).click((event) => {
                 if (!$(event.target).closest('#notificationDropdown').length) {
+                    // the click occured outside
                     if (!$(event.target).closest('.notifDiv').length) {
                         document.getElementById('notificationLink').classList.remove('active'); 
                     }      
