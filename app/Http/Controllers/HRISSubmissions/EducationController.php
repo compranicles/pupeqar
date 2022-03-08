@@ -59,10 +59,12 @@ class EducationController extends Controller
         }
 
         if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('report_category_id', 24)
                     ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('report_category_id', 24)
                     ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }

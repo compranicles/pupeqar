@@ -164,5 +164,18 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 17
         ]);
+        //HRIS Report Category Seeder
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Attendance in Development Programs',
+            'is_active' => 1,
+            'order' => 18
+        ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Attendance in Trainings',
+            'is_active' => 1,
+            'order' => 19
+        ]);
     }
 }

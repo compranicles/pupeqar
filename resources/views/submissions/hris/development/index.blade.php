@@ -6,6 +6,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-success">
+                        {{ $message }}
+                    </div>
+                @endif
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -32,8 +42,15 @@
                                                     <td>{{ $development->TrainingProgram }}</td>
                                                     <td>{{ $development->IncDate }}</td>
                                                     <td>{{ $development->Level }}</td>
-                                                    <td>
-                                                        Add to Submissions
+                                                    <td class="text-center">
+                                                        @if ($development->ClassificationID == '0')
+                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary m-1">Add as Seminar</a>
+                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
+                                                        @elseif ($development->ClassificationID >= '1' && $development->ClassificationID <= '4')
+                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary m-1">Add as Seminar</a>
+                                                        @elseif ($development->ClassificationID >= '1' && $development->ClassificationID <= '4')
+                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
