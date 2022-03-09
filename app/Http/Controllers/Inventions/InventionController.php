@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Inventions;
 
+use App\Services\DateContentService;
 use App\Models\Invention;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -78,9 +79,9 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
-        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+        $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
 
         $request->merge([
             'start_date' => $start_date,
@@ -93,9 +94,8 @@ class InventionController extends Controller
             'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
-            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
+            'end_date' => 'required_if:status, 54',
             'utilization' => 'required_if:classification, 46',
-            'issue_date' => 'after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);
@@ -219,9 +219,9 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
-        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+        $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
 
         $request->merge([
             'start_date' => $start_date,
@@ -234,9 +234,8 @@ class InventionController extends Controller
             'funding_agency' => 'required_if:funding_type, 51',
             // 'funding_amount' => 'numeric',
             'start_date' => 'required_unless:status, 55',
-            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
+            'end_date' => 'required_if:status, 54',
             'utilization' => 'required_if:classification, 46',
-            'issue_date' => 'after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);

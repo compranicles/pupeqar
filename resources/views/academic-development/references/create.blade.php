@@ -33,15 +33,11 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>   
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
+            $(function() {
+                $("#authors_compilers")[0].selectize.addOption({value:"{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}", text:"{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}"});
+                $("#authors_compilers")[0].selectize.addItem('{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}');
             });
         </script>
         <script>

@@ -368,13 +368,13 @@ class ExtensionDropdownSeeder extends Seeder
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Completed',
+            'name' => 'Ongoing',
             'order' => 4,
             'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
-            'name' => 'Ongoing',
+            'name' => 'Completed',
             'order' => 5,
             'is_active' => 1,
         ]);

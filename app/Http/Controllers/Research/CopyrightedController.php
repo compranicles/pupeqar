@@ -83,11 +83,6 @@ class CopyrightedController extends Controller
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date_parts = explode('-', $research->completion_date);
-
-        $request->validate([
-            'copyright_year' => 'after_or_equal:'.$date_parts[0],
-        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -184,12 +179,6 @@ class CopyrightedController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
-
-        $date_parts = explode('-', $research->completion_date);
-
-        $request->validate([
-            'copyright_year' => 'after_or_equal:'.$date_parts[0],
-        ]);
         
         $input = $request->except(['_token', '_method', 'document']);
 

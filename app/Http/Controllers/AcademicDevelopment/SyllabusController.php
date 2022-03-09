@@ -211,6 +211,11 @@ class SyllabusController extends Controller
             'date_finished' => $date,
         ]);
         
+        $request->validate([
+            'college_id' => 'required',
+            'department_id' => 'required'
+        ]);
+        
         $input = $request->except(['_token', '_method', 'document']);
         $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);

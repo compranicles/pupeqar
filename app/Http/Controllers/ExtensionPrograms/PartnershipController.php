@@ -81,7 +81,6 @@ class PartnershipController extends Controller
             'other_collab_nature' => 'required_if:collab_nature,138',
             'other_partnership_type' => 'required_if:partnership_type,149',
             'other_deliverable' => 'required_if:deliverable, 157',
-            'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
             'college_id' => 'required',
             'department_id' => 'required'
@@ -210,7 +209,6 @@ class PartnershipController extends Controller
             'other_collab_nature' => 'required_if:collab_nature,138',
             'other_partnership_type' => 'required_if:partnership_type,149',
             'other_deliverable' => 'required_if:deliverable, 157',
-            'end_date' => 'after_or_equal:start_date',
             'level' => 'required',
             'college_id' => 'required',
             'department_id' => 'required'

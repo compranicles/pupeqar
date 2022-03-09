@@ -70,8 +70,6 @@ class StudentTrainingController extends Controller
         ]);
 
         $request->validate([
-            // 'budget' => 'numeric',
-            'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);
         
@@ -186,8 +184,6 @@ class StudentTrainingController extends Controller
         ]);
         
         $request->validate([
-            // 'budget' => 'numeric',
-            'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);
         

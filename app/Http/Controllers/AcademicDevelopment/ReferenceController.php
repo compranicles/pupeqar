@@ -83,8 +83,6 @@ class ReferenceController extends Controller
         ]);
 
         $request->validate([
-            'date_completed' => 'after_or_equal:date_started',
-            'date_published' => 'after:date_completed',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);
@@ -219,21 +217,7 @@ class ReferenceController extends Controller
         ]);
 
         $request->validate([
-            'category' => 'required',
-            'level' => 'required',
-            'date_started' => 'required|date',
-            'date_completed' => 'required|date|after_or_equal:date_started',
-            'title' => 'required',
-            'authors_compilers' => 'required',
-            // 'editor_name' => ''
-            // 'editor_profession' => ''
-            'volume_no' => 'integer',
-            'issue_no' => 'integer',
-            'date_published' => 'date|after:date_completed',
-            // 'copyright_regi_no' => ''
             'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
             'department_id' => 'required'
         ]);
 

@@ -57,13 +57,6 @@ class ExtensionServiceController extends Controller
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-        // $extensionServiceFields1 = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', 4)
-        //                                 ->where('extension_program_fields.is_active', 1)
-        //                                 ->whereBetween('extension_program_fields.id', [30, 47])
-        //                                 ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
-        //                                 ->select('extension_program_fields.*', 'field_types.name as field_type_name')
-        //                                 ->orderBy('order')
-        //                                 ->get();
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
@@ -103,7 +96,6 @@ class ExtensionServiceController extends Controller
             'funding_agency' => 'required_if:funding_type,123',
             // 'amount_of_funding' => 'numeric',
             'from' => 'required_unless:status, 107',
-            'to' => 'after_or_equal:from',
             'classification_of_trainees_or_beneficiaries' => 'required',
             'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
             'keywords' => new Keyword,
@@ -253,7 +245,6 @@ class ExtensionServiceController extends Controller
                 'funding_agency' => 'required_if:funding_type,123',
                 // 'amount_of_funding' => 'numeric',
                 'from' => 'required_unless:status, 107',
-                'to' => 'after_or_equal:from',
                 'classification_of_trainees_or_beneficiaries' => 'required',
                 'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
                 'keywords' => new Keyword,

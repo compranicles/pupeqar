@@ -5,24 +5,24 @@
         </h2>
     </x-slot>
 
-    {{-- Success Message --}}
-    @if ($message = Session::get('success'))
-    <div class="alert alert-success alert-index">
-        <i class="bi bi-check-circle"></i> {{ $message }}
-    </div>
-    @elseif ($message = Session::get('code-missing'))
-    <div class="alert alert-danger alert-index">
-        {{ $message }}
-    </div>
-    @endif
-    @if ($message = Session::get('cannot_access'))
-        <div class="alert alert-danger alert-index">
-            {{ $message }}
-        </div>
-    @endif
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                {{-- Success Message --}}
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @elseif ($message = Session::get('code-missing'))
+                <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="row">
@@ -130,7 +130,7 @@
                                                 <th>Research Title</th>
                                                 <th>Status</th>
                                                 <th>College/Branch/Campus/Office</th>
-                                                <th>Quarter</th>
+                                                <th>Date Added</th>
                                                 <th>Date Modified</th>
                                             </tr>
                                         </thead>
@@ -142,7 +142,11 @@
                                                     <td>{{ $research->title }}</td>
                                                     <td>{{ $research->status_name }}</td>
                                                     <td>{{ $research->college_name }}</td>
-                                                    <td>{{ $research->quarter }}</td>
+                                                    <td>
+                                                    <?php $created_at = strtotime( $research->created_at );
+                                                        $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                    {{ $created_at }}
+                                                    </td>
                                                     <td>
                                                     <?php $updated_at = strtotime( $research->updated_at );
                                                         $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
@@ -195,7 +199,7 @@
 
             var quarterIndex = 0;
             $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Quarter") {
+                if ($($(this)).html() == "Date Modified") {
                     quarterIndex = i; return false;
 
                 }
@@ -204,7 +208,32 @@
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex];
+                    var quarter = data[quarterIndex].substring(0, 4);
+                    switch (quarter) {
+                        case "Jan ":
+                        case "Feb ":
+                        case "Mar ":
+                            quarter = "1";
+                            break;
+                        case "Apr ":
+                        case "May ":
+                        case "Jun ":
+                            quarter = "2";
+                            break;
+                        case "Jul ":
+                        case "Aug ":
+                        case "Sep ":
+                            quarter = "3";
+                            break;
+                        case "Oct ":
+                        case "Nov ":
+                        case "Dec ":
+                            quarter = "4";
+                            break;
+                        default:
+                        quarter = "";
+                    }
+
                     if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
@@ -233,7 +262,7 @@
 
             var reportIndex = 0;
             $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
+                if ($($(this)).html() == "Date Added") {
                     reportIndex = i; return false;
 
                 }

@@ -1016,7 +1016,7 @@ class SubmissionController extends Controller
                         $successToSubmit++;
                     
                     break;
-                    case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 24:
+                    case 17: case 18: case 19: case 20: case 21: case 22: case 23:
                         //role and department/ college id
                         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
                         $department_id = '';

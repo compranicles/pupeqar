@@ -148,17 +148,52 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>   
+        <script src="{{ asset('js/views/research.js') }}"></script>   
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                format: 'mm/dd/yyyy',
-                immediateUpdates: true,
-                todayBtn: "linked",
-                todayHighlight: true
+            $(function() {
+                if ({{ $research->status }} == 26) {
+                    $('#start_date').attr('disabled', true);
+                    $('#target_date').attr('disabled', true);
+                }
+                else if ({{ $research->status }} == 27) {
+                    $('#start_date').removeAttr('disabled');
+                    $('#target_date').removeAttr('disabled');
+                    $('#status').attr('disabled', true);
+                }
+                else if ({{ $research->status }} > 27) {
+                    $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
+                    $('#status').attr('disabled', true);
+                }
+
+                if ({{ $research->funding_type }} == 24) {
+                    $('#funding_agency').val('');
+                    $('#funding_agency').removeAttr('required');
+                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').removeClass('form-validation');
+                }
+
+                var collegeId = $('#college').val();
+                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+                $.get('/departments/options/'+collegeId, function (data){
+
+                    data.forEach(function (item){
+                        $("#department").append(new Option(item.name, item.id));
+                        
+                    });
+                    $("#department").val('{{ $values['department_id'] }}');
                 });
+                $('#researchers').attr('disabled', true);
+
+
             });
-        </script>   
+            $('#nature_of_involvement').attr('disabled', true);
+            // $('#nature_of_involvement').on('change', function (){
+            //     $('#nature_of_involvement option[value=12]').attr('disabled',true);
+            //     $('#nature_of_involvement option[value=13]').attr('disabled',true);
+            // });
+            
+        </script>
         <script>
             var url = '';
             var docId = '';
@@ -216,135 +251,6 @@
             });
             
         
-        </script>
-        <script>
-            function hide_dates() {
-                $('.start_date').hide();
-                $('.target_date').hide();
-                $('#start_date').attr('disabled', true);
-                $('#target_date').attr('disabled', true);
-            }
-
-            $(function() {
-                if ({{ $research->status }} == 26) {
-                    hide_dates();
-                    
-                }
-                else if ({{ $research->status }} == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
-                    $('#status').attr('disabled', true);
-                }
-                else if ({{ $research->status }} > 27) {
-                    $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
-                    $('#status').attr('disabled', true);
-                }
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-                    $("#department").val('{{ $values['department_id'] }}');
-                });
-                // $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name }}</option>');
-                // $('#status').attr('disabled', true);
-                $('#researchers').attr('disabled', true);
-            });
-
-            $('#nature_of_involvement').on('change', function (){
-                // $('#nature_of_involvement option[value=11]').attr('selected','selected');
-                // console.log(11);
-                // $('#nature_of_involvement').attr('disabled', true); 
-                $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
-                $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
-            });
-
-            $('#funding_type').on('change', function (){
-                var type = $(this).val();
-                if(type == 23){
-                    
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('Polytechnic University of the Philippines');
-                    $('#funding_agency').removeAttr('disabled');
-                    $('#funding_agency').attr('readonly', true);
-                }
-                else if(type == 24){
-                    $('.funding_agency').hide();
-                    $('#funding_agency').attr('disabled', true);
-                }
-                else if(type == 25){
-                    $('#funding_agency').removeAttr('readonly');
-                    $('#funding_agency').removeAttr('disabled');
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('');
-                }
-            });
-
-            $('#status').on('change', function(){
-                var statusId = $('#status').find(":selected").val();
-                console.log(statusId);
-                if (statusId == 26) {
-                    hide_dates();
-                    $('#start_date').removeAttr('required');
-                    $('#target_date').removeAttr('required');
-                    $('#start_date').attr("disabled", true);
-                    $('#target_date').attr("disabled", true);
-                }
-                else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.target_date').show();
-                    $('#start_date').attr("required", true);
-                    $('#target_date').attr("required", true);
-                    $('#target_date').removeAttr('disabled');
-                    $('#start_date').removeAttr('disabled');
-
-                    $('#start_date').focus();
-
-                }
-            });
-
-            
-            $('#keywords').on('keyup', function(){
-                var value = $(this).val();
-                if (value != null){
-                    var count = value.match(/(\w+)/g).length;
-                    if(count < 5)
-                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
-                    else{
-                        $("#validation-keywords").text('');
-                    }
-                }
-                if (value == null)
-                    $("#validation-keywords").text('The number of keywords must be five (5)');
-            });
-
-        </script>
-        <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('target_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#target_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
         </script>
         <script>
             var report_category_id = 1;

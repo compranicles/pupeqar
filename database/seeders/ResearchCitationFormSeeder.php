@@ -113,7 +113,7 @@ class ResearchCitationFormSeeder extends Seeder
             'name' => 'page',
             'placeholder' => null,
             'size' => 'col-md-2',
-            'field_type_id' => 2,
+            'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,

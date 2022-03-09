@@ -13221,19 +13221,19 @@ table tr .padding_left_show {
     visibility: hidden; 
 }
 
-.nav-item-extension-program {
+.submenu-nav-item {
   /* flex: 1 1 auto; */
   text-align: center;
   text-decoration: none;
   margin: 8px 25px 8px 0;
 }
 
-.nav-item-extension-program a:hover {
+.submenu-nav-item a:hover {
   text-decoration: none;
 
 }
 
-.nav-item-extension-program a.active {
+.submenu-nav-item a.active {
   font-weight: bolder;
 
 }
@@ -13420,4 +13420,51 @@ table tr .padding_left_show {
 
 .text-small{
   font-size: 12px;
+}
+
+.datepicker .table-condensed{
+    margin-left: 10px;
+}
+
+/* Selectize input (for multiple input) */
+.selectize-dropdown, .selectize-input { 
+  line-height: 23px; 
+  font-size: 14px;
+}
+
+/* Table */
+/* .parent-row ~ .child-row {
+  display: none;
+}
+.open .parent-row ~ .child-row {
+  display: table-row;
+}
+.parent-row {
+  cursor: pointer;
+}
+
+.open {
+  background-color: #e6e6e6;
+}
+
+.open .child-row {
+  background-color: #999;
+  color: white;
+}
+.parent-row > *:last-child {
+  width: 30px;
+}
+.parent-row i {
+  transform: rotate(0deg);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  margin: -.5rem;
+  padding: .5rem;
+ 
+}
+.open .parent-row i {
+  transform: rotate(180deg)
+} */
+
+.table-responsive{
+  overflow-x: auto;
 }

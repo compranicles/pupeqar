@@ -1,13 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('submissions.hris.navigation')
+        @include('submissions.navigation')
     </x-slot>
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @include('submissions.hris.navigation-bar')
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>Trainings and Seminars</h3>

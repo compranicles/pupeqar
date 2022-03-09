@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Research;
+
+use App\Services\DateContentService;
 use App\Models\User;
 use App\Models\Report;
 use App\Rules\Keyword;
@@ -120,8 +122,8 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
 
         $request->merge([
             'start_date' => $start_date,
@@ -130,8 +132,6 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            // 'funding_amount' => 'numeric',
-            // 'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
             'start_date' => 'required_if:status,27',
             'target_date' => 'required_if:status,27',
@@ -360,13 +360,17 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+
         $request->merge([
+            'start_date' => $start_date,
+            'target_date' => $target_date,
             'funding_amount' => $value,
         ]);
 
         $request->validate([
-            // 'funding_amount' => 'numeric',
-            // 'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
             'start_date' => 'required_if:status,27',
             'target_date' => 'required_if:status,27',
@@ -375,8 +379,8 @@ class ResearchController extends Controller
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document', 'funding_type']);
-        $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_type', 'college_id', 'department_id', 'nature_of_involvement']);
+        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_amount', 'college_id', 'department_id', 'nature_of_involvement']);
         $funding_amount = $request->funding_amount;    
         $funding_amount = str_replace( ',' , '', $funding_amount);
         

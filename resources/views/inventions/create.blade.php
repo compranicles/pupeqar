@@ -33,48 +33,68 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>   
         <script>
             $(function() {
-                $('.funding_agency').hide();
+                $('#funding_agency').attr("disabled", true);
                 $('#funding_agency').removeClass('form-validation');
+                $('#start_date').attr("disabled", true);
+                $('#end_date').attr("disabled", true);
+                $('#issue_date').attr("disabled", true);
+                $('#status').val(53); // Select Ongoing Status
+
+                $("#collaborator")[0].selectize.addOption({value:"{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}", text:"{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}"});
+                $("#collaborator")[0].selectize.addItem('{{ auth()->user()->last_name.' '.auth()->user()->first_name.' '.substr(auth()->user()->middle_name,0,1)."." }}');
             });
         
+            $('#status').on('change', function (){ 
+                $('#status option[value="54"]').attr("disabled", true);
+                $('#status option[value="55"]').attr("disabled", true);
+                if ($(this).val() == 53) {
+                    $('#start_date').attr("required", true);
+                    $('#start_date').removeAttr('disabled');
+                    $('#end_date').removeClass('form-validation');
+                    $('#end_date').removeAttr("required");
+                    $('#end_date').attr("disabled", true);
+                    $('#end_date').removeClass('form-validation');
+                    $('#issue_date').removeAttr("required");
+                    $('#issue_date').attr("disabled", true);
+                    $('#issue_date').removeClass('form-validation');
+                    $('#end_date').val("");
+                    $('#issue_date').val("");
+                }
+                // else if ($(this).val() == 54) {
+                //     $('.end_date').show();
+                //     $('#end_date').attr("required", true);
+                //     $('#end_date').removeAttr('disabled');
+
+                //     $('.issue_date').show();
+                //     $('#issue_date').attr("required", true);
+                //     $('#issue_date').removeAttr('disabled');
+                // }
+            });
+
             $('#funding_type').on('change', function (){
                 var type = $(this).val();
                 if(type == 49){
-                    
-                    $('.funding_agency').show();
                     $('#funding_agency').val('Polytechnic University of the Philippines');
-                    $('#funding_agency').removeAttr('disabled');
-                    $('#funding_agency').attr('readonly', true);
+                    $('#funding_agency').attr('disabled', true);
                     $('#funding_agency').addClass('form-validation');
                 }
                 else if(type == 50){
-                    $('.funding_agency').hide();
+                    $('#funding_agency').val('');
                     $('#funding_agency').attr('disabled', true);
                     $('#funding_agency').removeClass('form-validation');
                 }
                 else if(type == 51){
-                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').removeAttr('disabled');
-                    $('.funding_agency').show();
+                    $('#funding_agency').attr('required', true);
                     $('#funding_agency').val('');
                     $('#funding_agency').addClass('form-validation');
                 }
             });
         </script>
-        <script>
+        <!-- <script>
             $('#status').on('change', function(){
                 var statusId = $('#status').val();
                 if (statusId == 26) {
@@ -86,7 +106,7 @@
                     $('.end_date').show();
                 }
             });
-        </script>
+        </script> -->
         <script>
             $('#start_date').on('input', function(){
                 var date = new Date($('#start_date').val());
@@ -105,8 +125,6 @@
                     month = date.getMonth() + 1;
                 }
                 var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
                 document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
@@ -128,8 +146,6 @@
                     month = date.getMonth() + 1;
                 }
                 var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
                 document.getElementById('issue_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
                 $('#issue_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });

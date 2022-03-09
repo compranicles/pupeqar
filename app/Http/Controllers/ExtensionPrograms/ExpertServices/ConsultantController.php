@@ -83,7 +83,6 @@ class ConsultantController extends Controller
         ]);
 
         $request->validate([
-            'to' => 'after_or_equal:from',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);
@@ -200,7 +199,6 @@ class ConsultantController extends Controller
         ]);
 
         $request->validate([
-            'to' => 'after_or_equal:from',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);

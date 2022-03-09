@@ -4,7 +4,9 @@
         <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <textarea name="{{ $fieldInfo->name }}" placeholder="Add description or select/edit from suggestions" id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
-
+        @if ($fieldInfo->name == 'description')
+        <span><small>{{ $fieldInfo->placeholder }}</small></span>
+        @endif
         @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>

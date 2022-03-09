@@ -148,49 +148,65 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>   
         <script>
             $(function() {
-                $('.funding_agency').hide();
-                $('#funding_agency').removeClass('form-validation');
+                if ('{{ $value['status'] }}' == 53) {
+                    $('#end_date').attr("disabled", true);
+                    $('#issue_date').attr("disabled", true);
+                    $('#end_date').removeAttr("required");
+                }
+                else if('{{ $value['status'] }}' == 54) {
+                    $('#end_date').attr("required", true);
+                }
+                else {
+                    $('#end_date').removeAttr("required");
+                }
             });
-
-            var fund_type = document.getElementById('#funding_agency').value;
-            if (fund_type == 49) {
-                $('.funding_agency').show();
-            }
-            
+        </script>
+        <script>            
             $('#funding_type').on('change', function (){
                 var type = $(this).val();
                 if(type == 49){
                     
-                    $('.funding_agency').show();
                     $('#funding_agency').val('Polytechnic University of the Philippines');
-                    $('#funding_agency').removeAttr('disabled');
-                    $('#funding_agency').attr('readonly', true);
+                    $('#funding_agency').attr('disabled', true);
                     $('#funding_agency').addClass('form-validation');
                 }
                 else if(type == 50){
-                    $('.funding_agency').hide();
                     $('#funding_agency').attr('disabled', true);
                     $('#funding_agency').removeClass('form-validation');
+                    $('#funding_agency').val('');
                 }
                 else if(type == 51){
-                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').removeAttr('disabled');
-                    $('.funding_agency').show();
+                    $('#funding_agency').attr('required', true);
                     $('#funding_agency').val('');
                     $('#funding_agency').addClass('form-validation');
+                }
+            });
+        </script>
+        <script>
+            // On change
+            $('#status').on('change', function (){ 
+                if ($(this).val() == 53) {
+                    $('#start_date').attr("required", true);
+                    $('#start_date').removeAttr('disabled');
+                    $('#end_date').removeAttr("required");
+                    $('#end_date').attr("disabled", true);
+                    $('#end_date').removeClass('form-validation');
+                    $('#issue_date').removeAttr("required");
+                    $('#issue_date').attr("disabled", true);
+                    $('#issue_date').removeClass('form-validation');
+                }
+                else if ($(this).val() == 54) {
+                    $('#end_date').attr("required", true);
+                    $('#end_date').removeAttr('disabled');
+                    $('#end_date').val("");
+
+                    $('#issue_date').attr("required", true);
+                    $('#issue_date').removeAttr('disabled');
+                    $('#issue_date').val("");
                 }
             });
         </script>
