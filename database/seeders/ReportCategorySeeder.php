@@ -59,7 +59,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::create([
             'report_type_id' => 1,
-            'name' => 'Faculty Invention, Innovation, and Creative Works',
+            'name' => 'Invention, Innovation, and Creative Works',
             'is_active' => 1,
             'order' => 8
         ]);
@@ -83,7 +83,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::create([
             'report_type_id' => 1,
-            'name' => 'Extension Program, Project, and Active (Ongoing and Completed)',
+            'name' => 'Extension Program, Project, and Activity (Ongoing and Completed)',
             'is_active' => 1,
             'order' => 12
         ]);
@@ -95,7 +95,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::create([
             'report_type_id' => 1,
-            'name' => 'Faculty Involvement in Inter-Country Mobility',
+            'name' => 'Involvement in Inter-Country Mobility',
             'is_active' => 1,
             'order' => 14
         ]);
