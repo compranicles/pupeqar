@@ -10,8 +10,11 @@ use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Currency;
 use App\Models\Maintenance\HRISField;
+use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 
 class SeminarAndTrainingController extends Controller
 {
@@ -82,8 +85,8 @@ class SeminarAndTrainingController extends Controller
             'organizer' => $seminar->Conductor,
             'level' => $seminar->Level,
             'venue' => $seminar->Venue,
-            'from' => $seminar->IncDateFrom,
-            'to' => $seminar->IncDateTo,
+            'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours
         ];
 
@@ -97,9 +100,42 @@ class SeminarAndTrainingController extends Controller
             return redirect()->back()->with('error', 'Document upload are required');
         }
 
-        $values = collect($request->except(['_token', 'document']));
 
         $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+
+        $seminarFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+            ->where('h_r_i_s_fields.h_r_i_s_form_id', 4)->where('h_r_i_s_fields.is_active', 1)
+            ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+            ->orderBy('h_r_i_s_fields.order')->get();
+    
+        $data = [];
+        
+        foreach($seminarFields as $field){
+            if($field->field_type_id == '5'){
+                $data[$field->name] = DropdownOption::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            elseif($field->field_type_id == '3'){
+                $currency_name = Currency::where('id', $request->input('currency_'.$field->name))->pluck('code')->first();
+                $data[$field->name] = $currency_name.' '.$request->input($field->name);
+            }
+            elseif($field->field_type_id == '10'){
+                continue;
+            }
+            elseif($field->field_type_id == '12'){
+                $data[$field->name] = College::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            elseif($field->field_type_id == '13'){
+                $data[$field->name] = Department::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            else{
+                if($request->input($field->name) == 'null' || $request->input($field->name) == null)
+                    $data[$field->name] = '';
+                else
+                    $data[$field->name] = $request->input($field->name);
+            }
+        }
+        
+        $filenames = [];
 
         if($request->has('document')){
             
@@ -121,6 +157,7 @@ class SeminarAndTrainingController extends Controller
                         'reference_id' => $id,
                         'filename' => $fileName,
                     ]);
+                    array_push($filenames, $fileName);
                 }
             }
         }
@@ -133,8 +170,8 @@ class SeminarAndTrainingController extends Controller
             'report_category_id' => 25,
             'report_code' => null,
             'report_reference_id' => $id,
-            'report_details' => json_encode($values),
-            'report_documents' => json_encode(collect($request->document)),
+            'report_details' => json_encode($data),
+            'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
         ]);
 
@@ -197,8 +234,8 @@ class SeminarAndTrainingController extends Controller
             'organizer' => $training->Conductor,
             'level' => $training->Level,
             'venue' => $training->Venue,
-            'from' => $training->IncDateFrom,
-            'to' => $training->IncDateTo,
+            'from' => date('m/d/Y', strtotime($training->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($training->IncDateTo)),
             'total_hours' => $training->NumberOfHours
         ];
 
@@ -213,10 +250,41 @@ class SeminarAndTrainingController extends Controller
             return redirect()->back()->with('error', 'Document upload are required');
         }
 
-        $values = collect($request->except(['_token', 'document']));
-
         $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
 
+        $trainingFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+            ->where('h_r_i_s_fields.h_r_i_s_form_id', 5)->where('h_r_i_s_fields.is_active', 1)
+            ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+            ->orderBy('h_r_i_s_fields.order')->get();
+        
+        $data = [];
+        
+        foreach($trainingFields as $field){
+            if($field->field_type_id == '5'){
+                $data[$field->name] = DropdownOption::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            elseif($field->field_type_id == '3'){
+                $currency_name = Currency::where('id', $request->input('currency_'.$field->name))->pluck('code')->first();
+                $data[$field->name] = $currency_name.' '.$request->input($field->name);
+            }
+            elseif($field->field_type_id == '10'){
+                continue;
+            }
+            elseif($field->field_type_id == '12'){
+                $data[$field->name] = College::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            elseif($field->field_type_id == '13'){
+                $data[$field->name] = Department::where('id', $request->input($field->name))->pluck('name')->first();
+            }
+            else{
+                if($request->input($field->name) == 'null' || $request->input($field->name) == null)
+                    $data[$field->name] = '';
+                else
+                    $data[$field->name] = $request->input($field->name);
+            }
+        }
+
+        $filenames = [];
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -237,6 +305,7 @@ class SeminarAndTrainingController extends Controller
                         'reference_id' => $id,
                         'filename' => $fileName,
                     ]);
+                    array_push($filenames, $fileName);
                 }
             }
         }
@@ -249,8 +318,8 @@ class SeminarAndTrainingController extends Controller
             'report_category_id' => 26,
             'report_code' => null,
             'report_reference_id' => $id,
-            'report_details' => json_encode($values),
-            'report_documents' => json_encode(collect($request->document)),
+            'report_details' => json_encode($data),
+            'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
         ]);
 

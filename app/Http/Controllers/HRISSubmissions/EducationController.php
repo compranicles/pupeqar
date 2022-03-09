@@ -128,6 +128,7 @@ class EducationController extends Controller
 
         $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
 
+        $filenames = [];
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -148,6 +149,7 @@ class EducationController extends Controller
                         'reference_id' => $educID,
                         'filename' => $fileName,
                     ]);
+                    array_push($filenames, $fileName);
                 }
             }
         }
@@ -161,7 +163,7 @@ class EducationController extends Controller
             'report_code' => null,
             'report_reference_id' => $educID,
             'report_details' => json_encode($data),
-            'report_documents' => json_encode(collect($request->document)),
+            'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
         ]);
 
