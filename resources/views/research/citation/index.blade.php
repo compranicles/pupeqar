@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-6">
                                 {{-- ADD Fields --}}
-                                @if($research->nature_of_involvement == 11)
+                                @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
                                     <a href="{{ route('research.citation.create', $research->id) }}" class="btn btn-success">
                                         <i class="fas fa-plus"></i> Add Citation
                                     </a>
