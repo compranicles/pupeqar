@@ -112,10 +112,11 @@ return [
             'odbc'     => true,
         
             /* Set the ODBC data source, your previous dns */
-            'odbc_datasource_name' => '{HRIS}',
+            // 'odbc_datasource_name' => '{HRIS}',
         
             /* There is no dsn config variable that I am aware of */
             /*'dsn'    => 'Driver={SQL Server};Server={serverName};Trusted_Connection=true;Database=meteor;', */
+            'dsn' => 'Driver={SQL Server};Server={192.168.4.13};Trusted_Connection=true;Database=HRIS;',
         
             /* host is the server */
             'host'     => '192.168.4.13', /*'DESKTOP-B9M4O7M\SQLEXPRESS',*/
