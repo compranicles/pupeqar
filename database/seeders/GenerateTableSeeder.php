@@ -72,7 +72,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 25,
             'footers' => json_encode([
                 '* Seminar/Webinar, Fora, Conference, Planning',
                 '** GAD Related, Inclusivity and Diversity, Professional, Skills/Technical',
@@ -85,7 +85,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 26,
             'footers' => json_encode([
                 '* Workshop, Professional/Continuing Professional Development, Short Term Courses, Executive/Managerial',
                 '** GAD Related, Inclusivity and Diversity, Professional, Skills/Technical',
@@ -438,7 +438,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 25,
             'footers' => json_encode([
                 '* Seminar/Webinar, Fora, Conference, Planning',
                 '** GAD Related, Inclusivity and Diversity, Professional, Skills/Technical',
@@ -451,7 +451,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 26,
             'footers' => json_encode([
                 '* Workshop, Professional/Continuing Professional Development, Short Term Courses, Executive/Managerial',
                 '** GAD Related, Inclusivity and Diversity, Professional, Skills/Technical',
