@@ -59,10 +59,12 @@ class EducationController extends Controller
         }
 
         if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('report_category_id', 24)
                     ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('report_category_id', 24)
                     ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
@@ -126,6 +128,7 @@ class EducationController extends Controller
 
         $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
 
+        $filenames = [];
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -146,6 +149,7 @@ class EducationController extends Controller
                         'reference_id' => $educID,
                         'filename' => $fileName,
                     ]);
+                    array_push($filenames, $fileName);
                 }
             }
         }
@@ -159,7 +163,7 @@ class EducationController extends Controller
             'report_code' => null,
             'report_reference_id' => $educID,
             'report_details' => json_encode($data),
-            'report_documents' => json_encode(collect($request->document)),
+            'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
         ]);
 
