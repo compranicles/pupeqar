@@ -91,18 +91,43 @@ return [
             'prefix_indexes' => true,
         ],
 
-        'mysql_external' => [
-            'driver'    => 'sqlsrv',
-            'host'      => env('DB_EXT_HOST', '192.168.4.13'),
-            'port'      => env('DB_EXT_PORT', '1433'),
-            'database'  => env('DB_EXT_DATABASE', 'forge'),
-            'username'  => env('DB_EXT_USERNAME', 'forge'),
-            'password'  => env('DB_EXT_PASSWORD', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
+        // 'mysql_external' => [
+        //     'driver'    => 'sqlsrv',
+        //     'host'      => env('DB_EXT_HOST', '192.168.4.13'),
+        //     'port'      => null,
+        //     'database'  => env('DB_EXT_DATABASE', 'forge'),
+        //     'username'  => env('DB_EXT_USERNAME', 'forge'),
+        //     'password'  => env('DB_EXT_PASSWORD', ''),
+        //     'charset'   => 'utf8',
+        //     'collation' => 'utf8_unicode_ci',
+        //     'prefix'    => '',
+        //     'strict'    => false,
+        // ],
+
+        'mysql_external'   => [
+            /* USE sql server as the driver, and set odbc settings (see below) */
+            'driver'   => 'sqlsrv',
+        
+            /* Tell laravel that you are using odbc */
+            'odbc'     => true,
+        
+            /* Set the ODBC data source, your previous dns */
+            'odbc_datasource_name' => '{HRIS}',
+        
+            /* There is no dsn config variable that I am aware of */
+            /*'dsn'    => 'Driver={SQL Server};Server={serverName};Trusted_Connection=true;Database=meteor;', */
+        
+            /* host is the server */
+            'host'     => '192.168.4.13', /*'DESKTOP-B9M4O7M\SQLEXPRESS',*/
+        
+            'database' => 'HRIS',
+            'username' => env('DB_EXT_USERNAME'),
+            'password' => env('DB_EXT_PASSWORD'),
+            'grammar' => [
+                'query' => Illuminate\Database\Query\Grammars\SqlServerGrammar::class,
+                'schema' => Illuminate\Database\Schema\Grammars\SqlServerGrammar::class,
+            ],
+         ],
 
     ],
 
