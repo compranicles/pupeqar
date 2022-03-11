@@ -116,7 +116,8 @@ return [
         
             /* There is no dsn config variable that I am aware of */
             /*'dsn'    => 'Driver={SQL Server};Server={serverName};Trusted_Connection=true;Database=meteor;', */
-            'dsn' => 'Driver={SQL Server};Server={192.168.4.13};Trusted_Connection=true;Database=HRIS;',
+            // Driver={ODBC Driver 13 for SQL Server};server=localhost;database=WideWorldImporters;trusted_connection=Yes;
+            'dsn' => 'Driver={SQL Server};server={192.168.4.13};database=HRIS;trusted_connection=Yes;',
         
             /* host is the server */
             'host'     => '192.168.4.13', /*'DESKTOP-B9M4O7M\SQLEXPRESS',*/
