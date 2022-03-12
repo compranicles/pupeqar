@@ -355,6 +355,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'saveTraining'])->name('submissions.development.training.save');
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
 
+    /* PROFILE (SYNCHRONIZED WITH HRIS) */
+    Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
+    Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
+    Route::get('/profile/education', [\App\Http\Controllers\User\ProfileController::class, 'education'])->name('profile.education');
+    Route::get('/profile/professional-study', [\App\Http\Controllers\User\ProfileController::class, 'professionalStudy'])->name('profile.professionalStudy');
+    Route::get('/profile/teaching-discipline', [\App\Http\Controllers\User\ProfileController::class, 'teaching'])->name('profile.teaching');
+    
     /* SUPER ADMIN PERMANENT TASKS */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         // Maintenance
