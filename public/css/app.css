@@ -299,19 +299,20 @@ fieldset {
   min-width: 0;
   padding: 0;
   margin: 0;
-  border: 0;
+  border: 1px solid lightgray;
 }
 
 legend {
   display: block;
-  width: 100%;
+  width: auto;
   max-width: 100%;
-  padding: 0;
+  padding: 2px;
   margin-bottom: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   line-height: inherit;
   color: inherit;
   white-space: normal;
+  margin-left: 0.5em;
 }
 
 progress {
