@@ -15,4 +15,3 @@ yarn-error.log
 /.idea
 /.vscode
 cloudflared.exe
-.env
