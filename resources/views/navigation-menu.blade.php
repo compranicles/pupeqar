@@ -148,12 +148,12 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
-                            <x-jet-dropdown-link href="{{ route('profile.personal') }}">
-                                {{ __('Profile') }}
-                            </x-jet-dropdown-link>
-
-                            <x-jet-dropdown-link href="{{ route('manage.account') }}">
+                            <h6 class="dropdown-header small text-muted">
                                 {{ __('Manage Account') }}
+                            </h6>
+
+                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                                {{ __('Profile') }}
                             </x-jet-dropdown-link>
                             <hr class="dropdown-divider">
 
