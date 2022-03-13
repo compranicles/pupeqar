@@ -14,14 +14,14 @@
                             <fieldset>
                                 <legend>Baccalaureate Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                 </div>
                             </fieldset>
                         <hr>
                             <fieldset>
                                 <legend>Post Baccalaureate/Certificate/Diploma Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                     
                                     <div class="col-md-3">
                                         <div class="form-group input-group-sm">
@@ -41,7 +41,7 @@
                             <fieldset>
                                 <legend>Master's Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                     
                                     <div class="col-md-3">
                                         <div class="form-group input-group-sm">
@@ -61,7 +61,7 @@
                             <fieldset>
                                 <legend>Doctorate Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                     
                                     <div class="col-md-3">
                                         <div class="form-group input-group-sm">
@@ -81,7 +81,7 @@
                             <fieldset>
                                 <legend>Post Doctorate (Fellowship) Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                     
                                     <div class="col-md-3">
                                         <div class="form-group input-group-sm">
@@ -102,7 +102,7 @@
                             <fieldset>
                                 <legend>Other Degree</legend>
                                 <div class="row m-1">
-                                    @include('profile.education-profile-template')
+                                    @include('profile.educational-degree-profile-template')
                                     
                                     <div class="col-md-3">
                                         <div class="form-group input-group-sm">
