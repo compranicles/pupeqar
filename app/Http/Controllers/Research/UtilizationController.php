@@ -10,6 +10,7 @@ use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -74,6 +75,13 @@ class UtilizationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+        
+        $currentQuarterYear = Quarter::find(1);
+
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
+        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 

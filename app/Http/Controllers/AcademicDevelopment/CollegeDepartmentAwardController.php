@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\CollegeDepartmentAward;
 use Illuminate\Support\Facades\Storage;
@@ -59,9 +60,13 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date')));
+
+        $currentQuarterYear = Quarter::find(1);
         
         $request->merge([
             'date' => $date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

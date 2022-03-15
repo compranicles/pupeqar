@@ -8,6 +8,7 @@ use App\Models\TemporaryFile;
 use App\Models\ReferenceDocument;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
@@ -76,10 +77,14 @@ class ReferenceController extends Controller
         $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
         $date_published = date("Y-m-d", strtotime($request->input('date_published')));
         
+        $currentQuarterYear = Quarter::find(1);
+
         $request->merge([
             'date_started' => $date_started,
             'date_completed' => $date_completed,
             'date_published' => $date_published,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

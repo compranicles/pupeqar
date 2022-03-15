@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\RequestDocument;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\IPCRForm;
 use App\Models\FormBuilder\IPCRField;
@@ -73,6 +74,14 @@ class RequestController extends Controller
         $this->authorize('create', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $currentQuarterYear = Quarter::find(1);
+
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
+        ]);
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $requestdata = RequestModel::create($input);

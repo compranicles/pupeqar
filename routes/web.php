@@ -61,6 +61,10 @@ Route::group(['middleware' => 'auth'], function() {
     /* MAINTENANCES */
     Route::get('/maintenances', [\App\Http\Controllers\Maintenances\MaintenanceController::class, 'index'])->name('maintenances.index');
 
+    //Quarter and Year Maintenance
+    Route::get('/maintenances/quarter',[App\Http\Controllers\Maintenances\QuarterController::class, 'index'])->name('maintenance.quarter.index');
+    Route::post('/maintenances/quarter/update',[App\Http\Controllers\Maintenances\QuarterController::class, 'update'])->name('maintenance.quarter.update');
+
     // 1. Colleges
     Route::get('/maintenances/colleges/name/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeName'])->name('college.name');
     Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);

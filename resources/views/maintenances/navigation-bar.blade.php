@@ -12,6 +12,12 @@
                     @endcan
 
                     <li class="nav-item">
+                        <x-jet-nav-link href="{{ route('maintenance.quarter.index') }}" class="text-dark"  class="text-dark" :active="request()->routeIs('maintenance.quarter.*')">
+                            {{ __('Quarter and Year') }}
+                        </x-jet-nav-link>
+                    </li>
+
+                    <li class="nav-item">
                         <x-jet-nav-link href="{{ route('sectors.maintenance.index') }}" class="text-dark"  :active="request()->routeIs('sectors.*')">
                             {{ __('Sectors') }}
                         </x-jet-nav-link>

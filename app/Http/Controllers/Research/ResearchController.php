@@ -15,6 +15,7 @@ use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -122,11 +123,14 @@ class ResearchController extends Controller
 
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+        $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
             'start_date' => $start_date,
             'target_date' => $target_date,
             'funding_amount' => $value,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([
@@ -569,11 +573,19 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $currentQuarterYear = Quarter::find(1);
+        
+        $yearAndQuarter = [
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
+        ];
+
         $research = Research::where('id', $research_id)->first()->toArray();
         $research = collect($research);
         $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'researchers', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);
         $fromRequest = $request->except(['_token', 'document', 'notif_id']);
         $data = array_merge($researchFiltered->toArray(), $fromRequest);
+        $data = array_merge($yearAndQuarter, $data);
         $data = Arr::add($data, 'user_id', auth()->id());
         // dd($data);
         $saved = Research::create($data); 

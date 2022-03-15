@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
@@ -76,10 +77,13 @@ class ConsultantController extends Controller
 
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
+        $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

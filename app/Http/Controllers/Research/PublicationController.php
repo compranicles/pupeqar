@@ -10,6 +10,7 @@ use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -110,9 +111,12 @@ class PublicationController extends Controller
             return view('inactive');
 
         $publish_date = date("Y-m-d", strtotime($request->input('publish_date')));
+        $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
             'publish_date' => $publish_date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);

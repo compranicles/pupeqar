@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Models\PartnershipDocument;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
@@ -70,10 +71,13 @@ class PartnershipController extends Controller
 
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
-
+        $currentQuarterYear = Quarter::find(1);
+        
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

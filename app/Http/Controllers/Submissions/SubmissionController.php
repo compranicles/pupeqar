@@ -32,6 +32,7 @@ use App\Models\ReferenceDocument;
 use App\Models\TechnicalExtension;
 use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Models\PartnershipDocument;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -901,6 +902,8 @@ class SubmissionController extends Controller
     {
         $report_controller = new ReportDataController;
         $user_id = auth()->id();
+        $currentQuarterYear = Quarter::find(1);
+
 
         if($request->has('report_values')){
             $report_details;
@@ -937,11 +940,13 @@ class SubmissionController extends Controller
                             $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                         }
                         $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                        
+
                         Report::where('report_reference_id', $report_values_array[2])
                             ->where('report_code', $report_values_array[0])
                             ->where('report_category_id', $report_values_array[1])
                             ->where('user_id', auth()->id())
+                            ->where('report_quarter', $currentQuarterYear->current_quarter)
+                            ->where('report_year', $currentQuarterYear->current_year)
                             ->delete();
                         Report::create([
                             'user_id' =>  $user_id,
@@ -954,6 +959,8 @@ class SubmissionController extends Controller
                             'report_details' => json_encode($report_details),
                             'report_documents' => json_encode($report_documents),
                             'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->report_quarter,
+                            'report_year' => $currentQuarterYear->report_year,
                         ]);
                         $successToSubmit++;
                     
@@ -1005,6 +1012,8 @@ class SubmissionController extends Controller
                             ->where('report_code', $report_values_array[0])
                             ->where('report_category_id', $report_values_array[1])
                             ->where('user_id', auth()->id())
+                            ->where('report_quarter', $currentQuarterYear->current_quarter)
+                            ->where('report_year', $currentQuarterYear->current_year)
                             ->delete();
                         Report::create([
                             'user_id' =>  $user_id,
@@ -1017,6 +1026,8 @@ class SubmissionController extends Controller
                             'report_details' => json_encode($report_details),
                             'report_documents' => json_encode($report_documents),
                             'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->report_quarter,
+                            'report_year' => $currentQuarterYear->report_year,
                         ]);
                         $successToSubmit++;
                     
@@ -1046,6 +1057,8 @@ class SubmissionController extends Controller
                                 ->where('report_code', $report_values_array[0])
                                 ->where('report_category_id', $report_values_array[1])
                                 ->where('user_id', auth()->id())
+                                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                                ->where('report_year', $currentQuarterYear->current_year)
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
@@ -1058,7 +1071,9 @@ class SubmissionController extends Controller
                                 'report_details' => json_encode($report_details),
                                 'report_documents' => json_encode($report_documents),
                                 'report_date' => date("Y-m-d", time()),
-                                'chairperson_approval' => 1    
+                                'chairperson_approval' => 1,
+                                'report_quarter' => $currentQuarterYear->report_quarter,
+                                'report_year' => $currentQuarterYear->report_year,
                             ]);
 
                             $successToSubmit++;
@@ -1069,6 +1084,8 @@ class SubmissionController extends Controller
                                 ->where('report_code', $report_values_array[0])
                                 ->where('report_category_id', $report_values_array[1])
                                 ->where('user_id', auth()->id())
+                                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                                ->where('report_year', $currentQuarterYear->current_year)
                                 ->delete();
                             Report::create([
                                 'user_id' =>  $user_id,
@@ -1082,8 +1099,9 @@ class SubmissionController extends Controller
                                 'report_documents' => json_encode($report_documents),
                                 'report_date' => date("Y-m-d", time()),
                                 'chairperson_approval' => 1,
-                                'dean_approval' => 1
-
+                                'dean_approval' => 1,
+                                'report_quarter' => $currentQuarterYear->report_quarter,
+                                'report_year' => $currentQuarterYear->report_year,
                             ]);
                             $successToSubmit++;
                         }
