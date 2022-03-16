@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ResearchInviteNotification;
 use App\Http\Controllers\Maintenances\LockController;
-
+use App\Services\DateContentService;
 
 class ResearchController extends Controller
 {
@@ -120,8 +120,8 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
 
         $request->merge([
             'start_date' => $start_date,
@@ -130,11 +130,7 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            // 'funding_amount' => 'numeric',
-            // 'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
-            'start_date' => 'required_if:status,27',
-            'target_date' => 'required_if:status,27',
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
@@ -250,7 +246,7 @@ class ResearchController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research added.');
+        \LogActivity::addToLog('Research entitled "'.$request->input('title').'" was added.');
 
 
         return redirect()->route('research.index')->with('success', 'Research has been registered.');
@@ -360,23 +356,24 @@ class ResearchController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+
         $request->merge([
             'funding_amount' => $value,
+            'start_date' => $start_date,
+            'target_date' => $target_date,
         ]);
 
         $request->validate([
-            // 'funding_amount' => 'numeric',
-            // 'funding_agency' => 'required_if:funding_type,23',
             'keywords' => new Keyword,
-            'start_date' => 'required_if:status,27',
-            'target_date' => 'required_if:status,27',
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document', 'funding_type']);
-        $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_type', 'college_id', 'department_id', 'nature_of_involvement']);
+        $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
+        $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_amount', 'college_id', 'department_id', 'nature_of_involvement']);
         $funding_amount = $request->funding_amount;    
         $funding_amount = str_replace( ',' , '', $funding_amount);
         
@@ -417,7 +414,7 @@ class ResearchController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research updated.');
+        \LogActivity::addToLog('Research entitled "'.$research->title.'" was updated.');
 
         return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated.');
     }
@@ -435,7 +432,7 @@ class ResearchController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
 
-        \LogActivity::addToLog('Research updated.');
+        \LogActivity::addToLog('Research entitled "'.$research->title.'" was updated.');
 
         return redirect()->route('research.show', $research)->with('success', 'Research has been updated.');
     }
@@ -459,7 +456,7 @@ class ResearchController extends Controller
         $research->delete();
         ResearchDocument::where('research_id', $research->id)->delete();
 
-        \LogActivity::addToLog('Research deleted.');
+        \LogActivity::addToLog('Research entitled "'.$research->title.'" was deleted.');
 
 
         return redirect()->route('research.index')->with('success', 'Research has been deleted.');
@@ -800,7 +797,6 @@ class ResearchController extends Controller
     }
 
     public function researchYearFilter($year, $statusResearch) {
-
         $currentMonth = date('m');
         $quarter = 0;
         if ($currentMonth <= 3 && $currentMonth >= 1) {
@@ -816,7 +812,8 @@ class ResearchController extends Controller
             $quarter = 4;
         }
 
-        if ($year == "started" || $year == "completed" || $year == "published" || $year == "presented" || $year == "created") {
+        
+        if ($year == "started" || $year == "completion" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
 
@@ -838,7 +835,7 @@ class ResearchController extends Controller
                     ->get();
         }       
 
-        elseif ($statusResearch == 'completed') {
+        elseif ($statusResearch == 'completion') {
             $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                     ->join('colleges', 'colleges.id', 'research.college_id')
                     ->whereYear('research.completion_date', $year)

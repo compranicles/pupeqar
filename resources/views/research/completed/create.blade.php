@@ -36,20 +36,12 @@
 
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.datepicker').datepicker({
-                autoclose: true,
-                format: 'mm/dd/yyyy',
-                immediateUpdates: true,
-                todayBtn: "linked",
-                todayHighlight: true
-            });
-        });
-    </script>   
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>  
     <script>
         $(function() {
-            $('textarea').val('');
+            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
+            $('#status').attr('disabled', true);
+            $('#completion_date').datepicker('setStartDate', "{{ date('m/d/Y', strtotime($value['start_date'])) }}");
         });
     </script>
     <script>
@@ -59,17 +51,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        $(function() {
-            $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
-            $('#status').attr('disabled', true);
-        });
-    </script>
-    <script>
-        $('#completion_date').on('click', function(){
-            $('#completion_date').prop("min", "{{ $research->start_date }}");
-        });
     </script>
     <script>
         var report_category_id = 2;

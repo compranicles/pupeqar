@@ -35,27 +35,7 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
-        <script>
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
-        </script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
             var report_category_id = 22;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

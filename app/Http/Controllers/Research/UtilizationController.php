@@ -77,9 +77,9 @@ class UtilizationController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
-        $id = ResearchUtilization::insertGetId($input);
+        $utilization = ResearchUtilization::create($input);
 
-        ResearchUtilization::where('id', $id)->update([
+        ResearchUtilization::where('id', $utilization->id)->update([
             'research_id' => $research->id,
         ]);
 
@@ -112,7 +112,7 @@ class UtilizationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research utilization added.');
+        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was added.');
 
 
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been added.');
@@ -232,7 +232,7 @@ class UtilizationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research utilization updated.');
+        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was updated.');
 
         return redirect()->route('research.utilization.show', [$research->id, $utilization->id])->with('success', 'Research Utilization Updated Successfully');
     }
@@ -259,7 +259,7 @@ class UtilizationController extends Controller
 
         $utilization->delete();
 
-        \LogActivity::addToLog('Research utilization deleted.');
+        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was deleted.');
 
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been deleted.');
     }

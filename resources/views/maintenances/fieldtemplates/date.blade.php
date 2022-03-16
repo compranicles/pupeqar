@@ -29,8 +29,3 @@
 
     </div>
 </div>  
-<script>
-    if ({{$value}} == []) {
-        document.getElementById
-    }
-</script>

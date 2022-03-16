@@ -95,7 +95,7 @@ class CollegeDepartmentAwardController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Awards and recognition received by the college and department has been added.');
+        \LogActivity::addToLog('Awards and recognition received by the college and department was added.');
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been added.');
     }
@@ -199,7 +199,7 @@ class CollegeDepartmentAwardController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Awards and recognition received by the college and department has been updated.');
+        \LogActivity::addToLog('Awards and recognition received by the college and department was updated.');
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been updated.');
     }
@@ -224,7 +224,7 @@ class CollegeDepartmentAwardController extends Controller
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
 
-        \LogActivity::addToLog('Awards and recognition received by the college and department has been deleted.');
+        \LogActivity::addToLog('Awards and recognition received by the college and department was deleted.');
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been deleted.');
     }
@@ -236,7 +236,7 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
         CollegeDepartmentAwardDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Awards and recognition received by the college and department document has been removed.');
+        \LogActivity::addToLog('Awards and recognition received by the college and department document was removed.');
 
         return true;
     }

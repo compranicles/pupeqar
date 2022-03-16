@@ -144,89 +144,37 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             $(document).ready(function(){
                 var nature = '{{ $value['nature']; }}'
-                if (nature == 86) {
-                    $('div .other_nature').show();
+                if (nature == 86) { //Others
+                    $('#other_nature').removeAttr('disabled');
                 }
                 else {
-                    $('div .other_nature').hide();
+                    $('#other_nature').val('');
+                    $('#other_nature').attr('disabled', true);
                 }
             });
         </script>
         <script>
-            var other_nature = document.getElementById("other_nature");
+            $('#from').on('change', function () {
+                $('#to').datepicker('setStartDate', $('#from').val());
+            });
+        </script>
+        <script>
+            $('#other_nature').attr('disabled', true);
             $('#nature').on('input', function(){
                 var nature_name = $("#nature option:selected").text();
                 if (nature_name == "Others") {
-                    $('div .other_nature').show();
+                    $('#other_nature').removeAttr('disabled');
                     $('#other_nature').focus();
                 }
                 else {
-                    $('div .other_nature').hide();
+                    $('#other_nature').val('');
+                    $('#other_nature').attr('disabled', true);
                 }
-            });
-        </script>
-        <script>
-           var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-
-                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
-                        .insertBefore('#documentsSection')
-                        .delay(3000)
-                        .fadeOut(function (){
-                            $(this).remove();
-                        });
-
-                    var docCount = $('.documents-display').length
-                    if(docCount == 0){
-                        $('.docEmptyMessage').show();
-                    }
-                });
-            });
-        </script>
-        <script>
-             $('#from').on('input', function(){
-                var date = new Date($('#from').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('to').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#to').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
         <script>

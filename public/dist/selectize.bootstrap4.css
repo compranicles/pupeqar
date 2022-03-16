@@ -112,8 +112,8 @@
 .selectize-input input {
     color: #343a40;
     font-family: inherit;
-    font-size: small;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.55;
     font-smoothing: inherit
 }
 
@@ -210,7 +210,8 @@
 }
 
 .selectize-input>input[placeholder] {
-    box-sizing: initial
+    box-sizing: initial;
+    font-size: 14px;
 }
 
 .selectize-input.has-items>input {

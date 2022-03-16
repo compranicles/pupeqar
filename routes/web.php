@@ -201,8 +201,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('invention-innovation-creative', \App\Http\Controllers\Inventions\InventionController::class);
     //Remove Documents
     Route::get('/invention-innovation-creative/remove-document/{filename}', [\App\Http\Controllers\Inventions\InventionController::class, 'removeDoc'])->name('iicw.removedoc');
-    // Filter
-    Route::get('/invention-innovation-creative/{year_or_quarter}/{filter}', [\App\Http\Controllers\Inventions\InventionController::class, 'inventionYearFilter'])->name('invention.filterByYear');
 
     /* EXTENSION PROGRAMS AND EXPERT SERVICES */
     Route::resource('/extension-programs/expert-service-as-consultant', \App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class);
