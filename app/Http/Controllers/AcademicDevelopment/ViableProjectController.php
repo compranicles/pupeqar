@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\ViableProject;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\ViableProjectDocument;
 use Illuminate\Support\Facades\Storage;
@@ -65,10 +66,14 @@ class ViableProjectController extends Controller
 
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
 
+        $currentQuarterYear = Quarter::find(1);
+
         $request->merge([
             'revenue' => $value,
             'cost' => $value2,
             'start_date' => $start_date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

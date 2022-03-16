@@ -9,6 +9,7 @@ use App\Models\TemporaryFile;
 use App\Models\SyllabusDocument;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
@@ -84,9 +85,12 @@ class SyllabusController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date_finished')));
+        $currentQuarterYear = Quarter::find(1);
         
         $request->merge([
             'date_finished' => $date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

@@ -10,6 +10,7 @@ use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -115,9 +116,12 @@ class PresentationController extends Controller
             return view('inactive');
 
         $date_presented = date("Y-m-d", strtotime($request->input('date_presented')));
+        $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
             'date_presented' => $date_presented,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);

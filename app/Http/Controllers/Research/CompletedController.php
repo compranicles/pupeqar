@@ -11,6 +11,7 @@ use App\Models\ResearchComplete;
 use App\Models\ResearchDocument;
 use App\Models\ResearchCopyright;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Models\ResearchPublication;
 use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
@@ -106,9 +107,12 @@ class CompletedController extends Controller
             return view('inactive');
 
         $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
-
+        $currentQuarterYear = Quarter::find(1);
+        
         $request->merge([
             'completion_date' => $completion_date,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         $request->validate([

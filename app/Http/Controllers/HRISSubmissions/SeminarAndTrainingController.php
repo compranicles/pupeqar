@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Currency;
 use App\Models\Maintenance\HRISField;
@@ -32,27 +33,18 @@ class SeminarAndTrainingController extends Controller
     public function addSeminar($id){
         $user = User::find(auth()->id());
 
-        $currentMonth = date('m');
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-        }
+        $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $id)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+        if(Report::where('report_reference_id', $id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
                     ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        if(Report::where('report_reference_id', $id)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+        if(Report::where('report_reference_id', $id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
                     ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
@@ -162,6 +154,8 @@ class SeminarAndTrainingController extends Controller
             }
         }
 
+        $currentQuarterYear = Quarter::find(1);
+
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
@@ -173,6 +167,8 @@ class SeminarAndTrainingController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
@@ -181,27 +177,18 @@ class SeminarAndTrainingController extends Controller
     public function addTraining($id){
         $user = User::find(auth()->id());
 
-        $currentMonth = date('m');
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-        }
+        $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $id)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+        if(Report::where('report_reference_id', $id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
                     ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         if(Report::where('report_reference_id', $id)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
                     ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
@@ -310,6 +297,8 @@ class SeminarAndTrainingController extends Controller
             }
         }
 
+        $currentQuarterYear = Quarter::find(1);
+
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
@@ -321,6 +310,8 @@ class SeminarAndTrainingController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');

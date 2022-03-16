@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\TechnicalExtension;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TechnicalExtensionDocument;
@@ -59,8 +60,12 @@ class TechnicalExtensionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $currentQuarterYear = Quarter::find(1);
+
         $request->merge([
             'total_profit' => $value,
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
         $request->validate([
             'moa_code' => 'required',
