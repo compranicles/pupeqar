@@ -177,5 +177,11 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 19
         ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Outstanding Awards/Achievements',
+            'is_active' => 1,
+            'order' => 20
+        ]);
     }
 }
