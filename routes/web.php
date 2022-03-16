@@ -358,9 +358,13 @@ Route::group(['middleware' => 'auth'], function() {
     /* PROFILE (SYNCHRONIZED WITH HRIS) */
     Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
     Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
-    Route::get('/profile/education', [\App\Http\Controllers\User\ProfileController::class, 'education'])->name('profile.education');
+    Route::get('/profile/educational-background', [\App\Http\Controllers\User\ProfileController::class, 'educationalBackground'])->name('profile.educationalBackground');
+    Route::get('/profile/educational-degree', [\App\Http\Controllers\User\ProfileController::class, 'educationalDegree'])->name('profile.educationalDegree');
     Route::get('/profile/professional-study', [\App\Http\Controllers\User\ProfileController::class, 'professionalStudy'])->name('profile.professionalStudy');
     Route::get('/profile/teaching-discipline', [\App\Http\Controllers\User\ProfileController::class, 'teaching'])->name('profile.teaching');
+    Route::get('/profile/eligibility', [\App\Http\Controllers\User\ProfileController::class, 'eligibility'])->name('profile.eligibility');
+    Route::get('/profile/work-experience', [\App\Http\Controllers\User\ProfileController::class, 'workExperience'])->name('profile.workExperience');
+    Route::get('/profile/voluntary-work', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWork'])->name('profile.voluntaryWork');
     
     /* SUPER ADMIN PERMANENT TASKS */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
