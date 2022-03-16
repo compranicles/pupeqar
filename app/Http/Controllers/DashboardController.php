@@ -39,7 +39,20 @@ class DashboardController extends Controller
            ->where('report_quarter', $currentQuarterYear->current_quarter)
            ->where('report_year', $currentQuarterYear->current_year)
            ->count();
-        
+        $department_reported = '';
+        $cbco_reported  = '';
+        $departments = '';
+        $chairpersonReceived = '';
+        $chairpersonNotReceived = '';
+        $colleges = '';
+        $deanReceived = '';
+        $deanNotReceived = '';
+        $sectors = '';
+        $vpReceived = '';
+        $vpNotReceived = '';
+        $ipqmsoReceived = '';
+        $ipqmsoReturned = '';
+        $ipqmsoNotReceived = '';
 
         //No. of accomplishments received by Chairperson
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
@@ -47,9 +60,8 @@ class DashboardController extends Controller
         if (in_array(1, $roles) || in_array(2, $roles) || in_array(3, $roles) || in_array(4, $roles)) {
             $department_reported = Report::where('user_id', auth()->id())->distinct('department_id')->count();
             $cbco_reported = Report::where('user_id', auth()->id())->distinct('college_id')->count();
-            return view('dashboard', compact('totalReports', 'department_reported', 'cbco_reported', 'currentQuarterYear'));
         }
-        elseif (in_array(5, $roles)) {
+        if (in_array(5, $roles)) {
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())
                 ->join('departments', 'departments.id', 'chairpeople.department_id')
                 ->pluck('chairpeople.department_id')->all();
@@ -75,9 +87,8 @@ class DashboardController extends Controller
                 //         ->where('dean_approval', 0)
                 //         ->where('user_id', auth()->id())
                 //         ->whereYear('report_date', date('Y'))->count();
-            return view('dashboard', compact('totalReports', 'chairpersonReceived', 'chairpersonNotReceived', 'currentQuarterYear'));
         }
-        elseif (in_array(6, $roles)) {
+        if (in_array(6, $roles)) {
             $colleges = Dean::where('deans.user_id', auth()->id())
                         ->join('colleges', 'colleges.id', 'deans.college_id')->pluck('deans.college_id')->all();
                         // dd($colleges);
@@ -100,10 +111,9 @@ class DashboardController extends Controller
             //         ->where('sector_approval', 0)
             //         ->where('user_id', auth()->id())
             //         ->whereYear('report_date', date('Y'))->count();
-        return view('dashboard', compact('totalReports', 'deanReceived', 'deanNotReceived', 'currentQuarterYear'));
 
         }
-        elseif (in_array(7, $roles)) {
+        if (in_array(7, $roles)) {
             $sectors = SectorHead::where('sector_heads.user_id', auth()->id())
                 ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->pluck('sector_heads.sector_id')->all();
             $vpReceived = Report::where('reports.sector_approval', 1)
@@ -126,10 +136,9 @@ class DashboardController extends Controller
             //         ->where('ipqmso_approval', 0)
             //         ->where('user_id', auth()->id())
             //         ->whereYear('report_date', date('Y'))->count();
-        return view('dashboard', compact('totalReports', 'vpReceived', 'vpNotReceived', 'currentQuarterYear'));
 
         }
-        elseif (in_array(8, $roles)) {
+        if (in_array(8, $roles)) {
             $ipqmsoReceived = Report::where('ipqmso_approval', 1)
                 ->where('report_quarter', $currentQuarterYear->current_quarter)
                 ->where('report_year', $currentQuarterYear->current_year)
@@ -142,8 +151,23 @@ class DashboardController extends Controller
                 ->where('report_quarter', $currentQuarterYear->current_quarter)
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->count();
-            return view('dashboard', compact('totalReports', 'ipqmsoReceived', 'ipqmsoNotReceived', 'ipqmsoReturned', 'currentQuarterYear'));
         }
-        return view('dashboard', compact('totalReports', 'is_sAdmin', 'currentQuarterYear'));
+        return view('dashboard', 
+                        compact(
+                                    'totalReports', 
+                                    'currentQuarterYear', 
+                                    'department_reported', 
+                                    'cbco_reported', 
+                                    'currentQuarterYear',
+                                    'chairpersonReceived', 
+                                    'chairpersonNotReceived',
+                                    'deanReceived', 
+                                    'deanNotReceived',
+                                    'vpReceived', 
+                                    'vpNotReceived', 
+                                    'ipqmsoReceived', 
+                                    'ipqmsoNotReceived', 
+                                    'ipqmsoReturned',
+                            ));
     }
 }

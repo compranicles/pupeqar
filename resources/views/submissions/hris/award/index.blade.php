@@ -35,7 +35,9 @@
                                                     <td>{{ $award->Date }}</td>
                                                     <td>{{ $award->Level }}</td>
                                                     <td>
-                                                        Add to Submissions
+                                                        <td>
+                                                            <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="text-primary h4"><i class="fas fa-plus"></i></i></a>
+                                                        </td>
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -4,19 +4,6 @@
             {{ __('Awards and Recognition Received by the College/Branch/Campus/Office/Department') }}
         </h2>
     </x-slot>
-    @php
-    $currentMonth = date('m');
-
-    $year_or_quarter = 0;
-    if ($currentMonth <= 3 && $currentMonth >= 1) 
-        $quarter = 1;
-    if ($currentMonth <= 6 && $currentMonth >= 4)
-        $quarter = 2;
-    if ($currentMonth <= 9 && $currentMonth >= 7)
-        $quarter = 3;
-    if ($currentMonth <= 12 && $currentMonth >= 10) 
-        $quarter = 4;
-    @endphp
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -42,11 +29,8 @@
                             <div class="col-md-3">
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                    <select id="quarterFilter" class="custom-select" name="quarterFilter">
+                                       
                                     </select>
                                 </div>
                             </div>
@@ -55,7 +39,7 @@
                                 <div class="d-flex">
                                     <select id="yearFilter" class="custom-select" name="yearFilter">
                                         
-                                </select>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -71,8 +55,8 @@
                                         <th></th>
                                         <th>Name of Award</th>
                                         <th>Certifying Body</th>
-                                        <th>Date Added</th>
-                                        <th>Date Modified</th>
+                                        <th>Quarter</th>
+                                        <th>Year</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -82,16 +66,8 @@
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->name_of_award }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->certifying_body }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >
-                                            <?php $created_at = strtotime( $row->created_at );
-                                                $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                            {{ $created_at }}
-                                        </td>
-                                        <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >
-                                            <?php $updated_at = strtotime( $row->updated_at );
-                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                            {{ $updated_at }}
-                                        </td>
+                                        <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_quarter }}</td>
+                                        <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_year }}</td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('college-department-award.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
@@ -123,92 +99,55 @@
         }, 4000);
 
          $(document).ready( function () {
-             var table = $('#college_department_award_table').DataTable();
+            var table = $('#college_department_award_table').DataTable({
+                "searchCols": [
+                    null,
+                    null,
+                    null,
+                    { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                    { "search": "{{ $currentQuarterYear->current_year }}" },
+                    null
+                ],
+                initComplete: function () {
+                    this.api().columns(3).every( function () {
+                        var column = this;
+                        var select = $('#quarterFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
 
-             var quarterIndex = 0;
-            $("#college_department_award_table th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
-                    quarterIndex = i; return false;
-
+                    this.api().columns(4).every( function () {
+                        var column = this;
+                        var select = $('#yearFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
                 }
             });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex].substring(0, 4);
-                    switch (quarter) {
-                        case "Jan ":
-                        case "Feb ":
-                        case "Mar ":
-                            quarter = "1";
-                            break;
-                        case "Apr ":
-                        case "May ":
-                        case "Jun ":
-                            quarter = "2";
-                            break;
-                        case "Jul ":
-                        case "Aug ":
-                        case "Sep ":
-                            quarter = "3";
-                            break;
-                        case "Oct ":
-                        case "Nov ":
-                        case "Dec ":
-                            quarter = "4";
-                            break;
-                        default:
-                        quarter = "";
-                    }
-
-                    if (selectedItem === "" || quarter.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var yearIndex = 0;
-            $("#college_department_award_table th").each(function (i) {
-                if ($($(this)).html() == "Date Added") {
-                    yearIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    let selectedItem = $('#yearFilter').val()
-                    var year = data[yearIndex].substring(8, 12);
-                    console.log(year);
-                    if (selectedItem === "" || year.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            $("#quarterFilter").change(function (e) {
-                table.draw();
-            });
-            $("#yearFilter").change(function (e) {
-                table.draw();
-            });
-
-            table.draw();
-            var max = new Date().getFullYear();
-            var min = 0;
-            var diff = max-2022;
-            min = max-diff;
-            select = document.getElementById('yearFilter');
-            for (var i = max; i >= min; i--) {
-                select.append(new Option(i, i));
-                if (i == "{{ date('Y') }}") {
-                    document.getElementById("yearFilter").value = i;
-                    table.draw();
-                }
-            }
+            
          } );
 
          //Item to delete to display in delete modal

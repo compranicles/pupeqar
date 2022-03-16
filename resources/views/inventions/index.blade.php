@@ -4,20 +4,6 @@
             {{ __('Invention, Innovation & Creative Works') }}
         </h2>
     </x-slot>
-
-    @php
-    $currentMonth = date('m');
-
-    $year_or_quarter = 0;
-    if ($currentMonth <= 3 && $currentMonth >= 1) 
-        $quarter = 1;
-    if ($currentMonth <= 6 && $currentMonth >= 4)
-        $quarter = 2;
-    if ($currentMonth <= 9 && $currentMonth >= 7)
-        $quarter = 3;
-    if ($currentMonth <= 12 && $currentMonth >= 10) 
-        $quarter = 4;
-    @endphp
     <div class="container">
         <div class="row">
 
@@ -54,10 +40,7 @@
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -89,8 +72,8 @@
                                         <th>Title</th>
                                         <th>Status</th>
                                         <th>College/Branch/Campus/Office</th>
-                                        <th>Date Added</th>
-                                        <th>Date Modified</th>
+                                        <th>Quarter</th>
+                                        <th>Year</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -102,14 +85,10 @@
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->status_name }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">
-                                            <?php $created_at = strtotime( $invention->created_at );
-                                                $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                            {{ $created_at }}
+                                            {{ $invention->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">
-                                            <?php $updated_at = strtotime( $invention->updated_at );
-                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                            {{ $updated_at }}
+                                            {{ $invention->report_year }}
                                         </td>
                                         <td>
                                             <div role="group">
@@ -161,139 +140,102 @@
         });
      </script>
      <script>
-         var table =  $("#invention_table").DataTable();
-          var statusIndex = 0;
-            $("#invention_table th").each(function (i) {
-                if ($($(this)).html() == "Status") {
-                    statusIndex = i; return false;
+        var table =  $("#invention_table").DataTable({
+            "searchCols": [
+                null,
+                null,
+                null,
+                null,
+                { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                { "search": "{{ $currentQuarterYear->current_year }}" },
+                null
+            ],
+            initComplete: function () {
+                this.api().columns(4).every( function () {
+                    var column = this;
+                    var select = $('#quarterFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
 
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#statusFilter').val()
-                    var status = data[statusIndex];
-                    if (selectedItem === "" || status.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var quarterIndex = 0;
-            $("#invention_table th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
-                    quarterIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex].substring(0, 4);
-                    switch (quarter) {
-                        case "Jan ":
-                        case "Feb ":
-                        case "Mar ":
-                            quarter = "1";
-                            break;
-                        case "Apr ":
-                        case "May ":
-                        case "Jun ":
-                            quarter = "2";
-                            break;
-                        case "Jul ":
-                        case "Aug ":
-                        case "Sep ":
-                            quarter = "3";
-                            break;
-                        case "Oct ":
-                        case "Nov ":
-                        case "Dec ":
-                            quarter = "4";
-                            break;
-                        default:
-                        quarter = "";
-                    }
-
-                    if (selectedItem === "" || quarter.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var collegeIndex = 0;
-            $("#invention_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Campus/Office") {
-                    collegeIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#collegeFilter').val()
-                    var college = data[collegeIndex];
-                    if (selectedItem === "" || college.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var addedIndex = 0;
-            $("#invention_table th").each(function (i) {
-                if ($($(this)).html() == "Date Added") {
-                    addedIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    let selectedItem = $('#createFilter').val()
-                    var year = data[addedIndex].substring(8, 12);
-                    if (selectedItem === "" || year.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            $("#statusFilter").change(function (e) {
-                table.draw();
-            });
-
-            $("#quarterFilter").change(function (e) {
-                table.draw();
-            });
-
-            $("#collegeFilter").change(function (e) {
-                table.draw();
-            });
-
-            $("#createFilter").change(function (e) {
-                table.draw();
-            });
-
-            table.draw();
-     </script>
-     <script>
-        var max = new Date().getFullYear();
-        var min = 0;
-        var diff = max-2022;
-        min = max-diff;
-        select = document.getElementById('createFilter');
-        for (var i = max; i >= min; i--) {
-            select.append(new Option(i, i));
-            if (i == "{{ date('Y') }}") {
-                document.getElementById("createFilter").value = i;
-                table.draw();
+                this.api().columns(5).every( function () {
+                    var column = this;
+                    var select = $('#createFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
             }
-        }
-    </script>
+        });
+
+        var statusIndex = 0;
+        $("#invention_table th").each(function (i) {
+            if ($($(this)).html() == "Status") {
+                statusIndex = i; return false;
+
+            }
+        });
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var selectedItem = $('#statusFilter').val()
+                var status = data[statusIndex];
+                if (selectedItem === "" || status.includes(selectedItem)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        var collegeIndex = 0;
+        $("#invention_table th").each(function (i) {
+            if ($($(this)).html() == "College/Branch/Campus/Office") {
+                collegeIndex = i; return false;
+
+            }
+        });
+
+        $.fn.dataTable.ext.search.push(
+            function (settings, data, dataIndex) {
+                var selectedItem = $('#collegeFilter').val()
+                var college = data[collegeIndex];
+                if (selectedItem === "" || college.includes(selectedItem)) {
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        $("#statusFilter").change(function (e) {
+            table.draw();
+        });
+
+        $("#collegeFilter").change(function (e) {
+            table.draw();
+        });
+
+        table.draw();
+     </script>
      @endpush
 </x-app-layout>

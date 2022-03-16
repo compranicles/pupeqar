@@ -31,6 +31,8 @@ class ExtensionServiceController extends Controller
 
         $status = DropdownOption::where('dropdown_id', 24)->get();
 
+        $currentQuarterYear = Quarter::find(1);
+
         $extensionServices = ExtensionService::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'extension_services.status')
                                         ->join('colleges', 'colleges.id', 'extension_services.college_id')
@@ -39,11 +41,13 @@ class ExtensionServiceController extends Controller
                                         ->get();
 
         $eservice_in_colleges = ExtensionService::join('colleges', 'extension_services.college_id', 'colleges.id')
+                                        ->where('user_id', auth()->id())
+                                        ->whereNull('extension_services.deleted_at')
                                         ->select('colleges.name')
                                         ->distinct()
                                         ->get();
 
-        return view('extension-programs.extension-services.index', compact('extensionServices', 'eservice_in_colleges', 'status'));
+        return view('extension-programs.extension-services.index', compact('extensionServices', 'eservice_in_colleges', 'status', 'currentQuarterYear'));
     }
 
     /**
@@ -98,8 +102,8 @@ class ExtensionServiceController extends Controller
             'amount_of_funding' => $value,
             'from' => $from,
             'to' => $to,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

@@ -23,11 +23,11 @@ class StudentAwardController extends Controller
     public function index()
     {
         $this->authorize('viewAny', StudentAward::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $student_awards = StudentAward::where('user_id', auth()->id())
-                            ->select(DB::raw('student_awards.*, QUARTER(student_awards.updated_at) as quarter'))
                             ->orderBy('student_awards.updated_at', 'desc')->get();
-        return view('academic-development.student-awards.index', compact('student_awards'));
+        return view('academic-development.student-awards.index', compact('student_awards', 'currentQuarterYear'));
     }
 
     /**
@@ -65,8 +65,8 @@ class StudentAwardController extends Controller
         
         $request->merge([
             'date' => $date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

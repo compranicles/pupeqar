@@ -50,14 +50,14 @@ class EducationController extends Controller
                 ->where('report_quarter', $currentQuarterYear->current_quarter)
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->where('report_category_id', 24)
-                ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
+                ->where('chairperson_approval', 1)->orWhere('dean_approval', 1)->orWhere('sector_approval', 1)->orWhere('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         if(Report::where('report_reference_id', $educID)
                 ->where('report_quarter', $currentQuarterYear->current_quarter)
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->where('report_category_id', 24)
-                ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
+                ->where('chairperson_approval', null)->orWhere('dean_approval', null)->orWhere('sector_approval', null)->orWhere('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         
@@ -165,8 +165,8 @@ class EducationController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         return redirect()->route('submissions.educ.index')->with('success','Report Submitted Successfully');

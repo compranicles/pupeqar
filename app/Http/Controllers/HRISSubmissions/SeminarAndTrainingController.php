@@ -167,8 +167,8 @@ class SeminarAndTrainingController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
@@ -183,14 +183,14 @@ class SeminarAndTrainingController extends Controller
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
-                    ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
+                    ->where('chairperson_approval', 1)->orWhere('dean_approval', 1)->orWhere('sector_approval', 1)->orWhere('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        if(Report::where('report_reference_id', $id)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+        if(Report::where('report_reference_id', $id)
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->whereIn('report_category_id', [25, 26])
-                    ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
+                    ->where('chairperson_approval', null)->orWhere('dean_approval', null)->orWhere('sector_approval', null)->orWhere('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
 
@@ -310,8 +310,8 @@ class SeminarAndTrainingController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');

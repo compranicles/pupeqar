@@ -115,8 +115,8 @@ class PublicationController extends Controller
 
         $request->merge([
             'publish_date' => $publish_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);

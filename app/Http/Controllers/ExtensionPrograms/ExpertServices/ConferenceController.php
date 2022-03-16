@@ -29,19 +29,23 @@ class ConferenceController extends Controller
 
         $conferenceNature = DropdownOption::where('dropdown_id', 17)->get();
 
+        $currentQuarterYear = Quarter::find(1);
+
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_conferences.nature')
                                         ->join('colleges', 'colleges.id', 'expert_service_conferences.college_id')
-                                        ->select(DB::raw('expert_service_conferences.*, dropdown_options.name as nature, colleges.name as college_name, QUARTER(expert_service_conferences.updated_at) as quarter'))
+                                        ->select(DB::raw('expert_service_conferences.*, dropdown_options.name as nature, colleges.name as college_name'))
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
 
         $conference_in_colleges = ExpertServiceConference::join('colleges', 'expert_service_conferences.college_id', 'colleges.id')
+                                ->where('user_id', auth()->id())
+                                ->whereNull('expert_service_conferences.deleted_at')
                                 ->select('colleges.name')
                                 ->distinct()
                                 ->get();
 
-        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'conferenceNature', 'conference_in_colleges'));
+        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'conferenceNature', 'conference_in_colleges', 'currentQuarterYear'));
     }
 
     /**
@@ -82,8 +86,8 @@ class ConferenceController extends Controller
         $request->merge([
             'from' => $from,
             'to' => $to,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

@@ -120,8 +120,8 @@ class PresentationController extends Controller
 
         $request->merge([
             'date_presented' => $date_presented,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
