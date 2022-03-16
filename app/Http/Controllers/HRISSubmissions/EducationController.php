@@ -72,9 +72,15 @@ class EducationController extends Controller
         $values = [
             'degree' =>  $educationData[0]->Degree,
             'school_name' => $educationData[0]->SchoolName,
+            'program_level' => $educationData[0]->AccreditationLevel,
+            'support_type' => $educationData[0]->TypeOfSupport,
+            'sponsor_name' => $educationData[0]->Scholarship,
+            'amount' => $educationData[0]->Amount,
             'from' => $educationData[0]->IncYearFrom,
             'to' => $educationData[0]->IncYearTo,
+            'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' =>$educationData[0]->UnitsEnrolled
         ];
 
         $colleges = College::all();
