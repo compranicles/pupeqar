@@ -56,7 +56,7 @@ class ResearchCitationFormSeeder extends Seeder
         ]);
         ResearchField::create([
             'research_form_id' => 5,
-            'label' => 'Title of the Journal/ Books Where Your Article has been cited',
+            'label' => 'Title of the Journal/ Book Where Your Article has been cited',
             'name' => 'journal_title',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -113,7 +113,7 @@ class ResearchCitationFormSeeder extends Seeder
             'name' => 'page',
             'placeholder' => null,
             'size' => 'col-md-2',
-            'field_type_id' => 2,
+            'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
@@ -127,7 +127,7 @@ class ResearchCitationFormSeeder extends Seeder
             'name' => 'year',
             'placeholder' => null,
             'size' => 'col-md-2',
-            'field_type_id' => 2,
+            'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

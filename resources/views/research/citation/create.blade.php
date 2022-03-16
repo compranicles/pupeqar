@@ -35,20 +35,12 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>
-        <script>
-            $(function() {
-                $('textarea').val('');
+            $('#year').datepicker({
+                format: " yyyy", // Notice the Extra space at the beginning
+                viewMode: "years", 
+                minViewMode: "years"
             });
         </script>
         <script>

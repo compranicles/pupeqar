@@ -36,22 +36,7 @@
 
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
-    <script>
-        $(function() {
-            $('textarea').val('');
-        });
-    </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script>
         // auto hide alert
         window.setTimeout(function() {
@@ -64,6 +49,7 @@
         $(function() {
             $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
             $('#status').attr('disabled', true);
+            $('#date_presented').datepicker('setStartDate', "{{ date('m/d/Y', strtotime($value['completion_date'])) }}"); //Set min. date
         });
     </script>
     <script>

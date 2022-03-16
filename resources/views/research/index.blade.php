@@ -28,7 +28,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 {{-- ADD Fields --}}
-                                <a href="{{ route('research.create') }}" class="btn btn-success mr-1">
+                                <a href="{{ route('research.create') }}" class="btn btn-success mr-2">
                                     <i class="fas fa-plus"></i> Add Research
                                 </a>
                                 {{-- <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#addModal">
@@ -36,9 +36,9 @@
                                 </button> --}}
                                 <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
                                     Invites @if (count($invites) != 0)
-                                                <span class="badge badge-light">{{ count($invites) }}</span>
+                                                <span class="badge badge-secondary">{{ count($invites) }}</span>
                                             @else
-                                                <span class="badge badge-light">0</span>
+                                                <span class="badge badge-secondary">0</span>
                                             @endif
                                 </button>
                                 <hr>
@@ -96,7 +96,7 @@
                                 <label for="completeFilter" class="mr-2">Year Completed: <span style="color:red;">*</span> </label>
                                 <div class="d-flex">
                                     <select id="completeFilter" class="custom-select yearFilter" name="completeFilter">
-                                        <option value="completed" {{ $year == "completed" ? 'selected' : '' }} class="present_year">--</option>
+                                        <option value="completion" {{ $year == "completion" ? 'selected' : '' }} class="present_year">--</option>
                                     </select>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                                 <th>Research Title</th>
                                                 <th>Status</th>
                                                 <th>College/Branch/Campus/Office</th>
-                                                <th>Quarter</th>
+                                                <th>Date Added</th>
                                                 <th>Date Modified</th>
                                             </tr>
                                         </thead>
@@ -142,11 +142,15 @@
                                                     <td>{{ $research->title }}</td>
                                                     <td>{{ $research->status_name }}</td>
                                                     <td>{{ $research->college_name }}</td>
-                                                    <td>{{ $research->quarter }}</td>
                                                     <td>
-                                                    <?php $updated_at = strtotime( $research->updated_at );
-                                                        $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                                    {{ $updated_at }}
+                                                        <?php $created_at = strtotime( $research->created_at );
+                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                        {{ $created_at }}
+                                                    </td>
+                                                    <td>
+                                                        <?php $updated_at = strtotime( $research->updated_at );
+                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                        {{ $updated_at }}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -195,7 +199,7 @@
 
             var quarterIndex = 0;
             $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Quarter") {
+                if ($($(this)).html() == "Date Modified") {
                     quarterIndex = i; return false;
 
                 }
@@ -204,7 +208,32 @@
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex];
+                    var quarter = data[quarterIndex].substring(0, 4);
+                    switch (quarter) {
+                        case "Jan ":
+                        case "Feb ":
+                        case "Mar ":
+                            quarter = "1";
+                            break;
+                        case "Apr ":
+                        case "May ":
+                        case "Jun ":
+                            quarter = "2";
+                            break;
+                        case "Jul ":
+                        case "Aug ":
+                        case "Sep ":
+                            quarter = "3";
+                            break;
+                        case "Oct ":
+                        case "Nov ":
+                        case "Dec ":
+                            quarter = "4";
+                            break;
+                        default:
+                        quarter = "";
+                    }
+
                     if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
@@ -233,7 +262,7 @@
 
             var reportIndex = 0;
             $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
+                if ($($(this)).html() == "Date Added") {
                     reportIndex = i; return false;
 
                 }
@@ -299,7 +328,7 @@
                 if (sel == 1 && i == "{{$year}}" && status == "started") {
                     document.getElementById("startFilter").value = i;
                 }
-                if (sel == 2 && i == "{{$year}}" && status == "completed") {
+                if (sel == 2 && i == "{{$year}}" && status == "completion") {
                     document.getElementById("completeFilter").value = i;
                 }
                 if (sel == 3 && i == "{{$year}}" && status == "published") {
@@ -321,7 +350,7 @@
         $('#completeFilter').on('change', function () {
             var year_completed = $('#completeFilter').val();
             var link = "/research/filterByYear/:year/:status";
-            var newLink = link.replace(':year', year_completed).replace(':status', 'completed');
+            var newLink = link.replace(':year', year_completed).replace(':status', 'completion');
             window.location.replace(newLink);
         });
         $('#publishFilter').on('change', function () {

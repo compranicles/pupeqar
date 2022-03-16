@@ -37,7 +37,7 @@
                 <a class="dropdown-item" href="{{ route('research.utilization.create', $research_id) }}">Add Utilization</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('research.complete', $research_id) }}">Edit Completed Research</a>
-                <a class="dropdown-item" href="{{ route('research.publication', $research_id) }}">Edit Presentation</a>
+                <a class="dropdown-item" href="{{ route('research.presentation', $research_id) }}">Edit Presentation</a>
                 <a class="dropdown-item" href="{{ route('research.copyright', $research_id ) }}">Add/Edit Copyright</a>
                 <a class="dropdown-item" href="{{ route('research.edit', $research_id) }}">Edit Research Info</a>
                 <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>

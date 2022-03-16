@@ -144,73 +144,8 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $('div .other_collab_nature').hide();
-            var other_collab_nature = document.getElementById("other_collab_nature");
-            $('#collab_nature').on('input', function(){
-                var collab_nature_name = $("#collab_nature option:selected").text();
-                if (collab_nature_name == "Others") {
-                    $('div .other_collab_nature').show();
-                    $('#other_collab_nature').focus();
-                }
-                else {
-                    $('div .other_collab_nature').hide();
-                }
-            });
-
-            $('div .other_request_type').hide();
-            var other_request_type = document.getElementById("other_request_type");
-            $('#request_type').on('input', function(){
-                var request_type_name = $("#request_type option:selected").text();
-                if (request_type_name == "Others") {
-                    $('div .other_request_type').show();
-                    $('#other_request_type').focus();
-                }
-                else {
-                    $('div .other_request_type').hide();
-                }
-            });
-
-            $('div .other_deliverable').hide();
-            var other_deliverable = document.getElementById("other_deliverable");
-            $('#deliverable').on('input', function(){
-                var deliverable_name = $("#deliverable option:selected").text();
-                if (deliverable_name == "Others") {
-                    $('div .other_deliverable').show();
-                    $('#other_deliverable').focus();
-                }
-                else {
-                    $('div .other_deliverable').hide();
-                }
-            });
-        </script>
-        <script>
-             var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-
-                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
-                        .insertBefore('#documentsSection')
-                        .delay(3000)
-                        .fadeOut(function (){
-                            $(this).remove();
-                        });
-
-                    var docCount = $('.documents-display').length
-                    if(docCount == 0){
-                        $('.docEmptyMessage').show();
-                    }
-                });
-            });
-        
-        </script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             var report_category_id = 17;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

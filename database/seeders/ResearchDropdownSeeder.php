@@ -240,7 +240,7 @@ class ResearchDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Deffered',
             'order' => 8,
-            'is_active' => 0,
+            'is_active' => 1,
         ]);
         
         //research publication level

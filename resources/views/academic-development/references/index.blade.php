@@ -86,7 +86,7 @@
                                         <th>Title</th>
                                         <th>Category</th>
                                         <th>College/Branch/Campus/Office</th>
-                                        <th>Quarter</th>
+                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -98,8 +98,11 @@
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->title }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->quarter }}</td>
-
+                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
+                                            <?php $created_at = strtotime( $rtmmi->created_at );
+                                                $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                            {{ $created_at }}
+                                        </td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
                                             <?php $updated_at = strtotime( $rtmmi->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
@@ -177,7 +180,7 @@
 
             var quarterIndex = 0;
             $("#rtmmi_table th").each(function (i) {
-                if ($($(this)).html() == "Quarter") {
+                if ($($(this)).html() == "Date Modified") {
                     quarterIndex = i; return false;
 
                 }
@@ -186,7 +189,32 @@
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex];
+                    var quarter = data[quarterIndex].substring(0, 4);
+                    switch (quarter) {
+                        case "Jan ":
+                        case "Feb ":
+                        case "Mar ":
+                            quarter = "1";
+                            break;
+                        case "Apr ":
+                        case "May ":
+                        case "Jun ":
+                            quarter = "2";
+                            break;
+                        case "Jul ":
+                        case "Aug ":
+                        case "Sep ":
+                            quarter = "3";
+                            break;
+                        case "Oct ":
+                        case "Nov ":
+                        case "Dec ":
+                            quarter = "4";
+                            break;
+                        default:
+                        quarter = "";
+                    }
+
                     if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
@@ -215,7 +243,7 @@
 
             var yearIndex = 0;
             $("#rtmmi_table th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
+                if ($($(this)).html() == "Date Added") {
                     yearIndex = i; return false;
 
                 }
@@ -253,7 +281,7 @@
      <script>
         var max = new Date().getFullYear();
         var min = 0;
-        var diff = max-2019;
+        var diff = max-2022;
         min = max-diff;
         select = document.getElementById('yearFilter');
         for (var i = max; i >= min; i--) {

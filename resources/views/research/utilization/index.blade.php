@@ -49,6 +49,8 @@
                                                 <th>#</th>
                                                 <th>Agency/Organization that Utilized the Research Output</th>
                                                 <th>Brief Description of Research Utilization</th>
+                                                <th>Date Added</th>
+                                                <th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -57,6 +59,16 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
                                                     <td>{{ $utilization->utilization_description }}</td>
+                                                    <td>
+                                                        <?php $created_at = strtotime( $utilization->created_at );
+                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                        {{ $created_at }}
+                                                    </td>
+                                                    <td>
+                                                        <?php $updated_at = strtotime( $utilization->updated_at );
+                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                        {{ $updated_at }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

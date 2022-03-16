@@ -35,63 +35,26 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script> 
-        <script>
-            $('div .other_type').hide();
-            var other_type = document.getElementById("other_type");
+            $('#other_type').attr('disabled', true);
             $('#type').on('input', function(){
                 var type_name = $("#type option:selected").text();
                 if (type_name == "Others") {
-                    $('div .other_type').show();
+                    $('#other_type').removeAttr('disabled');
                     $('#other_type').focus();
                 }
                 else {
-                    $('div .other_type').hide();
+                    $('#other_type').val('');
+                    $('#other_type').attr('disabled', true);
                 }
             });
         </script>
         <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            $('#start_date').on('change', function () {
+                $('#end_date').datepicker('setDate', $('#start_date').val());
+                $('#end_date').datepicker('setStartDate', $('#start_date').val());
             });
-
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
         </script>
         <script>
             var report_category_id = 14;

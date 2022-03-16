@@ -33,105 +33,52 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
             $(function() {
-                $('.funding_agency').hide();
-                $('#funding_agency').removeClass('form-validation');
+                $('#status').val(53);
+                var middle = '';
+                if ("{{auth()->user()->middle_name}}" != '') {
+                    middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
+                }
+                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
+                $("#collaborator")[0].selectize.addOption({value:fullname, text:fullname});
+                $("#collaborator")[0].selectize.addItem(fullname);
             });
-        
+        </script>
+        <script>
             $('#funding_type').on('change', function (){
-                var type = $(this).val();
-                if(type == 49){
-                    
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                if ($(this).val() == 49) {
+                    //Univ. Funded
+                    $('#funding_agency').val("Polytechnic University of the Philippines");
                     $('#funding_agency').removeAttr('disabled');
-                    $('#funding_agency').attr('readonly', true);
-                    $('#funding_agency').addClass('form-validation');
+                    $('#funding_agency').attr('required', true);
                 }
-                else if(type == 50){
-                    $('.funding_agency').hide();
+                else if ($(this).val() == 50) {
+                    //Self Funded
+                    $('#funding_agency').val("");
                     $('#funding_agency').attr('disabled', true);
-                    $('#funding_agency').removeClass('form-validation');
+                    $('#funding_agency').removeAttr('required');
                 }
-                else if(type == 51){
-                    $('#funding_agency').removeAttr('readonly');
+                else if ($(this).val() == 51) { // External Funded
+                    $('#funding_agency').val("");
                     $('#funding_agency').removeAttr('disabled');
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('');
-                    $('#funding_agency').addClass('form-validation');
+                    $('#funding_agency').attr('required', true);
                 }
             });
         </script>
         <script>
             $('#status').on('change', function(){
-                var statusId = $('#status').val();
-                if (statusId == 26) {
-                    $('#start_date').prop("required", false);
-                    $('#end_date').prop("required", false);
+                $('#status option[value=54]').attr('disabled','disabled');
+                $('#status option[value=55]').attr('disabled','disabled');
+                if ($(this).val() == 53) {
+                    $('#end_date').val("");
+                    $('#end_date').attr('disabled', true);
+                    $('#end_date').removeAttr('required');
+                    $('#issue_date').val("");
+                    $('#issue_date').attr('disabled', true);
+                    $('#issue_date').removeAttr('required');
                 }
-                else if (statusId == 27) {
-                    $('.start_date').show();
-                    $('.end_date').show();
-                }
-            });
-        </script>
-        <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-
-            $('#end_date').on('input', function(){
-                var date = new Date($('#end_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('issue_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#issue_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
         <script>

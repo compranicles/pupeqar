@@ -95,7 +95,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Student award and recognition added.');
+        \LogActivity::addToLog('Student award and recognition "'.$request->input('name_of_award').'" was added.');
 
         return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been added.');
     }
@@ -200,7 +200,7 @@ class StudentAwardController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Student award and recognition updated.');
+        \LogActivity::addToLog('Student award and recognition "'.$student_award->name_of_award.'" was updated.');
 
         return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
@@ -222,7 +222,7 @@ class StudentAwardController extends Controller
         StudentAwardDocument::where('student_award_id', $student_award->id)->delete();
         $student_award->delete();
 
-        \LogActivity::addToLog('Student award and recognition deleted.');
+        \LogActivity::addToLog('Student award and recognition "'.$student_award->name_of_award.'" was deleted.');
 
         return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }
@@ -232,7 +232,7 @@ class StudentAwardController extends Controller
 
         StudentAwardDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Student award and recognition document deleted.');
+        \LogActivity::addToLog('Student award and recognition document was deleted.');
 
         return true;
     }

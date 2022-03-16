@@ -101,7 +101,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Technical extension program, project, or activity added.');
+        \LogActivity::addToLog('Technical extension program, project, or activity was added.');
 
 
         return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been added.');
@@ -212,7 +212,7 @@ class TechnicalExtensionController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Technical extension program, project, or activity updated.');
+        \LogActivity::addToLog('Technical extension program, project, or activity was updated.');
 
 
         return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been updated.');
@@ -237,7 +237,7 @@ class TechnicalExtensionController extends Controller
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
         $technical_extension->delete();
 
-        \LogActivity::addToLog('Technical extension program, project, or activity deleted.');
+        \LogActivity::addToLog('Technical extension program, project, or activity was deleted.');
 
         return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been deleted.');
     }
@@ -249,7 +249,7 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         TechnicalExtensionDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Technical extension program, project, or activity document deleted.');
+        \LogActivity::addToLog('Technical extension program, project, or activity document was deleted.');
 
         return true;
     }

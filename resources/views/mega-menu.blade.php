@@ -5,7 +5,6 @@
                 
                 <h6 class="menu-category">Personnel</h6>
                 <li><a href="">Professional Study</a></li>
-                <li><a href="">Attendance in University Functions</a></li>
             </ul>
             <ul>
                 <h6 class="menu-category">Employee Development</h6>
