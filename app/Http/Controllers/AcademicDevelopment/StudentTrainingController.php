@@ -113,7 +113,7 @@ class StudentTrainingController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Student attended seminar and training added.');
+        \LogActivity::addToLog('Student attended seminar and training "'.$request->input('title').'" was added.');
 
         return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been added.');
     }
@@ -230,7 +230,7 @@ class StudentTrainingController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Student attended seminar and training updated.');
+        \LogActivity::addToLog('Student attended seminar and training "'.$student_training->title.'" was updated.');
 
         return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been updated.');
     }
@@ -254,7 +254,7 @@ class StudentTrainingController extends Controller
         StudentTrainingDocument::where('student_training_id', $student_training->id)->delete();
         $student_training->delete();
 
-        \LogActivity::addToLog('Student attended seminar and training deleted.');
+        \LogActivity::addToLog('Student attended seminar and training "'.$student_training->title.'" was deleted.');
 
         return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been deleted.');
     }
@@ -266,7 +266,7 @@ class StudentTrainingController extends Controller
             return view('inactive');
         StudentTrainingDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Student attended seminar and training document deleted.');
+        \LogActivity::addToLog('Student attended seminar and training document was deleted.');
 
         return true;
     }

@@ -58,6 +58,7 @@
                                         <th>Ave. Days/Time of Processing</th>
                                         <th>Category</th>
                                         <th>College/Branch/Campus/Office</th>
+                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -70,11 +71,15 @@
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->processing_time }}</td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->category }}</td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->college_name }}</td>
-
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
-                                        <?php $updated_at = strtotime( $row->updated_at );
-                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                                {{ $updated_at }}
+                                            <?php $created_at = strtotime( $row->created_at );
+                                                    $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                    {{ $created_at }}
+                                        </td>
+                                        <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
+                                            <?php $updated_at = strtotime( $row->updated_at );
+                                                    $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                    {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">

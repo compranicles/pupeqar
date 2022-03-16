@@ -103,13 +103,6 @@ class ExtensionServiceController extends Controller
         ]);
 
         $request->validate([
-            'other_classification' => 'required_if:classification,119',
-            'funding_agency' => 'required_if:funding_type,123',
-            // 'amount_of_funding' => 'numeric',
-            'from' => 'required_unless:status, 107',
-            'to' => 'after_or_equal:from',
-            'classification_of_trainees_or_beneficiaries' => 'required',
-            'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
             'keywords' => new Keyword,
             'college_id' => 'required',
             'department_id' => 'required'
@@ -156,7 +149,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Extension service added.');
+        \LogActivity::addToLog('Extension service was added.');
 
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been added.');
@@ -253,13 +246,6 @@ class ExtensionServiceController extends Controller
             ]);
 
             $request->validate([
-                'other_classification' => 'required_if:classification,119',
-                'funding_agency' => 'required_if:funding_type,123',
-                // 'amount_of_funding' => 'numeric',
-                'from' => 'required_unless:status, 107',
-                'to' => 'after_or_equal:from',
-                'classification_of_trainees_or_beneficiaries' => 'required',
-                'other_classification_of_trainees' => 'required_if:classification_of_trainees_or_beneficiaries,130',
                 'keywords' => new Keyword,
                 'college_id' => 'required',
                 'department_id' => 'required'
@@ -307,7 +293,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Extension service updated.');
+        \LogActivity::addToLog('Extension service was updated.');
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been updated.');
     }
@@ -331,7 +317,7 @@ class ExtensionServiceController extends Controller
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
 
-        \LogActivity::addToLog('Extension service deleted.');
+        \LogActivity::addToLog('Extension service was deleted.');
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been deleted.');
     }
@@ -341,7 +327,7 @@ class ExtensionServiceController extends Controller
 
         ExtensionServiceDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Extension service document deleted.');
+        \LogActivity::addToLog('Extension service document was deleted.');
 
         // Storage::delete('documents/'.$filename);
         return true;

@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <form action="{{ route('research.copyrighted.store', $research->id) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $researchFields, 'value' => $research])
+                            @include('form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -35,20 +35,17 @@
 
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script>
         $(function() {
-            $('textarea').val('');
+            $('#copyright_year').datepicker('setStartDate', "{{ date('Y', strtotime($value['completion_date'])) }}"); //Set min. date
+        });
+    </script>
+    <script>
+        $('#copyright_year').datepicker({
+            format: " yyyy", // Notice the Extra space at the beginning
+            viewMode: "years", 
+            minViewMode: "years"
         });
     </script>
     <script>
@@ -58,27 +55,6 @@
                 $(this).remove(); 
             });
         }, 4000);
-    </script>
-    <script>
-        function hide_dates() {
-            $('.start_date').hide();
-            $('.target_date').hide();
-        }
-
-        $(function() {
-            hide_dates();
-        });
-
-    </script>
-    <script>
-        
-        var statusId = $('#status').val();
-        if (statusId == 26) {
-            hide_dates();
-
-            $('#start_date').prop("required", false);
-            $('#target_date').prop("required", false);
-        }
     </script>
     <script>
         var report_category_id = 7;

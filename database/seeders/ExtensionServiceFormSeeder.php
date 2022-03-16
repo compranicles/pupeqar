@@ -213,7 +213,7 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::create([
             'extension_programs_form_id' => 4,
-            'label' => 'No. of Trainess/Beneficiaries',
+            'label' => 'No. of Trainees/Beneficiaries',
             'name' => 'no_of_trainees_or_beneficiaries',
             'placeholder' => null,
             'size' => 'col-md-3',

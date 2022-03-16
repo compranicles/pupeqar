@@ -16,6 +16,7 @@ use App\Models\FormBuilder\InventionForm;
 use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\InventionField;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Services\DateContentService;
 
 class InventionController extends Controller
 {
@@ -79,11 +80,11 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
-        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+        $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
         $currentQuarterYear = Quarter::find(1);
-
+        
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -94,12 +95,6 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 51',
-            // 'funding_amount' => 'numeric',
-            'start_date' => 'required_unless:status, 55',
-            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
-            'utilization' => 'required_if:classification, 46',
-            'issue_date' => 'after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);
@@ -134,7 +129,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' added.');
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$request->input('title').'"was added.');
 
         // dd($classification);
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
@@ -223,9 +218,9 @@ class InventionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
-        $issue_date = date("Y-m-d", strtotime($request->input('issue_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+        $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
 
         $request->merge([
             'start_date' => $start_date,
@@ -235,12 +230,6 @@ class InventionController extends Controller
         ]);
 
         $request->validate([
-            'funding_agency' => 'required_if:funding_type, 51',
-            // 'funding_amount' => 'numeric',
-            'start_date' => 'required_unless:status, 55',
-            'end_date' => 'required_if:status, 54|after_or_equal:start_date',
-            'utilization' => 'required_if:classification, 46',
-            'issue_date' => 'after_or_equal:end_date',
             'college_id' => 'required',
             'department_id' => 'required'
         ]);
@@ -274,7 +263,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' updated.');
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$invention_innovation_creative->title.'" was updated.');
 
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }
@@ -302,7 +291,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' deleted.');
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$invention_innovation_creative->title.'" was deleted.');
 
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been deleted.');
     }
@@ -316,7 +305,7 @@ class InventionController extends Controller
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Invention/Innovation/Creative Work document deleted.');
+        \LogActivity::addToLog('Invention/Innovation/Creative Work document was deleted.');
 
         return true;
     }

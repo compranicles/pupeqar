@@ -144,94 +144,11 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>
-        <script>
-            var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-
-                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
-                        .insertBefore('#documentsSection')
-                        .delay(3000)
-                        .fadeOut(function (){
-                            $(this).remove();
-                        });
-
-                    var docCount = $('.documents-display').length
-                    if(docCount == 0){
-                        $('.docEmptyMessage').show();
-                    }
-                });
-            });
-            $('#college').on('input', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-
-                });
-            });
-        
-        </script>
-        <script>            
-            $('#keywords').on('keyup', function(){
-                var value = $(this).val();
-                if (value != null){
-                    var count = value.match(/(\w+)/g).length;
-                    if(count < 5)
-                        $("#validation-keywords").text('The number of keywords is still less than five (5)');
-                    else{
-                        $("#validation-keywords").text('');
-                    }
-                }
-                if (value == null)
-                    $("#validation-keywords").text('The number of keywords must be five (5)');
-            });
-
-        </script>
-        <script>
-             $('#from').on('input', function(){
-                var date = new Date($('#from').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('to').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#to').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
+            $('#from').on('change', function () {
+                $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>
         <script>

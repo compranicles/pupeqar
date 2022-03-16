@@ -52,6 +52,8 @@
                                                 <th>#</th>
                                                 <th>Article Title</th>
                                                 <th>Article Author</th>
+                                                <th>Date Added</th>
+                                                <th>Date Modified</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -60,6 +62,16 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('research.citation.show', [$research->id, $citation->id]) }}" class="link text-dark">{{ $citation->article_title }}</a></td>
                                                     <td>{{ $citation->article_author }}</td>
+                                                    <td>
+                                                        <?php $created_at = strtotime( $citation->created_at );
+                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                        {{ $created_at }}
+                                                    </td>
+                                                    <td>
+                                                        <?php $updated_at = strtotime( $citation->updated_at );
+                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                        {{ $updated_at }}
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

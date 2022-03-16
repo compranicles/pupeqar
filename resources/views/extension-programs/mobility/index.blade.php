@@ -41,7 +41,7 @@
                         <hr>
                         <div class="row">
                                 <div class="col-md-3">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period (Year <?php echo date('Y'); ?>): </label>
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarter">
                                             <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
@@ -77,7 +77,7 @@
                                         <th>Description</th>
                                         <th>Hosting Institution/Organization/Agency</th>
                                         <th>College/Branch/Campus/Office</th>
-                                        <th>Quarter</th>
+                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -89,8 +89,11 @@
                                         <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->mobility_description }}</td>
                                         <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->host_name }}</td>
                                         <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">{{ $row->quarter }}</td>
-
+                                        <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">
+                                            <?php $created_at = strtotime( $row->created_at );
+                                                $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                            {{ $created_at }}
+                                        </td>
                                         <td onclick="window.location.href = '{{ route('mobility.show', $row->id) }}' ">
                                             <?php $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
@@ -150,7 +153,7 @@
 
          var quarterIndex = 0;
             $("#mobility_table th").each(function (i) {
-                if ($($(this)).html() == "Quarter") {
+                if ($($(this)).html() == "Date Modified") {
                     quarterIndex = i; return false;
 
                 }
@@ -159,7 +162,32 @@
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex];
+                    var quarter = data[quarterIndex].substring(0, 4);
+                    switch (quarter) {
+                        case "Jan ":
+                        case "Feb ":
+                        case "Mar ":
+                            quarter = "1";
+                            break;
+                        case "Apr ":
+                        case "May ":
+                        case "Jun ":
+                            quarter = "2";
+                            break;
+                        case "Jul ":
+                        case "Aug ":
+                        case "Sep ":
+                            quarter = "3";
+                            break;
+                        case "Oct ":
+                        case "Nov ":
+                        case "Dec ":
+                            quarter = "4";
+                            break;
+                        default:
+                        quarter = "";
+                    }
+
                     if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
@@ -169,7 +197,7 @@
 
             var yearIndex = 0;
             $("#mobility_table th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
+                if ($($(this)).html() == "Date Added") {
                     yearIndex = i; return false;
 
                 }
@@ -222,7 +250,7 @@
      <script>
         var max = new Date().getFullYear();
         var min = 0;
-        var diff = max-2019;
+        var diff = max-2022;
         min = max-diff;
         select = document.getElementById('yearFilter');
         for (var i = max; i >= min; i--) {

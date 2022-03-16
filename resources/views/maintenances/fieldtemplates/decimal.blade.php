@@ -24,7 +24,7 @@
                     @default
                         
                 @endswitch>
-
+                
                 @error($fieldInfo->name)
                     <span class='invalid-feedback' role="alert">
                         <strong>{{ $message }}</strong>
@@ -53,7 +53,7 @@
         });
     </script>
     <script>
-        $("#{{ $fieldInfo->name }}").on('blur' , function() {       
+        $("#{{ $fieldInfo->name }}").on('change' , function() {       
             var value = parseFloat($(this).val());
             var actual = number_format(value, 2, '.', ',');
             $(this).val(actual);

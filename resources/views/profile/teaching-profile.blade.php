@@ -87,17 +87,4 @@
             </div>
         </div>
     </div>
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $('.datepicker').datepicker({
-            autoclose: true,
-        format: 'mm/dd/yyyy',
-        immediateUpdates: true,
-        todayBtn: "linked",
-        todayHighlight: true
-        });
-    });
-</script>  
-@endpush
 </x-app-layout>

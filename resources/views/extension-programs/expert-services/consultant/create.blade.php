@@ -35,49 +35,12 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
+            $('#from').on('change', function () {
+                $('#to').datepicker('setDate', $('#from').val());
+                $('#to').datepicker('setStartDate', $('#from').val());
             });
-        </script>
-        <script>
-            $('#from').on('input', function(){
-                var date = new Date($('#from').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('to').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#to').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
         </script>
         <script>
             var report_category_id = 9;

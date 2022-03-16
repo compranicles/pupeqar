@@ -85,9 +85,9 @@ class CitationController extends Controller
 
         $input = $request->except(['_token', '_method', 'document']);
 
-        $id = ResearchCitation::insertGetId($input);
+        $citation = ResearchCitation::create($input);
         
-        ResearchCitation::where('id', $id)->update([
+        ResearchCitation::where('id', $citation->id)->update([
             'research_id' => $research->id,
         ]);
 
@@ -120,7 +120,7 @@ class CitationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research citation added.');
+        \LogActivity::addToLog('Research citation of "'.$research->title.'" was added.');
 
         return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been added.');
     }
@@ -240,7 +240,7 @@ class CitationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research citation updated.');
+        \LogActivity::addToLog('Research citation of "'.$research->title.'" was updated.');
 
         return redirect()->route('research.citation.show', [$research->id, $citation->id])->with('success', 'Research Citation Updated Successfully');
     }
@@ -267,7 +267,7 @@ class CitationController extends Controller
 
         $citation->delete();
 
-        \LogActivity::addToLog('Research citation deleted.');
+        \LogActivity::addToLog('Research citation of "'.$research->title.'" was deleted.');
 
         return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been deleted.');
     }

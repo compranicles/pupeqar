@@ -37,122 +37,90 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
+            $(function() {
+                $('#status').val(105);
+
+                var classification = '{{ old('classification') }}';
+                if (classification != 119) {
+                    $('#other_classification').attr('disabled', true);
+                } else {
+                    $('#other_classification').removeAttr('disabled');
+                }
+
+                var classification_of_trainees_or_beneficiaries = '{{ old('classification_of_trainees_or_beneficiaries') }}';
+                if (classification_of_trainees_or_beneficiaries != 130) {
+                    $('#other_classification_of_trainees').attr('disabled', true);
+                } else {
+                    $('#other_classification_of_trainees').removeAttr('disabled');
+                }
             });
         </script>
         <script>
-            $('div .other_classification').hide();
-                var other_classification = document.getElementById("other_classification");
-                $('#classification').on('change', function(){
-                    var classification_name = $("#classification option:selected").text();
-                    if (classification_name == "Others") {
-                        $('div .other_classification').show();
-                        $('#other_classification').focus();
-                    }
-                    else {
-                        $('div .other_classification').hide();
-                    }
-                });
-
-            $('div .other_classification_of_trainees').hide();
-            var other_classification_of_trainees = document.getElementById("other_classification_of_trainees");
+            $('#other_classification').attr('disabled', true);
+            $('#classification').on('input', function(){
+                var classification_name = $("#classification option:selected").text();
+                if (classification_name == "Others") {
+                    $('#other_classification').removeAttr('disabled');
+                    $('#other_classification').focus();
+                }
+                else {
+                    $('#other_classification').val('');
+                    $('#other_classification').attr('disabled', true);
+                }
+            });
+        </script>
+        <script>
+            $('#other_classification_of_trainees').attr('disabled', true);
             $('#classification_of_trainees_or_beneficiaries').on('input', function(){
-                var classification_trainees_name = $("#classification_of_trainees_or_beneficiaries option:selected").text();
-                if (classification_trainees_name == "Others") {
-                    $('div .other_classification_of_trainees').show();
+                var other_classification_of_trainees = $("#classification_of_trainees_or_beneficiaries option:selected").text();
+                if (other_classification_of_trainees == "Others") {
+                    $('#other_classification_of_trainees').removeAttr('disabled');
                     $('#other_classification_of_trainees').focus();
                 }
                 else {
-                    $('div .other_classification_of_trainees').hide();
+                    $('#other_classification_of_trainees').val('');
+                    $('#other_classification_of_trainees').attr('disabled', true);
                 }
             });
         </script>
         <script>
-            $('#from').on('input', function(){
-                var date = new Date($('#from').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('to').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#to').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-            });
-
-            $('#keywords').on('keyup', function(){
-                // var value = $(this).val();
-                var value = $(this).val().replace(/ /g,'');
-                var words = value.split(",");
-                words = words.filter(function(e){return e});
-                // console.log(words);
-                if(words.length < 5){
-                    $("#validation-keywords").text('The number of keywords must be five (5)');
-                }
-                else if (words.length >= 5){
-                    $("#validation-keywords").text('');
-                }
-                else if( words == null){
-                    $("#validation-keywords").text('The number of keywords must be five (5)');
-                }
-            });
-            
-            $(function () {
-                $('.funding_agency').hide();
-                $('#funding_agency').removeClass('form-validation');
-            });
-
             $('#type_of_funding').on('change', function (){
-                var type = $(this).val();
-                if(type == 123){
-                    
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('Polytechnic University of the Philippines');
+                if ($(this).val() == 123) {
+                    //Univ. Funded
+                    $('#funding_agency').val("Polytechnic University of the Philippines");
                     $('#funding_agency').removeAttr('disabled');
-                    $('#funding_agency').attr('readonly', true);
-                    $('#funding_agency').addClass('form-validation');
+                    $('#funding_agency').attr('required', true);
                 }
-                else if(type == 124){
-                    $('.funding_agency').hide();
+                else if ($(this).val() == 124) {
+                    //Self Funded
+                    $('#funding_agency').val("");
                     $('#funding_agency').attr('disabled', true);
-                    $('#funding_agency').removeClass('form-validation');
+                    $('#funding_agency').removeAttr('required');
                 }
-                else if(type == 125){
-                    $('#funding_agency').removeAttr('readonly');
+                else if ($(this).val() == 125) { // External Funded
+                    $('#funding_agency').val("");
                     $('#funding_agency').removeAttr('disabled');
-                    $('.funding_agency').show();
-                    $('#funding_agency').val('');
-                    $('#funding_agency').addClass('form-validation');
+                    $('#funding_agency').attr('required', true);
                 }
             });
-
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
+        </script>
+        <script>
+            $('#status').on('change', function(){
+                $('#status option[value=106]').attr('disabled','disabled'); //Completed
+                $('#status option[value=107]').attr('disabled','disabled'); //Deferred
+                if ($(this).val() == 105) { // Ongoing
+                    $('#from').removeAttr('disabled');
+                    $('#from').attr('required', true);
+                    $('#to').val("");
+                    $('#to').attr('disabled', true);
+                    $('#to').removeAttr('required');
+                }
+            });
+        </script>
+        <script>
+            $('#keywords').on
         </script>
         <script>
             var report_category_id = 12;

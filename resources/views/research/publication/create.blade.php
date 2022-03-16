@@ -36,32 +36,13 @@
 
     @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
-    <script>
-        $(function() {
-            $('textarea').val('');
-        });
-    </script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     @endpush
     <script>
         $(function() {
             $('#status').empty().append('<option selected="selected" value="{{ $researchStatus->id }}">{{ $researchStatus->name}}</option>');
             $('#status').attr('disabled', true);
-        });
-    </script>
-    <script>
-        $('#publish_date').on('click', function(){
-            $('#publish_date').prop("min", "{{ $research->completion_date }}");
+            $('#publish_date').datepicker('setStartDate', "{{ date('m/d/Y', strtotime($value['completion_date'])) }}"); //Set min. date
         });
     </script>
     <script>

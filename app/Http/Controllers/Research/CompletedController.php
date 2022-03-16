@@ -160,7 +160,7 @@ class CompletedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research completetion added.');
+        \LogActivity::addToLog('Research completion of "'.$research->title.'" was added.');
 
 
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been added.');
@@ -278,7 +278,7 @@ class CompletedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research completetion updated.');
+        \LogActivity::addToLog('Research completion of "'.$research->title.'" was updated.');
 
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
         

@@ -130,7 +130,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material added.');
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$request->input('title').'" was added.');
 
 
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
@@ -279,7 +279,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material updated.');
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$rtmmi->title.'" was updated.');
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');
@@ -310,7 +310,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material deleted.');
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$rtmmi->title.'" was deleted.');
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                             ->with('action', 'deleted.');
@@ -325,7 +325,7 @@ class ReferenceController extends Controller
         ReferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material document deleted.');
+        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material document was deleted.');
 
         return true;
     }

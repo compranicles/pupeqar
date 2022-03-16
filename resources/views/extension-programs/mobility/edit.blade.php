@@ -144,118 +144,34 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script> 
-        <script>
-            $(document).ready(function(){
-                var type = '{{ $values['type']; }}'
-                if (type == 173) {
-                    $('div .other_type').show();
-                }
-                else {
-                    $('div .other_type').hide();
+            $(function() {
+                var type = '{{ $values['type'] }}';
+                if (type != 173) {
+                    $('#other_type').attr('disabled', true);
+                } else {
+                    $('#other_type').removeAttr('disabled');
                 }
             });
         </script>
         <script>
-            var other_type = document.getElementById("other_type");
+            $('#start_date').on('change', function () {
+                $('#end_date').datepicker('setStartDate', $('#start_date').val());
+            });
+        </script>
+        <script>
             $('#type').on('input', function(){
                 var type_name = $("#type option:selected").text();
                 if (type_name == "Others") {
-                    $('div .other_type').show();
+                    $('#other_type').removeAttr('disabled');
                     $('#other_type').focus();
                 }
                 else {
-                    $('div .other_type').hide();
+                    $('#other_type').val('');
+                    $('#other_type').attr('disabled', true);
                 }
-            });
-        </script>
-        <script>
-            var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-
-                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
-                        .insertBefore('#documentsSection')
-                        .delay(3000)
-                        .fadeOut(function (){
-                            $(this).remove();
-                        });
-
-                    var docCount = $('.documents-display').length
-                    if(docCount == 0){
-                        $('.docEmptyMessage').show();
-                    }
-                });
-            });
-
-            $('#college').on('input', function(){
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-
-                });
-            });
-
-            $(function() {
-                
-                var collegeId = $('#college').val();
-                $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-                $.get('/departments/options/'+collegeId, function (data){
-
-                    data.forEach(function (item){
-                        $("#department").append(new Option(item.name, item.id));
-                        
-                    });
-                    document.getElementById("department").value = "{{ $values['department_id'] }}";
-                });
-               
-            });
-        
-        </script>
-        <script>
-             $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
-                }
-                else {
-                    var day = date.getDate();
-                }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
         </script>
         <script>

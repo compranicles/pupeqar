@@ -144,43 +144,8 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
-            });
-        </script>   
-        <script>
-            var url = '';
-            var docId = '';
-            $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
-                docId = $(this).data('id');
-            });
-            $('#deletedoc').on('click', function(){
-                $.get(url, function (data){
-                    $('#deleteModal .close').click();
-                    $('#'+docId).remove();
-
-                    $('<div class="alert alert-success mt-3">Document removed successfully.</div>')
-                        .insertBefore('#documentsSection')
-                        .delay(3000)
-                        .fadeOut(function (){
-                            $(this).remove();
-                        });
-
-                    var docCount = $('.documents-display').length
-                    if(docCount == 0){
-                        $('.docEmptyMessage').show();
-                    }
-                });
-            });
-        </script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             var report_category_id = 22;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

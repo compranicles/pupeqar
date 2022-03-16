@@ -35,90 +35,54 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $(document).ready(function() {
-                $('.datepicker').datepicker({
-                    autoclose: true,
-                    format: 'mm/dd/yyyy',
-                    immediateUpdates: true,
-                    todayBtn: "linked",
-                    todayHighlight: true
-                });
+            $('#start_date').on('change', function () {
+                $('#end_date').datepicker('setDate', $('#start_date').val());
+                $('#end_date').datepicker('setStartDate', $('#start_date').val());
             });
-        </script>   
+        </script>
         <script>
-
-            $('div .other_collab_nature').hide();
-            var other_collab_nature = document.getElementById("other_collab_nature");
+            $('#other_collab_nature').attr('disabled', true);
             $('#collab_nature').on('input', function(){
                 var collab_nature_name = $("#collab_nature option:selected").text();
                 if (collab_nature_name == "Others") {
-                    $('div .other_collab_nature').show();
+                    $('#other_collab_nature').removeAttr('disabled');
                     $('#other_collab_nature').focus();
                 }
                 else {
-                    $('div .other_collab_nature').hide();
-                }
-            });
-
-            $('div .other_partnership_type').hide();
-            var other_partnership_type = document.getElementById("other_partnership_type");
-            $('#partnership_type').on('input', function(){
-                var partnership_type_name = $("#partnership_type option:selected").text();
-                if (partnership_type_name == "Others") {
-                    $('div .other_partnership_type').show();
-                    $('#other_partnership_type').focus();
-                }
-                else {
-                    $('div .other_partnership_type').hide();
-                }
-            });
-
-            $('div .other_deliverable').hide();
-            var other_deliverable = document.getElementById("other_deliverable");
-            $('#deliverable').on('input', function(){
-                var deliverable_name = $("#deliverable option:selected").text();
-                if (deliverable_name == "Others") {
-                    $('div .other_deliverable').show();
-                    $('#other_deliverable').focus();
-                }
-                else {
-                    $('div .other_deliverable').hide();
+                    $('#other_collab_nature').val('');
+                    $('#other_collab_nature').attr('disabled', true);
                 }
             });
         </script>
         <script>
-            $('#start_date').on('input', function(){
-                var date = new Date($('#start_date').val());
-                if (date.getDate() <= 9) {
-                        var day = "0" + date.getDate();
+            $('#other_partnership_type').attr('disabled', true);
+            $('#partnership_type').on('input', function(){
+                var partnership_type_name = $("#partnership_type option:selected").text();
+                if (partnership_type_name == "Others") {
+                    $('#other_partnership_type').removeAttr('disabled');
+                    $('#other_partnership_type').focus();
                 }
                 else {
-                    var day = date.getDate();
+                    $('#other_partnership_type').val('');
+                    $('#other_partnership_type').attr('disabled', true);
                 }
-
-                var month = date.getMonth() + 1;
-                if (month <= 9) {
-                    month = "0" + month;
-                }
-                else {
-                    month = date.getMonth() + 1;
-                }
-                var year = date.getFullYear();
-                // alert([day, month, year].join('-'));
-                // document.getElementById("target_date").setAttribute("min", [day, month, year].join('-'));
-                document.getElementById('end_date').setAttribute('min', [year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
-                $('#end_date').val([year, month, day.toLocaleString(undefined, {minimumIntegerDigits: 2})].join('-'));
             });
-
-            function validateForm() {
-                var isValid = true;
-                $('.form-validation').each(function() {
-                    if ( $(this).val() === '' )
-                        isValid = false;
-                });
-                return isValid;
-            }
+        </script>
+        <script>
+            $('#other_deliverable').attr('disabled', true);
+            $('#deliverable').on('input', function(){
+                var deliverable_name = $("#deliverable option:selected").text();
+                if (deliverable_name == "Others") {
+                    $('#other_deliverable').removeAttr('disabled');
+                    $('#other_deliverable').focus();
+                }
+                else {
+                    $('#other_deliverable').val('');
+                    $('#other_deliverable').attr('disabled', true);
+                }
+            });
         </script>
         <script>
             var report_category_id = 13;

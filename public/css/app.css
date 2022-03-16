@@ -13422,3 +13422,12 @@ table tr .padding_left_show {
 .text-small{
   font-size: 12px;
 }
+
+/* Datepicker Style */
+.datepicker .table-condensed{
+  margin-left: 10px;
+}
+
+.table-responsive{
+overflow-x: auto;
+}

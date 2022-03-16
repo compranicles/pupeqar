@@ -66,8 +66,13 @@ class CopyrightedController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
-           
-        return view('research.copyrighted.create', compact('researchFields', 'research'));
+        $value = $research;
+        $value->toArray();
+        $value = collect($research);
+        $value = $value->except(['description', 'status']);
+        $value = $value->toArray();
+
+        return view('research.copyrighted.create', compact('researchFields', 'research', 'value'));
     }
 
     /**
@@ -131,7 +136,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research copyright added.');
+        \LogActivity::addToLog('Research copyright of "'.$research->title.'" was added.');
 
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been added.');
     }
@@ -232,7 +237,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research copyright updated.');
+        \LogActivity::addToLog('Research copyright of "'.$research->title.'" was updated.');
 
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been updated.');
     }
