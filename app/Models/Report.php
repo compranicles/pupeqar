@@ -27,5 +27,7 @@ class Report extends Model
         'dean_approval',
         'sector_approval',
         'ipqmso_approval',
+        'report_quarter',
+        'report_year',
     ];
 }

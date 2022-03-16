@@ -10,6 +10,7 @@ use App\Models\TemporaryFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Currency;
 use App\Models\Maintenance\HRISField;
@@ -43,29 +44,20 @@ class EducationController extends Controller
 
         $user = User::find(auth()->id());
 
-        $currentMonth = date('m');
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-        }
+        $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
-                    ->where('report_category_id', 24)
-                    ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
+        if(Report::where('report_reference_id', $educID)
+                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                ->where('report_year', $currentQuarterYear->current_year)
+                ->where('report_category_id', 24)
+                ->where('chairperson_approval', 1)->where('dean_approval', 1)->where('sector_approval', 1)->where('ipqmso_approval', 1)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        if(Report::where('report_reference_id', $educID)->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
-                    ->where('report_category_id', 24)
-                    ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
+        if(Report::where('report_reference_id', $educID)
+                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                ->where('report_year', $currentQuarterYear->current_year)
+                ->where('report_category_id', 24)
+                ->where('chairperson_approval', null)->where('dean_approval', null)->where('sector_approval', null)->where('ipqmso_approval', null)->exists()){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         
@@ -80,9 +72,15 @@ class EducationController extends Controller
         $values = [
             'degree' =>  $educationData[0]->Degree,
             'school_name' => $educationData[0]->SchoolName,
+            'program_level' => $educationData[0]->AccreditationLevel,
+            'support_type' => $educationData[0]->TypeOfSupport,
+            'sponsor_name' => $educationData[0]->Scholarship,
+            'amount' => $educationData[0]->Amount,
             'from' => $educationData[0]->IncYearFrom,
             'to' => $educationData[0]->IncYearTo,
+            'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' =>$educationData[0]->UnitsEnrolled
         ];
 
         $colleges = College::all();
@@ -153,6 +151,8 @@ class EducationController extends Controller
                 }
             }
         }
+
+        $currentQuarterYear = Quarter::find(1);
         
         Report::create([
             'user_id' =>  auth()->id(),
@@ -165,6 +165,8 @@ class EducationController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
+            'report_quarter' => $currentQuarterYear->report_quarter,
+            'report_year' => $currentQuarterYear->report_year,
         ]);
 
         return redirect()->route('submissions.educ.index')->with('success','Report Submitted Successfully');

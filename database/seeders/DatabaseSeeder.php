@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
 
             //other maintenance
+            QuarterSeeder::class,
             SectorSeeder::class,
             CollegeSeeder::class,
             DepartmentSeeder::class,

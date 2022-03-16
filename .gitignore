@@ -15,3 +15,5 @@ yarn-error.log
 /.idea
 /.vscode
 cloudflared.exe
+ngork.exe
+.env

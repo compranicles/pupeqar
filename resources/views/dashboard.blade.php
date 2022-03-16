@@ -1,8 +1,20 @@
-<x-app-layout>
+<x-app-layout> 
     <div class="container db-container">
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
+                    <div class="col-md-4 mb-1">
+                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
+                            <div class="d-flex p-3">
+                                <div>
+                                    <p class="text-left">All Accomplishments will be saved on</p>
+                                    <h4 class="text-left">Quarter: {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }}</h4>
+                                    <h4 class="text-left">Year: {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h4>
+                                </div>
+                                <i class="fas fa-info home-icons text-right" style="padding-left: 75px; padding-top: 15px;"></i>
+                            </div>
+                        </div>
+                    </div>
                     @IsReporting
                     <div class="col-md-4 mb-1">
                         <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
@@ -180,7 +192,7 @@
         }
 
         if (document.getElementById("quarter") != null) {
-            document.getElementById("quarter").innerHTML = "Accomplishments reported this quarter " + {{$quarter}} + " of " + new Date().getFullYear(); //"Reported accomplishments from " + month1 + ' - ' + month4 + ' ' + new Date().getFullYear();
+            document.getElementById("quarter").innerHTML = "Accomplishments reported this quarter " + {{ $currentQuarterYear->current_quarter }} + " of " + {{ $currentQuarterYear->current_year }}; //"Reported accomplishments from " + month1 + ' - ' + month4 + ' ' + new Date().getFullYear();
         }
     </script>
     <script>
