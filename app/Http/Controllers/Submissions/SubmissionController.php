@@ -959,8 +959,8 @@ class SubmissionController extends Controller
                             'report_details' => json_encode($report_details),
                             'report_documents' => json_encode($report_documents),
                             'report_date' => date("Y-m-d", time()),
-                            'report_quarter' => $currentQuarterYear->report_quarter,
-                            'report_year' => $currentQuarterYear->report_year,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
                         ]);
                         $successToSubmit++;
                     
@@ -1026,8 +1026,8 @@ class SubmissionController extends Controller
                             'report_details' => json_encode($report_details),
                             'report_documents' => json_encode($report_documents),
                             'report_date' => date("Y-m-d", time()),
-                            'report_quarter' => $currentQuarterYear->report_quarter,
-                            'report_year' => $currentQuarterYear->report_year,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
                         ]);
                         $successToSubmit++;
                     
@@ -1072,8 +1072,8 @@ class SubmissionController extends Controller
                                 'report_documents' => json_encode($report_documents),
                                 'report_date' => date("Y-m-d", time()),
                                 'chairperson_approval' => 1,
-                                'report_quarter' => $currentQuarterYear->report_quarter,
-                                'report_year' => $currentQuarterYear->report_year,
+                                'report_quarter' => $currentQuarterYear->current_quarter,
+                                'report_year' => $currentQuarterYear->current_year,
                             ]);
 
                             $successToSubmit++;
@@ -1100,8 +1100,8 @@ class SubmissionController extends Controller
                                 'report_date' => date("Y-m-d", time()),
                                 'chairperson_approval' => 1,
                                 'dean_approval' => 1,
-                                'report_quarter' => $currentQuarterYear->report_quarter,
-                                'report_year' => $currentQuarterYear->report_year,
+                                'report_quarter' => $currentQuarterYear->current_quarter,
+                                'report_year' => $currentQuarterYear->current_year,
                             ]);
                             $successToSubmit++;
                         }

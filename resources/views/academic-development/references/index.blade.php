@@ -4,19 +4,6 @@
             {{ __('Reference, Textbook, Module, Monographs, and Instructional Materials') }}
         </h2>
     </x-slot>
-    @php
-    $currentMonth = date('m');
-
-    $year_or_quarter = 0;
-    if ($currentMonth <= 3 && $currentMonth >= 1) 
-        $quarter = 1;
-    if ($currentMonth <= 6 && $currentMonth >= 4)
-        $quarter = 2;
-    if ($currentMonth <= 9 && $currentMonth >= 7)
-        $quarter = 3;
-    if ($currentMonth <= 12 && $currentMonth >= 10) 
-        $quarter = 4;
-    @endphp
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -51,20 +38,15 @@
                             <div class="col-md-2">
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                    <select id="quarterFilter" class="custom-select" name="quarterFilter">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <label for="yearFilter" class="mr-2">Year Added:</label>
                                 <div class="d-flex">
-                                    <select id="yearFilter" class="custom-select" name="yearFilter">
-                                        
-                                </select>
+                                    <select id="yearFilter" class="custom-select" name="yearFilter">  
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-5">
@@ -86,8 +68,8 @@
                                         <th>Title</th>
                                         <th>Category</th>
                                         <th>College/Branch/Campus/Office</th>
-                                        <th>Date Added</th>
-                                        <th>Date Modified</th>
+                                        <th>Quarter</th>
+                                        <th>Year</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -99,14 +81,10 @@
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
-                                            <?php $created_at = strtotime( $rtmmi->created_at );
-                                                $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                            {{ $created_at }}
+                                            {{ $rtmmi->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
-                                            <?php $updated_at = strtotime( $rtmmi->updated_at );
-                                                $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                            {{ $updated_at }}
+                                            {{ $rtmmi->report_year }}
                                         </td>
                                         <td>
                                             <div role="group">
@@ -158,7 +136,54 @@
         });
      </script>
      <script>
-         var table =  $("#rtmmi_table").DataTable();
+         var table =  $("#rtmmi_table").DataTable({
+            "searchCols": [
+                null,
+                null,
+                null,
+                null,
+                { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                { "search": "{{ $currentQuarterYear->current_year }}" },
+                null
+            ],
+            initComplete: function () {
+                this.api().columns(4).every( function () {
+                    var column = this;
+                    var select = $('#quarterFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(5).every( function () {
+                    var column = this;
+                    var select = $('#yearFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+            }
+         });
          var catIndex = 0;
             $("#rtmmi_table th").each(function (i) {
                 if ($($(this)).html() == "Category") {
@@ -172,50 +197,6 @@
                     var selectedItem = $('#catFilter').val()
                     var category = data[catIndex];
                     if (selectedItem === "" || category.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var quarterIndex = 0;
-            $("#rtmmi_table th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
-                    quarterIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex].substring(0, 4);
-                    switch (quarter) {
-                        case "Jan ":
-                        case "Feb ":
-                        case "Mar ":
-                            quarter = "1";
-                            break;
-                        case "Apr ":
-                        case "May ":
-                        case "Jun ":
-                            quarter = "2";
-                            break;
-                        case "Jul ":
-                        case "Aug ":
-                        case "Sep ":
-                            quarter = "3";
-                            break;
-                        case "Oct ":
-                        case "Nov ":
-                        case "Dec ":
-                            quarter = "4";
-                            break;
-                        default:
-                        quarter = "";
-                    }
-
-                    if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
                     return false;
@@ -241,29 +222,7 @@
                 }
             );
 
-            var yearIndex = 0;
-            $("#rtmmi_table th").each(function (i) {
-                if ($($(this)).html() == "Date Added") {
-                    yearIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    let selectedItem = $('#yearFilter').val()
-                    var year = data[yearIndex].substring(8, 12);
-                    console.log(year);
-                    if (selectedItem === "" || year.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
             $("#catFilter").change(function (e) {
-                table.draw();
-            });
-            $("#quarterFilter").change(function (e) {
                 table.draw();
             });
 
@@ -271,26 +230,8 @@
                 table.draw();
             });
 
-            $("#yearFilter").change(function (e) {
-                table.draw();
-            });
-
             table.draw();
             
      </script>
-     <script>
-        var max = new Date().getFullYear();
-        var min = 0;
-        var diff = max-2022;
-        min = max-diff;
-        select = document.getElementById('yearFilter');
-        for (var i = max; i >= min; i--) {
-            select.append(new Option(i, i));
-            if (i == "{{ date('Y') }}") {
-                document.getElementById("yearFilter").value = i;
-                table.draw();
-            }
-        }
-    </script>
      @endpush
 </x-app-layout>

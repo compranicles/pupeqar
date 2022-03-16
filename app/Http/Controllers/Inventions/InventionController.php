@@ -30,19 +30,19 @@ class InventionController extends Controller
         $this->authorize('viewAny', Invention::class);
 
         $year = "created";
-    
+        
+        $currentQuarterYear = Quarter::find(1);
+
         $inventions = DB::select("CALL get_all_invention_by_year_and_user_id(".date('Y').",".auth()->id().")");
         
         $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
         $iicw_in_colleges = Invention::join('colleges', 'inventions.college_id', 'colleges.id')
+                                ->whereNull('inventions.deleted_at')
                                 ->select('colleges.name')->where('inventions.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
 
-        $inventionYears = Invention::selectRaw("YEAR(inventions.created_at) as created")->where('inventions.user_id', auth()->id())
-                        ->distinct()
-                        ->get();
-        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'inventionYears', 'year'));
+        return view('inventions.index', compact('inventions', 'iicw_in_colleges', 'inventionStatus', 'year', 'currentQuarterYear'));
 
     }
 
@@ -90,8 +90,8 @@ class InventionController extends Controller
             'end_date' => $end_date,
             'issue_date' => $issue_date,
             'funding_amount' => $value,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

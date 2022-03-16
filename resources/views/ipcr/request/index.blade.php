@@ -46,6 +46,21 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -58,8 +73,8 @@
                                         <th>Ave. Days/Time of Processing</th>
                                         <th>Category</th>
                                         <th>College/Branch/Campus/Office</th>
-                                        <th>Date Added</th>
-                                        <th>Date Modified</th>
+                                        <th>Quarter</th>
+                                        <th>Year</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -72,14 +87,10 @@
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->category }}</td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
-                                            <?php $created_at = strtotime( $row->created_at );
-                                                    $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                                    {{ $created_at }}
+                                            {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
-                                            <?php $updated_at = strtotime( $row->updated_at );
-                                                    $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                                    {{ $updated_at }}
+                                            {{ $row->report_year }}
                                         </td>
                                         <td>
                                             <div role="group">
@@ -131,7 +142,56 @@
         });
      </script>
      <script>
-         var table =  $("#request_table").DataTable();
+         var table =  $("#request_table").DataTable({
+            "searchCols": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                { "search": "{{ $currentQuarterYear->current_year }}" },
+                null
+            ],
+            initComplete: function () {
+                this.api().columns(5).every( function () {
+                    var column = this;
+                    var select = $('#quarterFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(6).every( function () {
+                    var column = this;
+                    var select = $('#yearFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+            }
+         });
+
           var statusIndex = 0;
             $("#request_table th").each(function (i) {
                 if ($($(this)).html() == "Category") {

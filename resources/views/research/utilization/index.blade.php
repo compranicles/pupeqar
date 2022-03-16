@@ -49,8 +49,8 @@
                                                 <th>#</th>
                                                 <th>Agency/Organization that Utilized the Research Output</th>
                                                 <th>Brief Description of Research Utilization</th>
-                                                <th>Date Added</th>
-                                                <th>Date Modified</th>
+                                                <th>Quarter</th>
+                                                <th>Year</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -60,14 +60,10 @@
                                                     <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
                                                     <td>{{ $utilization->utilization_description }}</td>
                                                     <td>
-                                                        <?php $created_at = strtotime( $utilization->created_at );
-                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                                        {{ $created_at }}
+                                                        {{ $utilization->report_quarter}}
                                                     </td>
                                                     <td>
-                                                        <?php $updated_at = strtotime( $utilization->updated_at );
-                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
-                                                        {{ $updated_at }}
+                                                        {{ $utilization->year}}
                                                     </td>
                                                 </tr>
                                             @endforeach

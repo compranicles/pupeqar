@@ -25,10 +25,12 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('viewAny', OutreachProgram::class);
 
+        $currentQuarterYear = Quarter::find(1);
+
         $outreach_programs = OutreachProgram::where('user_id', auth()->id())
-                                ->select(DB::raw('outreach_programs.*, QUARTER(outreach_programs.updated_at) as quarter'))
+                                ->select(DB::raw('outreach_programs.*'))
                                 ->orderBy('outreach_programs.updated_at', 'desc')->get();
-        return view('extension-programs.outreach-program.index', compact('outreach_programs'));
+        return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear'));
     }
 
     /**
@@ -65,8 +67,8 @@ class OutreachProgramController extends Controller
 
         $request->merge([
             'date' => $date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

@@ -165,8 +165,8 @@ class EducationController extends Controller
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         return redirect()->route('submissions.educ.index')->with('success','Report Submitted Successfully');

@@ -26,16 +26,19 @@ class MobilityController extends Controller
     {
         $this->authorize('viewAny', Mobility::class);
 
+        $currentQuarterYear = Quarter::find(1);
+
         $mobilities = Mobility::where('user_id', auth()->id())
                                 ->join('colleges', 'colleges.id', 'mobilities.college_id')
-                                ->select(DB::raw('mobilities.*, colleges.name as college_name, QUARTER(mobilities.updated_at) as quarter'))
+                                ->select(DB::raw('mobilities.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $mobility_in_colleges = Mobility::join('colleges', 'mobilities.college_id', 'colleges.id')
+        $mobility_in_colleges = Mobility::whereNull('mobilities.deleted_at')->join('colleges', 'mobilities.college_id', 'colleges.id')
+                                ->where('user_id', auth()->id())
                                 ->select('colleges.name')
                                 ->distinct()
                                 ->get();
-        return view('extension-programs.mobility.index', compact('mobilities', 'mobility_in_colleges'));
+        return view('extension-programs.mobility.index', compact('mobilities', 'mobility_in_colleges', 'currentQuarterYear'));
     }
 
     /**
@@ -72,8 +75,8 @@ class MobilityController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

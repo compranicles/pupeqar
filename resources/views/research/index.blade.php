@@ -57,7 +57,7 @@
                             <div class="col-md-2">
                                 <label for="reportFilter" class="mr-2">Year Registered:</label>
                                 <div class="d-flex">
-                                    <select id="reportFilter" class="custom-select yearFilter" name="reportFilter">
+                                    <select id="reportFilter" class="custom-select" name="reportFilter">
                                     </select>
                                 </div>
                             </div>
@@ -65,10 +65,7 @@
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -132,6 +129,8 @@
                                                 <th>College/Branch/Campus/Office</th>
                                                 <th>Date Added</th>
                                                 <th>Date Modified</th>
+                                                <th>Quarter</th>
+                                                <th>Year</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -152,6 +151,8 @@
                                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                                         {{ $updated_at }}
                                                     </td>
+                                                    <td>{{ $research->report_quarter }}</td>
+                                                    <td>{{ $research->report_year }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -173,10 +174,61 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#researchTable").dataTable({
-                "searching":true
+            $("#researchTable").dataTable();
+        });
+    </script>
+    <script>
+        var table =  $("#researchTable").DataTable({
+                "searching":true,
+                "searchCols": [
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                    { "search": "{{ $currentQuarterYear->current_year }}" },
+                ],
+                initComplete: function () {
+                    this.api().columns(7).every( function () {
+                        var column = this;
+                        var select = $('#quarterFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
+
+                    this.api().columns(8).every( function () {
+                        var column = this;
+                        var select = $('#reportFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
+                }
             });
-            var table =  $("#researchTable").DataTable();
 
             var statusIndex = 0;
             $("#researchTable th").each(function (i) {
@@ -191,50 +243,6 @@
                     var selectedItem = $('#statusFilter').val()
                     var status = data[statusIndex];
                     if (selectedItem === "" || status.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
-            var quarterIndex = 0;
-            $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Date Modified") {
-                    quarterIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#quarterFilter').val()
-                    var quarter = data[quarterIndex].substring(0, 4);
-                    switch (quarter) {
-                        case "Jan ":
-                        case "Feb ":
-                        case "Mar ":
-                            quarter = "1";
-                            break;
-                        case "Apr ":
-                        case "May ":
-                        case "Jun ":
-                            quarter = "2";
-                            break;
-                        case "Jul ":
-                        case "Aug ":
-                        case "Sep ":
-                            quarter = "3";
-                            break;
-                        case "Oct ":
-                        case "Nov ":
-                        case "Dec ":
-                            quarter = "4";
-                            break;
-                        default:
-                        quarter = "";
-                    }
-
-                    if (selectedItem === "" || quarter.includes(selectedItem)) {
                         return true;
                     }
                     return false;
@@ -267,24 +275,9 @@
 
                 }
             });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    let selectedItem = $('#reportFilter').val()
-                    var year = data[reportIndex].substring(8, 12);
-                    console.log(year);
-                    if (selectedItem === "" || year.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            
 
             $("#statusFilter").change(function (e) {
-                table.draw();
-            });
-
-            $("#quarterFilter").change(function (e) {
                 table.draw();
             });
 
@@ -292,11 +285,7 @@
                 table.draw();
             });
 
-            $("#reportFilter").change(function (e) {
-                table.draw();
-            });
             table.draw();
-        });
     </script>
     <script>
         // auto hide alert
@@ -322,9 +311,6 @@
         for (var sel = 0; sel < select.length; sel++) {
             for (var i = max; i >= min; i--) {
                 select[sel].append(new Option(i, i));
-                if (sel == 0 && i == "{{$year}}" && status == "created") {
-                    document.getElementById("reportFilter").value = i;
-                }
                 if (sel == 1 && i == "{{$year}}" && status == "started") {
                     document.getElementById("startFilter").value = i;
                 }

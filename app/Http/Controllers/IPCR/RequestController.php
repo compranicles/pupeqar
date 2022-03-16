@@ -29,18 +29,21 @@ class RequestController extends Controller
 
         $categories = DropdownOption::where('dropdown_id', 48)->get();
 
-        $requests = RequestModel::where('user_id', auth()->id())
-        ->join('dropdown_options', 'dropdown_options.id', 'requests.category')
-        ->join('colleges', 'colleges.id', 'requests.college_id')
-        ->select('requests.*', 'dropdown_options.name as category', 'colleges.name as college_name')
-        ->orderBy('requests.updated_at', 'desc')
-        ->get();
+        $currentQuarterYear = Quarter::find(1);
 
-        $requests_in_colleges = RequestModel::join('colleges', 'requests.college_id', 'colleges.id')
+        $requests = RequestModel::where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'requests.category')
+                ->join('colleges', 'colleges.id', 'requests.college_id')
+                ->select('requests.*', 'dropdown_options.name as category', 'colleges.name as college_name')
+                ->orderBy('requests.updated_at', 'desc')
+                ->get();
+
+        $requests_in_colleges = RequestModel::whereNull('requests.deleted_at')->join('colleges', 'requests.college_id', 'colleges.id')
+                                ->where('user_id', auth()->id())
                                 ->select('colleges.name')->where('requests.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
-        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories'));
+        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories', 'currentQuarterYear'));
     }
 
     /**
@@ -78,8 +81,8 @@ class RequestController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

@@ -111,8 +111,8 @@ class CompletedController extends Controller
         
         $request->merge([
             'completion_date' => $completion_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

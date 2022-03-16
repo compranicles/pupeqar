@@ -23,12 +23,12 @@ class StudentTrainingController extends Controller
     public function index()
     {
         $this->authorize('viewAny', StudentTraining::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $student_trainings = StudentTraining::where('user_id', auth()->id())
-                        ->select(DB::raw('student_trainings.*, QUARTER(student_trainings.updated_at) as quarter'))
                         ->orderBy('student_trainings.updated_at', 'desc')->get();
 
-        return view('academic-development.student-training.index', compact('student_trainings'));
+        return view('academic-development.student-training.index', compact('student_trainings', 'currentQuarterYear'));
     }
 
     /**
@@ -69,8 +69,8 @@ class StudentTrainingController extends Controller
             'budget' => $value,
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

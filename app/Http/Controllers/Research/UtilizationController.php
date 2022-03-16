@@ -31,13 +31,15 @@ class UtilizationController extends Controller
     {
         $this->authorize('viewAny', ResearchUtilization::class);;
 
+        $currentQuarterYear = Quarter::find(1);
+
         $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
-        return view('research.utilization.index', compact('research', 'researchutilizations'));
+        return view('research.utilization.index', compact('research', 'researchutilizations', 'currentQuarterYear'));
     }
 
     /**
@@ -79,8 +81,8 @@ class UtilizationController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
