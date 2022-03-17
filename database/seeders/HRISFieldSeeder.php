@@ -751,7 +751,7 @@ class HRISFieldSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        //Officeership
+        //Officership
         HRISField::create([
             'h_r_i_s_form_id' => 3,
             'label' => 'Name of the Organization',

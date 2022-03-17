@@ -119,8 +119,8 @@ class AwardController extends Controller
                     $temporaryFile->delete();
 
                     HRISDocument::create([
-                        'hris_form_id' => 1,
-                        'reference_id' => $educID,
+                        'hris_form_id' => 2,
+                        'reference_id' => $id,
                         'filename' => $fileName,
                     ]);
                     array_push($filenames, $fileName);

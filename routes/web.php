@@ -359,6 +359,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'saveTraining'])->name('submissions.development.training.save');
     //Officership/Memberhips
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
+    Route::get('/submissions/officership/{id}/add', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'add'])->name('submissions.officership.add');
+    Route::get('/submissions/officership/{id}/save', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'save'])->name('submissions.officership.save');
     //Outstanding Awards
     Route::get('/submissions/outstanding-awards', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'index'])->name('submissions.award.index');
     Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');

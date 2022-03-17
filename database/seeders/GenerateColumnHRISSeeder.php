@@ -192,7 +192,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Awards of distinction received in recognition of achievement in relevant areas of specialization/profession and/or assignment of Administrative Employee concerned',
             'table_id' => 4,
-            'report_column' => 'award_name',
+            'report_column' => 'award',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -206,7 +206,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Award Giving Body',
             'table_id' => 4,
-            'report_column' => 'award_body',
+            'report_column' => 'awarded_by',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -251,7 +251,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Awards of distinction received in recognition of achievement in relevant areas of specialization/profession and/or assignment of faculty concerned',
             'table_id' => 37,
-            'report_column' => 'award_name',
+            'report_column' => 'award',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -265,7 +265,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Award Giving Body',
             'table_id' => 37,
-            'report_column' => 'award_body',
+            'report_column' => 'awarded_by',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -310,7 +310,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Name of the Organization',
             'table_id' => 5,
-            'report_column' => 'organization_name',
+            'report_column' => 'organization',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -368,7 +368,7 @@ class GenerateColumnHRISSeeder extends Seeder
         GenerateColumn::create([
             'name' => 'Name of the Organization',
             'table_id' => 38,
-            'report_column' => 'organization_name',
+            'report_column' => 'organization',
             'is_active' => 1,
             'order' => 1
         ]);
