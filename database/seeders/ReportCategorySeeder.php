@@ -183,5 +183,11 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 20
         ]);
+        ReportCategory::create([
+            'report_type_id' => 1,
+            'name' => 'Officership/Membership',
+            'is_active' => 1,
+            'order' => 20
+        ]);
     }
 }

@@ -35,7 +35,9 @@
                                                     <td>{{ $officership->IncDate }}</td>
                                                     <td>{{ $officership->Level }}</td>
                                                     <td>
-                                                        Add to Submissions
+                                                        <td>
+                                                            <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="text-primary h4"><i class="fas fa-plus"></i></i></a>
+                                                        </td>
                                                     </td>
                                                 </tr>
                                             @endforeach
