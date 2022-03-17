@@ -15,6 +15,7 @@
 
                         <input type="hidden" name="emp_code" value="{{ $user->EmpCode ?? '' }}" >
                         <input type="hidden" name="emp_id" value="{{ $user->EmpNo ?? '' }}" >
+                        <input type="hidden" name="user_account_id" value="{{ $user->UserAccountID ?? '' }}" >
 
                         <div class="form-group">
                             <x-jet-label value="{{ __('First Name') }}" id="textHome"/>

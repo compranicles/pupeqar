@@ -61,6 +61,7 @@ class RegistrationController extends Controller
             'last_name' => $request->last_name,
             'emp_code' => $request->emp_code,
             'emp_id' => $request->emp_id,
+            'user_account_id' => $request->user_account_id
         ]);
         
         UserRole::create(['user_id' => $user->id, 'role_id' => $request->role]);

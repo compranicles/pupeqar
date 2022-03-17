@@ -245,6 +245,7 @@ return array(
     'App\\Providers\\JetstreamServiceProvider' => $baseDir . '/app/Providers/JetstreamServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Rules\\Keyword' => $baseDir . '/app/Rules/Keyword.php',
+    'App\\Services\\DateContentService' => $baseDir . '/app/Services/DateContentService.php',
     'App\\Services\\ManageConsolidatedReportAuthorizationService' => $baseDir . '/app/Services/ManageConsolidatedReportAuthorizationService.php',
     'App\\Services\\ToReceiveReportAuthorizationService' => $baseDir . '/app/Services/ToReceiveReportAuthorizationService.php',
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',

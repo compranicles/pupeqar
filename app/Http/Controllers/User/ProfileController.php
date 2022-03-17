@@ -17,6 +17,7 @@ class ProfileController extends Controller
 
         $employeeDetail1 = $db_ext->select("EXEC GetEmployeeByEmpCode N'$user->emp_code'");
         $employeeDetail2 = $db_ext->select("EXEC GetEmployeePersonalDetailsByEmpCode N'$user->emp_code'");
+        $employeeDetail3 = $db_ext->select("EXEC GetUserAccount N'$user->user_account_id'");
         $nationalities = $db_ext->select("EXEC GetNationality");
         $countries = $db_ext->select("EXEC GetCountry");
         $civilStatuses = $db_ext->select("EXEC GetCivilStatus");
@@ -43,7 +44,7 @@ class ProfileController extends Controller
         //PlaceOfBirth
         $placeOfBirth = $employeeDetail2[0]->CityMunicipality.', '.$employeeDetail2[0]->Province.', '.$employeeDetail2[0]->Region.', '.$employeeDetail2[0]->BCountry;
 
-        return view('profile.personal-profile', compact('employeeDetail1', 'employeeDetail2', 'citizenship', 'civilStatus', 'placeOfBirth'));
+        return view('profile.personal-profile', compact('employeeDetail1', 'employeeDetail2', 'employeeDetail3', 'citizenship', 'civilStatus', 'placeOfBirth'));
     }
 
     // public function employment() {
@@ -85,12 +86,42 @@ class ProfileController extends Controller
     }
 
     public function workExperience() {
-        return view('profile.work-experience-profile');
+        $user = User::find(auth()->id());
+
+        $db_ext = DB::connection('mysql_external');
+
+        $workExperiences = $db_ext->select("EXEC GetEmployeeWorkExperienceByEmpCode N'$user->emp_code'");
+
+        return view('profile.work-experience-index', compact('workExperiences'));
+    }
+
+    public function workExperienceView($id){
+        $user = User::find(auth()->id());
+
+        $db_ext = DB::connection('mysql_external');
+
+        $workExperience = $db_ext->select("EXEC GetEmployeeWorkExperienceByEmpCodeAndID N'$user->emp_code','$id'");
+
+        $employmentStatuses = $db_ext->select("EXEC GetEmploymentStatus");
+
+        $employeeStatus;
+        foreach($employmentStatuses as $status)
+            if($workExperience[0]->EmploymentStatusID == $status->EmploymentStatusID)
+                $employeeStatus = $status->EmploymentStatus;
+
+        return view('profile.work-experience-profile', compact('workExperience', 'employeeStatus'));
     }
 
     public function voluntaryWork() {
-        return view('profile.voluntary-work-profile');
+        $user = User::find(auth()->id());
+
+        $db_ext = DB::connection('mysql_external');
+
+        $voluntaryWorks = $db_ext->select("EXEC GetEmployeeVoluntaryWorkByEmpCode N'$user->emp_code'");
+
+        return view('profile.voluntary-work-index', compact('voluntaryWorks'));
     }
+
     // public function professionalStudy() {
     //     return view('profile.professional-study-profile');
     // }

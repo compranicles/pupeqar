@@ -27,14 +27,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group input-group-sm">
-                                    <label for="">College/Branch/Campus</label>
-                                    <input type="text" readonly class="form-control">
+                                    <label for="">Position</label>
+                                    <input type="text" readonly class="form-control" value="{{ $employeeDetail3[0]->PlantillaPosition }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group input-group-sm">
-                                    <label for="">Program</label>
-                                    <input type="text" readonly class="form-control">
+                                    <label for="">Department</label>
+                                    <input type="text" readonly class="form-control" value="{{ $employeeDetail3[0]->Department }}">
                                 </div>
                             </div>
                         </div>

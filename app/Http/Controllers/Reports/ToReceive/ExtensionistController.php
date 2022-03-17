@@ -110,7 +110,7 @@ class ExtensionistController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        Report::where('id', $report_id)->update(['extensionist_approval' => 1]);
+        Report::where('id', $report_id)->update(['extensionist_approval' => 1, 'chairperson_approval' => 1]);
 
         $report = Report::find($report_id);
 
