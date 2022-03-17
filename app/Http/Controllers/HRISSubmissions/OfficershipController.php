@@ -65,8 +65,8 @@ class OfficershipController extends Controller
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
             'orgnization_address' => $officeData[0]->Address,
-            'from' => $officeData[0]->IncDateFrom,
-            'to' => $officeData[0]->IncDateTo,
+            'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
         ];
 
         $colleges = College::all();

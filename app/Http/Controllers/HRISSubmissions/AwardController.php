@@ -56,8 +56,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->Level,
             'venue' => $awardData[0]->Venue,
-            'from' => $awardData[0]->Date,
-            'to' => $awardData[0]->Date,
+            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
         ];
 
         $colleges = College::all();

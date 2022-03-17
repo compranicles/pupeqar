@@ -6,6 +6,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <p>
+                    <a class="back_link" href="{{ route('profile.workExperience') }}"><i class="bi bi-chevron-double-left"></i>Back to all Work Experience</a>
+                </p>
                 <div class="card">
                     <div class="card-body">
                         <h3 class="mb-3">Voluntary Work</h3>
