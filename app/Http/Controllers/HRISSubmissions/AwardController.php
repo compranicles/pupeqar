@@ -145,6 +145,9 @@ class AwardController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
+
+        \LogActivity::addToLog('Oustanding Award/Achievement added.');
+
         return redirect()->route('submissions.award.index')->with('success','Report Submitted Successfully');
     }
 }

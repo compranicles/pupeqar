@@ -171,6 +171,8 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
+        \LogActivity::addToLog('Seminar/Webinar added.');
+
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
     }
 
@@ -313,6 +315,8 @@ class SeminarAndTrainingController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
+
+        \LogActivity::addToLog('Training added.');
 
         return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
     }

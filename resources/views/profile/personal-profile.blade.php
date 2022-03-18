@@ -108,7 +108,7 @@
                             <div class="col-md-6">
                                 <div class="form-group input-group-sm">
                                     <label for="">Religion</label>
-                                    <input type="text" readonly class="form-control">
+                                    <input type="text" readonly class="form-control" value="{{ $religion }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
