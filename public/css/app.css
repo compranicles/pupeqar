@@ -13160,13 +13160,9 @@ table tr .padding_left_show {
     background-color: white;
 }
 
-.card.db-card {
-  height: 90px;
-  width: 30%;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.2) !important;
+.db-card {
   margin-right: 15px;
   margin-bottom: 15px;
-  border-bottom: 2px solid #eeb510;
 }
 
 .card-title a {
@@ -13222,19 +13218,19 @@ table tr .padding_left_show {
     visibility: hidden; 
 }
 
-.nav-item-extension-program {
+.nav-sub-menu {
   /* flex: 1 1 auto; */
   text-align: center;
   text-decoration: none;
   margin: 8px 25px 8px 0;
 }
 
-.nav-item-extension-program a:hover {
+.nav-sub-menu a:hover {
   text-decoration: none;
 
 }
 
-.nav-item-extension-program a.active {
+.nav-sub-menu a.active {
   font-weight: bolder;
 
 }
@@ -13289,8 +13285,25 @@ table tr .padding_left_show {
     column-count: 2;
 }
 
-.home-icons { 
-  font-size: 3.5em;
+/* HOME PAGE */
+.bi.bi-send {
+  background-color: #2C4859;
+  color: white;
+  border-radius: 50%;
+  border: 1px solid #2C4859;
+  padding: 10px;
+}
+
+.row.div-bottom-separator {
+  border: none; 
+  border-bottom: 1px solid gainsboro;
+  padding-bottom: 0.25em;
+}
+
+.row.div-top-separator {
+  border: none; 
+  border-top: 1px solid gainsboro;
+  padding-top: 0.25em;
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/

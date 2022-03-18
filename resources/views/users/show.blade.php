@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Show User') }}
+            {{ __('View User') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -11,10 +11,6 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <th>ID</th>
-                                    <td>{{ $user->id }}</td>
-                                </tr>
                                 <tr>
                                     <th>First Name</th>
                                     <td>{{ $user->first_name }}</td>
@@ -26,10 +22,6 @@
                                 <tr>
                                     <th>Last Name</th>
                                     <td>{{ $user->last_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Suffix</th>
-                                    <td>{{ $user->suffix ?? '-' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>

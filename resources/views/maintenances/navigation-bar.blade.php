@@ -2,100 +2,75 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-12">
-                <ul class="nav justify-content-center m-n3">
+                <ul class="nav justify-content-center m-n2">
                     @can('viewAny', App\Models\Announcement::class)
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('announcements.index') }}" class="text-dark"  class="text-dark" :active="request()->routeIs('announcements.*')">
-                            {{ __('Announcements') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('announcements.*') ? 'active' : '' }}" href="{{ route('announcements.index') }}">Announcements</a>
                     </li>
                     @endcan
 
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('maintenance.quarter.index') }}" class="text-dark"  class="text-dark" :active="request()->routeIs('maintenance.quarter.*')">
-                            {{ __('Quarter and Year') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('maintenance.quarter.*') ? 'active' : '' }}" href="{{ route('maintenance.quarter.index') }}">Quarter & Year</a>
                     </li>
 
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('sectors.maintenance.index') }}" class="text-dark"  :active="request()->routeIs('sectors.*')">
-                            {{ __('Sectors') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('sectors.*') ? 'active' : '' }}" href="{{ route('sectors.maintenance.index') }}">Sectors</a>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('colleges.index') }}" class="text-dark"  :active="request()->routeIs('colleges.*')">
-                            {{ __('Office/Colleges/Branch/Campus') }}
-                        </x-jet-nav-link>
+
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('colleges.*') ? 'active' : '' }}" href="{{ route('colleges.index') }}">College/Branch/Campus/Office</a>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('departments.index') }}" class="text-dark"  :active="request()->routeIs('departments.*')">
-                            {{ __('Departments') }}
-                        </x-jet-nav-link>
+
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('departments.*') ? 'active' : '' }}" href="{{ route('departments.index') }}">Departments</a>
                     </li>
 
                     @can('viewAny', App\Models\Maintenance\Currency::class)
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('currencies.index') }}" class="text-dark"  :active="request()->routeIs('currencies.*')">
-                            {{ __('Currencies') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('currencies.*') ? 'active' : '' }}" href="{{ route('currencies.index') }}">Currencies</a>
                     </li>
                     @endcan
                     
                     @can('viewAny', App\Models\FormBuilder\Dropdown::class)
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('dropdowns.index') }}" class="text-dark" :active="request()->routeIs('dropdowns.*')">
-                            {{ __('Dropdowns') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('dropdowns.*') ? 'active' : '' }}" href="{{ route('dropdowns.index') }}">Dropdowns</a>
                     </li>
                     @endcan
                     
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('report-types.index') }}" class="text-dark" :active="request()->routeIs('report-types.*') || request()->routeIs('report-categories.*')">
-                            {{ __('Submissions') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('report-types.*') || request()->routeIs('report-categories.*') ? 'active' : '' }}" href="{{ route('report-types.index') }}">Submissions</a>
                     </li>
 
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('maintenance.generate.type') }}" class="text-dark" :active="request()->routeIs('maintenance.generate.*')">
-                            {{ __('Reports') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('maintenance.generate.*') ? 'active' : '' }}" href="{{ route('maintenance.generate.type') }}">Reports</a>
                     </li>
 
                     @can('viewAny', App\Models\FormBuilder\ResearchForm::class)
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('research-forms.index') }}" class="text-dark" :active="request()->routeIs('research-forms.*')">
-                            {{ __('Research') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('research-forms.*') ? 'active' : '' }}" href="{{ route('research-forms.index') }}">Research</a>
                     </li>
                     @endcan
 
                     @can('viewAny', App\Models\FormBuilder\ResearchForm::class)
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('invention-forms.index') }}" class="text-dark" :active="request()->routeIs('invention-forms.*')">
-                            {{ __('Invention') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('invention-forms.*') ? 'active' : '' }}" href="{{ route('invention-forms.index') }}">Invention</a>
                     </li>
                     @endcan
 
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('extension-program-forms.index') }}" class="text-dark" :active="request()->routeIs('extension-program-forms.*')">
-                            {{ __('Extension Programs') }}
-                        </x-jet-nav-link>
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('extension-program-forms.*') ? 'active' : '' }}" href="{{ route('extension-program-forms.index') }}">Extension Programs</a>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('academic-module-forms.index') }}" class="text-dark" :active="request()->routeIs('academic-module-forms.*')">
-                            {{ __('Academic Module') }}
-                        </x-jet-nav-link>
+
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('academic-module-forms.*') ? 'active' : '' }}" href="{{ route('academic-module-forms.index') }}">Academic Module</a>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('ipcr-forms.index') }}" class="text-dark" :active="request()->routeIs('ipcr-forms.*')">
-                            {{ __('IPCR') }}
-                        </x-jet-nav-link>
+
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('ipcr-forms.*') ? 'active' : '' }}" href="{{ route('ipcr-forms.index') }}">IPCR</a>
                     </li>
-                    <li class="nav-item">
-                        <x-jet-nav-link href="{{ route('hris-forms.index') }}" class="text-dark" :active="request()->routeIs('hris-forms.*')">
-                            {{ __('HRIS') }}
-                        </x-jet-nav-link>
+
+                    <li class="nav-sub-menu ml-4 mr-4">
+                        <a class="text-dark {{ request()->routeIs('hris-forms.*') ? 'active' : '' }}" href="{{ route('hris-forms.index') }}">HRIS</a>
                     </li>
                 </ul>
             </div>

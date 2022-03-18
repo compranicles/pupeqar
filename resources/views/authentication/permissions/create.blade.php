@@ -41,19 +41,21 @@
                       <div class="form-group">
                           <x-jet-label value="{{ __('Name') }}" />
                           <x-jet-input class="{{ $errors->has('permission_name') ? 'is-invalid' : '' }}" type="text" name="permission_name" 
-                                      required autofocus />
+                                      autocomplete="off" required autofocus />
                           <x-jet-input-error for="permission_name"></x-jet-input-error>
                       </div>
                     </div>
                   </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="mb-0 mt-3 ml-3">
-                <div class="d-flex justify-content-start align-items-baseline">
-                  <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
-                  <a href="{{ route('admin.permissions.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
-                </div>
+                  <div class="row mt-3">
+                    <div class="col-md-12">
+                      <div class="mb-0">
+                          <div class="d-flex justify-content-end align-items-baseline">
+                            <a href="{{ route('admin.permissions.index') }}" class="btn btn-secondary mr-2" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-save mr-2"></i>Save</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </form>
