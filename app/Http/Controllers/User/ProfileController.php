@@ -21,6 +21,7 @@ class ProfileController extends Controller
         $nationalities = $db_ext->select("EXEC GetNationality");
         $countries = $db_ext->select("EXEC GetCountry");
         $civilStatuses = $db_ext->select("EXEC GetCivilStatus");
+        $religions = $db_ext->select("EXEC GetReligion");
 
         //Citizenship
         $citizenship;
@@ -41,10 +42,15 @@ class ProfileController extends Controller
             if($status->CivilStatusID == $employeeDetail2[0]->CivilStatusID)
                 $civilStatus = $status->CivilStatus;
         }
+        //Religion
+        $religion;
+        foreach($religions as $row)
+            if($row->ReligionID == $employeeDetail2[0]->ReligionID)
+                $religion = $row->Religion;
         //PlaceOfBirth
         $placeOfBirth = $employeeDetail2[0]->CityMunicipality.', '.$employeeDetail2[0]->Province.', '.$employeeDetail2[0]->Region.', '.$employeeDetail2[0]->BCountry;
 
-        return view('profile.personal-profile', compact('employeeDetail1', 'employeeDetail2', 'employeeDetail3', 'citizenship', 'civilStatus', 'placeOfBirth'));
+        return view('profile.personal-profile', compact('employeeDetail1', 'employeeDetail2', 'employeeDetail3', 'citizenship', 'civilStatus', 'placeOfBirth', 'religion'));
     }
 
     // public function employment() {
