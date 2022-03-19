@@ -118,15 +118,15 @@
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
 
-                            <x-jet-dropdown-link href="{{ route('manage.account') }}">
+                            {{-- <x-jet-dropdown-link href="{{ route('manage.account') }}">
                                 {{ __('Manage Account') }}
-                            </x-jet-dropdown-link>
+                            </x-jet-dropdown-link> --}}
                             <hr class="dropdown-divider">
 
                             <!-- Authentication -->
                             <x-jet-dropdown-link href="{{ route('logout') }}"
                                                  onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
+                                                         document.getElementById('logout-form').submit();" class="text-danger">
                                 {{ __('Log out') }}
                             </x-jet-dropdown-link>
                             <form method="POST" id="logout-form" action="{{ route('logout') }}">

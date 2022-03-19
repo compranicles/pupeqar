@@ -28,11 +28,12 @@
                                        <tbody>
                                            @foreach ($voluntaryWorks as $works)
                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $works->Position }}</td>
                                                 <td>{{ $works->Organization }}</td>
                                                 <td>{{ $works->Address }}</td>
                                                 <td>{{ date('m/d/Y', strtotime($works->IncDateFrom)).' - '.date('m/d/Y', strtotime($works->IncDateTo)) }}</td>
-                                                <td>{{ $works->NoOfHours }}</td>
+                                                <td>{{ $works->NumberOfHours }}</td>
                                             </tr>
                                            @endforeach
                                        </tbody>

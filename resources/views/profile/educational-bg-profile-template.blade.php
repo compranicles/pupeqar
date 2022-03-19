@@ -13,7 +13,7 @@
         </div>
     </div>
     @php
-        $educationDiscipline;
+        $educationDiscipline = '';
         foreach($disciplines as $discipline)
             if($values->EducationDisciplineID == $discipline->EducationDisciplineID)
                 $educationDiscipline = $discipline->EducationDiscipline;
