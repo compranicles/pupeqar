@@ -140,6 +140,25 @@
                                 '</a>'
                             );
                     }
+                    else if(item.data.type == 'research'){
+                        $('#notification-'+countColumns)
+                            .append('<td class="notification-seeall-content">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                                    'Your research titled '+item.data.research_title+' is due on '+item.data.target_date+'.'+
+                                '</a>'+
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                            );
+                    }
+                    else if(item.data.type == 'deadline'){
+                        $('#notification-'+countColumns)
+                            .append('<td class="notification-seeall-content">'+
+                                '<a href="'+item.data.url+'" id="noti-info-'+countColumns+'" class="text-decoration-none noti-message text-dark">'+
+                                    'Please be informed that the deadline of submission of eQAR is on '+item.data.deadline_date+'.'+
+                                    ' You only have '+item.data.days_remaining+' day/s remaining to finalize.'+
+                                '</a>'+
+                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                            );
+                    }
 
                     if(item.read_at == null){
                         countUnread++;

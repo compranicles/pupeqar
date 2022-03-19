@@ -69,31 +69,13 @@ class SubmissionController extends Controller
     {
         $collegeID = "all";
 
-        $currentMonth = date('m');
+        $currentQuarterYear = Quarter::find(1);
 
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-            $totalReports = Report::whereMonth('report_date', '>=', 1)->whereMonth('report_date', '<=', 3)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-            $totalReports = Report::whereMonth('report_date', '>=', 4)->whereMonth('report_date', '<=', 6)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-            $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-            $totalReports = Report::whereMonth('report_date', '>=', 10)->whereMonth('report_date', '<=', 12)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
-
+        $totalReports = Report::where('user_id', auth()->id())
+                            ->where('report_quarter', $currentQuarterYear->current_quarter)
+                            ->where('report_year', $currentQuarterYear->current_year)
+                            ->count();
+       
         $report_tables = ReportCategory::all();
         // dd($report_tables);
         $report_array = [];
@@ -879,7 +861,7 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
 
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports'));
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports'));
     }
 
     /**
@@ -1282,29 +1264,13 @@ class SubmissionController extends Controller
     }
 
     public function getCollege($collegeID) {
-        $currentMonth = date('m');
 
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-            $totalReports = Report::whereMonth('report_date', '>=', 1)->whereMonth('report_date', '<=', 3)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
+        $currentQuarterYear = Quarter::find(1);
 
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-            $totalReports = Report::whereMonth('report_date', '>=', 4)->whereMonth('report_date', '<=', 6)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $totalReports = Report::whereMonth('report_date', '>=', 7)->whereMonth('report_date', '<=', 9)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-            $totalReports = Report::whereMonth('report_date', '>=', 10)->whereMonth('report_date', '<=', 12)
-                    ->where('user_id', auth()->id())->whereYear('report_date', date('Y'))->count();
-        }
+        $totalReports = Report::where('user_id', auth()->id())
+                            ->where('report_quarter', $currentQuarterYear->current_quarter)
+                            ->where('report_year', $currentQuarterYear->current_year)
+                            ->count();
 
         if ($collegeID == 'all') {
             return redirect()->route('to-finalize.index');
@@ -2146,6 +2112,6 @@ class SubmissionController extends Controller
         // dd($reported_accomplishments);
 
         // dd($report_array);
-        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'quarter', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
     }
 }
