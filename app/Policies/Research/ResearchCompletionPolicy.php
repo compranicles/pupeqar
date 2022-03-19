@@ -27,9 +27,9 @@ class ResearchCompletionPolicy
                         ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                         ->where('permissions.name', "manage faculty research completion")
                         ->first();
-
-        return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

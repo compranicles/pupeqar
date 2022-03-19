@@ -24,12 +24,12 @@ class SyllabusPolicy
         
         foreach ($roles as $role) {
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
-                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                            ->where('permissions.name', "manage course syllabus")
-                            ->first();
-
-            return $permission !== null ;
-
+                        ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                        ->where('permissions.name', "manage course syllabus")
+                        ->first();
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

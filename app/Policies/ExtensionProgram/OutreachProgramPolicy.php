@@ -24,12 +24,12 @@ class OutreachProgramPolicy
         
         foreach ($roles as $role) {
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
-                            ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
-                            ->where('permissions.name', "manage community relations and outreach programs")
+                        ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
+                        ->where('permissions.name', "manage community relations and outreach programs")
                         ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

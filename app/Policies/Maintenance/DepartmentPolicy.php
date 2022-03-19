@@ -27,9 +27,9 @@ class DepartmentPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage departments")
                         ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

@@ -27,9 +27,9 @@ class MobilityPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage inter-country mobility")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

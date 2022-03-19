@@ -27,8 +27,9 @@ class InventionFormPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage invention forms")
                             ->first();
-
-            return $permission !== null ;
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

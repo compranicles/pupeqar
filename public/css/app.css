@@ -13294,16 +13294,11 @@ table tr .padding_left_show {
   padding: 10px;
 }
 
-.row.div-bottom-separator {
+.div-bottom-separator {
   border: none; 
   border-bottom: 1px solid gainsboro;
-  padding-bottom: 0.25em;
-}
-
-.row.div-top-separator {
-  border: none; 
-  border-top: 1px solid gainsboro;
-  padding-top: 0.25em;
+  margin-top: 5px;
+  margin-bottom: 20px;
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/

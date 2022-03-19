@@ -26,9 +26,9 @@ class UserPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "view users")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
@@ -59,9 +59,9 @@ class UserPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "add users")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }                    
         }
     }
 
@@ -81,9 +81,9 @@ class UserPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "edit user role")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
@@ -103,9 +103,9 @@ class UserPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "delete user record")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

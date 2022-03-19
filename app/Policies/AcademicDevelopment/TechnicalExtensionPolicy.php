@@ -26,10 +26,10 @@ class TechnicalExtensionPolicy
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage technical extension")
-                            ->first();
-
-            return $permission !== null ;
-
+                            ->first();          
+            if ($permission !== null) {
+                return $permission !== null ;
+            }        
         }
     }
 

@@ -26,10 +26,10 @@ class ReferencePolicy
             $permission = RolePermission::where('role_permissions.role_id', $role->role_id)
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage reference, textbook, module, monographs, IMs")
-                        ->first();
-
-            return $permission !== null ;
-
+                        ->first(); 
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
