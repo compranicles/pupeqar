@@ -24,10 +24,13 @@ class ViableProjectController extends Controller
     {
         $this->authorize('viewAny', ViableProject::class);
 
+        $currentQuarterYear = Quarter::find(1);
+
         $viable_projects = ViableProject::where('user_id', auth()->id())
-                            ->select(DB::raw('viable_projects.*, QUARTER(viable_projects.updated_at) as quarter'))
+                            ->select(DB::raw('viable_projects.*'))
                             ->orderBy('viable_projects.updated_at', 'desc')->get();
-        return view('academic-development.viable-project.index', compact('viable_projects'));
+                            
+        return view('academic-development.viable-project.index', compact('viable_projects', 'currentQuarterYear'));
     }
 
     /**
@@ -72,8 +75,8 @@ class ViableProjectController extends Controller
             'revenue' => $value,
             'cost' => $value2,
             'start_date' => $start_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

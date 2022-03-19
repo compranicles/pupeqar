@@ -359,8 +359,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'saveTraining'])->name('submissions.development.training.save');
     //Officership/Memberhips
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
+    Route::get('/submissions/officership/{id}/add', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'add'])->name('submissions.officership.add');
+    Route::post('/submissions/officership/{id}/save', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'save'])->name('submissions.officership.save');
     //Outstanding Awards
     Route::get('/submissions/outstanding-awards', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'index'])->name('submissions.award.index');
+    Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');
+    Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'save'])->name('submissions.award.save');
 
     /* PROFILE (SYNCHRONIZED WITH HRIS) */
     Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
@@ -371,7 +375,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/profile/teaching-discipline', [\App\Http\Controllers\User\ProfileController::class, 'teaching'])->name('profile.teaching');
     Route::get('/profile/eligibility', [\App\Http\Controllers\User\ProfileController::class, 'eligibility'])->name('profile.eligibility');
     Route::get('/profile/work-experience', [\App\Http\Controllers\User\ProfileController::class, 'workExperience'])->name('profile.workExperience');
+    Route::get('/profile/work-experience/{id}', [\App\Http\Controllers\User\ProfileController::class, 'workExperienceView'])->name('profile.workExperience.view');
     Route::get('/profile/voluntary-work', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWork'])->name('profile.voluntaryWork');
+    Route::get('/profile/voluntary-work/{id}', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWorkView'])->name('profile.voluntaryWork.view');
     
     /* SUPER ADMIN PERMANENT TASKS */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){

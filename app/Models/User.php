@@ -44,7 +44,8 @@ class User extends Authenticatable
         'last_name',
         'suffix',
         'emp_code',
-        'emp_id'
+        'emp_id',
+        'user_account_id'
     ];
 
     /**

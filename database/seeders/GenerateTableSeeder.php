@@ -50,7 +50,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 27,
             'footers' => json_encode([
                 '* Research, Extension, Arts/Media/Culture & Sports,Invention,Innovation,Professional, Service',
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
@@ -61,7 +61,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 28,
             'footers' => json_encode([
                 '* Learned, Honor, Scientific, Professional, GAD Related',
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
@@ -416,7 +416,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 27,
             'footers' => json_encode([
                 '* Research, Extension, Arts/Media/Culture & Sports,Invention,Innovation,Professional, Service',
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
@@ -427,7 +427,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 28,
             'footers' => json_encode([
                 '* Learned, Honor, Scientific, Professional, GAD Related',
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',

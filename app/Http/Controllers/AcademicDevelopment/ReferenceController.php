@@ -28,19 +28,24 @@ class ReferenceController extends Controller
         $this->authorize('viewAny', Reference::class);
 
         $categories = DropdownOption::where('dropdown_id', 37)->get();
+
+        $currentQuarterYear = Quarter::find(1);
+
         $allRtmmi = Reference::where('user_id', auth()->id())
-                                        ->join('dropdown_options', 'dropdown_options.id', 'references.category')
-                                        ->join('colleges', 'colleges.id', 'references.college_id')
-                                        ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name', DB::raw('QUARTER(references.updated_at) as quarter'))
-                                        ->orderBy('references.updated_at', 'desc')
-                                        ->get();
+                                    ->join('dropdown_options', 'dropdown_options.id', 'references.category')
+                                    ->join('colleges', 'colleges.id', 'references.college_id')
+                                    ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name')
+                                    ->orderBy('references.updated_at', 'desc')
+                                    ->get();
         
         $rtmmi_in_colleges = Reference::join('colleges', 'references.college_id', 'colleges.id')
+                                        ->whereNull('references.deleted_at')
+                                        ->where('user_id', auth()->id())
                                         ->select('colleges.name')
                                         ->distinct()
                                         ->get();
 
-        return view('academic-development.references.index', compact('allRtmmi', 'rtmmi_in_colleges', 'categories'));
+        return view('academic-development.references.index', compact('allRtmmi', 'rtmmi_in_colleges', 'categories', 'currentQuarterYear'));
     }
 
     /**
@@ -83,8 +88,8 @@ class ReferenceController extends Controller
             'date_started' => $date_started,
             'date_completed' => $date_completed,
             'date_published' => $date_published,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

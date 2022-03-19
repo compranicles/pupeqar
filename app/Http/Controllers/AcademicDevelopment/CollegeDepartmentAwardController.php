@@ -24,10 +24,10 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('viewAny', CollegeDepartmentAward::class);
 
+        $currentQuarterYear = Quarter::find(1);
         $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())
-                                    ->select(DB::raw('college_department_awards.*, QUARTER(college_department_awards.updated_at) as quarter'))
                                     ->orderBy('college_department_awards.updated_at', 'desc')->get();
-        return view('academic-development.college-department-award.index', compact('college_department_awards'));
+        return view('academic-development.college-department-award.index', compact('college_department_awards', 'currentQuarterYear'));
     }
 
     /**
@@ -65,8 +65,8 @@ class CollegeDepartmentAwardController extends Controller
         
         $request->merge([
             'date' => $date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

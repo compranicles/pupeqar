@@ -44,20 +44,7 @@ class ResearchController extends Controller
         $year = 'started';
         $statusResearch = "started";//for filter
 
-        $currentMonth = date('m');
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-        }
+        $currentQuarterYear = Quarter::find(1);
 
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
 
@@ -69,7 +56,8 @@ class ResearchController extends Controller
                                 ->orderBy('research.updated_at', 'DESC')
                                 ->get();
 
-        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
+        $research_in_colleges = Research::whereNull('research.deleted_at')->join('colleges', 'research.college_id', 'colleges.id')
+                                        ->where('user_id', auth()->id())
                                         ->select('colleges.name')
                                         ->distinct()
                                         ->get();
@@ -85,7 +73,7 @@ class ResearchController extends Controller
                                 ->where('research_invites.status', null)
                                 ->get();
 
-        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'quarter', 'invites'));
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'invites', 'currentQuarterYear'));
     }
 
     /**
@@ -129,8 +117,8 @@ class ResearchController extends Controller
             'start_date' => $start_date,
             'target_date' => $target_date,
             'funding_amount' => $value,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([
@@ -573,8 +561,8 @@ class ResearchController extends Controller
         $currentQuarterYear = Quarter::find(1);
         
         $yearAndQuarter = [
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ];
 
         $research = Research::where('id', $research_id)->first()->toArray();
@@ -809,29 +797,17 @@ class ResearchController extends Controller
     }
 
     public function researchYearFilter($year, $statusResearch) {
-        $currentMonth = date('m');
-        $quarter = 0;
-        if ($currentMonth <= 3 && $currentMonth >= 1) {
-            $quarter = 1;
-        }
-        if ($currentMonth <= 6 && $currentMonth >= 4) {
-            $quarter = 2;
-        }
-        if ($currentMonth <= 9 && $currentMonth >= 7) {
-            $quarter = 3;
-        }
-        if ($currentMonth <= 12 && $currentMonth >= 10) {
-            $quarter = 4;
-        }
-
         
         if ($year == "started" || $year == "completion" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
 
+        $currentQuarterYear = Quarter::find(1);
+
         $researchStatus = DropdownOption::where('dropdown_id', 7)->get();
 
-        $research_in_colleges = Research::join('colleges', 'research.college_id', 'colleges.id')
+        $research_in_colleges = Research::whereNull('research.deleted_at')->join('colleges', 'research.college_id', 'colleges.id')
+                                        ->where('user_id', auth()->id())
                                         ->select('colleges.name')
                                         ->distinct()
                                         ->get();
@@ -904,7 +880,7 @@ class ResearchController extends Controller
                                 )
                                 ->get();
 
-        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'quarter', 'invites'));
+        return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'invites', 'currentQuarterYear'));
         
     }
 }

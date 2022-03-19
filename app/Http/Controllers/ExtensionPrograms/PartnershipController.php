@@ -29,17 +29,21 @@ class PartnershipController extends Controller
         $this->authorize('viewAny', Partnership::class);
         $collaborations = DropdownOption::where('dropdown_id', 30)->get();
 
+        $currentQuarterYear = Quarter::find(1);
+
         $partnerships = Partnership::where('user_id', auth()->id())
                             ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
                             ->join('colleges', 'colleges.id', 'partnerships.college_id')
-                            ->select(DB::raw('partnerships.*, dropdown_options.name as collab, colleges.name as college_name, QUARTER(partnerships.updated_at) as quarter'))
+                            ->select(DB::raw('partnerships.*, dropdown_options.name as collab, colleges.name as college_name'))
                             ->orderBy('updated_at', 'desc')->get();
 
-        $partnership_in_colleges = Partnership::join('colleges', 'partnerships.college_id', 'colleges.id')
+        $partnership_in_colleges = Partnership::whereNull('partnerships.deleted_at')->join('colleges', 'partnerships.college_id', 'colleges.id')
+                            ->where('user_id', auth()->id())
                             ->select('colleges.name')
                             ->distinct()
                             ->get();
-        return view('extension-programs.partnership.index', compact('partnerships', 'collaborations', 'partnership_in_colleges'));
+
+        return view('extension-programs.partnership.index', compact('partnerships', 'collaborations', 'partnership_in_colleges', 'currentQuarterYear'));
     }
 
     /**
@@ -76,8 +80,8 @@ class PartnershipController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

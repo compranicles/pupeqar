@@ -30,14 +30,15 @@ class CitationController extends Controller
     public function index(Research $research)
     {
         $this->authorize('viewAny', ResearchCitation::class);
- 
+        
+        $currentQuarterYear = Quarter::find(1);
 
         $researchcitations = ResearchCitation::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
 
-        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
-                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
-                ->select('research.*', 'dropdown_options.name as status_name')->first();
-        return view('research.citation.index', compact('research', 'researchcitations'));
+        $research = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                    ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                    ->select('research.*', 'dropdown_options.name as status_name')->first();
+        return view('research.citation.index', compact('research', 'researchcitations', 'currentQuarterYear'));
     }
 
     /**
@@ -79,8 +80,8 @@ class CitationController extends Controller
         $currentQuarterYear = Quarter::find(1);
         
         $request->merge([
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

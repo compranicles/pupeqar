@@ -24,10 +24,13 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('viewAny', TechnicalExtension::class);
 
+        $currentQuarterYear = Quarter::find(1);
+
         $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
-                                ->select(DB::raw('technical_extensions.*, QUARTER(technical_extensions.updated_at) as quarter'))
+                                ->select(DB::raw('technical_extensions.*'))
                                 ->orderBy('technical_extensions.updated_at', 'desc')->get();
-        return view('academic-development.technical-extension.index', compact('technical_extensions'));
+                                
+        return view('academic-development.technical-extension.index', compact('technical_extensions', 'currentQuarterYear'));
     }
 
     /**
@@ -64,8 +67,8 @@ class TechnicalExtensionController extends Controller
 
         $request->merge([
             'total_profit' => $value,
-            'report_quarter' => $currentQuarterYear->report_quarter,
-            'report_year' => $currentQuarterYear->report_year,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
         $request->validate([
             'moa_code' => 'required',

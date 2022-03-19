@@ -917,6 +917,7 @@ class ComposerStaticInit478b8e84dc2d82b36ecb26ac418e1a4d
         'App\\Providers\\JetstreamServiceProvider' => __DIR__ . '/../..' . '/app/Providers/JetstreamServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Rules\\Keyword' => __DIR__ . '/../..' . '/app/Rules/Keyword.php',
+        'App\\Services\\DateContentService' => __DIR__ . '/../..' . '/app/Services/DateContentService.php',
         'App\\Services\\ManageConsolidatedReportAuthorizationService' => __DIR__ . '/../..' . '/app/Services/ManageConsolidatedReportAuthorizationService.php',
         'App\\Services\\ToReceiveReportAuthorizationService' => __DIR__ . '/../..' . '/app/Services/ToReceiveReportAuthorizationService.php',
         'App\\View\\Components\\AppLayout' => __DIR__ . '/../..' . '/app/View/Components/AppLayout.php',
