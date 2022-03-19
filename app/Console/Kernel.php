@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\ResearchCheck::class,
+        Commands\DeadlineWeekly::class,
+        Commands\DeadlineDaily::class,
     ];
 
     /**
@@ -25,6 +27,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('research:weekly')->weekly();
+        $schedule->command('deadline:weekly')->weekly();
+        $schedule->command('deadline:daily')->daily();
     }
 
     /**

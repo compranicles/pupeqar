@@ -47,6 +47,11 @@
                                     
                                 </div>
 
+                                <div class="form-group">
+                                    <x-jet-label value="{{ __('Deadline') }}" />
+                                    <input type="date" name="deadline" class="form-control" value="{{ isset($quarter->deadline) ? $quarter->deadline : '' }}" required>
+                                </div>
+
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
                                         <button type="submit" class="btn btn-primary mb-2 mr">Save</button>

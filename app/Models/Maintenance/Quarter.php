@@ -11,7 +11,8 @@ class Quarter extends Model
 
     protected $fillable = [
         'current_quarter',
-        'current_year'
+        'current_year',
+        'deadline'
     ];
 
     protected $primaryKey = "id";
