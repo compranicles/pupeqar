@@ -38,12 +38,14 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $users = User::all();
+        $users = User::orderBy('users.updated_at', 'DESC')->get();
 
         $rolesperuser = [];
 
         foreach($users as $user){
-            $rolesperuser[$user->id] = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')->where('user_roles.user_id',$user->id)->get();
+            $rolesperuser[$user->id] = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')
+                    ->where('user_roles.user_id',$user->id)
+                    ->get();
         }
         return view('users.index', compact('users', 'rolesperuser'));
     }
@@ -104,18 +106,39 @@ class UserController extends Controller
             ]);
         }
         
-        if($request->has('department')){
-            Chairperson::create([
-                'user_id' => $user_id,
-                'department_id' => $request->input('department') ?? null
-            ]);
+        foreach($roles as $role){
+            if ($role == 5) {
+                Chairperson::create([
+                    'user_id' => $user_id,
+                    'department_id' => $request->input('department') ?? null
+                ]);
+            }
+            if ($role == 6) {
+                Dean::create([
+                    'user_id' => $user_id,
+                    'college_id' => $request->input('college') ?? null
+                ]);
+            }
+            if ($role == 7) {
+                SectorHead::create([
+                    'user_id' => $user_id,
+                    'sector_id' => $request->input('sector') ?? null
+                ]);
+            }
+            if ($role == 10) {
+                FacultyResearcher::create([
+                    'user_id' => $user_id,
+                    'department_id' => $request->input('research') ?? null
+                ]);
+            }
+            if ($role == 11) {
+                FacultyExtensionist::create([
+                    'user_id' => $user_id,
+                    'department_id' => $request->input('extension') ?? null
+                ]);
+            }
         }
-        if($request->has('college')){
-            Dean::create([
-                'user_id' => $user_id,
-                'college_id' => $request->input('college') ?? null
-            ]);
-        }
+
         return redirect()->route('admin.users.create')->with('add_user_success','User added successfully.');
     }
 
@@ -253,6 +276,30 @@ class UserController extends Controller
                 SectorHead::updateOrCreate([ 
                     'user_id' => $user->id, 
                     'sector_id' => $sector, 
+                ]);
+            }
+        }
+        if(!in_array(10, $checkedroles)){
+            FacultyResearcher::where('user_id', $user->id)->delete();
+        }
+        else{
+            FacultyResearcher::where('user_id', $user->id)->delete();
+            foreach($request->input('research') as $researchDepartment){
+                FacultyResearcher::updateOrCreate([ 
+                    'user_id' => $user->id, 
+                    'department_id' => $researchDepartment, 
+                ]);
+            }
+        }
+        if(!in_array(11, $checkedroles)){
+            FacultyExtensionist::where('user_id', $user->id)->delete();
+        }
+        else{
+            FacultyExtensionist::where('user_id', $user->id)->delete();
+            foreach($request->input('extension') as $extensionDepartment){
+                FacultyExtensionist::updateOrCreate([ 
+                    'user_id' => $user->id, 
+                    'department_id' => $extensionDepartment, 
                 ]);
             }
         }

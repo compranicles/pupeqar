@@ -29,9 +29,9 @@ class ResearchPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "view all faculty research")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
@@ -51,9 +51,9 @@ class ResearchPolicy
                         ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                         ->where('permissions.name', "manage faculty research registration")
                         ->first();
-
-        return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
@@ -72,9 +72,9 @@ class ResearchPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage faculty research registration")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 
@@ -117,9 +117,9 @@ class ResearchPolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "defer research")
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 }

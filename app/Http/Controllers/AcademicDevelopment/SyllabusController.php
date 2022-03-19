@@ -300,23 +300,13 @@ class SyllabusController extends Controller
     }
 
     public function syllabusYearFilter($year, $filter) {
-
-        $currentQuarterYear = Quarter::find(1);
-        if($filter == "created") {
-            if ($year == "created") {
-                return redirect()->route('syllabus.index');
-            }
-            else {
-                $syllabi = Syllabus::where('user_id', auth()->id())
-                ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
-                ->join('colleges', 'colleges.id', 'syllabi.college_id')
-                ->whereYear('syllabi.created_at', $year)
-                ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name'))
-                ->orderBy('syllabi.updated_at', 'desc')
-                ->get();
-            }   
+        if ($year == "finished") {
+            return redirect()->route('syllabus.index');
         }
-        elseif ($filter == "finished") {
+      
+        $currentQuarterYear = Quarter::find(1);
+        
+        if ($filter == "finished") {
             $syllabi = Syllabus::where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
                 ->join('colleges', 'colleges.id', 'syllabi.college_id')

@@ -1,175 +1,36 @@
 <x-app-layout> 
-    <div class="container db-container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    <p class="text-left">All Accomplishments will be saved on</p>
-                                    <h4 class="text-left">Quarter: {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }}</h4>
-                                    <h4 class="text-left">Year: {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h4>
-                                </div>
-                                <i class="fas fa-info home-icons text-right" style="padding-left: 75px; padding-top: 15px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    @IsReporting
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    <h4 class="text-left">{{ $totalReports }}</h4>
-                                    <p class="text-left" id="quarter"></p>
-                                </div>
-                                <i class="far fa-star home-icons" style="padding-left: 14px; padding-top: 15px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    @endIsReporting
-                    @FacultyAdmin
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    <h4 class="text-left">{{ $department_reported }}</h4>
-                                    <p class="text-left">Departments you reported with within this quarter</p>
-                                </div>
-                                <i class="far fa-building home-icons" style="padding-left: 90px; padding-top: 8px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    <h4 class="text-left">{{ $cbco_reported }}</h4>
-                                    <p class="text-left">College/Branch/Campus/Offices you reported with within this quarter</p>
-                                </div>
-                                <i class="far fa-building home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    @endFacultyAdmin
-                    @IsReceiving
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    @chairperson
-                                    <h4 class="text-left">{{ $chairpersonReceived }}</h4>
-                                    @endchairperson
-                                    @director
-                                    <h4 class="text-left">{{ $deanReceived }}</h4>
-                                    @enddirector
-                                    @sectorHead
-                                    <h4 class="text-left">{{ $vpReceived }}</h4>
-                                    @endsectorHead
-                                    @ipqmso
-                                    <h4 class="text-left">{{ $ipqmsoReceived }}</h4>
-                                    @endipqmso
-                                    <p class="text-left" id="received">Accomplishments received this quarter</p>
-                                </div>
-                                <i class="bi bi-collection home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-1">
-                        <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 10px;">
-                            <div class="d-flex p-3">
-                                <div>
-                                    @chairperson
-                                    <h4 class="text-left">{{ $chairpersonNotReceived }}</h4>
-                                    @endchairperson
-                                    @director
-                                    <h4 class="text-left">{{ $deanNotReceived }}</h4>
-                                    @enddirector
-                                    @sectorHead
-                                    <h4 class="text-left">{{ $vpNotReceived }}</h4>
-                                    @endsectorHead
-                                    @ipqmso
-                                    <h4 class="text-left">{{ $ipqmsoNotReceived }}</h4>
-                                    @endipqmso
-                                    <p class="text-left" id="notReceived">Accomplishments need to receive</p>
-                                </div>
-                                <i class="bi bi-collection home-icons" style="padding-left: 14px; padding-top: 8px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    @endIsReceiving
-                    @chairperson
-
-                    @endchairperson
-                    @director
-                    
-                    @enddirector
-                    @sectorHead
-                    
-                    @endsectorHead
-                    @ipqmso
-                    
-                    @endipqmso
-                </div>
-                <hr>
-            </div>
+    <div class="container">
+            @if (in_array(9, $roles))
+                @include('dashboard.superadmin')
+            @endif
+            @if (in_array(1, $roles) || in_array(3, $roles))
+                @include('dashboard.faculty-admin')
+            @endif
+            @if (in_array(5, $roles))
+                @include('dashboard.chairperson')
+            @endif
+            @if (in_array(6, $roles))
+                @include('dashboard.director')
+            @endif
+            @if (in_array(7, $roles))
+                @include('dashboard.sector-head')
+            @endif
+            @if (in_array(8, $roles))
+                @include('dashboard.ipqmso')
+            @endif
+            @if (in_array(10, $roles))
+                @include('dashboard.researcher')
+            @endif
+            @if (in_array(11, $roles))
+                @include('dashboard.extensionist')
+            @endif
         </div>
-        
-        @if (isset($is_sAdmin))
-        <div class="row mt-1">
-            <div class="col-md-6">
-                <div class="card card-vertical">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h5 style="padding-top: 5px;">Activity Log</h5>
-                            </div>
-                            <div class="col-md-2" style="padding-top: 5px;">
-                                <a href="{{ route('logs.all') }}">View All</a>                                
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-striped text-center table-bordered fixed_header" id="log_activity_table">
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @else
-        <div class="row mt-1">
-            <div class="col-md-6">
-                <div class="card card-vertical">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-10">
-                                <h5 style="padding-top: 5px;">Activity Log</h5>
-                            </div>
-                            <div class="col-md-2" style="padding-top: 5px;">
-                                <a href="{{ route('logs.user') }}">View All</a>                                
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                                <div class="table-responsive">
-                                    <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table">
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>   
-        @endif
     </div>
 
+    
+    
+                
+    @push('scripts')
     <script>
         const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
@@ -254,4 +115,5 @@
             });
         }
     </script>
+    @endpush
 </x-app-layout>

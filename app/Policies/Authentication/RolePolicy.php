@@ -27,10 +27,11 @@ class RolePolicy
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', "manage roles")
                             ->first();
-
-            return $permission !== null ;
-                // ? Response::allow()
-                // : Response::deny('You are not authorized to manage the roles.');
+                            // ? Response::allow()
+                            // : Response::deny('You are not authorized to manage the roles.');
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

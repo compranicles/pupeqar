@@ -7,6 +7,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @include('authentication.navigation-bar')
+            </div>
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
                         @if ($message = Session::get('edit_user_success'))

@@ -16,9 +16,9 @@ class ManageConsolidatedReportAuthorizationService {
                             ->join('permissions', 'permissions.id', '=', 'role_permissions.permission_id')
                             ->where('permissions.name', $permission_name)
                             ->first();
-
-            return $permission !== null ;
-
+            if ($permission !== null) {
+                return $permission !== null ;
+            }
         }
     }
 

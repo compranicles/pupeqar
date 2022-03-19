@@ -6,7 +6,9 @@
     </x-slot>
     <div class="container">
         <div class="row">
-
+            <div class="col-md-12">
+                @include('authentication.navigation-bar')
+            </div>
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_permission_success'))
                     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

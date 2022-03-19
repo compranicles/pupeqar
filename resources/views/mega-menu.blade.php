@@ -1,6 +1,6 @@
 <div class="menu-sub animate slideIn">
     <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-4">
             <ul>
                 
                 <h6 class="menu-category">Personnel</h6>
@@ -14,9 +14,9 @@
                 <li><a href="">Trainings</a></li>
             </ul>
             
-        </div>
+        </div> -->
         
-        <div class="col-md-3">
+        <div class="col-md-4">
             <ul>
                 <h6 class="menu-category">Academic Program Development</h6>
                 @can('viewAny', \App\Models\Syllabus::class)
@@ -37,16 +37,18 @@
                 @director
                 <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the College</a></li>
                 @enddirector
-                @chairperson
+                @can('viewAny', \App\Models\CollegeDepartmentAward::class)
+
                 <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the Department</a></li>
-                @endchairperson
+
+                @endcan
                 @can('viewAny', \App\Models\TechnicalExtension::class)
                 <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities</a></li>
                 @endcan
             </ul>
             
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <ul>
                 <h6 class="menu-category">Extension Programs & Expert Services</h6>
 
@@ -68,7 +70,7 @@
                 @endcan
             </ul>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             @can('viewAny', \App\Models\Request::class)
             <ul>
                 <h6 class="menu-category">Requests & Queries</h6>

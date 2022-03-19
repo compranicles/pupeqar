@@ -26,148 +26,78 @@ use App\Models\CollegeDepartmentAward;
 use App\Models\Authentication\UserRole;
 use App\Models\ExpertServiceConference;
 use App\Models\ExpertServiceConsultant;
+use App\Models\FacultyResearcher;
+use App\Models\FacultyExtensionist;
 use App\Models\Request as RequestModel;
+use App\Services\UserRoleService;
 
 class DashboardController extends Controller
 {
     public function index() {
         
+        $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
+        
         $currentQuarterYear = Quarter::find(1);
 
-        $totalReports = Report::whereMonth('report_date', '<=', 3)
-           ->where('user_id', auth()->id())
-           ->where('report_quarter', $currentQuarterYear->current_quarter)
-           ->where('report_year', $currentQuarterYear->current_year)
-           ->count();
-        $department_reported = '';
-        $cbco_reported  = '';
-        $departments = '';
-        $chairpersonReceived = '';
-        $chairpersonNotReceived = '';
-        $colleges = '';
-        $deanReceived = '';
-        $deanNotReceived = '';
-        $sectors = '';
-        $vpReceived = '';
-        $vpNotReceived = '';
-        $ipqmsoReceived = '';
-        $ipqmsoReturned = '';
-        $ipqmsoNotReceived = '';
+        $countFaculty = (new UserRoleService())->getNumberOfUserByRole(1);
+        $countAdmin = (new UserRoleService())->getNumberOfUserByRole(3);
+        $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
+        $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
+        $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
+        $countIPOEmployee = (new UserRoleService())->getNumberOfUserByRole(8);
+        $countResearcher = (new UserRoleService())->getNumberOfUserByRole(10);
+        $countExtensionist = (new UserRoleService())->getNumberOfUserByRole(11);
+        $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
+            'director' => $countDirector, 'sectorHead' => $countSectorHead,
+            'ipo' => $countIPOEmployee, 'researcher' => $countResearcher, 'extensionist' => $countExtensionist);
 
-        //No. of accomplishments received by Chairperson
-        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
-
-        if (in_array(1, $roles) || in_array(2, $roles) || in_array(3, $roles) || in_array(4, $roles)) {
-            $department_reported = Report::where('user_id', auth()->id())->distinct('department_id')->count();
-            $cbco_reported = Report::where('user_id', auth()->id())->distinct('college_id')->count();
-        }
         if (in_array(5, $roles)) {
-            $departments = Chairperson::where('chairpeople.user_id', auth()->id())
-                ->join('departments', 'departments.id', 'chairpeople.department_id')
-                ->pluck('chairpeople.department_id')->all();
-            $chairpersonReceived = Report::where('reports.chairperson_approval', 1)
-                ->whereIn('reports.department_id', [$departments])
-                ->where('user_id', auth()->id())
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            $chairpersonNotReceived = Report::where('reports.chairperson_approval', null)
-                ->whereIn('reports.department_id', [$departments])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                //check for researcher and extensionist                   
-                ->where('reports.researcher_approval', 1)
-                ->orWhere('reports.extensionist_approval', 1)
-                ->count();
-                // $chairpersonReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-                //         ->where('chairperson_approval', 0)
-                //         ->whereIn('department_id', [$departments])
-                //         ->whereYear('report_date', date('Y'))->count();
-                // $deanReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-                //         ->where('dean_approval', 0)
-                //         ->where('user_id', auth()->id())
-                //         ->whereYear('report_date', date('Y'))->count();
+            $chairpersonDepartment = Chairperson::where('user_id', auth()->id())
+                                    ->join('departments', 'departments.id', 'chairpeople.department_id')
+                                    ->select('departments.name')
+                                    ->get();
+        } else {
+            $chairpersonDepartment = '';
         }
+
         if (in_array(6, $roles)) {
-            $colleges = Dean::where('deans.user_id', auth()->id())
-                        ->join('colleges', 'colleges.id', 'deans.college_id')->pluck('deans.college_id')->all();
-                        // dd($colleges);
-            $deanReceived = Report::where('dean_approval', 1)
-                ->whereIn('college_id', [$colleges])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            $deanNotReceived = Report::where('chairperson_approval', 1)
-                ->where('dean_approval', null)
-                ->whereIn('college_id', [$colleges])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            // $deanReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-            //         ->where('dean_approval', 0)
-            //         ->whereIn('college_id', [$colleges])
-            //         ->whereYear('report_date', date('Y'))->count();
-            // $sectorReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-            //         ->where('sector_approval', 0)
-            //         ->where('user_id', auth()->id())
-            //         ->whereYear('report_date', date('Y'))->count();
-
+            $directorOffice = Dean::where('user_id', auth()->id())
+                                    ->join('colleges', 'colleges.id', 'deans.college_id')
+                                    ->select('colleges.name')
+                                    ->get();
+        } else {
+            $directorOffice = '';
         }
+
         if (in_array(7, $roles)) {
-            $sectors = SectorHead::where('sector_heads.user_id', auth()->id())
-                ->join('sectors', 'sectors.id', 'sector_heads.sector_id')->pluck('sector_heads.sector_id')->all();
-            $vpReceived = Report::where('reports.sector_approval', 1)
-                ->whereIn('reports.sector_id', [$sectors])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            $vpNotReceived = Report::where('chairperson_approval', 1)
-                ->where('dean_approval', 1)
-                ->where('sector_approval', null)
-                ->whereIn('sector_id', [$sectors])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            // $vpReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-            //         ->where('sector_approval', 0)
-            //         ->whereIn('sector_id', [$sectors])
-            //         ->whereYear('report_date', date('Y'))->count();
-            // $ipqmsoReturned = Report::where(DB::raw('QUARTER(reports.report_date)'), $quarter)
-            //         ->where('ipqmso_approval', 0)
-            //         ->where('user_id', auth()->id())
-            //         ->whereYear('report_date', date('Y'))->count();
+            $sector = SectorHead::where('user_id', auth()->id())
+                                    ->join('sectors', 'sectors.id', 'sector_heads.sector_id')
+                                    ->select('sectors.name')
+                                    ->get();
+        } else {
+            $sector = '';
+        }
 
+        if (in_array(10, $roles)) {
+            $researcherDepartment = FacultyResearcher::where('user_id', auth()->id())
+                                ->join('departments', 'departments.id', 'faculty_researchers.department_id')
+                                ->select('departments.name')
+                                ->get();
+            // dd($researcherDepartment);
+        } else {
+            $researcherDepartment = '';
         }
-        if (in_array(8, $roles)) {
-            $ipqmsoReceived = Report::where('ipqmso_approval', 1)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            $ipqmsoNotReceived = Report::where('ipqmso_approval', null)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-            $ipqmsoReturned = Report::where('ipqmso_approval', 0)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
+
+        if (in_array(11, $roles)) {
+            $extensionistDepartment = FacultyExtensionist::where('user_id', auth()->id())
+                                ->join('departments', 'departments.id', 'faculty_extensionists.department_id')
+                                ->select('departments.name')
+                                ->get();
+        } else {
+            $extensionistDepartment = '';
         }
-        return view('dashboard', 
-                        compact(
-                                    'totalReports', 
-                                    'currentQuarterYear', 
-                                    'department_reported', 
-                                    'cbco_reported', 
-                                    'currentQuarterYear',
-                                    'chairpersonReceived', 
-                                    'chairpersonNotReceived',
-                                    'deanReceived', 
-                                    'deanNotReceived',
-                                    'vpReceived', 
-                                    'vpNotReceived', 
-                                    'ipqmsoReceived', 
-                                    'ipqmsoNotReceived', 
-                                    'ipqmsoReturned',
-                            ));
+
+        return view('dashboard', compact('roles', 'currentQuarterYear', 'arrayOfNoOfAllUsers', 'chairpersonDepartment', 'directorOffice',
+                'sector', 'researcherDepartment', 'extensionistDepartment'));
     }
 }

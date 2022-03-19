@@ -19,23 +19,10 @@
                 </li>
 
                 @can('viewAny', App\Models\User::class)
-                <li class="nav-item dropdown">
-                    <a class="nav-link main-dropdown {{ request()->routeIs('admin.users.*') ? 'active' : ''}} {{ request()->routeIs('admin.roles.*') ? 'active' : ''}} {{ request()->routeIs('admin.permissions.*') ? 'active' : ''}}" role="button" data-bs-toggle="dropdown" aria-expanded="false" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
-                        Authentication
-                    </a>
-                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
-                        @can('viewAny', App\Models\User::class)
-                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}">Users</a></li>
-                        @endcan
-
-                        @can('viewAny', App\Models\Role::class)
-                        <li><a class="dropdown-item" href="{{ route('admin.roles.index') }}">Roles</a></li>
-                        @endcan
-
-                        @can('viewAny', App\Models\Authentication\Permission::class)
-                        <li><a class="dropdown-item" href="{{ route('admin.permissions.index') }}">Permissions</a></li>
-                        @endcan
-                    </ul>
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                        {{ __('Authentication') }}
+                    </x-jet-nav-link>
                 </li>
                 @endcan
 
@@ -85,36 +72,15 @@
                     </x-jet-nav-link>
                 </li>
                 @endIsReporting
-
+                
+                @ExceptSuperAdmin
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
-
+                    
                 </li>
-{{-- 
-                <li class="nav-item dropdown mr-auto main-nav-item">
-                    <a class="nav-link @if (request()->routeIs('faculty.*') || request()->routeIs('chairpersons.*') || request()->routeIs('dean.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('reports.*')) active font-weight-bold @endif" 
-                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                        Reports
-                    </a>
-                    <ul class="dropdown-menu animate slideIn" aria-labelledby="navbarDropdown">
-                       
-                        <li><a class="dropdown-item" href="{{ route('faculty.index') }}">Individual</a></li>
-                       
-                        <li><a class="dropdown-item" href="{{ route('chairperson.index') }}">Department</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('dean.index') }}">College</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('sector.index') }}">Sector</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('ipqmso.index') }}">IPQMSO</a></li>
-
-                        <li><a class="dropdown-item" href="{{ route('reports.all') }}">All</a></li>
-                    </ul>
-                </li> --}}
-
-
+                @endExceptSuperAdmin
             </ul>
             
             <!-- Right Side Of Navbar -->
