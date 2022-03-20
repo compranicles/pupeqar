@@ -40,9 +40,7 @@
                                             {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
                                         @endif --}}
                                         @if ($research->nature_of_involvement == 11)
-                                            @if ($exists == 1)
-                                                <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-1">Invite Co-Researcher</a>
-                                            @endif
+                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-1">Invite Co-Researcher</a>
                                         @endif
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>

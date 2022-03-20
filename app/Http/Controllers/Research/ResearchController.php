@@ -370,7 +370,7 @@ class ResearchController extends Controller
         $funding_amount = str_replace( ',' , '', $funding_amount);
         
         $research->update(['description' => '-clear']);
-
+        
         $research->update($input);
         Research::where('research_code', $research->research_code)->update($inputOtherResearchers);
         Research::where('research_code', $research->research_code)->update([
