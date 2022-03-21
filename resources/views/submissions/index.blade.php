@@ -21,7 +21,7 @@
                 <h5>
                     You have no new accomplishments to finalize so far.
                 </h5> 
-                <small>Submissions this quarter {{$quarter}} of <?php echo date('Y'); ?>: {{$totalReports}}</small>
+                <small>Submissions this quarter {{$currentQuarterYear->current_quarter}} of {{ $currentQuarterYear->current_year }}: {{$totalReports}}</small>
             </div>
         </div>
     </div>

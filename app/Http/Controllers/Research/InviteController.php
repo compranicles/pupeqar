@@ -78,16 +78,24 @@ class InviteController extends Controller
 
     public function confirm($research_id, Request $request){
 
+        $user = User::find(auth()->id());
+
         \LogActivity::addToLog('Research Invitation Confirmed.');
+
+        $user->notifications->where('id', $request->get('id'))->markAsRead();
         
         return redirect()->route('research.code.create', ['research_id' => $research_id, 'id' => $request->get('id') ]);
     }
     
-    public function cancel($research_id){
+    public function cancel($research_id , Request $request){
+        $user = User::find(auth()->id());
+
         ResearchInvite::where('research_id', $research_id)->where('user_id', auth()->id())->update([
             'status' => 0
         ]);
 
+        $user->notifications->where('id', $request->get('id'))->markAsRead();
+        
         \LogActivity::addToLog('Research Invitation Cancelled.');
 
         return redirect()->route('research.index')->with('success', 'Invitation cancelled');

@@ -78,8 +78,8 @@ class ReturnNotification extends Notification
         if($this->notificationData['accomplishment_type'] == 'individual')
             return [
                 'type' => 'returned',
-                'sender' => $this->notificationData['receiver'],
-                'url' => $this->notificationData['url'],
+                'sender' => $this->notificationData['sender'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],
@@ -90,8 +90,8 @@ class ReturnNotification extends Notification
         elseif($this->notificationData['accomplishment_type'] == 'department')
             return [
                 'type' => 'returned',
-                'sender' => $this->notificationData['receiver'],
-                'url' => $this->notificationData['url'],
+                'sender' => $this->notificationData['sender'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],
@@ -102,8 +102,8 @@ class ReturnNotification extends Notification
         elseif($this->notificationData['accomplishment_type'] == 'college')
             return [
                 'type' => 'returned',
-                'sender' => $this->notificationData['receiver'],
-                'url' => $this->notificationData['url'],
+                'sender' => $this->notificationData['sender'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],

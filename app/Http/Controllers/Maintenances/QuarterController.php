@@ -17,7 +17,8 @@ class QuarterController extends Controller
         $quarter = Quarter::find(1);
         $data = [
             'current_quarter' => $request->current_quarter,
-            'current_year' => $request->current_year
+            'current_year' => $request->current_year,
+            'deadline' => $request->deadline
         ];
         if(empty($quarter))
             Quarter::create($data);

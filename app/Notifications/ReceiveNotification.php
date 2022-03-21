@@ -79,7 +79,7 @@ class ReceiveNotification extends Notification
             return [
                 'type' => 'received',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'accomplishment_type' => $this->notificationData['accomplishment_type'],
@@ -89,7 +89,7 @@ class ReceiveNotification extends Notification
             return [
                 'type' => 'received',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'accomplishment_type' => $this->notificationData['accomplishment_type'],
@@ -100,7 +100,7 @@ class ReceiveNotification extends Notification
             return [
                 'type' => 'received',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'accomplishment_type' => $this->notificationData['accomplishment_type'],

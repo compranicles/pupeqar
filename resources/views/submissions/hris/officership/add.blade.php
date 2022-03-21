@@ -16,11 +16,20 @@
                 <p>
                     <a class="back_link" href="{{ route('submissions.officership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Officerships/Memberships</a>
                 </p>
+                @if ($deniedDetails = Session::get('denied'))
+                 <div class="alert alert-info" role="alert">
+                     <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                 </div>
+                 @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.officership.save', $id) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $officeFields, 'value' => $values])
+                            @if ($collegeOfDepartment == '')
+                                @include('form', ['formFields' => $officeFields, 'value' => $values])
+                            @else
+                                @include('form', ['formFields' => $officeFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                            @endif
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

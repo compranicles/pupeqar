@@ -20,17 +20,17 @@ class NotificationController extends Controller
        return $user->notifications;
     }
 
-    public function markAsRead(){
+    public function markAsRead(Request $request){
         $user = User::find(auth()->id());
 
-        $user->unreadNotifications()->update(['read_at' => now()]);
+        $urlDecoded  = urldecode($request->get('u'));
+
+        $user->notifications->where('id', $request->get('v'))->markAsRead();
         
-        return true;
+        return redirect()->away($urlDecoded);
     }
 
     public function seeAll() {
-        // $notifications = DB::table('notifications')->where('notifiable_id', auth()->id())->orderBy('created_at')->get();
-        // dd($notifications);
         return view('notification-see-all');
     }
 }

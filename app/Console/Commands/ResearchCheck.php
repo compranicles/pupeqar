@@ -1,48 +1,47 @@
 <?php
 
-namespace App\Http\Controllers\Test;
+namespace App\Console\Commands;
 
 use DateTime;
 use App\Models\User;
 use App\Models\Research;
-use Illuminate\Http\Request;
-use App\Models\Maintenance\Sector;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use Illuminate\Console\Command;
 use App\Notifications\ResearchNotification;
 use Illuminate\Support\Facades\Notification;
 
-class TestController extends Controller
+class ResearchCheck extends Command
 {
-   public function index() { 
-        // $db_ext = DB::connection('mysql_external');
-        // // dd($db_ext);
-        // $departments = $db_ext->select(" EXEC GetDepartment");
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'research:weekly';
 
-        // $departmentIDs = []; 
-        // $count = 0;
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Checking if the research is less than a month from due and sends email to researchers';
 
-        // // foreach($departments as $row){
-        // //     $departmentIDs[$count] = $row->DepartmentID;
-        // //     $count++;
-        // // }
-        
-        // // $sectorHRISCode = Sector::pluck('hris_code')->all();
-        // // $allDepartments = $db_ext->select(" EXEC GetDepartment");
-        // // dd(Sector::where('hris_code', $allDepartments[282]->DepartmentID)->pluck('id')->first());
-        // $i = 1;
-        // $totalcount = 1;
-        // do {
-        //     $data = $db_ext->select(" EXEC GetUserAccount $i");
-        //     $count++;
-        //     $i++;
-        // }
-        // while (count($data) > 0);
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-        // echo $count;
-        // echo $i++;
-        // var_dump($data);
-
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
         $researches = Research::whereIn('nature_of_involvement', [11, 224])->where('status', 27)->get();
 
 
@@ -50,7 +49,7 @@ class TestController extends Controller
             $target_date = new DateTime($research->target_date);
             $current_date = new DateTime(date('Y-m-d'));
             $interval = $current_date->diff($target_date);
-            if($interval->days < 30){
+            if($interval->days <= 30){
                 $user = User::find($research->user_id);
                 $url = route('research.show', $research->id);
 
@@ -71,7 +70,5 @@ class TestController extends Controller
                 
             }
         }
-
-        return true;
     }
 }

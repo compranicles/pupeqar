@@ -3,9 +3,20 @@
 namespace App\Http\Controllers\HRISSubmissions;
 
 use App\Models\User;
+use App\Models\Report;
+use App\Models\HRISDocument;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Currency;
+use App\Models\Maintenance\HRISField;
+use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class AwardController extends Controller
 {
@@ -25,18 +36,7 @@ class AwardController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $educID)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 27)
-                ->where('chairperson_approval', 1)->orWhere('dean_approval', 1)->orWhere('sector_approval', 1)->orWhere('ipqmso_approval', 1)->exists()){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
-        }
-        if(Report::where('report_reference_id', $educID)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 27)
-                ->where('chairperson_approval', null)->orWhere('dean_approval', null)->orWhere('sector_approval', null)->orWhere('ipqmso_approval', null)->exists()){
+        if(LockController::isLocked($id, 27)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         
@@ -62,7 +62,44 @@ class AwardController extends Controller
 
         $colleges = College::all();
 
-        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges'));
+         //HRIS Document 
+         $hrisDocuments = [];
+         $collegeOfDepartment = '';
+         if(LockController::isNotLocked($id, 27) && Report::where('report_reference_id', $id)
+                     ->where('report_quarter', $currentQuarterYear->current_quarter)
+                     ->where('report_year', $currentQuarterYear->current_year)
+                     ->where('report_category_id', 27)->exists()){
+ 
+             $hrisDocuments = HRISDocument::where('hris_form_id', 2)->where('reference_id', $id)->get()->toArray();
+             $report = Report::where('report_reference_id',$id)->where('report_category_id', 27)->first();
+             $report_details = json_decode($report->report_details, true);
+             $description;
+ 
+             foreach($awardFields as $row){
+                 if($row->name == 'description')
+                     $description = $report_details[$row->name];
+             }
+ 
+             if ($report->department_id != null) {
+                 $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$report->department_id.")");
+             }
+             else {
+                 $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+             }
+ 
+             $values = [
+                'award' =>  $awardData[0]->Achievement,
+                'classification' => $awardData[0]->Classification,
+                'awarded_by' => $awardData[0]->AwardedBy,
+                'level' => $awardData[0]->Level,
+                'venue' => $awardData[0]->Venue,
+                'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
+                'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+                 'description' => $description
+             ]; 
+         }
+
+        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
     }
 
     public function save(Request $request, $id){
@@ -129,6 +166,13 @@ class AwardController extends Controller
         }
 
         $currentQuarterYear = Quarter::find(1);
+
+        Report::where('report_reference_id', $id)
+            ->where('report_category_id', 27)
+            ->where('user_id', auth()->id())
+            ->where('report_quarter', $currentQuarterYear->current_quarter)
+            ->where('report_year', $currentQuarterYear->current_year)
+            ->delete();
         
         Report::create([
             'user_id' =>  auth()->id(),
