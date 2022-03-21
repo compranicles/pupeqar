@@ -16,6 +16,7 @@ use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class OfficershipController extends Controller
 {
@@ -35,18 +36,7 @@ class OfficershipController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $id)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 28)
-                ->where('chairperson_approval', 1)->orWhere('dean_approval', 1)->orWhere('sector_approval', 1)->orWhere('ipqmso_approval', 1)->exists()){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
-        }
-        if(Report::where('report_reference_id', $id)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 28)
-                ->where('chairperson_approval', null)->orWhere('dean_approval', null)->orWhere('sector_approval', null)->orWhere('ipqmso_approval', null)->exists()){
+        if(LockController::isLocked($id, 28)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         
@@ -71,7 +61,45 @@ class OfficershipController extends Controller
 
         $colleges = College::all();
 
-        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges'));
+        //HRIS Document 
+        $hrisDocuments = [];
+        $collegeOfDepartment = '';
+        if(LockController::isNotLocked($id, 28) && Report::where('report_reference_id', $id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->where('report_category_id', 28)->exists()){
+
+            $hrisDocuments = HRISDocument::where('hris_form_id', 3)->where('reference_id', $id)->get()->toArray();
+            $report = Report::where('report_reference_id',$id)->where('report_category_id', 28)->first();
+            $report_details = json_decode($report->report_details, true);
+            $description;
+
+            foreach($officeFields as $row){
+                if($row->name == 'description')
+                    $description = $report_details[$row->name];
+            }
+
+            if ($report->department_id != null) {
+                $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$report->department_id.")");
+            }
+            else {
+                $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+            }
+
+            $values = [
+                'organization' =>  $officeData[0]->Organization,
+                'classification' => $officeData[0]->Classification,
+                'position' => $officeData[0]->Position,
+                'level' => $officeData[0]->Level,
+                'orgnization_address' => $officeData[0]->Address,
+                'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
+                'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+                'description' => $description
+            ]; 
+        }
+
+
+        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
     }
 
     public function save(Request $request, $id){
@@ -139,6 +167,13 @@ class OfficershipController extends Controller
         }
 
         $currentQuarterYear = Quarter::find(1);
+
+        Report::where('report_reference_id', $id)
+            ->where('report_category_id', 28)
+            ->where('user_id', auth()->id())
+            ->where('report_quarter', $currentQuarterYear->current_quarter)
+            ->where('report_year', $currentQuarterYear->current_year)
+            ->delete();
         
         Report::create([
             'user_id' =>  auth()->id(),

@@ -17,6 +17,7 @@ use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\Maintenances\LockController;
 
 class EducationController extends Controller
 {
@@ -46,18 +47,7 @@ class EducationController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        if(Report::where('report_reference_id', $educID)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 24)
-                ->where('chairperson_approval', 1)->orWhere('dean_approval', 1)->orWhere('sector_approval', 1)->orWhere('ipqmso_approval', 1)->exists()){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
-        }
-        if(Report::where('report_reference_id', $educID)
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->where('report_category_id', 24)
-                ->where('chairperson_approval', null)->orWhere('dean_approval', null)->orWhere('sector_approval', null)->orWhere('ipqmso_approval', null)->exists()){
+        if(LockController::isLocked($educID, 24)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
         
@@ -85,7 +75,48 @@ class EducationController extends Controller
 
         $colleges = College::all();
 
-        return view('submissions.hris.education.add', compact('educID', 'educationData', 'educFields', 'values', 'colleges'));
+        //HRIS Document 
+        $hrisDocuments = [];
+        $collegeOfDepartment = '';
+        if(LockController::isNotLocked($educID, 24) && Report::where('report_reference_id', $educID)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->where('report_category_id', 24)->exists()){
+
+            $hrisDocuments = HRISDocument::where('hris_form_id', 1)->where('reference_id', $educID)->get()->toArray();
+            $report = Report::where('report_reference_id',$educID)->where('report_category_id', 24)->first();
+            $report_details = json_decode($report->report_details, true);
+            $description;
+
+            foreach($educFields as $row){
+                if($row->name == 'description')
+                    $description = $report_details[$row->name];
+            }
+
+            if ($report->department_id != null) {
+                $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$report->department_id.")");
+            }
+            else {
+                $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+            }
+
+            $values = [
+                'degree' =>  $educationData[0]->Degree,
+                'school_name' => $educationData[0]->SchoolName,
+                'program_level' => $educationData[0]->AccreditationLevel,
+                'support_type' => $educationData[0]->TypeOfSupport,
+                'sponsor_name' => $educationData[0]->Scholarship,
+                'amount' => $educationData[0]->Amount,
+                'from' => $educationData[0]->IncYearFrom,
+                'to' => $educationData[0]->IncYearTo,
+                'status' => $educationData[0]->EnrollmentStatus,
+                'units_earned' => $educationData[0]->UnitsEarned,
+                'units_enrolled' =>$educationData[0]->UnitsEnrolled,
+                'description' => $description
+            ]; 
+        }
+
+        return view('submissions.hris.education.add', compact('educID', 'educationData', 'educFields', 'values', 'colleges' , 'collegeOfDepartment', 'hrisDocuments'));
     }
 
     public function save(Request $request, $educID){
@@ -153,6 +184,13 @@ class EducationController extends Controller
         }
 
         $currentQuarterYear = Quarter::find(1);
+
+        Report::where('report_reference_id', $educID)
+            ->where('report_category_id', 24)
+            ->where('user_id', auth()->id())
+            ->where('report_quarter', $currentQuarterYear->current_quarter)
+            ->where('report_year', $currentQuarterYear->current_year)
+            ->delete();
         
         Report::create([
             'user_id' =>  auth()->id(),
