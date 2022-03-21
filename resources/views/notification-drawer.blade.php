@@ -126,15 +126,15 @@
                                 '<div id="noti-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark">'+
                                 item.data.sender+' invited you as Co-Researcher in a Research titled : "'+item.data.title+'"'+
                                 '</div>'+
-                                '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm notif-row btn-primary mr-2">Confirm</a>'+
-                                '<a href="'+item.data.url_deny+'?id='+item.id+'"class="btn btn-sm notif-row btn-seconday mr-2">Cancel</a></div>'
+                                '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm  btn-primary mr-2">Confirm</a>'+
+                                '<a href="'+item.data.url_deny+'?id='+item.id+'"class="btn btn-sm btn-seconday mr-2">Cancel</a></div>'
                                 +'<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
                             );
                     }
                     else if(item.data.type == 'confirm'){
                         $('#notification-'+countColumns)
                             .append('<td class="notification-seeall-content">'+
-                                '<div id="noti-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
+                                '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
                                 '</div>'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
@@ -189,7 +189,9 @@
             var id = $(this).data("id");
             var url = $(this).data("url")
             // alert(1);
-            window.location.replace('{{ url('') }}'+'/notifications/mark-as-read?u='+url+'&v='+id);
+            if( url != ''){
+                window.location.replace('{{ url('') }}'+'/notifications/mark-as-read?u='+url+'&v='+id);
+            }
         });
     </script>
     <script>
