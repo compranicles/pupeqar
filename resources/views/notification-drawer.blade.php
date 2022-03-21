@@ -179,7 +179,7 @@
 
                 $('#notificationCounter').text(countUnread);
                 if(countUnread > 0){
-                    document.getElementById('notificationCounter').classList.remove('badge-light'); 
+                    document.getElementById('notificationCounter').classList.remove('notif-badge'); 
                     document.getElementById('notificationCounter').classList.add('badge-danger'); 
                 }
             });
@@ -189,6 +189,7 @@
             var id = $(this).data("id");
             var url = $(this).data("url")
             // alert(1);
+
             if( url != ''){
                 window.location.replace('{{ url('') }}'+'/notifications/mark-as-read?u='+url+'&v='+id);
             }

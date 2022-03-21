@@ -67,13 +67,13 @@
                                         @foreach ($reportsToReview as $row)
                                             <tr role="button">
                                                 <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $college_names[$row->id]->name ?? '-' }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $department_names[$row->id]->name ?? '-' }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}"><i class="bi bi-three-dots-vertical"></i></td>
+                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name ?? '-' }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('extensionist.accept', ':id') }}" data-deny="{{ route('extensionist.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -91,7 +91,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
+                <h5 class="modal-title" id="viewReportLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -304,6 +304,10 @@
             $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Receive</a>');
             $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Return</a>');
             
+            var viewReport = document.getElementById('viewReport')
+            var reportCategory = $(this).data('report-category')
+            var modalTitle = viewReport.querySelector('.modal-title')
+            modalTitle.textContent = reportCategory
         });
 
         $('#viewReport').on('hidden.bs.modal', function(event) {

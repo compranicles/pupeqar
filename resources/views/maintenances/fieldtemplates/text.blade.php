@@ -3,6 +3,13 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+                @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
+                    $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
+                    $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author')
+                    <span id="" role="alert" class="ml-3">
+                        <small>[Surname Suffix (if any), First Name M.I]</small>
+                    </span>
+                @endif
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
@@ -23,11 +30,9 @@
                         <small>Required if the previous selection is <em>others</em>.</small>
                     </span>
                 @endif
-                @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
-                    $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
-                    $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author')
+                @if ($fieldInfo->name == 'researchers')
                     <span id="" role="alert">
-                        <small>Surname Suffix (if any), First Name M.I</small>
+                        <small> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. For researchers within PUP, invite them in the research to share them info.' : '' }}</small>
                     </span>
                 @endif
                 @error($fieldInfo->name)
