@@ -18,6 +18,7 @@ class GenerateController extends Controller
 {
     public function index($id, Request $request){
         $reportFormat = $request->input("type_generate");
+        $data = '';
 
         $source_type = '';
         if($request->input("type_generate") == "academic"){
@@ -198,7 +199,18 @@ class GenerateController extends Controller
         $source_generate = $request->input("source_generate");
         $year_generate = $request->input('year_generate');
         $quarter_generate = $request->input('quarter_generate');
-        $cbco = $request->input('cbco');
+        $college = College::where('id', $request->input('cbco'))->first();
+        $file_suffix = '';
+        if ($source_generate == "my") {
+            $cbco = $request->input('cbco');
+            $file_suffix = $data->name.'_'.$college->code.'_'.$year_generate.'_'.$quarter_generate.'_Individual_Report';
+        } elseif ($source_generate == "department") {
+            $cbco = $data->college_id;
+            $file_suffix = $data->name.'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_Report';
+        } elseif ($source_generate == "college") {
+            $cbco = $data->id;
+            $file_suffix = $data->name.'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_Report';
+        }
 
 
         $user = User::where('id', auth()->id())->first('last_name');
@@ -215,6 +227,6 @@ class GenerateController extends Controller
             json_decode($request->input('table_contents_json'), true), 
             json_decode($request->input('table_format_json'), true)), 
             
-            $nameUser.'_Individual_Report.xlsx');
+            $file_suffix.'.xlsx');
     }
 }

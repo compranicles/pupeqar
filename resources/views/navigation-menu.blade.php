@@ -73,14 +73,32 @@
                 </li>
                 @endIsReporting
                 
-                @ExceptSuperAdmin
+                @ExceptSuperAdminAndSectorAndIpo
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                     
                 </li>
-                @endExceptSuperAdmin
+                @endExceptSuperAdminAndSectorAndIpo
+
+                @sectorHead
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{  route('sector.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
+                        {{ __('Reports') }}
+                    </x-jet-nav-link>
+                    
+                </li>
+                @endsectorHead
+
+                @ipqmso
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{  route('ipqmso.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
+                        {{ __('Reports') }}
+                    </x-jet-nav-link>
+                    
+                </li>
+                @endipqmso
             </ul>
             
             <!-- Right Side Of Navbar -->
@@ -89,7 +107,7 @@
                 <!-- Settings Dropdown -->
                 @auth
                     <li class="nav-item" id="notificationDropdown">
-                        <a id="notificationLink" class="nav-link notif-row" role="button"><i class="fas fa-bell"></i> <span class="badge notif-badge" id="notificationCounter">0</span></a>
+                        <a id="notificationLink" class="nav-link" role="button"><i class="fas fa-bell"></i> <span class="badge notif-badge" id="notificationCounter">0</span></a>
                         <div class="notifDiv animate slideIn dropdown-menu-right">
                             <div class="row">
                                 <div class="col-md-12 notif-scrollable">

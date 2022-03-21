@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('report.generate.index', $data->id) }}" method="post">
+                <form action="{{ route('report.generate.index', $data->id ?? '') }}" method="post" id="generate_form">
                     @csrf
                     <input type="hidden" name="source_generate" value="{{ $source_type }}">
                     <div class="form-group">
@@ -21,6 +21,7 @@
                         </select>
                     </div>
                     <!-- CBCO (College/Branch/Campus/Office) -->
+                    @if($source_type == "my" || $special_type == 'sector')
                     <div class="form-group">
                         <label for="cbco">College/Branch/Campus/Office</label>
                         <select name="cbco" id="cbco" class="form-control" required>
@@ -30,6 +31,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
                     <div class="form-group">
                         <label for="quarter_generate">Quarter</label>
                         <select name="quarter_generate" id="quarter_generate" class="form-control">
@@ -68,6 +70,16 @@
             if (year == i) {
                 document.getElementById("year_generate").value = i;
             }
+        }
+        
+        var special = '{{ $special_type ?? "" }}';
+        if(special != ''){
+            $(document).on('change', '#cbco', function() {
+                var collegeID = $('#cbco option:selected').val();
+                var url = "{{ route('report.generate.index', ':id') }}";
+                var replace = url.replace(':id', collegeID);
+                $('#generate_form').attr('action', replace);
+            });
         }
     </script>
 @endpush

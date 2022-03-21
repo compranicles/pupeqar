@@ -17,7 +17,8 @@ class GetRolesByUserId extends Migration
         CREATE PROCEDURE `get_roles_by_user_id` (userID INT)
         BEGIN
         SELECT user_roles.role_id FROM user_roles
-                    WHERE user_roles.user_id = userID;
+                    WHERE user_roles.user_id = userID AND
+                    user_roles.deleted_at IS null;
         END;";
 
         DB::unprepared($procedure);

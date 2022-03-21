@@ -1,6 +1,7 @@
 {{-- My Accomplishments --}}
+@if (!in_array(7,$roles))
 <a href="{{ route('reports.consolidate.myaccomplishments') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.myaccomplishments') || request()->routeIs('reports.consolidate.myaccomplishments.*') ? 'active' : '' }} ">My Accomplishments</a>
-
+@endif
 {{-- Departments' --}}
 @if (in_array(5, $roles))
     <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Review - Department</a>   

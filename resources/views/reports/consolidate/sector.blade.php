@@ -18,7 +18,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>{{ $sector->name }} - Accomplishments</h5>
+                    <h5 class="d-inline-block" style="padding-top: 10px;">{{ $sector->name }} - Accomplishments</h5>
+                    <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                 </div>
             </div>
             <hr>
@@ -319,6 +320,8 @@
         </div>
     </div>
 
+    @include('reports.generate.index', ['source_type' => 'college', 'special_type' => 'sector', 'colleges' => $collegesOfSector])
+    
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
@@ -478,9 +481,9 @@
                 // var returned = $('td:contains(Returned)');
                 // document.getElementById('badge-returned').innerHTML = returned.length;
                 //Count the returned accomplishments shown in badge in Returned tab
-                var tbl =  $('#college_accomplishments_in_sector_table').DataTable().search("Returned");
-                var count = tbl.$('tr', {"filter":"applied"}).length;
-                document.getElementById('badge-returned').innerHTML = count;
+                // var tbl =  $('#college_accomplishments_in_sector_table').DataTable().search("Returned");
+                // var count = tbl.$('tr', {"filter":"applied"}).length;
+                // document.getElementById('badge-returned').innerHTML = count;
             });
         </script>
     @endpush

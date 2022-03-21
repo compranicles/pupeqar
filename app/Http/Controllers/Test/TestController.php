@@ -43,35 +43,36 @@ class TestController extends Controller
         // echo $i++;
         // var_dump($data);
 
-        $researches = Research::whereIn('nature_of_involvement', [11, 224])->where('status', 27)->get();
+        // $researches = Research::whereIn('nature_of_involvement', [11, 224])->where('status', 27)->get();
 
 
-        foreach ($researches as $research){
-            $target_date = new DateTime($research->target_date);
-            $current_date = new DateTime(date('Y-m-d'));
-            $interval = $current_date->diff($target_date);
-            if($interval->days < 30){
-                $user = User::find($research->user_id);
-                $url = route('research.show', $research->id);
+        // foreach ($researches as $research){
+        //     $target_date = new DateTime($research->target_date);
+        //     $current_date = new DateTime(date('Y-m-d'));
+        //     $interval = $current_date->diff($target_date);
+        //     if($interval->days < 30){
+        //         $user = User::find($research->user_id);
+        //         $url = route('research.show', $research->id);
 
-                $notificationData = [
-                    'sender' => 'PUP eQAR',
-                    'receiver' => $user->first_name,
-                    'url' => $url,
-                    'research_title' => $research->title,
-                    'research_code' => $research->research_code,
-                    'target_date' => $target_date->format('F j, Y'),
-                    'user_id' => $user->id,
-                    'days_remaining' => $interval->days,
-                    'type' => 'research',
-                    'date' => date('F j, Y, g:i a'),
-                ];
+        //         $notificationData = [
+        //             'sender' => 'PUP eQAR',
+        //             'receiver' => $user->first_name,
+        //             'url' => $url,
+        //             'research_title' => $research->title,
+        //             'research_code' => $research->research_code,
+        //             'target_date' => $target_date->format('F j, Y'),
+        //             'user_id' => $user->id,
+        //             'days_remaining' => $interval->days,
+        //             'type' => 'research',
+        //             'date' => date('F j, Y, g:i a'),
+        //         ];
 
-                Notification::send($user, new ResearchNotification($notificationData));
+        //         Notification::send($user, new ResearchNotification($notificationData));
                 
-            }
-        }
+        //     }
+        // }
 
-        return true;
+        // return true;
+
     }
 }

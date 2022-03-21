@@ -464,9 +464,9 @@
                 // var returned = $('td:contains(Returned)');
                 // document.getElementById('badge-returned').innerHTML = returned.length;
                 //Count the returned accomplishments shown in badge in Returned tab
-                var tbl =  $('#college_accomplishments_table').DataTable().search("Returned");
-                var count = tbl.$('tr', {"filter":"applied"}).length;
-                document.getElementById('badge-returned').innerHTML = count;
+                // var tbl =  $('#college_accomplishments_table').DataTable().search("Returned");
+                // var count = tbl.$('tr', {"filter":"applied"}).length;
+                // document.getElementById('badge-returned').innerHTML = count;
             });
         </script>
         <script>
