@@ -3,7 +3,7 @@ $(document).ready(function() {
         autoclose: true,
         format: 'mm/dd/yyyy',
         immediateUpdates: true,
-        todayBtn: "linked",
+        // todayBtn: "linked",
         todayHighlight: true,    
     });
 });

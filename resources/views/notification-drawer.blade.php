@@ -160,7 +160,7 @@
 
                 $('#notificationCounter').text(countUnread);
                 if(countUnread > 0){
-                    document.getElementById('notificationCounter').classList.remove('badge-light'); 
+                    document.getElementById('notificationCounter').classList.remove('notif-badge'); 
                     document.getElementById('notificationCounter').classList.add('badge-danger'); 
                 }
             });
@@ -172,7 +172,7 @@
                 $('.noti-message').removeClass("font-weight-bold");
                 $('#notificationCounter').text("0");
                 document.getElementById('notificationCounter').classList.remove('badge-danger'); 
-                document.getElementById('notificationCounter').classList.add('badge-light'); 
+                document.getElementById('notificationCounter').classList.add('notif-badge'); 
             });
         });
     </script>

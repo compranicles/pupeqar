@@ -15,7 +15,7 @@ class DocumentDescriptionSeeder extends Seeder
     public function run()
     {
         //Research Regi
-        // DocumentDescription::truncate();
+        DocumentDescription::truncate();
         DocumentDescription::create([
             'report_category_id' => 1,
             'name' => 'MOA',

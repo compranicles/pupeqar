@@ -89,7 +89,7 @@
                 <!-- Settings Dropdown -->
                 @auth
                     <li class="nav-item" id="notificationDropdown">
-                        <a id="notificationLink" class="nav-link" role="button"><i class="fas fa-bell"></i> <span class="badge notif-badge" id="notificationCounter">0</span></a>
+                        <a id="notificationLink" class="nav-link notif-row" role="button"><i class="fas fa-bell"></i> <span class="badge notif-badge" id="notificationCounter">0</span></a>
                         <div class="notifDiv animate slideIn dropdown-menu-right">
                             <div class="row">
                                 <div class="col-md-12 notif-scrollable">

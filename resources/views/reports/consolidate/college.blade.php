@@ -17,13 +17,11 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-11">
-                    <h5>{{ $college->name }} - Consolidated Accomplishments</h5>
+                <div class="col-md-12">
+                    <h5 class="d-inline-block" style="padding-top: 10px;">{{ $college->name }} - Consolidated Accomplishments</h5>
+                    <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                 </div>
                 {{-- Generate Report Button --}}
-                <div class="col-md-1 ml-auto">
-                    <button id="generate" type="button" class="btn btn-primary btn-sm" data-target="#reportGenerate" data-toggle="modal">Generate Report</button>
-                </div>
             </div>
             <hr>
             <div class="row">
@@ -91,12 +89,12 @@
                             <tbody>
                                 @forelse ($college_accomps as $row)
                                 <tr role="button">
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $loop->iteration }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                    {{--<td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $college_names[$row->id]->name }}</td>--}}
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                    {{--<td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name }}</td>--}}
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 Receiving...
@@ -108,7 +106,7 @@
                                         @else
                                         @endif
                                     </td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                             @if ($row->extensionist_approval == null)
                                                 Receiving...
@@ -120,7 +118,7 @@
                                         @else
                                         @endif
                                     </td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 -
@@ -159,7 +157,7 @@
                                             @endif
                                         @endif      
                                     </td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->chairperson_approval === 0)
                                             -
                                         @elseif ($row->chairperson_approval === null)
@@ -174,7 +172,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->dean_approval === 0)
                                             -
                                         @elseif ($row->dean_approval === null)
@@ -189,7 +187,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->sector_approval === 0)
                                             -
                                         @elseif ($row->sector_approval === null)
@@ -260,7 +258,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel">View Submission</h5>
+                <h5 class="modal-title" id="viewReportLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -392,6 +390,10 @@
                     });
                 });
                 
+                var viewReport = document.getElementById('viewReport')
+                var reportCategory = $(this).data('report-category')
+                var modalTitle = viewReport.querySelector('.modal-title')
+                modalTitle.textContent = reportCategory
             });
 
             $(document).on('click', '.button-deny', function () {

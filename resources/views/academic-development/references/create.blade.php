@@ -43,6 +43,19 @@
                 var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
                 $("#authors_compilers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#authors_compilers")[0].selectize.addItem(fullname);
+
+            });
+        </script>
+         <script>
+            $('#date_started').on('change', function () {
+                $('#date_completed').datepicker('setDate', $('#date_started').val());
+                $('#date_completed').datepicker('setStartDate', $('#date_started').val());
+                $('#date_published').datepicker('setStartDate', $('#date_completed').val());
+            });
+        </script>
+        <script>
+            $('#date_completed').on('change', function () {
+                $('#date_published').datepicker('setStartDate', $('#date_completed').val());
             });
         </script>
         <script>

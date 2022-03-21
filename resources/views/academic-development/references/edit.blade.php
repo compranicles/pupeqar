@@ -149,6 +149,17 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
+            $('#date_started').on('change', function () {
+                $('#date_completed').datepicker('setStartDate', $('#date_started').val());
+                $('#date_published').datepicker('setStartDate', $('#date_completed').val());
+            });
+        </script>
+        <script>
+            $('#date_completed').on('change', function () {
+                $('#date_published').datepicker('setStartDate', $('#date_completed').val());
+            });
+        </script>
+        <script>
             var report_category_id = 15;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get('/document-upload/description/'+report_category_id, function (data){
