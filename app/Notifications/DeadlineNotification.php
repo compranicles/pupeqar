@@ -60,7 +60,7 @@ class DeadlineNotification extends Notification
         return [
             'sender' => $this->notificationData['sender'],
             'receiver' => $this->notificationData['receiver'],
-            'url' => $this->notificationData['url'],
+            'url' => urlencode($this->notificationData['url']),
             'deadline_date' => $this->notificationData['deadline_date'],
             'user_id' => $this->notificationData['user_id'],
             'days_remaining' => $this->notificationData['days_remaining'],

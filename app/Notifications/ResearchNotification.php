@@ -61,7 +61,7 @@ class ResearchNotification extends Notification
         return [
             'sender' => $this->notificationData['sender'],
             'receiver' => $this->notificationData['receiver'],
-            'url' => $this->notificationData['url'],
+            'url' => urlencode($this->notificationData['url']),
             'research_title' => $this->notificationData['research_title'],
             'research_code' => $this->notificationData['research_code'],
             'target_date' => $this->notificationData['target_date'],

@@ -79,6 +79,8 @@ class InviteController extends Controller
     public function confirm($research_id, Request $request){
 
         \LogActivity::addToLog('Research Invitation Confirmed.');
+
+        $user->notifications->where('id', $request->get('id'))->markAsRead();
         
         return redirect()->route('research.code.create', ['research_id' => $research_id, 'id' => $request->get('id') ]);
     }
@@ -88,6 +90,8 @@ class InviteController extends Controller
             'status' => 0
         ]);
 
+        $user->notifications->where('id', $request->get('id'))->markAsRead();
+        
         \LogActivity::addToLog('Research Invitation Cancelled.');
 
         return redirect()->route('research.index')->with('success', 'Invitation cancelled');

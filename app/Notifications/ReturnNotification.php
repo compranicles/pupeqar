@@ -79,7 +79,7 @@ class ReturnNotification extends Notification
             return [
                 'type' => 'returned',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],
@@ -91,7 +91,7 @@ class ReturnNotification extends Notification
             return [
                 'type' => 'returned',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],
@@ -103,7 +103,7 @@ class ReturnNotification extends Notification
             return [
                 'type' => 'returned',
                 'sender' => $this->notificationData['sender'],
-                'url' => $this->notificationData['url'],
+                'url' => urlencode($this->notificationData['url']),
                 'category_name' => $this->notificationData['category_name'],
                 'user_id' => $this->notificationData['user_id'],
                 'reason' => $this->notificationData['reason'],

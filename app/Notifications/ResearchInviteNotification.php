@@ -70,8 +70,8 @@ class ResearchInviteNotification extends Notification
                 'receiver' => $this->notificationData['receiver'],
                 'title' => $this->notificationData['title'],
                 'sender' =>  $this->notificationData['sender'],
-                'url_accept' =>  $this->notificationData['url_accept'],
-                'url_deny' =>  $this->notificationData['url_deny'],
+                'url_accept' => urlencode($this->notificationData['url_accept']),
+                'url_deny' =>  urlencode($this->notificationData['url_deny']),
                 'date' => $this->notificationData['date'],
                 'type' => $this->notificationData['type']
             ];
@@ -80,7 +80,7 @@ class ResearchInviteNotification extends Notification
                 'receiver' => $this->notificationData['receiver'],
                 'title' => $this->notificationData['title'],
                 'sender' =>  $this->notificationData['sender'],
-                'url' =>  $this->notificationData['url'],
+                'url' =>  urlencode($this->notificationData['url']),
                 'date' => $this->notificationData['date'],
                 'type' => $this->notificationData['type']
             ];
