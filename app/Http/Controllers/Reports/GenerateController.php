@@ -13,6 +13,7 @@ use App\Models\Maintenance\GenerateTable;
 use App\Models\Maintenance\GenerateColumn;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\IndividualAccomplishmentReportExport;
+use App\Exports\DepartmentConsolidatedReportExport;
 
 class GenerateController extends Controller
 {
@@ -204,29 +205,40 @@ class GenerateController extends Controller
         if ($source_generate == "my") {
             $cbco = $request->input('cbco');
             $file_suffix = $data->name.'_'.$college->code.'_'.$year_generate.'_'.$quarter_generate.'_Individual_Report';
+            $user = User::where('id', auth()->id())->first('last_name');
+            $nameUser = $user->last_name;
+            return Excel::download(new IndividualAccomplishmentReportExport(
+                $source_type, 
+                $reportFormat, 
+                $source_generate,
+                $year_generate,
+                $quarter_generate,
+                $cbco, 
+                $id, 
+                json_decode($request->input('table_columns_json'), true), 
+                json_decode($request->input('table_contents_json'), true), 
+                json_decode($request->input('table_format_json'), true)), 
+                
+                $file_suffix.'.xlsx');
         } elseif ($source_generate == "department") {
             $cbco = $data->college_id;
             $file_suffix = $data->name.'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_Report';
+            return Excel::download(new DepartmentConsolidatedReportExport(
+                $source_type, 
+                $reportFormat, 
+                $source_generate,
+                $year_generate,
+                $quarter_generate,
+                $cbco, 
+                $id, 
+                json_decode($request->input('table_columns_json'), true), 
+                json_decode($request->input('table_contents_json'), true), 
+                json_decode($request->input('table_format_json'), true)), 
+                
+                $file_suffix.'.xlsx');
         } elseif ($source_generate == "college") {
             $cbco = $data->id;
             $file_suffix = $data->name.'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_Report';
         }
-
-
-        $user = User::where('id', auth()->id())->first('last_name');
-        $nameUser = $user->last_name;
-        return Excel::download(new IndividualAccomplishmentReportExport(
-            $source_type, 
-            $reportFormat, 
-            $source_generate,
-            $year_generate,
-            $quarter_generate,
-            $cbco, 
-            $id, 
-            json_decode($request->input('table_columns_json'), true), 
-            json_decode($request->input('table_contents_json'), true), 
-            json_decode($request->input('table_format_json'), true)), 
-            
-            $file_suffix.'.xlsx');
     }
 }

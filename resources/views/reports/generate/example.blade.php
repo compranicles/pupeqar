@@ -25,7 +25,7 @@
                     <thead> 
                         <tr>
                             @if ($format->is_individual == "1" && $source_type != "individual")
-                            <th>Department</th>
+                            <!-- <th>Department</th> -->
                             <th>Name of the Employee</th>
                             @endif
                             @if ($source_type == "individual")
@@ -36,6 +36,10 @@
                             @foreach ($table_columns[$format->id] as $column)
                                 <th>{{ $column['name'] }}</th>
                             @endforeach
+                            @if ($source_type != "individual")
+                                <th>Supporting Evidence Verified By</th>
+                                <th>Status of Supporting Documents</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
