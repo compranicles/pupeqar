@@ -178,5 +178,19 @@ class AppServiceProvider extends ServiceProvider
                 return 0;
             }
         });
+
+        Blade::if('Reviewer', function () {            
+            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())
+            ->whereIn('user_roles.role_id', [5, 6, 7, 8, 10, 11])
+            ->first();
+            
+            // dd($is_superadmin);
+            if ($is_ipqmso != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
     }
 }

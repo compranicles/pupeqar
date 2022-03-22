@@ -75,6 +75,8 @@ Route::group(['middleware' => 'auth'], function() {
     // 3. Sectors
     Route::get('/maintenances/sectors', [\App\Http\Controllers\Maintenances\SectorController::class , 'index'])->name('sectors.maintenance.index');
     Route::get('/maintenances/sectors/sync', [\App\Http\Controllers\Maintenances\SectorController::class, 'sync'])->name('sectors.maintenance.sync');
+    Route::get('/maintenances/sectors/name/{collegeID}', [\App\Http\Controllers\Maintenances\SectorController::class, 'getSectorName'])->name('sectors.name');
+
     //4. Type/Format of Reports (e.g. Academic and Admin)
     Route::get('/maintenances/generate/types', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'index'])->name('maintenance.generate.type');
     Route::get('/maintenances/generate/type/{type}/manage', [\App\Http\Controllers\Maintenances\GenerateTypeController::class, 'view'])->name('maintenance.generate.view');
@@ -366,13 +368,16 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');
     Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'save'])->name('submissions.award.save');
 
+    /* USER ACCOUNT */
+    Route::resource('/offices', \App\Http\Controllers\User\EmployeeController::class);
+    Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
+    
     /* PROFILE (SYNCHRONIZED WITH HRIS) */
     Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
     Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
     Route::get('/profile/educational-background', [\App\Http\Controllers\User\ProfileController::class, 'educationalBackground'])->name('profile.educationalBackground');
     Route::get('/profile/educational-degree', [\App\Http\Controllers\User\ProfileController::class, 'educationalDegree'])->name('profile.educationalDegree');
     Route::get('/profile/professional-study', [\App\Http\Controllers\User\ProfileController::class, 'professionalStudy'])->name('profile.professionalStudy');
-    Route::get('/profile/teaching-discipline', [\App\Http\Controllers\User\ProfileController::class, 'teaching'])->name('profile.teaching');
     Route::get('/profile/eligibility', [\App\Http\Controllers\User\ProfileController::class, 'eligibility'])->name('profile.eligibility');
     Route::get('/profile/work-experience', [\App\Http\Controllers\User\ProfileController::class, 'workExperience'])->name('profile.workExperience');
     Route::get('/profile/work-experience/{id}', [\App\Http\Controllers\User\ProfileController::class, 'workExperienceView'])->name('profile.workExperience.view');
