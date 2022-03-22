@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Reports\Consolidate;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\SectorHead;
 use App\Models\Chairperson;
+use Illuminate\Http\Request;
 use App\Models\FacultyResearcher;
+use Illuminate\Support\Facades\DB;
 use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\DB;
 use App\Models\Authentication\UserRole;
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
@@ -30,16 +31,10 @@ class DepartmentConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        $currentMonth = date('m');
-        $year = "default";
-        if ($currentMonth <= 3 && $currentMonth >= 1) 
-            $quarter = 1;
-        if ($currentMonth <= 6 && $currentMonth >= 4)
-            $quarter = 2;
-        if ($currentMonth <= 9 && $currentMonth >= 7)
-            $quarter = 3;
-        if ($currentMonth <= 12 && $currentMonth >= 10) 
-            $quarter = 4;
+        
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
         
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -75,8 +70,8 @@ class DepartmentConsolidatedController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
-                ->whereYear('reports.updated_at', date('Y'))
-                ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.department_id', $id)->get();
 
         //get_department_and_college_name
@@ -103,7 +98,7 @@ class DepartmentConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.department', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'quarter', 'year')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter')
                 );
     }
 
@@ -118,7 +113,7 @@ class DepartmentConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-  
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -153,8 +148,8 @@ class DepartmentConsolidatedController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
-                ->whereYear('reports.updated_at', $year)
-                ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.department_id', $dept)->get();
 
         //get_department_and_college_name

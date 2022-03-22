@@ -17,25 +17,18 @@ use App\Models\{
 use App\Models\Maintenance\{
     College,
     Department,
-    ReportCategory
+    ReportCategory,
+    Quarter
 };
 use App\Models\Authentication\UserRole;
 
 class MyAccomplishmentController extends Controller
 {
     public function index() {
-        $currentMonth = date('m');
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
 
-        if ($currentMonth <= 3 && $currentMonth >= 1) 
-            $quarter = 1;
-        if ($currentMonth <= 6 && $currentMonth >= 4)
-            $quarter = 2;
-        if ($currentMonth <= 9 && $currentMonth >= 7)
-            $quarter = 3;
-        if ($currentMonth <= 12 && $currentMonth >= 10) 
-            $quarter = 4;
-
-        $year = "default";
         $user = User::find(auth()->id());
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
@@ -74,8 +67,8 @@ class MyAccomplishmentController extends Controller
                             'report_categories.name as report_category', 
                         )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-                ->whereYear('reports.updated_at', date('Y'))
-                ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.user_id', auth()->id())
                 ->orderBy('reports.updated_at')
                 ->get(); //get my individual accomplishment
@@ -161,8 +154,8 @@ class MyAccomplishmentController extends Controller
                             'report_categories.name as report_category', 
                             )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-                ->whereYear('reports.updated_at', $year)
-                ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.user_id', auth()->id())->get(); //get my individual accomplishment
 
             //get_department_and_college_name

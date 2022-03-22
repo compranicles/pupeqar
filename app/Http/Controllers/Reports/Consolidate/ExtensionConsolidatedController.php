@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Reports\Consolidate;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\SectorHead;
 use App\Models\Chairperson;
+use Illuminate\Http\Request;
 use App\Models\FacultyResearcher;
 use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use App\Services\ManageConsolidatedReportAuthorizationService;
@@ -29,6 +30,10 @@ class ExtensionConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
         
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -65,6 +70,8 @@ class ExtensionConsolidatedController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
                 ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.department_id', $id)->get();
 
         //get_department_and_college_name
@@ -91,7 +98,7 @@ class ExtensionConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.extension', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter')
                 );
     }
 }

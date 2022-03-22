@@ -23,6 +23,10 @@ class ResearchConsolidatedController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
+
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
         
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
@@ -66,6 +70,8 @@ class ResearchConsolidatedController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
                 ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.department_id', $id)->get();
         //get_department_and_college_name
         $college_names = [];
@@ -90,7 +96,7 @@ class ResearchConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.research', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter')
                 );
     }
 }

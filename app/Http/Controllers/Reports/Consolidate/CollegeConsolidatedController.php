@@ -12,7 +12,8 @@ use App\Models\{
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\{
     College,
-    Department
+    Department,
+    Quarter
 };
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
@@ -31,16 +32,9 @@ class CollegeConsolidatedController extends Controller
         $departmentsResearch = [];
         $departmentsExtension = [];
 
-        $currentMonth = date('m');
-        $year = "default";
-        if ($currentMonth <= 3 && $currentMonth >= 1) 
-            $quarter = 1;
-        if ($currentMonth <= 6 && $currentMonth >= 4)
-            $quarter = 2;
-        if ($currentMonth <= 9 && $currentMonth >= 7)
-            $quarter = 3;
-        if ($currentMonth <= 12 && $currentMonth >= 10) 
-            $quarter = 4;
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
 
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -76,8 +70,8 @@ class CollegeConsolidatedController extends Controller
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'users.id', 'reports.user_id')
-                ->whereYear('reports.updated_at', date('Y'))
-                ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                ->where('reports.report_year', $year)
+                ->where('reports.report_quarter', $quarter)
                 ->where('reports.college_id', $id)->get();
 
         //get_department_and_college_name
@@ -104,7 +98,7 @@ class CollegeConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.college', 
-                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
+                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
                 );
     }
     
@@ -154,8 +148,8 @@ class CollegeConsolidatedController extends Controller
                             )
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                     ->join('users', 'users.id', 'reports.user_id')
-                    ->whereYear('reports.updated_at', $year)
-                    ->where(DB::raw('QUARTER(reports.updated_at)'), $quarter)
+                    ->where('reports.report_year', $year)
+                    ->where('reports.report_quarter', $quarter)
                     ->where('reports.college_id', $college)->get();
 
             //get_department_and_college_name
@@ -182,7 +176,7 @@ class CollegeConsolidatedController extends Controller
 
             return view(
                         'reports.consolidate.college', 
-                        compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
+                        compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
                     );
         }
     }
