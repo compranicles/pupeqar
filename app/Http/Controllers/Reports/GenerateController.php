@@ -43,8 +43,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.department_id', $department_id)
                             ->where('reports.chairperson_approval', 1)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
@@ -71,8 +71,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.college_id', $college_id)
                             ->where('reports.dean_approval', 1)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
@@ -97,8 +97,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->where('reports.user_id', $user_id)
                             ->where('reports.college_id', $request->input('cbco'))
                             ->join('users', 'users.id', 'reports.user_id')
@@ -131,8 +131,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.department_id', $department_id)
                             ->where('reports.chairperson_approval', 1)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
@@ -159,8 +159,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.college_id', $college_id)
                             ->where('reports.dean_approval', 1)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
@@ -185,8 +185,8 @@ class GenerateController extends Controller
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
-                            ->whereYear('reports.updated_at', $request->input('year_generate'))
-                            ->where(DB::raw('QUARTER(reports.updated_at)'), $request->input('quarter_generate'))
+                            ->where('reports.report_year', $request->input('year_generate'))
+                            ->where('reports.report_quarter', $request->input('quarter_generate'))
                             ->where('reports.user_id', $user_id)
                             ->where('reports.college_id', $request->input('cbco'))
                             ->join('users', 'users.id', 'reports.user_id')
