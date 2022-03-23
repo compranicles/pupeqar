@@ -8,6 +8,7 @@ use Illuminate\Facades\Storage;
 
 class UploadController extends Controller
 {
+    //Make sure that the input name in views is "document"
     public function store(Request $request){
         if($request->hasFile('document')){
             $files = $request->file('document');

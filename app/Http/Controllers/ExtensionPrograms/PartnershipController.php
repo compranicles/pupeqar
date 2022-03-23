@@ -4,7 +4,10 @@ namespace App\Http\Controllers\ExtensionPrograms;
 
 use App\Models\Partnership;
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee
+};
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -59,7 +62,8 @@ class PartnershipController extends Controller
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+
         return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges'));
     }
 
@@ -184,14 +188,11 @@ class PartnershipController extends Controller
 
         $values = $partnership->toArray();
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
 
-
-
         return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
-
     }
 
     /**

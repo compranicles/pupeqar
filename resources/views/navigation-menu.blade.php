@@ -132,6 +132,10 @@
 
                         <x-slot name="content">
                             <!-- Account Management -->
+                            <x-jet-dropdown-link href="{{ route('account') }}">
+                                {{ __('Account') }}
+                            </x-jet-dropdown-link>
+                            
                             <x-jet-dropdown-link href="{{ route('profile.personal') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>

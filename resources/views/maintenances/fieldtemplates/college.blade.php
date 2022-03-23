@@ -22,7 +22,11 @@
                 @endforeach
                
             </select>
-            
+            <!-- @if ($colleges !== []) -->
+            <span id="" role="alert">
+                <small><a href="{{ route('offices.create') }}" style="color: maroon;">Add College/Branch/Campus/Offices Where You Are Reporting.</a></small>
+            </span>
+            <!-- @endif -->
             @error($fieldInfo->name)
                 <span class='invalid-feedback' role="alert">
                     <strong>{{ $message }}</strong>
@@ -46,7 +50,6 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#department_id").append(new Option(item.name, item.id));
-                        
                     });
                 }
                 <?php if (old($fieldInfo->name) == '') { ?>
