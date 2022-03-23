@@ -45,6 +45,8 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
     Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
     Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
+    Route::get('/notifications/count-not-viewed', [\App\Http\Controllers\NotificationController::class, 'getCount']);
+    Route::get('/notifications/count-reset', [\App\Http\Controllers\NotificationController::class, 'resetCount']);
 
     /* ACTIVITY LOG */
     Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);

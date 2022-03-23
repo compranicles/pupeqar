@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Notification\ReturnNotification;
 use Illuminate\Support\Facades\DB;
+use App\Models\NotificationCounter;
+use App\Models\Notification\ReturnNotification;
 
 class NotificationController extends Controller
 {
@@ -32,5 +33,17 @@ class NotificationController extends Controller
 
     public function seeAll() {
         return view('notification-see-all');
+    }
+
+    public function getCount(){
+        return NotificationCounter::where('user_id', auth()->id())->pluck('count')->first();
+    }
+
+    public function resetCount(){
+        NotificationCounter::where('user_id', auth()->id())->update([
+            'count' => 0
+        ]);
+        
+        return 0;
     }
 }

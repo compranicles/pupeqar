@@ -39,7 +39,7 @@
         $(function(){
             getNotifications();
 
-            setInterval(getNotifications, 60000);
+            setInterval(getNotifications, 30000);
         });
 
         function getNotifications(){
@@ -60,11 +60,11 @@
                     if(item.data.type == 'received'){
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
-                            .append(
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">received</span> your '+item.data.category_name+' accomplishment.'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
-                                '</div>'
+                                '</div></td>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'department'){
@@ -79,43 +79,43 @@
                         }
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
-                            .append(
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
-                                '</div>'
+                                '</div></td>'
                             );
                         }
                     }
                     else if(item.data.type == 'returned'){
                         if(item.data.accomplishment_type == 'individual'){
                             $('#notification-'+countColumns)
-                            .append(
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> your '+item.data.category_name+' accomplishment.'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
-                                '</div>'
+                                '</div></td>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'department'){
                             $('#notification-'+countColumns)
-                            .append(
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
-                                '</div>'
+                                '</div></td>'
                             );
                         }
                         else if(item.data.accomplishment_type == 'college'){
                             $('#notification-'+countColumns)
-                            .append(
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
-                                '</div>'
+                                '</div></td>'
                             );
                         }
                     }
@@ -133,7 +133,7 @@
                     }
                     else if(item.data.type == 'confirm'){
                         $('#notification-'+countColumns)
-                            .append('<td class="notification-seeall-content">'+
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark p-2">'+
                                 item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
                                 '</div>'+
@@ -142,7 +142,7 @@
                     }
                     else if(item.data.type == 'research'){
                         $('#notification-'+countColumns)
-                            .append('<td class="notification-seeall-content">'+
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark">'+
                                     'Your research titled '+item.data.research_title+' is due on '+item.data.target_date+'.'+
                                 '</div>'+
@@ -151,7 +151,7 @@
                     }
                     else if(item.data.type == 'deadline'){
                         $('#notification-'+countColumns)
-                            .append('<td class="notification-seeall-content">'+
+                            .append('<td class="notification-content">'+
                                 '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-row noti-message text-dark">'+
                                     'Please be informed that the deadline of submission of eQAR is on '+item.data.deadline_date+'.'+
                                     ' You only have '+item.data.days_remaining+' day/s remaining to finalize.'+
@@ -176,12 +176,20 @@
                         .append('<td class="notification-content text-center text-dark">No Notifications</td>');
                         $('.see_all_div').remove();
                 }
+            });
 
-                $('#notificationCounter').text(countUnread);
-                if(countUnread > 0){
+            $.get('/notifications/count-not-viewed', function (data){
+
+                $('#notificationCounter').text(data);
+                if(data > 0){
                     document.getElementById('notificationCounter').classList.remove('notif-badge'); 
                     document.getElementById('notificationCounter').classList.add('badge-danger'); 
                 }
+                else{
+                    document.getElementById('notificationCounter').classList.add('notif-badge'); 
+                    document.getElementById('notificationCounter').classList.remove('badge-danger'); 
+                }
+
             });
         }
 
@@ -197,6 +205,21 @@
     <script>
         $('#notificationLink').on('click', function() {
             $( this ).toggleClass("active");
+
+            $.get('/notifications/count-reset', function (data){
+
+                $('#notificationCounter').text(data);
+                if(data > 0){
+                    document.getElementById('notificationCounter').classList.remove('notif-badge'); 
+                    document.getElementById('notificationCounter').classList.add('badge-danger'); 
+                }
+                else{
+                    document.getElementById('notificationCounter').classList.add('notif-badge'); 
+                    document.getElementById('notificationCounter').classList.remove('badge-danger'); 
+                }
+
+            });
+
         });
     </script>
     <script>
