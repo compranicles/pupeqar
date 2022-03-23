@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\IPCR;
 
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee
+};
 use App\Models\RequestDocument;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -61,7 +64,8 @@ class RequestController extends Controller
                         ->where('i_p_c_r_fields.i_p_c_r_form_id', 1)->where('i_p_c_r_fields.is_active', 1)
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
-        $colleges = College::all();
+
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         
         return view('ipcr.request.create', compact('requestFields', 'colleges'));
     }
@@ -168,7 +172,7 @@ class RequestController extends Controller
 
         $documents = RequestDocument::where('request_id', $request->id)->get()->toArray();
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges'));
     }

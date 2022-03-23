@@ -33,6 +33,6 @@ class AccountController extends Controller
                                 ->select('employees.id', 'sectors.name as sectorName', 'colleges.name as collegeName')
                                 ->get();
 
-        return view('account', compact('accountDetail', 'employeeDetail', 'roles', 'employeeSectorsCbcoDepartment'));
+        return view('account', compact('accountDetail', 'employeeDetail', 'roles', 'employeeSectorsCbcoDepartment', 'user'));
     }
 }

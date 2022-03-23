@@ -64,7 +64,37 @@
                                 </div>
                             </div>
                         </div>
-                        @if (in_array())
+                        <form action="{{ route('account.signature.save') }}" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="">Signature </label>
+                                        <input type="file" 
+                                        class="{{ $errors->has('document') ? 'is-invalid' : '' }} filepond mb-n1"
+                                        name="document[]"
+                                        id="document"
+                                        data-max-file-size="50MB"
+                                        data-max-files="50"
+                                        />
+                                        <p class="mt-1"><small>Accepts JPEG, and PNG file formats.</small></p>
+                                        <button type="submit" id="submit" class="btn btn-success float-right">Save</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    @if (!$user->signature == '')
+                                        @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$user->signature)))
+                                        
+                                        <div class="card bg-light border border-maroon rounded-lg">
+                                            <a href="{{ route('document.display', $user->signature) }}" data-lightbox="gallery" data-title="{{ $user->signature }}" target="_blank">
+                                                <img src="{{ route('document.display', $user->signature) }}" class="card-img-top img-resize"/>
+                                            </a>
+                                        </div>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -156,6 +186,13 @@
         $("#role")[0].selectize.lock();
     </script>
     <script>
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
+    </script>
+    <script>
         //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -171,6 +208,38 @@
           var url = '{{ route("offices.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
+        });
+    </script>
+    <script>
+        FilePond.registerPlugin(
+
+            // encodes the file as base64 data
+            FilePondPluginFileEncode,
+            
+            // validates the size of the file
+            FilePondPluginFileValidateSize,
+            
+            // corrects mobile image orientation
+            FilePondPluginImageExifOrientation,
+            
+            // previews dropped images
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateType,
+            
+        );
+        // Create a FilePond instance
+        const pondDocument = FilePond.create(document.querySelector('input[name="document[]"]'));
+        pondDocument.setOptions({
+            acceptedFileTypes: ['image/jpeg', 'image/png'],
+            
+            server: {
+                process: {
+                    url: "/upload",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    }
+                },
+            }
         });
     </script>
     @endpush

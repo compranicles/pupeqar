@@ -24,7 +24,7 @@
             </select>
             <!-- @if ($colleges !== []) -->
             <span id="" role="alert">
-                <small><a href="{{ route('account') }}" style="color: maroon;">Add College/Branch/Campus/Offices Where You Are Reporting.</a></small>
+                <small><a href="{{ route('offices.create') }}" style="color: maroon;">Add College/Branch/Campus/Offices Where You Are Reporting.</a></small>
             </span>
             <!-- @endif -->
             @error($fieldInfo->name)

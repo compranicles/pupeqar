@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
 use App\Models\FormBuilder\AcademicDevelopmentForm;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Models\Employee;
 
 class ReferenceController extends Controller
 {
@@ -61,7 +62,8 @@ class ReferenceController extends Controller
             return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+
         return view('academic-development.references.create', compact('referenceFields', 'colleges'));
     }
 
@@ -187,7 +189,7 @@ class ReferenceController extends Controller
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
       
         if ($rtmmi->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee
+};
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -61,7 +64,7 @@ class ConsultantController extends Controller
             return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges'));
     }
@@ -175,7 +178,7 @@ class ConsultantController extends Controller
 
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         $value = $expert_service_as_consultant;
         $value->toArray();

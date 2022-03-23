@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('offices.index') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
+                    <a class="back_link" href="{{ route('account') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
                 </p>
                 <div class="card">
                     <div class="card-body">

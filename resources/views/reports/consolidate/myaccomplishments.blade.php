@@ -258,7 +258,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $user, 'source_type' => 'my', 'colleges' => $collegeList])
+    @include('reports.generate.index', ['data' => $user, 'source_type' => 'my', 'colleges' => $collegeList, 'special_type' => ''])
 
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">

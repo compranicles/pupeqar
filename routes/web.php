@@ -371,6 +371,8 @@ Route::group(['middleware' => 'auth'], function() {
     /* USER ACCOUNT */
     Route::resource('/offices', \App\Http\Controllers\User\EmployeeController::class);
     Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
+    Route::post('/account/store-signature', [\App\Http\Controllers\UserController::class, 'storeSignature'])->name('account.signature.save');
+
     
     /* PROFILE (SYNCHRONIZED WITH HRIS) */
     Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');

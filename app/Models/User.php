@@ -28,6 +28,8 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
     use SoftDeletes;
+    
+    protected $guarded = [];
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,7 @@ class User extends Authenticatable
         'suffix',
         'emp_code',
         'emp_id',
+        'signature',
         'user_account_id'
     ];
 
