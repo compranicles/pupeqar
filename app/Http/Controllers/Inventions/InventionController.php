@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Inventions;
 
 use App\Models\Invention;
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee
+};
 use App\Models\InventionDocument;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
@@ -59,7 +62,8 @@ class InventionController extends Controller
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+
         return view('inventions.create', compact('inventionFields', 'colleges'));
     }
 
@@ -180,7 +184,7 @@ class InventionController extends Controller
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
         
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         if ($invention_innovation_creative->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");

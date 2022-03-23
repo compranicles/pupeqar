@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee,
+};
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -62,7 +65,7 @@ class AcademicController extends Controller
             return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges'));
     }
@@ -181,7 +184,7 @@ class AcademicController extends Controller
 
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
         
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         if ($expert_service_in_academic->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$expert_service_in_academic->department_id.")");

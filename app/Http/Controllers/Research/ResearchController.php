@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Research;
-use App\Models\User;
+use App\Models\{
+    User,
+    Employee
+};
 use App\Models\Report;
 use App\Rules\Keyword;
 use App\Models\Research;
@@ -89,7 +92,8 @@ class ResearchController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+
         return view('research.create', compact('researchFields', 'colleges'));
     }
 
@@ -281,7 +285,7 @@ class ResearchController extends Controller
         $value = $research;
         $value->toArray();
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'colleges', 'collegeOfDepartment', 'exists'));
     }
@@ -315,7 +319,7 @@ class ResearchController extends Controller
         }
     
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         if ($research->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
@@ -543,7 +547,7 @@ class ResearchController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
 
         $departments = Department::all();
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
 

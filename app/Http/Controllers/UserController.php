@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Dean;
 // use App\Models\Invite;
+use App\Models\TemporaryFile;
 use App\Models\Role;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Invite;
 use App\Models\SectorHead;
@@ -326,41 +328,32 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')->with('edit_user_success', 'User record deleted successfully');
     }
 
-    // public function invite(){
-    //     $invites = Invite::all();
-    //     return view('users.invite', compact('invites'));
-    // }
+    public function storeSignature(Request $request) {
+        $user = User::where('id', auth()->id())->first();
 
-    // public function send(Request $request){
-    //     $request->validate([
-    //         'email' => ['required', 'email', 'max:255', 'unique:users', 'unique:invites'],
-    //     ]);
-    //     do{
-    //         $token = Str::random(20);
-    //     } while (Invite::where('token', $token)->first());
-
-    //     Invite::create([
-    //         'token' => $token,
-    //         'email' => $request->input('email'),
-    //         'status' => 0,
-    //     ]);
-
-    //     $url = URL::temporarySignedRoute(
-    //         'registration', now()->addMinutes(300), ['token' => $token]
-    //     );
-    //     Notification::route('mail', $request->input('email'))->notify(new InviteNotification($url));
-    //     return redirect()->route('admin.users.invite')->with('success', 'User invited successfully');
-    // }
-
-    // public function registration_view($token){
-    //     $invite = Invite::where('token', $token)->first();
-    //     if($invite === null){
-    //         return abort("403");
-    //     }
-    //     elseif($invite->status != 0){
-    //         return redirect()->route('login')->with('register-error','Email already registered');
-    //     }
-    //     return view('auth.register', ['invite' => $invite]);
-    // }
+            if($request->has('document')){
+            
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    // dd($temporaryFile);
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = $user->first_name.'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+    
+                        User::where('id', $user->id)->update([
+                            'signature' => $fileName,
+                        ]);
+                    }
+                }
+            }
+        return redirect()->route('account')->with('success', 'Personal signature has been added in your account.');
+    }
     
 }

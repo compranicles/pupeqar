@@ -189,7 +189,6 @@
             var id = $(this).data("id");
             var url = $(this).data("url")
             // alert(1);
-
             if( url != ''){
                 window.location.replace('{{ url('') }}'+'/notifications/mark-as-read?u='+url+'&v='+id);
             }

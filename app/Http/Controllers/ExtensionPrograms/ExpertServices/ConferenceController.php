@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
+use App\Models\{
+    TemporaryFile,
+    Employee
+};
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -61,7 +64,7 @@ class ConferenceController extends Controller
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges'));
     }
@@ -177,7 +180,7 @@ class ConferenceController extends Controller
 
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         
         $value = $expert_service_in_conference;
         $value->toArray();
