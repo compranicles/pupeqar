@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
             GenerateColumnSeeder::class,
             GenerateColumn2Seeder::class,
             GenerateColumnHRISSeeder::class,
+            GenerateColumn3Seeder::class,
         ]);
         
         // \App\Models\Research::truncate();

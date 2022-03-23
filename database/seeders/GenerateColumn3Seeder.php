@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Maintenance\GenerateColumn;
 
 class GenerateColumn3Seeder extends Seeder
 {
