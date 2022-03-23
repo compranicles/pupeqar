@@ -92,7 +92,7 @@ class IpqmsoConsolidatedController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
 
-        //SectorDetails
+        $colleges = Colleges::all();
 
         return view(
                     'reports.consolidate.ipqmso', 
@@ -172,12 +172,13 @@ class IpqmsoConsolidatedController extends Controller
                 else
                     $department_names[$row->id] = $temp_department_name;
             }
-        //SectorDetails
 
         }
-            return view(
-                'reports.consolidate.ipqmso', 
-                compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
-            );
+        $colleges = Colleges::all();
+        
+        return view(
+            'reports.consolidate.ipqmso', 
+            compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
+        );
     }
 }

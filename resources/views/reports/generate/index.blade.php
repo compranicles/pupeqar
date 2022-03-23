@@ -21,7 +21,7 @@
                         </select>
                     </div>
                     <!-- CBCO (College/Branch/Campus/Office) -->
-                    @if($source_type == "my" || $special_type == 'sector')
+                    @if($source_type == "my" || $special_type == 'sector' || $special_type == 'ipqmso')
                     <div class="form-group">
                         <label for="cbco">College/Branch/Campus/Office</label>
                         <select name="cbco" id="cbco" class="form-control" required>

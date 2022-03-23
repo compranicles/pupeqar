@@ -21,6 +21,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h5>Consolidated Accomplishments</h5>
+                            <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                             <hr>
                         </div>
                     </div>
@@ -254,6 +255,8 @@
             </div>   
         </div>
     </div>
+
+    @include('reports.generate.index', ['source_type' => 'college', 'special_type' => 'ipqmso', 'colleges' => $colleges])
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
