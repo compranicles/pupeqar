@@ -36,7 +36,9 @@ class NotificationController extends Controller
     }
 
     public function getCount(){
-        return NotificationCounter::where('user_id', auth()->id())->pluck('count')->first();
+        if(NotificationCounter::where('user_id', auth()->id())->exists())
+            return NotificationCounter::where('user_id', auth()->id())->pluck('count')->first();
+        return 0;
     }
 
     public function resetCount(){
