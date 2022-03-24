@@ -29,13 +29,18 @@
                             <th>Name of the Employee</th>
                             @endif
                             @if ($source_type == "individual")
-                                <!-- <th>College</th> -->
-                                <th>Department</th>
+                                @if ($reportFormat == "academic")
+                                    <th>Department</th>
+                                @elseif ($reportFormat == "admin")
+                                    <th>Section</th>
+                                @endif
                             @endif
                             {{-- load the addtl columns --}}
                             @foreach ($table_columns[$format->id] as $column)
                                 <th>{{ $column['name'] }}</th>
                             @endforeach
+                            <th>Supporting Evidence Verified By</th>
+                            <th>Status of Supporting Documents</th>
                         </tr>
                     </thead>
                     <tbody>

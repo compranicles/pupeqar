@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reports\Consolidate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Maintenance\Quarter;
 use App\Models\Dean;
 use App\Models\Report;
 use App\Models\SectorHead;
