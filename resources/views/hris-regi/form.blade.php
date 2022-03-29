@@ -54,7 +54,7 @@
         
                             <select name="role" id="role" class="{{ $errors->has('role') ? 'is-invalid' : '' }} form-control form-control-lg rounded-0" id="textHome" required>
                                 <option value="" selected disabled>Choose...</option>
-                                <option value="1">Faculty</option>
+                                <option value="1">Faculty Employee</option>
                                 <option value="3">Admin Employee</option>
                                 <option value="9">None</option>
                             </select>

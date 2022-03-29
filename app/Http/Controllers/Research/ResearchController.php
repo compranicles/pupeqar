@@ -53,9 +53,11 @@ class ResearchController extends Controller
 
         $researches = Research::where('research.user_id', auth()->id())
                                 ->where('research.is_active_member', 1)
+                                ->where('research.report_quarter', $currentQuarterYear->current_quarter)
+                                ->where('research.report_year', $currentQuarterYear->current_year)
                                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                                 ->join('colleges', 'colleges.id', 'research.college_id')
-                                ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name', DB::raw('QUARTER(research.updated_at) as quarter'))
+                                ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
                                 ->orderBy('research.updated_at', 'DESC')
                                 ->get();
 

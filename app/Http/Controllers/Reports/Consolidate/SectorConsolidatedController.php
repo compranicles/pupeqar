@@ -13,6 +13,7 @@ use App\Models\Maintenance\Sector;
 use App\Models\FacultyExtensionist;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
+use App\Models\Maintenance\Quarter;
 use App\Models\Authentication\UserRole;
 use App\Services\ManageConsolidatedReportAuthorizationService;
 

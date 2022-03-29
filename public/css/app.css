@@ -4410,7 +4410,7 @@ input[type=button].btn-block {
 .card-header {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
+  background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 .card-header:first-child {
@@ -12967,7 +12967,6 @@ body {
   display: block;
   float: none;
 } */
-
 .menu-sub li {
   display: block;
   padding-bottom: .70em;
@@ -13161,8 +13160,7 @@ table tr .padding_left_show {
 }
 
 .db-card {
-  margin-right: 15px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .card-title a {
@@ -13239,7 +13237,8 @@ table tr .padding_left_show {
   /* color: #820202; */
   margin-right: 15px;
   font-size: 15px;
-  color: #212529;
+  /* color: #212529; */
+  color: gainsboro;
 }
 
 .submission-menu.active {
@@ -13252,7 +13251,9 @@ table tr .padding_left_show {
 }
 
 .submission-menu:hover {
-  color: #212529;
+  /* color: #212529; */
+  color: whitesmoke;
+
   text-decoration: none;
 }
 
@@ -13286,19 +13287,51 @@ table tr .padding_left_show {
 }
 
 /* HOME PAGE */
-.bi.bi-send {
-  background-color: #2C4859;
+.home-icons {
+  background-color: #5b0616;
   color: white;
   border-radius: 50%;
-  border: 1px solid #2C4859;
+  border: 1px solid #5b0616;
   padding: 10px;
+  font-size: 2em;
 }
 
+.home-navigate-icons {
+  background-color: #eeb510;
+  color: white;
+  border-radius: 50%;
+  border: 1px solid #eeb510;
+  padding: 10px;
+  font-size: 2em;
+}
 .div-bottom-separator {
   border: none; 
   border-bottom: 1px solid gainsboro;
   margin-top: 5px;
   margin-bottom: 20px;
+}
+
+.home-report-list li > a {
+  color: var(--gray-dark);
+  /* text-decoration: none; */
+}
+
+.home-titles {
+  color:#6f080b;
+}
+
+.db-card {
+  height: 130px;
+  vertical-align: middle;
+}
+
+.db-text {
+  padding-top: 10px;
+}
+
+a.home-card-links  {
+  color: black;
+  text-decoration: none;
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/

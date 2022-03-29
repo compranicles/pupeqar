@@ -115,7 +115,7 @@ class UtilizationController extends Controller
                         'research_code' => $request->input('research_code'),
                         'research_id' => $research->id,
                         'research_form_id' => 6,
-                        'research_utilization_id' => $id,
+                        'research_utilization_id' => $utilization->id,
                         'filename' => $fileName,
                     ]);
                 }
@@ -244,7 +244,7 @@ class UtilizationController extends Controller
 
         \LogActivity::addToLog('Research utilization of "'.$research->title.'" was updated.');
 
-        return redirect()->route('research.utilization.show', [$research->id, $utilization->id])->with('success', 'Research Utilization Updated Successfully');
+        return redirect()->route('research.utilization.show', [$research->id, $utilization->id])->with('success', 'Research Utilization has been updated.');
     }
 
     /**

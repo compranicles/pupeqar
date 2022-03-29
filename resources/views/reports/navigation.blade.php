@@ -1,5 +1,5 @@
 {{-- My Accomplishments --}}
-@if (!in_array(7,$roles))
+@if (!in_array(7,$roles) || in_array(8,$roles))
 <a href="{{ route('reports.consolidate.myaccomplishments') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.myaccomplishments') || request()->routeIs('reports.consolidate.myaccomplishments.*') ? 'active' : '' }} ">My Accomplishments</a>
 @endif
 {{-- Departments' --}}

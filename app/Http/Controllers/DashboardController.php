@@ -4,100 +4,137 @@ namespace App\Http\Controllers;
 
 use App\Models\Dean;
 use App\Models\Report;
-use App\Models\Mobility;
-use App\Models\Research;
-use App\Models\Syllabus;
-use App\Models\Invention;
-use App\Models\Reference;
 use App\Models\SectorHead;
 use App\Models\Chairperson;
-use App\Models\Partnership;
-use App\Models\StudentAward;
 use Illuminate\Http\Request;
-use App\Models\ViableProject;
-use App\Models\OutreachProgram;
-use App\Models\StudentTraining;
-use App\Models\ExtensionService;
-use App\Models\TechnicalExtension;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Models\ExpertServiceAcademic;
-use App\Models\CollegeDepartmentAward;
+use App\Models\Maintenance\{
+    Quarter,
+    Department,
+    College,
+    Sector
+};
 use App\Models\Authentication\UserRole;
-use App\Models\ExpertServiceConference;
-use App\Models\ExpertServiceConsultant;
 use App\Models\FacultyResearcher;
 use App\Models\FacultyExtensionist;
-use App\Models\Request as RequestModel;
-use App\Services\UserRoleService;
+use App\Services\{
+    UserRoleService,
+    DashboardService
+};
+use App\Models\{
+    Announcement,
+    Employee,
+    User,
+    Role
+};
 
 class DashboardController extends Controller
 {
     public function index() {
-        
+        $user = User::where('id', auth()->id())->first();
         $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
-        
+        $roleNames = Role::whereIn('id', $roles)->pluck('name')->all();
+        $userRoleNames = '';
+        foreach($roleNames as $roleName) {
+            $userRoleNames = $userRoleNames.' '.$roleName;
+        }
         $currentQuarterYear = Quarter::find(1);
-
-        $countFaculty = (new UserRoleService())->getNumberOfUserByRole(1);
-        $countAdmin = (new UserRoleService())->getNumberOfUserByRole(3);
-        $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
-        $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
-        $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
-        $countIPOEmployee = (new UserRoleService())->getNumberOfUserByRole(8);
-        $countResearcher = (new UserRoleService())->getNumberOfUserByRole(10);
-        $countExtensionist = (new UserRoleService())->getNumberOfUserByRole(11);
-        $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
-            'director' => $countDirector, 'sectorHead' => $countSectorHead,
-            'ipo' => $countIPOEmployee, 'researcher' => $countResearcher, 'extensionist' => $countExtensionist);
-
-        if (in_array(5, $roles)) {
-            $chairpersonDepartment = Chairperson::where('user_id', auth()->id())
-                                    ->join('departments', 'departments.id', 'chairpeople.department_id')
-                                    ->select('departments.name')
-                                    ->get();
-        } else {
-            $chairpersonDepartment = '';
-        }
-
-        if (in_array(6, $roles)) {
-            $directorOffice = Dean::where('user_id', auth()->id())
-                                    ->join('colleges', 'colleges.id', 'deans.college_id')
-                                    ->select('colleges.name')
-                                    ->get();
-        } else {
-            $directorOffice = '';
-        }
-
-        if (in_array(7, $roles)) {
-            $sector = SectorHead::where('user_id', auth()->id())
-                                    ->join('sectors', 'sectors.id', 'sector_heads.sector_id')
-                                    ->select('sectors.name')
-                                    ->get();
-        } else {
+        $countAccomplishmentsSubmitted = Report::where('user_id', auth()->id())
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->count();
+        $countAccomplishmentsReturned = Report::where('user_id', auth()->id())
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->where(function ($query) {
+                        $query->where('researcher_approval', 0)
+                            ->orWhere('extensionist_approval', 0)
+                            ->orWhere('chairperson_approval', 0)
+                            ->orWhere('dean_approval', 0)
+                            ->orWhere('sector_approval', 0)
+                            ->orWhere('ipqmso_approval', 0);
+                    })
+                    ->count();
+        
+        if (in_array(1, $roles) || in_array(3, $roles)) {
+            $department = '';
+            $college = '';
             $sector = '';
+            $countFaculty = '';
+            $countAdmin = '';
+            $countChairperson = '';
+            $countDirector = '';
+            $countSectorHead = '';
+            $countIPO = '';
+            $arrayOfNoOfAllUsers = '';
+            $countReviewed1 = '';
+            $countReviewed2 = "";
         }
-
+        
         if (in_array(10, $roles)) {
-            $researcherDepartment = FacultyResearcher::where('user_id', auth()->id())
-                                ->join('departments', 'departments.id', 'faculty_researchers.department_id')
-                                ->select('departments.name')
-                                ->get();
-            // dd($researcherDepartment);
-        } else {
-            $researcherDepartment = '';
+            $college = '';
+            $sector = '';
+            $arrayOfNoOfAllUsers = '';
+            $department = Department::join('faculty_researchers', 'departments.id', 'faculty_researchers.department_id')->where('faculty_researchers.user_id', auth()->id())->get();
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '[1,2,3,4,5,6,7]');
+            $countReviewed2 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '[8]');
         }
-
         if (in_array(11, $roles)) {
-            $extensionistDepartment = FacultyExtensionist::where('user_id', auth()->id())
-                                ->join('departments', 'departments.id', 'faculty_extensionists.department_id')
-                                ->select('departments.name')
-                                ->get();
-        } else {
-            $extensionistDepartment = '';
+            $college = '';
+            $sector = '';
+            $arrayOfNoOfAllUsers = '';
+            $department = Department::join('faculty_extensionists', 'departments.id', 'faculty_extensionists.department_id')->where('faculty_extensionists.user_id', auth()->id())->get();
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('extensionist_approval', $department[0]->department_id, 1, $currentQuarterYear, '[9,10,11,12,13,14]');
+            $countReviewed2 = "";
         }
+        if (in_array(5, $roles)) {
+            $college = '';
+            $sector = '';
+            $arrayOfNoOfAllUsers = '';
+            $department = Department::join('chairpeople', 'departments.id', 'chairpeople.department_id')->where('chairpeople.user_id', auth()->id())->get();
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndQuarterYear('chairperson_approval', $department[0]->department_id, $currentQuarterYear);
+            $countReviewed2 = "";
+        } 
+        if (in_array(6, $roles)) {
+            $department = '';
+            $sector = '';
+            $college = College::join('deans', 'colleges.id', 'deans.college_id')->where('deans.user_id', auth()->id())->get();
+            $countFaculty = Employee::where('college_id', $college[0]->college_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 1)->count();
+            $countAdmin = Employee::where('college_id', $college[0]->college_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 3)->count();
+            $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin);
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndCollegeAndQuarterYear('dean_approval', $college[0]->college_id, $currentQuarterYear);
+            $countReviewed2 = "";
+        } 
+        if (in_array(7, $roles)) {
+            $department = '';
+            $sector = SectorHead::leftjoin('sectors', 'sector_heads.sector_id', 'sectors.id')->where('sector_heads.user_id', auth()->id())->first();
+            $college = College::where('sector_id', $sector['sector_id'])->count();
+            $countFaculty = Employee::where('sector_id', $sector['sector_id'])->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 1)->count();
+            $countAdmin = Employee::where('sector_id', $sector['sector_id'])->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 3)->count();
+            $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin);
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndCollegeAndQuarterYear('sector_approval', $sector['sector_id'], $currentQuarterYear);
+            $countReviewed2 = "";
 
-        return view('dashboard', compact('roles', 'currentQuarterYear', 'arrayOfNoOfAllUsers', 'chairpersonDepartment', 'directorOffice',
-                'sector', 'researcherDepartment', 'extensionistDepartment'));
+        } 
+        if (in_array(8, $roles) || in_array(9, $roles)) {
+            $department = '';
+            $college = '';
+            $sector = '';
+            $countFaculty = (new UserRoleService())->getNumberOfUserByRole(1);
+            $countAdmin = (new UserRoleService())->getNumberOfUserByRole(3);
+            $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
+            $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
+            $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
+            $countIPO = (new UserRoleService())->getNumberOfUserByRole(8);
+            $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
+                    'director' => $countDirector, 'sectorHead' => $countSectorHead, 'ipo' => $countIPO);
+            $countReviewed1 = '';
+            $countReviewed2 = "";
+        } 
+        
+        $announcements = Announcement::where('status', 1)->orderBy('updated_at')->paginate(3);
+        return view('dashboard', compact('user', 'roles', 'userRoleNames', 'currentQuarterYear', 'announcements', 'countAccomplishmentsSubmitted',
+                'countAccomplishmentsReturned', 'countReviewed1', 'countReviewed2', 'arrayOfNoOfAllUsers', 
+                'department', 'college', 'sector'));
     }
 }

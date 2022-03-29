@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark border-bottom sticky-top" style="background-color: #212529">
+<nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #212529;">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="{{ route('dashboard') }}" style="color:white">
@@ -75,6 +75,7 @@
                 
                 @ExceptSuperAdminAndSectorAndIpo
                 <li class="navbar-nav mr-auto main-nav-item">
+                    @
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>

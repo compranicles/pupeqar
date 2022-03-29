@@ -114,7 +114,7 @@ class CitationController extends Controller
                         'research_code' => $request->input('research_code'),
                         'research_id' => $research->id,
                         'research_form_id' => 5,
-                        'research_citation_id' => $id,
+                        'research_citation_id' => $citation->id,
                         'filename' => $fileName,
                     ]);
                 }
