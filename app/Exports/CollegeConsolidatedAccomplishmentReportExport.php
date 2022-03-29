@@ -18,25 +18,21 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use App\Services\NameConcatenationService;
 
-class IndividualAccomplishmentReportExport implements FromView, WithEvents
+class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEvents
 {
-    function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate, 
-    $cbco, $id, $get_college, $get_sector, $faculty_researchers, $faculty_extensionists, $chairpeople, 
-    $director, $sector_head, $table_columns, $table_contents, $table_format) {
+    function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate,
+         $id, $cbco, $faculty_researchers, $faculty_extensionists, $chairpeople, $table_columns, 
+         $table_contents, $table_format) {
         $this->source_type = $source_type;
         $this->report_format = $reportFormat;
         $this->source_generate = $source_generate;
         $this->year_generate = $year_generate;
         $this->quarter_generate = $quarter_generate;
-        $this->cbco = $cbco;
         $this->id = $id;
-        $this->get_college = $get_college;
-        $this->get_sector = $get_sector;
+        $this->cbco = $cbco;
         $this->faculty_researchers = $faculty_researchers;
         $this->faculty_extensionists = $faculty_extensionists;
         $this->chairpeople = $chairpeople;
-        $this->director = $director;
-        $this->sector_head = $sector_head;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;
         $this->table_format = $table_format;
@@ -46,18 +42,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
         $this->fr_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_researchers['user_id'], "Faculty Researcher");
         $this->fe_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_extensionists['user_id'], "Faculty Extensionist");
         $this->chairperson_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($chairpeople['user_id'], "Chairperson");
-        $this->director_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($director['user_id'], "Director");
-        $this->sector_head_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($sector_head['user_id'], "Sector Head");
-
-        $this->name_user = $user->last_name.', '.$user->first_name.' '.$user->middle_name; 
-
-        if ($this->director != null) {
-            $this->college = $this->get_college->name;
-        }
-
-        if ($this->sector_head != null) {
-            $this->sector = $this->get_sector->name;
-        }
     }
 
     public function view(): View
@@ -75,10 +59,10 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
         $source_type;
         
         if($reportFormat == "academic"){
-            if($source_generate == "my"){
-                $source_type = "individual";
-                $user_id = $id;
-                $data = User::where('id', $user_id)->select('users.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as name"))->first();
+            if($source_generate == "college"){
+                $source_type = "college";
+                $college_id = $id;
+                $data = College::where('id', $college_id)->first();
                 $table_format = GenerateTable::where('type_id', 2)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
@@ -94,23 +78,21 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                            ->where('reports.college_id', $college_id)
+                            ->where('reports.dean_approval', 1)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
-                            ->where('reports.user_id', $user_id)
                             ->join('users', 'users.id', 'reports.user_id')
-                            ->where('reports.college_id', $this->cbco)
-                            // ->join('departments', 'departments.id', 'reports.department_id')
-                            // ->join('colleges', 'colleges.id', 'reports.college_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
                 }
             }
         }
         elseif($reportFormat == "admin"){
-            if($source_generate == "my"){
-                $source_type = "individual";
-                $user_id = $id;
-                $data = User::where('id', $user_id)->select('users.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as name"))->first();
+            if($source_generate == "college"){
+                $source_type = "college";
+                $college_id = $id;
+                $data = College::where('id', $college_id)->first();
                 $table_format = GenerateTable::where('type_id', 1)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
@@ -126,15 +108,16 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                            ->where('reports.college_id', $college_id)
+                            ->where('reports.dean_approval', 1)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
-                            ->where('reports.user_id', $user_id)
-                            ->where('reports.college_id', $this->cbco)
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
                 }
             }
+            
         }
 
         $this->table_format = $table_format;
@@ -153,6 +136,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
                 // $event->sheet->getStyle('A1:Z500')->getAlignment()->setWrapText(true);
                 $event->sheet->mergeCells('A1:G1');
+                $event->sheet->freezePane('B1');
                 if ($this->source_type == "individual")
                     if ($this->report_format == "academic")
                     {   
@@ -174,7 +158,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         ]);
                     }
                 else {
-                    $event->sheet->setCellValue('A1', 'CONSOLIDATED ACCOMPLISHMENT REPORT');
+                    $event->sheet->setCellValue('A1', 'CONSOLIDATED QUARTERLY ACCOMPLISHMENT REPORT');
                     $event->sheet->getStyle('A1')->applyFromArray([
                         'font' => [
                             'bold' => true,
@@ -195,10 +179,9 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         'bold' => true,
                     ]
                 ]);
-                $college = College::where('id', $this->cbco)->select('name')->first();
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->mergeCells('D2:F2');
-                $event->sheet->setCellValue('D2', $college->name);
+                $event->sheet->setCellValue('D2', $this->cbco);
                 $event->sheet->getStyle('D2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('D2:F2')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('D2')->applyFromArray([
@@ -208,7 +191,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 ]);
 
                 // Name
-                $event->sheet->setCellValue('C3', 'EMPLOYEE:');
+                $event->sheet->setCellValue('C3', 'CHAIRPERSON:');
                 $event->sheet->getStyle('C3')->applyFromArray([
                     'font' => [
                         'size' => 16,
@@ -293,8 +276,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
                         // $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF800000");
-                        // $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
-                        
                         if ($format->is_individual == '0') {
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF002060");
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('ffffffff');
@@ -303,6 +284,8 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
                         }
+                        
+                        // $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
 
                         $event->sheet->getRowDimension($count)->setRowHeight(30);
                         $event->sheet->getStyle('A'.$count)->applyFromArray([
@@ -314,8 +297,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
 
                         //column
                         $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF203764");
-                        $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
                         $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                         $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
                             'font' => [
@@ -335,7 +316,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         //contents
                         foreach($table_contents[$format->id] as $contents){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
@@ -345,7 +325,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                                 'borders' => [
                                     'allBorders' => [
                                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        'color' => ['argb' => 'FF515256'],
                                     ],
                                 ],
                             ]);
@@ -354,7 +333,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
 
                         if($table_contents[$format->id] == null){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
+                            // $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
@@ -364,7 +343,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                                 'borders' => [
                                     'allBorders' => [
                                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        'color' => ['argb' => 'FF515256'],
+                                        // 'color' => ['argb' => 'FF515256'],
                                     ],
                                 ],
                             ]);
@@ -387,10 +366,9 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     }
                 }
                 $count = $count + 2;
-                $event->sheet->setCellValue('A'.$count, 'Prepared By:');
-                $event->sheet->setCellValue('C'.$count, 'Supporting Evidence Verified By:');
-                $event->sheet->setCellValue('K'.$count, 'Approved By:');
-                $event->sheet->getStyle('A'.$count.':K'.$count)->applyFromArray([
+                $event->sheet->setCellValue('A'.$count, 'Supporting Evidence Verified By:');
+                $event->sheet->setCellValue('G'.$count, 'Prepared By:');
+                $event->sheet->getStyle('A'.$count.':G'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
                         'bold' => true, 
@@ -398,13 +376,11 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     ],
                 ]);
                 $count = $count + 5;
-                $event->sheet->setCellValue('A'.$count, $this->arranged_name);
-                $event->sheet->setCellValue('C'.$count, $this->fr_name);
-                $event->sheet->setCellValue('E'.$count, $this->fe_name);
-                $event->sheet->setCellValue('G'.$count, $this->chairperson_name);
-                $event->sheet->setCellValue('I'.$count, $this->director_name);
-                $event->sheet->setCellValue('K'.$count, $this->sector_head_name);
-                $event->sheet->getStyle('A'.$count.':K'.$count)->applyFromArray([
+                $event->sheet->setCellValue('A'.$count, $this->fr_name);
+                $event->sheet->setCellValue('C'.$count, $this->fe_name);
+                $event->sheet->setCellValue('E'.$count, $this->chairperson_name);
+                $event->sheet->setCellValue('G'.$count, $this->arranged_name);
+                $event->sheet->getStyle('A'.$count.':G'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
                         'bold' => true, 
@@ -415,44 +391,28 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('G'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('I'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('K'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $count = $count + 1;
-                $event->sheet->setCellValue('A'.$count, 'Employee');
-                $event->sheet->setCellValue('C'.$count, 'Faculty Researcher, '.$this->faculty_researchers->department_name);
-                $event->sheet->setCellValue('E'.$count, 'Faculty Extensionist, '.$this->faculty_extensionists->department_name);
-                $event->sheet->setCellValue('G'.$count, 'Chairperson, '.$this->chairpeople->department_name);
-                $event->sheet->setCellValue('I'.$count, 'Director, '.$this->college);
-                $event->sheet->setCellValue('K'.$count, 'Sector Head, '.$this->sector);
-                $event->sheet->getStyle('A'.$count.':K'.$count)->applyFromArray([
+                $event->sheet->setCellValue('A'.$count, 'Faculty Researcher, '.$this->faculty_researchers->department_name);
+                $event->sheet->setCellValue('C'.$count, 'Faculty Extensionist, '.$this->faculty_extensionists->department_name);
+                $event->sheet->setCellValue('E'.$count, 'Chairperson, '.$this->chairpeople->department_name);
+                $event->sheet->setCellValue('G'.$count, 'Director, '.$this->cbco);
+                $event->sheet->getStyle('A'.$count.':G'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
                         'bold' => true, 
                         'size' => 14
                     ],
                 ]);
-
-                $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                $event->sheet->getStyle('C'.$count)->getAlignment()->setWrapText(true);
-                $event->sheet->getStyle('E'.$count)->getAlignment()->setWrapText(true);
-                $event->sheet->getStyle('G'.$count)->getAlignment()->setWrapText(true);
-                $event->sheet->getStyle('I'.$count)->getAlignment()->setWrapText(true);
-                $event->sheet->getStyle('K'.$count)->getAlignment()->setWrapText(true);
 
                 $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('C'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('E'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('G'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                $event->sheet->getStyle('I'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                $event->sheet->getStyle('K'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('G'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('I'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('K'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
             }
 
         ];

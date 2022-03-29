@@ -12,7 +12,8 @@ use App\Models\{
     Dean,
     SectorHead,
     FacultyResearcher,
-    FacultyExtensionist
+    FacultyExtensionist,
+    Employee
 };
 use App\Models\Maintenance\{
     College,
@@ -96,7 +97,7 @@ class MyAccomplishmentController extends Controller
         }
 
         //Get distinct colleges from the colleges that had been reported with repeatedly
-        $collegeList = College::get();
+        $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         return view(   
             'reports.consolidate.myaccomplishments', 
@@ -190,7 +191,7 @@ class MyAccomplishmentController extends Controller
             }
 
         //Get distinct colleges from the colleges that had been reported with repeatedly
-        $collegeList = College::get();
+        $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         return view('reports.consolidate.myaccomplishments', compact('roles', 'colleges', 'departments', 'my_accomplishments', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension', 'user', 'collegeList', 'year', 'quarter', 'report_categories'));
     }
 }
