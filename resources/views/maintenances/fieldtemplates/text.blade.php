@@ -5,7 +5,8 @@
         <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
                 @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
                     $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
-                    $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author')
+                    $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author' || 
+                    $fieldInfo->name == 'name_of_contact_person')
                     <span id="" role="alert" class="ml-3">
                         <small>[Surname Suffix (if any), First Name M.I]</small>
                     </span>

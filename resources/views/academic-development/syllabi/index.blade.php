@@ -54,9 +54,6 @@
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                 <select id="collegeFilter" class="custom-select">
                                     <option value="">Show All</option>
-                                    @foreach($syllabus_in_colleges as $college)
-                                    <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -184,6 +181,24 @@
                 this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#yearFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#collegeFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()

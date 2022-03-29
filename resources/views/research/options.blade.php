@@ -68,6 +68,7 @@
             @case('32')
                 {{-- Deffered --}}
                 @can('defer', App\Models\Research::class)
+                <a class="dropdown-item" href="{{ route('research.edit', $research_id) }}">Edit Research Info</a>
                 <button class="dropdown-item text-danger " data-toggle="modal" data-target="#deleteModal">Delete</button>
                 @endcan
                 

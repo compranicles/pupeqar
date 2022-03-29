@@ -154,17 +154,17 @@
                 if ("{{ $value['funding_type'] }}" == 49) {
                     //Univ. Funded
                     $('#funding_agency').val("Polytechnic University of the Philippines");
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
                 else if ("{{ $value['funding_type'] }}" == 50) {
                     //Self Funded
                     $('#funding_agency').val("");
-                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').attr('readonly', true);
                     $('#funding_agency').removeAttr('required');
                 }
                 else { // External Funded
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
 
@@ -187,18 +187,18 @@
                 if ($(this).val() == 49) {
                     //Univ. Funded
                     $('#funding_agency').val("Polytechnic University of the Philippines");
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
                 else if ($(this).val() == 50) {
                     //Self Funded
                     $('#funding_agency').val("");
-                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').attr('readonly', true);
                     $('#funding_agency').removeAttr('required');
                 }
                 else if ($(this).val() == 51) { // External Funded
                     $('#funding_agency').val("");
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
             });

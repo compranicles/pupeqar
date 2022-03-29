@@ -45,10 +45,12 @@ class UserController extends Controller
         $rolesperuser = [];
 
         foreach($users as $user){
-            $rolesperuser[$user->id] = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')
-                    ->where('user_roles.user_id',$user->id)
+            $rolesperuser[$user->id] = UserRole::where('user_roles.user_id',$user->id)
+                    ->join('roles', 'roles.id', 'user_roles.role_id')
+                    ->select('roles.name')
                     ->get();
         }
+
         return view('users.index', compact('users', 'rolesperuser'));
     }
 

@@ -21,10 +21,15 @@ use App\Models\Maintenance\{
     Quarter
 };
 use App\Models\Authentication\UserRole;
+use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class MyAccomplishmentController extends Controller
 {
     public function index() {
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageConsolidatedIndividualReports();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $currentQuarterYear = Quarter::find(1);
         $quarter = $currentQuarterYear->current_quarter;
         $year = $currentQuarterYear->current_year;
@@ -112,6 +117,11 @@ class MyAccomplishmentController extends Controller
 
 
     public function individualReportYearFilter($year, $quarter) {
+        $authorize = (new ManageConsolidatedReportAuthorizationService())->authorizeManageConsolidatedIndividualReports();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $report_categories = ReportCategory::all();
         if ($year == "default") {
             return redirect()->route('submissions.myaccomp.index');

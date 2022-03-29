@@ -153,16 +153,16 @@
         <script>
                 if ({{ $research->funding_type }} == 23) {
                     //Univ. Funded
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
                 else if ({{ $research->funding_type }} == 24) {
                     //Self Funded
-                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').attr('readonly', true);
                     $('#funding_agency').removeAttr('required');
                 }
                 else { // External Funded
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
 
@@ -187,18 +187,18 @@
                 if ($(this).val() == 23) {
                     //Univ. Funded
                     $('#funding_agency').val("Polytechnic University of the Philippines");
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
                 else if ($(this).val() == 24) {
                     //Self Funded
                     $('#funding_agency').val("");
-                    $('#funding_agency').attr('disabled', true);
+                    $('#funding_agency').attr('readonly', true);
                     $('#funding_agency').removeAttr('required');
                 }
                 else if ($(this).val() == 25) { // External Funded
                     $('#funding_agency').val("");
-                    $('#funding_agency').removeAttr('disabled');
+                    $('#funding_agency').removeAttr('readonly');
                     $('#funding_agency').attr('required', true);
                 }
             });

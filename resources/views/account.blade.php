@@ -8,7 +8,7 @@
     <div class="container">
         {{-- Success Message --}}
         @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-index">
+        <div class="alert alert-success alert-index action-alert">
             <i class="bi bi-check-circle"></i> {{ $message }}
         </div>
         @endif
@@ -137,7 +137,7 @@
                             <div class="col-md-12">
                                 <div class="alert alert-success text-center p-5" role="alert">
                                     <h5>
-                                        Add Sector, College/Branch/Campus/Office, and Department Where You Are Reporting.
+                                        Add College/Branch/Campus/Office Where You Are Reporting.
                                     </h5> 
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
     </script>
     <script>
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".action-alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 4000);

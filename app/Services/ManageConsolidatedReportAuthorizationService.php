@@ -22,6 +22,10 @@ class ManageConsolidatedReportAuthorizationService {
         }
     }
 
+    public function authorizeManageConsolidatedIndividualReports() {
+        return $this->authorizeAction("manage submitted accomplishments");
+    }
+
     public function authorizeManageConsolidatedReportsByResearch() {
         return $this->authorizeAction("manage consolidated reports (by research)");
     }

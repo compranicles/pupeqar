@@ -39,6 +39,7 @@
          <!-- JavaScript Bundle with Popper -->
          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
         <script src="{{ mix('js/app.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
         <!-- Bootstrap Datepicker Resources -->
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
@@ -54,9 +55,11 @@
         <!-- Page Heading -->
         @if((!Request::is('dashboard')))
         <!-- Page Heading -->
-        <header class="d-flex py-3 bg-white shadow-sm border-bottom">
+        <header class="d-flex py-2 border-bottom" style="background-color: #373b3e; border-color: #373b3e; color: whitesmoke;">
             <div class="container">
-                {{ $header }}
+                <div class="py-1">
+                    {{ $header }}
+                </div>
             </div>
         </header>
         @endif
