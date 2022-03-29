@@ -39,8 +39,16 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
 
         $user = User::where('id', auth()->id())->first();
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user['id'], " ");
-        $this->fr_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_researcher['user_id'], "Faculty Researcher");
-        $this->fe_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_extensionist['user_id'], "Faculty Extensionist");
+        if ($this->faculty_researcher != null) {
+            $this->fr_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_researcher['user_id'], "Faculty Researcher");
+        } else {
+            $this->fr_name = '';
+        }
+        if ($this->faculty_extensionist != null) {
+            $this->fe_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_extensionist['user_id'], "Faculty Extensionist");
+        } else {
+            $this->fe_name = '';
+        }
 
         if ($this->faculty_researcher != null) {
             $this->department = $this->get_department;
@@ -142,27 +150,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 // $event->sheet->getStyle('A1:Z500')->getAlignment()->setWrapText(true);
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->freezePane('B1');
-                if ($this->source_type == "individual")
-                    if ($this->report_format == "academic")
-                    {   
-                        $event->sheet->setCellValue('A1', 'FACULTY INDIVIDUAL ACCOMPLISHMENT REPORT');
-                        $event->sheet->getStyle('A1')->applyFromArray([
-                            'font' => [
-                                'bold' => true,
-                                'size' => 20,
-                            ]
-                        ]);
-                    }
-                    else {
-                        $event->sheet->setCellValue('A1', 'ADMIN INDIVIDUAL ACCOMPLISHMENT REPORT');
-                        $event->sheet->getStyle('A1')->applyFromArray([
-                            'font' => [
-                                'bold' => true,
-                                'size' => 20,
-                            ]
-                        ]);
-                    }
-                else {
+                if ($this->source_type == "department") {
                     $event->sheet->setCellValue('A1', 'CONSOLIDATED QUARTERLY ACCOMPLISHMENT REPORT');
                     $event->sheet->getStyle('A1')->applyFromArray([
                         'font' => [
@@ -177,7 +165,12 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $event->sheet->mergeCells('B2:C2');
-                $event->sheet->setCellValue('B2', 'DEPARTMENT:');
+                if ($this->report_format == "academic") {
+                    $event->sheet->setCellValue('B2', 'DEPARTMENT:');
+                } elseif ($this->report_format == "admin") {
+                    $event->sheet->setCellValue('B2', 'SECTION:');
+                }
+                
                 $event->sheet->getStyle('B2')->applyFromArray([
                     'font' => [
                         'size' => 16,
