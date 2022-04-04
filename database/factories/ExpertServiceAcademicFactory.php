@@ -22,10 +22,12 @@ class ExpertServiceAcademicFactory extends Factory
             'copyright_no' => $this->faker->word(),
             'indexing' => rand(87, 93),
             'level' => rand(94, 97),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
+            'user_id' => 2,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

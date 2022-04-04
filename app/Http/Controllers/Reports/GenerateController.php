@@ -72,14 +72,10 @@ class GenerateController extends Controller
             $file_suffix = $data->name.'_'.$college->code.'_'.ucfirst($request->input("type_generate")).'_'.$year_generate.'_'.$quarter_generate.'_Individual_QAR';
             $departments = Department::where('college_id', $cbco)->pluck('id')->all();
             /* */
-            $faculty_researchers = FacultyResearcher::whereIn('faculty_researchers.department_id', [$departments])->join('departments', 'departments.id', 'faculty_researchers.department_id')->join('users', 'users.id', 'faculty_researchers.user_id')->select('users.*', 'departments.name as department_name')->first();
-            $faculty_extensionists = FacultyExtensionist::whereIn('faculty_extensionists.department_id', [$departments])->join('departments', 'departments.id', 'faculty_extensionists.department_id')->join('users', 'users.id', 'faculty_extensionists.user_id')->select('users.*', 'departments.name as department_name')->first();
-            $chairpeople = Chairperson::whereIn('chairpeople.department_id', [$departments])->join('departments', 'departments.id', 'chairpeople.department_id')->join('users', 'users.id', 'chairpeople.user_id')->select('users.*', 'departments.name as department_name')->first();
-            $director = User::join('deans', 'deans.user_id', 'users.id')->where('deans.college_id', $cbco)->first();
+            $director = User::join('deans', 'deans.user_id', 'users.id')->where('deans.college_id', $cbco)->whereNull('deans.deleted_at')->first('users.*');
             $get_college = College::where('colleges.id', $cbco)->join('sectors', 'sectors.id', 'colleges.sector_id')->select('colleges.*')->first();
             $get_sector = Sector::where('id', $get_college->sector_id)->first();
-            $sector_head = User::join('sector_heads', 'sector_heads.user_id', 'users.id')->where('sector_heads.sector_id', $get_college->sector_id)->first();
-            // dd($sectorHead);
+            $sector_head = User::join('sector_heads', 'sector_heads.user_id', 'users.id')->where('sector_heads.sector_id', $get_college->sector_id)->whereNull('sector_heads.deleted_at')->first('users.*');
             return Excel::download(new IndividualAccomplishmentReportExport(
                 $source_type, 
                 $reportFormat, 
@@ -90,9 +86,6 @@ class GenerateController extends Controller
                 $id, 
                 $get_college,
                 $get_sector,
-                $faculty_researchers,
-                $faculty_extensionists,
-                $chairpeople,
                 $director,
                 $sector_head,
                 json_decode($request->input('table_columns_json'), true), 
@@ -102,9 +95,9 @@ class GenerateController extends Controller
 
         } elseif ($source_generate == "department") {
             $department = $data->name;
-            $file_suffix = $data->name.'_'.ucfirst($request->input("type_generate")).'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_QAR';
-            $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('department_id', $data->id)->select('users.*')->first();
-            $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('department_id', $data->id)->select('users.*')->first();
+            $file_suffix = $data->name.'_'.ucfirst($request->input("type_generate")).'_'.$year_generate.'_'.$quarter_generate.'_Consolidated_Department_QAR';
+            $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.department_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first();
+            $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.department_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first();
             return Excel::download(new DepartmentConsolidatedAccomplishmentReportExport(
                 $source_type, 
                 $reportFormat, 

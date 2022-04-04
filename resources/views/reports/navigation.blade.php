@@ -1,3 +1,4 @@
+<nav class="navbar navbar-expand-md navbar-light sticky-top">
 {{-- My Accomplishments --}}
 @if (!in_array(7,$roles) || in_array(8,$roles))
 <a href="{{ route('reports.consolidate.myaccomplishments') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.myaccomplishments') || request()->routeIs('reports.consolidate.myaccomplishments.*') ? 'active' : '' }} ">My Accomplishments</a>
@@ -59,9 +60,10 @@
 @if (in_array(11, $roles))
     <a href="{{ route('extensionist.index') }}" class="submission-menu {{ request()->routeIs('extensionist.index') ? 'active' : ''}}">To Review - Extensionist</a> 
     @forelse ( $departmentsExtension as $row)
-        <a href="{{ route('reports.consolidate.extension', $row->department_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.extension') ? 'active' : ''}}">
+        <a href="{{ route('reports.consolidate.extension', $row->department_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.extension') || request()->routeIs('reports.consolidate.extension.*') ? 'active' : ''}}">
             {{ $row->code }} - Accomplishments
         </a>  
     @empty
     @endforelse
 @endif
+</nav>

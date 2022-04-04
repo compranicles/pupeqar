@@ -1,6 +1,6 @@
 <x-app-layout>   
     <x-slot name="header">
-        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch', 'departmentsExtension'))
+        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors'))
     </x-slot>
 
     <div class="row">
@@ -23,7 +23,6 @@
                             <h5 class="d-inline-block" style="padding-top: 10px;">My Accomplishments</h5>
                             <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                         </div>
-                        {{-- Generate Report Button --}}
                     </div>
                     <hr>
                     <div class="row">
@@ -98,7 +97,7 @@
                                                         <span class="text-success font-weight-bold">Received</span>
                                                     @endif
                                                 @else
-                                                    
+                                                    N/A
                                                 @endif
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
@@ -111,7 +110,7 @@
                                                         <span class="text-success font-weight-bold">Received</span>
                                                     @endif
                                                 @else
-                                                    
+                                                    N/A
                                                 @endif
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">

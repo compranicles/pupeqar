@@ -512,5 +512,57 @@ class DocumentDescriptionSeeder extends Seeder
             'name' => 'Certificate',
             'is_active' => 1,
         ]);
+
+        // Attendance in Relevant Faculty/Admin Development Program (Seminars/ Webinars, Fora/Conferences) and Trainings
+        for ($i = 25; $i <= 26; $i++) {
+            DocumentDescription::create([
+                'report_category_id' => $i,
+                'name' => 'Special Order',
+                'is_active' => 1,
+            ]);
+            DocumentDescription::create([
+                'report_category_id' => $i,
+                'name' => 'Certificate',
+                'is_active' => 1,
+            ]);
+            DocumentDescription::create([
+                'report_category_id' => $i,
+                'name' => 'Terminal Report',
+                'is_active' => 1,
+            ]);
+            DocumentDescription::create([
+                'report_category_id' => $i,
+                'name' => 'Special Order',
+                'is_active' => 1,
+            ]);
+        }
+        // Outstanding Awards
+        DocumentDescription::create([
+            'report_category_id' => 27,
+            'name' => 'Citation',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::create([
+            'report_category_id' => 27,
+            'name' => 'Certificate of Award',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::create([
+            'report_category_id' => 27,
+            'name' => 'Pictures',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::create([
+            'report_category_id' => 27,
+            'name' => 'Documentation',
+            'is_active' => 1,
+        ]);
+
+        // Officership
+        DocumentDescription::create([
+            'report_category_id' => 28,
+            'name' => 'Certificate',
+            'is_active' => 1,
+        ]);
     }
 }

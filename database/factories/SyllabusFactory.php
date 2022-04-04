@@ -17,10 +17,12 @@ class SyllabusFactory extends Factory
             'course_title' => $this->faker->text(),
             'assigned_task' => rand(186, 189),
             'date_finished' => date("Y-m-d"),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
+            'user_id' => 2,
+            'report_quarter' => 1,
+            'report_year' => 2022,
             // User::all()->random()->id,
         ];
     }

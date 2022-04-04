@@ -20,8 +20,9 @@ class ViableProjectFactory extends Factory
             'start_date' => $this->faker->word(),
             'rate_of_return' => $this->faker->word(),
             'description' => $this->faker->word(),
-            'user_id' => rand(54, 57)
-            // User::all()->random()->id,
+            'user_id' => 4,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

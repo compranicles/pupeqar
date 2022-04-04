@@ -27,10 +27,12 @@ class InventionFactory extends Factory
             'utilization' => $this->faker->text(),
             'copyright_number' => $this->faker->word(),
             'issue_date' =>  date("Y-m-d", strtotime("+2 day")),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
+            'user_id' => 3,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

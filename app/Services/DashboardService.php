@@ -32,7 +32,7 @@ class DashboardService {
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->count();
         } else {
-            $countAccomplishment = Report::whereNotNull($officialApprovalColumn)
+            $countAccomplishment = Report::where($officialApprovalColumn, 1)
                 ->where('department_id', $department)
                 ->whereIn('report_category_id', [$reportCategoryID])
                 ->where('report_quarter', $currentQuarterYear->current_quarter)

@@ -1,44 +1,44 @@
 <x-app-layout>   
     <x-slot name="header">
-        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch', 'departmentsExtension'))
+        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors'))
     </x-slot>
 
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h5>{{ $department->name }} - Research Accomplishments</h5>
+                    <h5>{{ $department->name }} - Consolidated Department Research & Invention</h5>
                     <hr>
                 </div>
                 <div class="col-md-12">
-                    <div class="table-responive">
+                    <div class="table-responsive">
                         <table class="table table-hover table-sm table-bordered" id="department_accomplishments_table">
-                            <thead class="text-center">
+                            <thead>
                                 <tr>
-                                    <th rowspan="2">#</th>
+                                    <th rowspan="2"></th>
                                     <th rowspan="2">Accomplishment Report</th>
+                                    <th rowspan="2">Employee</th>
                                     <th rowspan="2">College/Branch/Campus/Office</th>
-                                    <th rowspan="2">Department</th>
-                                    <th colspan="6">Status</th>
+                                    <th class="text-center" colspan="6">Status</th>
                                     <th rowspan="2">Remarks</th>
                                 </tr>
-                                <tr>
+                                <tr class="text-center">
                                     <th>Researcher</th>
                                     <th>Extensionist</th>
                                     <th>Chairperson</th>
-                                    <th>Dean/Director</th>
+                                    <th>Dean/<br>Director</th>
                                     <th>Sector Head</th>
                                     <th>IPQMSO</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
+                            <tbody>
                                 @forelse ($department_accomps as $row)
                                 <tr role="button">
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 Receiving...
@@ -48,10 +48,10 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
+                                            N/A
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
                                             @if ($row->extensionist_approval == null)
                                                 Receiving...
@@ -61,10 +61,10 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
-                                            n/a
+                                            N/A
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval == null)
                                                 -
@@ -103,7 +103,7 @@
                                             @endif
                                         @endif     
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->chairperson_approval === 0)
                                             -
                                         @elseif ($row->chairperson_approval === null)
@@ -118,7 +118,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->dean_approval === 0)
                                             -
                                         @elseif ($row->dean_approval === null)
@@ -133,7 +133,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                    <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->sector_approval === 0)
                                             -
                                         @elseif ($row->sector_approval === null)
@@ -148,7 +148,7 @@
                                             @endif
                                         @endif
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if (
                                                 $row->researcher_approval === 0 ||
@@ -282,8 +282,8 @@
                 $.get('/reports/data/'+catID, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
-                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+'</td>');
+                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
+                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });

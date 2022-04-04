@@ -1,6 +1,6 @@
 <x-app-layout>   
     <x-slot name="header">
-        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch', 'departmentsExtension'))
+        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors'))
     </x-slot>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -101,6 +101,7 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
+                                            N/A
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
@@ -113,6 +114,7 @@
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
                                         @else
+                                            N/A
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">

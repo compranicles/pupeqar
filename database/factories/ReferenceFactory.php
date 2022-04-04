@@ -26,10 +26,12 @@ class ReferenceFactory extends Factory
             'issue_no' => rand(1, 5),
             'date_published' => date("Y-m-d", strtotime("+3 day")),
             'copyright_regi_no' => $this->faker->numerify('ISBN-####'),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
+            'user_id' => 2,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

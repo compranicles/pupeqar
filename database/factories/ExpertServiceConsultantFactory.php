@@ -22,10 +22,12 @@ class ExpertServiceConsultantFactory extends Factory
             'title' => $this->faker->text(),
             'venue' => $this->faker->text(),
             'partner_agency' => $this->faker->text(),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
+            'user_id' => 2,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

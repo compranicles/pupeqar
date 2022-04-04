@@ -60,7 +60,6 @@ class ExtensionistController extends Controller
         }
 
         $reportsToReview = collect();
-        $employees = collect();
 
         foreach ($departmentsExtension as $row){
             $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
@@ -70,18 +69,7 @@ class ExtensionistController extends Controller
                 ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
                 ->where('department_id', $row->department_id)->where('extensionist_approval', null)->get();
 
-                        
-            $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
-                ->where('reports.department_id', $row->department_id)
-                ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
-                ->where('reports.extensionist_approval', null)
-                ->distinct()
-                ->orderBy('users.last_name')
-                ->get();
-            
             $reportsToReview = $reportsToReview->concat($tempReports);
-            $employees = $employees->concat($tempEmployees);
         }
 
         $college_names = [];
@@ -101,7 +89,7 @@ class ExtensionistController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
 
-        return view('reports.to-receive.extensionists.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
+        return view('reports.to-receive.extensionists.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     public function accept($report_id){

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Models\User;
-use App\Models\Report;
-use App\Models\HRISDocument;
+use App\Models\{
+    User,
+    Report,
+    HRISDocument,
+    Employee,
+};
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use Illuminate\Support\Carbon;
@@ -73,7 +76,7 @@ class EducationController extends Controller
             'units_enrolled' =>$educationData[0]->UnitsEnrolled
         ];
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         //HRIS Document 
         $hrisDocuments = [];

@@ -55,9 +55,9 @@
         <!-- Page Heading -->
         @if((!Request::is('dashboard')))
         <!-- Page Heading -->
-        <header class="d-flex py-2 border-bottom" style="background-color: #373b3e; border-color: #373b3e; color: whitesmoke;">
-            <div class="container">
-                <div class="py-1">
+        <header class="d-flex py-3" style="background-color: #212529; border-color: #212529; color: whitesmoke;">
+        <div class="container">
+                <div>
                     {{ $header }}
                 </div>
             </div>
