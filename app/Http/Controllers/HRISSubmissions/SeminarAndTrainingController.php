@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Models\User;
-use App\Models\Report;
+use App\Models\{
+    User,
+    Report,
+    Employee,
+};
 use App\Models\HRISDocument;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -83,7 +86,7 @@ class SeminarAndTrainingController extends Controller
             'total_hours' => $seminar->NumberOfHours
         ];
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         //HRIS Document 
         $hrisDocuments = [];
@@ -276,7 +279,7 @@ class SeminarAndTrainingController extends Controller
             'total_hours' => $training->NumberOfHours
         ];
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         //HRIS Document 
         $hrisDocuments = [];

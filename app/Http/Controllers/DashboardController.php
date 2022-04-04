@@ -76,15 +76,15 @@ class DashboardController extends Controller
             $sector = '';
             $arrayOfNoOfAllUsers = '';
             $department = Department::join('faculty_researchers', 'departments.id', 'faculty_researchers.department_id')->where('faculty_researchers.user_id', auth()->id())->get();
-            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '[1,2,3,4,5,6,7]');
-            $countReviewed2 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '[8]');
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '1,2,3,4,5,6,7');
+            $countReviewed2 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('researcher_approval', $department[0]->department_id, 1, $currentQuarterYear, '8');
         }
         if (in_array(11, $roles)) {
             $college = '';
             $sector = '';
             $arrayOfNoOfAllUsers = '';
             $department = Department::join('faculty_extensionists', 'departments.id', 'faculty_extensionists.department_id')->where('faculty_extensionists.user_id', auth()->id())->get();
-            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('extensionist_approval', $department[0]->department_id, 1, $currentQuarterYear, '[9,10,11,12,13,14]');
+            $countReviewed1 = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID('extensionist_approval', $department[0]->department_id, 1, $currentQuarterYear, '9,10,11,12,13,14');
             $countReviewed2 = "";
         }
         if (in_array(5, $roles)) {

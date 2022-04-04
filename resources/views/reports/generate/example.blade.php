@@ -25,10 +25,12 @@
                     <thead> 
                         <tr>
                             @if ($format->is_individual == "1" && $source_type != "individual")
-                                @if ($reportFormat == "academic")
-                                    <th>Department</th>
-                                @elseif ($reportFormat == "admin")
-                                    <th>Section</th>    
+                                @if ($source_type == "college")
+                                    @if ($reportFormat == "academic")
+                                        <th>Department</th>
+                                    @elseif ($reportFormat == "admin")
+                                        <th>Section</th>    
+                                    @endif
                                 @endif
                             <th>Name of the Employee</th>
                             @endif
@@ -43,8 +45,6 @@
                             @foreach ($table_columns[$format->id] as $column)
                                 <th>{{ $column['name'] }}</th>
                             @endforeach
-                            <th>Supporting Evidence Verified By</th>
-                            <th>Status of Supporting Documents</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,12 +54,14 @@
                             @endphp
                             <tr>
                                 @if ($format->is_individual == "1" && $source_type != "individual")
+                                    @if ($source_type == "college")
                                     <td>
                                         @if ($source_type != "department")
                                             {{ $data['department_id'] }}
                                         @else
                                         @endif
                                     </td>
+                                    @endif
                                     <td>
                                         {{ $content['faculty_name'] }}
                                     </td>
@@ -75,6 +77,7 @@
                                         <td>-</td>
                                     @endif
                                 @endforeach
+                                <td></td>
                             </tr>
                                 
                         @empty

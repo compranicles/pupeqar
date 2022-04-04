@@ -19,7 +19,9 @@ class OutreachProgramFactory extends Factory
             'date' => date("Y-m-d"),
             'level' => rand(174, 176),
             'description' => $this->faker->word(),
-            'user_id' => rand(54, 58)
+            'user_id' => 3,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

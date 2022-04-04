@@ -67,7 +67,6 @@ class ChairpersonController extends Controller
         }
 
         $reportsToReview = collect();
-        $employees = collect();
         
         foreach ($departments as $row){
             $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
@@ -76,17 +75,8 @@ class ChairpersonController extends Controller
                 ->join('users', 'reports.user_id', 'users.id')
                 ->where('department_id', $row->department_id)->where('chairperson_approval', null)->get();
 
-                        
-            $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
-                ->where('reports.department_id', $row->department_id)
-                ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->where('reports.chairperson_approval', null)
-                ->distinct()
-                ->orderBy('users.last_name')
-                ->get();
             
             $reportsToReview = $reportsToReview->concat($tempReports);
-            $employees = $employees->concat($tempEmployees);
         }
 
 
@@ -128,7 +118,7 @@ class ChairpersonController extends Controller
         }
         
 
-        return view('reports.to-receive.chairpersons.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
+        return view('reports.to-receive.chairpersons.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

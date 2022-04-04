@@ -11,7 +11,6 @@ use App\Models\SectorHead;
 use App\Models\Chairperson;
 use App\Models\FacultyResearcher;
 use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\Quarter;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;

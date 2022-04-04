@@ -27,11 +27,12 @@ class PartnershipFactory extends Factory
             'name_of_contact_person' => $this->faker->name.', '.$this->faker->name.', '.$this->faker->name,
             'address_of_contact_person' => $this->faker->text(),
             'telephone_number' => $this->faker->phoneNumber(),
-            'college_id' => 86,
+            'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3
-            // User::all()->random()->id,
+            'user_id' => 3,
+            'report_quarter' => 1,
+            'report_year' => 2022,
         ];
     }
 }

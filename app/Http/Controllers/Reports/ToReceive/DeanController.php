@@ -66,7 +66,6 @@ class DeanController extends Controller
         }
 
         $reportsToReview = collect();
-        $employees = collect();
         $department_list = collect();
         
         foreach ($colleges as $row){
@@ -75,15 +74,6 @@ class DeanController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
                 ->where('reports.college_id', $row->college_id)->where('chairperson_approval', 1)->where('dean_approval', null)->get();
-                        
-            $tempEmployees = Report::join('users', 'reports.user_id', 'users.id')
-                ->where('reports.college_id', $row->college_id)
-                ->select('users.last_name', 'users.first_name', 'users.suffix', 'users.middle_name')
-                ->where('reports.chairperson_approval', 1)
-                ->where('reports.dean_approval', null)
-                ->distinct()
-                ->orderBy('users.last_name')
-                ->get();
 
             $tempDepartment_list = Department::where('college_id', $row->college_id)
                 ->orderBy('departments.name')
@@ -92,7 +82,6 @@ class DeanController extends Controller
                 ->get();
             
             $reportsToReview = $reportsToReview->concat($tempReports);
-            $employees = $employees->concat($tempEmployees);
             $department_list = $department_list->concat($tempDepartment_list);
         }
         
@@ -113,7 +102,7 @@ class DeanController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
 
-        return view('reports.to-receive.deans.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'employees', 'college_names', 'department_names', 'department_list', 'sectors', 'departmentsResearch','departmentsExtension'));
+        return view('reports.to-receive.deans.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'college_names', 'department_names', 'department_list', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
+        @include('submissions.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report - College/Branch/Campus/Office
+                                Quarterly Accomplishment Report - Department
                             </h3>
                             <hr>
                         </div>
@@ -26,23 +26,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3" style="display: none;" id="actionButtons">
+                        <div class="col-md-6" style="display: none;" id="actionButtons">
                             <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
-                        <div class="col-md-4 ml-auto">
-                            <div class="d-flex justify-content-start">
-                                <label class="mt-2 mr-2" for="deptFilter">Department:</label>
-                                <select id="deptFilter" class="custom-select mr-2">
-                                    <option value="">Show All</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6 ml-auto">
                             <div class="d-flex justify-content-start">
                                 <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
-                                <select name="emp" id="employeeFilter" class="custom-select">
-                                    <option value="">Show All</option>
+                                <select id="employeeFilter" class="custom-select mr-2">
+                                    <option value="">All</option>
+                                    @foreach ($employees as $employee)
+                                    <option value="{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}">{{ $employee->last_name.', '.$employee->first_name.(($employee->middle_name == null) ? '' : ', '.' '.$employee->middle_name).(($employee->suffix == null) ? '' : ', '.$employee->suffix) }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -58,9 +53,9 @@
                                             <th></th>
                                             <th></th>
                                             <th>Accomplishment Report</th>
-                                            <th>Employee</th>
                                             <th>College/Branch/Campus/Office</th>
                                             <th>Department</th>
+                                            <th>Employee</th>
                                             <th>Report Date</th>
                                         </tr>
                                     </thead>
@@ -68,13 +63,13 @@
                                         @foreach ($reportsToReview as $row)
                                             <tr role="button">
                                                 <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}"><i class="bi bi-three-dots-vertical"></i></td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ date( "F j, Y g:i a", strtotime($row->created_at)) }}</td>
+                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport"><i class="bi bi-three-dots-vertical"></i></td>
+                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $loop->iteration }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->report_category }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $college_names[$row->id]->name ?? '-' }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport">{{ date( "F j, Y g:i a", strtotime($row->created_at)) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -92,7 +87,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel"></h5>
+                <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -100,6 +95,12 @@
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-md-11">
+{{--                        <div class="alert alert-danger alert-index">
+                            @foreach($reportsToReview as $row)
+                            <i class="bi bi-x-circle"></i> Denied by {{ $row->reason }} at <?php $created_at = strtotime( $row->created_at );
+                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  {{ $created_at }}: {{ $row->reason }}
+                            @endforeach
+                        </div>--}}
                         <table class="table table-sm table-borderless" id="columns_value_table">
                         </table>
                     </div>
@@ -123,6 +124,7 @@
                 <div class="">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -139,9 +141,9 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">Are you sure you want to  <span class="text-danger font-weight-bold">RETURN</span> selected items?</div>
+                    <div class="col-md-12">Are you sure you want to  <span class="text-danger font-weight-bold">RETURN</span> selected?</div>
                 </div>
-                <form action="{{ route('dean.deny-select') }}" method="POST">
+                <form action="{{ route('chairperson.deny-select') }}" method="POST">
                     @csrf
                     @foreach ($reportsToReview as $row)
                         <input class="report-{{ $row->id }}" type="hidden" value="{{ $row->id }}" name="report_id[]" disabled>
@@ -160,16 +162,16 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectApproveLabel">Accept Selected</h5>
+                <h5 class="modal-title" id="selectApproveLabel">Receive Selected</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">ACCEPT</span> selected items?</div>
+                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">RECEIVE</span> selected?</div>
                 </div>
-                <form action="{{ route('dean.accept-select') }}" method="POST">
+                <form action="{{ route('chairperson.accept-select') }}" method="POST">
                     @csrf
                     @foreach ($reportsToReview as $row)
                         <input class="report-{{ $row->id }}" type="hidden" value="{{ $row->id }}" name="report_id[]" disabled>
@@ -183,7 +185,6 @@
         </div>
     </div>
 </div>
-
 
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -223,8 +224,8 @@
             });
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
-                
                 $('#actionButtons').hide();
+                
             }
             else{
                 
@@ -253,8 +254,8 @@
             });
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
-                
                 $('#actionButtons').hide();
+                
             }
             else{
                 
@@ -281,23 +282,24 @@
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
                     $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
-                    $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
+                    $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                 });
             });
             $.get('/reports/docs/'+catID, function (data) {
-                data.forEach(function (item){
-                    var newlink = link.replace(':filename', item)
-                    $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-dark">'+item+'<a/>');
-                });
+                if(data == false){
+                    $('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
+                }
+                else{
+                    data.forEach(function (item){
+                        var newlink = link.replace(':filename', item)
+                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-dark m-1">'+item+'</a>');
+                    });
+                }
             });
             
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Receive</a>');
             $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Accept</a>');
             
-            var viewReport = document.getElementById('viewReport')
-            var reportCategory = $(this).data('report-category')
-            var modalTitle = viewReport.querySelector('.modal-title')
-            modalTitle.textContent = reportCategory
         });
 
         $('#viewReport').on('hidden.bs.modal', function(event) {
@@ -310,43 +312,7 @@
                 columnDefs: [ {
                     targets: 0,
                     orderable: false
-                } ],
-                initComplete: function () {
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#employeeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-    
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-    
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(6).every( function () {
-                    var column = this;
-                    var select = $('#deptFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-    
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-    
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                }
+                } ]
             });
             
             var allChecked = 0;
@@ -357,33 +323,15 @@
             });
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
-                
                 $('#actionButtons').hide();
+                
+
             }
             else{
                 
                 $('#actionButtons').show();
             }
-
-            var deptIndex = 0;
-            $("#to_review_table th").each(function (i) {
-                if ($($(this)).html() == "Department") {
-                    deptIndex = i; return false;
-
-                }
-            });
-
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#deptFilter').val()
-                    var department = data[deptIndex];
-                    if (selectedItem === "" || department.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
-
+            
             var empIndex = 0;
             $("#to_review_table th").each(function (i) {
                 if ($($(this)).html() == "Employee") {
@@ -403,16 +351,11 @@
                 }
             );
 
-            $("#deptFilter").change(function (e) {
-                table.draw();
-            });
-
             $("#employeeFilter").change(function (e) {
                 table.draw();
             });
 
             table.draw();
-
         });
     </script>
     <script>
@@ -423,6 +366,7 @@
             });
         }, 4000);
     </script>
+
 @endpush
 
 </x-app-layout>

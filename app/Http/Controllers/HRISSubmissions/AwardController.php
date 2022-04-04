@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Models\User;
-use App\Models\Report;
-use App\Models\HRISDocument;
+use App\Models\{
+    User,
+    Report,
+    HRISDocument,
+    TemporaryFile,
+    Employee
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -60,7 +63,7 @@ class AwardController extends Controller
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
         ];
 
-        $colleges = College::all();
+        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
          //HRIS Document 
          $hrisDocuments = [];
