@@ -31,7 +31,7 @@
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
                         <div class="col-md-6 ml-auto">
-                            <div class="d-flex justify-content-start">
+                            <div class="form-group">
                                 <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
                                 <select id="employeeFilter" class="custom-select mr-2">
                                     <option value="">Show All</option>

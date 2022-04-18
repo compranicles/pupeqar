@@ -32,39 +32,62 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="reportFilter" class="mr-2">Accomplishment: </label>
-                            <div class="d-flex">
-                                <!-- @include('submissions.accomplishment-filter') -->
-                                <select name="report" id="reportFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                </select>
+                            <div class="form-group">
+                                <label for="reportFilter" class="mr-2">Accomplishment: </label>
+                                <div class="d-flex">
+                                    <!-- @include('submissions.accomplishment-filter') -->
+                                    <select name="report" id="reportFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="empFilter" class="mr-2">Employee: </label>
-                                <select name="emp" id="empFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                </select>
+                            <div class="form-group">
+                                <label for="empFilter" class="mr-2">Employee: </label>
+                                    <select name="emp" id="empFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                            </div>
                         </div>
-                        <span style="display: inline-block;
-                                border-right: 1px solid #ccc;
-                                margin: 0px 20px 0px 20px;;
-                                height: 65px;"></span>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office: </label>
+                                    <select name="college" id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="deptFilter" class="mr-2">Department: </label>
+                                    <select name="dept" id="deptFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="col-md-2">
-                            <label for="yearFilter" class="mr-2">Year Reported: </label>
-                            <select id="yearFilter" class="custom-select">
-                            </select>
+                            <div class="form-group">
+                                <label for="yearFilter" class="mr-2">Year Reported: </label>
+                                <select id="yearFilter" class="custom-select">
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-2">
-                            <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                            <div class="d-flex">
-                                <select id="quarterFilter" class="custom-select" name="quarter">
-                                    <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                    <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                    <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                    <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
-                                </select>
-                                <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                            <div class="form-group">
+                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                <div class="d-flex">
+                                    <select id="quarterFilter" class="custom-select" name="quarter">
+                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                    </select>
+                                    <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -341,6 +364,24 @@
         <script>
             var table = $('#college_accomplishments_table').DataTable({
                 initComplete: function () {
+                this.api().columns(1).every( function () {
+                    var column = this;
+                    var select = $('#reportFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+        
+                });
                 this.api().columns(2).every( function () {
                     var column = this;
                     var select = $('#empFilter')
@@ -358,10 +399,9 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-
-                this.api().columns(1).every( function () {
+                this.api().columns(3).every( function () {
                     var column = this;
-                    var select = $('#reportFilter')
+                    var select = $('#collegeFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
@@ -376,7 +416,25 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                }
+                this.api().columns(4).every( function () {
+                    var column = this;
+                    var select = $('#deptFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+            }
+
             });
 
             $(document).on('click', '.button-view', function(){

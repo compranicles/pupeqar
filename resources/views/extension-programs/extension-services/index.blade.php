@@ -27,33 +27,40 @@
                         </div>  
                         <hr>
                         <div class="row">
-                                <div class="col-md-3">
+                            <div class="col-md-3">
+                                <div class="form-group">
                                     <label for="statusFilter" class="mr-2">Current Status: </label>
                                     <select id="statusFilter" class="custom-select">
                                         <option value="">Show All</option>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarter">
-                                           
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
                                     <label for="yearFilter" class="mr-2">Year Added:</label>
                                     <div class="d-flex">
                                         <select id="yearFilter" class="custom-select" name="yearFilter">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
                                     <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                     <select id="collegeFilter" class="custom-select">
                                         <option value="">Show All</option>
                                     </select>
                                 </div>
+                            </div>
                         </div>
                         <hr>
                         <div class="table-responsive">

@@ -24,42 +24,59 @@
             </div>
             <hr>
             <div class="row">
-                <div class="col-md-3">
-                    <label for="reportFilter" class="mr-2">Accomplishment: </label>
-                    <div class="d-flex">
-                        <!-- @include('submissions.accomplishment-filter') -->
-                        <select name="report" id="reportFilter" class="custom-select">
-                            <option value="">Show All</option>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="reportFilter" class="mr-2">Accomplishment: </label>
+                        <div class="d-flex">
+                            <!-- @include('submissions.accomplishment-filter') -->
+                            <select name="report" id="reportFilter" class="custom-select">
+                                <option value="">Show All</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office: </label>
+                        <div class="d-flex">
+                            <select name="college" id="collegeFilter" class="custom-select">
+                                <option value="">Show All</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="deptFilter" class="mr-2">Department: </label>
+                            <select name="dept" id="deptFilter" class="custom-select">
+                                <option value="">Show All</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="yearFilter" class="mr-2">Year Reported: </label>
+                        <select id="yearFilter" class="custom-select">
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="empFilter" class="mr-2">Employee: </label>
-                        <select name="emp" id="empFilter" class="custom-select">
-                            <option value="">Show All</option>
-                        </select>
-                </div>
-                <!-- <span style="display: inline-block;
-                        border-right: 1px solid #ccc;
-                        margin: 0px 20px 0px 20px;;
-                        height: 65px;"></span>
                 <div class="col-md-2">
-                    <label for="yearFilter" class="mr-2">Year Reported: </label>
-                    <select id="yearFilter" class="custom-select">
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                    <div class="d-flex">
-                        <select id="quarterFilter" class="custom-select" name="quarter">
-                            <option value="1" class="quarter">1</option>
-                            <option value="2" class="quarter">2</option>
-                            <option value="3" class="quarter">3</option>
-                            <option value="4" class="quarter">4</option>
-                        </select>
-                        <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                    <div class="form-group m-0">
+                        <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                        <div class="d-flex">
+                            <select id="quarterFilter" class="custom-select" name="quarter">
+                                <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                                <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                                <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                                <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                            </select>
+                            <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                        </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <hr>
             <div class="row">
@@ -330,9 +347,9 @@
         <script>
             var table = $('#college_accomplishments_in_sector_table').DataTable({
                 initComplete: function () {
-                this.api().columns(2).every( function () {
+                this.api().columns(1).every( function () {
                     var column = this;
-                    var select = $('#empFilter')
+                    var select = $('#reportFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
@@ -347,10 +364,26 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-
-                this.api().columns(1).every( function () {
+                this.api().columns(2).every( function () {
                     var column = this;
-                    var select = $('#reportFilter')
+                    var select = $('#collegeFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#deptFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
@@ -479,13 +512,30 @@
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
 
                 table.draw();
+            });
+        </script>
+        <script>
+            var max = new Date().getFullYear();
+            var min = 0;
+            var diff = max-2022;
+            min = max-diff;
+            select = document.getElementById('yearFilter');
 
-                // var returned = $('td:contains(Returned)');
-                // document.getElementById('badge-returned').innerHTML = returned.length;
-                //Count the returned accomplishments shown in badge in Returned tab
-                // var tbl =  $('#college_accomplishments_in_sector_table').DataTable().search("Returned");
-                // var count = tbl.$('tr', {"filter":"applied"}).length;
-                // document.getElementById('badge-returned').innerHTML = count;
+            var year = {!! json_encode($year) !!};
+            for (var i = max; i >= min; i--) {
+                select.append(new Option(i, i));
+                if (year == i) {
+                    document.getElementById("yearFilter").value = i;
+                }
+            }
+        </script>
+        <script>
+            $('#filter').on('click', function () {
+                var year_reported = $('#yearFilter').val();
+                var quarter = $('#quarterFilter').val();
+                var link = "/reports/consolidate/sector/reportYearFilter/:sector/:year/:quarter";
+                var newLink = link.replace(':sector', "{{$sectors[0]->sector_id}}").replace(':year', year_reported).replace(':quarter', quarter);
+                window.location.replace(newLink);
             });
         </script>
     @endpush

@@ -46,71 +46,80 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="statusFilter" class="mr-2">Current Status: </label>
-                                <select id="statusFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                    @foreach ($researchStatus as $status)
-                                    <option value="{{ $status->name }}">{{ $status->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group">
+                                    <label for="statusFilter" class="mr-2">Current Status: </label>
+                                    <select id="statusFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="reportFilter" class="mr-2">Year Registered:</label>
-                                <div class="d-flex">
-                                    <select id="reportFilter" class="custom-select" name="reportFilter">
-                                    </select>
+                                <div class="form-group">
+                                    <label for="reportFilter" class="mr-2">Year Registered:</label>
+                                    <div class="d-flex">
+                                        <select id="reportFilter" class="custom-select" name="reportFilter">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                        
-                                    </select>
+                                <div class="form-group">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                <select id="collegeFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                    @foreach($research_in_colleges as $college)
-                                    <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <hr>
                         <div class="row mt-3">
                             <div class="col-md-2">
-                                <label for="startFilter" class="mr-2">Year Started: <span style="color:red;">*</span></label>
-                                <div class="d-flex">
-                                    <select id="startFilter" class="custom-select yearFilter" name="startFilter">
-                                    <option value="started" {{ $year == "started" ? 'selected' : '' }} class="present_year">--</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="startFilter" class="mr-2">Year Started: <span style="color:red;">*</span></label>
+                                    <div class="d-flex">
+                                        <select id="startFilter" class="custom-select yearFilter" name="startFilter">
+                                        <option value="started" {{ $year == "started" ? 'selected' : '' }} class="present_year">--</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="completeFilter" class="mr-2">Year Completed: <span style="color:red;">*</span> </label>
-                                <div class="d-flex">
-                                    <select id="completeFilter" class="custom-select yearFilter" name="completeFilter">
-                                        <option value="completion" {{ $year == "completion" ? 'selected' : '' }} class="present_year">--</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="completeFilter" class="mr-2">Year Completed: <span style="color:red;">*</span> </label>
+                                    <div class="d-flex">
+                                        <select id="completeFilter" class="custom-select yearFilter" name="completeFilter">
+                                            <option value="completion" {{ $year == "completion" ? 'selected' : '' }} class="present_year">--</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="publishFilter" class="mr-2">Year Published: <span style="color:red;">*</span> </label>
-                                <div class="d-flex">
-                                    <select id="publishFilter" class="custom-select yearFilter" name="publishFilter">
-                                        <option value="published" {{ $year == "published" ? 'selected' : '' }} class="present_year">--</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="publishFilter" class="mr-2">Year Published: <span style="color:red;">*</span> </label>
+                                    <div class="d-flex">
+                                        <select id="publishFilter" class="custom-select yearFilter" name="publishFilter">
+                                            <option value="published" {{ $year == "published" ? 'selected' : '' }} class="present_year">--</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="presentFilter" class="mr-2">Year Presented: <span style="color:red;">*</span> </label>
-                                <div class="d-flex">
-                                    <select id="presentFilter" class="custom-select yearFilter" name="presentFilter">
-                                        <option value="presented" {{ $year == "presented" ? 'selected' : '' }} class="present_year">--</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="presentFilter" class="mr-2">Year Presented: <span style="color:red;">*</span> </label>
+                                    <div class="d-flex">
+                                        <select id="presentFilter" class="custom-select yearFilter" name="presentFilter">
+                                            <option value="presented" {{ $year == "presented" ? 'selected' : '' }} class="present_year">--</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -192,6 +201,40 @@
                     { "search": "{{ $currentQuarterYear->current_year }}" },
                 ],
                 initComplete: function () {
+                    this.api().columns(3).every( function () {
+                        var column = this;
+                        var select = $('#statusFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
+                    this.api().columns(4).every( function () {
+                        var column = this;
+                        var select = $('#collegeFilter')
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    });
                     this.api().columns(7).every( function () {
                         var column = this;
                         var select = $('#quarterFilter')
