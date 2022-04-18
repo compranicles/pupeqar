@@ -264,6 +264,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getRejectDetails']);
     Route::get('/reports/manage/{report_id}/{report_category_id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'viewReportOrigin'])->name('report.manage');
     Route::post('/reports/generate/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'index'])->name('report.generate.index');
+    Route::get('/reports/{id}/documents', [\App\Http\Controllers\Reports\GenerateController::class, 'documentView'])->name('report.generate.document-view');
 
     /* REPORTS TO RECEIVE */
     Route::get('/reports/to-receive/researcher', [\App\Http\Controllers\Reports\ToReceive\ResearcherController::class, 'index'])->name('researcher.index');

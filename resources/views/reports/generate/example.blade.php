@@ -81,9 +81,8 @@
                                         <td>-</td>
                                     @endif
                                 @endforeach
-                                @foreach ($documents as $document)
-                                    <td>{{ "localhost:8000/document-view/".$document }}</td>
-                                @endforeach
+                                <td><a href="{{ route('report.generate.document-view', $content['id']) }}" target="_blank">View Documents</a></td>
+                                <td></td>
                             </tr>
                                 
                         @empty
