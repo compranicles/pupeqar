@@ -342,9 +342,9 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         foreach($table_contents[$format->id] as $contents){
                             //DOCUMENTS LINK
                             $documents =  json_decode($contents['report_documents'], true);
-                            foreach($documents as $document) {
-                                $event->sheet->setCellValue($letter.$count, "localhost:8000/document-view/".$document);
-                            }
+                            // foreach($documents as $document) {
+                            //     $event->sheet->setCellValue($letter.$count, "localhost:8000/document-view/".$document);
+                            // }
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
