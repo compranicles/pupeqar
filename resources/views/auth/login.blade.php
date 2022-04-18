@@ -32,7 +32,7 @@
                             <x-jet-label value="{{ __('Email') }}" />
 
                             <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }} login-field rounded-0" type="email"
-                                        name="email" :value="old('email')" required />
+                                        name="email" :value="old('email')" required autocomplete="off" />
                             <x-jet-input-error for="email"></x-jet-input-error>
                         </div>
 
@@ -55,7 +55,7 @@
 
                         <div class="mb-0">
                             <div class="d-flex justify-content-end align-items-baseline">
-                                <a class="text-muted mr-3" href="{{ route('register.hris') }}">
+                                <a class="text-dark mr-3" href="{{ route('register.hris') }}">
                                     {{ __('Register with HRIS') }}
                                 </a>
 

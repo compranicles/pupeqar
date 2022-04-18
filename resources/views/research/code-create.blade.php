@@ -95,7 +95,7 @@
     </div>
 
     @push('scripts')
-    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
             $(function () {
@@ -106,6 +106,7 @@
                 var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
                 $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#researchers")[0].selectize.addItem(fullname);
+                $("#researchers")[0].selectize.lock();
             });
         </script>
         <script>
@@ -135,7 +136,7 @@
            
             $('#title').attr('disabled', true); 
             $('#keywords').attr('disabled', true);
-            $('#researchers').attr('disabled', true);
+            // $('#researchers').attr('readonly', true);
             $('#currency_select_funding_amount').attr('disabled', true);
             $('#funding_amount').attr('disabled', true);
             $('#funding_agency').attr('disabled', true);

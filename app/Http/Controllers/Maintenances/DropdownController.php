@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Maintenances;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\DropdownOption;
+use App\Models\{
+    FormBuilder\Dropdown,
+    FormBuilder\DropdownOption,
+};
 
 class DropdownController extends Controller
 {

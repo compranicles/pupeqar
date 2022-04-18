@@ -2,41 +2,41 @@
 
 namespace App\Http\Controllers\Reports;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\{
+    CollegeDepartmentAwardDocument,
+    DenyReason,
+    ExpertServiceAcademicDocument,
+    ExpertServiceConferenceDocument,
+    ExpertServiceConsultantDocument,
+    ExtensionServiceDocument,
+    InventionDocument,
+    MobilityDocument,
+    OutreachProgramDocument,
+    PartnershipDocument,
+    ReferenceDocument,
     Report,
+    RequestDocument,
     Research,
     ResearchCitation,
     ResearchComplete,
-    ResearchDocument,
-    DenyReason,
-    RequestDocument,
-    MobilityDocument,
-    SyllabusDocument,
-    InventionDocument,
-    ReferenceDocument,
     ResearchCopyright,
-    PartnershipDocument,
+    ResearchDocument,
     ResearchPublication,
+    ResearchPresentation,
+    ResearchUtilization,
+    StudentAwardDocument,
+    SyllabusDocument,
+    StudentTrainingDocument,
+    TechnicalExtensionDocument,
+    ViableProjectDocument,
+    FormBuilder\DropdownOption,
+    Maintenance\Currency,
+    Maintenance\HRISField,
+    Maintenance\ReportColumn,
 };
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\ResearchUtilization;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Currency;
-use App\Models\ResearchPresentation;
-use App\Models\StudentAwardDocument;
-use App\Models\ViableProjectDocument;
-use App\Models\OutreachProgramDocument;
-use App\Models\StudentTrainingDocument;
-use App\Models\ExtensionServiceDocument;
-use App\Models\Maintenance\ReportColumn;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\TechnicalExtensionDocument;
-use App\Models\ExpertServiceAcademicDocument;
-use App\Models\CollegeDepartmentAwardDocument;
-use App\Models\ExpertServiceConferenceDocument;
-use App\Models\ExpertServiceConsultantDocument;
-use App\Models\Maintenance\HRISField;
 
 class ReportDataController extends Controller
 {
@@ -453,11 +453,11 @@ class ReportDataController extends Controller
                 break;
             case 10:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('expert-service-as-conference.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('expert-service-in-conference.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 11:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('expert-service-as-academic.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('expert-service-in-academic.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 12:
                 $report = Report::where('id', $report_id)->first();

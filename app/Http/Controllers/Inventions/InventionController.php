@@ -2,23 +2,27 @@
 
 namespace App\Http\Controllers\Inventions;
 
-use App\Models\Invention;
-use Illuminate\Http\Request;
-use App\Models\{
-    TemporaryFile,
-    Employee
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
-use App\Models\InventionDocument;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\InventionForm;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\FormBuilder\InventionField;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    Invention,
+    InventionDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\InventionField,
+    FormBuilder\InventionForm,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
 use App\Services\DateContentService;
 
 class InventionController extends Controller
@@ -43,8 +47,8 @@ class InventionController extends Controller
                         ->select('inventions.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
                         ->orderBy('inventions.updated_at', 'DESC')
                         ->get();
-        $inventionStatus = DropdownOption::where('dropdown_id', 13)->get();
-        return view('inventions.index', compact('inventions', 'inventionStatus', 'year', 'currentQuarterYear'));
+
+        return view('inventions.index', compact('inventions', 'year', 'currentQuarterYear'));
 
     }
 
@@ -132,7 +136,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$request->input('title').'"was added.');
+        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$request->input('title').'" was added.');
 
         // dd($classification);
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');

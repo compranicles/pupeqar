@@ -238,7 +238,7 @@
         </script>
         <script>
             $('#status').on('change', function(){
-                $('#status option[value=107]').attr('disabled','disabled'); //Deferred
+                // $('#status option[value=107]').attr('disabled','disabled'); //Deferred
                 if ($(this).val() == 105) { // Ongoing
                     $('#from').removeAttr('disabled');
                     $('#from').attr('required', true);

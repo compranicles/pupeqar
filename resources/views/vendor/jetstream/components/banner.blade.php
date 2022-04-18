@@ -19,7 +19,7 @@
                     </svg>
                 </span>
 
-                <p class="m-0 ml-3 font-weight-normal text-white" x-text="message"></p>
+                <a href="{{ route('account') }}"><p class="m-0 ml-3 font-weight-normal text-white" x-text="message"></p></a>
             </div>
 
             <div class="flex-shrink-0">

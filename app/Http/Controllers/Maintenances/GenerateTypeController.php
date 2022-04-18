@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\GenerateType;
-use App\Models\Maintenance\GenerateTable;
-use App\Models\Maintenance\GenerateColumn;
-use App\Models\Maintenance\ReportCategory;
+use Illuminate\Http\Request;
+use App\Models\Maintenance\{
+    GenerateColumn,
+    GenerateTable,
+    GenerateType,
+    ReportCategory,
+};
 
 class GenerateTypeController extends Controller
 {

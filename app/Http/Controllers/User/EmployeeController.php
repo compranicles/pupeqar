@@ -52,6 +52,8 @@ class EmployeeController extends Controller
             'college_id' => $request->input('cbco'),
         ]);
 
+        $officeName = College::where('id', $request->input('cbco'))->first();
+        \LogActivity::addToLog($officeName['name'].' was added as office to report with.');
         return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been added in your account.');
     }
 
@@ -94,6 +96,7 @@ class EmployeeController extends Controller
             'college_id' => $request->input('cbco'),
         ]);
 
+        \LogActivity::addToLog('Office reporting with was updated.');
         return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been updated in your account.');
     }
 
@@ -106,7 +109,8 @@ class EmployeeController extends Controller
     public function destroy(Employee $office)
     {
         Employee::where('id', $office->id)->delete();
+        $officeName = College::where('id', $office->id)->first();
+        \LogActivity::addToLog($officeName['name'].' was removed in the offices reporting with.');
         return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been removed in your account.');
-
     }
 }

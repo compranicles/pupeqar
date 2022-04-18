@@ -2,25 +2,28 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Models\{
-    User,
-    Report,
-    Employee,
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
-use App\Models\HRISDocument;
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\SyllabusDocument;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Currency;
-use App\Models\Maintenance\HRISField;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    HRISDocument,
+    Report,
+    TemporaryFile,
+    User,
+    FormBuilder\DropdownOption,
+    Maintenance\College,
+    Maintenance\Currency,
+    Maintenance\Department,
+    Maintenance\HRISField,
+    Maintenance\Quarter,
+};
 
 class SeminarAndTrainingController extends Controller
 {
@@ -32,7 +35,9 @@ class SeminarAndTrainingController extends Controller
 
         $developmentFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
 
-        return view('submissions.hris.development.index', compact('developmentFinal'));
+        $seminarReports = Report::where('report_category_id', 25)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
+        $trainingReports = Report::where('report_category_id', 26)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
+        return view('submissions.hris.development.index', compact('developmentFinal', 'seminarReports', 'trainingReports'));
     }
 
     public function addSeminar($id){
@@ -41,17 +46,17 @@ class SeminarAndTrainingController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         if(LockController::isLocked($id, 25)){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
         if(LockController::isLocked($id, 26)){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
         if(Report::where('report_reference_id', $id)
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->where('report_category_id', 26)->exists()
             ){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment in Training');
+            return redirect()->back()->with('error', 'The "Training" accomplishment report has already been submitted.');
         }
 
         $db_ext = DB::connection('mysql_external');
@@ -234,17 +239,17 @@ class SeminarAndTrainingController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         if(LockController::isLocked($id, 25)){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
         if(LockController::isLocked($id, 26)){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
         if(Report::where('report_reference_id', $id)
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->where('report_category_id', 25)->exists()
             ){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment in Seminar');
+            return redirect()->back()->with('error', 'The "Seminar" accomplishment report has already been submitted.');
         }
 
         $db_ext = DB::connection('mysql_external');

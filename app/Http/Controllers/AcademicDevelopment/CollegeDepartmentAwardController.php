@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\CollegeDepartmentAward;
 use Illuminate\Support\Facades\Storage;
-use App\Models\CollegeDepartmentAwardDocument;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Models\{
+    CollegeDepartmentAward,
+    CollegeDepartmentAwardDocument,
+    TemporaryFile,  
+    FormBuilder\AcademicDevelopmentForm,
+    Maintenance\Quarter,
+};
 
 class CollegeDepartmentAwardController extends Controller
 {

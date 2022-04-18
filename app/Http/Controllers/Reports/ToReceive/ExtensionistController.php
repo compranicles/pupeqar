@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Reports\ToReceive;
 
-use App\Models\Dean;
-use App\Models\User;
-use App\Models\Report;
-use App\Models\DenyReason;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use App\Models\Authentication\UserRole;
-use App\Notifications\ReturnNotification;
-use App\Models\Maintenance\ReportCategory;
-use App\Notifications\ReceiveNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use App\Models\{
+    Chairperson,
+    Dean,
+    DenyReason,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    User,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\ReportCategory,
+};
+use App\Notifications\ReceiveNotification;
+use App\Notifications\ReturnNotification;
 use App\Services\ToReceiveReportAuthorizationService;
 
 class ExtensionistController extends Controller
@@ -129,7 +131,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist received an accomplishment.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report Accepted');
+        return redirect()->route('extensionist.index')->with('success', 'Report has been added in department consolidation of reports.');
     
     }
     public function rejectCreate($report_id){
@@ -190,7 +192,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist returned an accomplishment.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report Denied');
+        return redirect()->route('extensionist.index')->with('success', 'Report has been returned to the owner.');
     }
 
     public function acceptSelected(Request $request){
@@ -203,7 +205,7 @@ class ExtensionistController extends Controller
 
         $count = 0;
         foreach($reportIds as $report_id){
-            Report::where('id', $report_id)->update(['extensionist_approval' => 1]);
+            Report::where('id', $report_id)->update(['extensionist_approval' => 1, 'chairperson_approval' => 1]);
 
             $report = Report::find($report_id);
 
@@ -237,7 +239,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist received '.$count.' accomplishments.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report/s Approved Successfully');
+        return redirect()->route('extensionist.index')->with('success', 'Report/s added in department consolidation of reports.');
     }
 
     public function denySelected(Request $request){
@@ -304,7 +306,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist returned '.$count.' accomplishments.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report/s Denied Successfully');
+        return redirect()->route('extensionist.index')->with('success', 'Report/s returned to the owner/s.');
 
     }
 }

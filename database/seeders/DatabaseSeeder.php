@@ -18,14 +18,14 @@ class DatabaseSeeder extends Seeder
         
         $this->call([
             // authentication
-            // RoleSeeder::class,
-            // PermissionSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
             // UserSeeder::class,
             // UserRoleSeeder::class,
-            // RolePermissionSeeder::class,
+            RolePermissionSeeder::class,
 
             //other maintenance
-            QuarterSeeder::class,
+            // QuarterSeeder::class,
             SectorSeeder::class,
             CollegeSeeder::class,
             DepartmentSeeder::class,
@@ -64,10 +64,11 @@ class DatabaseSeeder extends Seeder
             GenerateColumn2Seeder::class,
             GenerateColumnHRISSeeder::class,
             GenerateColumn3Seeder::class,
+            GenerateColumn4Seeder::class,
         ]);
         
         \App\Models\Research::truncate();
-        \App\Models\Research::factory()->count(12)->create();
+        // \App\Models\Research::factory()->count(12)->create();
 
         \App\Models\Invention::truncate();
         \App\Models\Invention::factory()->count(12)->create();
@@ -79,7 +80,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Partnership::factory()->count(12)->create();
 
         // \App\Models\ExtensionService::truncate();
-        // \App\Models\ExtensionService::factory()->count(12)->create();
+        // // \App\Models\ExtensionService::factory()->count(12)->create();
 
         \App\Models\ExpertServiceAcademic::truncate();
         \App\Models\ExpertServiceAcademic::factory()->count(12)->create();

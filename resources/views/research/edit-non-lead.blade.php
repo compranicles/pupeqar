@@ -134,19 +134,7 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
-        <script src="{{ asset('js/remove-document.js') }}"></script>
-        <script>
-            $(function () {
-                var middle = '';
-                if ("{{auth()->user()->middle_name}}" != '') {
-                    middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
-                }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
-                $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
-                $("#researchers")[0].selectize.addItem(fullname);
-                $("#researchers")[0].selectize.lock();
-            });
-        </script>
+
         <script>
             $('#classification').on('change', function () {
                 $('#classification').attr('disabled', true); 

@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Models\{
-    User,
-    Report,
-    HRISDocument,
-    TemporaryFile,
-    Employee,
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Currency;
-use App\Models\Maintenance\HRISField;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    HRISDocument,
+    Report,
+    TemporaryFile,
+    User,
+    FormBuilder\DropdownOption,
+    Maintenance\College,
+    Maintenance\Currency,
+    Maintenance\Department,
+    Maintenance\HRISField,
+    Maintenance\Quarter,
+};
 
 class OfficershipController extends Controller
 {

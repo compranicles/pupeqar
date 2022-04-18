@@ -44,8 +44,8 @@ class ResearchFactory extends Factory
             'college_id' => 87,
             'department_id' => 292,
             'description' => $this->faker->word(),
-            'user_id' => 3,
-            'report_quarter' => 1,
+            'user_id' => 2,
+            'report_quarter' => 2,
             'report_year' => 2022,
         ];
     }

@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\TechnicalExtension;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Models\TechnicalExtensionDocument;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Models\{
+    TechnicalExtension,
+    TechnicalExtensionDocument,
+    TemporaryFile,
+    FormBuilder\AcademicDevelopmentForm,
+    Maintenance\Quarter,
+};
 
 class TechnicalExtensionController extends Controller
 {

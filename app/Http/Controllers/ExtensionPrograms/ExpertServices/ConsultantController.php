@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
-use Illuminate\Http\Request;
-use App\Models\{
-    TemporaryFile,
-    Employee
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\ExpertServiceConsultant;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\ExpertServiceConsultantDocument;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Models\{
+    Employee,
+    ExpertServiceConsultant,
+    ExpertServiceConsultantDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\ExtensionProgramField,
+    FormBuilder\ExtensionProgramForm,
+    Maintenance\College,
+    Maintenance\Quarter,
+};
 
 class ConsultantController extends Controller
 {
@@ -31,8 +33,6 @@ class ConsultantController extends Controller
         $this->authorize('viewAny', ExpertServiceConsultant::class);
 
         $currentQuarterYear = Quarter::find(1);
-
-        $classifications = DropdownOption::where('dropdown_id', 14)->get();
         
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
@@ -40,15 +40,8 @@ class ConsultantController extends Controller
                                         ->select(DB::raw('expert_service_consultants.*, dropdown_options.name as classification_name, colleges.name as college_name'))
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
-
-        $consultant_in_colleges = ExpertServiceConsultant::join('colleges', 'expert_service_consultants.college_id', 'colleges.id')
-                                ->where('user_id', auth()->id())
-                                ->whereNull('expert_service_consultants.deleted_at')
-                                ->select('colleges.name')
-                                ->distinct()
-                                ->get();
         
-        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant', 'classifications', 'consultant_in_colleges', 'currentQuarterYear'));
+        return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant', 'currentQuarterYear'));
     }
 
     /**

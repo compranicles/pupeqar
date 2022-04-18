@@ -730,7 +730,7 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::create([
-            'name' => 'VI.  Awards/ Recognitions Received by College/Branch/Campus from  Reputable Organizations',
+            'name' => 'VI.  Awards/ Recognitions Received by College/Branch/Campus from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 0,
@@ -738,7 +738,7 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::create([
-            'name' => 'VII. Students Awards/ Recognitions from  Reputable Organizations',
+            'name' => 'VII. Students Awards/ Recognitions from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 0,
@@ -764,7 +764,78 @@ class GenerateTableSeeder extends Seeder
                 '*** University Funded, Self Funded, Externally Funded, No Funding Required'
             ], JSON_FORCE_OBJECT)
         ]);
-        
-
+        GenerateTable::create([
+            'name' => 'DEPARTMENT LEVEL ACCOMPLISHMENTS (TO BE FILLED-IN BY CHAIRPERSON)																	            ',
+            'is_table' => 0,
+            'type_id' => 3,
+            'is_individual' => null,
+            'report_category_id' => null,
+            'footers' => null
+        ]);
+        GenerateTable::create([
+            'name' => 'A. Technical Extension Programs/Projects/Activities',
+            'is_table' => 1,
+            'type_id' => 3,
+            'is_individual' => 0,
+            'report_category_id' => 23,
+        ]);
+        GenerateTable::create([
+            'name' => 'B. Community Relations and Outreach Programs',
+            'is_table' => 1,
+            'type_id' => 3,
+            'is_individual' => 0,
+            'report_category_id' => 22,
+        ]);
+        GenerateTable::create([
+            'name' => 'C. Viable Demonstration Projects',
+            'is_table' => 1,
+            'type_id' => 3,
+            'is_individual' => 0,
+            'report_category_id' => 20,
+        ]);
+        GenerateTable::create([
+            'name' => 'D. Awards/Recognitions Received by the Department from Reputable Organizations',
+            'is_table' => 1,
+            'type_id' => 3,
+            'is_individual' => 0,
+            'report_category_id' => 21,
+        ]);
+        /* College Level Tables */
+        GenerateTable::create([
+            'name' => 'COLLEGE LEVEL ACCOMPLISHMENTS (TO BE FILLED-IN BY DEAN)																	            ',
+            'is_table' => 0,
+            'type_id' => 4,
+            'is_individual' => null,
+            'report_category_id' => null,
+            'footers' => null
+        ]);
+        GenerateTable::create([
+            'name' => 'A. Technical Extension Programs/Projects/Activities',
+            'is_table' => 1,
+            'type_id' => 4,
+            'is_individual' => 0,
+            'report_category_id' => 23,
+        ]);
+        GenerateTable::create([
+            'name' => 'B. Community Relations and Outreach Programs',
+            'is_table' => 1,
+            'type_id' => 4,
+            'is_individual' => 0,
+            'report_category_id' => 22,
+        ]);
+        GenerateTable::create([
+            'name' => 'C. Viable Demonstration Projects',
+            'is_table' => 1,
+            'type_id' => 4,
+            'is_individual' => 0,
+            'report_category_id' => 20,
+        ]);
+        GenerateTable::create([
+            'name' => 'D. Awards/Recognitions Received by the College/Branch/Campus/Office from Reputable Organizations',
+            'is_table' => 1,
+            'type_id' => 4,
+            'is_individual' => 0,
+            'report_category_id' => 21,
+        ]);
     }
 }

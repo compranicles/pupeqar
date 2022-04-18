@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Models\Report;
-use App\Models\Syllabus;
-use App\Models\Employee;
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\SyllabusDocument;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Models\{
+    Employee,
+    Report,
+    Syllabus,
+    SyllabusDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
+    Maintenance\Quarter,
+    Maintenance\Department,
+};
 
 class SyllabusController extends Controller
 {
@@ -37,17 +41,14 @@ class SyllabusController extends Controller
                     ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name'))
                     ->orderBy('syllabi.updated_at', 'desc')
                     ->get();
-        
-        $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
-        
-        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
-                        ->where('user_id', auth()->id())
-                        ->where('syllabi.deleted_at', null)
-                        ->distinct()
-                        ->get();
-                        // dd($syllabiYearsFinished);
+    
+        $syllabiYearsFinished = Syllabus::where('user_id', auth()->id())
+                    ->where('syllabi.deleted_at', null)
+                    ->selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
+                    ->distinct()
+                    ->get();
 
-        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'year', 'syllabiYearsFinished', 'currentQuarterYear'));
+        return view('academic-development.syllabi.index', compact('syllabi', 'year', 'syllabiYearsFinished', 'currentQuarterYear'));
     }
 
     /**
@@ -61,6 +62,7 @@ class SyllabusController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
+
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -145,9 +147,6 @@ class SyllabusController extends Controller
             return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
-
-        $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
-
         $values = $syllabu->toArray();
 
         return view('academic-development.syllabi.show', compact('syllabu', 'syllabusDocuments', 'syllabusFields', 'values'));
@@ -281,7 +280,6 @@ class SyllabusController extends Controller
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         SyllabusDocument::where('filename', $filename)->delete();
-        // Storage::delete('documents/'.$filename);
 
         \LogActivity::addToLog('Course Syllabus document was deleted.');
 
@@ -310,21 +308,16 @@ class SyllabusController extends Controller
 
         $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
         
-        $syllabiYearsAdded = Syllabus::selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
-                        ->where('user_id', auth()->id())
+        $syllabiYearsAdded = Syllabus::where('user_id', auth()->id())
                         ->where('syllabi.deleted_at', null)
+                        ->selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())
                         ->distinct()
                         ->get();
-        $syllabiYearsFinished = Syllabus::selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
-                        ->where('user_id', auth()->id())
+        $syllabiYearsFinished = Syllabus::where('user_id', auth()->id())
                         ->where('syllabi.deleted_at', null)
+                        ->selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
                         ->distinct()
                         ->get();
-        $syllabus_in_colleges = Syllabus::join('colleges', 'syllabi.college_id', 'colleges.id')
-                        ->where('user_id', auth()->id())
-                        ->where('syllabi.deleted_at', null)
-                        ->distinct()
-                        ->get();
-        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'syllabus_in_colleges', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished', 'currentQuarterYear'));
+        return view('academic-development.syllabi.index', compact('syllabi', 'syllabiTask', 'year', 'syllabiYearsAdded', 'syllabiYearsFinished', 'currentQuarterYear'));
     }
 }

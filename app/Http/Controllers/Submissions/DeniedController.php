@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Submissions;
 
-use App\Models\Dean;
-use App\Models\Report;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Authentication\UserRole;
+use Illuminate\Http\Request;
+use App\Models\{
+    Chairperson,
+    Dean,
+    Report,
+    Authentication\UserRole,
+};
 
 class DeniedController extends Controller
 {

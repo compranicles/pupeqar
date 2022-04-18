@@ -1,37 +1,42 @@
 <?php
 
 namespace App\Http\Controllers\Research;
-use App\Models\{
-    User,
-    Employee
+
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
-use App\Models\Report;
-use App\Rules\Keyword;
-use App\Models\Research;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\ResearchInvite;
-use App\Models\ResearchCitation;
-use App\Models\ResearchComplete;
-use App\Models\ResearchDocument;
-use App\Models\ResearchCopyright;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Models\ResearchPublication;
-use App\Models\ResearchUtilization;
-use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
-use App\Models\FormBuilder\DropdownOption;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\{
+    DB,
+    Notification,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    Report,
+    Research,
+    ResearchCitation,
+    ResearchComplete,
+    ResearchCopyright,
+    ResearchDocument,
+    ResearchInvite,
+    ResearchPresentation,
+    ResearchPublication,
+    ResearchUtilization,
+    TemporaryFile,
+    User,
+    FormBuilder\DropdownOption,
+    FormBuilder\ResearchField,
+    FormBuilder\ResearchForm,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
 use App\Notifications\ResearchInviteNotification;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Rules\Keyword;
 use App\Services\DateContentService;
 
 class ResearchController extends Controller
@@ -427,6 +432,12 @@ class ResearchController extends Controller
             'department_id' => 'required',
         ]);
         // dd($request);
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+        $request->merge([
+            'start_date' => $start_date,
+            'target_date' => $target_date,
+        ]);
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
 
@@ -525,8 +536,6 @@ class ResearchController extends Controller
 
     public function addResearch($research_id, Request $request){
 
-        
-        
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -559,21 +568,27 @@ class ResearchController extends Controller
     }
 
     public function saveResearch($research_id, Request $request){
-
+        // dd($request->all());
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
         $currentQuarterYear = Quarter::find(1);
-        
         $yearAndQuarter = [
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ];
 
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+        $request->merge([
+            'start_date' => $start_date,
+            'target_date' => $target_date,
+        ]);
+
         $research = Research::where('id', $research_id)->first()->toArray();
         $research = collect($research);
-        $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'researchers', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);
+        $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);
         $fromRequest = $request->except(['_token', 'document', 'notif_id']);
         $data = array_merge($researchFiltered->toArray(), $fromRequest);
         $data = array_merge($yearAndQuarter, $data);
@@ -581,7 +596,7 @@ class ResearchController extends Controller
         // dd($data);
         $saved = Research::create($data); 
         Research::where('research_code', $saved->research_code)->update([
-            'researchers' => $research['researchers'].', '.auth()->user()->first_name.' '.auth()->user()->last_name
+            'researchers' => $request->input('researchers'),
         ]);
         ResearchInvite::where('research_id', $research_id)->where('user_id', auth()->id())->update([
             'status' => 1
@@ -614,7 +629,7 @@ class ResearchController extends Controller
         \LogActivity::addToLog('Research added.');
         
 
-        return redirect()->route('research.index')->with('success', 'Research has been saved');
+        return redirect()->route('research.index')->with('success', 'Research has been saved.');
     }
 
     public function retrieve($research_code){

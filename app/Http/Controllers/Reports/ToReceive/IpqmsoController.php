@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Reports\ToReceive;
 
-use App\Models\Dean;
-use App\Models\User;
-use App\Models\Report;
-use App\Models\DenyReason;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use App\Models\FacultyExtensionist;
 use App\Http\Controllers\Controller;
-use App\Models\Authentication\UserRole;
-use App\Models\Maintenance\ReportCategory;
-use App\Notifications\ReturnNotification;
-use App\Notifications\ReceiveNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use App\Models\{
+    Chairperson,
+    Dean,
+    DenyReason,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    User,
+    Authentication\UserRole,
+    Maintenance\Department,
+    Maintenance\ReportCategory,
+};
+use App\Notifications\ReceiveNotification;
+use App\Notifications\ReturnNotification;
 use App\Services\ToReceiveReportAuthorizationService;
 
 class IpqmsoController extends Controller
@@ -223,7 +226,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO received an accomplishment.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report Accepted');
+        return redirect()->route('ipqmso.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
     }
 
     public function rejectCreate($report_id){
@@ -333,7 +336,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO returned an accomplishment.');
 
-        return redirect()->route('ipqmso.index')->with('deny-success', 'Report Denial successfully sent');
+        return redirect()->route('ipqmso.index')->with('deny-success', 'Report has been returned to the owner.');
     }
 
     public function undo($report_id){
@@ -434,7 +437,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO received '.$count.' accomplishments.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report/s Approved Successfully');
+        return redirect()->route('ipqmso.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
     }
 
     public function denySelected(Request $request){
@@ -550,7 +553,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO returned '.$count.' accomplishments.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report/s Denied Successfully');
+        return redirect()->route('ipqmso.index')->with('success', 'Report/s returned to the owner/s.');
 
     }
 }

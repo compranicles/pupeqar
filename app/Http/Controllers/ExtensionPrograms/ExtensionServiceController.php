@@ -2,24 +2,29 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Rules\Keyword;
-use Illuminate\Http\Request;
-use App\Models\{
-    TemporaryFile,
-    Employee
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
-use App\Models\ExtensionService;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\ExtensionServiceDocument;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    ExtensionService,
+    ExtensionServiceDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\ExtensionProgramField,
+    FormBuilder\ExtensionProgramForm,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
+use App\Rules\Keyword;
+use App\Services\DateContentService;
 
 class ExtensionServiceController extends Controller
 {
@@ -32,8 +37,6 @@ class ExtensionServiceController extends Controller
     {
         $this->authorize('viewAny', ExtensionService::class);
 
-        $status = DropdownOption::where('dropdown_id', 24)->get();
-
         $currentQuarterYear = Quarter::find(1);
 
         $extensionServices = ExtensionService::where('user_id', auth()->id())
@@ -43,14 +46,7 @@ class ExtensionServiceController extends Controller
                                         ->orderBy('extension_services.updated_at', 'desc')
                                         ->get();
 
-        $eservice_in_colleges = ExtensionService::join('colleges', 'extension_services.college_id', 'colleges.id')
-                                        ->where('user_id', auth()->id())
-                                        ->whereNull('extension_services.deleted_at')
-                                        ->select('colleges.name')
-                                        ->distinct()
-                                        ->get();
-
-        return view('extension-programs.extension-services.index', compact('extensionServices', 'eservice_in_colleges', 'status', 'currentQuarterYear'));
+        return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear'));
     }
 
     /**
@@ -90,10 +86,11 @@ class ExtensionServiceController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
-        $currentQuarterYear = Quarter::find(1);
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
 
+        $currentQuarterYear = Quarter::find(1);
+        
         $request->merge([
             'amount_of_funding' => $value,
             'from' => $from,
@@ -101,7 +98,8 @@ class ExtensionServiceController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
-
+        
+        // dd($request->input('to'));
         $request->validate([
             'keywords' => new Keyword,
             'college_id' => 'required',
@@ -171,8 +169,6 @@ class ExtensionServiceController extends Controller
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
         $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
         
-        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id('4')");
-        
         $values = $extension_service->toArray();
         
         // dd($extensionServiceFields);
@@ -236,8 +232,8 @@ class ExtensionServiceController extends Controller
             $value = (float) str_replace(",", "", $value);
             $value = number_format($value,2,'.','');
 
-            $from = date("Y-m-d", strtotime($request->input('from')));
-            $to = date("Y-m-d", strtotime($request->input('to')));
+            $from = (new DateContentService())->checkDateContent($request, "from");
+            $to = (new DateContentService())->checkDateContent($request, "to");
     
             $request->merge([
                 'amount_of_funding' => $value,

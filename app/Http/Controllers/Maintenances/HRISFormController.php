@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Maintenances;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\Maintenance\HRISForm;
-use App\Models\FormBuilder\FieldType;
-use App\Models\Maintenance\HRISField;
+use App\Models\{
+    FormBuilder\Dropdown,
+    Maintenance\HRISForm,
+    FormBuilder\FieldType,
+    Maintenance\HRISField,
+};
 
 class HRISFormController extends Controller
 {

@@ -52,8 +52,8 @@
                                                 <th>#</th>
                                                 <th>Article Title</th>
                                                 <th>Article Author</th>
-                                                <th>Date Added</th>
-                                                <th>Date Modified</th>
+                                                <th>Quarter</th>
+                                                <th>Year</th>
                                             </tr>
                                         </thead>
                                         <tbody>

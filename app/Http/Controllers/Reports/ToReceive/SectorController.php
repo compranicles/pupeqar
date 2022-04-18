@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Reports\ToReceive;
 
-use App\Models\Dean;
-use App\Models\User;
-use App\Models\Report;
-use App\Models\DenyReason;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use App\Models\Authentication\UserRole;
-use App\Notifications\ReturnNotification;
-use App\Models\Maintenance\ReportCategory;
-use App\Notifications\ReceiveNotification;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use App\Models\{
+    Chairperson,
+    Dean,
+    DenyReason,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    User,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\ReportCategory,
+};
+use App\Notifications\ReceiveNotification;
+use App\Notifications\ReturnNotification;
 use App\Services\ToReceiveReportAuthorizationService;
 
 class SectorController extends Controller
@@ -231,7 +233,7 @@ class SectorController extends Controller
         \LogActivity::addToLog('Sector Head received an accomplishment.');
 
 
-        return redirect()->route('sector.index')->with('success', 'Report has been added in consolidated report.');
+        return redirect()->route('sector.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
     }
 
     public function rejectCreate($report_id){
@@ -344,7 +346,7 @@ class SectorController extends Controller
         \LogActivity::addToLog('Sector Head returned an accomplishment.');
 
 
-        return redirect()->route('sector.index')->with('success', 'Report has been returned.');
+        return redirect()->route('sector.index')->with('success', 'Report has been returned to the owner.');
     }
 
     public function relay($report_id){
@@ -354,7 +356,7 @@ class SectorController extends Controller
         }
 
         Report::where('id', $report_id)->update(['sector_approval' => 0]);
-        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report Denial successfully sent');
+        return redirect()->route('submissions.denied.index')->with('deny-success', 'Report has been returned to the owner.');
     }
 
     public function undo($report_id){
@@ -458,7 +460,7 @@ class SectorController extends Controller
 
         \LogActivity::addToLog('Sector Head received '.$count.' accomplishments.');
 
-        return redirect()->route('sector.index')->with('success', 'Report/s Approved Successfully');
+        return redirect()->route('sector.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
     }
 
     public function denySelected(Request $request){
@@ -578,7 +580,7 @@ class SectorController extends Controller
 
         \LogActivity::addToLog('Sector Head received '.$count.' accomplishments.');
 
-        return redirect()->route('sector.index')->with('success', 'Report/s Denied Successfully');
+        return redirect()->route('sector.index')->with('success', 'Report/s return to the owner/s.');
 
     }
 }

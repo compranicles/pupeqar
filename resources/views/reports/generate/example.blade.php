@@ -39,6 +39,7 @@
                                     <th>Department</th>
                                 @elseif ($reportFormat == "admin")
                                     <th>Section</th>
+                                @else
                                 @endif
                             @endif
                             {{-- load the addtl columns --}}
@@ -51,6 +52,7 @@
                         @forelse ($table_contents[$format->id] as $content)
                             @php
                                 $data = json_decode($content['report_details'], true);
+                                $documents =  json_decode($content['report_documents'], true);
                             @endphp
                             <tr>
                                 @if ($format->is_individual == "1" && $source_type != "individual")
@@ -67,8 +69,10 @@
                                     </td>
                                 @endif
                                 @if ($source_type == "individual")
-                                    {{-- <td>{{ $data['college_id'] ?? '' }}</td> --}}
+                                    @isset ($type_generate)
+                                    @else
                                     <td>{{ $data['department_id'] ?? ''}}</td>
+                                    @endisset
                                 @endif
                                 @foreach ($table_columns[$format->id] as $column )
                                     @if (isset($data[$column['report_column']]))

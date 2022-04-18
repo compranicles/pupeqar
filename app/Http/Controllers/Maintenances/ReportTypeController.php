@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Maintenances;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\ReportType;
-use App\Models\Maintenance\ReportCategory;
+use App\Models\Maintenance\{
+    ReportCategory,
+    ReportType,
+};
 
 class ReportTypeController extends Controller
 {

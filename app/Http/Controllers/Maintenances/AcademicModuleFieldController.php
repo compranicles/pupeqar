@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\FieldType;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Http\Request;
 use Illuminate\Database\Schema\Blueprint;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
-use App\Models\FormBuilder\AcademicDevelopmentField;
-use App\Models\DocumentDescription;
+use Illuminate\Support\Facades\Schema;
+use App\Models\{
+    DocumentDescription,
+    FormBuilder\AcademicDevelopmentField,
+    FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\Dropdown,
+    FormBuilder\FieldType,
+};
+
 
 class AcademicModuleFieldController extends Controller
 {

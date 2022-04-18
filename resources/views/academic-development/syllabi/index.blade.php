@@ -30,9 +30,6 @@
                                 <label for="taskFilter" class="mr-2">Assigned Task: </label>
                                 <select id="taskFilter" class="custom-select">
                                     <option value="">Show All</option>
-                                    @foreach ($syllabiTask as $task)
-                                    <option value="{{ $task->name }}">{{ $task->name }}</option>
-                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -160,6 +157,24 @@
                 null
             ],
             initComplete: function () {
+                this.api().columns(2).every( function () {
+                    var column = this;
+                    var select = $('#taskFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
                 this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')
