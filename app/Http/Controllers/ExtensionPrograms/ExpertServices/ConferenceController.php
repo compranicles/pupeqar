@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
-use Illuminate\Http\Request;
-use App\Models\{
-    TemporaryFile,
-    Employee
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\ExpertServiceConference;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\ExpertServiceConferenceDocument;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Http\Controllers\Maintenances\LockController;
+use App\Models\{
+    Employee,
+    ExpertServiceConference,
+    ExpertServiceConferenceDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\ExtensionProgramField,
+    FormBuilder\ExtensionProgramForm,
+    Maintenance\College,
+    Maintenance\Quarter,
+};
 
 class ConferenceController extends Controller
 {
@@ -30,8 +32,6 @@ class ConferenceController extends Controller
     {
         $this->authorize('viewAny', ExpertServiceConference::class);
 
-        $conferenceNature = DropdownOption::where('dropdown_id', 17)->get();
-
         $currentQuarterYear = Quarter::find(1);
 
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
@@ -41,14 +41,7 @@ class ConferenceController extends Controller
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
 
-        $conference_in_colleges = ExpertServiceConference::join('colleges', 'expert_service_conferences.college_id', 'colleges.id')
-                                ->where('user_id', auth()->id())
-                                ->whereNull('expert_service_conferences.deleted_at')
-                                ->select('colleges.name')
-                                ->distinct()
-                                ->get();
-
-        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'conferenceNature', 'conference_in_colleges', 'currentQuarterYear'));
+        return view('extension-programs.expert-services.conference.index', compact('expertServicesConference', 'currentQuarterYear'));
     }
 
     /**

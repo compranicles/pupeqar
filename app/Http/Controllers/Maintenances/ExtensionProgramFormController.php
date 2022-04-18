@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Maintenances;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\FieldType;
-use App\Models\FormBuilder\ExtensionProgramField;
-use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Models\{
+    FormBuilder\Dropdown,
+    FormBuilder\ExtensionProgramField,
+    FormBuilder\ExtensionProgramForm,
+    FormBuilder\FieldType,
+};
 
 class ExtensionProgramFormController extends Controller
 {

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use App\Models\Report;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
+use App\Models\{
+    Report,
+    Maintenance\Quarter,
+};
 
 class LockController extends Controller
 {

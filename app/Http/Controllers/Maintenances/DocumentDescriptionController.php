@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Maintenances;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\DocumentDescription;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
-use App\Models\Maintenance\ReportCategory;
+use App\Models\{
+    DocumentDescription,
+    FormBuilder\ResearchField,
+    FormBuilder\ResearchForm,
+    Maintenance\ReportCategory,
+};
 
 class DocumentDescriptionController extends Controller
 {

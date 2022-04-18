@@ -2,30 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dean;
-// use App\Models\Invite;
-use App\Models\TemporaryFile;
-use App\Models\Role;
-use Illuminate\Support\Facades\Storage;
-use App\Models\User;
-use App\Models\Invite;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use App\Models\Maintenance\Sector;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
-use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Models\Maintenance\Department;
-use App\Models\Authentication\UserRole;
-use App\Models\Authentication\Permission;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\{
+    Hash,
+    Notification,
+    Storage,
+    URL,
+};
+use App\Models\{
+    Chairperson,
+    Dean,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Invite,
+    Role,
+    SectorHead,
+    TemporaryFile,
+    User,
+    Authentication\Permission,
+    Authentication\RolePermission,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Sector,
+};
 use App\Notifications\InviteNotification;
-use Illuminate\Support\Facades\Notification;
-use App\Models\Authentication\RolePermission;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -355,6 +358,7 @@ class UserController extends Controller
                     }
                 }
             }
+        \LogActivity::addToLog('Digital signature was uploaded.');
         return redirect()->route('account')->with('success', 'Personal signature has been added in your account.');
     }
     

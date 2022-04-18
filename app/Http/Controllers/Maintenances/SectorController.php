@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
-use App\Models\Maintenance\Sector;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Maintenance\College;
+use App\Models\Maintenance\{
+    College,
+    Sector,
+};
 
 class SectorController extends Controller
 {

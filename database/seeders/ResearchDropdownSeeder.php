@@ -216,25 +216,25 @@ class ResearchDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Completed',
             'order' => 3,
-            'is_active' => 0,
+            'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Completed & Presented',
             'order' => 6,
-            'is_active' => 0,
+            'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Completed & Published',
             'order' => 7,
-            'is_active' => 0,
+            'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,
             'name' => 'Completed, Presented & Published',
             'order' => 8,
-            'is_active' => 0,
+            'is_active' => 1,
         ]);
         DropdownOption::create([
             'dropdown_id' => $dropdownId,

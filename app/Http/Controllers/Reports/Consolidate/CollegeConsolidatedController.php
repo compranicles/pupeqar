@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Reports\Consolidate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Authentication\UserRole;
+use Illuminate\Support\Facades\DB;
 use App\Models\{
     Dean,
     Report,
-};
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\{
-    College,
-    Department,
-    Quarter
+    User,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
 };
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
@@ -92,13 +91,15 @@ class CollegeConsolidatedController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
         
-
+        $user = User::find(auth()->id());
         //collegedetails
         $college = College::find($id);
 
         return view(
                     'reports.consolidate.college', 
-                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
+                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 
+                        'department_names', 'college_names', 'sectors', 'departmentsResearch',
+                        'departmentsExtension', 'quarter', 'year', 'id', 'user')
                 );
     }
     
@@ -170,13 +171,15 @@ class CollegeConsolidatedController extends Controller
                     $department_names[$row->id] = $temp_department_name;
             }
             
-
+            $user = User::find(auth()->id());
             //collegedetails
             $college = College::find($college);
 
             return view(
                         'reports.consolidate.college', 
-                        compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
+                        compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names',
+                             'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year',
+                             'user')
                     );
         }
     }

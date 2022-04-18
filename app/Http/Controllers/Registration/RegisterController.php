@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Registration;
 
 
-use App\Models\User;
-use App\Models\Invite;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Response;
 use App\Actions\Fortify\PasswordValidationRules;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{
+    Hash,
+    Validator,
+};
+use App\Models\{
+    Invite,
+    User,
+};
+use Symfony\Component\HttpFoundation\Response;
 
 
 class RegisterController extends Controller

@@ -31,9 +31,6 @@
                                     <label for="collabFilter" class="mr-2">Collaboration: </label>
                                     <select id="collabFilter" class="custom-select">
                                         <option value="">Show All</option>
-                                        @foreach ($collaborations as $collaboration)
-                                        <option value="{{ $collaboration->name }}">{{ $collaboration->name }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -55,9 +52,6 @@
                                     <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                     <select id="collegeFilter" class="custom-select">
                                         <option value="">Show All</option>
-                                        @foreach($partnership_in_colleges as $college)
-                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                        @endforeach
                                     </select>
                                 </div>
                         </div>
@@ -67,7 +61,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>MOA/MOU Code</th>
+                                        <!-- <th>MOA/MOU Code</th> -->
                                         <th>Title</th>
                                         <th>Organization/Partner</th>
                                         <th>Collaboration</th>
@@ -81,7 +75,7 @@
                                     @foreach ($partnerships as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->moa_code }}</td>
+                                        {{--<td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->moa_code }}</td>--}}
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->title_of_partnership }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->name_of_partner }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->collab }}</td>
@@ -149,13 +143,48 @@
                 null,
                 null,
                 null,
-                null,
                 { "search": "{{ $currentQuarterYear->current_quarter }}" },
                 { "search": "{{ $currentQuarterYear->current_year }}" },
                 null
             ],
             initComplete: function () {
-                this.api().columns(6).every( function () {
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#collabFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(4).every( function () {
+                    var column = this;
+                    var select = $('#collegeFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')
                         .on( 'change', function () {
@@ -173,7 +202,7 @@
                     } );
                 });
 
-                this.api().columns(7).every( function () {
+                this.api().columns(6).every( function () {
                     var column = this;
                     var select = $('#yearFilter')
                         .on( 'change', function () {

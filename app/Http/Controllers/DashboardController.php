@@ -2,37 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dean;
-use App\Models\Report;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\{
-    Quarter,
-    Department,
     College,
+    Department,
+    Quarter,
     Sector
 };
 use App\Models\Authentication\UserRole;
-use App\Models\FacultyResearcher;
-use App\Models\FacultyExtensionist;
+use App\Models\{
+    Announcement,
+    Chairperson,
+    Dean,
+    Employee,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    Role,
+    SectorHead,
+    User,
+};
 use App\Services\{
     UserRoleService,
     DashboardService
-};
-use App\Models\{
-    Announcement,
-    Employee,
-    User,
-    Role
 };
 
 class DashboardController extends Controller
 {
     public function index() {
         $user = User::where('id', auth()->id())->first();
+        $employee = Employee::where('user_id', $user['id'])->first();
         $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
+        if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
+            request()->session()->flash('flash.banner', "Complete your account information. Click here.");
+        }
         $roleNames = Role::whereIn('id', $roles)->pluck('name')->all();
         $userRoleNames = '';
         foreach($roleNames as $roleName) {
@@ -65,7 +69,6 @@ class DashboardController extends Controller
             $countChairperson = '';
             $countDirector = '';
             $countSectorHead = '';
-            $countIPO = '';
             $arrayOfNoOfAllUsers = '';
             $countReviewed1 = '';
             $countReviewed2 = "";
@@ -125,9 +128,8 @@ class DashboardController extends Controller
             $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
             $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
             $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
-            $countIPO = (new UserRoleService())->getNumberOfUserByRole(8);
             $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
-                    'director' => $countDirector, 'sectorHead' => $countSectorHead, 'ipo' => $countIPO);
+                    'director' => $countDirector, 'sectorHead' => $countSectorHead);
             $countReviewed1 = '';
             $countReviewed2 = "";
         } 

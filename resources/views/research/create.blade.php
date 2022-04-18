@@ -83,6 +83,10 @@
         </script>
         <script>
             $('#status').on('change', function(){
+                $('#status option[value=28]').attr('disabled','disabled');
+                $('#status option[value=29]').attr('disabled','disabled');
+                $('#status option[value=30]').attr('disabled','disabled');
+                $('#status option[value=31]').attr('disabled','disabled');
                 $('#status option[value=32]').attr('disabled','disabled'); //Deferred
                 if ($(this).val() == 26) { //New Commitment
                     $('#start_date').val("");

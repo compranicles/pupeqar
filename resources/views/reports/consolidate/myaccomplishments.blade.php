@@ -21,7 +21,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h5 class="d-inline-block" style="padding-top: 10px;">My Accomplishments</h5>
-                            <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
+                            @if(in_array(1, $roles) || in_array(3, $roles)) 
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Individual Report</button>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <hr>

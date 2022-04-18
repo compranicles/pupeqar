@@ -19,44 +19,46 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
+                        <div class="mb-3">
                             <div class="d-inline mr-2">
                                 <a href="{{ route('rtmmi.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Reference, Textbook, Module, Monograph, or Instructional Material</a>
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <div class="row my-auto">
                             <div class="col-md-3">
-                                <label for="catFilter" class="mr-2">Category: </label>
-                                <select id="catFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                    @foreach($categories as $category)
-                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarterFilter">
+                                <div class="form-group">
+                                    <label for="catFilter" class="mr-2">Category: </label>
+                                    <select id="catFilter" class="custom-select">
+                                        <option value="">Show All</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="yearFilter" class="mr-2">Year Added:</label>
-                                <div class="d-flex">
-                                    <select id="yearFilter" class="custom-select" name="yearFilter">  
-                                    </select>
+                                <div class="form-group">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarterFilter">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">  
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-5">
-                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                <select id="collegeFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                    @foreach($rtmmi_in_colleges as $college)
-                                    <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group m-0">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <hr>
@@ -147,6 +149,42 @@
                 null
             ],
             initComplete: function () {
+                this.api().columns(2).every( function () {
+                    var column = this;
+                    var select = $('#catFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#collegeFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
                 this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')

@@ -139,7 +139,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::create([
             'report_type_id' => 2,
-            'name' => 'Awards/ Recognitions Received by College/Branch/Campus from  Reputable Organizations',
+            'name' => 'Awards/Recognitions Received by College/Branch/Campus from Reputable Organizations',
             'is_active' => 1,
             'order' => 1,
         ]);

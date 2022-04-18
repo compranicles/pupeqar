@@ -20,7 +20,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Trainings and Seminars</h3>
+                                <h3>Seminars & Trainings</h3>
                                 <hr>
                             </div>
                             <div class="col-md-12">
@@ -33,6 +33,7 @@
                                                 <th>Inclusive Date</th>
                                                 <th>Level</th>
                                                 <th>Action</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -42,15 +43,30 @@
                                                     <td>{{ $development->TrainingProgram }}</td>
                                                     <td>{{ $development->IncDate }}</td>
                                                     <td>{{ $development->Level }}</td>
+                                                    <td>
+                                                        <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
+                                                        <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
+                                                    </td>
                                                     <td class="text-center">
-                                                        @if ($development->ClassificationID == '0')
-                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary m-1">Add as Seminar</a>
-                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
-                                                        @elseif ($development->ClassificationID >= '1' && $development->ClassificationID <= '4')
-                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary m-1">Add as Seminar</a>
-                                                        @elseif ($development->ClassificationID >= '1' && $development->ClassificationID <= '4')
-                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
-                                                        @endif
+                                                    
+                                                    @if ($seminarReports != null)
+                                                        @foreach ($seminarReports as $seminarReport)
+                                                            @if ($seminarReport->report_reference_id == $development->EmployeeTrainingProgramID)
+                                                                    <span class="badge bg-success">Submitted as seminar</span>
+                                                                    <span class="badge bg-secondary">Quarter {{ $seminarReport->report_quarter.' of '. $seminarReport->report_year}}</span>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+<!--  -->
+                                                    @if ($trainingReports != null)
+                                                        @foreach ($trainingReports as $trainingReport)
+                                                            @if ($trainingReport->report_reference_id == $development->EmployeeTrainingProgramID)
+                                                                    <span class="badge bg-success">Submitted as training</span>
+                                                                    <span class="badge bg-secondary">Quarter {{ $trainingReport->report_quarter.' of '. $trainingReport->report_year}}</span> 
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+
                                                     </td>
                                                 </tr>
                                             @endforeach

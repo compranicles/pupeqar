@@ -151,6 +151,9 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
+                $(function() {
+                    $("#status").prop('disable', true);
+                });
                 if ({{ $research->funding_type }} == 23) {
                     //Univ. Funded
                     $('#funding_agency').removeAttr('readonly');
@@ -205,6 +208,10 @@
         </script>
         <script>
             $('#status').on('change', function(){
+                $('#status option[value=28]').attr('disabled','disabled');
+                $('#status option[value=29]').attr('disabled','disabled');
+                $('#status option[value=30]').attr('disabled','disabled');
+                $('#status option[value=31]').attr('disabled','disabled');
                 if ($(this).val() == 26) {
                     $('#start_date').val("");
                     $('#start_date').attr('disabled', true);

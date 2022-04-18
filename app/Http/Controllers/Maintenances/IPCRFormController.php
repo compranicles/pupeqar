@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\IPCRForm;
-use App\Models\FormBuilder\FieldType;
-use App\Models\FormBuilder\IPCRField;
+use Illuminate\Http\Request;
+use App\Models\{
+    FormBuilder\Dropdown,
+    FormBuilder\FieldType,
+    FormBuilder\IPCRField,
+    FormBuilder\IPCRForm,
+};
 
 class IPCRFormController extends Controller
 {

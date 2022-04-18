@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers\Reports\Consolidate;
 
-use App\Models\Dean;
-use App\Models\Report;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use Illuminate\Support\Facades\DB;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use App\Models\Authentication\UserRole;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\{
+    Chairperson,
+    Dean,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    User,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class DepartmentConsolidatedController extends Controller
@@ -92,12 +95,14 @@ class DepartmentConsolidatedController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
         
-
+        $user = User::find(auth()->id());
         //departmentdetails
         $department = Department::find($id);
         return view(
                     'reports.consolidate.department', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter')
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 
+                        'department_names', 'college_names', 'sectors', 'departmentsResearch', 
+                        'departmentsExtension', 'year', 'quarter', 'user', 'id')
                 );
     }
 
@@ -169,13 +174,15 @@ class DepartmentConsolidatedController extends Controller
                     $department_names[$row->id] = $temp_department_name;
             }
             
-
+            $user = User::find(auth()->id());
             //departmentdetails
             $department = Department::find($dept);
         }
         return view(
                 'reports.consolidate.department', 
-                compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'quarter', 'year')
+                compact('roles', 'departments', 'colleges', 'department_accomps', 'department' ,
+                     'department_names', 'college_names', 'sectors', 'departmentsResearch', 
+                     'departmentsExtension', 'quarter', 'year', 'user')
             );
     }
 }

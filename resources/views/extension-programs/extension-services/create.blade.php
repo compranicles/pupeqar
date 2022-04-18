@@ -37,7 +37,7 @@
 
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
-        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>z
         <script>
             $(function() {
                 $('#status').val(105);
@@ -110,17 +110,12 @@
             $('#status').on('change', function(){
                 $('#status option[value=106]').attr('disabled','disabled'); //Completed
                 $('#status option[value=107]').attr('disabled','disabled'); //Deferred
-                if ($(this).val() == 105) { // Ongoing
-                    $('#from').removeAttr('disabled');
-                    $('#from').attr('required', true);
                     $('#to').val("");
                     $('#to').attr('disabled', true);
                     $('#to').removeAttr('required');
-                }
+                    $('#from').removeAttr('disabled');
+                    $('#from').attr('required', true);
             });
-        </script>
-        <script>
-            $('#keywords').on
         </script>
         <script>
             var report_category_id = 12;

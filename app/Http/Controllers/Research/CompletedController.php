@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers\Research;
 
-use App\Models\Research;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\ResearchCitation;
-use App\Models\ResearchComplete;
-use App\Models\ResearchDocument;
-use App\Models\ResearchCopyright;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Models\ResearchPublication;
-use App\Models\ResearchUtilization;
 use App\Http\Controllers\Controller;
-use App\Models\ResearchPresentation;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
-use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Models\{
+    Research,
+    ResearchCitation,
+    ResearchComplete,
+    ResearchCopyright,
+    ResearchDocument,
+    ResearchPresentation,
+    ResearchPublication,
+    ResearchUtilization,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\ResearchField,
+    FormBuilder\ResearchForm,
+    Maintenance\Quarter,
+};
 
 class CompletedController extends Controller
 {

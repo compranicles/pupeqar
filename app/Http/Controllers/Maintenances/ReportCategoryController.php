@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\ReportType;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Maintenance\ReportColumn;
-use App\Models\Maintenance\ReportCategory;
+use App\Models\Maintenance\{
+    ReportCategory,
+    ReportColumn,
+    ReportType,
+};
 
 class ReportCategoryController extends Controller
 {
