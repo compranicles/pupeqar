@@ -139,4 +139,9 @@ class GenerateController extends Controller
                 $file_suffix.'.xlsx');
         }
     }
+
+    public function documentView($reportID){
+        $reportDocuments = json_decode(Report::where('id', $reportID)->pluck('report_documents')->first(), true);
+        return view('reports.generate.document', compact('reportDocuments'));
+    }
 }

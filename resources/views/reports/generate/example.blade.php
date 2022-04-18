@@ -77,6 +77,7 @@
                                         <td>-</td>
                                     @endif
                                 @endforeach
+                                <td><a href="{{ route('report.generate.document-view', $content['id']) }}" target="_blank">View Documents</a></td>
                                 <td></td>
                             </tr>
                                 
