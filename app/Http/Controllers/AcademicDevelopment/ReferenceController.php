@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Models\Reference;
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\ReferenceDocument;
 use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Models\FormBuilder\AcademicDevelopmentForm;
-use App\Http\Controllers\Maintenances\LockController;
-use App\Models\Employee;
+use App\Models\{
+    Employee,
+    Reference,
+    ReferenceDocument,
+    TemporaryFile,
+    FormBuilder\DropdownOption,
+    FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
+    Maintenance\Quarter,
+    Maintenance\Department,
+};
 
 class ReferenceController extends Controller
 {
@@ -28,8 +32,6 @@ class ReferenceController extends Controller
     {
         $this->authorize('viewAny', Reference::class);
 
-        $categories = DropdownOption::where('dropdown_id', 37)->get();
-
         $currentQuarterYear = Quarter::find(1);
 
         $allRtmmi = Reference::where('user_id', auth()->id())
@@ -38,15 +40,8 @@ class ReferenceController extends Controller
                                     ->select('references.*', 'dropdown_options.name as category_name', 'colleges.name as college_name')
                                     ->orderBy('references.updated_at', 'desc')
                                     ->get();
-        
-        $rtmmi_in_colleges = Reference::join('colleges', 'references.college_id', 'colleges.id')
-                                        ->whereNull('references.deleted_at')
-                                        ->where('user_id', auth()->id())
-                                        ->select('colleges.name')
-                                        ->distinct()
-                                        ->get();
 
-        return view('academic-development.references.index', compact('allRtmmi', 'rtmmi_in_colleges', 'categories', 'currentQuarterYear'));
+        return view('academic-development.references.index', compact('allRtmmi', 'currentQuarterYear'));
     }
 
     /**

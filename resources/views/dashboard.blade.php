@@ -163,27 +163,29 @@
             </div>
         </div>
         @endExceptSuperAdmin
-        <div class="row mt-4">
-            @if (in_array(9, $roles) || in_array(8, $roles))
-            <div class="col-md-8">
+        <div class="row">
+            @if (in_array(8, $roles) || in_array(9, $roles))
+            <div class="col-md-8 mt-4">
                 <div class="card">
                 <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
                     <div class="card-body">
                         <table class="table table-sm table-borderless fixed_header" id="log_activity_table">
                             <tbody>
                             </tbody>
+                            <p class="align-middle text-center no-data-message">No recent logs to show.</p>
                         </table>
                     </div>
                 </div>
             </div>
             @else
-            <div class="col-md-8">
+            <div class="col-md-8 mt-4">
                 <div class="card">
                 <h5 class="card-header">Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
                     <div class="card-body">
                         <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table">
                             <tbody>
                             </tbody>
+                            <p class="align-middle text-center no-data-message">No recent activities to show.</p>
                         </table>
                     </div>
                 </div>
@@ -201,10 +203,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h5 class="modal-subject font-weight-bold">Announcement</h5>
-                    <h6 class="modal-date"></h6>
-                    <br>
-                    <p id="message"></p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-11">
+
+                            <h5 class="modal-subject font-weight-bold">Announcement</h5>
+                            <h6 class="modal-date"></h6>
+                            <br>
+                            <p id="message"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -244,21 +254,12 @@
                 var countColumns = 0;
 
                 data.forEach(function(item){
+                    $('.no-data-message').remove();
                     $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
                     $('#activity-log-'+countColumns)
                         .append('<td class="activity-log-content text-small">'+
-                                item.name
-                            +'</td>'
-                        );
-                    $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content text-small">'+
                                 item.subject
-                            +'</td>'
-                        );
-                    $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content text-small">'+
-                                item.created_at
-                            +'</td>'
+                            +'<div class="text-muted"><small>'+item.name+' &#183; '+item.created_at+'</small></div></td>'
                         );
                     countColumns++;
                 });
@@ -267,21 +268,17 @@
         function getLogInd(){
             $('.activity-log-indi-content').remove();
 
-            $.get('/get-dashboard-list', function (data){
+            $.get('/get-dashboard-list-indi', function (data){
                 var countColumns = 0;
 
                 data.forEach(function(item){
+                    $('.no-data-message').remove();
                     $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
                     $('#activity-log-indi-'+countColumns)
                         .append('<td class="activity-log-indi-content text-small">'+
                                 item.subject
                             +'<div class="text-muted"><small>'+item.created_at+'</small></div></td>'
                         );
-                    // $('#activity-log-indi-'+countColumns)
-                    //     .append('<td class="activity-log-indi-content text-small">'+
-                    //             item.created_at
-                    //         +'</td>'
-                    //     );
                     countColumns++;
                 });
             });

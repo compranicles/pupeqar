@@ -16,9 +16,6 @@
                                         <th>#</th>
                                         <th>Event</th>
                                         <th>URL</th>
-                                        <th>Method</th>
-                                        <th>IP</th>
-                                        <th>User Agent</th>
                                         <th>Name</th>
                                         <th>Date</th>
                                     </tr>
@@ -30,9 +27,6 @@
                                             <td>{{ ++$key }}</td>
                                             <td>{{ $log->subject }}</td>
                                             <td class="text-success">{{ $log->url }}</td>
-                                            <td><label class="label label-info">{{ $log->method }}</label></td>
-                                            <td class="text-secondary">{{ $log->ip }}</td>
-                                            <td class="text-danger">{{ $log->agent }}</td>
                                             <td>{{ $log->name }}</td>
                                             <td>{{ $log->created_at }}</td>
                                         </tr>

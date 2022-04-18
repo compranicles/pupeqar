@@ -69,7 +69,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="">Signature </label>
+                                        <label for="">Signature <small class="ml-2">Upload your digital signature to be attached in consolidation of reports. </small></label>
                                         <input type="file" 
                                         class="{{ $errors->has('document') ? 'is-invalid' : '' }} filepond mb-n1"
                                         name="document[]"

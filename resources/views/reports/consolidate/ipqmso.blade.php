@@ -13,18 +13,23 @@
                     <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
+                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
                 </li>
             </ul>
             <div class="card mb-3">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row justify-content-between">
                         <div class="col-md-12">
-                            <h5>Consolidated Accomplishments</h5>
-                            <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
-                            <hr>
+                            <h5 class="d-inline-block" style="padding-top: 10px;">Consolidated Quarterly Accomplishments</h5>
+                            <div class="float-right">
+                                <button type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
+                            </div>
+                            <!-- <div class="float-right">
+                                <button type="button" class="btn btn-primary ml-2" data-target="#GenerateLevelReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate College Level Report</button>
+                            </div> -->
                         </div>
                     </div>
+                    <hr>
                     <div class="row">
                         <div class="col-md-3">
                             <label for="reportFilter" class="mr-2">Accomplishment: </label>
@@ -92,12 +97,12 @@
                                         <tr role="button">
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
                                             <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>
                                             <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name ?? '-' }}</td>
                                             <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                 @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                    @if ($row->researcher_approval == null)
+                                                    @if ($row->researcher_approval === null)
                                                         Receiving...
                                                     @elseif ($row->researcher_approval == 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
@@ -110,7 +115,7 @@
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                 @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
-                                                    @if ($row->extensionist_approval == null)
+                                                    @if ($row->extensionist_approval === null)
                                                         Receiving...
                                                     @elseif ($row->extensionist_approval == 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
@@ -123,7 +128,7 @@
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                 @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                    @if ($row->researcher_approval == null)
+                                                    @if ($row->researcher_approval === null)
                                                         -
                                                     @elseif ($row->researcher_approval == 0)
                                                         -
@@ -137,7 +142,7 @@
                                                         @endif
                                                     @endif
                                                 @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
-                                                    @if ($row->extensionist_approval == null)
+                                                    @if ($row->extensionist_approval === null)
                                                         -
                                                     @elseif ($row->extensionist_approval == 0)
                                                         -
@@ -490,22 +495,6 @@
                     });
                     table.draw();
             }
-        </script>
-        <script>
-            $(function(){
-                //show all the accomplishments
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-
-                table.draw();
-
-                // var returned = $('td:contains(Returned)');
-                // document.getElementById('badge-returned').innerHTML = returned.length;
-                //Count the returned accomplishments shown in badge in Returned tab
-                var tbl =  $('#college_accomplishments_table').DataTable().search("Returned");
-                var count = tbl.$('tr', {"filter":"applied"}).length;
-                document.getElementById('badge-returned').innerHTML = count;
-            });
         </script>
         <script>
             $('#filter').on('click', function () {

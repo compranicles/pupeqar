@@ -332,6 +332,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/consolidate/all', [\App\Http\Controllers\Reports\Consolidate\IpqmsoConsolidatedController::class, 'index'])->name('reports.consolidate.ipqmso');
     Route::get('/reports/consolidate/my-accomplishments/reportYearFilter/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\MyAccomplishmentController::class, 'individualReportYearFilter'])->name('reports.consolidate.myaccomplishments.reportYearFilter');
     Route::get('/reports/consolidate/extension/reportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\ExtensionConsolidatedController::class, 'departmentExtReportYearFilter'])->name('reports.consolidate.extension.reportYearFilter');
+    Route::get('/reports/consolidate/research/reportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\ResearchConsolidatedController::class, 'departmentResReportYearFilter'])->name('reports.consolidate.research.reportYearFilter');
 
     Route::get('/reports/consolidate/department/reportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\DepartmentConsolidatedController::class, 'departmentReportYearFilter'])->name('reports.consolidate.department.reportYearFilter');
     Route::get('/reports/consolidate/college/reportYearFilter/{college}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\CollegeConsolidatedController::class, 'collegeReportYearFilter'])->name('reports.consolidate.college.reportYearFilter');

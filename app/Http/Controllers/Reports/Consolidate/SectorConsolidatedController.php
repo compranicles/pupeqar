@@ -4,17 +4,19 @@ namespace App\Http\Controllers\Reports\Consolidate;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Dean;
-use App\Models\Report;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use App\Models\FacultyResearcher;
-use App\Models\Maintenance\Sector;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Department;
-use App\Models\Maintenance\Quarter;
-use App\Models\Authentication\UserRole;
+use App\Models\{
+    Chairperson,
+    Dean,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+    Maintenance\Sector,
+};
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class SectorConsolidatedController extends Controller

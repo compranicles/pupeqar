@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\HRISRegistration;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Authentication\UserRole;
+use Illuminate\Support\{
+    Str,
+    Facades\DB,
+};
+use Illuminate\Http\Request;
+use App\Models\{
+    User,
+    Authentication\UserRole,
+};
 
 class RegistrationController extends Controller
 {

@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use App\Models\{
-    User,
-    Report,
+    Employee,
     HRISDocument,
+    Report,
     TemporaryFile,
-    Employee
+    User,
+    FormBuilder\DropdownOption,
+    Maintenance\College,
+    Maintenance\Currency,
+    Maintenance\Department,
+    Maintenance\HRISField,
+    Maintenance\Quarter,
 };
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Currency;
-use App\Models\Maintenance\HRISField;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\DropdownOption;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
 
 class AwardController extends Controller
 {

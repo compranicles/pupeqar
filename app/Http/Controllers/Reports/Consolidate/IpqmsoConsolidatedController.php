@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\Reports\Consolidate;
 
-use App\Models\Dean;
-use App\Models\Report;
-use App\Models\SectorHead;
-use App\Models\Chairperson;
-use Illuminate\Http\Request;
-use App\Models\FacultyResearcher;
-use Illuminate\Support\Facades\DB;
-use App\Models\FacultyExtensionist;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use App\Models\Authentication\UserRole;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\{
+    Dean,
+    Chairperson,
+    FacultyExtensionist,
+    FacultyResearcher,
+    Report,
+    SectorHead,
+    Authentication\UserRole,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
 use App\Services\ManageConsolidatedReportAuthorizationService;
 
 class IpqmsoConsolidatedController extends Controller
@@ -92,7 +94,7 @@ class IpqmsoConsolidatedController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
 
-        $colleges = Colleges::all();
+        $colleges = College::all();
 
         return view(
                     'reports.consolidate.ipqmso', 

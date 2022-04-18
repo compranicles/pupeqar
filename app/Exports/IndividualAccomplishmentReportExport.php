@@ -27,7 +27,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 class IndividualAccomplishmentReportExport implements FromView, WithEvents
 {
     function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate, 
-    $cbco, $id, $get_college, $get_sector, $director, $sector_head, $table_columns, $table_contents, $table_format) {
+    $cbco, $id, $get_college, $get_sector, $director, $sector_head) {
         $this->source_type = $source_type;
         $this->report_format = $reportFormat;
         $this->source_generate = $source_generate;
@@ -131,10 +131,10 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();
+                        }
+                    }
                 }
-            }
-        }
-
+                
         $this->table_format = $table_format;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;
@@ -291,7 +291,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                             $length = 2;
                         }
                         else{
-                            $length = $length+3;
+                            $length = $length+2;
                         }
                         $letter = Coordinate::stringFromColumnIndex($length);
 
@@ -340,6 +340,11 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
 
                         //contents
                         foreach($table_contents[$format->id] as $contents){
+                            //DOCUMENTS LINK
+                            $documents =  json_decode($contents['report_documents'], true);
+                            foreach($documents as $document) {
+                                $event->sheet->setCellValue($letter.$count, "localhost:8000/document-view/".$document);
+                            }
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
@@ -406,14 +411,16 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
 
                 $count = $count + 5;
                 /* SIGNATURE */
-                $employeeSignature = new Drawing();
-                $employeeSignature->setName('');
-                $employeeSignature->setDescription('Employee Signature');
-                $employeeSignature->setPath(storage_path('app/documents/'. $this->signature));
-                $employeeSignature->setWidth(30);
-                $employeeSignature->setHeight(80);
-                $employeeSignature->setCoordinates('A'.$count-4);
-                $employeeSignature->setWorksheet($event->sheet->getDelegate());
+                if ($this->signature != null) {
+                    $employeeSignature = new Drawing();
+                    $employeeSignature->setName('');
+                    $employeeSignature->setDescription('Employee Signature');
+                    $employeeSignature->setPath(storage_path('app/documents/'. $this->signature));
+                    $employeeSignature->setWidth(30);
+                    $employeeSignature->setHeight(80);
+                    $employeeSignature->setCoordinates('A'.$count-4);
+                    $employeeSignature->setWorksheet($event->sheet->getDelegate());
+                }
                 /*  */
                 $event->sheet->setCellValue('A'.$count, $this->arranged_name);
                 $event->sheet->setCellValue('C'.$count, $this->director_name);

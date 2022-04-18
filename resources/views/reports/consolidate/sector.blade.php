@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="d-inline-block" style="padding-top: 10px;">{{ $sector->name }} - Accomplishments</h5>
-                    <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
+                    <button id="generate" type="button" class="btn btn-primary float-right" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                 </div>
             </div>
             <hr>
@@ -93,7 +93,7 @@
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id] }}</td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                            @if ($row->researcher_approval == null)
+                                            @if ($row->researcher_approval === null)
                                                 Receiving...
                                             @elseif ($row->researcher_approval == 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
@@ -106,7 +106,7 @@
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
-                                            @if ($row->extensionist_approval == null)
+                                            @if ($row->extensionist_approval === null)
                                                 Receiving...
                                             @elseif ($row->extensionist_approval == 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
@@ -119,7 +119,7 @@
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                            @if ($row->researcher_approval == null)
+                                            @if ($row->researcher_approval === null)
                                                 -
                                             @elseif ($row->researcher_approval == 0)
                                                 -
@@ -133,7 +133,7 @@
                                                 @endif
                                             @endif
                                         @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
-                                            @if ($row->extensionist_approval == null)
+                                            @if ($row->extensionist_approval === null)
                                                 -
                                             @elseif ($row->extensionist_approval == 0)
                                                 -
@@ -222,7 +222,7 @@
                                                 $row->sector_approval === 0 ||
                                                 $row->ipqmso_approval === 0
                                             )
-                                                <button class="button-deny action-remarks btn-sm" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text"></i> Remarks</button>
+                                                <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text"></i> Remarks</button>
                                             @else
                                                 -
                                             @endif

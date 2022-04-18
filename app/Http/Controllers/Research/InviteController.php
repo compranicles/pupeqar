@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Research;
 
-use App\Models\User;
-use App\Models\Report;
-use App\Models\Research;
-use Illuminate\Http\Request;
-use App\Models\ResearchInvite;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use App\Models\{
+    Report,
+    Research,
+    ResearchInvite,
+    User,
+};
 use App\Notifications\ResearchInviteNotification;
 
 class InviteController extends Controller

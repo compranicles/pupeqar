@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
+};
 use Illuminate\Http\Request;
-use App\Models\TemporaryFile;
-use App\Models\OutreachProgram;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\Quarter;
-use App\Models\PartnershipDocument;
-use App\Http\Controllers\Controller;
-use App\Models\OutreachProgramDocument;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    OutreachProgram,
+    OutreachProgramDocument,
+    TemporaryFile,
+    FormBuilder\ExtensionProgramForm,
+    Maintenance\Quarter,
+};
 
 class OutreachProgramController extends Controller
 {

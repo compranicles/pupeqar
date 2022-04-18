@@ -26,8 +26,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 class DepartmentConsolidatedAccomplishmentReportExport implements FromView, WithEvents
 {
     function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate,
-         $department, $id, $get_department, $faculty_researcher, $faculty_extensionist, $table_columns, 
-         $table_contents, $table_format) {
+         $department, $id, $get_department, $faculty_researcher, $faculty_extensionist) {
         $this->source_type = $source_type;
         $this->report_format = $reportFormat;
         $this->source_generate = $source_generate;
@@ -44,12 +43,13 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
 
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
         if ($faculty_researcher != null) {
-            $this->fr_signature = User::where('id', $faculty_researcher['user_id'])->first('users.signature');
+            $this->fr_signature = User::where('id', $faculty_researcher['user_id'])->pluck('users.signature')->first();
             $this->fr_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_researcher, "Researcher");
         } else {
             $this->fr_name = '';
             $this->fr_signature = '';
         }
+
         if ($faculty_extensionist != null) {
             $this->fe_signature = User::where('id', $faculty_extensionist['user_id'])->pluck('users.signature')->first();
             $this->fe_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_extensionist, "Extensionist");
@@ -58,7 +58,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
             $this->fe_signature = '';
         }
         
-        $this->department = $get_department;
+        $this->departmentName = $get_department;
     }
 
     public function view(): View
@@ -182,7 +182,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 ]);
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->mergeCells('C2:F2');
-                $event->sheet->setCellValue('C2', $this->department);
+                $event->sheet->setCellValue('C2', $this->departmentName);
                 $event->sheet->getStyle('C2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('C2:F2')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('C2')->applyFromArray([
@@ -275,7 +275,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                             $length = 2;
                         }
                         else{
-                            $length = $length+3;
+                            $length = $length+4;
                         }
                         $letter = Coordinate::stringFromColumnIndex($length);
 
@@ -373,76 +373,150 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     }
                 }
                 $count = $count + 2;
-                $event->sheet->setCellValue('A'.$count, 'Supporting Evidence Verified By:');
-                $event->sheet->setCellValue('E'.$count, 'Prepared By:');
-                $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
-                    'font' => [
-                        'name' => 'Arial',
-                        'bold' => true, 
-                        'size' => 14
-                    ],
-                ]);
-                $count = $count + 5;
-                $event->sheet->mergeCells('A'.($count-4).':A'.$count-1);
-                $event->sheet->mergeCells('C'.($count-4).':C'.$count-1);
-                $event->sheet->mergeCells('E'.($count-4).':E'.$count-1);
-                /* SIGNATURE */
-                if ($this->fr_signature != '') {
-                    $path = storage_path('app/documents/'. $this->fr_signature);
-                    $coordinates = 'A'.$count-4;
-                    $sheet = $event->sheet->getDelegate();
-                    echo $this->addImage($path, $coordinates, $sheet);
-                } elseif ($this->fe_signature != '') {
-                    $path = storage_path('app/documents/'. $this->fe_signature);
-                    $coordinates = 'C'.$count-4;
-                    $sheet = $event->sheet->getDelegate();
-                    echo $this->addImage($path, $coordinates, $sheet);
-                }
-                    $path = storage_path('app/documents/'. $this->signature);
-                    $coordinates = 'E'.$count-4;
-                    $sheet = $event->sheet->getDelegate();
-                    // dd($this->signature);
-                    echo $this->addImage($path, $coordinates, $sheet);
-                
-                /*  */
-                $event->sheet->setCellValue('A'.$count, $this->fr_name);
-                $event->sheet->setCellValue('C'.$count, $this->fe_name);
-                $event->sheet->setCellValue('E'.$count, $this->arranged_name);
-                $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
-                    'font' => [
-                        'name' => 'Arial',
-                        'bold' => true, 
-                        'size' => 14
-                    ],
-                ]);
-                $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                if ($this->isFacultyRes != '') {
+                    $event->sheet->setCellValue('A'.$count, 'Prepared By:');
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $count = $count + 5;
+                    if ($this->signature != '') {
+                        $path = storage_path('app/documents/'. $this->signature);
+                        $coordinates = 'A'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    } 
+                    $event->sheet->setCellValue('A'.$count, $this->fr_name);
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
 
-                $count = $count + 1;
-                $event->sheet->setCellValue('A'.$count, 'Researcher, '.$this->department);
-                $event->sheet->setCellValue('C'.$count, 'Extensionist, '.$this->department);
-                $event->sheet->setCellValue('E'.$count, 'Chairperson, '.$this->department);
-                $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
-                    'font' => [
-                        'name' => 'Arial',
-                        'bold' => true, 
-                        'size' => 14
-                    ],
-                ]);
+                    $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                    $count = $count + 1;
+                    $event->sheet->setCellValue('A'.$count, 'Researcher, '.$this->departmentName);
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                }
+                elseif ($this->isFacultyExt != '') {
+                    $event->sheet->setCellValue('A'.$count, 'Prepared By:');
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $count = $count + 5;
+                    if ($this->signature != '') {
+                        $path = storage_path('app/documents/'. $this->signature);
+                        $coordinates = 'A'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    } 
+                    $event->sheet->setCellValue('A'.$count, $this->fe_name);
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+
+                    $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                    $count = $count + 1;
+                    $event->sheet->setCellValue('A'.$count, 'Extensionist, '.$this->departmentName);
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                }
+                else {
+                    $event->sheet->setCellValue('A'.$count, 'Supporting Evidence Verified By:');
+                    $event->sheet->setCellValue('E'.$count, 'Prepared By:');
+                    $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $count = $count + 5;
+                    /* SIGNATURE */
+                    if ($this->fr_signature != '') {
+                        $path = storage_path('app/documents/'. $this->fr_signature);
+                        $coordinates = 'A'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    } elseif ($this->fe_signature != '') {
+                        $path = storage_path('app/documents/'. $this->fe_signature);
+                        $coordinates = 'C'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    }
+                        $path = storage_path('app/documents/'. $this->signature);
+                        $coordinates = 'E'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        // dd($this->signature);
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    
+                    /*  */
+                    $event->sheet->setCellValue('A'.$count, $this->fr_name);
+                    $event->sheet->setCellValue('C'.$count, $this->fe_name);
+                    $event->sheet->setCellValue('E'.$count, $this->arranged_name);
+                    $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                    $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    
+                    
+                    $count = $count + 1;
+                    $event->sheet->setCellValue('A'.$count, 'Researcher, '.$this->departmentName);
+                    $event->sheet->setCellValue('C'.$count, 'Extensionist, '.$this->departmentName);
+                    $event->sheet->setCellValue('E'.$count, 'Chairperson, '.$this->departmentName);
+                    $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
+                        'font' => [
+                            'name' => 'Arial',
+                            'bold' => true, 
+                            'size' => 14
+                        ],
+                    ]);
+                }
+                $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('C'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('E'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('C'.$count)->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('E'.$count)->getAlignment()->setWrapText(true);
-
-                $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                $event->sheet->getStyle('C'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-                $event->sheet->getStyle('E'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
             }
 
         ];

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Maintenances;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\FieldType;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
+use App\Models\FormBuilder\{
+    Dropdown,
+    FieldType,
+    ResearchField,
+    ResearchForm,
+};
 
 class ResearchFormController extends Controller
 {

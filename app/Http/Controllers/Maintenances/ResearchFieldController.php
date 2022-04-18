@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Maintenances;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\Dropdown;
-use App\Models\FormBuilder\FieldType;
-use Illuminate\Support\Facades\Schema;
-use App\Models\FormBuilder\ResearchForm;
-use App\Models\FormBuilder\ResearchField;
-use App\Models\DocumentDescription;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use App\Models\{
+    DocumentDescription,
+    FormBuilder\Dropdown,
+    FormBuilder\FieldType,
+    FormBuilder\ResearchField,
+    FormBuilder\ResearchForm,
+};
 
 class ResearchFieldController extends Controller
 {

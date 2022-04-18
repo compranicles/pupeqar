@@ -63,7 +63,7 @@
                                                         {{ $utilization->report_quarter}}
                                                     </td>
                                                     <td>
-                                                        {{ $utilization->year}}
+                                                        {{ $utilization->report_year}}
                                                     </td>
                                                 </tr>
                                             @endforeach

@@ -27,8 +27,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6" style="display: none;" id="actionButtons">
-                            <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-success mr-2"><i class="bi bi-check2"></i> Receive</button>
-                            <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-danger"><i class="bi bi-slash-circle"></i> Return</a>
+                            <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
+                            <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
                         <div class="col-md-6 ml-auto">
                             <div class="d-flex justify-content-start">
@@ -159,14 +159,14 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="selectApproveLabel">Receive Selected</h5>
+                <h5 class="modal-title" id="selectApproveLabel">Accept Selected</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">RECEIVE</span> selected?</div>
+                    <div class="col-md-12">Are you sure you want to <span class="text-success font-weight-bold">ACCEPT</span> selected?</div>
                 </div>
                 <form action="{{ route('researcher.accept-select') }}" method="POST">
                     @csrf
@@ -322,8 +322,8 @@
                 }
             });
             
-            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-success report-content"><i class="bi bi-check2"></i> Receive</a>');
-            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-danger report-content"><i class="bi bi-slash-circle"></i> Return</a>');
+            $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Accept</a>');
+            $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
             
             var viewReport = document.getElementById('viewReport')
             var reportCategory = $(this).data('report-category')

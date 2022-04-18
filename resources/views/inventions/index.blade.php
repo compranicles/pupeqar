@@ -27,16 +27,13 @@
                         </div>  
                         <hr>
                         <div class="row">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label for="statusFilter" class="mr-2">Current Status: </label>
                                 <select id="statusFilter" class="custom-select">
                                     <option value="">Show All</option>
-                                    @foreach ($inventionStatus as $status)
-                                    <option value="{{ $status->name }}">{{ $status->name }}</option>
-                                    @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
@@ -44,15 +41,15 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <label for="createFilter" class="mr-2">Year Added: </label>
+                                <select id="createFilter" class="custom-select">
+                                </select>
+                            </div>
                             <div class="col-md-5">
                                 <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                 <select id="collegeFilter" class="custom-select">
                                     <option value="">Show All</option>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label for="createFilter" class="mr-2">Year Added: </label>
-                                <select id="createFilter" class="custom-select">
                                 </select>
                             </div>
                         </div>
@@ -148,6 +145,42 @@
                 null
             ],
             initComplete: function () {
+                this.api().columns(2).every( function () {
+                    var column = this;
+                    var select = $('#statusFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
+                this.api().columns(3).every( function () {
+                    var column = this;
+                    var select = $('#collegeFilter')
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                });
+
                 this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')
@@ -169,24 +202,6 @@
                 this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#createFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-    
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-    
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-
-                this.api().columns(3).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()

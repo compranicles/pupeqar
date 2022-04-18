@@ -49,7 +49,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">received</span> your '+item.data.category_name+' accomplishment.'+
+                                item.data.sender+' <span class="text-success">received</span> your '+item.data.category_name+' accomplishment.'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
                             );
@@ -58,7 +58,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
+                                item.data.sender+' <span class="text-success">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
@@ -68,7 +68,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">received</span> the '+item.data.category_name+' accomplishment'+
+                                item.data.sender+' <span class="text-success">received</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
@@ -81,7 +81,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">returned</span> your '+item.data.category_name+' accomplishment.'+
+                                item.data.sender+' <span class="text-danger">returned</span> your '+item.data.category_name+' accomplishment.'+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
                             );
@@ -90,7 +90,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
+                                item.data.sender+' <span class="text-danger">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.department_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
@@ -100,7 +100,7 @@
                             $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
                                 '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' <span class="">returned</span> the '+item.data.category_name+' accomplishment'+
+                                item.data.sender+' <span class="text-danger">returned</span> the '+item.data.category_name+' accomplishment'+
                                 ' of '+item.data.college_name+
                                 '<div class="text-muted"><small>'+item.data.date+'</small></div>' +
                                 '</div></td>'
@@ -122,10 +122,10 @@
                     else if(item.data.type == 'confirm'){
                         $('#notification-all-'+countAllColumns)
                             .append('<td class="notification-seeall-content">'+
-                                '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark p-2">'+
-                                item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
+                                '<div id="noti-all-info-'+countAllColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="text-decoration-none notif-all-row noti-message text-dark ml-2">'+
+                                item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'".'+
                                 '</div>'+
-                                '<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                                '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
                             );
                     }
                     else if(item.data.type == 'research'){

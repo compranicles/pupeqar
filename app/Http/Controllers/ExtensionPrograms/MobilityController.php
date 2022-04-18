@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Models\Mobility;
-use Illuminate\Http\Request;
-use App\Models\{
-    TemporaryFile,
-    Employee
+use App\Http\Controllers\{
+    Controller,
+    Maintenances\LockController,
 };
-use App\Models\MobilityDocument;
-use Illuminate\Support\Facades\DB;
-use App\Models\Maintenance\College;
-use App\Models\Maintenance\Quarter;
-use App\Http\Controllers\Controller;
-use App\Models\Maintenance\Department;
-use Illuminate\Support\Facades\Storage;
-use App\Models\FormBuilder\ExtensionProgramForm;
-use App\Http\Controllers\Maintenances\LockController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\{
+    DB,
+    Storage,
+};
+use App\Models\{
+    Employee,
+    Mobility,
+    MobilityDocument,
+    TemporaryFile,
+    FormBuilder\ExtensionProgramForm,
+    Maintenance\College,
+    Maintenance\Department,
+    Maintenance\Quarter,
+};
 
 class MobilityController extends Controller
 {
@@ -36,12 +40,7 @@ class MobilityController extends Controller
                                 ->select(DB::raw('mobilities.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $mobility_in_colleges = Mobility::whereNull('mobilities.deleted_at')->join('colleges', 'mobilities.college_id', 'colleges.id')
-                                ->where('user_id', auth()->id())
-                                ->select('colleges.name')
-                                ->distinct()
-                                ->get();
-        return view('extension-programs.mobility.index', compact('mobilities', 'mobility_in_colleges', 'currentQuarterYear'));
+        return view('extension-programs.mobility.index', compact('mobilities', 'currentQuarterYear'));
     }
 
     /**
