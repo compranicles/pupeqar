@@ -13462,15 +13462,6 @@ a.home-card-links  {
   color: #eeb510;
 }
 
-/* .notif-scrollable::-webkit-scrollbar {
-  display: none;
-} */
-
-/* Hide scrollbar for IE, Edge and Firefox */
-/* .notif-scrollable {
-  -ms-overflow-style: none;  
-} */
-
 /* width */
 .notif-scrollable::-webkit-scrollbar {
   width: 10px;

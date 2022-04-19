@@ -27,19 +27,23 @@
                         <hr>
                         <div class="row">
                             <div class="col-md-3">
-                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                       
-                                    </select>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                        <div class="d-flex">
+                                            <select id="quarterFilter" class="custom-select" name="quarter">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <label for="yearFilter" class="mr-2">Year Added:</label>
-                                <div class="d-flex">
-                                    <select id="yearFilter" class="custom-select" name="yearFilter">
-                                        
-                                </select>
+                                <div class="form-group">
+                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -31,7 +31,7 @@
 @if (in_array(7, $roles))
     <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">To Review - Sector</a>
     @forelse ( $sectors as $row)
-        <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.sector') ? 'active' : ''}}">
+        <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.sector') || request()->routeIs('reports.consolidate.sector.*') ? 'active' : ''}}">
             {{ $row->code }} - Accomplishments
         </a>  
     @empty
