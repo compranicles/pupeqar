@@ -19,12 +19,13 @@ class CreateExtensionServicesTable extends Migration
             $table->foreignId('status')->nullable();
             $table->foreignId('nature_of_involvement')->nullable();
             $table->foreignId('classification')->nullable();
+            $table->string('other_classification')->nullable();
             $table->foreignId('type')->nullable();
             $table->string('title_of_extension_program')->nullable();
             $table->string('title_of_extension_project')->nullable();
             $table->string('title_of_extension_activity')->nullable();
             $table->string('funding_agency')->nullable();
-            $table->foreignId('currency')->nullable();
+            $table->foreignId('currency_amount_of_funding')->nullable();
             $table->decimal('amount_of_funding', 15, 2)->nullable();
             $table->foreignId('type_of_funding')->nullable();
             $table->date('from')->nullable();
@@ -32,6 +33,7 @@ class CreateExtensionServicesTable extends Migration
             $table->integer('no_of_trainees_or_beneficiaries')->nullable();
             $table->decimal('total_no_of_hours', 9, 1)->nullable();
             $table->foreignId('classification_of_trainees_or_beneficiaries')->nullable();
+            $table->string('other_classification_of_trainees')->nullable();
             $table->string('place_or_venue')->nullable();
             $table->string('keywords')->nullable();
             $table->integer('quality_poor')->nullable();
@@ -45,7 +47,9 @@ class CreateExtensionServicesTable extends Migration
             $table->integer('timeliness_very_satisfactory')->nullable();
             $table->integer('timeliness_outstanding')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

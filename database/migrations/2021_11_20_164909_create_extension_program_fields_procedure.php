@@ -18,7 +18,7 @@ class CreateExtensionProgramFieldsProcedure extends Migration
         BEGIN
         SELECT extension_program_fields.*, field_types.name as field_type_name FROM extension_program_fields 
                     INNER JOIN field_types on field_types.id = extension_program_fields.field_type_id
-                    WHERE extension_program_fields.extension_programs_form_id = form_id
+                    WHERE extension_program_fields.extension_program_form_id = form_id
                     AND extension_program_fields.is_active = 1 ORDER BY `order`;
         END;";
 

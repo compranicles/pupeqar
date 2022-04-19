@@ -14,7 +14,7 @@ class ResearchCompletedFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 2,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -28,7 +28,7 @@ class ResearchCompletedFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 2,
             'label' => 'Status',
             'name' => 'status',
@@ -42,7 +42,7 @@ class ResearchCompletedFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 2,
             'label' => 'Date Completed',
             'name' => 'completion_date',
@@ -56,7 +56,7 @@ class ResearchCompletedFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 2,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -69,7 +69,7 @@ class ResearchCompletedFormSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 2,
             'label' => 'Document Upload',
             'name' => 'document',

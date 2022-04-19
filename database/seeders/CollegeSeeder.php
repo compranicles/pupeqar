@@ -29,7 +29,7 @@ class CollegeSeeder extends Seeder
                     if($row->RootID == "0"){
                         if(in_array($row->DepartmentID, $sectorHRISCodes)){
                             $sectorId = Sector::where('hris_code', $row->DepartmentID)->pluck('id')->first();
-                            College::create([
+                            College::insert([
                                 'name' => $row->Department,
                                 'code' => $row->DepartmentCode,
                                 'hris_code' => $row->DepartmentID,
@@ -37,7 +37,7 @@ class CollegeSeeder extends Seeder
                             ]);
                         }
                         else{
-                            College::create([
+                            College::insert([
                                 'name' => $row->Department,
                                 'code' => $row->DepartmentCode,
                                 'hris_code' => $row->DepartmentID,
@@ -48,7 +48,7 @@ class CollegeSeeder extends Seeder
                     else{
                         if(in_array($row->RootID, $sectorHRISCodes)){
                             $sectorId = Sector::where('hris_code', $row->RootID)->pluck('id')->first();
-                            College::create([
+                            College::insert([
                                 'name' => $row->Department,
                                 'code' => $row->DepartmentCode,
                                 'hris_code' => $row->DepartmentID,

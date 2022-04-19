@@ -19,7 +19,7 @@ class CreateStudentTrainingsTable extends Migration
             $table->string('title')->nullable();
             $table->foreignId('classification')->nullable();
             $table->foreignId('nature')->nullable();
-            $table->foreignId('currency')->nullable();
+            $table->foreignId('currency_budget')->nullable();
             $table->decimal('budget', 15, 2)->nullable();
             $table->foreignId('source_of_fund')->nullable();
             $table->string('organization')->nullable();
@@ -29,7 +29,7 @@ class CreateStudentTrainingsTable extends Migration
             $table->date('end_date')->nullable();
             $table->integer('total_hours')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

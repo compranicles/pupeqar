@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
         
         //Super Admin
         // 1
-//         User::create([
+//         User::insert([
 //             'email' => 'superadmin1@mailinator.com',
 //             'password'=> Hash::make('superadmin1@mailinator.com'),
 //             'date_of_birth' => 1992-04-24,
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 //         // 2
-//         User::create([
+//         User::insert([
 //             'email' => 'superadmin2@mailinator.com',
 //             'password'=> Hash::make('superadmin2@mailinator.com'),
 //             'date_of_birth' => 1992-04-24,
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
 
 //         //Faculty
 //         // 3
-//         User::create([
+//         User::insert([
 //             'email' => 'faculty_taguig@mailinator.com',
 //             'password'=> Hash::make('faculty_taguig@mailinator.com'),
 //             'date_of_birth' => 1992-04-24,
@@ -58,7 +58,7 @@ class UserSeeder extends Seeder
 //         ]);
 
 //         // 4
-//         User::create([
+//         User::insert([
 //             'email' => 'faculty_caf_acc@mailinator.com',
 //             'password'=> Hash::make('faculty_caf_acc@mailinator.com'),
 //             'date_of_birth' => 1992-04-24,
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
 //         ]);
 //         // 5-15
 //         for ($f = 1; $f <= 11; $f++) {
-//             User::create([
+//             User::insert([
 //                 'email' => 'faculty'.$f.'@mailinator.com',
 //                 'password'=> Hash::make('faculty'.$f.'@mailinator.com'),
 //                 'date_of_birth' => 1992-04-24,
@@ -82,7 +82,7 @@ class UserSeeder extends Seeder
 
 //         //16
 //         //Faculty with designation
-//         User::create([
+//         User::insert([
 //             'email' => 'loey@mailinator.com',
 //             'password'=> Hash::make('loey@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -92,7 +92,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 //         //17
-//         User::create([
+//         User::insert([
 //             'email' => 'miro@mailinator.com',
 //             'password'=> Hash::make('miro@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -103,7 +103,7 @@ class UserSeeder extends Seeder
 //         ]);
 //         // 18-28
 //         for ($i = 1; $i <= 11; $i++) {
-//             User::create([
+//             User::insert([
 //                 'email' => 'facultydesignate'.$i.'@mailinator.com',
 //                 'password'=> Hash::make('facultydesignate'.$i.'@mailinator.com'),
 //                 'date_of_birth' => 1992-04-24,
@@ -115,7 +115,7 @@ class UserSeeder extends Seeder
 //         }
 
 //         //Admin Employee 29- 41
-//         User::create([
+//         User::insert([
 //             'email' => 'harry@mailinator.com',
 //             'password'=> Hash::make('harry@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -125,7 +125,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         User::create([
+//         User::insert([
 //             'email' => 'mira@mailinator.com',
 //             'password'=> Hash::make('mira@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -136,7 +136,7 @@ class UserSeeder extends Seeder
 //         ]);
 
 //         for ($a = 1; $a <= 11; $a++) {
-//             User::create([
+//             User::insert([
 //                 'email' => 'admin'.$a.'@mailinator.com',
 //                 'password'=> Hash::make('admin'.$a.'@mailinator.com'),
 //                 'date_of_birth' => 1992-04-24,
@@ -148,7 +148,7 @@ class UserSeeder extends Seeder
 //         }
 // //42
 //         //Admin with Teaching Load
-//         User::create([
+//         User::insert([
 //             'email' => 'gola@mailinator.com',
 //             'password'=> Hash::make('gola@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -158,7 +158,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         User::create([
+//         User::insert([
 //             'email' => 'sorita@mailinator.com',
 //             'password'=> Hash::make('sorita@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -169,7 +169,7 @@ class UserSeeder extends Seeder
 //         ]);
 
 //         for ($at = 1; $at <= 11; $at++) {
-//             User::create([
+//             User::insert([
 //                 'email' => 'adminteaching'.$at.'@mailinator.com',
 //                 'password'=> Hash::make('adminteaching'.$at.'@mailinator.com'),
 //                 'date_of_birth' => 1992-04-24,
@@ -183,7 +183,7 @@ class UserSeeder extends Seeder
 //         Chairperson::truncate();
 
 //         //Chairperson
-//         $cp1 = User::create([
+//         $cp1 = User::insert([
 //             'email' => 'chairperson_caf_accountancy@mailinator.com',
 //             'password'=> Hash::make('chairperson_caf_accountancy@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -193,14 +193,14 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         Chairperson::create([
+//         Chairperson::insert([
 //             'user_id' => $cp1->id,
 //             'department_id' => 60,
 //             'college_id' => 5,
 //         ]);
 
 
-//         $cp2 = User::create([
+//         $cp2 = User::insert([
 //             'email' => 'chairperson_taguig@mailinator.com',
 //             'password'=> Hash::make('chairperson_taguig@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -210,7 +210,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         Chairperson::create([
+//         Chairperson::insert([
 //             'user_id' => $cp2->id,
 //             'department_id' => 292,
 //             'college_id' => 86,
@@ -218,7 +218,7 @@ class UserSeeder extends Seeder
 // //56
 //         Dean::truncate();
 //         //Director/Dean
-//         $dean1 = User::create([
+//         $dean1 = User::insert([
 //             'email' => 'dean_caf@mailPinator.com',
 //             'password'=> Hash::make('dean_caf@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -228,12 +228,12 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         Dean::create([
+//         Dean::insert([
 //             'user_id' => $dean1->id,
 //             'college_id' => 5,
 //         ]);
 
-//         $dean2 = User::create([
+//         $dean2 = User::insert([
 //             'email' => 'dean_taguig@mailinator.com',
 //             'password'=> Hash::make('dean_taguig@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -243,14 +243,14 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         Dean::create([
+//         Dean::insert([
 //             'user_id' => $dean2->id,
 //             'college_id' => 86,
 //         ]);
 
 // //58
 //         //VP/Sector head
-//         $head1 = User::create([
+//         $head1 = User::insert([
 //             'email' => 'sectorhead1@mailinator.com',
 //             'password'=> Hash::make('sectorhead1@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -261,12 +261,12 @@ class UserSeeder extends Seeder
 //         ]);
 
 
-//         SectorHead::create([
+//         SectorHead::insert([
 //             'user_id' => $head1->id,
 //             'sector_id' => 3,
 //         ]);
 
-//         $head2 = User::create([
+//         $head2 = User::insert([
 //             'email' => 'sectorhead2@mailinator.com',
 //             'password'=> Hash::make('sectorhead2@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -276,13 +276,13 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         SectorHead::create([
+//         SectorHead::insert([
 //             'user_id' => $head2->id,
 //             'sector_id' => 8,
 //         ]);
 // //60
 //         //IPQMSO
-//         User::create([
+//         User::insert([
 //             'email' => 'ipqmso1@mailinator.com',
 //             'password'=> Hash::make('ipqmso1@mailinator.com'),
 //             'date_of_birth' => 2000-04-24,
@@ -292,7 +292,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         User::create([
+//         User::insert([
 //             'email' => 'ipqmso2@mailinator.com',
 //             'password'=> Hash::make('ipqmso2@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -303,7 +303,7 @@ class UserSeeder extends Seeder
 //         ]);
 // //62
 //         //Faculty Extensionist
-//         $ext1 = User::create([
+//         $ext1 = User::insert([
 //             'email' => 'facultyext1@mailinator.com',
 //             'password'=> Hash::make('facultyext1@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -314,12 +314,12 @@ class UserSeeder extends Seeder
 //         ]);
 
 //         FacultyExtensionist::truncate();
-//         FacultyExtensionist::create([
+//         FacultyExtensionist::insert([
 //             'user_id' => $ext1->id,
 //             'department_id' => 60,
 //         ]);
 
-//         $ext2 = User::create([
+//         $ext2 = User::insert([
 //             'email' => 'facultyext2@mailinator.com',
 //             'password'=> Hash::make('facultyext2@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -330,13 +330,13 @@ class UserSeeder extends Seeder
 //         ]);
 
 // //64
-//         FacultyExtensionist::create([
+//         FacultyExtensionist::insert([
 //             'user_id' => $ext2->id,
 //             'department_id' => 292,
 //         ]);
 
 //         //FAculty researchers
-//         $res1 = User::create([
+//         $res1 = User::insert([
 //             'email' => 'facultyres1@mailinator.com',
 //             'password'=> Hash::make('facultyres1@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -347,12 +347,12 @@ class UserSeeder extends Seeder
 //         ]);
 
 //         FacultyResearcher::truncate();
-//         FacultyResearcher::create([
+//         FacultyResearcher::insert([
 //             'user_id' => $res1->id,
 //             'department_id' => 60,
 //         ]);
 
-//         $res2 = User::create([
+//         $res2 = User::insert([
 //             'email' => 'facultyres2@mailinator.com',
 //             'password'=> Hash::make('facultyres2@mailinator.com'),
 //             'date_of_birth' => 1998-04-24,
@@ -362,7 +362,7 @@ class UserSeeder extends Seeder
 //             'suffix' => null,
 //         ]);
 
-//         FacultyResearcher::create([
+//         FacultyResearcher::insert([
 //             'user_id' => $res2->id,
 //             'department_id' => 292,
 //         ]);

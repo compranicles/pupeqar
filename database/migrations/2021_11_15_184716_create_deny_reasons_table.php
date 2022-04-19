@@ -15,8 +15,8 @@ class CreateDenyReasonsTable extends Migration
     {
         Schema::create('deny_reasons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_id');
-            $table->foreignId('user_id');
+            $table->foreignId('report_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('position_name');
             $table->text('reason');
             $table->timestamps();

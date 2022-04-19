@@ -16,16 +16,16 @@ class RoleSeeder extends Seeder
     public function run()
     {
         Role::truncate();
-        Role::create(['name' => 'Faculty Employee']);
-        Role::create(['name' => 'Faculty with designation', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
-        Role::create(['name' => 'Admin Employee']);
-        Role::create(['name' => 'Admin with teaching load', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
-        Role::create(['name' => 'Chairperson']);
-        Role::create(['name' => 'Director/Dean']);
-        Role::create(['name' => 'VP/Sector Head']); //7
-        Role::create(['name' => 'IPQMSO']);
-        Role::create(['name' => 'Super Admin']);
-        Role::create(['name' => 'Researcher']);
-        Role::create(['name' => 'Extensionist']); //11
+        Role::insert(['name' => 'Faculty Employee']);
+        Role::insert(['name' => 'Faculty with designation', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
+        Role::insert(['name' => 'Admin Employee']);
+        Role::insert(['name' => 'Admin with teaching load', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
+        Role::insert(['name' => 'Chairperson']);
+        Role::insert(['name' => 'Director/Dean']);
+        Role::insert(['name' => 'VP/Sector Head']); //7
+        Role::insert(['name' => 'IPQMSO']);
+        Role::insert(['name' => 'Super Admin']);
+        Role::insert(['name' => 'Researcher']);
+        Role::insert(['name' => 'Extensionist']); //11
     }
 }

@@ -15,7 +15,7 @@ class ReferenceFormSeeder extends Seeder
     public function run()
     {
         AcademicDevelopmentField::truncate();
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Category',
             'name' => 'category',
@@ -28,7 +28,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Level',
             'name' => 'level',
@@ -41,7 +41,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Date Started',
             'name' => 'date_started',
@@ -54,7 +54,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Date Completed',
             'name' => 'date_completed',
@@ -67,7 +67,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Title',
             'name' => 'title',
@@ -80,7 +80,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Authors/Compilers',
             'name' => 'authors_compilers',
@@ -93,7 +93,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Name of Editor/Referee',
             'name' => 'editor_name',
@@ -106,7 +106,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Profession of Editor/Referee',
             'name' => 'editor_profession',
@@ -119,7 +119,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Volume No.',
             'name' => 'volume_no',
@@ -132,7 +132,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Issue No.',
             'name' => 'issue_no',
@@ -145,7 +145,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Date of Publication',
             'name' => 'date_published',
@@ -158,7 +158,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Copyright Registration No.',
             'name' => 'copyright_regi_no',
@@ -171,7 +171,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -184,7 +184,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -197,7 +197,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -210,7 +210,7 @@ class ReferenceFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 1,
             'label' => 'Document Upload',
             'name' => 'document',

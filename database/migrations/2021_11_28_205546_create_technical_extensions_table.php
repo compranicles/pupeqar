@@ -24,10 +24,10 @@ class CreateTechnicalExtensionsTable extends Migration
             $table->string('nature_of_business_enterprise')->nullable();
             $table->string('has_businesses')->nullable();
             $table->foreignId('is_borrowed')->nullable();
-            $table->foreignId('currency')->nullable();
+            $table->foreignId('currency_total_profit')->nullable();
             $table->decimal('total_profit', 15, 2 )->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

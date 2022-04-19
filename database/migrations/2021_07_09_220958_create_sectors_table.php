@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenameStartdateEnddateAtExpertServiceConsultantsTable extends Migration
+class CreateSectorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class RenameStartdateEnddateAtExpertServiceConsultantsTable extends Migration
      */
     public function up()
     {
-        Schema::table('expert_service_consultants', function (Blueprint $table) {
-            $table->renameColumn('start_date', 'from');
-            $table->renameColumn('end_date', 'to');
-            $table->renameColumn('partner', 'partner_agency');
-
+        Schema::create('sectors', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', '200');
+            $table->string('code', 255);
+            $table->integer('hris_code');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +30,6 @@ class RenameStartdateEnddateAtExpertServiceConsultantsTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('sectors');
     }
 }

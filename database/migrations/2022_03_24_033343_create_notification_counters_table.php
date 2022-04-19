@@ -15,7 +15,7 @@ class CreateNotificationCountersTable extends Migration
     {
         Schema::create('notification_counters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('count');
             $table->timestamps();
         });

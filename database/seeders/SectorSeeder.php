@@ -21,7 +21,7 @@ class SectorSeeder extends Seeder
         $sectors = $db_ext->select(" EXEC GetDepartment 'Y'");
 
         foreach ($sectors as $sector){
-            Sector::create([
+            Sector::insert([
                 'name' => $sector->Department,
                 'code' => $sector->DepartmentCode,
                 'hris_code' =>$sector->DepartmentID,

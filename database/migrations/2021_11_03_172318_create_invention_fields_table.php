@@ -15,13 +15,13 @@ class CreateInventionFieldsTable extends Migration
     {
         Schema::create('invention_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invention_form_id');
+            $table->foreignId('invention_form_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('label');
             $table->string('name');
             $table->text('placeholder')->nullable();
             $table->string('size');
-            $table->foreignId('field_type_id');
-            $table->foreignId('dropdown_id')->nullable();
+            $table->foreignId('field_type_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('dropdown_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('required');
             $table->integer('visibility');
             $table->integer('order');

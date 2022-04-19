@@ -18,9 +18,10 @@ class CreateSyllabiTable extends Migration
             $table->string('course_title')->nullable();
             $table->foreignId('assigned_task')->nullable();
             $table->date('date_finished')->nullable();
-            $table->foreignId('department_id')->nullable();
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

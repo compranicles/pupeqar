@@ -20,7 +20,7 @@ class CreateOutreachProgramsTable extends Migration
             $table->date('date')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

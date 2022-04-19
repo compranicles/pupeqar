@@ -15,12 +15,12 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('college_id');
-            $table->foreignId('department_id')->nullable();
-            $table->foreignId('report_category_id');
-            $table->string('report_code')->nullable();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('report_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('report_reference_id')->nullable();
+            $table->string('report_code')->nullable();
             $table->longText('report_details');
             $table->longText('report_documents');
             $table->date('report_date');

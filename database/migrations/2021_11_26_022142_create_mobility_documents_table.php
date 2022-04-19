@@ -15,7 +15,7 @@ class CreateMobilityDocumentsTable extends Migration
     {
         Schema::create('mobility_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mobility_id');
+            $table->foreignId('mobility_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

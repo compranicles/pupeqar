@@ -18,19 +18,19 @@ class IPCRDropdownSeeder extends Seeder
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Request Category'
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Simple',
             'order' => 1,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Complex',
             'order' => 1,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Highly Technical',
             'order' => 1,

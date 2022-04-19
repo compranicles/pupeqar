@@ -27,7 +27,7 @@ class CreateResearchPublicationsTable extends Migration
             $table->string('issue')->nullable();
             $table->foreignId('indexing_platform')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('research_id');
+            $table->foreignId('research_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

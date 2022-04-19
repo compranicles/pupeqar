@@ -15,7 +15,7 @@ class HRISFieldSeeder extends Seeder
     public function run()
     {
         HRISField::truncate();
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Degree/Program',
             'name' => 'degree',
@@ -28,7 +28,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Name of School',
             'name' => 'school_name',
@@ -41,7 +41,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Program Accreditation Level/ World Ranking/ COE or COD',
             'name' => 'program_level',
@@ -54,7 +54,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Type of Support',
             'name' => 'support_type',
@@ -67,7 +67,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Name of Sponsor/Agency/Organization',
             'name' => 'sponsor_name',
@@ -80,7 +80,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Amount',
             'name' => 'amount',
@@ -93,7 +93,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'From',
             'name' => 'from',
@@ -106,7 +106,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'To',
             'name' => 'to',
@@ -119,7 +119,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Status',
             'name' => 'status',
@@ -132,7 +132,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Number of Units Earned',
             'name' => 'units_earned',
@@ -145,7 +145,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Number of Units Currently Enrolled',
             'name' => 'units_enrolled',
@@ -158,7 +158,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -171,7 +171,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -184,7 +184,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -197,7 +197,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Document Upload',
             'name' => 'document',
@@ -212,7 +212,7 @@ class HRISFieldSeeder extends Seeder
         ]);
 
         //Seminars/Webinars
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Title',
             'name' => 'title',
@@ -225,7 +225,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Classification',
             'name' => 'classification',
@@ -238,7 +238,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Nature',
             'name' => 'nature',
@@ -251,7 +251,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Budget',
             'name' => 'budget',
@@ -264,7 +264,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Source of Fund',
             'name' => 'fund_source',
@@ -277,7 +277,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Organizer',
             'name' => 'organizer',
@@ -290,7 +290,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Level',
             'name' => 'level',
@@ -303,7 +303,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Venue',
             'name' => 'venue',
@@ -316,7 +316,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'From',
             'name' => 'from',
@@ -329,7 +329,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'To',
             'name' => 'to',
@@ -342,7 +342,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Total No. Of Hours',
             'name' => 'total_hours',
@@ -355,7 +355,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -368,7 +368,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -381,7 +381,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -394,7 +394,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Document Upload',
             'name' => 'document',
@@ -409,7 +409,7 @@ class HRISFieldSeeder extends Seeder
         ]);
 
         //Trainings
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Title',
             'name' => 'title',
@@ -422,7 +422,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Classification',
             'name' => 'classification',
@@ -435,7 +435,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Nature',
             'name' => 'nature',
@@ -448,7 +448,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Budget',
             'name' => 'budget',
@@ -461,7 +461,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Source of Fund',
             'name' => 'fund_source',
@@ -474,7 +474,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Organizer',
             'name' => 'organizer',
@@ -487,7 +487,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Level',
             'name' => 'level',
@@ -500,7 +500,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Venue',
             'name' => 'venue',
@@ -513,7 +513,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'From',
             'name' => 'from',
@@ -526,7 +526,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'To',
             'name' => 'to',
@@ -539,7 +539,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Total No. Of Hours',
             'name' => 'total_hours',
@@ -552,7 +552,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -565,7 +565,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -578,7 +578,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -591,7 +591,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Document Upload',
             'name' => 'document',
@@ -607,7 +607,7 @@ class HRISFieldSeeder extends Seeder
 
 
         //outstanding awards
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Name of Award/Achievement ',
             'name' => 'award',
@@ -620,7 +620,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Classification',
             'name' => 'classification',
@@ -633,7 +633,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Award Giving Body',
             'name' => 'awarded_by',
@@ -646,7 +646,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Level',
             'name' => 'level',
@@ -659,7 +659,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Venue',
             'name' => 'venue',
@@ -672,7 +672,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'From',
             'name' => 'from',
@@ -685,7 +685,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'To',
             'name' => 'to',
@@ -698,7 +698,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -711,7 +711,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -724,7 +724,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -737,7 +737,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Document Upload',
             'name' => 'document',
@@ -752,7 +752,7 @@ class HRISFieldSeeder extends Seeder
         ]);
 
         //Officership
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Name of the Organization',
             'name' => 'organization',
@@ -765,7 +765,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Classification',
             'name' => 'classification',
@@ -778,7 +778,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Position',
             'name' => 'position',
@@ -791,7 +791,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Level',
             'name' => 'level',
@@ -804,7 +804,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Organization Address',
             'name' => 'organization_address',
@@ -817,7 +817,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'From',
             'name' => 'from',
@@ -830,7 +830,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'To',
             'name' => 'to',
@@ -843,7 +843,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -856,7 +856,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -869,7 +869,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -882,7 +882,7 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::create([
+        HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Document Upload',
             'name' => 'document',

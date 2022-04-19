@@ -15,13 +15,14 @@ class CreateStudentAwardsTable extends Migration
     {
         Schema::create('student_awards', function (Blueprint $table) {
             $table->id();
+            $table->string('name_of_student');
             $table->string('name_of_award')->nullable();
             $table->string('certifying_body')->nullable();
             $table->string('place')->nullable();
             $table->date('date')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -14,7 +14,7 @@ class ResearchUtilizationFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -28,7 +28,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Agency/Organization that Utilized the Research Output',
             'name' => 'organization',
@@ -41,7 +41,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Brief Description of Research Utilization',
             'name' => 'utilization_description',
@@ -55,7 +55,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Level of Utilization',
             'name' => 'level',
@@ -69,7 +69,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -82,7 +82,7 @@ class ResearchUtilizationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 6,
             'label' => 'Document Upload',
             'name' => 'document',

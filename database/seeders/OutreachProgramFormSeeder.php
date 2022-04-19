@@ -14,8 +14,8 @@ class OutreachProgramFormSeeder extends Seeder
      */
     public function run()
     {
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Title of the Program',
             'name' => 'title_of_the_program',
             'placeholder' => null,
@@ -27,8 +27,8 @@ class OutreachProgramFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Place',
             'name' => 'place',
             'placeholder' => null,
@@ -40,8 +40,8 @@ class OutreachProgramFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Date',
             'name' => 'date',
             'placeholder' => null,
@@ -53,8 +53,8 @@ class OutreachProgramFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Level',
             'name' => 'level',
             'placeholder' => null,
@@ -66,8 +66,8 @@ class OutreachProgramFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
             'placeholder' => "*Special Order (if applicable), *Budget Allocation & Utilization (if applicable), *Pictures/Documentation/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents if applicable",
@@ -79,8 +79,8 @@ class OutreachProgramFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 7,
             'label' => 'Document Upload',
             'name' => 'document',
             'placeholder' => null,

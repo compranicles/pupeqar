@@ -19,19 +19,19 @@ class InventionDropdownSeeder extends Seeder
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Invention Classification'
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Invention',
             'order' => 1,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Innovation',
             'order' => 2,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Creative Work',
             'order' => 3,
@@ -42,19 +42,19 @@ class InventionDropdownSeeder extends Seeder
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Invention Type of Funding'
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'University Funded',
             'order' => 1,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Self Funded',
             'order' => 3,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Externally Funded',
             'order' => 2,
@@ -65,25 +65,25 @@ class InventionDropdownSeeder extends Seeder
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Invention Status'
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'New Commitment',
             'order' => 1,
             'is_active' => 0,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Ongoing',
             'order' => 2,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Completed',
             'order' => 2,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => $dropdownId,
             'name' => 'Deferred',
             'order' => 2,

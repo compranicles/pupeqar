@@ -18,6 +18,7 @@ class CreateRolesTable extends Migration
             $table->id();
             $table->string('name');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-
+        Schema::dropIfExists('roles');
     }
 }

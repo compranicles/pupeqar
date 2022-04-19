@@ -15,7 +15,7 @@ class CreateOutreachProgramDocumentsTable extends Migration
     {
         Schema::create('outreach_program_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('outreach_program_id');
+            $table->foreignId('outreach_program_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

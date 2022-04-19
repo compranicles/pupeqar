@@ -15,7 +15,7 @@ class InventionSeeder extends Seeder
     public function run()
     {
         InventionField::truncate();
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Classification',
             'name' => 'classification',
@@ -28,7 +28,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Nature (IT Products, Equipments, Machinery, etc.)',
             'name' => 'nature',
@@ -41,7 +41,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Title',
             'name' => 'title',
@@ -54,7 +54,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Name of Collaborators',
             'name' => 'collaborator',
@@ -68,7 +68,7 @@ class InventionSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Type of Funding',
             'name' => 'funding_type',
@@ -82,7 +82,7 @@ class InventionSeeder extends Seeder
             'is_active' => 1,
         ]);
         
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Amount of Funding',
             'name' => 'funding_amount',
@@ -96,7 +96,7 @@ class InventionSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Funding Agency',
             'name' => 'funding_agency',
@@ -110,7 +110,7 @@ class InventionSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Status',
             'name' => 'status',
@@ -123,7 +123,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Project Date Started',
             'name' => 'start_date',
@@ -136,7 +136,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Project Date Ended',
             'name' => 'end_date',
@@ -149,7 +149,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Utilization of Invention',
             'name' => 'utilization',
@@ -162,7 +162,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Copyright/Patent No.',
             'name' => 'copyright_number',
@@ -175,7 +175,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Date of Issue',
             'name' => 'issue_date',
@@ -188,7 +188,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -201,7 +201,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -214,7 +214,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -227,7 +227,7 @@ class InventionSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        InventionField::create([
+        InventionField::insert([
             'invention_form_id' => 1,
             'label' => 'Document Upload',
             'name' => 'document',

@@ -27,7 +27,7 @@ class DepartmentSeeder extends Seeder
             if($row->IsActive == "Y"){
                 if($row->RootID == "0"){
                     if(in_array($row->DepartmentID, $collegeHRISCodes)){
-                        Department::create([
+                        Department::insert([
                             'name' => $row->Department,
                             'code' => $row->DepartmentCode,
                             'hris_code' => $row->DepartmentID,
@@ -38,7 +38,7 @@ class DepartmentSeeder extends Seeder
                 else{
                     if($row->Level == "1"){
                         if(in_array($row->DepartmentID, $collegeHRISCodes)){
-                            Department::create([
+                            Department::insert([
                                 'name' => $row->Department,
                                 'code' => $row->DepartmentCode,
                                 'hris_code' => $row->DepartmentID,
@@ -48,7 +48,7 @@ class DepartmentSeeder extends Seeder
                     }
                     else{
                         if(in_array($row->RootID, $collegeHRISCodes)){
-                            Department::create([
+                            Department::insert([
                                 'name' => $row->Department,
                                 'code' => $row->DepartmentCode,
                                 'hris_code' => $row->DepartmentID,

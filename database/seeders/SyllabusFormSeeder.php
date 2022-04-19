@@ -15,7 +15,7 @@ class SyllabusFormSeeder extends Seeder
     public function run()
     {   
         // AcademicDevelopmentField::where('academic_development_form_id',2)->truncate();
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Course Title',
             'name' => 'course_title',
@@ -28,7 +28,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Assigned Task',
             'name' => 'assigned_task',
@@ -41,7 +41,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Date You Finished the Assigned Task',
             'name' => 'date_finished',
@@ -54,7 +54,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -67,7 +67,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -80,7 +80,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -93,7 +93,7 @@ class SyllabusFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
             'label' => 'Document Upload',
             'name' => 'document',

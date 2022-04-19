@@ -15,7 +15,10 @@ class CreateDropdownOptionsTable extends Migration
     {
         Schema::create('dropdown_options', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('dropdown_id');
+            $table->foreignId('dropdown_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
+            $table->integer('order');
+            $table->integer('is_active');
             $table->timestamps();
             $table->softDeletes();
         });

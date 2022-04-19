@@ -14,7 +14,7 @@ class ViableProjectFormSeeder extends Seeder
      */
     public function run()
     {
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Name of Viable Demonstration Project',
             'name' => 'name',
@@ -27,7 +27,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Revenue',
             'name' => 'revenue',
@@ -40,7 +40,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Cost',
             'name' => 'cost',
@@ -53,7 +53,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Date Started',
             'name' => 'start_date',
@@ -66,7 +66,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Internal Rate of Return',
             'name' => 'rate_of_return',
@@ -79,7 +79,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -92,7 +92,7 @@ class ViableProjectFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 5,
             'label' => 'Document Upload',
             'name' => 'document',
