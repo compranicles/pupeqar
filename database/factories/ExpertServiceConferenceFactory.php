@@ -24,7 +24,7 @@ class ExpertServiceConferenceFactory extends Factory
             'college_id' => 1,
             'department_id' => 2,
             'description' => $this->faker->word(),
-            'user_id' => 5,
+            'user_id' => 2,
             'report_quarter' => 2,
             'report_year' => 2022,
         ];

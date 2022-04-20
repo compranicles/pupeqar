@@ -34,13 +34,13 @@
                 @can('viewAny', \App\Models\ViableProject::class)
                 <li><a href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
                 @endcan
-                @director
-                <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the College</a></li>
-                @enddirector
                 @can('viewAny', \App\Models\CollegeDepartmentAward::class)
-
+                @director
+                <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the College/Branch/Campus</a></li>
+                @enddirector
+                @chairperson
                 <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the Department</a></li>
-
+                @endchairperson
                 @endcan
                 @can('viewAny', \App\Models\TechnicalExtension::class)
                 <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities</a></li>

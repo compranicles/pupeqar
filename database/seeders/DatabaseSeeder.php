@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
 
             //other maintenance
-            // QuarterSeeder::class,
+            QuarterSeeder::class,
             SectorSeeder::class,
             CollegeSeeder::class,
             DepartmentSeeder::class,
@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
             GenerateColumn3Seeder::class,
             GenerateColumn4Seeder::class,
         ]);
-        
+        \App\Models\Report::truncate();
         \App\Models\Research::truncate();
         // \App\Models\Research::factory()->count(12)->create();
 
@@ -79,7 +79,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Partnership::truncate();
         \App\Models\Partnership::factory()->count(12)->create();
 
-        // \App\Models\ExtensionService::truncate();
+        \App\Models\ExtensionService::truncate();
         // // \App\Models\ExtensionService::factory()->count(12)->create();
 
         \App\Models\ExpertServiceAcademic::truncate();

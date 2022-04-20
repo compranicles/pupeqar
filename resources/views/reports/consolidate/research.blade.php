@@ -21,7 +21,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h5 class="d-inline-block" style="padding-top: 10px;">{{ $department->name }} - Consolidated Department Research & Invention</h5>
-                            <button id="generate" type="button" class="btn btn-primary float-right" data-target="#reportGenerate" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
+                            <button id="generate" type="button" class="btn btn-primary float-right" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
                         </div>
                     </div>
                     <hr>

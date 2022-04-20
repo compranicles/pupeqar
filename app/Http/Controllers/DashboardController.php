@@ -128,8 +128,9 @@ class DashboardController extends Controller
             $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
             $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
             $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
+            $countIPO = (new UserRoleService())->getNumberOfUserByRole(8);
             $arrayOfNoOfAllUsers = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
-                    'director' => $countDirector, 'sectorHead' => $countSectorHead);
+                    'director' => $countDirector, 'sectorHead' => $countSectorHead, 'ipo' => $countIPO);
             $countReviewed1 = '';
             $countReviewed2 = "";
         } 
