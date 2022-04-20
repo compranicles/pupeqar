@@ -37,7 +37,7 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($tables as $row)
-                                            <tr class="{{ ($row->is_table == "1")? 'table-secondary' : 'table-primary' }}">
+                                            <tr class="{{ ($row->is_table == "1")? 'table-light' : 'table-primary' }}">
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->name }}</td>
                                                 <td>

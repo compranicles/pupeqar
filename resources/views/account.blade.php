@@ -69,7 +69,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="">Signature <small class="ml-2">Upload your digital signature to be attached in consolidation of reports. </small></label>
+                                        <label for="">Signature <small class="ml-2">Upload your digital signature to be attached in consolidated reports. </small></label>
                                         <input type="file" 
                                         class="{{ $errors->has('document') ? 'is-invalid' : '' }} filepond mb-n1"
                                         name="document[]"
@@ -128,7 +128,6 @@
                             </div>
                             <div class="col-md-2" style="padding-top: 35px;" role="group">
                                 <div class="form-group input-group-sm">
-                                    <a href="{{ route('offices.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                     <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-sector="{{ $row->sectorName }}" data-bs-cbco="{{ $row->collegeName }}" data-bs-dept="{{ $row->departmentName }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                 </div>
                             </div>

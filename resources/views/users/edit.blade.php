@@ -120,19 +120,15 @@
                             <option value="" selected>Choose...</option>
                         </select>
                         <x-jet-input-error for="research"></x-jet-input-error>
-                      </div>  
+                      </div> 
+                      <div class="form-group d-flex justify-content-end align-items-baseline">
+                        <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
+                      </div> 
                     </div>
                   </div>
                 </div>
               </div>
-            <div class="row">
-              <div class="mb-0 mt-3 ml-3">
-                <div class="d-flex justify-content-start align-items-baseline">
-                  <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
-                  <a href="{{ route('admin.users.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
-                </div>
-              </div>
-            </div>
           </form>
         </div>
 

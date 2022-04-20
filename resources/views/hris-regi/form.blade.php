@@ -56,7 +56,7 @@
                                 <option value="" selected disabled>Choose...</option>
                                 <option value="1">Faculty Employee</option>
                                 <option value="3">Administrative Employee</option>
-                                <!-- <option value="9">None</option> -->
+                                <option value="9">None</option>
                             </select>
                             <x-jet-input-error for="role"></x-jet-input-error>
                         </div>

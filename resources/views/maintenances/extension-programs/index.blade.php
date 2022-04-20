@@ -47,7 +47,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('extension-program-forms.edit', $form->id) }}" class="btn btn-outline-primary btn-sm">Rename</a>
+                                                    <a href="{{ route('extension-program-forms.edit', $form->id) }}" class="btn btn-outline-primary btn-sm mr-2">Rename</a>
                                                     <a href="{{ route('extension-program-forms.show', $form->id) }}" class="btn btn-warning edit-row btn-sm">Fields</a>
                                                 </td>
                                             </tr>

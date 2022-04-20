@@ -14,17 +14,23 @@ use App\Models\Maintenance\{
 class GenerateTypeController extends Controller
 {
     public function index(){
+        $this->authorize('manage', GenerateType::class);
+
         $report_types = GenerateType::all();
         return view('maintenances.generate.index', compact('report_types'));
     }
 
     public function view($type_id){
+        $this->authorize('manage', GenerateType::class);
+
         $type = GenerateType::find($type_id);
         $tables = GenerateTable::where('type_id', $type_id)->get();
         return view('maintenances.generate.show', compact('type', 'tables'));
     }
 
     public function edit($type_id, $table_id){
+        $this->authorize('manage', GenerateType::class);
+
         $table = GenerateTable::find($table_id);
         $report_categories = ReportCategory::all();
         $footers = json_decode($table->footers, true);
@@ -33,6 +39,8 @@ class GenerateTypeController extends Controller
     }
 
     public function save($type_id, $table_id, Request $request){
+        $this->authorize('manage', GenerateType::class);
+
         $table = GenerateTable::find($table_id);
         $footers = $request->input('footers');
         $tempArray = explode(";", $footers);

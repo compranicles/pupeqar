@@ -18,6 +18,8 @@ class ReportTypeController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', ReportType::class);
+
         $reporttypes = ReportType::all();
         return view('maintenances.reports.index', compact('reporttypes'));
     }
@@ -51,6 +53,8 @@ class ReportTypeController extends Controller
      */
     public function show(ReportType $report_type)
     {
+        $this->authorize('manage', ReportType::class);
+
         $reportcategories = ReportCategory::where('report_type_id', $report_type->id)->get();
         return view('maintenances.reports.show', compact('report_type', 'reportcategories'));
     }

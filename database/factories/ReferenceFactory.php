@@ -26,10 +26,10 @@ class ReferenceFactory extends Factory
             'issue_no' => rand(1, 5),
             'date_published' => date("Y-m-d", strtotime("+3 day")),
             'copyright_regi_no' => $this->faker->numerify('ISBN-####'),
-            'college_id' => 1,
-            'department_id' => 2,
+            'college_id' => 88,
+            'department_id' => 296,
             'description' => $this->faker->word(),
-            'user_id' => 5,
+            'user_id' => 2,
             'report_quarter' => 2,
             'report_year' => 2022,
         ];

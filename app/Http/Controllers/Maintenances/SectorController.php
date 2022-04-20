@@ -14,12 +14,14 @@ class SectorController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Sector::class);
         $sectors = Sector::all();
         return view('maintenances.sectors.index', compact('sectors'));
     }
 
     public function sync()
     {
+        $this->authorize('update', ResearchForm::class);
         Artisan::call('db:seed', ['--class' => 'SectorSeeder']); 
         Artisan::call('db:seed', ['--class' => 'CollegeSeeder']); 
         Artisan::call('db:seed', ['--class' => 'DepartmentSeeder']); 

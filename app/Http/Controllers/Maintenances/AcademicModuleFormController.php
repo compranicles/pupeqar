@@ -20,6 +20,8 @@ class AcademicModuleFormController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $academicforms = AcademicDevelopmentForm::all();
         return view('maintenances.academic-module.index', compact('academicforms'));
     }
@@ -53,6 +55,8 @@ class AcademicModuleFormController extends Controller
      */
     public function show(AcademicDevelopmentForm $academic_module_form)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $academic_fields = AcademicDevelopmentField::where('academic_development_fields.academic_development_form_id', $academic_module_form->id)->orderBy('academic_development_fields.order')
                     ->join('field_types', 'field_types.id', 'academic_development_fields.field_type_id')
                     ->select('academic_development_fields.*', 'field_types.name as field_type_name')->get();
@@ -70,6 +74,8 @@ class AcademicModuleFormController extends Controller
      */
     public function edit(AcademicDevelopmentForm $academic_module_form)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         return view('maintenances.academic-module.rename', compact('academic_module_form'));
     }
 
@@ -82,6 +88,8 @@ class AcademicModuleFormController extends Controller
      */
     public function update(Request $request, AcademicDevelopmentForm $academic_module_form)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $request->validate([
             'label' => 'required'
         ]);

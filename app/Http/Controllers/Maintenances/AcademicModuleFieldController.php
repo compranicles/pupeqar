@@ -45,6 +45,8 @@ class AcademicModuleFieldController extends Controller
      */
     public function store(Request $request, AcademicDevelopmentForm $academic_module_form)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
@@ -123,6 +125,8 @@ class AcademicModuleFieldController extends Controller
      */
     public function edit(AcademicDevelopmentForm $academic_module_form, AcademicDevelopmentField $academic_module_field)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
         if ($academic_module_form->id == 1) {
@@ -158,6 +162,8 @@ class AcademicModuleFieldController extends Controller
      */
     public function update(Request $request, AcademicDevelopmentForm $academic_module_form, AcademicDevelopmentField $academic_module_field)
     {
+        $this->authorize('manage', AcademicDevelopmentForm::class);
+
         $input = $request->except(['_token', '_method']);
 
         AcademicDevelopmentField::where('academic_development_form_id', $academic_module_form->id)->where('id', $academic_module_field->id)->update($input);
