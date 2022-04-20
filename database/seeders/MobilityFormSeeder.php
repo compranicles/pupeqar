@@ -14,8 +14,8 @@ class MobilityFormSeeder extends Seeder
      */
     public function run()
     {
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Nature of Engagement',
             'name' => 'nature_of_engagement',
             'placeholder' => null,
@@ -27,8 +27,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Type',
             'name' => 'type',
             'placeholder' => null,
@@ -40,8 +40,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Please specify',
             'name' => 'other_type',
             'placeholder' => null,
@@ -53,8 +53,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Hosting Institution/ Organization/ Agency',
             'name' => 'host_name',
             'placeholder' => null,
@@ -66,8 +66,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Full Address',
             'name' => 'host_address',
             'placeholder' => null,
@@ -79,8 +79,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Description of Inter-Country Mobility',
             'name' => 'mobility_description',
             'placeholder' => null,
@@ -92,8 +92,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'From',
             'name' => 'start_date',
             'placeholder' => null,
@@ -105,8 +105,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'To',
             'name' => 'end_date',
             'placeholder' => null,
@@ -118,8 +118,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
             'placeholder' => null,
@@ -131,8 +131,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => null,
@@ -144,8 +144,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
             'placeholder' => "*Special Order (if applicable), *[For students] Proof of enrollment in the SUC (for both inbound and outbound students), *Documentation/Pictures/Other similar supporting documents, *MOA/MOU/Other similar supporting documents",
@@ -157,8 +157,8 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 6,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 6,
             'label' => 'Document Upload',
             'name' => 'document',
             'placeholder' => null,

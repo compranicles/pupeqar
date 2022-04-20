@@ -15,7 +15,7 @@ class CreateReferenceDocumentsTable extends Migration
     {
         Schema::create('reference_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reference_id');
+            $table->foreignId('reference_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

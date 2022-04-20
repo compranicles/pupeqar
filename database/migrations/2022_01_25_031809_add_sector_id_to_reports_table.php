@@ -14,7 +14,7 @@ class AddSectorIdToReportsTable extends Migration
     public function up()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->foreignId('sector_id')->after('user_id');
+            $table->foreignId('sector_id')->after('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

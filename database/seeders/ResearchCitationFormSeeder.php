@@ -14,7 +14,7 @@ class ResearchCitationFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -28,7 +28,7 @@ class ResearchCitationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Title of Article Where Your Research has been cited',
             'name' => 'article_title',
@@ -41,7 +41,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Authors/s Who Cited Your Research',
             'name' => 'article_author',
@@ -54,7 +54,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Title of the Journal/ Book Where Your Article has been cited',
             'name' => 'journal_title',
@@ -67,7 +67,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Name of the Publisher',
             'name' => 'journal_publisher',
@@ -81,7 +81,7 @@ class ResearchCitationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Volume No.',
             'name' => 'volume',
@@ -94,7 +94,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Issue No.',
             'name' => 'issue',
@@ -107,7 +107,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Page No.',
             'name' => 'page',
@@ -121,7 +121,7 @@ class ResearchCitationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Year',
             'name' => 'year',
@@ -135,7 +135,7 @@ class ResearchCitationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Indexing Platform',
             'name' => 'indexing_platform',
@@ -149,7 +149,7 @@ class ResearchCitationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -162,7 +162,7 @@ class ResearchCitationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 5,
             'label' => 'Document Upload',
             'name' => 'document',

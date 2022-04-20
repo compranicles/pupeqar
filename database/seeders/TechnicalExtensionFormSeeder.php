@@ -14,7 +14,7 @@ class TechnicalExtensionFormSeeder extends Seeder
      */
     public function run()
     {
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'MOA/MOU Code Number',
             'name' => 'moa_code',
@@ -27,7 +27,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Title of the Program',
             'name' => 'program_title',
@@ -40,7 +40,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Title of the Project',
             'name' => 'project_title',
@@ -53,7 +53,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Title of the Activity',
             'name' => 'activity_title',
@@ -66,7 +66,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Name of the Adoptor',
             'name' => 'name_of_adoptor',
@@ -79,7 +79,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Classification of Adoptor',
             'name' => 'classification_of_adoptor',
@@ -92,7 +92,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Nature of Business Enterprise',
             'name' => 'nature_of_business_enterprise',
@@ -105,7 +105,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Adoptors have established profitable businesses in the last three years',
             'name' => 'has_businesses',
@@ -118,7 +118,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Extension project by the university or borrowed from other institutions',
             'name' => 'is_borrowed',
@@ -131,7 +131,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Total Profit/ Income of the Adoptors',
             'name' => 'total_profit',
@@ -144,7 +144,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -157,7 +157,7 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
             'label' => 'Document Upload',
             'name' => 'document',

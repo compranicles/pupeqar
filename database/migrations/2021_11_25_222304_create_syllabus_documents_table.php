@@ -15,7 +15,7 @@ class CreateSyllabusDocumentsTable extends Migration
     {
         Schema::create('syllabus_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('syllabus_id');
+            $table->foreignId('syllabus_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

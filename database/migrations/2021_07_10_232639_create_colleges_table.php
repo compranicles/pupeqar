@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectorsTable extends Migration
+class CreateCollegesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateSectorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sectors', function (Blueprint $table) {
+        Schema::create('colleges', function (Blueprint $table) {
             $table->id();
             $table->string('name', '200');
+            $table->foreignId('sector_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('code', 255);
+            $table->integer('hris_code');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +31,6 @@ class CreateSectorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sectors');
+        Schema::dropIfExists('colleges');
     }
 }

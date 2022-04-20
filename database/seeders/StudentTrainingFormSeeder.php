@@ -14,7 +14,7 @@ class StudentTrainingFormSeeder extends Seeder
      */
     public function run()
     {
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Name of Student',
             'name' => 'name_of_student',
@@ -27,7 +27,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Title',
             'name' => 'title',
@@ -40,7 +40,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Classification',
             'name' => 'classification',
@@ -53,7 +53,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Nature',
             'name' => 'nature',
@@ -66,7 +66,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Budget',
             'name' => 'budget',
@@ -79,7 +79,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Source of Fund',
             'name' => 'source_of_fund',
@@ -92,7 +92,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Organization',
             'name' => 'organization',
@@ -105,7 +105,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Level',
             'name' => 'level',
@@ -118,7 +118,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Venue',
             'name' => 'venue',
@@ -131,7 +131,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'From',
             'name' => 'start_date',
@@ -144,7 +144,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'To',
             'name' => 'end_date',
@@ -157,7 +157,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Total No. of Hours',
             'name' => 'total_hours',
@@ -170,7 +170,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -183,7 +183,7 @@ class StudentTrainingFormSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
             'label' => 'Document Upload',
             'name' => 'document',

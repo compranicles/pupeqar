@@ -14,7 +14,7 @@ class ResearchPublicationFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -29,7 +29,7 @@ class ResearchPublicationFormSeeder extends Seeder
         ]);
 
         
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Status',
             'name' => 'status',
@@ -44,7 +44,7 @@ class ResearchPublicationFormSeeder extends Seeder
         ]);
 
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Publisher',
             'name' => 'publisher',
@@ -58,7 +58,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Journal Name',
             'name' => 'journal_name',
@@ -72,7 +72,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Editor',
             'name' => 'editor',
@@ -86,7 +86,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Level',
             'name' => 'level',
@@ -99,7 +99,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Date Published',
             'name' => 'publish_date',
@@ -112,7 +112,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'ISSN/ISBN',
             'name' => 'issn',
@@ -126,7 +126,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Page No.',
             'name' => 'page',
@@ -139,7 +139,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Vol No.',
             'name' => 'volume',
@@ -152,7 +152,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Issue No.',
             'name' => 'issue',
@@ -165,7 +165,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Indexing Platform',
             'name' => 'indexing_platform',
@@ -179,7 +179,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -192,7 +192,7 @@ class ResearchPublicationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 3,
             'label' => 'Document Upload',
             'name' => 'document',

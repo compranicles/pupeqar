@@ -20,7 +20,9 @@ class CreateRequestsTable extends Migration
             $table->string('processing_time')->nullable();
             $table->foreignId('category')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

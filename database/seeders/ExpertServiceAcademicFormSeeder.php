@@ -14,9 +14,9 @@ class ExpertServiceAcademicFormSeeder extends Seeder
      */
     public function run()
     {
-        // ExtensionProgramField::truncate();
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::truncate();
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Classification',
             'name' => 'classification',
             'placeholder' => null,
@@ -29,8 +29,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Nature',
             'name' => 'nature',
             'placeholder' => null,
@@ -43,8 +43,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Please specify',
             'name' => 'other_nature',
             'placeholder' => null,
@@ -57,8 +57,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'From',
             'name' => 'from',
             'placeholder' => null,
@@ -71,8 +71,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'To',
             'name' => 'to',
             'placeholder' => null,
@@ -85,8 +85,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Publication/Audio Visual Production',
             'name' => 'publication_or_audio_visual',
             'placeholder' => null,
@@ -99,8 +99,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Copyright No. (ISSN/E-ISSN/ISBN)',
             'name' => 'copyright_no',
             'placeholder' => null,
@@ -113,8 +113,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Indexing',
             'name' => 'indexing',
             'placeholder' => null,
@@ -127,8 +127,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Level',
             'name' => 'level',
             'placeholder' => null,
@@ -141,8 +141,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
             'placeholder' => null,
@@ -154,8 +154,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => null,
@@ -168,8 +168,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
             'placeholder' => "*Special Order (if applicable), *MOU/MOA/Other similar supporting documents, *Citation/Certificate/Other similar supporting documents, *Documentation/Pictures/Other similar supporting documents",
@@ -182,8 +182,8 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ExtensionProgramField::create([
-            'extension_programs_form_id' => 3,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 3,
             'label' => 'Document Upload',
             'name' => 'document',
             'placeholder' => null,

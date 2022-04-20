@@ -17,11 +17,13 @@ class CreatePartnershipsTable extends Migration
             $table->id();
             $table->string('moa_code')->nullable();
             $table->foreignId('collab_nature')->nullable();
-            $table->foreignId('partnershp_type')->nullable();
+            $table->string('other_collab_nature')->nullable();
+            $table->foreignId('partnership_type')->nullable();
+            $table->string('other_partnership_type')->nullable();
             $table->foreignId('deliverable')->nullable();
+            $table->string('other_deliverable')->nullable();    
             $table->string('name_of_partner')->nullable();
             $table->string('title_of_partnership')->nullable();
-            $table->string('partnership_type')->nullable();
             $table->string('beneficiaries')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
@@ -30,9 +32,9 @@ class CreatePartnershipsTable extends Migration
             $table->string('address_of_contact_person')->nullable();
             $table->string('telephone_number')->nullable();
             $table->string('description')->nullable();
-            $table->foreignId('user_id')->nullable();
-            $table->foreignId('college_id')->nullable();
-            $table->foreignId('department_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,13 +18,15 @@ class CreateExpertServiceConsultantsTable extends Migration
             $table->foreignId('classification')->nullable();
             $table->foreignId('category')->nullable();
             $table->foreignId('level')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->date('from')->nullable();
+            $table->date('to')->nullable();
             $table->string('title')->nullable();
             $table->string('venue')->nullable();
-            $table->string('partner')->nullable();
+            $table->string('partner_agency')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

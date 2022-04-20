@@ -16,7 +16,7 @@ class ResearchRegistrationFormSeeder extends Seeder
     {
 
         ResearchField::truncate();
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Classification',
             'name' => 'classification',
@@ -29,7 +29,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Category',
             'name' => 'category',
@@ -42,7 +42,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'University Research Agenda',
             'name' => 'agenda',
@@ -55,7 +55,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Title',
             'name' => 'title',
@@ -68,7 +68,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Researcher/s',
             'name' => 'researchers',
@@ -82,7 +82,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Keywords (at least five (5) keywords)',
             'name' => 'keywords',
@@ -96,7 +96,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Nature of Involvement',
             'name' => 'nature_of_involvement',
@@ -110,7 +110,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Type of Research',
             'name' => 'research_type',
@@ -123,7 +123,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Type of Funding',
             'name' => 'funding_type',
@@ -136,7 +136,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Amount of Funding',
             'name' => 'funding_amount',
@@ -149,7 +149,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Funding Agency',
             'name' => 'funding_agency',
@@ -163,7 +163,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         
-        // ResearchField::create([
+        // ResearchField::insert([
         //     'research_form_id' => 1,
         //     'label' => 'Date Completed',
         //     'name' => 'completion_date',
@@ -176,7 +176,7 @@ class ResearchRegistrationFormSeeder extends Seeder
         //     'order' => 1,
         //     'is_active' => 1,
         // ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Status',
             'name' => 'status',
@@ -190,7 +190,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Actual Date Started',
             'name' => 'start_date',
@@ -203,7 +203,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Target Date of Completion',
             'name' => 'target_date',
@@ -217,7 +217,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -230,7 +230,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -244,7 +244,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -258,7 +258,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Document Upload',
             'name' => 'document',

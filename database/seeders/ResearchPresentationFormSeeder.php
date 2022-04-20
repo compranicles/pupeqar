@@ -14,7 +14,7 @@ class ResearchPresentationFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -29,7 +29,7 @@ class ResearchPresentationFormSeeder extends Seeder
         ]);
 
         
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Status',
             'name' => 'status',
@@ -43,7 +43,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Conference Title',
             'name' => 'conference_title',
@@ -56,7 +56,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Organizer',
             'name' => 'organizer',
@@ -69,7 +69,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Venue',
             'name' => 'venue',
@@ -82,7 +82,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Date Presented',
             'name' => 'date_presented',
@@ -95,7 +95,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Level',
             'name' => 'level',
@@ -109,7 +109,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -122,7 +122,7 @@ class ResearchPresentationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 4,
             'label' => 'Document Upload',
             'name' => 'document',

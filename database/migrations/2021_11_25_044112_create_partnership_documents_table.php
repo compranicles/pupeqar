@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoftdeletesInRolesTable extends Migration
+class CreatePartnershipDocumentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,11 @@ class AddSoftdeletesInRolesTable extends Migration
      */
     public function up()
     {
-        Schema::table('roles', function (Blueprint $table) {
+        Schema::create('partnership_documents', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('partnership_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('filename');
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -25,8 +29,6 @@ class AddSoftdeletesInRolesTable extends Migration
      */
     public function down()
     {
-        Schema::table('roles', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('partnership_documents');
     }
 }

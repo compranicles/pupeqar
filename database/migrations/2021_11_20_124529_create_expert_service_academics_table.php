@@ -17,6 +17,7 @@ class CreateExpertServiceAcademicsTable extends Migration
             $table->id();
             $table->foreignId('classification')->nullable();
             $table->foreignId('nature')->nullable();
+            $table->string('other_nature')->nullable();
             $table->date('from')->nullable();
             $table->date('to')->nullable();
             $table->string('publication_or_audio_visual')->nullable();
@@ -24,7 +25,9 @@ class CreateExpertServiceAcademicsTable extends Migration
             $table->foreignId('indexing')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -16,9 +16,10 @@ class CreateResearchDocumentsTable extends Migration
         Schema::create('research_documents', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->foreignId('research_form_id');
-            $table->foreignId('research_citation_id')->nullable();
-            $table->foreignId('research_utilization_id')->nullable();
+            $table->foreignId('research_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_form_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_citation_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_utilization_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

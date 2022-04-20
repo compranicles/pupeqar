@@ -14,7 +14,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
      */
     public function run()
     {
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Name of Award',
             'name' => 'name_of_award',
@@ -27,7 +27,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Certifying Body',
             'name' => 'certifying_body',
@@ -40,7 +40,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Place',
             'name' => 'place',
@@ -53,7 +53,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Date',
             'name' => 'date',
@@ -66,7 +66,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Level',
             'name' => 'level',
@@ -79,7 +79,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -92,7 +92,7 @@ class CollegeDepartmentAwardFormSeeder extends Seeder
             'order' => 4,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::create([
+        AcademicDevelopmentField::insert([
             'academic_development_form_id' => 6,
             'label' => 'Document Upload',
             'name' => 'document',

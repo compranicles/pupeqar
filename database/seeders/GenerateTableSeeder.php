@@ -17,7 +17,7 @@ class GenerateTableSeeder extends Seeder
         GenerateTable::truncate();
 
         //ADMIN - Type_id = 1
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'I. ACCOMPLISHMENT REPORT',
             'is_table' => 0,
             'type_id' => 1,
@@ -25,7 +25,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A. ONGOING ADVANCED/ PROFESSIONAL STUDY',
             'is_table' => 1,
             'type_id' => 1,
@@ -37,7 +37,7 @@ class GenerateTableSeeder extends Seeder
                 '***Currently Enrolled (New Student), Currently Enrolled (Old Student), Leave of Absence,  Completed Academic Requirement, Passed Comprehensive Exam, Currently Enrolled for Thesis Writing, Currently Enrolled for Dissertation Writing'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B. OUTSTANDING ACHIEVEMENTS/ AWARDS, OFFICERSHIP/MEMBERSHIP IN PROFESSIONAL ORGANIZATION/S, & TRAININGS/ SEMINARS ATTENDED',
             'is_table' => 0,
             'type_id' => 1,
@@ -45,7 +45,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.1. Administrative Employees Outstanding Achievements/Awards',
             'is_table' => 1,
             'type_id' => 1,
@@ -56,7 +56,7 @@ class GenerateTableSeeder extends Seeder
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.2. Officership/ Membership in Professional Organization/s',
             'is_table' => 1,
             'type_id' => 1,
@@ -67,7 +67,7 @@ class GenerateTableSeeder extends Seeder
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.3.1 Attendance in Relevant Administrative Employee Development Program (Seminars/ Webinars, Fora/Conferences)',
             'is_table' => 1,
             'type_id' => 1,
@@ -80,7 +80,7 @@ class GenerateTableSeeder extends Seeder
                 '****  International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.3.2. Attendance in Training/s',
             'is_table' => 1,
             'type_id' => 1,
@@ -93,7 +93,7 @@ class GenerateTableSeeder extends Seeder
                 '****  International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'II. ACCOMPLISHMENTS BASED ON OPCR',
             'is_table' => 1,
             'type_id' => 1,
@@ -101,7 +101,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 1,
@@ -109,7 +109,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 1,
@@ -117,7 +117,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'III. ATTENDANCE IN UNIVERSITY FUNCTION',
             'is_table' => 1,
             'type_id' => 1,
@@ -125,7 +125,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'IV. REQUESTS AND QUERIES ACTED UPON',
             'is_table' => 1,
             'type_id' => 1,
@@ -135,7 +135,7 @@ class GenerateTableSeeder extends Seeder
                 '* Simple, Complex, Highly Technical'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'V. SPECIAL TASKS',
             'is_table' => 1,
             'type_id' => 1,
@@ -145,7 +145,7 @@ class GenerateTableSeeder extends Seeder
                 '* International, National, Local',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'VI. OTHER ACCOMPLISHMENTS (IF ANY)',
             'is_table' => 0,
             'type_id' => 1,
@@ -153,7 +153,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A. Research & Book Chapter (Production, Citation, Presentation)',
             'is_table' => 0,
             'type_id' => 1,
@@ -161,7 +161,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.1. Research Ongoing /Completed',
             'is_table' => 1,
             'type_id' => 1,
@@ -176,7 +176,7 @@ class GenerateTableSeeder extends Seeder
                 '****** Externally Funded, University Funded, Self Funded',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.2. Research Publication',
             'is_table' => 1,
             'type_id' => 1,
@@ -191,7 +191,7 @@ class GenerateTableSeeder extends Seeder
                 '****** Externally Funded, University Funded, Self Funded',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.3. Research Presentation',
             'is_table' => 1,
             'type_id' => 1,
@@ -207,7 +207,7 @@ class GenerateTableSeeder extends Seeder
                 '******* International, National, Local'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.4. Research Citation',
             'is_table' => 1,
             'type_id' => 1,
@@ -223,7 +223,7 @@ class GenerateTableSeeder extends Seeder
                 '******* Scopus, Web of Science, OASUC Accredited Journals, CHED Recognized Journals, International Refereed Journals, Excellence in Research for Australia, and ASEAN Citation Index'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.5. Research Utilization',
             'is_table' => 1,
             'type_id' => 1,
@@ -239,7 +239,7 @@ class GenerateTableSeeder extends Seeder
                 '******* International, National, Regional, Local'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A.6. Copyrighted Research Output',
             'is_table' => 1,
             'type_id' => 1,
@@ -255,7 +255,7 @@ class GenerateTableSeeder extends Seeder
                 '******* Scopus, Web of Science, OASUC Accredited Journals, CHED Recognized Journals, International Refereed Journals, Excellence in Research for Australia, and ASEAN Citation Index'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B. Inventions, Innovation, and Creative Works',
             'is_table' => 0,
             'type_id' => 1,
@@ -263,7 +263,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.1 Administrative Employee Invention, Innovation and Creative Works Commitment',
             'is_table' => 1,
             'type_id' => 1,
@@ -275,7 +275,7 @@ class GenerateTableSeeder extends Seeder
                 '*** University Funded, Externally Funded, Self-Funded',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C. Extension Program and Expert Service Rendered',
             'is_table' => 0,
             'type_id' => 1,
@@ -283,7 +283,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.1. Expert Service Rendered',
             'is_table' => 1,
             'type_id' => 1,
@@ -294,7 +294,7 @@ class GenerateTableSeeder extends Seeder
                 '** International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 1,
@@ -305,7 +305,7 @@ class GenerateTableSeeder extends Seeder
                 '** International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 1,
@@ -318,7 +318,7 @@ class GenerateTableSeeder extends Seeder
                 '**** International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.2. Extension Program, Project and Activity (Ongoing and Completed)',
             'is_table' => 1,
             'type_id' => 1,
@@ -332,7 +332,7 @@ class GenerateTableSeeder extends Seeder
                 '***** Completed, Ongoing, Deferred',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.3. Partnership/Linkages/Network',
             'is_table' => 1,
             'type_id' => 1,
@@ -346,7 +346,7 @@ class GenerateTableSeeder extends Seeder
                 '***** International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.4. Involvement in Inter-Country Mobility',
             'is_table' => 1,
             'type_id' => 1,
@@ -357,7 +357,7 @@ class GenerateTableSeeder extends Seeder
                 '**On the Job Training, Internship, Exchange Student, Others'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'D. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 1,
@@ -365,7 +365,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 20,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E. Awards/ Recognitions Received by Office from  Reputable Organization',
             'is_table' => 1,
             'type_id' => 1,
@@ -373,7 +373,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 21,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'F. Community Relation and Outreach Program',
             'is_table' => 1,
             'type_id' => 1,
@@ -383,7 +383,7 @@ class GenerateTableSeeder extends Seeder
         ]);
 
         //Academic
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'I. ACCOMPLISHMENT REPORT',
             'is_table' => 0,
             'type_id' => 2,
@@ -391,7 +391,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A. ONGOING ADVANCED/ PROFESSIONAL STUDY',
             'is_table' => 1,
             'type_id' => 2,
@@ -403,7 +403,7 @@ class GenerateTableSeeder extends Seeder
                 '***Currently Enrolled (New Student), Currently Enrolled (Old Student), Leave of Absence,  Completed Academic Requirement, Passed Comprehensive Exam, Currently Enrolled for Thesis Writing, Currently Enrolled for Dissertation Writing'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B. OUTSTANDING ACHIEVEMENTS/ AWARDS, OFFICERSHIP/MEMBERSHIP IN PROFESSIONAL ORGANIZATION/S, & TRAININGS/ SEMINARS ATTENDED',
             'is_table' => 0,
             'type_id' => 2,
@@ -411,7 +411,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.1. Faculty Outstanding Achievements/Awards',
             'is_table' => 1,
             'type_id' => 2,
@@ -422,7 +422,7 @@ class GenerateTableSeeder extends Seeder
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.2. Officership/ Membership in Professional Organization/s',
             'is_table' => 1,
             'type_id' => 2,
@@ -433,7 +433,7 @@ class GenerateTableSeeder extends Seeder
                 '**  International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.3.1 Attendance in Relevant Faculty Development Program (Seminars/ Webinars, Fora/Conferences)',
             'is_table' => 1,
             'type_id' => 2,
@@ -446,7 +446,7 @@ class GenerateTableSeeder extends Seeder
                 '****  International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B.3.2. Attendance in Training/s',
             'is_table' => 1,
             'type_id' => 2,
@@ -459,7 +459,7 @@ class GenerateTableSeeder extends Seeder
                 '****  International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C. Research & Book Chapter (Production, Citation, Presentation)',
             'is_table' => 0,
             'type_id' => 2,
@@ -467,7 +467,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.1. Research Ongoing /Completed',
             'is_table' => 1,
             'type_id' => 2,
@@ -482,7 +482,7 @@ class GenerateTableSeeder extends Seeder
                 '****** Externally Funded, University Funded, Self Funded'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.2. Research Publication',
             'is_table' => 1,
             'type_id' => 2,
@@ -497,7 +497,7 @@ class GenerateTableSeeder extends Seeder
                 '****** Externally Funded, University Funded, Self Funded'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.3. Research Presentation',
             'is_table' => 1,
             'type_id' => 2,
@@ -513,7 +513,7 @@ class GenerateTableSeeder extends Seeder
                 '******* International, National, Local'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.4. Research Citation',
             'is_table' => 1,
             'type_id' => 2,
@@ -529,7 +529,7 @@ class GenerateTableSeeder extends Seeder
                 '******* Scopus, Web of Science, OASUC Accredited Journals, CHED Recognized Journals, International Refereed Journals, Excellence in Research for Australia, and ASEAN Citation Index'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.5. Research Utilization',
             'is_table' => 1,
             'type_id' => 2,
@@ -545,7 +545,7 @@ class GenerateTableSeeder extends Seeder
                 '******* International, National, Regional, Local'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C.6. Copyrighted Research Output',
             'is_table' => 1,
             'type_id' => 2,
@@ -561,7 +561,7 @@ class GenerateTableSeeder extends Seeder
                 '******* Scopus, Web of Science, OASUC Accredited Journals, CHED Recognized Journals, International Refereed Journals, Excellence in Research for Australia, and ASEAN Citation Index'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'D. Faculty Inventions, Innovation, and Creative Works',
             'is_table' => 0,
             'type_id' => 2,
@@ -569,7 +569,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'D.1 Faculty Invention, Innovation and Creative Works Commitment',
             'is_table' => 1,
             'type_id' => 2,
@@ -581,7 +581,7 @@ class GenerateTableSeeder extends Seeder
                 '*** University Funded, Externally Funded, Self-Funded',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E. Extension Program and Expert Service Rendered',
             'is_table' => 0,
             'type_id' => 2,
@@ -589,7 +589,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E.1. Expert Service Rendered',
             'is_table' => 1,
             'type_id' => 2,
@@ -600,7 +600,7 @@ class GenerateTableSeeder extends Seeder
                '** International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 2,
@@ -611,7 +611,7 @@ class GenerateTableSeeder extends Seeder
                 '** International,National, Regional, Provincial/City/Municipal, Local-PUP',
              ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 2,
@@ -624,7 +624,7 @@ class GenerateTableSeeder extends Seeder
                 '**** International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E.2. Extension Program, Project and Activity (Ongoing and Completed)',
             'is_table' => 1,
             'type_id' => 2,
@@ -638,7 +638,7 @@ class GenerateTableSeeder extends Seeder
                 '***** Completed, Ongoing, Deferred',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E.3. Partnership/Linkages/Network',
             'is_table' => 1,
             'type_id' => 2,
@@ -652,7 +652,7 @@ class GenerateTableSeeder extends Seeder
                 '***** International,National, Regional, Provincial/City/Municipal, Local-PUP',
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'E.4. Faculty Involvement in Inter-Country Mobility',
             'is_table' => 1,
             'type_id' => 2,
@@ -663,7 +663,7 @@ class GenerateTableSeeder extends Seeder
                 '**On the Job Training, Internship, Exchange Student, Others'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'F. Academic Program Development',
             'is_table' => 0,
             'type_id' => 2,
@@ -671,7 +671,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'F.1. Instructional Material, Reference/Text Book, Module, Monographs',
             'is_table' => 1,
             'type_id' => 2,
@@ -681,7 +681,7 @@ class GenerateTableSeeder extends Seeder
                '* International,National, Regional, Provincial/City/Municipal, Local-PUP' 
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'F.2. Course Syllabus/ Guide Developed/Revised/Enhanced',
             'is_table' => 1,
             'type_id' => 2,
@@ -689,7 +689,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 16,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'III. SPECIAL TASKS',
             'is_table' => 1,
             'type_id' => 2,
@@ -697,7 +697,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 2,
@@ -705,7 +705,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => '',
             'is_table' => 1,
             'type_id' => 2,
@@ -713,7 +713,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'IV. ATTENDANCE IN UNIVERSITY FUNCTION',
             'is_table' => 1,
             'type_id' => 2,
@@ -721,7 +721,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'V. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 2,
@@ -729,7 +729,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 20,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'VI.  Awards/ Recognitions Received by College/Branch/Campus from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 2,
@@ -737,14 +737,14 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 21,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'VII. Students Awards/ Recognitions from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 0,
             'report_category_id' => 18,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'VIII. Community Relation and Outreach Program',
             'is_table' => 1,
             'type_id' => 2,
@@ -752,7 +752,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 22,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'IX. STUDENTS TRAININGS AND SEMINARS',
             'is_table' => 1,
             'type_id' => 2,
@@ -764,7 +764,7 @@ class GenerateTableSeeder extends Seeder
                 '*** University Funded, Self Funded, Externally Funded, No Funding Required'
             ], JSON_FORCE_OBJECT)
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'DEPARTMENT LEVEL ACCOMPLISHMENTS (TO BE FILLED-IN BY CHAIRPERSON)																	            ',
             'is_table' => 0,
             'type_id' => 3,
@@ -772,28 +772,28 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A. Technical Extension Programs/Projects/Activities',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
             'report_category_id' => 23,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B. Community Relations and Outreach Programs',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
             'report_category_id' => 22,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
             'report_category_id' => 20,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'D. Awards/Recognitions Received by the Department from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 3,
@@ -801,7 +801,7 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => 21,
         ]);
         /* College Level Tables */
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'COLLEGE LEVEL ACCOMPLISHMENTS (TO BE FILLED-IN BY DEAN)																	            ',
             'is_table' => 0,
             'type_id' => 4,
@@ -809,28 +809,28 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'A. Technical Extension Programs/Projects/Activities',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,
             'report_category_id' => 23,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'B. Community Relations and Outreach Programs',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,
             'report_category_id' => 22,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'C. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,
             'report_category_id' => 20,
         ]);
-        GenerateTable::create([
+        GenerateTable::insert([
             'name' => 'D. Awards/Recognitions Received by the College/Branch/Campus/Office from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 4,

@@ -81,7 +81,7 @@ class RequestFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        IPCRField::create([
+        IPCRField::insert([
             'i_p_c_r_form_id' => 1,
             'label' => 'College/Branch/Campus/Office to commit the accomplishment',
             'name' => 'college_id',
@@ -94,7 +94,7 @@ class RequestFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        IPCRField::create([
+        IPCRField::insert([
             'i_p_c_r_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
@@ -108,7 +108,7 @@ class RequestFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        IPCRField::create([
+        IPCRField::insert([
             'i_p_c_r_form_id' => 1,
             'label' => 'Proof Upload',
             'name' => 'document',

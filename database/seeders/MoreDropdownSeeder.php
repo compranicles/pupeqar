@@ -15,13 +15,13 @@ class MoreDropdownSeeder extends Seeder
     public function run()
     {
         // Research Agenda
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 3,
             'name' => 'Peace and Security',
             'order' => 2,
             'is_active' => 1,
         ]);
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 3,
             'name' => 'Protection and Rehabilitation towards Sustainable Development',
             'order' => 6,
@@ -29,7 +29,7 @@ class MoreDropdownSeeder extends Seeder
         ]);
         
         // Involvement
-        DropdownOption::create([ 
+        DropdownOption::insert([ 
             'dropdown_id' => 4,
             'name' => 'Independent Researcher',
             'order' => 1,
@@ -37,7 +37,7 @@ class MoreDropdownSeeder extends Seeder
         ]);
         
         // pRESEENTATION
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 8,
             'name' => 'Local',
             'order' => 1,
@@ -45,7 +45,7 @@ class MoreDropdownSeeder extends Seeder
         ]);
 
         // Consultant Level
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 16,
             'name' => 'Provincial/City/Municipal',
             'order' => 4,
@@ -53,35 +53,35 @@ class MoreDropdownSeeder extends Seeder
         ]);
 
         // CONFERENCE Level
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 18,
             'name' => 'Provincial/City/Municipal',
             'order' => 4,
             'is_active' => 1,
         ]);
         // academic Level
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 22,
             'name' => 'Provincial/City/Municipal',
             'order' => 4,
             'is_active' => 1,
         ]);
         // extension services Level
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 23,
             'name' => 'Provincial/City/Municipal',
             'order' => 4,
             'is_active' => 1,
         ]);
         // deliverable/des
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 32,
             'name' => 'Education and Communication',
             'order' => 4,
             'is_active' => 1,
         ]);
         //classification of beneficiaries
-        DropdownOption::create([
+        DropdownOption::insert([
             'dropdown_id' => 29,
             'name' => 'Administrative Employee',
             'order' => 1,

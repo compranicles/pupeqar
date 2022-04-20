@@ -14,7 +14,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
      */
     public function run()
     {
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Research Code',
             'name' => 'research_code',
@@ -28,7 +28,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Copyright Agency',
             'name' => 'copyright_agency',
@@ -41,7 +41,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Copyright no.',
             'name' => 'copyright_number',
@@ -54,7 +54,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Year Copyrighted',
             'name' => 'copyright_year',
@@ -67,7 +67,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Level',
             'name' => 'copyright_level',
@@ -81,7 +81,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
@@ -94,7 +94,7 @@ class ResearchCopyrightedFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ResearchField::create([
+        ResearchField::insert([
             'research_form_id' => 7,
             'label' => 'Document Upload',
             'name' => 'document',
