@@ -20,7 +20,7 @@ class QuarterSeeder extends Seeder
         $date = new DateTime();
         $date->add(new DateInterval('P15D'));
         Quarter::create([
-            'current_quarter' => '1',
+            'current_quarter' => '2',
             'current_year' => '2022',
             'deadline' => $date->format('Y-m-d'),
         ]);

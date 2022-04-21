@@ -20,6 +20,8 @@ class IPCRFormController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $ipcrforms = IPCRForm::all();
         return view('maintenances.ipcr.index', compact('ipcrforms'));
     }
@@ -53,6 +55,8 @@ class IPCRFormController extends Controller
      */
     public function show(IPCRForm $ipcr_form)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $ipcr_fields = IPCRField::where('i_p_c_r_fields.i_p_c_r_form_id', $ipcr_form->id)->orderBy('i_p_c_r_fields.order')
                     ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                     ->select('i_p_c_r_fields.*', 'field_types.name as field_type_name')->get();
@@ -70,6 +74,8 @@ class IPCRFormController extends Controller
      */
     public function edit(IPCRForm $ipcr_form)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         return view('maintenances.ipcr.rename', compact('ipcr_form'));
     }
 
@@ -82,6 +88,8 @@ class IPCRFormController extends Controller
      */
     public function update(Request $request, IPCRForm $ipcr_form)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $request->validate([
             'label' => 'required'
         ]);
@@ -105,6 +113,8 @@ class IPCRFormController extends Controller
     }
 
     public function activate($id){
+        $this->authorize('manage', IPCRForm::class);
+
         IPCRForm::where('id', $id)->update([
             'is_active' => 1
         ]);
@@ -113,6 +123,8 @@ class IPCRFormController extends Controller
     }
 
     public function inactivate($id){
+        $this->authorize('manage', IPCRForm::class);
+
         IPCRForm::where('id', $id)->update([
             'is_active' => 0
         ]);

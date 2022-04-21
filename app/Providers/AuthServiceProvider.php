@@ -38,6 +38,10 @@ use App\Models\Maintenance\{
     College,
     Department,
     Currency,
+    Sector,
+    HRISForm,
+    GenerateType,
+    ReportType,
 };
 use App\Models\FormBuilder\{
     Dropdown,
@@ -45,6 +49,7 @@ use App\Models\FormBuilder\{
     InventionForm,
     ExtensionProgramForm,
     AcademicDevelopmentForm,
+    IPCRForm
 };
 
 use App\Models\Authentication\Permission;
@@ -79,15 +84,22 @@ use App\Policies\AcademicDevelopment\TechnicalExtensionPolicy;
 use App\Policies\AcademicDevelopment\ViableProjectPolicy;
 
 use App\Policies\Content\AnnouncementPolicy;
-use App\Policies\Maintenance\CollegePolicy;
+use App\Policies\Maintenance\{
+    CollegePolicy,
+    HRISFormPolicy,
+    IPCRFormPolicy,
+    AcademicModuleFormPolicy,
+    ReportTypePolicy,
+    ReportGenerateTypePolicy,
+};
 use App\Policies\Maintenance\DepartmentPolicy;
 use App\Policies\Maintenance\CurrencyPolicy;
 use App\Policies\Maintenance\DropdownPolicy;
+use App\Policies\Maintenance\SectorPolicy;
 use App\Policies\Maintenance\Research\ResearchFormPolicy;
 use App\Policies\Maintenance\Invention\InventionFormPolicy;
 use App\Policies\Maintenance\ExtensionProgram\ExtensionProgramFormPolicy;
 use App\Policies\Request\RequestPolicy;
-
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -108,6 +120,9 @@ class AuthServiceProvider extends ServiceProvider
         Department::class => DepartmentPolicy::class,
         Currency::class => CurrencyPolicy::class,
         Dropdown::class => DropdownPolicy::class,
+        Sector::class => SectorPolicy::class,
+        GenerateType::class => ReportGenerateTypePolicy::class,
+        ReportType::class => ReportTypePolicy::class,
 
         //Content Management
         Announcement::class => AnnouncementPolicy::class,
@@ -116,6 +131,9 @@ class AuthServiceProvider extends ServiceProvider
         ResearchForm::class => ResearchFormPolicy::class,
         InventionForm::class => InventionFormPolicy::class,
         ExtensionProgramForm::class => ExtensionProgramFormPolicy::class,
+        HRISForm::class => HRISFormPolicy::class,
+        IPCRForm::class => IPCRFormPolicy::class,
+        AcademicDevelopmentForm::class => AcademicModuleFormPolicy::class,
 
         //Faculty Research
         Research::class => ResearchPolicy::class,

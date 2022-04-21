@@ -43,6 +43,8 @@ class HRISFieldController extends Controller
      */
     public function store(Request $request, HRISForm $hris_form)
     {
+        $this->authorize('manage', HRISForm::class);
+
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
@@ -121,6 +123,8 @@ class HRISFieldController extends Controller
      */
     public function edit(HRISForm $hris_form, HRISField $hris_field)
     {
+        $this->authorize('manage', HRISForm::class);
+
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
         if ($hris_form->id == 1) {
@@ -138,6 +142,8 @@ class HRISFieldController extends Controller
      */
     public function update(Request $request, HRISForm $hris_form, HRISField $hris_field)
     {
+        $this->authorize('manage', HRISForm::class);
+
         $input = $request->except(['_token', '_method']);
 
         HRISField::where('h_r_i_s_form_id', $hris_form->id)->where('id', $hris_field->id)->update($input);

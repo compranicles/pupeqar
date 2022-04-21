@@ -45,10 +45,10 @@
             @if (in_array(7, $roles))
                 @include('dashboard.sector-head')
             @endif
-            @if (in_array(8, $roles))
+            @if (in_array(8, $roles) || (in_array(8, $roles) && in_array(9, $roles)))
                 @include('dashboard.ipqmso')
             @endif
-            @if (in_array(9, $roles))
+            @if (in_array(9, $roles) && !in_array(8, $roles))
                 @include('dashboard.superadmin')
             @endif
         </div>

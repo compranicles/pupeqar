@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-borderless">
                                 <tr>
                                     <th>First Name</th>
                                     <td>{{ $user->first_name }}</td>

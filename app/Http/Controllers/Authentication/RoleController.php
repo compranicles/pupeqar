@@ -31,7 +31,7 @@ class RoleController extends Controller
     {
         $this->authorize('create', Role::class);
 
-        $permissions = Permission::get();
+        $permissions = Permission::orderBy('group', 'ASC')->get();
         return view('authentication.roles.create', compact('permissions'));
     }
 

@@ -44,6 +44,7 @@ class ResearchFieldController extends Controller
      */
     public function store(ResearchForm $research_form, Request $request)
     {   
+        $this->authorize('viewAny', ResearchForm::class);
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
@@ -122,6 +123,8 @@ class ResearchFieldController extends Controller
      */
     public function edit(ResearchForm $research_form, ResearchField $research_field)
     {
+        $this->authorize('viewAny', ResearchForm::class);
+
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
         $descriptions = DocumentDescription::where('report_category_id', $research_form->id)->get();
@@ -137,6 +140,8 @@ class ResearchFieldController extends Controller
      */
     public function update(Request $request, ResearchForm $research_form, ResearchField $research_field)
     {
+        $this->authorize('viewAny', ResearchForm::class);
+
         $input = $request->except(['_token', '_method']);
 
         ResearchField::where('research_form_id', $research_form->id)->where('id', $research_field->id)->update($input);
@@ -156,6 +161,8 @@ class ResearchFieldController extends Controller
     }
 
     public function activate($id){
+        $this->authorize('viewAny', ResearchForm::class);
+
         ResearchField::where('id', $id)->update([
             'is_active' => 1
         ]);
@@ -164,6 +171,8 @@ class ResearchFieldController extends Controller
     }
 
     public function inactivate($id){
+        $this->authorize('viewAny', ResearchForm::class);
+
         ResearchField::where('id', $id)->update([
             'is_active' => 0
         ]);
