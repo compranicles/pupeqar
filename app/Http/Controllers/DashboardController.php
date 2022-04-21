@@ -32,11 +32,11 @@ class DashboardController extends Controller
 {
     public function index() {
         $user = User::where('id', auth()->id())->first();
-        $employee = Employee::where('user_id', $user['id'])->first();
+        // $employee = Employee::where('user_id', $user['id'])->first();
         $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
-        if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
-            request()->session()->flash('flash.banner', "Complete your account information. Click here.");
-        }
+        // if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
+        //     request()->session()->flash('flash.banner', "Complete your account information. Click here.");
+        // }
         $roleNames = Role::whereIn('id', $roles)->pluck('name')->all();
         $userRoleNames = '';
         foreach($roleNames as $roleName) {
