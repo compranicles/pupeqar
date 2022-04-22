@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -41,6 +42,12 @@ use App\Services\DateContentService;
 
 class ResearchController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -212,9 +219,6 @@ class ResearchController extends Controller
 
         Research::where('id', $research->id)->update($input);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -224,7 +228,7 @@ class ResearchController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$researchCode.'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RR-'.$researchCode.'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -379,9 +383,6 @@ class ResearchController extends Controller
         Research::where('research_code', $research->research_code)->update([
             'funding_amount' => $funding_amount,
         ]);
-        
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             $documents = $request->input('document');
@@ -392,7 +393,7 @@ class ResearchController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$research->research_code.'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RR-'.$research->researchCode.'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -670,7 +671,7 @@ class ResearchController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'RR-'.$research_code.'-'.$description.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'RR-'.$researchCode.'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

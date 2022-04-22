@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Inventions;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
@@ -27,6 +28,12 @@ use App\Services\DateContentService;
 
 class InventionController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -120,7 +127,7 @@ class InventionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'IICW-'.str_replace("/", "-", $request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'IICW-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -254,7 +261,7 @@ class InventionController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'IICW-'.str_replace("/", "-", $invention_innovation_creative->description).'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'IICW-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

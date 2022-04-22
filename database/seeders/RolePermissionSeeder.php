@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Authentication\RolePermission;
 
 class RolePermissionSeeder extends Seeder
@@ -14,6 +15,8 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
+        Schema::enableForeignKeyConstraints();
+
         /***** Super admin role permissions *****/
         RolePermission::truncate();
         for ($i = 1; $i <= 14; $i++) {
@@ -27,7 +30,7 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '9', 'permission_id' => 58]);
 
         /***** Faculty role permissions *****/
-        for ($f = 16; $f <= 30; $f++) {
+        for ($f = 15; $f <= 30; $f++) {
             RolePermission::insert(['role_id' => '1', 'permission_id' => $f]);
         }
         RolePermission::insert(['role_id' => '1', 'permission_id' => 32]);
@@ -35,7 +38,7 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '1', 'permission_id' => 41]);
         
         /***** Admin role permissions *****/
-        for ($a = 16; $a <= 30; $a++) {
+        for ($a = 15; $a <= 30; $a++) {
             RolePermission::insert(['role_id' => '3', 'permission_id' => $a]);
             RolePermission::insert(['role_id' => '3', 'permission_id' => 32]);
             RolePermission::insert(['role_id' => '3', 'permission_id' => 33]);
@@ -75,5 +78,8 @@ class RolePermissionSeeder extends Seeder
         /***** IPQMSO role permissions *****/
         RolePermission::insert(['role_id' => '8', 'permission_id' => 48]);
         RolePermission::insert(['role_id' => '8', 'permission_id' => 49]);
+
+        Schema::disableForeignKeyConstraints();
+
     }
 }

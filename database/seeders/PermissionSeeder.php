@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Authentication\Permission;
 
 class PermissionSeeder extends Seeder
@@ -14,6 +15,7 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
         Permission::truncate();
 
         /* ************************USERS********************************** */
@@ -106,5 +108,6 @@ class PermissionSeeder extends Seeder
         Permission::insert(['name' => 'manage academic module forms', 'group' => '9FORM']); 
         Permission::insert(['name' => 'manage report types', 'group' => '8MAINT']); 
         Permission::insert(['name' => 'manage report generate types', 'group' => '8MAINT']); //58
+        Schema::enableForeignKeyConstraints();
     }
 }

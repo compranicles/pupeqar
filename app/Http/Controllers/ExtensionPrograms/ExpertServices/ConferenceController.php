@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,12 @@ use App\Models\{
 
 class ConferenceController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +38,7 @@ class ConferenceController extends Controller
     public function index()
     {
         $this->authorize('viewAny', ExpertServiceConference::class);
-
+        
         $currentQuarterYear = Quarter::find(1);
 
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
@@ -99,9 +106,6 @@ class ConferenceController extends Controller
         $esConference = ExpertServiceConference::create($input);
         $esConference->update(['user_id' => auth()->id()]);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -111,7 +115,7 @@ class ConferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConference-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESCF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -217,10 +221,7 @@ class ConferenceController extends Controller
         $expert_service_in_conference->update(['description' => '-clear']);
 
         $expert_service_in_conference->update($input);
-
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-
+        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -230,7 +231,7 @@ class ConferenceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESConference-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESCF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

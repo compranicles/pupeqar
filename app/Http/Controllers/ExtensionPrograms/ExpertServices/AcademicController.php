@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,11 @@ use App\Models\{
 
 class AcademicController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -112,7 +118,7 @@ class AcademicController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESAcademic-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -232,9 +238,6 @@ class AcademicController extends Controller
         $expert_service_in_academic->update($input);
         $expert_service_in_academic->update(['other_nature' => $request->input('other_nature')]);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -244,7 +247,7 @@ class AcademicController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'ESAcademic-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
