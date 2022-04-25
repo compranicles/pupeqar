@@ -367,7 +367,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     ],
                 ]);
                 $count = $count + 5;
-                if ($this->signature != '') {
+                if ($this->signature != null) {
                     $path = storage_path('app/documents/'. $this->signature);
                     $coordinates = 'A'.$count-4;
                     $sheet = $event->sheet->getDelegate();

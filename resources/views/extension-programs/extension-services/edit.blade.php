@@ -167,7 +167,6 @@
                     $('#funding_agency').removeAttr('required');
                 }
                 else { // External Funded
-                    $('#funding_agency').val("");
                     $('#funding_agency').removeAttr('disabled');
                     $('#funding_agency').attr('required', true);
                 }

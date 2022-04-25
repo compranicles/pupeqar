@@ -42,7 +42,7 @@
 @if (in_array(8, $roles))
     <a href="{{ route('ipqmso.index') }}" class="submission-menu {{ request()->routeIs('ipqmso.index') ? 'active' : ''}}">To Receive - IPQMSO</a> 
     <a href="{{ route('reports.consolidate.ipqmso') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.ipqmso') || request()->routeIs('reports.consolidate.ipqmso.*') ? 'active' : ''}}">
-        To Consolidate
+        QAR
     </a>  
 @endif
 

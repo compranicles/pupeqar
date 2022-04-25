@@ -38,7 +38,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
         $user = User::where('id', auth()->id())->first();
         $this->signature = $user->signature;
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
-        $this->departmentName = $departmentName;
+        $this->departmentName = $department_name;
     }
 
     public function view(): View
@@ -312,11 +312,13 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                     ]);
                     $count = $count + 5;
                     /* SIGNATURE */
-                    $path = storage_path('app/documents/'. $this->signature);
-                    $coordinates = 'A'.$count-4;
-                    $sheet = $event->sheet->getDelegate();
-                    // dd($this->signature);
-                    echo $this->addImage($path, $coordinates, $sheet);
+                    if ($this->signature != null) {
+                        $path = storage_path('app/documents/'. $this->signature);
+                        $coordinates = 'A'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        // dd($this->signature);
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    }
                     
                     /*  */
                     $event->sheet->setCellValue('A'.$count, $this->arranged_name);

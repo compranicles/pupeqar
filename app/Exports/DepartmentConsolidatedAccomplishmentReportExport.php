@@ -373,7 +373,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     }
                 }
                 $count = $count + 2;
-                if ($this->isFacultyRes != '') {
+                if ($this->isFacultyRes != null) {
                     $event->sheet->setCellValue('A'.$count, 'Prepared By:');
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
@@ -383,7 +383,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         ],
                     ]);
                     $count = $count + 5;
-                    if ($this->signature != '') {
+                    if ($this->signature != null) {
                         $path = storage_path('app/documents/'. $this->signature);
                         $coordinates = 'A'.$count-4;
                         $sheet = $event->sheet->getDelegate();
@@ -411,7 +411,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     ]);
                     $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 }
-                elseif ($this->isFacultyExt != '') {
+                elseif ($this->isFacultyExt != null) {
                     $event->sheet->setCellValue('A'.$count, 'Prepared By:');
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
@@ -421,7 +421,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         ],
                     ]);
                     $count = $count + 5;
-                    if ($this->signature != '') {
+                    if ($this->signature != null) {
                         $path = storage_path('app/documents/'. $this->signature);
                         $coordinates = 'A'.$count-4;
                         $sheet = $event->sheet->getDelegate();
@@ -461,22 +461,25 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     ]);
                     $count = $count + 5;
                     /* SIGNATURE */
-                    if ($this->fr_signature != '') {
+                    if ($this->fr_signature != null) {
                         $path = storage_path('app/documents/'. $this->fr_signature);
                         $coordinates = 'A'.$count-4;
                         $sheet = $event->sheet->getDelegate();
                         echo $this->addImage($path, $coordinates, $sheet);
-                    } elseif ($this->fe_signature != '') {
+                    } elseif ($this->fe_signature != null) {
                         $path = storage_path('app/documents/'. $this->fe_signature);
                         $coordinates = 'C'.$count-4;
                         $sheet = $event->sheet->getDelegate();
                         echo $this->addImage($path, $coordinates, $sheet);
                     }
+
+                    if ($this->signature != null) {
                         $path = storage_path('app/documents/'. $this->signature);
                         $coordinates = 'E'.$count-4;
                         $sheet = $event->sheet->getDelegate();
                         // dd($this->signature);
                         echo $this->addImage($path, $coordinates, $sheet);
+                    }
                     
                     /*  */
                     $event->sheet->setCellValue('A'.$count, $this->fr_name);

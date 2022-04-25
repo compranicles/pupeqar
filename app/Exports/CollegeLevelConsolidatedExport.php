@@ -308,11 +308,12 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                     ]);
                     $count = $count + 5;
                     /* SIGNATURE */
-                    $path = storage_path('app/documents/'. $this->signature);
-                    $coordinates = 'A'.$count-4;
-                    $sheet = $event->sheet->getDelegate();
-                    // dd($this->signature);
-                    echo $this->addImage($path, $coordinates, $sheet);
+                    if ($this->signature != null) {
+                        $path = storage_path('app/documents/'. $this->signature);
+                        $coordinates = 'A'.$count-4;
+                        $sheet = $event->sheet->getDelegate();
+                        echo $this->addImage($path, $coordinates, $sheet);
+                    }
                     
                     /*  */
                     $event->sheet->setCellValue('A'.$count, $this->arranged_name);
