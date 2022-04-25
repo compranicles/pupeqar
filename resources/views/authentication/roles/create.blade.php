@@ -7,17 +7,7 @@
     <div class="container">
       <div class="row justify-content-center">
 
-        
-        <div class="col-md-9 offset-md-2">
-          <div class="d-flex align-content-center">
-            <h2 class="ml-3 mr-3">Roles</h2>
-            <p class="mt-2 mr-3">Create Role.</p>
-            <p class="mt-2">
-              <a class="back_link" href="{{ route('admin.roles.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Roles</a>
-            </p>
-          </div>
-
-          <div class="col-md-9">
+          <div class="col-md-9 offset-md-2">
             @if ($message = Session::get('add_role_success'))
               <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                 <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -31,7 +21,15 @@
                 </div>
               </div>            
             @endif 
+            <div class="d-flex align-content-center">
+              <h2 class="ml-3 mr-3">Roles</h2>
+              <p class="mt-2 mr-3">Create Role.</p>
+              <p class="mt-2">
+                <a class="back_link" href="{{ route('admin.roles.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Roles</a>
+              </p>
+            </div>
 
+            <div class="col-md-9">
             <div class="card">
               <div class="card-body">
                 <form method="POST" action="{{ route('admin.roles.store') }}">
@@ -53,20 +51,23 @@
                         <label>Permissions</label>
                       </div>
                     </div>
-                    <div class="row">
-                    @forelse ($permissions as $permission)
-                      <div class="col-md-4 ml-3">
+                    <div class="row mt-1">
+                      @php $permissionGroup = ''; @endphp
+                      @foreach ($permissions as $permission)
+                      @if ($permissionGroup != $permission->group && $permissionGroup != '')
+                      <br>
+                      @endif
+                      <div class="col-md-12 ml-3">
                         <label for="{{ $permission->id }}">
                           <input type="checkbox" id="{{ $permission->id }}" value="{{ $permission->id }}" name="permissions[]">
                           {{ $permission->name }}
                         </label>
                       </div>
-                    @empty
-                      <div class="m-auto">
-                        <p>No permissions found. <a href="{{ route('admin.permissions.create') }}">Create now.</a></p>
-                      </div>
-                    @endforelse
+                      
+                      @php $permissionGroup = $permission->group; @endphp
+                      @endforeach
                     </div>
+
                   </div>  
                   <div class="row mt-3">
                     <div class="col-md-12">
@@ -79,6 +80,7 @@
                     </div>
                   </div>     
               </div>
+            </div>
             </div>
           
           </form>

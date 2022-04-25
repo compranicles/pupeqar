@@ -44,6 +44,8 @@ class IPCRFieldController extends Controller
      */
     public function store(Request $request, IPCRForm $ipcr_form)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $required = 1;
         $field_name = $request->field_name;
         if($request->required == null){
@@ -122,6 +124,8 @@ class IPCRFieldController extends Controller
      */
     public function edit(IPCRForm $ipcr_form, IPCRField $ipcr_field)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $fieldtypes = FieldType::all();
         $dropdowns = Dropdown::all();
         if ($ipcr_form->id == 1) {
@@ -139,6 +143,8 @@ class IPCRFieldController extends Controller
      */
     public function update(Request $request, IPCRForm $ipcr_form, IPCRField $ipcr_field)
     {
+        $this->authorize('manage', IPCRForm::class);
+
         $input = $request->except(['_token', '_method']);
 
         IPCRField::where('i_p_c_r_form_id', $ipcr_form->id)->where('id', $ipcr_field->id)->update($input);

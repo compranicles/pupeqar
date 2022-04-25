@@ -48,4 +48,16 @@ class StorageFileController extends Controller
 
         return response()->file($path, $headers);
     }
+
+    public function abbrev($string){
+        $parts = explode(' ',$string);
+        $initials = '';
+        $count = 0;
+        foreach($parts as $part) {
+            if($count >= 5) break;
+            $initials .= ucwords(strtoupper($part[0]));
+            $count++;
+        }
+        return $initials;
+    }
 }

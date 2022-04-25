@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,12 @@ use App\Models\{
 
 class CollegeDepartmentAwardController extends Controller
 {
+
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -78,9 +85,6 @@ class CollegeDepartmentAwardController extends Controller
         $college_department_award = CollegeDepartmentAward::create($input);
         $college_department_award->update(['user_id' => auth()->id()]);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -90,7 +94,7 @@ class CollegeDepartmentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'CDAward-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'CDA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -182,9 +186,6 @@ class CollegeDepartmentAwardController extends Controller
 
         $college_department_award->update($input);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-        
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -194,7 +195,7 @@ class CollegeDepartmentAwardController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'CDAward-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'CDAward-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

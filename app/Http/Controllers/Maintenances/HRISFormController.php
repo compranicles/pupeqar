@@ -20,6 +20,8 @@ class HRISFormController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', HRISForm::class);
+
         $hrisforms = HRISForm::all();
         return view('maintenances.hris.index', compact('hrisforms'));
     }
@@ -53,6 +55,8 @@ class HRISFormController extends Controller
      */
     public function show(HRISForm $hris_form)
     {
+        $this->authorize('manage', HRISForm::class);
+
         $hris_fields = HRISField::where('h_r_i_s_fields.h_r_i_s_form_id', $hris_form->id)->orderBy('h_r_i_s_fields.order')
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->select('h_r_i_s_fields.*', 'field_types.name as field_type_name')->get();
@@ -70,6 +74,8 @@ class HRISFormController extends Controller
      */
     public function edit(HRISForm $hris_form)
     {
+        $this->authorize('manage', HRISForm::class);
+
         return view('maintenances.hris.rename', compact('hris_form'));
     }
 
@@ -82,6 +88,8 @@ class HRISFormController extends Controller
      */
     public function update(Request $request, HRISForm $hris_form)
     {
+        $this->authorize('manage', HRISForm::class);
+
         $request->validate([
             'label' => 'required'
         ]);

@@ -2064,6 +2064,11 @@ class SubmissionController extends Controller
                     $report_document_checker[$table->id] = $checker_array;
                     $checker_array = [];
                     break;
+                default:
+                    $report_array[$table->id] = [];
+                    $report_document_checker[$table->id] = [];
+                    $checker_array = [];
+                    break;
             }
             
         }

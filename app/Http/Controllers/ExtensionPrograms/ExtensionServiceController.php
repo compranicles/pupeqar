@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
@@ -28,6 +29,12 @@ use App\Services\DateContentService;
 
 class ExtensionServiceController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -120,9 +127,6 @@ class ExtensionServiceController extends Controller
             'other_classification' => $request->input('other_classification'),
             'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
         ]);
-        
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
             
@@ -133,7 +137,7 @@ class ExtensionServiceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'EService-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ES-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -263,9 +267,6 @@ class ExtensionServiceController extends Controller
                 'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
             ]);
 
-        $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
-        $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-
         if($request->has('document')){
             
             $documents = $request->input('document');
@@ -275,7 +276,7 @@ class ExtensionServiceController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'EService-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'ES-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

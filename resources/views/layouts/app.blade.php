@@ -49,7 +49,9 @@
     
     </head>
     <body class="font-sans antialiased bg-light">
-        <x-jet-banner />
+        @incompleteAccount
+            <x-jet-banner />
+        @endincompleteAccount
         @livewire('navigation-menu')
 
         <!-- Page Heading -->

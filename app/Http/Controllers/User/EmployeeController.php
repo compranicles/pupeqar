@@ -76,9 +76,11 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $office)
     {
-        $sectors = Sector::all();
-        $cbco = College::all();
-        return view('offices.edit', compact('sectors', 'cbco', 'office'));
+        // $sectors = Sector::all();
+        // $cbco = College::all();
+        // return view('offices.edit', compact('sectors', 'cbco', 'office'));
+        abort(404);
+
     }
 
     /**
@@ -90,14 +92,15 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $office)
     {
-        Employee::where('id', $office->id)->update([
-            'user_id' => auth()->id(),
-            'sector_id' => $request->input('sector'),
-            'college_id' => $request->input('cbco'),
-        ]);
+        // Employee::where('id', $office->id)->update([
+        //     'user_id' => auth()->id(),
+        //     'sector_id' => $request->input('sector'),
+        //     'college_id' => $request->input('cbco'),
+        // ]);
 
-        \LogActivity::addToLog('Office reporting with was updated.');
-        return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been updated in your account.');
+        // \LogActivity::addToLog('Office reporting with was updated.');
+        // return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been updated in your account.');
+        abort(404);
     }
 
     /**

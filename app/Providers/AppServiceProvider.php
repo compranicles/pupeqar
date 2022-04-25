@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use App\Models\Authentication\UserRole;
+use App\Models\Employee;
+use App\Services\UserRoleService;
 use Illuminate\Support\Facades\Blade;
+use App\Models\Authentication\UserRole;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -183,6 +185,18 @@ class AppServiceProvider extends ServiceProvider
             
             // dd($is_superadmin);
             if ($is_ipqmso != null) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+
+        Blade::if('incompleteAccount', function () {
+            $employee = Employee::where('user_id', auth()->id())->first();
+            $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
+            if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
+                request()->session()->flash('flash.banner', "Complete your account information. Click here.");
                 return 1;
             }
             else {

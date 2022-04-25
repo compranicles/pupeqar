@@ -26,7 +26,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <x-jet-label value="{{ __('Name') }}" />
-                        <x-jet-input class="{{ $errors->has('role_name') ? 'is-invalid' : '' }}" onfocus="this.selectionStart = this.selectionEnd = this.value.length;"  
+                        <x-jet-input class="{{ $errors->has('role_name') ? 'is-invalid' : '' }}"  
                                       autofocus="true" type="text" name="role_name"
                                     :value="old('role_name', $role->name)" required autocomplete="role_name" />
                         <x-jet-input-error for="role_name"></x-jet-input-error>
@@ -41,7 +41,7 @@
                     </div>
                     <div class="row">
                     @forelse ($allpermissions as $permission)
-                      <div class="col-sm-4 ml-3">
+                      <div class="col-md-12 ml-3">
                         <label for="{{ $permission->id }}">
                           <input type="checkbox" id="{{ $permission->id }}" value="{{ $permission->id }}" name="permissions[]" @if (in_array($permission->id, $yourpermissions)) checked @endif />
                           {{ $permission->name }}
@@ -53,15 +53,11 @@
                       </div>
                     @endforelse
                     </div>
+                  </div>
+                  <div class="form-group d-flex justify-content-end align-items-baseline">
+                    <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
+                    <a href="{{ route('admin.roles.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
                   </div>       
-              </div>
-            </div>
-            <div class="row">
-              <div class="mb-0 mt-3 ml-3">
-                <div class="d-flex justify-content-start align-items-baseline">
-                  <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
-                  <a href="{{ route('admin.roles.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
-                </div>
               </div>
             </div>
           </form>

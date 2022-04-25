@@ -42,7 +42,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($roles as $role)
-                                    <tr class="tr-hover" role="button" onclick="window.location.href = '{{ route('admin.roles.show', $role->id) }}' " >
+                                    <tr class="tr-hover">
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $role->name }}</td>
                                         <td>
