@@ -230,7 +230,7 @@ class SeminarAndTrainingController extends Controller
 
         \LogActivity::addToLog('Seminar/Webinar added.');
 
-        return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
+        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been submitted.');
     }
 
     public function addTraining($id){
@@ -422,6 +422,6 @@ class SeminarAndTrainingController extends Controller
 
         \LogActivity::addToLog('Training added.');
 
-        return redirect()->route('submissions.development.index')->with('success','Report Submitted Successfully');
+        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been submitted.');
     }
 }

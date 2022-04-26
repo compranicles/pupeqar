@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <div class="alert alert-success text-center p-5" role="alert">
                 <h5>
-                    You have no new accomplishments to finalize so far.
+                    No accomplishments to finalize so far.
                 </h5> 
                 <small>Submissions this quarter {{$currentQuarterYear->current_quarter}} of {{ $currentQuarterYear->current_year }}: {{$totalReports}}</small>
             </div>

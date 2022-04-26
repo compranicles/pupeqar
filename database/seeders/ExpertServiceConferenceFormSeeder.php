@@ -14,7 +14,7 @@ class ExpertServiceConferenceFormSeeder extends Seeder
      */
     public function run()
     {
-        ExtensionProgramField::truncate();
+        // ExtensionProgramField::truncate();
         ExtensionProgramField::insert([
             'extension_program_form_id' => 2,
             'label' => 'Nature',

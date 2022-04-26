@@ -35,6 +35,7 @@ use App\Models\{
     FormBuilder\DropdownOption,
     Maintenance\Currency,
     Maintenance\HRISField,
+    Maintenance\ReportCategory,
     Maintenance\ReportColumn,
 };
 
@@ -352,6 +353,12 @@ class ReportDataController extends Controller
         }
         return $report_docs;
         
+    }
+
+    public function getReportCategory($reportID) {
+        $category = Report::where('reports.id', $reportID)->join('report_categories', 'reports.report_category_id', 
+                'report_categories.id')->pluck('report_categories.name')->first();
+        return $category;
     }
 
     public function getReportData($report_id){

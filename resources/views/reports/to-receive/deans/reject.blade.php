@@ -79,15 +79,14 @@
     @push('scripts')
         <script>
             $('.button-view').on('click', function(){
-                var catID = $(this).data('id');
+                var reportID = $(this).data('id');
                 var link = $(this).data('url');
                 var countColumns = 0;
                 
-                $.get('/reports/report-category/'+catID, function (data){
+                $.get('/reports/report-category/'+reportID, function (data){
                     document.getElementById('viewReportLabel').innerHTML = data;
-                        // $('#viewReportLabel').text(data);
                 });
-                $.get('/reports/data/'+catID, function (data){
+                $.get('/reports/data/'+reportID, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class=" d-flex report-content"></tr>')
@@ -95,7 +94,7 @@
                         $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                     });
                 });
-                $.get('/reports/docs/'+catID, function (data) {
+                $.get('/reports/docs/'+reportID, function (data) {
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
                         $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');

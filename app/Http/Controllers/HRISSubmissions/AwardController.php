@@ -199,6 +199,6 @@ class AwardController extends Controller
 
         \LogActivity::addToLog('Oustanding Award/Achievement added.');
 
-        return redirect()->route('submissions.award.index')->with('success','Report Submitted Successfully');
+        return redirect()->route('submissions.award.index')->with('success','The accomplishment has been submitted.');
     }
 }

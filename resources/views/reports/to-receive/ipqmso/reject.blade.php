@@ -31,7 +31,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
-                                            <button type="submit" id="submit" class="btn btn-danger">RETURN</button>
+                                            <button type="submit" id="submit" class="btn btn-danger">Return</button>
                                         </div>
                                     </div>
                                 </div>

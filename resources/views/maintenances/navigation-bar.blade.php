@@ -43,13 +43,13 @@
                     </li>
                     @endcan
                     
-                    @can('viewAny', App\Models\Maintenance\ReportType::class)
+                    @can('manage', App\Models\Maintenance\ReportType::class)
                     <li class="nav-sub-menu ml-4 mr-4">
                         <a class="text-dark {{ request()->routeIs('report-types.*') || request()->routeIs('report-categories.*') ? 'active' : '' }}" href="{{ route('report-types.index') }}">Submissions</a>
                     </li>
                     @endcan
 
-                    @can('viewAny', App\Models\Maintenance\GenerateType::class)
+                    @can('manage', App\Models\Maintenance\GenerateType::class)
                     <li class="nav-sub-menu ml-4 mr-4">
                         <a class="text-dark {{ request()->routeIs('maintenance.generate.*') ? 'active' : '' }}" href="{{ route('maintenance.generate.type') }}">Reports</a>
                     </li>

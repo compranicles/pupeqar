@@ -22,12 +22,12 @@ class RolePermissionSeeder extends Seeder
         for ($i = 1; $i <= 14; $i++) {
             RolePermission::insert(['role_id' => '9', 'permission_id' => $i]);
         }
-        RolePermission::insert(['role_id' => '9', 'permission_id' => 53]);
         RolePermission::insert(['role_id' => '9', 'permission_id' => 54]);
         RolePermission::insert(['role_id' => '9', 'permission_id' => 55]);
         RolePermission::insert(['role_id' => '9', 'permission_id' => 56]);
         RolePermission::insert(['role_id' => '9', 'permission_id' => 57]);
         RolePermission::insert(['role_id' => '9', 'permission_id' => 58]);
+        RolePermission::insert(['role_id' => '9', 'permission_id' => 59]);
 
         /***** Faculty role permissions *****/
         for ($f = 15; $f <= 30; $f++) {

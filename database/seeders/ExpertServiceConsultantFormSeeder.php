@@ -14,6 +14,7 @@ class ExpertServiceConsultantFormSeeder extends Seeder
      */
     public function run()
     {
+        // ExtensionProgramField::truncate();
         ExtensionProgramField::insert([
             'extension_program_form_id' => 1,
             'label' => 'Classification',

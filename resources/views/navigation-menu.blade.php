@@ -18,38 +18,6 @@
                     </x-jet-nav-link>
                 </li>
 
-                @can('viewAny', App\Models\User::class)
-                <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
-                        {{ __('Authentication') }}
-                    </x-jet-nav-link>
-                </li>
-                @endcan
-
-                @can('viewAny', App\Models\Announcement::class)
-                <li class="navbar-nav mr-auto main-nav-item nav-item">
-                    <a href="{{ route('maintenances.index') }}" class="nav-link @if (   request()->routeIs('maintenances.*') ||
-                                request()->routeIs('announcements.*') || 
-                                request()->routeIs('sectors.*') ||
-                                request()->routeIs('colleges.*') ||
-                                request()->routeIs('departments.*') ||
-                                request()->routeIs('currencies.*') ||
-                                request()->routeIs('dropdowns.*') ||
-                                request()->routeIs('report-types.*') ||
-                                request()->routeIs('report-categories.*') ||
-                                request()->routeIs('maintenance.generate.*') ||
-                                request()->routeIs('research-forms.*') ||
-                                request()->routeIs('invention-forms.*') || 
-                                request()->routeIs('extension-program-forms.*') ||
-                                request()->routeIs('academic-module-forms.*') ||
-                                request()->routeIs('ipcr-forms.*') ||
-                                request()->routeIs('hris-forms.*')
-                            ) active @endif">
-                        {{ __('Maintenances') }}
-                    </a>
-                </li>
-                @endcan
-
                 @IsReporting
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
                     <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('invention-innovation-creative.*') ||
@@ -99,6 +67,38 @@
                     
                 </li>
                 @endipqmso
+
+                @can('viewAny', App\Models\User::class)
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
+                        {{ __('Authentication') }}
+                    </x-jet-nav-link>
+                </li>
+                @endcan
+
+                @can('viewAny', App\Models\Announcement::class)
+                <li class="navbar-nav mr-auto main-nav-item nav-item">
+                    <a href="{{ route('maintenances.index') }}" class="nav-link @if (   request()->routeIs('maintenances.*') ||
+                                request()->routeIs('announcements.*') || 
+                                request()->routeIs('sectors.*') ||
+                                request()->routeIs('colleges.*') ||
+                                request()->routeIs('departments.*') ||
+                                request()->routeIs('currencies.*') ||
+                                request()->routeIs('dropdowns.*') ||
+                                request()->routeIs('report-types.*') ||
+                                request()->routeIs('report-categories.*') ||
+                                request()->routeIs('maintenance.generate.*') ||
+                                request()->routeIs('research-forms.*') ||
+                                request()->routeIs('invention-forms.*') || 
+                                request()->routeIs('extension-program-forms.*') ||
+                                request()->routeIs('academic-module-forms.*') ||
+                                request()->routeIs('ipcr-forms.*') ||
+                                request()->routeIs('hris-forms.*')
+                            ) active @endif">
+                        {{ __('Maintenances') }}
+                    </a>
+                </li>
+                @endcan
             </ul>
             
             <!-- Right Side Of Navbar -->

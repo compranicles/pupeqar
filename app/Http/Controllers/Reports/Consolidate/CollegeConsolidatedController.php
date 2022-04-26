@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\{
     Dean,
     Report,
+    SectorHead,
     User,
     Authentication\UserRole,
     Maintenance\College,

@@ -20,8 +20,8 @@ class PermissionSeeder extends Seeder
 
         /* ************************USERS********************************** */
         Permission::insert(['name' => 'edit user role', 'group' => '6AUTH']);
-        Permission::insert(['name' => 'delete user record', 'group' => '6AUTH']); //3
-        Permission::insert(['name' => 'view users', 'group' => '6AUTH']);
+        Permission::insert(['name' => 'delete user record', 'group' => '6AUTH']); 
+        Permission::insert(['name' => 'view users', 'group' => '6AUTH']); //3
         
         /* ************************AUTHENTICATION********************************** */
         Permission::insert(['name' => 'manage roles', 'group' => '6AUTH']);
@@ -104,10 +104,10 @@ class PermissionSeeder extends Seeder
         /* ************************MAINTENANCES (CONTINUATION)********************************** */
         Permission::insert(['name' => 'manage quarter and year', 'group' => '8MAINT']);
         Permission::insert(['name' => 'manage HRIS forms', 'group' => '9FORM']);
-        Permission::insert(['name' => 'manage IPCR forms', 'group' => '9FORM']); //55
+        Permission::insert(['name' => 'manage IPCR forms', 'group' => '9FORM']); //56
         Permission::insert(['name' => 'manage academic module forms', 'group' => '9FORM']); 
         Permission::insert(['name' => 'manage report types', 'group' => '8MAINT']); 
-        Permission::insert(['name' => 'manage report generate types', 'group' => '8MAINT']); //58
+        Permission::insert(['name' => 'manage report generate types', 'group' => '8MAINT']); //59
         Schema::enableForeignKeyConstraints();
     }
 }

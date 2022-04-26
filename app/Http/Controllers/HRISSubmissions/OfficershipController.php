@@ -199,6 +199,6 @@ class OfficershipController extends Controller
 
         \LogActivity::addToLog('Officership/Membership added.');
 
-        return redirect()->route('submissions.officership.index')->with('success','Report Submitted Successfully');
+        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been submitted.');
     }
 }

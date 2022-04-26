@@ -16,7 +16,7 @@ class ReportTypePolicy
      *
      * @return void
      */
-    public function manage()
+    public function manage(User $user)
     {
         $roles = UserRole::where('user_roles.user_id', $user->id)
                  ->pluck('user_roles.role_id')->all();

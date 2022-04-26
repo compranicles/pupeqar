@@ -217,6 +217,6 @@ class EducationController extends Controller
         \LogActivity::addToLog('Ongoing Advanced/Professional Studies added.');
 
 
-        return redirect()->route('submissions.educ.index')->with('success','Report Submitted Successfully');
+        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been submitted.');
     }
 }
