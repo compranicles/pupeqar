@@ -15,11 +15,15 @@
                         <div class="ml-auto">
                             <h4 class="text-right">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h4>
                             @if (in_array(5, $roles))
-                                <small class="text-right">{{ $department[0]->name }}</small>
+                                @foreach ($department[5] as $values)
+                                    <small class="text-right">{{ $values->name }}</small>
+                                @endforeach
                             @elseif (in_array(6, $roles))
-                                <small class="text-right">{{ $college[0]->name }}</small>
+                                @foreach ($college[6] as $values)
+                                    <small class="text-right">{{ $values->name }}</small>
+                                @endforeach
                             @elseif (in_array(7, $roles))
-                                <small class="text-right">{{ $sector['code'] }}</small>
+                                <small class="text-right">{{ $sector[7]->code }}</small>
                             @else
                                 <small class="text-right">Reporting Period</small>
                             @endif
@@ -31,16 +35,24 @@
                 @include('dashboard.faculty-admin')
             @endif
             @if (in_array(10, $roles))
-                @include('dashboard.researcher')
+                @foreach ($department[10] as $value)
+                    @include('dashboard.researcher', ['countReviewed1' => $countReviewed1[10][$value->department_id], 'countReviewed2' => $countReviewed1[10][$value->department_id]])
+                @endforeach
             @endif
             @if (in_array(11, $roles))
-                @include('dashboard.extensionist')
+                @foreach ($department[11] as $value)
+                    @include('dashboard.extensionist', ['countReviewed1' => $countReviewed1[11][$value->department_id]])
+                @endforeach
             @endif
             @if (in_array(5, $roles))
-                @include('dashboard.chairperson')
+                @foreach ($department[5] as $value)
+                    @include('dashboard.chairperson', ['countReviewed1' => $countReviewed1[5][$value->department_id], 'department_id' => $value->department_id])
+                @endforeach
             @endif
             @if (in_array(6, $roles))
-                @include('dashboard.director')
+                @foreach ($college[6] as $value)
+                    @include('dashboard.director', ['countReviewed1' => $countReviewed1[6][$value->college_id], 'college_id' => $value->college_id])
+                @endforeach
             @endif
             @if (in_array(7, $roles))
                 @include('dashboard.sector-head')

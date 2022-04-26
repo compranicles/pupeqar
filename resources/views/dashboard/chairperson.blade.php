@@ -22,9 +22,9 @@
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white;">
         <div style="padding: 1.70em 2em 2.40em 2em">
             <div class="text-center mb-3">
-                <a href="{{ route('reports.consolidate.department', $department[0]->department_id) }}"><i class="bi bi-file-earmark-check text-center home-navigate-icons"></i></a>
+                <a href="{{ route('reports.consolidate.department', $department_id) }}"><i class="bi bi-file-earmark-check text-center home-navigate-icons"></i></a>
             </div>
-            <h6 class="text-center"><a href="{{ route('reports.consolidate.department', $department[0]->department_id) }}" class="home-card-links">Consolidate Department Accomplishments</a></h6>
+            <h6 class="text-center"><a href="{{ route('reports.consolidate.department', $department_id) }}" class="home-card-links">Consolidate Department Accomplishments</a></h6>
         </div>
     </div>
 </div>
