@@ -25,19 +25,19 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
+                        {{-- <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
                                 <a href="{{ route('admin.permissions.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Create Permission</a>
                             </div>
                         </div>  
-                        <hr>
+                        <hr> --}}
                         <div class="table-responsive">
                             <table class="table" id="permission_table">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Permission</th>
-                                        <th>Actions</th>
+                                        {{-- <th>Actions</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -45,13 +45,13 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $permission->name }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <div role="group">
                                                 
                                                 <a href="{{ route('admin.permissions.edit', $permission->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                                 <button type="button" value="{{ $permission->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-permission="{{ $permission->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     @endforeach
                                 </tbody>

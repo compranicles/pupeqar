@@ -48,8 +48,10 @@
                                         <td>
                                             <div role="group">
                                                 <!-- <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#showRoleModal" data-bs-whatever="{{ $role->name }}"><i class="bi bi-eye mr-2"></i>View</button> -->
-                                                <a href="{{ route('admin.roles.edit', $role->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                {{--<button type="button" value="{{ $role->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-role="{{ $role->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>--}}
+                                                <a href="{{ route('admin.roles.edit', $role->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                @if ($role->id >= 12)
+                                                    <button type="button" value="{{ $role->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-role="{{ $role->name }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i> Delete</button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

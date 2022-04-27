@@ -40,13 +40,18 @@
                       </div>
                     </div>
                     <div class="row">
+                    @php $permissionGroup = ''; @endphp
                     @forelse ($allpermissions as $permission)
+                      @if ($permissionGroup != $permission->group && $permissionGroup != '')
+                      <br>
+                      @endif
                       <div class="col-md-12 ml-3">
                         <label for="{{ $permission->id }}">
                           <input type="checkbox" id="{{ $permission->id }}" value="{{ $permission->id }}" name="permissions[]" @if (in_array($permission->id, $yourpermissions)) checked @endif />
                           {{ $permission->name }}
                         </label>
                       </div>
+                      @php $permissionGroup = $permission->group; @endphp
                       @empty
                       <div class="m-auto">
                         <p>No permissions found. <a href="">Create now.</a></p>

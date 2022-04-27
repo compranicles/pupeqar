@@ -50,7 +50,7 @@ class ExtensionProgramFieldController extends Controller
             $required = 0;
         }
         ExtensionProgramField::create([
-            'extension_programs_form_id' => $extension_program_form->id,
+            'extension_program_form_id' => $extension_program_form->id,
             'label' => $request->label,
             'name' => $request->field_name,
             'placeholder' => $request->placeholder,
@@ -159,7 +159,7 @@ class ExtensionProgramFieldController extends Controller
     {
         $input = $request->except(['_token', '_method']);
 
-        ExtensionProgramField::where('extension_programs_form_id', $extension_program_form->id)->where('id', $extension_program_field->id)->update($input);
+        ExtensionProgramField::where('extension_program_form_id', $extension_program_form->id)->where('id', $extension_program_field->id)->update($input);
         return redirect()->route('extension-program-forms.show', $extension_program_form->id)->with('success', 'Extension program field updated sucessfully.');
     }
 

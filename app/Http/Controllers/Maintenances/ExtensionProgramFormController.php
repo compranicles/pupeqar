@@ -60,7 +60,7 @@ class ExtensionProgramFormController extends Controller
     {
         $this->authorize('view', ExtensionProgramForm::class);
 
-        $extension_program_fields = ExtensionProgramField::where('extension_program_fields.extension_programs_form_id', $extension_program_form->id)->orderBy('extension_program_fields.order')
+        $extension_program_fields = ExtensionProgramField::where('extension_program_fields.extension_program_form_id', $extension_program_form->id)->orderBy('extension_program_fields.order')
                     ->join('field_types', 'field_types.id', 'extension_program_fields.field_type_id')
                     ->select('extension_program_fields.*', 'field_types.name as field_type_name')->get();
 
