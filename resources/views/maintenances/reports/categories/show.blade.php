@@ -53,7 +53,7 @@
                                                                 <th>Table</th>
                                                                 <th>Column</th>
                                                                 <th>Active</th>
-                                                                <th>Action</th>
+                                                                {{-- <th>Action</th> --}}
                                                             </tr>
                                                         </thead>
                                                         <tbody id="field_sortable">
@@ -68,9 +68,9 @@
                                                                         <label class="custom-control-label" for="is_active_{{ $report_column->id }}"></label>
                                                                     </div>
                                                                 </td>
-                                                                <td>
+                                                                {{-- <td>
                                                                     <a href="{{ route('report-categories.report-columns.edit', [$report_category->id, $report_column->id]) }}" class="btn btn-warning btn-sm edit-row">Manage</a>
-                                                                </td>    
+                                                                </td>     --}}
                                                             </tr>                                                
                                                             @endforeach
                                                         </tbody>
