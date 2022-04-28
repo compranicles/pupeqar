@@ -272,7 +272,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/reports/to-receive/chairperson', \App\Http\Controllers\Reports\ToReceive\ChairpersonController::class);
     Route::resource('/reports/to-receive/director', \App\Http\Controllers\Reports\ToReceive\DeanController::class);
     Route::resource('/reports/to-receive/sector', \App\Http\Controllers\Reports\ToReceive\SectorController::class);
-    Route::resource('/reports/to-receive/ipqmso', \App\Http\Controllers\Reports\ToReceive\IpqmsoController::class);
+    Route::resource('/reports/to-receive/ipo', \App\Http\Controllers\Reports\ToReceive\IpqmsoController::class);
     // Acted By Chairperson
     Route::get('/reports/chairperson/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\ChairpersonController::class, 'accept'])->name('chairperson.accept');
     Route::get('/reports/chairperson/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\ChairpersonController::class, 'rejectCreate'])->name('chairperson.reject-create');
@@ -301,13 +301,13 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/reports/sector/deny-selected', [\App\Http\Controllers\Reports\ToReceive\SectorController::class, 'denySelected'])->name('sector.deny-select');
     Route::post('/reports/sector/reject-selected', [\App\Http\Controllers\Reports\ToReceive\SectorController::class, 'rejectSelected'])->name('sector.reject-selected');
     // Acted By IPQMSO
-    Route::get('/reports/ipqmso/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
-    Route::get('/reports/ipqmso/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
-    Route::post('/reports/ipqmso/reject/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
-    Route::post('/reports/ipqmso/undo/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
-    Route::post('/reports/ipqmso/accept-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'acceptSelected'])->name('ipqmso.accept-select');
-    Route::post('/reports/ipqmso/deny-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'denySelected'])->name('ipqmso.deny-select');
-    Route::post('/reports/ipqmso/reject-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'rejectSelected'])->name('ipqmso.reject-selected');
+    Route::get('/reports/ipo/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'accept'])->name('ipqmso.accept');
+    Route::get('/reports/ipo/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'rejectCreate'])->name('ipqmso.reject-create');
+    Route::post('/reports/ipo/reject/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'reject'])->name('ipqmso.reject');
+    Route::post('/reports/ipo/undo/{id}', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'reject'])->name('ipqmso.undo');
+    Route::post('/reports/ipo/accept-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'acceptSelected'])->name('ipqmso.accept-select');
+    Route::post('/reports/ipo/deny-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'denySelected'])->name('ipqmso.deny-select');
+    Route::post('/reports/ipo/reject-selected', [\App\Http\Controllers\Reports\ToReceive\IpqmsoController::class, 'rejectSelected'])->name('ipqmso.reject-selected');
     //Acted By Extensionist
     Route::get('/reports/extensionist/accept/{id}', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'accept'])->name('extensionist.accept');
     Route::get('/reports/extensionist/reject-create/{id}', [\App\Http\Controllers\Reports\ToReceive\ExtensionistController::class, 'rejectCreate'])->name('extensionist.reject-create');
@@ -338,7 +338,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/consolidate/department/reportYearFilter/{dept}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\DepartmentConsolidatedController::class, 'departmentReportYearFilter'])->name('reports.consolidate.department.reportYearFilter');
     Route::get('/reports/consolidate/college/reportYearFilter/{college}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\CollegeConsolidatedController::class, 'collegeReportYearFilter'])->name('reports.consolidate.college.reportYearFilter');
     Route::get('/reports/consolidate/sector/reportYearFilter/{sector}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\SectorConsolidatedController::class, 'sectorReportYearFilter'])->name('reports.consolidate.sector.reportYearFilter');
-    Route::get('/reports/consolidate/all/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\IpqmsoConsolidatedController::class, 'reportYearFilter'])->name('reports.consolidate.ipqmso.reportYearFilter');
+    Route::get('/reports/consolidate/all/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\IpqmsoConsolidatedController::class, 'reportYearFilter'])->name('reports.consolidate.ipo.reportYearFilter');
     
     /* GENERATE/EXPORT REPORT */
     Route::post('/reports/export/individual-export/{source_type}/{report_format}/{source_generate}/{year_generate}/{quarter_generate}/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'individualExport'])->name('report.individual.export');

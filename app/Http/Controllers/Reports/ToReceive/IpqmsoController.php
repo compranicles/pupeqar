@@ -226,7 +226,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO received an accomplishment.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('ipo.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
     }
 
     public function rejectCreate($report_id){
@@ -336,7 +336,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO returned an accomplishment.');
 
-        return redirect()->route('ipqmso.index')->with('deny-success', 'Report has been returned to the owner.');
+        return redirect()->route('ipo.index')->with('deny-success', 'Report has been returned to the owner.');
     }
 
     public function undo($report_id){
@@ -437,7 +437,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO received '.$count.' accomplishments.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('ipo.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
     }
 
     public function denySelected(Request $request){
@@ -553,7 +553,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPQMSO returned '.$count.' accomplishments.');
 
-        return redirect()->route('ipqmso.index')->with('success', 'Report/s returned to the owner/s.');
+        return redirect()->route('ipo.index')->with('success', 'Report/s returned to the owner/s.');
 
     }
 }
