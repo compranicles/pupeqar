@@ -16,9 +16,9 @@ class StudentTrainingFormSeeder extends Seeder
     {
         AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
-            'label' => 'Name of Student',
-            'name' => 'name_of_student',
-            'placeholder' => 'Surname, First Name, Middle Initial',
+            'label' => 'Title',
+            'name' => 'title',
+            'placeholder' => null,
             'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
@@ -29,11 +29,11 @@ class StudentTrainingFormSeeder extends Seeder
         ]);
         AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
-            'label' => 'Title',
-            'name' => 'title',
-            'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 1,
+            'label' => 'No. of Student Attendees',
+            'name' => 'no_of_students',
+            'placeholder' => '',
+            'size' => 'col-md-4',
+            'field_type_id' => 2,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,
@@ -174,7 +174,7 @@ class StudentTrainingFormSeeder extends Seeder
             'academic_development_form_id' => 4,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => "*Certificate/Other similar supporting documents, *Terminal report (if applicable), *Documentation/Pictures/ Other similar supporting documents",
+            'placeholder' => "*List of student attendees, *Certificate/Other similar supporting documents, *Terminal report (if applicable), *Documentation/Pictures/ Other similar supporting documents",
             'size' => 'col-md-12',
             'field_type_id' => 16,
             'dropdown_id' => null, 

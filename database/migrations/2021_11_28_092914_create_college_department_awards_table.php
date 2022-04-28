@@ -34,6 +34,6 @@ class CreateCollegeDepartmentAwardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('college_department_awards')->nullable();
+        Schema::dropIfExists('college_department_awards');
     }
 }

@@ -62,6 +62,6 @@ class CreateExtensionServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('extension_services')->nullable();
+        Schema::dropIfExists('extension_services');
     }
 }

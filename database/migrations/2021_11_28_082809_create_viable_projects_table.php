@@ -36,6 +36,6 @@ class CreateViableProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('viable_projects')->nullable();
+        Schema::dropIfExists('viable_projects');
     }
 }

@@ -29,6 +29,7 @@ class AccountController extends Controller
         $roles = UserRole::where('user_id', $user->id)->join('roles', 'roles.id', 'user_roles.role_id')
                             ->pluck('roles.name')
                             ->all();
+        $roles = implode(', ', $roles);
         $employeeSectorsCbcoDepartment = Employee::where('employees.user_id', $user->id)
                             ->join('sectors', 'employees.sector_id', 'sectors.id')
                             ->join('colleges', 'employees.college_id', 'colleges.id')

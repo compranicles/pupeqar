@@ -1775,14 +1775,7 @@ class GenerateColumn2Seeder extends Seeder
             'order' => 1,
         ]);        
         
-        // Student trainings and seminars
-        GenerateColumn::insert([
-            'name' => 'Name of Student',
-            'table_id' => 68,
-            'report_column' => 'name_of_student',
-            'is_active' => 1,
-            'order' => 1,
-        ]);    
+        // Student trainings and seminars 
         GenerateColumn::insert([
             'name' => 'Title',
             'table_id' => 68,
@@ -1790,6 +1783,13 @@ class GenerateColumn2Seeder extends Seeder
             'is_active' => 1,
             'order' => 1,
         ]);    
+        GenerateColumn::insert([
+            'name' => 'No. of Student Attendees',
+            'table_id' => 68,
+            'report_column' => 'no_of_students',
+            'is_active' => 1,
+            'order' => 1,
+        ]);   
         GenerateColumn::insert([
             'name' => 'Classification',
             'table_id' => 68,

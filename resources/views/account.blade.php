@@ -60,7 +60,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="">Role</label>
-                                    <input type="text" id="role" readonly class="form-control" value="{{ $roles[0] }}">
+                                    <input type="text" id="role" readonly class="form-control" value="{{ $roles }}">
                                 </div>
                             </div>
                         </div>

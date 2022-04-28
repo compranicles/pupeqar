@@ -53,7 +53,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Name of Student</th>
+                                        <th>No. of Student Attendees</th>
                                         <th>Title</th>
                                         <th>Organization</th>
                                         <th>Quarter</th>
@@ -65,7 +65,7 @@
                                     @foreach ($student_trainings as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->name_of_student }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
