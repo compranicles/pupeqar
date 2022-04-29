@@ -12,6 +12,7 @@ use App\Models\{
     FacultyResearcher,
     Report,
     SectorHead,
+    Maintenance\Sector,
     Authentication\UserRole,
     Maintenance\College,
     Maintenance\Department,
@@ -95,10 +96,11 @@ class IpqmsoConsolidatedController extends Controller
         }
 
         $colleges = College::all();
+        $sector_names = Sector::all();
 
         return view(
                     'reports.consolidate.ipqmso', 
-                    compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
+                    compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names')
                 );
     }
 
@@ -177,10 +179,11 @@ class IpqmsoConsolidatedController extends Controller
 
         }
         $colleges = Colleges::all();
+        $sector_names = Sector::all();
         
         return view(
             'reports.consolidate.ipqmso', 
-            compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter')
+            compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names')
         );
     }
 }

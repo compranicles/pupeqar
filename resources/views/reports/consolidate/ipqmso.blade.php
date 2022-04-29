@@ -27,6 +27,9 @@
                             <!-- <div class="float-right">
                                 <button type="button" class="btn btn-primary ml-2" data-target="#GenerateLevelReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate College Level Report</button>
                             </div> -->
+                            <div class="float-right">
+                                <button class="btn btn primary ml-2" data-target="#GenerateIPOLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -287,6 +290,7 @@
     </div>
 
     @include('reports.generate.index', ['source_type' => 'college', 'special_type' => 'ipqmso', 'colleges' => $colleges])
+    @include('reports.generate.ipo', ['sectors' => $sector_names])
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
