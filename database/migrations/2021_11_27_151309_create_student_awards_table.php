@@ -35,6 +35,6 @@ class CreateStudentAwardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_awards')->nullable();
+        Schema::dropIfExists('student_awards');
     }
 }

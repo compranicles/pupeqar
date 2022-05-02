@@ -46,6 +46,6 @@ class CreateInventionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventions')->nullable();
+        Schema::dropIfExists('inventions');
     }
 }

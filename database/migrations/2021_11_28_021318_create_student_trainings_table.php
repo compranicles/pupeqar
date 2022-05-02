@@ -15,8 +15,8 @@ class CreateStudentTrainingsTable extends Migration
     {
         Schema::create('student_trainings', function (Blueprint $table) {
             $table->id();
-            $table->string('name_of_student')->nullable();
             $table->string('title')->nullable();
+            $table->string('no_of_students')->nullable();
             $table->foreignId('classification')->nullable();
             $table->foreignId('nature')->nullable();
             $table->foreignId('currency_budget')->nullable();
@@ -42,6 +42,6 @@ class CreateStudentTrainingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_trainings')->nullable();
+        Schema::dropIfExists('student_trainings');
     }
 }

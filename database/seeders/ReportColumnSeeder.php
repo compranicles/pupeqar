@@ -2367,20 +2367,20 @@ class ReportColumnSeeder extends Seeder
         // Student trainings and seminars
         ReportColumn::insert([
             'report_category_id' => 19,
-            'name' => 'Name of Student',
-            'table' => 'student_trainings',
-            'column' => 'name_of_student',
-            'is_active' => 1,
-            'order' => 1,
-        ]);    
-        ReportColumn::insert([
-            'report_category_id' => 19,
             'name' => 'Title',
             'table' => 'student_trainings',
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);   
+        ReportColumn::insert([
+            'report_category_id' => 19,
+            'name' => 'No. of Student Attendees',
+            'table' => 'student_trainings',
+            'column' => 'no_of_students',
+            'is_active' => 1,
+            'order' => 1,
+        ]);     
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Classification',

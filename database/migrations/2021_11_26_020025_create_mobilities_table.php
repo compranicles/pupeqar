@@ -39,6 +39,6 @@ class CreateMobilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mobilities')->nullable();
+        Schema::dropIfExists('mobilities');
     }
 }

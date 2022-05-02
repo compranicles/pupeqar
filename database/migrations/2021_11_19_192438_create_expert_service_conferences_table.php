@@ -38,6 +38,6 @@ class CreateExpertServiceConferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expert_service_conferences')->nullable();
+        Schema::dropIfExists('expert_service_conferences');
     }
 }

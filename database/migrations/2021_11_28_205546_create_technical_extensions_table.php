@@ -40,6 +40,6 @@ class CreateTechnicalExtensionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('technical_extensions')->nullable();
+        Schema::dropIfExists('technical_extensions');
     }
 }
