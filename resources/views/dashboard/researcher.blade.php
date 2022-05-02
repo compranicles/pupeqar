@@ -5,8 +5,8 @@
                 <i class="bi bi-search home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $countReviewed1 }}</h4>
-                <p>Total No. of Reviewed Researches</p>
+                <h4 class="text-center">{{ $countReviewed1 }}</h4>
+                <p>Reviewed Researches</p>
             </div>
         </div>
     </div>
@@ -18,8 +18,8 @@
                 <i class="bi bi-gear home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $countReviewed2 }}</h4>
-                <p>Total No. of Reviewed Invention</p>
+                <h4 class="text-center">{{ $countReviewed2 }}</h4>
+                <p>Reviewed Invention</p>
             </div>
         </div>
     </div>

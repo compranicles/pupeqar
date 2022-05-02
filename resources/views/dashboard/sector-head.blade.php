@@ -6,8 +6,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[7]['faculty'] }}</h4>
-                <p>Total No. of Faculty Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[7]['faculty'] }}</h4>
+                <p>Faculty Employees</p>
             </div>
         </div>
     </div>
@@ -19,8 +19,8 @@
                 <i class="bi bi-building home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $college[7] }}</h4>
-                <p>Total No. of Colleges in the Sector</p>
+                <h4 class="text-center">{{ $college[7] }}</h4>
+                <p>Colleges in the Sector</p>
             </div>
         </div>
     </div>
@@ -33,8 +33,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[7]['admin'] }}</h4>
-                <p>Total No. of Admin Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[7]['admin'] }}</h4>
+                <p>Admin Employees</p>
             </div>
         </div>
     </div>
@@ -46,8 +46,8 @@
                 <i class="bi bi-building home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $college[7] }}</h4>
-                <p>Total No. of Offices in the Sector</p>
+                <h4 class="text-center">{{ $college[7] }}</h4>
+                <p>Offices in the Sector</p>
             </div>
         </div>
     </div>
@@ -60,8 +60,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[7]['faculty'] }}</h4>
-                <p>Total No. of Faculty Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[7]['faculty'] }}</h4>
+                <p>Faculty Employees</p>
             </div>
         </div>
     </div>
@@ -73,8 +73,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[7]['admin'] }}</h4>
-                <p>Total No. of Admin Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[7]['admin'] }}</h4>
+                <p>Admin Employees</p>
             </div>
         </div>
     </div>

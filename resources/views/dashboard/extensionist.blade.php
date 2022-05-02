@@ -5,8 +5,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $countReviewed1 }}</h4>
-                <p>Total No. of Reviewed Extensions</p>
+                <h4 class="text-center">{{ $countReviewed1 }}</h4>
+                <p>Reviewed Extensions</p>
             </div>
         </div>
     </div>
