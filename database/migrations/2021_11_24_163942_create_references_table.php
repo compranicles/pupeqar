@@ -43,6 +43,6 @@ class CreateReferencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('references')->nullable();
+        Schema::dropIfExists('references');
     }
 }

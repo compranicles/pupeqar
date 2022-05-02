@@ -27,6 +27,8 @@ class NotificationController extends Controller
         $urlDecoded  = urldecode($request->get('u'));
 
         $user->notifications->where('id', $request->get('v'))->markAsRead();
+
+        $request->session()->put('notif-id', $request->get('v'));
         
         return redirect()->away($urlDecoded);
     }

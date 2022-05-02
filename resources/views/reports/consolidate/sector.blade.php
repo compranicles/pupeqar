@@ -19,8 +19,13 @@
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="d-inline-block" style="padding-top: 10px;">{{ $sector->name }} - Accomplishments</h5>
-                    <button id="generate" type="button" class="btn btn-primary float-right" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
-                </div>
+                    <div class="float-right">
+                        <button id="generate" type="button" class="btn btn-primary float-right" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
+                    </div>
+                    <div class="float-right">
+                        <button class="btn btn primary ml-2" data-target="#GenerateSectorLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
+                    </div>
+                </div>   
             </div>
             <hr>
             <div class="row">
@@ -340,6 +345,8 @@
     </div>
 
     @include('reports.generate.index', ['source_type' => 'college', 'special_type' => 'sector', 'colleges' => $collegesOfSector])
+    @include('reports.generate.sector', ['sector' => $sector])
+
     
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>

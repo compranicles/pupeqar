@@ -614,7 +614,6 @@ class ResearchController extends Controller
 
         $sender->notifications()
                     ->where('id', $request->input('notif_id')) // and/or ->where('type', $notificationType)
-                    ->where('type', 'App\Notifications\ResearchInviteNotification')
                     ->get()
                     ->first()
                     ->delete();

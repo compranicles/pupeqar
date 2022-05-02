@@ -413,6 +413,11 @@ class DocumentDescriptionSeeder extends Seeder
         //Student Training
         DocumentDescription::insert([
             'report_category_id' => 19,
+            'name' => 'List of student attendees',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::insert([
+            'report_category_id' => 19,
             'name' => 'Certificate',
             'is_active' => 1,
         ]);

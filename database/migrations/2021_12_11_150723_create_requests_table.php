@@ -35,6 +35,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requests')->nullable();
+        Schema::dropIfExists('requests');
     }
 }

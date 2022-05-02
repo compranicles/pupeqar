@@ -40,6 +40,6 @@ class CreateExpertServiceAcademicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expert_service_academics')->nullable();
+        Schema::dropIfExists('expert_service_academics');
     }
 }

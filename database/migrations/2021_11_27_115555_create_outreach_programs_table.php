@@ -33,6 +33,6 @@ class CreateOutreachProgramsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outreach_programs')->nullable();
+        Schema::dropIfExists('outreach_programs');
     }
 }

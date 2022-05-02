@@ -10,6 +10,8 @@ use App\Exports\DepartmentConsolidatedAccomplishmentReportExport;
 use App\Exports\DepartmentLevelConsolidatedExport;
 use App\Exports\CollegeConsolidatedAccomplishmentReportExport;
 use App\Exports\CollegeLevelConsolidatedExport;
+use App\Exports\IPOAccomplishmentReportExport;
+use App\Exports\SectorAccomplishmentReportExport;
 use App\Models\{
     Chairperson,
     Dean,
@@ -30,7 +32,6 @@ class GenerateController extends Controller
     public function index($id, Request $request){
         $reportFormat = $request->input("type_generate");
         $data = '';
-
         $source_type = '';
         if($request->input("type_generate") == "academic"){
             if($request->input("source_generate") == "department"){
@@ -48,6 +49,13 @@ class GenerateController extends Controller
                 $user_id = $id;
                 $data = User::where('id', $user_id)->select('users.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, '')) as name"))->first();
             }
+            elseif($request->input("source_generate") == "ipo"){
+                $source_type = "ipo";
+            }
+            elseif($request->input("source_generate") == "sector"){
+                $source_type = "sector";
+                $data = Sector::where('id', $request->sector)->first();
+            }
         }
         elseif($request->input("type_generate") == "admin"){
             if($request->input("source_generate") == "department"){
@@ -64,6 +72,13 @@ class GenerateController extends Controller
                 $source_type = "individual";
                 $user_id = $id;
                 $data = User::where('id', $user_id)->select('users.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, '')) as name"))->first();   
+            }
+            elseif($request->input("source_generate") == "ipo"){
+                $source_type = "ipo";
+            }
+            elseif($request->input("source_generate") == "sector"){
+                $source_type = "sector";
+                $data = Sector::where('id', $request->sector)->first();
             }
         }
         elseif($request->input("type_generate") == "department_level"){
@@ -181,6 +196,47 @@ class GenerateController extends Controller
                 $cbco,
                 ),
                 $file_suffix.'.xlsx');
+        }
+        elseif($source_generate == 'ipo'){
+            $file_suffix = 'Consolidated-QARs-IPO-Level';
+            $source = $request->source_generate;
+            $type = $request->type_generate;
+            $q1 = $request->from_quarter_generate;
+            $q2 = $request->to_quarter_generate;
+            $year = $request->year_generate2;
+
+            return Excel::download(new IPOAccomplishmentReportExport(
+                $type, 
+                $q1,
+                $q2,
+                $year,
+            ),
+            $file_suffix.'.xlsx');
+        }
+        elseif($source_generate == "sector"){
+            $file_suffix = 'Consolidated-QARs-Sector-Level-'.$data->code;
+            $sector = $data;
+            $type = $request->type_generate;
+            $q1 = $request->from_quarter_generate;
+            $q2 = $request->to_quarter_generate;
+            $year = $request->year_generate2;
+            
+            $asked = 'no one';
+
+            if($request->routeIs('reports.consolidate.ipqmso'))
+                $asked = 'ipo';
+            elseif($request->routeIs('reports.consolidate.sector'))
+                $asked = 'sector';
+
+            return Excel::download(new SectorAccomplishmentReportExport(
+                $type, 
+                $q1,
+                $q2,
+                $year,
+                $sector,
+                $asked,
+            ),
+            $file_suffix.'.xlsx');
         }
     }
 

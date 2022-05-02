@@ -34,6 +34,6 @@ class CreateSyllabiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('syllabi')->nullable();
+        Schema::dropIfExists('syllabi');
     }
 }
