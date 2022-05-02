@@ -67,9 +67,9 @@
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white;">
         <div style="padding: 1.70em 2em 2.40em 2em">
             <div class="text-center mb-3">
-                <a href="{{ route('ipqmso.index') }}"><i class="bi bi-file-bar-graph text-center home-navigate-icons"></i></a>
+                <a href="{{ route('ipo.index') }}"><i class="bi bi-file-bar-graph text-center home-navigate-icons"></i></a>
             </div>
-            <h6 class="text-center"><a href="{{ route('ipqmso.index') }}" class="home-card-links">Receive Accomplishments</a></h6>
+            <h6 class="text-center"><a href="{{ route('ipo.index') }}" class="home-card-links">Receive Accomplishments</a></h6>
         </div>
     </div>
 </div>

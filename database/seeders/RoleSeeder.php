@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
         Role::insert(['name' => 'Chairperson']);
         Role::insert(['name' => 'Director/Dean']);
         Role::insert(['name' => 'VP/Sector Head']); //7
-        Role::insert(['name' => 'IPQMSO']);
+        Role::insert(['name' => 'IPO']);
         Role::insert(['name' => 'Super Admin']);
         Role::insert(['name' => 'Researcher']);
         Role::insert(['name' => 'Extensionist']); //11
