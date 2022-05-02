@@ -62,8 +62,8 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                         <td>-</td>
                         <td>-</td>
                         @foreach ($table_columns[$format->id] as $column )
-                        <td>-</td>
-                    @endforeach
+                            <td>-</td>
+                        @endforeach
                     </tr>
                     @endforelse
                 </tbody>
@@ -76,7 +76,6 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                         <tr>
                             <td><small>{{ $footer }}</small></td>
                         </tr>
-                        <br>
                         @endforeach
                     @else
                         <tr>

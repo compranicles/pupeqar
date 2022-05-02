@@ -74,8 +74,11 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                         <tr>
                             <td><small>{{ $footer }}</small></td>
                         </tr>
-                        <br>
                         @endforeach
+                    @else
+                        <tr>
+                            <td><small></small></td>
+                        </tr>
                     @endif
                 </tfoot>
             </table>

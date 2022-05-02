@@ -87,6 +87,159 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
 
 
     public function registerEvents(): array {
-        return [];
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
+                $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
+                $event->sheet->getDefaultColumnDimension()->setWidth(33);
+                
+                $count = 1;
+                $table_format = $this->table_format;
+                $table_columns = $this->table_columns;
+                $table_contents = $this->table_contents;
+                foreach ($table_format as $format) {
+
+                    if ($format->is_table == '1') {
+                        
+                        if($format->name != ''){
+                            $event->sheet->mergeCells('A'.$count.':P'.$count);
+                            $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
+                            $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
+                            $event->sheet->getRowDimension($count)->setRowHeight(30);
+                            $count++;
+                            
+                            $event->sheet->mergeCells('A'.$count.':P'.$count);
+                            $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
+                            $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
+                            $event->sheet->getRowDimension($count)->setRowHeight(30);
+                            $count++;
+                        }
+                        
+                        //columns 
+                        $columnTWO = Coordinate::stringFromColumnIndex(3);
+                        $length = count($table_columns[$format->id]);
+                        if ($length == null){
+                            $length = 2;
+                        }
+                        else{
+                            $length = $length+4;
+                        }
+                        $letter = Coordinate::stringFromColumnIndex($length);
+
+                        $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setWrapText(true);
+                        $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFDE9D9");
+                        $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->applyFromArray([
+                            'font' => [
+                                'name' => 'Arial',
+                                'bold' => true, 
+                                'size' => 14
+                            ],
+                            'borders' => [
+                                'allBorders' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                            ],
+                        ]);
+                        $columnTHREE = Coordinate::stringFromColumnIndex(4);
+                        $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                        $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                        $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->applyFromArray([
+                            'font' => [
+                                'name' => 'Arial',
+                                'bold' => true, 
+                                'size' => 14
+                            ],
+                            'borders' => [
+                                'allBorders' => [
+                                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                ],
+                            ],
+                        ]);
+                        $count++;
+
+                        //contents
+                        foreach($table_contents[$format->id] as $contents){
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFDE9D9");
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->applyFromArray([
+                                'font' => [
+                                    'name' => 'Arial',
+                                ],
+                                'borders' => [
+                                    'allBorders' => [
+                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    ],
+                                ],
+                            ]);
+
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->applyFromArray([
+                                'font' => [
+                                    'name' => 'Arial',
+                                ],
+                                'borders' => [
+                                    'allBorders' => [
+                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    ],
+                                ],
+                            ]);
+                            $count++;
+                        }
+
+                        if($table_contents[$format->id] == null){
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFDE9D9");
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->applyFromArray([
+                                'font' => [
+                                    'name' => 'Arial',
+                                ],
+                                'borders' => [
+                                    'allBorders' => [
+                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    ],
+                                ],
+                            ]);
+
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                            $event->sheet->getStyle($columnTHREE.$count.':'.$letter.$count)->applyFromArray([
+                                'font' => [
+                                    'name' => 'Arial',
+                                ],
+                                'borders' => [
+                                    'allBorders' => [
+                                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                                    ],
+                                ],
+                            ]);
+                            $count++;
+                        }
+
+                        $footers = json_decode($format->footers);
+                        if ($footers != null){
+                            foreach ($footers as $footer){
+                                $event->sheet->getStyle('A'.$count)->applyFromArray([
+                                    'font' => [
+                                        'name' => 'Arial',
+                                    ]
+                                ]);
+                                $count++;
+                            }
+                        }
+                        else
+                            $count++;
+                        
+                        $count += 1;
+                    }
+                }
+            }
+        ];
     }
 }
