@@ -112,7 +112,7 @@
                                             <th>Chairperson</th>
                                             <th>Dean/<br>Director</th>
                                             <th>Sector Head</th>
-                                            <th>IPQMSO</th>
+                                            <th>IPO</th>
                                         </tr>
                                     </thead>
                                     <tbody>

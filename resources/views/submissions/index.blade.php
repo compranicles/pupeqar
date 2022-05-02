@@ -43,7 +43,7 @@
                         <div class="submission-list">
                             <!-- <div class="row">
                                 <div class="col-md-12 ml-2"> -->
-                                        <ul class="nav justify-content-center m-n3">
+                                        <ul class="nav justify-content-center">
                                             @foreach ( $report_tables as $table)
                                                 @if(array_key_exists($table->id, $report_array))
                                                     @if (count($report_array[$table->id]) == 0)

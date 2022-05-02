@@ -1,26 +1,26 @@
 <x-app-layout> 
-    <div class="container ">
+    <div class="container">
         <div class="row">
             <div class="d-flex col-md-12">
                 <h5> {{ $user['first_name'].' '.($user['middle_name'] == '' ? '' : $user['middle_name']).' '.$user['last_name'] }}</h5> <p class="ml-3">{{$userRoleNames}}</p>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
                     <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
                         <div class="db-icon">
                             <i class="bi bi-send home-icons"></i>
                         </div>
                         <div class="ml-auto">
-                            <h4 class="text-right">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h4>
+                            <h5 class="text-right">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h5>
                             @if (in_array(5, $roles))
                                 @foreach ($department[5] as $values)
-                                    <small class="text-right">{{ $values->name }}</small>
+                                    <small class="text-right">{{ $values->code }}</small>
                                 @endforeach
                             @elseif (in_array(6, $roles))
                                 @foreach ($college[6] as $values)
-                                    <small class="text-right">{{ $values->name }}</small>
+                                    <small class="text-right">{{ $values->code }}</small>
                                 @endforeach
                             @elseif (in_array(7, $roles))
                                 <small class="text-right">{{ $sector[7]->code }}</small>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            @if (in_array(1, $roles) || in_array(3, $roles) || in_array(10, $roles) || in_array(11, $roles))
+            @if (in_array(1, $roles) || in_array(3, $roles))
                 @include('dashboard.faculty-admin')
             @endif
             @if (in_array(10, $roles))
@@ -177,7 +177,7 @@
         @endExceptSuperAdmin
         <div class="row">
             @if (in_array(8, $roles) || in_array(9, $roles))
-            <div class="col-md-8 mt-4">
+            <div class="col-md-8">
                 <div class="card">
                 <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
                     <div class="card-body">
@@ -205,7 +205,6 @@
             @endif
         </div>
     </div>
-
 
     <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -269,9 +268,9 @@
                     $('.no-data-message').remove();
                     $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
                     $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content text-small">'+
+                        .append('<td class="activity-log-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #278bbf;"></i>'+
                                 item.subject
-                            +'<div class="text-muted"><small>'+item.name+' &#183; '+item.created_at+'</small></div></td>'
+                            +'<div class="text-muted ml-4"><small>'+item.name+' &#183; '+item.created_at+'</small></div></td>'
                         );
                     countColumns++;
                 });
@@ -287,9 +286,9 @@
                     $('.no-data-message').remove();
                     $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
                     $('#activity-log-indi-'+countColumns)
-                        .append('<td class="activity-log-indi-content text-small">'+
+                        .append('<td class="activity-log-indi-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #278bbf;"></i>'+
                                 item.subject
-                            +'<div class="text-muted"><small>'+item.created_at+'</small></div></td>'
+                            +'<div class="text-muted ml-4"><small>'+item.created_at+'</small></div></td>'
                         );
                     countColumns++;
                 });

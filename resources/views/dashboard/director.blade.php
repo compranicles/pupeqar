@@ -5,8 +5,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[6][$college_id]['faculty'] }}</h4>
-                <p>Total No. of Faculty Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[6][$college_id]['faculty'] }}</h4>
+                <p>Faculty Employees</p>
             </div>
         </div>
     </div>
@@ -18,8 +18,8 @@
                 <i class="bi bi-people home-icons"></i>
             </div>
             <div class="ml-auto">
-                <h4 class="text-right">{{ $arrayOfNoOfAllUsers[6][$college_id]['admin'] }}</h4>
-                <p>Total No. of Admin Employees</p>
+                <h4 class="text-center">{{ $arrayOfNoOfAllUsers[6][$college_id]['admin'] }}</h4>
+                <p>Admin Employees</p>
             </div>
         </div>
     </div>
