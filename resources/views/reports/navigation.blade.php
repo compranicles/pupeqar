@@ -50,7 +50,7 @@
 @if (in_array(10, $roles))
     <a href="{{ route('researcher.index') }}" class="submission-menu {{ request()->routeIs('researcher.index') ? 'active' : ''}}">To Review - Researcher</a> 
     @forelse ( $departmentsResearch as $row)
-        <a href="{{ route('reports.consolidate.research', $row->department_id) }}" class="submission-menu {{ isset($id) ? ($row->department_id == $id ? 'active' : '') : '' }}">
+        <a href="{{ route('reports.consolidate.research', $row->department_id) }}" class="submission-menu {{ isset($id) ? ($row->department_id == $id && request()->routeIs('reports.consolidate.research') ? 'active' : '') : '' }}">
             {{ $row->code }} - Accomplishments
         </a>  
     @empty
@@ -61,7 +61,7 @@
 @if (in_array(11, $roles))
     <a href="{{ route('extensionist.index') }}" class="submission-menu {{ request()->routeIs('extensionist.index') ? 'active' : ''}}">To Review - Extensionist</a> 
     @forelse ( $departmentsExtension as $row)
-        <a href="{{ route('reports.consolidate.extension', $row->department_id) }}" class="submission-menu {{ isset($id) ? ($row->department_id == $id ? 'active' : '') : '' }}">
+        <a href="{{ route('reports.consolidate.extension', $row->department_id) }}" class="submission-menu {{ isset($id) ? ($row->department_id == $id && request()->routeIs('reports.consolidate.extension') ? 'active' : '') : '' }}">
             {{ $row->code }} - Accomplishments
         </a>  
     @empty

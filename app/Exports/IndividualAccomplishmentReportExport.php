@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-// use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Http\Controllers\Controller;
 use App\Models\{
     User,
@@ -149,7 +148,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Helvetica');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
-                $event->sheet->freezePane('B1');
+                $event->sheet->freezePane('C1');
                 $event->sheet->mergeCells('A1:G1');
                 if ($this->source_type == "individual") {
                     if ($this->report_format == "academic")
@@ -298,8 +297,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         // title
                         $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                        // $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF800000");
-                        // $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
                         
                         if ($format->is_individual == '0') {
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF002060");
@@ -342,9 +339,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         foreach($table_contents[$format->id] as $contents){
                             //DOCUMENTS LINK
                             $documents =  json_decode($contents['report_documents'], true);
-                            // foreach($documents as $document) {
-                            //     $event->sheet->setCellValue($letter.$count, "localhost:8000/document-view/".$document);
-                            // }
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);

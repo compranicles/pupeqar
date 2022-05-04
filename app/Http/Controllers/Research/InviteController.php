@@ -82,7 +82,7 @@ class InviteController extends Controller
 
         $user = User::find(auth()->id());
 
-        \LogActivity::addToLog('Research Invitation Confirmed.');
+        \LogActivity::addToLog('Research invitation was confirmed.');
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         

@@ -116,6 +116,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
+                $event->sheet->freezePane('C1');
 
                 $event->sheet->mergeCells('A1:P1');
 

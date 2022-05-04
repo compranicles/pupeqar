@@ -62,7 +62,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
                                     <select id="collegeFilter" class="custom-select">

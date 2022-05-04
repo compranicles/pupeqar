@@ -27,47 +27,45 @@
                         </div>  
                         <hr>
                         <div class="row">
-                            <div class="d-flex mr-2">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="catFilter" class="mr-2">Category: </label>
-                                        <select id="catFilter" class="custom-select">
-                                            <option value="">Show All</option>
-                                            @foreach ($categories as $category)
-                                            <option value="{{ $category->name }}">{{ $category->name }}</option>
-                                            @endforeach
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="catFilter" class="mr-2">Category: </label>
+                                    <select id="catFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($categories as $category)
+                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                            
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                        <select id="collegeFilter" class="custom-select">
-                                            <option value="">Show All</option>
-                                            @foreach($requests_in_colleges as $college)
-                                            <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                            @endforeach
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                        <div class="d-flex">
-                                            <select id="quarterFilter" class="custom-select" name="quarter">
-                                               
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <label for="yearFilter" class="mr-2">Year Added:</label>
-                                        <div class="d-flex">
-                                            <select id="yearFilter" class="custom-select" name="yearFilter">
-                                            </select>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($requests_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>

@@ -618,7 +618,7 @@ class ResearchController extends Controller
                     ->first()
                     ->delete();
 
-        \LogActivity::addToLog('Research added.');
+        \LogActivity::addToLog('Research was added.');
         
 
         return redirect()->route('research.index')->with('success', 'Research has been saved.');

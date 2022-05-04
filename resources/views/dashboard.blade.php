@@ -36,7 +36,7 @@
             @endif
             @if (in_array(10, $roles))
                 @foreach ($department[10] as $value)
-                    @include('dashboard.researcher', ['countReviewed1' => $countReviewed1[10][$value->department_id], 'countReviewed2' => $countReviewed1[10][$value->department_id]])
+                    @include('dashboard.researcher', ['countReviewed1' => $countReviewed1[10][$value->department_id], 'countReviewed2' => $countReviewed2[10][$value->department_id]])
                 @endforeach
             @endif
             @if (in_array(11, $roles))
@@ -64,80 +64,9 @@
                 @include('dashboard.superadmin')
             @endif
         </div>
-        @ExceptSuperAdmin
+
         <div class="row">
-            <!-- @IsReporting
-            <div class="col-md-8">
-                <div class="card">
-                <h5 class="card-header">Quarterly Accomplishment Reports</h5>
-                    <div class="card-body">
-                        <h6 class="ml-3 home-titles"><i class="bi bi-book-fill mr-1 home-titles"></i> Academic Program Development</h6>
-                        <ul class="home-report-list">
-                            @can('viewAny', \App\Models\Syllabus::class)
-                            <li><a href="{{ route('syllabus.index') }}">Course Syllabus</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\Reference::class)
-                            <li><a href="{{ route('rtmmi.index') }}">Reference/Textbook/Module/Monographs/Instructional Materials</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\StudentAward::class)
-                            <li><a href="{{ route('student-award.index') }}">Student Awards and Recognition (Department/College Level)</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\StudentTraining::class)
-                            <li><a href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings (Department/College Level)</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\ViableProject::class)
-                            <li><a href="{{ route('viable-project.index') }}">Viable Demonstration Projects (Department/College Level)</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\CollegeDepartmentAward::class)
-                            <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received by the Department/College or Office</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\TechnicalExtension::class)
-                            <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities (Department/College Level)</a></li>
-                            @endcan
-                        </ul>
-                        <h6 class="ml-3 home-titles"><i class="bi bi-people-fill home-titles mr-1"></i> Extension Programs & Expert Services</h6>
-                        <ul class="home-report-list">
-                            @can('viewAny', \App\Models\ExpertServiceConsultant::class)
-                            <li><a href="{{ route('expert-service-as-consultant.index') }}">Expert Service Rendered as Consultant</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\ExpertServiceConference::class)
-                            <li><a href="{{ route('expert-service-in-conference.index') }}">Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\ExpertServiceAcademic::class)
-                            <li><a href="{{ route('expert-service-in-academic.index') }}">Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\ExtensionService::class)
-                            <li><a href="{{ route('extension-service.index') }}">Extension Services</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\Partnership::class)
-                            <li><a href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\Mobility::class)
-                            <li><a href="{{ route('mobility.index') }}">Inter-country Mobility</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\OutreachProgram::class)
-                            <li><a href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program (Department/College Level)</a></li>
-                            @endcan
-                        </ul>
-                        <h6 class="ml-3 home-titles"><i class="bi bi-search home-titles mr-1"></i> Research & Invention</h6>
-                        <ul class="home-report-list">
-                            @can('viewAny', \App\Models\Research::class)
-                            <li><a href="{{ route('research.index') }}">Research Registration</a></li>
-                            @endcan
-                            @can('viewAny', \App\Models\Invention::class)
-                            <li><a href="{{ route('invention-innovation-creative.index') }}">Inventions, Innovation, & Creativity</a></li>
-                            @endcan
-                        </ul>
-                        @can('viewAny', \App\Models\Request::class)
-                        <h6 class="ml-3 home-titles"><i class="bi bi-question-circle-fill home-titles mr-1"></i> Requests & Queries</h6>
-                        <ul class="home-report-list">
-                            <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
-                        </ul>
-                        @endcan
-                    </div>
-                </div>
-            </div>
-            @endIsReporting -->
+            
             @if (in_array(8, $roles) || in_array(9, $roles))
             <div class="col-md-8 mb-4">
                 <div class="card">
@@ -201,7 +130,6 @@
                 </div>
             </div>
         </div>
-        @endExceptSuperAdmin
         
     </div>
 

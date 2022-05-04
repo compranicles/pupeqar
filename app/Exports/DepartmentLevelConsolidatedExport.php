@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-// use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\{
     User,
     Report,
@@ -95,10 +94,8 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
             AfterSheet::class => function(Aftersheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
-                // $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
-                // $event->sheet->getStyle('A1:Z500')->getAlignment()->setWrapText(true);
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->freezePane('B1');
 
@@ -112,7 +109,6 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                 
 
                 $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                // $event->sheet->getRowDimension('1')->setRowHeight(26.25);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->setCellValue('B2', 'DEPARTMENT:');
@@ -269,7 +265,6 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
 
                         if($table_contents[$format->id] == null){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                            // $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
@@ -279,7 +274,6 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                                 'borders' => [
                                     'allBorders' => [
                                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        // 'color' => ['argb' => 'FF515256'],
                                     ],
                                 ],
                             ]);
@@ -316,7 +310,6 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                         $path = storage_path('app/documents/'. $this->signature);
                         $coordinates = 'A'.$count-4;
                         $sheet = $event->sheet->getDelegate();
-                        // dd($this->signature);
                         echo $this->addImage($path, $coordinates, $sheet);
                     }
                     

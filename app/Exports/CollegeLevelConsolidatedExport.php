@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-// use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\{
     User,
     Report,
@@ -95,17 +94,17 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                 $event->sheet->getSheetView()->setZoomScale(70);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
-                $event->sheet->getDefaultColumnDimension()->setWidth(33);
+                $event->sheet->getDefaultColumnDimension()->setWidth(35);
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->freezePane('B1');
 
-                    $event->sheet->setCellValue('A1', 'COLLEGE LEVEL QUARTERLY ACCOMPLISHMENT REPORT');
-                    $event->sheet->getStyle('A1')->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                            'size' => 20,
-                        ]
-                    ]);
+                $event->sheet->setCellValue('A1', 'COLLEGE LEVEL QUARTERLY ACCOMPLISHMENT REPORT');
+                $event->sheet->getStyle('A1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'size' => 20,
+                    ]
+                ]);
                 
 
                 $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
@@ -118,6 +117,7 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                         'bold' => true,
                     ]
                 ]);
+                $event->sheet->getStyle('B2')->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->mergeCells('C2:E2');
                 $event->sheet->setCellValue('C2', $this->collegeName);
@@ -275,7 +275,6 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                                 'borders' => [
                                     'allBorders' => [
                                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        // 'color' => ['argb' => 'FF515256'],
                                     ],
                                 ],
                             ]);

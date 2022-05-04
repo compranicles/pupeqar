@@ -128,36 +128,14 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
                 // $event->sheet->getStyle('A1:Z500')->getAlignment()->setWrapText(true);
                 $event->sheet->mergeCells('A1:G1');
-                $event->sheet->freezePane('B1');
-                if ($this->source_type == "individual")
-                    if ($this->report_format == "academic")
-                    {   
-                        $event->sheet->setCellValue('A1', 'FACULTY INDIVIDUAL ACCOMPLISHMENT REPORT');
-                        $event->sheet->getStyle('A1')->applyFromArray([
-                            'font' => [
-                                'bold' => true,
-                                'size' => 20,
-                            ]
-                        ]);
-                    }
-                    else {
-                        $event->sheet->setCellValue('A1', 'ADMIN INDIVIDUAL ACCOMPLISHMENT REPORT');
-                        $event->sheet->getStyle('A1')->applyFromArray([
-                            'font' => [
-                                'bold' => true,
-                                'size' => 20,
-                            ]
-                        ]);
-                    }
-                else {
-                    $event->sheet->setCellValue('A1', 'CONSOLIDATED QUARTERLY ACCOMPLISHMENT REPORT');
-                    $event->sheet->getStyle('A1')->applyFromArray([
-                        'font' => [
-                            'bold' => true,
-                            'size' => 20,
-                        ]
-                    ]);
-                }
+                $event->sheet->freezePane('C1');
+                $event->sheet->setCellValue('A1', 'CONSOLIDATED QUARTERLY ACCOMPLISHMENT REPORT');
+                $event->sheet->getStyle('A1')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                        'size' => 20,
+                    ]
+                ]);
 
                 $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 // $event->sheet->getRowDimension('1')->setRowHeight(26.25);

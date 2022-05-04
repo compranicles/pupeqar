@@ -76,10 +76,10 @@
                                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.' '.$row->suffix }}</td>
                                                 <td>
                                                     @if ($row->research_status == null)
-                                                        n/a
+                                                        N/A
                                                     @elseif($row->research_status == "1")
                                                         @if ($involvement[$row->id] == null)
-                                                            n/a
+                                                            N/A
                                                         @elseif ($involvement[$row->id] == "12")
                                                             Asst. Team Leader/ Co-Lead Researcher
                                                         @elseif ($involvement[$row->id] == "13")
