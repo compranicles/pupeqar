@@ -31,10 +31,12 @@ class AccountController extends Controller
                             ->all();
         $roles = implode(', ', $roles);
         $employeeSectorsCbcoDepartment = Employee::where('employees.user_id', $user->id)
-                            ->join('sectors', 'employees.sector_id', 'sectors.id')
+                            ->leftJoin('sectors', 'employees.sector_id', 'sectors.id')
                             ->join('colleges', 'employees.college_id', 'colleges.id')
                             ->select('employees.id', 'sectors.name as sectorName', 'colleges.name as collegeName')
                             ->get();
+
+                            // dd($employeeSectorsCbcoDepartment);
 
         return view('account', compact('accountDetail', 'employeeDetail', 'roles', 'employeeSectorsCbcoDepartment', 'user'));
     }

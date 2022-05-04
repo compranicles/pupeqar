@@ -1,7 +1,5 @@
 <x-guest-layout>
     <x-jet-authentication-card>
-        
-
         <div class="card-body">
             <div class="row mt-1 mb-3">
                 <div class="col-md-12">

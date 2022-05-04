@@ -95,7 +95,7 @@
             <div class="text-center mb-3">
                 <a href="{{ route('reports.consolidate.sector', $sector[7]->sector_id) }}"><i class="bi bi-file-earmark-check text-center home-navigate-icons"></i></a>
             </div>
-            <h6 class="text-center"><a href="{{ route('reports.consolidate.sector', $sector[7]->sector_id) }}" class="home-card-links">Consolidate College/Branch/Campus/Office Accomplishments</a></h6>
+            <h6 class="text-center"><a href="{{ route('reports.consolidate.sector', $sector[7]->sector_id) }}" class="home-card-links">Consolidate Sector Accomplishments</a></h6>
         </div>
     </div>
 </div>

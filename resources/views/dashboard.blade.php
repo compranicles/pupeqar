@@ -6,11 +6,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
                     <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
                         <div class="db-icon">
-                            <i class="bi bi-send home-icons"></i>
+                            <i class="bi bi-calendar3 home-icons"></i>
                         </div>
                         <div class="ml-auto">
                             <h5 class="text-right">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</h5>
@@ -66,7 +66,7 @@
         </div>
         @ExceptSuperAdmin
         <div class="row">
-            @IsReporting
+            <!-- @IsReporting
             <div class="col-md-8">
                 <div class="card">
                 <h5 class="card-header">Quarterly Accomplishment Reports</h5>
@@ -137,7 +137,34 @@
                     </div>
                 </div>
             </div>
-            @endIsReporting
+            @endIsReporting -->
+            @if (in_array(8, $roles) || in_array(9, $roles))
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
+                    <div class="card-body">
+                        <table class="table table-sm table-borderless fixed_header" id="log_activity_table" style="height: 15rem;">
+                            <tbody>
+                            </tbody>
+                            <p class="align-middle text-center no-data-message">No recent logs to show.</p>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @else
+            <div class="col-md-8">
+                <div class="card">
+                <h5 class="card-header">Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
+                    <div class="card-body">
+                        <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table" style="height: 15rem;">
+                            <tbody>
+                            </tbody>
+                            <p class="align-middle text-center no-data-message">No recent activities to show.</p>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-md-12">
@@ -175,35 +202,7 @@
             </div>
         </div>
         @endExceptSuperAdmin
-        <div class="row">
-            @if (in_array(8, $roles) || in_array(9, $roles))
-            <div class="col-md-8">
-                <div class="card">
-                <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
-                    <div class="card-body">
-                        <table class="table table-sm table-borderless fixed_header" id="log_activity_table">
-                            <tbody>
-                            </tbody>
-                            <p class="align-middle text-center no-data-message">No recent logs to show.</p>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            @else
-            <div class="col-md-8 mt-4">
-                <div class="card">
-                <h5 class="card-header">Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
-                    <div class="card-body">
-                        <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table">
-                            <tbody>
-                            </tbody>
-                            <p class="align-middle text-center no-data-message">No recent activities to show.</p>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            @endif
-        </div>
+        
     </div>
 
     <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
@@ -268,7 +267,7 @@
                     $('.no-data-message').remove();
                     $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
                     $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #278bbf;"></i>'+
+                        .append('<td class="activity-log-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #00a7d1;"></i>'+
                                 item.subject
                             +'<div class="text-muted ml-4"><small>'+item.name+' &#183; '+item.created_at+'</small></div></td>'
                         );
@@ -286,7 +285,7 @@
                     $('.no-data-message').remove();
                     $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
                     $('#activity-log-indi-'+countColumns)
-                        .append('<td class="activity-log-indi-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #278bbf;"></i>'+
+                        .append('<td class="activity-log-indi-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #00a7d1;"></i>'+
                                 item.subject
                             +'<div class="text-muted ml-4"><small>'+item.created_at+'</small></div></td>'
                         );

@@ -32,6 +32,7 @@ class ReferenceFactory extends Factory
             'user_id' => 2,
             'report_quarter' => 2,
             'report_year' => 2022,
+            // 'document' => $this->faker->image('public/storage',640,480, null, false)
         ];
     }
 }

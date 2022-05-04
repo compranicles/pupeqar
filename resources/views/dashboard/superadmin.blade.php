@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
         <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
             <div class="db-icon">
@@ -11,7 +11,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
         <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
             <div class="db-icon">
@@ -24,7 +24,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
         <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
             <div class="db-icon">
@@ -37,7 +37,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
         <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
             <div class="db-icon">
@@ -50,7 +50,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     <div class="db-card bg-body rounded shadow-sm" style="background-color: white; padding-top: 8px;">
         <div class="d-flex" style="padding: 2.40em 2em 2.40em 2em">
             <div class="db-icon">
