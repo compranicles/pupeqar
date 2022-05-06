@@ -140,11 +140,12 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
 
         return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'id', 'user', 'director', 'sector_head'));
     }
-
+    
     public function registerEvents(): array {
         return [
             AfterSheet::class => function(Aftersheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Helvetica');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
@@ -181,7 +182,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     ]);
                 }
 
-                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $event->sheet->mergeCells('B2:C2');

@@ -115,6 +115,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
