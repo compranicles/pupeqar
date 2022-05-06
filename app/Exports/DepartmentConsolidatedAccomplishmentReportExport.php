@@ -125,8 +125,8 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
-                            ->where('reports.department_id', $department_id)
-                            ->where('reports.chairperson_approval', 1)
+                        ->where('reports.department_id', $department_id)
+                        ->where('reports.chairperson_approval', 1)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')

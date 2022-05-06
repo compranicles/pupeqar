@@ -228,7 +228,7 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Seminar/Webinar added.');
+        \LogActivity::addToLog('Had submitted a Seminar/Webinar.');
 
         return redirect()->route('submissions.development.index')->with('success','The accomplishment has been submitted.');
     }
@@ -420,7 +420,7 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Training added.');
+        \LogActivity::addToLog('Had submitted a Training.');
 
         return redirect()->route('submissions.development.index')->with('success','The accomplishment has been submitted.');
     }

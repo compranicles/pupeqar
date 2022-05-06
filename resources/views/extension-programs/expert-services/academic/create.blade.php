@@ -43,17 +43,16 @@
             });
         </script>
         <script>
-            $('#other_nature').attr('disabled', true);
-            $('#nature').on('input', function(){
-                var nature_name = $("#nature option:selected").text();
-                if (nature_name == "Others") {
-                    $('#other_nature').removeAttr('disabled');
-                    $('#other_nature').focus();
-                }
-                else {
-                    $('#other_nature').val('');
-                    $('#other_nature').attr('disabled', true);
-                }
+            $("#nature").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
@@ -63,6 +62,17 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 20;
+            $('#nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#nature")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
             });

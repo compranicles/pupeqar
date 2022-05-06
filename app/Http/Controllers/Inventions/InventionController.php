@@ -143,7 +143,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$request->input('title').'" was added.');
+        \LogActivity::addToLog("Had added ".ucfirst($classification[0]->name).' entitled "'.$request->input('title').'".');
 
         // dd($classification);
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
@@ -277,7 +277,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$invention_innovation_creative->title.'" was updated.');
+        \LogActivity::addToLog("Had updated ".ucfirst($classification[0]->name).'.');
 
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }
@@ -305,7 +305,7 @@ class InventionController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
-        \LogActivity::addToLog(ucfirst($classification[0]->name).' entitled "'.$invention_innovation_creative->title.'" was deleted.');
+        \LogActivity::addToLog("Had deleted ".ucfirst($classification[0]->name).' entitled "'.$invention_innovation_creative->title.'".');
 
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been deleted.');
     }
@@ -319,7 +319,7 @@ class InventionController extends Controller
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Invention/Innovation/Creative Work document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an Invention/Innovation/Creative Work.');
 
         return true;
     }

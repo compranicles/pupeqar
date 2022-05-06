@@ -235,7 +235,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 8,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
         //Indexing
@@ -464,7 +464,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 8,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
         //Type
@@ -546,7 +546,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 5,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
         //Nature of Collaboration
@@ -599,7 +599,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 5,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
         //Type of Partnership Institution
@@ -670,7 +670,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 5,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
         //Deliverable/Desired Output
@@ -723,7 +723,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 9,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
 
          //Partnership Level
@@ -834,7 +834,7 @@ class ExtensionDropdownSeeder extends Seeder
             'dropdown_id' => $dropdownId,
             'name' => 'Others',
             'order' => 4,
-            'is_active' => 1,
+            'is_active' => 0,
         ]);
         
         //Outreach Level

@@ -16,12 +16,9 @@ class CreatePartnershipsTable extends Migration
         Schema::create('partnerships', function (Blueprint $table) {
             $table->id();
             $table->string('moa_code')->nullable();
-            $table->foreignId('collab_nature')->nullable();
-            $table->string('other_collab_nature')->nullable();
-            $table->foreignId('partnership_type')->nullable();
-            $table->string('other_partnership_type')->nullable();
-            $table->foreignId('deliverable')->nullable();
-            $table->string('other_deliverable')->nullable();    
+            $table->string('collab_nature')->nullable();
+            $table->string('partnership_type')->nullable();
+            $table->string('deliverable')->nullable();
             $table->string('name_of_partner')->nullable();
             $table->string('title_of_partnership')->nullable();
             $table->string('beneficiaries')->nullable();

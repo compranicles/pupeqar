@@ -136,7 +136,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$request->input('title').'" was added.');
+        \LogActivity::addToLog('Had added '.$request->input('category').' entitled "'.$request->input('title').'".');
 
 
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
@@ -282,7 +282,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$rtmmi->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');
@@ -313,7 +313,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material entitled "'.$rtmmi->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                             ->with('action', 'deleted.');
@@ -328,7 +328,7 @@ class ReferenceController extends Controller
         ReferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Reference, Textbook, Module, Monograph, or Instructional Material document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of a reference, textbook, module, monograph, or IM.');
 
         return true;
     }

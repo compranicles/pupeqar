@@ -73,7 +73,7 @@ class InviteController extends Controller
             Notification::send($user, new ResearchInviteNotification($notificationData));
             $count++;
         }
-        \LogActivity::addToLog('Added Researcher.');
+        \LogActivity::addToLog('Had invited a researcher to the research "'.$research_title.'".');
 
         return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited successfully');
     }
@@ -82,7 +82,7 @@ class InviteController extends Controller
 
         $user = User::find(auth()->id());
 
-        \LogActivity::addToLog('Research invitation was confirmed.');
+        \LogActivity::addToLog('Had confirmed the research invitation.');
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         
@@ -98,7 +98,7 @@ class InviteController extends Controller
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         
-        \LogActivity::addToLog('Research Invitation Cancelled.');
+        \LogActivity::addToLog('Had rejected the research invitation.');
 
         return redirect()->route('research.index')->with('success', 'Invitation cancelled');
     }

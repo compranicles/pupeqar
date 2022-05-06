@@ -131,7 +131,7 @@ class CitationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research citation of "'.$research->title.'" was added.');
+        \LogActivity::addToLog('Had added a research citation for "'.$research->title.'".');
 
         return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been added.');
     }
@@ -248,7 +248,7 @@ class CitationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research citation of "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated a research citation of "'.$research->title.'".');
 
         return redirect()->route('research.citation.show', [$research->id, $citation->id])->with('success', 'Research Citation Updated Successfully');
     }
@@ -275,7 +275,7 @@ class CitationController extends Controller
 
         $citation->delete();
 
-        \LogActivity::addToLog('Research citation of "'.$research->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted a research citation of "'.$research->title.'".');
 
         return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been deleted.');
     }

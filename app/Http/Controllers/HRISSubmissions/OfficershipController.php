@@ -197,7 +197,7 @@ class OfficershipController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Officership/Membership added.');
+        \LogActivity::addToLog('Had submitted an Officership/Membership.');
 
         return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been submitted.');
     }

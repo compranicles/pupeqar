@@ -146,7 +146,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research copyright of "'.$research->title.'" was added.');
+        \LogActivity::addToLog('Had added a copyright for research "'.$research->title.'".');
 
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been added.');
     }
@@ -244,7 +244,7 @@ class CopyrightedController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research copyright of "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated a copyright of research "'.$research->title.'".');
 
         return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been updated.');
     }

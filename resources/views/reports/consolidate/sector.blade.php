@@ -20,10 +20,7 @@
                 <div class="col-md-12">
                     <h5 class="d-inline-block" style="padding-top: 10px;">{{ $sector->name }} - Accomplishments</h5>
                     <div class="float-right">
-                        <button id="generate" type="button" class="btn btn-primary float-right" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
-                    </div>
-                    <div class="float-right">
-                        <button class="btn btn primary ml-2" data-target="#GenerateSectorLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
+                        <button class="btn btn-primary ml-2" data-target="#GenerateSectorLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
                     </div>
                 </div>   
             </div>
@@ -52,8 +49,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="deptFilter" class="mr-2">Department: </label>
-                            <select name="dept" id="deptFilter" class="custom-select">
+                        <label for="empFilter" class="mr-2">Employee: </label>
+                            <select name="emp" id="empFilter" class="custom-select">
                                 <option value="">Show All</option>
                             </select>
                     </div>
@@ -92,8 +89,9 @@
                                 <tr>
                                     <th rowspan="2"></th>
                                     <th rowspan="2">Accomplishment Report</th>
+                                    <th rowspan="2">Employee</th>
                                     <th rowspan="2">College/Branch/<br>Campus/Office</th>
-                                    <th rowspan="2">Department</th>
+                                    <!-- <th rowspan="2">Department</th> -->
                                     <th class="text-center" colspan="6">Status</th>
                                     <th rowspan="2"></th>
                                 </tr>
@@ -111,8 +109,8 @@
                                 <tr role="button">
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]['name'] }}</td>
-                                    <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id] }}</td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                             @if ($row->researcher_approval === null)
@@ -344,7 +342,6 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['source_type' => 'college', 'special_type' => 'sector', 'colleges' => $collegesOfSector])
     @include('reports.generate.sector', ['sector' => $sector])
 
     
@@ -373,7 +370,7 @@
                 });
                 this.api().columns(2).every( function () {
                     var column = this;
-                    var select = $('#collegeFilter')
+                    var select = $('#empFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
@@ -390,7 +387,7 @@
                 });
                 this.api().columns(3).every( function () {
                     var column = this;
-                    var select = $('#deptFilter')
+                    var select = $('#collegeFilter')
                         .on( 'change', function () {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
@@ -405,6 +402,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
+                
                 }
             });
 

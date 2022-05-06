@@ -19,7 +19,6 @@ class CreateExtensionServicesTable extends Migration
             $table->foreignId('status')->nullable();
             $table->foreignId('nature_of_involvement')->nullable();
             $table->foreignId('classification')->nullable();
-            $table->string('other_classification')->nullable();
             $table->foreignId('type')->nullable();
             $table->string('title_of_extension_program')->nullable();
             $table->string('title_of_extension_project')->nullable();
@@ -32,8 +31,7 @@ class CreateExtensionServicesTable extends Migration
             $table->date('to')->nullable();
             $table->integer('no_of_trainees_or_beneficiaries')->nullable();
             $table->decimal('total_no_of_hours', 9, 1)->nullable();
-            $table->foreignId('classification_of_trainees_or_beneficiaries')->nullable();
-            $table->string('other_classification_of_trainees')->nullable();
+            $table->string('classification_of_trainees_or_beneficiaries')->nullable();
             $table->string('place_or_venue')->nullable();
             $table->string('keywords')->nullable();
             $table->integer('quality_poor')->nullable();

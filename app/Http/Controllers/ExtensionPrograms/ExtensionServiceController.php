@@ -151,7 +151,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Extension service was added.');
+        \LogActivity::addToLog('Had added an extension service.');
 
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been added.');
@@ -290,7 +290,7 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Extension service was updated.');
+        \LogActivity::addToLog('Had updated an extension service.');
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been updated.');
     }
@@ -314,7 +314,7 @@ class ExtensionServiceController extends Controller
         $extension_service->delete();
         ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
 
-        \LogActivity::addToLog('Extension service was deleted.');
+        \LogActivity::addToLog('Had deleted an extension service.');
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension service has been deleted.');
     }
@@ -324,7 +324,7 @@ class ExtensionServiceController extends Controller
 
         ExtensionServiceDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Extension service document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an extension service.');
 
         // Storage::delete('documents/'.$filename);
         return true;

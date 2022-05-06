@@ -16,8 +16,7 @@ class CreateExpertServiceAcademicsTable extends Migration
         Schema::create('expert_service_academics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('classification')->nullable();
-            $table->foreignId('nature')->nullable();
-            $table->string('other_nature')->nullable();
+            $table->string('nature')->nullable();
             $table->date('from')->nullable();
             $table->date('to')->nullable();
             $table->string('publication_or_audio_visual')->nullable();
