@@ -149,11 +149,6 @@
         <script>
             $(function() {
                 var type = '{{ $values['type'] }}';
-                if (type != 173) {
-                    $('#other_type').attr('disabled', true);
-                } else {
-                    $('#other_type').removeAttr('disabled');
-                }
             });
         </script>
         <script>
@@ -162,16 +157,16 @@
             });
         </script>
         <script>
-            $('#type').on('input', function(){
-                var type_name = $("#type option:selected").text();
-                if (type_name == "Others") {
-                    $('#other_type').removeAttr('disabled');
-                    $('#other_type').focus();
-                }
-                else {
-                    $('#other_type').val('');
-                    $('#other_type').attr('disabled', true);
-                }
+            $("#type").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
@@ -181,6 +176,17 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 35;
+            $('#type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#type")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
             });

@@ -125,8 +125,8 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
-                            ->where('reports.department_id', $department_id)
-                            ->where('reports.chairperson_approval', 1)
+                        ->where('reports.department_id', $department_id)
+                        ->where('reports.chairperson_approval', 1)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')
@@ -147,6 +147,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
         return [
             AfterSheet::class => function(Aftersheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
@@ -162,7 +163,6 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     ]);
                 }
 
-                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 if ($this->report_format == "academic") {

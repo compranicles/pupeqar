@@ -37,23 +37,22 @@
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $('#other_type').attr('disabled', true);
-            $('#type').on('input', function(){
-                var type_name = $("#type option:selected").text();
-                if (type_name == "Others") {
-                    $('#other_type').removeAttr('disabled');
-                    $('#other_type').focus();
-                }
-                else {
-                    $('#other_type').val('');
-                    $('#other_type').attr('disabled', true);
-                }
-            });
-        </script>
-        <script>
             $('#start_date').on('change', function () {
                 $('#end_date').datepicker('setDate', $('#start_date').val());
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
+            });
+        </script>
+        <script>
+            $("#type").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
@@ -63,6 +62,17 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 35;
+            $('#type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#type")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
             });

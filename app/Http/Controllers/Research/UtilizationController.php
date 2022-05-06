@@ -128,7 +128,7 @@ class UtilizationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was added.');
+        \LogActivity::addToLog('Had added a research utilization for "'.$research->title.'".');
 
 
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been added.');
@@ -248,7 +248,7 @@ class UtilizationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated a research utilization of "'.$research->title.'".');
 
         return redirect()->route('research.utilization.show', [$research->id, $utilization->id])->with('success', 'Research Utilization has been updated.');
     }
@@ -275,7 +275,7 @@ class UtilizationController extends Controller
 
         $utilization->delete();
 
-        \LogActivity::addToLog('Research utilization of "'.$research->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted a research utilization of "'.$research->title.'".');
 
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been deleted.');
     }

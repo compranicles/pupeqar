@@ -41,48 +41,6 @@
         <script>
             $(function() {
                 $('#status').val(105);
-
-                var classification = '{{ old('classification') }}';
-                if (classification != 119) {
-                    $('#other_classification').attr('disabled', true);
-                } else {
-                    $('#other_classification').removeAttr('disabled');
-                }
-
-                var classification_of_trainees_or_beneficiaries = '{{ old('classification_of_trainees_or_beneficiaries') }}';
-                if (classification_of_trainees_or_beneficiaries != 130) {
-                    $('#other_classification_of_trainees').attr('disabled', true);
-                } else {
-                    $('#other_classification_of_trainees').removeAttr('disabled');
-                }
-            });
-        </script>
-        <script>
-            $('#other_classification').attr('disabled', true);
-            $('#classification').on('input', function(){
-                var classification_name = $("#classification option:selected").text();
-                if (classification_name == "Others") {
-                    $('#other_classification').removeAttr('disabled');
-                    $('#other_classification').focus();
-                }
-                else {
-                    $('#other_classification').val('');
-                    $('#other_classification').attr('disabled', true);
-                }
-            });
-        </script>
-        <script>
-            $('#other_classification_of_trainees').attr('disabled', true);
-            $('#classification_of_trainees_or_beneficiaries').on('input', function(){
-                var other_classification_of_trainees = $("#classification_of_trainees_or_beneficiaries option:selected").text();
-                if (other_classification_of_trainees == "Others") {
-                    $('#other_classification_of_trainees').removeAttr('disabled');
-                    $('#other_classification_of_trainees').focus();
-                }
-                else {
-                    $('#other_classification_of_trainees').val('');
-                    $('#other_classification_of_trainees').attr('disabled', true);
-                }
             });
         </script>
         <script>
@@ -117,6 +75,32 @@
                     $('#from').attr('required', true);
             });
         </script>
+                <script>
+            $("#classification").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
+            });
+        </script>
+        <script>
+            $("#classification_of_trainees_or_beneficiaries").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
+            });
+        </script>
         <script>
             var report_category_id = 12;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -124,6 +108,28 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 26;
+            $('#classification').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#classification")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 29;
+            $('#classification_of_trainees_or_beneficiaries').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#classification_of_trainees_or_beneficiaries")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
             });

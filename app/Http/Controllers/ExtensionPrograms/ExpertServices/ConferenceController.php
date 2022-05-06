@@ -129,7 +129,7 @@ class ConferenceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course "'.$request->input('title').'" was added.');
+        \LogActivity::addToLog('Had added an expert service rendered in conference "'.$request->input('title').'".');
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been added.');
     }
@@ -245,7 +245,7 @@ class ConferenceController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course "'.$expert_service_in_conference->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
 
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
@@ -271,7 +271,7 @@ class ConferenceController extends Controller
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
 
-        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course "'.$expert_service_in_conference->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been deleted.');
     }
@@ -283,7 +283,7 @@ class ConferenceController extends Controller
             return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Expert service rendered in conference, workshop, or training course document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an expert service rendered in conference.');
 
         // Storage::delete('documents/'.$filename);
         return true;

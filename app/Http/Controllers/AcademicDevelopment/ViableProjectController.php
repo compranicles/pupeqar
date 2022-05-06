@@ -131,7 +131,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Viable demonstration project "'.$request->input('name').'" was added.');
+        \LogActivity::addToLog('Had added a viable demo project "'.$request->input('name').'".');
 
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
@@ -250,7 +250,7 @@ class ViableProjectController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Viable demonstration project "'.$viable_project->name.'" was updated.');
+        \LogActivity::addToLog('Had updated the viable demo project "'.$viable_project->name.'".');
 
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
@@ -275,7 +275,7 @@ class ViableProjectController extends Controller
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
 
-        \LogActivity::addToLog('Viable demonstration project "'.$viable_project->name.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the viable demo project "'.$viable_project->name.'".');
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been deleted.');
     }
@@ -287,7 +287,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         ViableProjectDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Viable demonstration project document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of a viable demo project.');
 
         return true;
     }

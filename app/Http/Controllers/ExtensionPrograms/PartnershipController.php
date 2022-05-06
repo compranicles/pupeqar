@@ -131,7 +131,7 @@ class PartnershipController extends Controller
                 }
             }
         }
-        \LogActivity::addToLog('Partnership, linkages, and network "'.$request->input('title_of_partnership').'" was added.');
+        \LogActivity::addToLog('Had added a partnership/linkage/network "'.$request->input('title_of_partnership').'".');
 
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
@@ -251,7 +251,7 @@ class PartnershipController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Partnership, linkages, and network "'.$partnership->title_of_partnership.'" was updated.');
+        \LogActivity::addToLog('Had updated the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
 
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
@@ -277,7 +277,7 @@ class PartnershipController extends Controller
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
 
-        \LogActivity::addToLog('Partnership, linkages, and network "'.$partnership->title_of_partnership.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been deleted.');
     }
@@ -289,7 +289,7 @@ class PartnershipController extends Controller
             return view('inactive');
         PartnershipDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Partnership, linkages, and network document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of a partnership/linkage/network.');
 
         return true;
     }

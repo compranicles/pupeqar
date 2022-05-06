@@ -111,7 +111,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Community relations and outreach program "'.$request->input('title_of_the_program').'" was added.');
+        \LogActivity::addToLog('Had added a community relations and outreach program "'.$request->input('title_of_the_program').'".');
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
     }
@@ -211,7 +211,7 @@ class OutreachProgramController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Community relations and outreach program "'.$outreach_program->title_of_the_program.'" was updated.');
+        \LogActivity::addToLog('Had updated the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
 
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
@@ -236,7 +236,7 @@ class OutreachProgramController extends Controller
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
         $outreach_program->delete();
 
-        \LogActivity::addToLog('Community relations and outreach program "'.$outreach_program->title_of_the_program.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been deleted.');
     }
@@ -248,7 +248,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
         OutreachProgramDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Community relations and outreach program document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of a community relations and outreach program.');
 
         return true;
     }

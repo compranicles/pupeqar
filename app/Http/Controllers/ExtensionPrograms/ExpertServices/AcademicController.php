@@ -134,7 +134,7 @@ class AcademicController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
 
-        \LogActivity::addToLog('Expert service rendered in academic '.strtolower($classification[0]->name).' was added.');
+        \LogActivity::addToLog('Had added an expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
@@ -263,7 +263,7 @@ class AcademicController extends Controller
 
         $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
 
-        \LogActivity::addToLog('Expert service rendered in academic '.strtolower($classification[0]->name).' was updated.');
+        \LogActivity::addToLog('Had updated the expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
@@ -289,7 +289,7 @@ class AcademicController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
 
-        \LogActivity::addToLog('Expert service rendered in academic '.strtolower($classification[0]->name).' was deleted.');
+        \LogActivity::addToLog('Had deleted the expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been deleted.');
     }
@@ -302,7 +302,7 @@ class AcademicController extends Controller
         ExpertServiceAcademicDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Expert service rendered in academic document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an expert service rendered in academic.');
 
         return true;
     }

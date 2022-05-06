@@ -122,11 +122,10 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
         return [
             AfterSheet::class => function(Aftersheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
-                // $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
-                // $event->sheet->getStyle('A1:Z500')->getAlignment()->setWrapText(true);
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->freezePane('C1');
                 $event->sheet->setCellValue('A1', 'CONSOLIDATED QUARTERLY ACCOMPLISHMENT REPORT');
@@ -137,8 +136,6 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     ]
                 ]);
 
-                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                // $event->sheet->getRowDimension('1')->setRowHeight(26.25);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $event->sheet->mergeCells('B2:C2');
@@ -245,7 +242,6 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                         // title
                         $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                        // $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF800000");
                         if ($format->is_individual == '0') {
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF002060");
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('ffffffff');
@@ -255,8 +251,6 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
                         }
                         
-                        // $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
-
                         $event->sheet->getRowDimension($count)->setRowHeight(30);
                         $event->sheet->getStyle('A'.$count)->applyFromArray([
                             'font' => [
@@ -303,7 +297,6 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
 
                         if($table_contents[$format->id] == null){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
-                            // $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFD9E1F2");
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
@@ -313,7 +306,6 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                                 'borders' => [
                                     'allBorders' => [
                                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                                        // 'color' => ['argb' => 'FF515256'],
                                     ],
                                 ],
                             ]);

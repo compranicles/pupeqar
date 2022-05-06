@@ -124,7 +124,7 @@ class RequestController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Request & Queries Acted Upon added.');
+        \LogActivity::addToLog('Had added a Request & Queries Acted Upon.');
 
         return redirect()->route('request.index')->with('request_success', 'Your Accomplishment in Request & Queries Acted Upon has been saved.');
     }
@@ -223,7 +223,7 @@ class RequestController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Request & Queries Acted Upon updated.');
+        \LogActivity::addToLog('Had updated a Request & Queries Acted Upon.');
 
         return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been updated.');
     }
@@ -245,7 +245,7 @@ class RequestController extends Controller
         RequestDocument::where('request_id', $request->id)->delete();
         $request->delete();
 
-        \LogActivity::addToLog('Request & Queries Acted Upon deleted.');
+        \LogActivity::addToLog('Had deleted a Request & Queries Acted Upon.');
 
         return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been deleted.');
     }
