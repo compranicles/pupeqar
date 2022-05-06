@@ -31,28 +31,16 @@ class MobilityFormSeeder extends Seeder
             'extension_program_form_id' => 6,
             'label' => 'Type',
             'name' => 'type',
-            'placeholder' => null,
+            'placeholder' => "If others, please specify.",
             'size' => 'col-md-6',
-            'field_type_id' => 5,
+            'field_type_id' => 1,
             'dropdown_id' => 35, 
             'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::insert([
-            'extension_program_form_id' => 6,
-            'label' => 'Please specify',
-            'name' => 'other_type',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
+
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
             'label' => 'Hosting Institution/ Organization/ Agency',

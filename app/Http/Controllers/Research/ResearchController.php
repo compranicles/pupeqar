@@ -245,7 +245,7 @@ class ResearchController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research entitled "'.$request->input('title').'" was added.');
+        \LogActivity::addToLog('Had added a research entitled "'.$request->input('title').'".');
 
 
         return redirect()->route('research.index')->with('success', 'Research has been registered.');
@@ -410,7 +410,7 @@ class ResearchController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research entitled "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the details of research "'.$research->title.'".');
 
         return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated.');
     }
@@ -434,7 +434,7 @@ class ResearchController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
 
-        \LogActivity::addToLog('Research entitled "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the details of research "'.$research->title.'".');
 
         return redirect()->route('research.show', $research)->with('success', 'Research has been updated.');
     }
@@ -458,7 +458,7 @@ class ResearchController extends Controller
         $research->delete();
         ResearchDocument::where('research_id', $research->id)->delete();
 
-        \LogActivity::addToLog('Research entitled "'.$research->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the research entitled "'.$research->title.'".');
 
 
         return redirect()->route('research.index')->with('success', 'Research has been deleted.');
@@ -618,7 +618,7 @@ class ResearchController extends Controller
                     ->first()
                     ->delete();
 
-        \LogActivity::addToLog('Research was added.');
+        \LogActivity::addToLog('Had saved a research entitled "'.$research_title.'".');
         
 
         return redirect()->route('research.index')->with('success', 'Research has been saved.');

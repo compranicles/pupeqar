@@ -16,8 +16,7 @@ class CreateMobilitiesTable extends Migration
         Schema::create('mobilities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('nature_of_engagement')->nullable();
-            $table->foreignId('type')->nullable();
-            $table->string('other_type')->nullable();
+            $table->string('type')->nullable();
             $table->string('host_name')->nullable();
             $table->string('host_address')->nullable();
             $table->string('mobility_description')->nullable();

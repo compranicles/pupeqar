@@ -127,7 +127,7 @@ class ConsultantController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Expert service rendered as consultant "'.$request->input('title').'" was added');
+        \LogActivity::addToLog('Had added an expert service rendered as consultant "'.$request->input('title').'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
     }
@@ -243,7 +243,7 @@ class ConsultantController extends Controller
         }
 
 
-        \LogActivity::addToLog('Expert service rendered as consultant "'.$expert_service_as_consultant->title.'" was updated');
+        \LogActivity::addToLog('Had updated the xpert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been updated.');
     }
@@ -267,7 +267,7 @@ class ConsultantController extends Controller
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
 
-        \LogActivity::addToLog('Expert service rendered as consultant "'.$expert_service_as_consultant->title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the expert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been deleted.');
     }
@@ -279,7 +279,7 @@ class ConsultantController extends Controller
             return view('inactive');
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
-        \LogActivity::addToLog('Expert service rendered as consultant document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an expert service rendered as consultant.');
 
         return true;
     }

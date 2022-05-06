@@ -126,7 +126,7 @@ class MobilityController extends Controller
                 }
             }
         }
-        \LogActivity::addToLog('Inter-Country mobility was added.');
+        \LogActivity::addToLog('Had added an inter-country mobility.');
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been added.');
     }
@@ -244,7 +244,7 @@ class MobilityController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Inter-Country mobility was updated.');
+        \LogActivity::addToLog('Had updated an inter-country mobility.');
 
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been updated.');
@@ -268,7 +268,7 @@ class MobilityController extends Controller
             return view('inactive');
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
         $mobility->delete();
-        \LogActivity::addToLog('Inter-Country mobility was deleted.');
+        \LogActivity::addToLog('Had deleted an inter-country mobility.');
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been deleted.');
     }
@@ -280,7 +280,7 @@ class MobilityController extends Controller
             return view('inactive');
         MobilityDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Inter-Country mobility document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of an inter-country mobility.');
 
         return true;
     }

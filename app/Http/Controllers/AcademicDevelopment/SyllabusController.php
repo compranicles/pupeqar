@@ -130,7 +130,7 @@ class SyllabusController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Course Syllabus "'.$request->input('course_title').'" was added.');
+        \LogActivity::addToLog('Had added a course syllabus "'.$request->input('course_title').'".');
 
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'added.');
@@ -240,7 +240,7 @@ class SyllabusController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Course Syllabus "'.$syllabu->course_title.'" was updated.');
+        \LogActivity::addToLog('Had updated the course syllabus "'.$syllabu->course_title.'".');
 
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                     ->with('action', 'updated.');
@@ -269,7 +269,7 @@ class SyllabusController extends Controller
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'deleted.');
 
-        \LogActivity::addToLog('Course Syllabus "'.$syllabu->course_title.'" was deleted.');
+        \LogActivity::addToLog('Had deleted the course syllabus "'.$syllabu->course_title.'".');
 
     }
 
@@ -280,7 +280,7 @@ class SyllabusController extends Controller
             return view('inactive');
         SyllabusDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Course Syllabus document was deleted.');
+        \LogActivity::addToLog('Had deleted a document of a course syllabus.');
 
         return true;
     }

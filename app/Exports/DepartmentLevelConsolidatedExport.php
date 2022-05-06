@@ -93,6 +93,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
         return [
             AfterSheet::class => function(Aftersheet $event) {
                 $event->sheet->getSheetView()->setZoomScale(70);
+                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
@@ -108,7 +109,6 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                     ]);
                 
 
-                $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('B2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->setCellValue('B2', 'DEPARTMENT:');

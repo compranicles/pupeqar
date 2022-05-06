@@ -182,7 +182,7 @@ class PresentationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research presentation of "'.$research->title.'" was added.');
+        \LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
 
 
         return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been added.');
@@ -295,7 +295,7 @@ class PresentationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research presentation of "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the presentation details of research "'.$research->title.'".');
 
 
         return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been updated.');

@@ -43,45 +43,42 @@
             });
         </script>
         <script>
-            $('#other_collab_nature').attr('disabled', true);
-            $('#collab_nature').on('input', function(){
-                var collab_nature_name = $("#collab_nature option:selected").text();
-                if (collab_nature_name == "Others") {
-                    $('#other_collab_nature').removeAttr('disabled');
-                    $('#other_collab_nature').focus();
-                }
-                else {
-                    $('#other_collab_nature').val('');
-                    $('#other_collab_nature').attr('disabled', true);
-                }
+            $("#collab_nature").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
-            $('#other_partnership_type').attr('disabled', true);
-            $('#partnership_type').on('input', function(){
-                var partnership_type_name = $("#partnership_type option:selected").text();
-                if (partnership_type_name == "Others") {
-                    $('#other_partnership_type').removeAttr('disabled');
-                    $('#other_partnership_type').focus();
-                }
-                else {
-                    $('#other_partnership_type').val('');
-                    $('#other_partnership_type').attr('disabled', true);
-                }
+            $("#partnership_type").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
-            $('#other_deliverable').attr('disabled', true);
-            $('#deliverable').on('input', function(){
-                var deliverable_name = $("#deliverable option:selected").text();
-                if (deliverable_name == "Others") {
-                    $('#other_deliverable').removeAttr('disabled');
-                    $('#other_deliverable').focus();
-                }
-                else {
-                    $('#other_deliverable').val('');
-                    $('#other_deliverable').attr('disabled', true);
-                }
+            $("#deliverable").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
             });
         </script>
         <script>
@@ -91,6 +88,39 @@
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 30;
+            $('#collab_nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#collab_nature")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+        <script>
+            var dropdown_id = 31;
+            $('#partnership_type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#partnership_type")[0].selectize.addOption({value:item.name, text:item.name});
+                    });
+                }
+            });
+        </script>
+         <script>
+            var dropdown_id = 32;
+            $('#deliverable').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+            $.get('/dropdowns/options/'+dropdown_id, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#deliverable")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
             });

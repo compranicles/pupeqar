@@ -179,7 +179,7 @@ class PublicationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research publication of "'.$research->title.'" was added.');
+        \LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
 
         return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been added.');
     }
@@ -291,7 +291,7 @@ class PublicationController extends Controller
             }
         }
 
-        \LogActivity::addToLog('Research publication of "'.$research->title.'" was updated.');
+        \LogActivity::addToLog('Had updated the publication details of research "'.$research->title.'".');
 
 
         return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been updated.');

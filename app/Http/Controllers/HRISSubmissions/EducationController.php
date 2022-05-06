@@ -214,7 +214,7 @@ class EducationController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Ongoing Advanced/Professional Studies added.');
+        \LogActivity::addToLog('Had submitted an Ongoing Advanced/Professional Study.');
 
 
         return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been submitted.');

@@ -358,7 +358,7 @@ class UserController extends Controller
                     }
                 }
             }
-        \LogActivity::addToLog('Digital signature was uploaded.');
+        \LogActivity::addToLog('Had uploaded a digital signature.');
         return redirect()->route('account')->with('success', 'Personal signature has been added in your account.');
     }
     
