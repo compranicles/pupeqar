@@ -317,7 +317,8 @@ class ReportDataController extends Controller
             $report_docs = ExpertServiceAcademicDocument::where('expert_service_academic_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 12){
-            $report_docs = ExtensionServiceDocument::where('extension_service_id', $id)->pluck('filename')->all();
+            $ext_code = ExtensionServiceDocument::where('extension_service_id', $id)->pluck('ext_code')->first();
+            $report_docs = ExtensionServiceDocument::where('ext_code', $ext_code)->pluck('filename')->all();
         }
         elseif($report_category_id == 13){
             $report_docs = PartnershipDocument::where('partnership_id', $id)->pluck('filename')->all();

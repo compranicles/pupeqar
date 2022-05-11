@@ -607,16 +607,17 @@ class ResearchController extends Controller
             'sender' => $sender->first_name.' '.$sender->middle_name.' '.$sender->last_name.' '.$sender->suffix,
             'url' => $url,
             'date' => date('F j, Y, g:i a'),
-            'type' => 'confirm'
+            'type' => 'res-confirm'
         ];
 
         Notification::send($receiver, new ResearchInviteNotification($notificationData));
 
-        $sender->notifications()
-                    ->where('id', $request->input('notif_id')) // and/or ->where('type', $notificationType)
-                    ->get()
-                    ->first()
-                    ->delete();
+        if($request->has('notif_id'))
+            $sender->notifications()
+                        ->where('id', $request->input('notif_id')) // and/or ->where('type', $notificationType)
+                        ->get()
+                        ->first()
+                        ->delete();
 
         \LogActivity::addToLog('Had saved a research entitled "'.$research_title.'".');
         

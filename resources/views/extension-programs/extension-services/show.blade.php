@@ -16,6 +16,13 @@
                 <p class="mr-auto">
                   <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
                 </p>
+                @if ($extensionRole == '1')
+                <p>
+                  <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="action_buttons_show mr-3">
+                     Co-Extensionists
+                  </a>
+                </p>
+                @endif
                 <p>
                     <a href="{{ route('extension-service.edit', $extension_service->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                 </p>

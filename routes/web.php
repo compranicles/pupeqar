@@ -221,6 +221,15 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('viable-project', \App\Http\Controllers\AcademicDevelopment\ViableProjectController::class);
     Route::resource('college-department-award', \App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class);
     Route::resource('technical-extension', \App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class);
+    // Invite Co-Extensionist/s in a Extension
+    Route::get('/extension/{id}/invite', [\App\Http\Controllers\ExtensionPrograms\InviteController::class, 'index'])->name('extension.invite.index');
+    Route::post('/extension/{id}/invite/add', [\App\Http\Controllers\ExtensionPrograms\InviteController::class, 'add'])->name('extension.invite.add');
+    Route::post('/extension/{id}/invite/remove', [\App\Http\Controllers\ExtensionPrograms\InviteController::class, 'remove'])->name('extension.invite.remove');
+    Route::get('/extension/{id}/invite/cancel', [\App\Http\Controllers\ExtensionPrograms\InviteController::class, 'cancel'])->name('extension.invite.cancel');
+    Route::get('/extension/{id}/invite/confirm', [\App\Http\Controllers\ExtensionPrograms\InviteController::class, 'confirm'])->name('extension.invite.confirm');
+    // Use Extension By Co-Extensionists
+    Route::get('/extension-service/with-code/create/{extension_service_id}', [\App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class, 'addExtension'])->name('extension.code.create');
+    Route::post('/extension-service/with-code/save/{id}', [\App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class, 'saveExtension'])->name('extension.code.save');
     // Remove Documents
     Route::get('/extension-programs/expert-service-as-consultant/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConsultantController::class, 'removeDoc'])->name('esconsultant.removedoc');
     Route::get('/extension-programs/expert-service-in-conference/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\ConferenceController::class, 'removeDoc'])->name('esconference.removedoc');

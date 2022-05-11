@@ -15,6 +15,7 @@ class CreateExtensionServicesTable extends Migration
     {
         Schema::create('extension_services', function (Blueprint $table) {
             $table->id();
+            $table->string('ext_code')->nullable();
             $table->foreignId('level')->nullable();
             $table->foreignId('status')->nullable();
             $table->foreignId('nature_of_involvement')->nullable();

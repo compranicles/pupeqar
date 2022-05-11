@@ -67,7 +67,7 @@ class InviteController extends Controller
                 'url_accept' => $url_accept,
                 'url_deny' => $url_deny,
                 'date' => date('F j, Y, g:i a'),
-                'type' => 'invite'
+                'type' => 'res-invite'
             ];
 
             Notification::send($user, new ResearchInviteNotification($notificationData));
