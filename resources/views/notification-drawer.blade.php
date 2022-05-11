@@ -120,10 +120,10 @@
                         }
                     }
                     //
-                    else if(item.data.type == 'invite'){
+                    else if(item.data.type == 'res-invite'){
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<div id="noti-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="notif-row noti-message text-dark p-2">'+
+                                '<div id="noti-all-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="notif-row   noti-message text-dark">'+
                                 item.data.sender+' invited you as Co-Researcher in a Research titled : "'+item.data.title+'"'+
                                 '</div>'+
                                 '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm  btn-primary mr-2">Confirm</a>'+
@@ -131,11 +131,31 @@
                                 +'<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
                             );
                     }
-                    else if(item.data.type == 'confirm'){
+                    else if(item.data.type == 'ext-invite'){
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
-                                '<div id="noti-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row noti-message text-dark p-2">'+
-                                item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'"'+
+                                '<div id="noti-all-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="notif-row   noti-message text-dark">'+
+                                item.data.sender+' added you in an extension accomplishment. '+
+                                '</div>'+
+                                '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm  btn-primary mr-2">Confirm</a>'+
+                                '<a href="'+item.data.url_deny+'?id='+item.id+'"class="btn btn-sm btn-seconday mr-2">Cancel</a></div>'
+                                +'<div class="text-muted"><small>'+item.data.date+'</small></div></td>'
+                            );
+                    }
+                    else if(item.data.type == 'res-confirm'){
+                        $('#notification-'+countColumns)
+                            .append('<td class="notification-content">'+
+                                '<div id="noti-all-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row  noti-message text-dark ml-2">'+
+                                item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'".'+
+                                '</div>'+
+                                '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
+                            );
+                    }
+                    else if(item.data.type == 'ext-confirm'){
+                        $('#notification-'+countColumns)
+                            .append('<td class="notification-content">'+
+                                '<div id="noti-all-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row  noti-message text-dark ml-2">'+
+                                item.data.sender+' confirmed your invitation to be part of an extension accomplishment.'+
                                 '</div>'+
                                 '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
                             );

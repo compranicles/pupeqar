@@ -503,7 +503,7 @@ class SubmissionController extends Controller
                     $data = $tempdata;
                     if($data != null){
                         foreach($data as $row){
-                            $checker = ExtensionServiceDocument::where('extension_service_id', $row->id)->get();
+                            $checker = ExtensionServiceDocument::where('ext_code', $row->ext_code)->get();
                             $checker_array[$row->id] = $checker;
                         }
                     }

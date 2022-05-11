@@ -24,6 +24,13 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Service</a>
                             </div>
+                            <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
+                                Invites @if (count($invites) != 0)
+                                            <span class="badge badge-secondary">{{ count($invites) }}</span>
+                                        @else
+                                            <span class="badge badge-secondary">0</span>
+                                        @endif
+                            </button>
                         </div>  
                         <hr>
                         <div class="row">
@@ -105,9 +112,11 @@
             </div>
         </div>
     </div>
+    @include('extension-programs.extension-services.invite.modal', compact('invites'))
 
     {{-- Delete Modal --}}
     @include('delete')
+
 
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>

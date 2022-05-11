@@ -7,10 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ResearchInviteNotification extends Notification
+class ExtensionInviteNotification extends Notification
 {
     use Queueable;
-    private $notificationData;
 
     /**
      * Create a new notification instance.
@@ -41,20 +40,18 @@ class ResearchInviteNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        if($this->notificationData['type'] == 'res-invite')
+        if($this->notificationData['type'] == 'ext-invite')
             return (new MailMessage)
-                ->subject('PUP eQAR | Research Invitation Notification')
+                ->subject('PUP eQAR | Extension Invitation Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line('You are invited by '.$this->notificationData['sender'].' to be part of their Research titled: ')
-                ->line($this->notificationData['title'])
-                ->action('Open Research Tab', route('research.index'));
-        elseif($this->notificationData['type'] == 'res-confirm')
+                ->line('You are added by '.$this->notificationData['sender'].' as a part of Extension accomplishment.')
+                ->action('Open Extension Tab', route('extension-service.index'));
+        elseif($this->notificationData['type'] == 'ext-confirm')
             return (new MailMessage)
-                ->subject('PUP eQAR | Research Invitation Confirmation Notification')
+                ->subject('PUP eQAR | Extension Invitation Confirmation Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line($this->notificationData['sender'].' confirmed to be part of your Research titled: ')
-                ->line($this->notificationData['title'])
-                ->action('Open Research', $this->notificationData['url']);
+                ->line($this->notificationData['sender'].' confirmed a part of the Extension accomplishment.')
+                ->action('Open Extension', $this->notificationData['url']);
     }
 
     /**
@@ -64,8 +61,8 @@ class ResearchInviteNotification extends Notification
      * @return array
      */
     public function toArray($notifiable)
-    {   
-        if($this->notificationData['type'] == 'res-invite')
+    {
+        if($this->notificationData['type'] == 'ext-invite')
             return [
                 'receiver' => $this->notificationData['receiver'],
                 'title' => $this->notificationData['title'],
@@ -75,7 +72,7 @@ class ResearchInviteNotification extends Notification
                 'date' => $this->notificationData['date'],
                 'type' => $this->notificationData['type']
             ];
-        elseif($this->notificationData['type'] == 'confirm')
+        elseif($this->notificationData['type'] == 'ext-confirm')
             return [
                 'receiver' => $this->notificationData['receiver'],
                 'title' => $this->notificationData['title'],
