@@ -95,16 +95,13 @@ class CitationController extends Controller
         $request->merge([
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'research_id' => $research->id,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
         $citation = ResearchCitation::create($input);
         
-        ResearchCitation::where('id', $citation->id)->update([
-            'research_id' => $research->id,
-        ]);
-
         if($request->has('document')){
             
             $documents = $request->input('document');

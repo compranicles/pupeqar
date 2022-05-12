@@ -130,6 +130,7 @@ class PublicationController extends Controller
             'publish_date' => $publish_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'research_id' => $research->id,
         ]);
         
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -150,10 +151,7 @@ class PublicationController extends Controller
 
 
         $publication = ResearchPublication::create($input);
-        $publication->update([
-            'research_id' => $research->id,
-        ]);
-
+        
         if($request->has('document')){
             
             $documents = $request->input('document');

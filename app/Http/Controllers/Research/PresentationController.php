@@ -135,6 +135,7 @@ class PresentationController extends Controller
             'date_presented' => $date_presented,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'research_id' => $research->id,
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);
@@ -153,9 +154,6 @@ class PresentationController extends Controller
         // dd($input);
 
         $presentation = ResearchPresentation::create($input);
-        $presentation->update([
-            'research_id' => $research->id,
-        ]);
 
         if($request->has('document')){
             

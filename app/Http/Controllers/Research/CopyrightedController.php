@@ -108,6 +108,7 @@ class CopyrightedController extends Controller
         $request->merge([
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'research_id' => $research->id,
         ]);
 
         $request->validate([
@@ -117,10 +118,7 @@ class CopyrightedController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyright = ResearchCopyright::create($input);
-        $copyright->update([
-            'research_id' => $research->id,
-        ]);
-
+       
         if($request->has('document')){
             
             $documents = $request->input('document');

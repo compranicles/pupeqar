@@ -151,7 +151,7 @@
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>
-        <script>
+        {{-- <script>
             $("#nature").selectize({
                 maxItems: 5,
                 delimiter: ",",
@@ -163,7 +163,7 @@
                     };
                 },
             });
-        </script>
+        </script> --}}
         <script>
             var report_category_id = 11;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -175,7 +175,7 @@
                 }
             });
         </script>
-        <script>
+        {{-- <script>
             var dropdown_id = 20;
             $('#nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
             $.get('/dropdowns/options/'+dropdown_id, function (data){
@@ -185,6 +185,6 @@
                     });
                 }
             });
-        </script>
+        </script> --}}
     @endpush
 </x-app-layout>

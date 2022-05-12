@@ -35,7 +35,7 @@ class ExpertServiceAcademicFormSeeder extends Seeder
             'name' => 'nature',
             'placeholder' => "If others, please specify.",
             'size' => 'col-md-3',
-            'field_type_id' => 1,
+            'field_type_id' => 5,
             'dropdown_id' => 20, 
             'required' => 1,
             'visibility' => 1,

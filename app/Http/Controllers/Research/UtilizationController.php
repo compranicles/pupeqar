@@ -89,15 +89,12 @@ class UtilizationController extends Controller
         $request->merge([
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'research_id' => $research->id,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 
         $utilization = ResearchUtilization::create($input);
-
-        ResearchUtilization::where('id', $utilization->id)->update([
-            'research_id' => $research->id,
-        ]);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
