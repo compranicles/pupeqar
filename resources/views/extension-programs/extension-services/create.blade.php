@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Add Extension Service') }}
+            {{ __('Add Extension Program/Project/Activity') }}
         </h2>
     </x-slot>
 

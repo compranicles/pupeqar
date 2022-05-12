@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Extension Services') }}
+            {{ __('Extension Programs/Projects/Activities') }}
         </h2>
     </x-slot>
     <div class="container">
@@ -22,7 +22,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Service</a>
+                                <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Program/Project/Activity</a>
                             </div>
                             <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
                                 Invites @if (count($invites) != 0)
