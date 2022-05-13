@@ -142,22 +142,8 @@
             $('#funding_agency').attr('disabled', true);
             $('#status').attr('disabled', true);
             $('#description').attr('disabled', true);
-
-            /* STATUS On page load */
-            if ({{ $research->status }} == 26) {
-                $('#start_date').val("");
-                $('#start_date').attr('readonly', true);
-                $('#start_date').removeAttr('required');
-                $('#target_date').val("");
-                $('#target_date').attr('readonly', true);
-                $('#target_date').removeAttr('required');
-            }
-            else if ({{ $research->status }} == 27) {
-                $('#start_date').removeAttr('readonly');
-                $('#start_date').attr('required', true);
-                $('#target_date').removeAttr('readonly');
-                $('#target_date').attr('required', true);
-            }
+            $('#start_date').attr('disabled', true);
+            $('#target_date').attr('disabled', true);
         </script>
     @endpush
 </x-app-layout>
