@@ -105,8 +105,6 @@
                 "searchCols": [
                     null,
                     null,
-                    null,
-                    null,
                     { "search": "{{ $currentQuarterYear->current_quarter }}" },
                     { "search": "{{ $currentQuarterYear->current_year }}" },
                     null

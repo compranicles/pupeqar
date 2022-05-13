@@ -2613,86 +2613,86 @@ class ReportColumnSeeder extends Seeder
         ]);  
 
         //Technical Extensions
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Title of the Program',
-            'table' => 'technical_extensions',
-            'column' => 'program_title',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Title of the Project',
-            'table' => 'technical_extensions',
-            'column' => 'project_title',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Title of the Activities',
-            'table' => 'technical_extensions',
-            'column' => 'activity_title',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Name of Adoptor',
-            'table' => 'technical_extensions',
-            'column' => 'name_of_adoptor',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Classification',
-            'table' => 'technical_extensions',
-            'column' => 'classification_of_adoptor',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Nature of Business Enterprise',
-            'table' => 'technical_extensions',
-            'column' => 'nature_of_business_enterprise',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Adoptors have established profitable businesses in the last three years?',
-            'table' => 'technical_extensions',
-            'column' => 'has_businesses',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Extension project by the university or borrowed from other institutions?',
-            'table' => 'technical_extensions',
-            'column' => 'is_borrowed',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Total Profit/ Income of the Adoptors',
-            'table' => 'technical_extensions',
-            'column' => 'total_profit',
-            'is_active' => 1,
-            'order' => 1,
-        ]);   
-        ReportColumn::insert([
-            'report_category_id' => 23,
-            'name' => 'Description of Supporting Documents Submitted',
-            'table' => 'technical_extensions',
-            'column' => 'description',
-            'is_active' => 1,
-            'order' => 1,
-        ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Title of the Program',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'program_title',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Title of the Project',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'project_title',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Title of the Activities',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'activity_title',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Name of Adoptor',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'name_of_adoptor',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Classification',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'classification_of_adoptor',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Nature of Business Enterprise',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'nature_of_business_enterprise',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Adoptors have established profitable businesses in the last three years?',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'has_businesses',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Extension project by the university or borrowed from other institutions?',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'is_borrowed',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Total Profit/ Income of the Adoptors',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'total_profit',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);   
+        // ReportColumn::insert([
+        //     'report_category_id' => 23,
+        //     'name' => 'Description of Supporting Documents Submitted',
+        //     'table' => 'technical_extensions',
+        //     'column' => 'description',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);  
 
     }
 }

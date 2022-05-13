@@ -75,7 +75,7 @@
                     $('#from').attr('required', true);
             });
         </script>
-                <script>
+        <script>
             $("#classification").selectize({
                 maxItems: 5,
                 delimiter: ",",

@@ -5,9 +5,6 @@
               @foreach ($formFields as $field)
               @switch($field->field_type_name)
                       @case("text")
-                        @if ($field->label == "Please specify")
-                            <?php $field->label = "Please specify (for other options)"; ?>
-                        @endif
                           @include('maintenances.showtemplates.text', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                           @break
                       @case("number")

@@ -232,7 +232,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     elseif($format->is_table == '1') {
                         $length = count($table_columns[$format->id]);
                         if ($length == null){
-                            $length = 2;
+                            $length = 4;
                         }
                         else{
                             $length = $length+4;

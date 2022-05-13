@@ -33,7 +33,7 @@
                 @endif
                 @if ($fieldInfo->name == 'researchers')
                     <span id="" role="alert">
-                        <small> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers within PUP, invite them after you save this research to share them info.' : '' }}</small>
+                        <small> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers within PUP, add them after you save this research to share them info.' : '' }}</small>
                     </span>
                 @endif
                 @error($fieldInfo->name)
