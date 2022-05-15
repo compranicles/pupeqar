@@ -179,14 +179,10 @@ class ExtensionServiceController extends Controller
             ]);
         }
 
-        $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $eService = ExtensionService::create($input);
         $eService->update(['user_id' => auth()->id()]);
-        $eService->update([
-            'other_classification' => $request->input('other_classification'),
-            'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
-        ]);
 
         ExtensionInvite::create([
             'user_id' => auth()->id(),
@@ -332,23 +328,15 @@ class ExtensionServiceController extends Controller
             ]);
         }
 
-        $input = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees']);
+        $input = $request->except(['_token', '_method', 'document']);
         
         $extension_service->update(['description' => '-clear']);
 
         $extension_service->update($input);
-        $extension_service->update([
-            'other_classification' => $request->input('other_classification'),
-            'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
-        ]);
 
         if(ExtensionInvite::where('user_id', auth()->id())->where('ext_code', $extension_service->ext_code)->pluck('is_owner')->first()){
-            $details = $request->except(['_token', '_method', 'document', 'other_classification', 'other_classification_of_trainees', 'nature_of_involvement', 'college_id', 'department_id']);
+            $details = $request->except(['_token', '_method', 'document', 'nature_of_involvement', 'college_id', 'department_id']);
             ExtensionService::where('ext_code', $extension_service->ext_code)->update($details);
-            ExtensionService::where('ext_code', $extension_service->ext_code)->update([
-                'other_classification' => $request->input('other_classification'),
-                'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
-            ]);
         }
 
         if($request->has('document')){
@@ -480,10 +468,6 @@ class ExtensionServiceController extends Controller
 
         $eService = ExtensionService::create($extensionService);
         $eService->update(['user_id' => auth()->id()]);
-        $eService->update([
-            'other_classification' => $request->input('other_classification'),
-            'other_classification_of_trainees' => $request->input('other_classification_of_trainees'),
-        ]);
         $eService->update($input);
 
         ExtensionInvite::where('user_id', auth()->id())->where('extension_service_id', $id)->update([

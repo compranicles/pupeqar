@@ -18,8 +18,8 @@
                 </p>
                 @if ($extensionRole == '1')
                 <p>
-                  <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="action_buttons_show mr-3">
-                     Co-Extensionists
+                  <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="btn btn-primary btn-sm mr-3">
+                     Add Co-Extensionists
                   </a>
                 </p>
                 @endif
@@ -29,6 +29,9 @@
                 <p>
                     <button type="button" value="{{ $extension_service->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
+              </div>
+              <div class="alert alert-info" role="alert">
+                Add your co-extensionist/s in this extension to share them this info.
               </div>
               <div class="row">
                 <div class="col-md-12">

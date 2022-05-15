@@ -22,7 +22,7 @@
                         <div class="col-md-12">
                             <h5 class="d-inline-block" style="padding-top: 10px;">Consolidated Quarterly Accomplishments</h5>
                             <div class="float-right">
-                                <button class="btn btn primary ml-2" data-target="#GenerateIPOLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
+                                <button class="btn btn-primary ml-2" data-target="#GenerateIPOLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
                             </div>
                         </div>
                     </div>

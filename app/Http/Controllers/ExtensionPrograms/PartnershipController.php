@@ -45,11 +45,11 @@ class PartnershipController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $partnerships = Partnership::where('user_id', auth()->id())
-                            ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
                             ->join('colleges', 'colleges.id', 'partnerships.college_id')
-                            ->select(DB::raw('partnerships.*, dropdown_options.name as collab, colleges.name as college_name'))
-                            ->orderBy('updated_at', 'desc')->get();
+                            ->select(DB::raw('partnerships.*, colleges.name as college_name'))
+                            ->orderBy('partnerships.updated_at', 'desc')->get();
 
+                            // dd($partnerships);
         return view('extension-programs.partnership.index', compact('partnerships', 'currentQuarterYear'));
     }
 
@@ -99,15 +99,10 @@ class PartnershipController extends Controller
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
-        $partnership->update([
-            'other_collab_nature' => $request->input('other_collab_nature'),
-            'other_partnership_type' => $request->input('other_partnership_type'),
-            'other_deliverable' => $request->input('other_deliverable'),
-        ]);
 
         if($request->has('document')){
             
@@ -217,16 +212,11 @@ class PartnershipController extends Controller
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         
-        $input = $request->except(['_token', '_method', 'document', 'other_collab_nature', 'other_partnership_type', 'other_deliverable']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $partnership->update(['description' => '-clear']);
 
         $partnership->update($input);
-        $partnership->update([
-            'other_collab_nature' => $request->input('other_collab_nature'),
-            'other_partnership_type' => $request->input('other_partnership_type'),
-            'other_deliverable' => $request->input('other_deliverable'),
-        ]);
 
         if($request->has('document')){
             

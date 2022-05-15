@@ -42,9 +42,6 @@
                 <li><a href="{{ route('college-department-award.index') }}">Awards and Recognition Received<br> by the Department</a></li>
                 @endchairperson
                 @endcan
-                @can('viewAny', \App\Models\TechnicalExtension::class)
-                <li><a href="{{ route('technical-extension.index') }}">Technical Extension Programs/ Projects/ Activities</a></li>
-                @endcan
             </ul>
             
         </div>
@@ -56,7 +53,7 @@
                 <li><a href="{{ route('expert-service-as-consultant.index') }}">Expert Services Rendered</a></li>
                 @endcan
                 @can('viewAny', \App\Models\ExtensionService::class)
-                <li><a href="{{ route('extension-service.index') }}">Extension Services</a></li>
+                <li><a href="{{ route('extension-service.index') }}">Extension Program/Project/Activity</a></li>
                 @endcan
                 @can('viewAny', \App\Models\Partnership::class)
                 <li><a href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>

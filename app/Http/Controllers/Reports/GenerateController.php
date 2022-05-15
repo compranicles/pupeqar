@@ -109,7 +109,7 @@ class GenerateController extends Controller
         if ($source_generate == "my") {
             if ($request->input('type_generate') == "admin" || $request->input('type_generate') == "academic") {
                 $cbco = $request->input('cbco');
-                $file_suffix = 'QARs-'.$data->name.'-'.$college->code.'-'.ucfirst($request->input("type_generate")).'-'.$quarter_generate.'_'.$year_generate;
+                $file_suffix = 'QARs-'.$data->name.'-'.$college->code.'-'.ucfirst($request->input("type_generate")).'-'.$quarter_generate.'-'.$year_generate;
                 $departments = Department::where('college_id', $cbco)->pluck('id')->all();
                 /* */
                 $director = User::join('deans', 'deans.user_id', 'users.id')->where('deans.college_id', $cbco)->whereNull('deans.deleted_at')->first('users.*');
@@ -131,7 +131,7 @@ class GenerateController extends Controller
                 ),
                     $file_suffix.'.xlsx');
             } elseif ($request->input("type_generate") == "department_level") {
-                $file_suffix = 'QARs-Dept-Level'.$data->code.'-'.$request->input('year_generate_level').'-'.$quarter_generate.'-'.$request->input('year_generate_level');
+                $file_suffix = 'QARs-Dept-Level-'.$data->code.'-'.$request->input('year_generate_level').'-'.$quarter_generate.'-'.$request->input('year_generate_level');
                 $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.department_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first('users.*');
                 $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.department_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first('users.*');
                 return Excel::download(new DepartmentLevelConsolidatedExport(
@@ -148,7 +148,7 @@ class GenerateController extends Controller
                     ),
                     $file_suffix.'.xlsx');
             } elseif ($request->input("type_generate") == "college_level") {
-                $file_suffix = 'QARs-College-Level'.$data->code.'-'.$request->input('year_generate_level').'-'.$quarter_generate.'-'.$request->input('year_generate_level');
+                $file_suffix = 'QARs-College-Level-'.$data->code.'-'.$quarter_generate.'-'.$request->input('year_generate_level');
                 return Excel::download(new CollegeLevelConsolidatedExport(
                     $source_type, 
                     $reportFormat, 

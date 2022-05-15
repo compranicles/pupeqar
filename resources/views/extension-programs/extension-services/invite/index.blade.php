@@ -7,11 +7,8 @@
 
     <div class="container">
         <div class="row">
-            <p class="mr-auto">
+            <p class="ml-3">
                 <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
-            </p>
-            <p class="mr-auto">
-                <a class="back_link" href="{{ route('extension-service.show', $extension->id) }}"><i class="bi bi-chevron-double-left"></i>Back to the accomplishment</a>
             </p>
         </div>
 
@@ -37,6 +34,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
+                            <p>
+                                <a class="back_link" href="{{ route('extension-service.show', $extension->id) }}"><i class="bi bi-chevron-double-left"></i>Back to the accomplishment</a>
+                            </p>
                                 <h4>Co-Extensionists </h4>
                             </div>
                         </div>
@@ -72,10 +72,10 @@
                                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.' '.$row->suffix }}</td>
                                                 <td>
                                                     @if ($row->extension_status == null)
-                                                        n/a
+                                                        N/A
                                                     @elseif($row->extension_status == "1")
                                                         @if ($involvement[$row->id] == null)
-                                                            n/a
+                                                            N/A
                                                         @elseif ($involvement[$row->id] == "108")
                                                             Facilitator
                                                         @elseif ($involvement[$row->id] == "109")

@@ -85,7 +85,7 @@
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->moa_code }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->title_of_partnership }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->name_of_partner }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->collab }}</td>
+                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->collab_nature }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">
                                             {{ $row->report_quarter }}
