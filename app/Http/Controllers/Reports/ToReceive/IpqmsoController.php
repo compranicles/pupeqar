@@ -173,7 +173,7 @@ class IpqmsoController extends Controller
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -191,7 +191,7 @@ class IpqmsoController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -210,7 +210,7 @@ class IpqmsoController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                'sender' => "IPO",
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -224,7 +224,7 @@ class IpqmsoController extends Controller
 
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
-        \LogActivity::addToLog('IPQMSO received an accomplishment.');
+        \LogActivity::addToLog('IPO received an accomplishment.');
 
         return redirect()->route('ipo.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
     }
@@ -276,7 +276,7 @@ class IpqmsoController extends Controller
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -297,7 +297,7 @@ class IpqmsoController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -318,7 +318,7 @@ class IpqmsoController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                'sender' => "IPO",
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -334,7 +334,7 @@ class IpqmsoController extends Controller
         
         Notification::send($returnData, new ReturnNotification($notificationData));
 
-        \LogActivity::addToLog('IPQMSO returned an accomplishment.');
+        \LogActivity::addToLog('IPO returned an accomplishment.');
 
         return redirect()->route('ipo.index')->with('deny-success', 'Report has been returned to the owner.');
     }
@@ -381,7 +381,7 @@ class IpqmsoController extends Controller
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'sender' => "IPO",
                         'receiver' => $receiverData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -399,7 +399,7 @@ class IpqmsoController extends Controller
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'sender' => "IPO",
                         'receiver' => $receiverData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -418,7 +418,7 @@ class IpqmsoController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -435,7 +435,7 @@ class IpqmsoController extends Controller
             $count++;
         }
 
-        \LogActivity::addToLog('IPQMSO received '.$count.' accomplishments.');
+        \LogActivity::addToLog('IPO received '.$count.' accomplishments.');
 
         return redirect()->route('ipo.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
     }
@@ -491,7 +491,7 @@ class IpqmsoController extends Controller
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'sender' => "IPO",
                         'receiver' => $returnData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -512,7 +512,7 @@ class IpqmsoController extends Controller
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                        'sender' => "IPO",
                         'receiver' => $returnData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -533,7 +533,7 @@ class IpqmsoController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' (IPQMSO)',
+                    'sender' => "IPO",
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -551,7 +551,7 @@ class IpqmsoController extends Controller
             $count++;
         }
 
-        \LogActivity::addToLog('IPQMSO returned '.$count.' accomplishments.');
+        \LogActivity::addToLog('IPO returned '.$count.' accomplishments.');
 
         return redirect()->route('ipo.index')->with('success', 'Report/s returned to the owner/s.');
 

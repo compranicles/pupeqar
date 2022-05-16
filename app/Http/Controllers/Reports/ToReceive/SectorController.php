@@ -179,7 +179,7 @@ class SectorController extends Controller
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -197,7 +197,7 @@ class SectorController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -216,7 +216,7 @@ class SectorController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                'sender' => $senderName->sector_name,
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -285,7 +285,7 @@ class SectorController extends Controller
                 $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -306,7 +306,7 @@ class SectorController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -327,7 +327,7 @@ class SectorController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                'sender' => $senderName->sector_name,
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -404,7 +404,7 @@ class SectorController extends Controller
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                        'sender' => $senderName->sector_name,
                         'receiver' => $receiverData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -422,7 +422,7 @@ class SectorController extends Controller
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                        'sender' => $senderName->sector_name,
                         'receiver' => $receiverData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -441,7 +441,7 @@ class SectorController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -517,7 +517,7 @@ class SectorController extends Controller
                     $college_name = College::where('id', $report->college_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                        'sender' => $senderName->sector_name,
                         'receiver' => $returnData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -538,7 +538,7 @@ class SectorController extends Controller
                     $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                     $notificationData = [
-                        'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                        'sender' => $senderName->sector_name,
                         'receiver' => $returnData->first_name,
                         'url' => $url,
                         'category_name' => $report_category_name,
@@ -559,7 +559,7 @@ class SectorController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->sector_name.')',
+                    'sender' => $senderName->sector_name,
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,

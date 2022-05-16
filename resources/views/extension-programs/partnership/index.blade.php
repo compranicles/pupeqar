@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label for="yearFilter" class="mr-2">Year Added:</label>
+                                        <label for="yearFilter" class="mr-2">Year Covered:</label>
                                         <div class="d-flex">
                                             <select id="yearFilter" class="custom-select" name="yearFilter">
                                             </select>
@@ -63,18 +63,20 @@
                                 </div>
                         </div>
                         <hr>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="partnership_table">
                                 <thead>
                                     <tr>
                                         <th></th>
                                         <th>MOA/MOU Code</th>
                                         <th>Title</th>
-                                        <th>Organization/Partner</th>
+                                        <!-- <th>Organization/Partner</th> -->
                                         <th>Collaboration</th>
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
+                                        <th>Date Added</th>
+                                        <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -84,7 +86,7 @@
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->moa_code }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->title_of_partnership }}</td>
-                                        <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->name_of_partner }}</td>
+                                        {{--<td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->name_of_partner }}</td>--}}
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->collab_nature }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">
@@ -92,6 +94,20 @@
                                         </td>
                                         <td onclick="window.location.href = '{{ route('partnership.show', $row->id) }}' ">
                                             {{ $row->report_year }}
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            $created_at = strtotime( $row->created_at );
+                                            $created_at = date( 'M d, Y h:i A', $created_at );
+                                            ?>
+                                            {{ $created_at }}
+                                        </td>
+                                        <td>
+                                        <?php
+                                            $updated_at = strtotime( $row->updated_at );
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
+                                            ?>  
+                                            {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
@@ -150,13 +166,14 @@
                 null,
                 null,
                 null,
-                null,
                 { "search": "{{ $currentQuarterYear->current_quarter }}" },
                 { "search": "{{ $currentQuarterYear->current_year }}" },
-                null
+                null,
+                null,
+                null,
             ],
             initComplete: function () {
-                this.api().columns(4).every( function () {
+                this.api().columns(3).every( function () {
                     var column = this;
                     var select = $('#collabFilter')
                         .on( 'change', function () {
@@ -174,7 +191,7 @@
                     } );
                 });
 
-                this.api().columns(5).every( function () {
+                this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#collegeFilter')
                         .on( 'change', function () {
@@ -192,7 +209,7 @@
                     } );
                 });
 
-                this.api().columns(6).every( function () {
+                this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')
                         .on( 'change', function () {
@@ -210,7 +227,7 @@
                     } );
                 });
 
-                this.api().columns(7).every( function () {
+                this.api().columns(6).every( function () {
                     var column = this;
                     var select = $('#yearFilter')
                         .on( 'change', function () {

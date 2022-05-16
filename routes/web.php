@@ -271,6 +271,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/data/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getReportData']);
     Route::get('/reports/docs/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getDocumentsUsingId']);
     Route::get('/reports/reject-details/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getRejectDetails']);
+    Route::get('/reports/reject-details-being-updated/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getRejectDetailsBeingUpdated']);
     Route::get('/reports/manage/{report_id}/{report_category_id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'viewReportOrigin'])->name('report.manage');
     Route::post('/reports/generate/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'index'])->name('report.generate.index');
     Route::get('/reports/{id}/documents', [\App\Http\Controllers\Reports\GenerateController::class, 'documentView'])->name('report.generate.document-view');

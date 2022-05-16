@@ -98,7 +98,7 @@
                                             <th rowspan="2"></th>
                                             <th rowspan="2">Accomplishment Report</th>
                                             <th rowspan="2">Employee</th>
-                                            <th rowspan="2">College/Branch/<br>Campus/Office</th>
+                                            <th rowspan="2">College/Branch/Campus/Office</th>
                                             <th rowspan="2">Department</th>
                                             <th class="text-center" colspan="6">Status</th>
                                             <th rowspan="2"></th>

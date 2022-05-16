@@ -23,26 +23,6 @@ class DashboardService {
         return $countAccomplishment;
     }
 
-    public function countAccomplishmentByOfficerAndDepartmentAndStatusAndQuarterYearAndReportCategoryID($officialApprovalColumn, $department, $status, $currentQuarterYear, $reportCategoryID) {
-        if ($status == 0) {
-            $countAccomplishment = Report::whereNull($officialApprovalColumn)
-                ->where('department_id', $department)
-                ->whereIn('report_category_id', [$reportCategoryID])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-        } else {
-            $countAccomplishment = Report::where($officialApprovalColumn, 1)
-                ->where('department_id', $department)
-                ->whereIn('report_category_id', [$reportCategoryID])
-                ->where('report_quarter', $currentQuarterYear->current_quarter)
-                ->where('report_year', $currentQuarterYear->current_year)
-                ->count();
-        }
-
-        return $countAccomplishment;
-    }
-
     // No report categories (get all)
     public function countAccomplishmentByOfficerAndDepartmentAndQuarterYear($officialApprovalColumn, $department, $currentQuarterYear) {
         $countAccomplishment = Report::whereNotNull($officialApprovalColumn)
