@@ -23,6 +23,9 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
 
+// Refresh
+Route::get('refresh', [\App\Http\Controllers\RefreshController::class, 'index']);
+
 /* HRIS REGISTER AND VERIFICATION */
 Route::get('register/hris', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'index'])->name('register.hris');
 Route::post('register/verify', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'verify'])->name('register.verify');
