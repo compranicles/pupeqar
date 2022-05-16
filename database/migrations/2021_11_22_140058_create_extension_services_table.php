@@ -19,7 +19,7 @@ class CreateExtensionServicesTable extends Migration
             $table->foreignId('level')->nullable();
             $table->foreignId('status')->nullable();
             $table->foreignId('nature_of_involvement')->nullable();
-            $table->foreignId('classification')->nullable();
+            $table->string('classification')->nullable();
             $table->foreignId('type')->nullable();
             $table->string('title_of_extension_program')->nullable();
             $table->string('title_of_extension_project')->nullable();

@@ -95,7 +95,6 @@ class IpqmsoConsolidatedController extends Controller
                 $department_names[$row->id] = $temp_department_name;
         }
 
-        $colleges = College::all();
         $sector_names = Sector::all();
 
         return view(

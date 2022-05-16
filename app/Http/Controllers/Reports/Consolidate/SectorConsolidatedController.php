@@ -99,11 +99,9 @@ class SectorConsolidatedController extends Controller
         //SectorDetails
         $sector = Sector::find($id);
 
-        $collegesOfSector = College::where('sector_id', $id)->get();
-
         return view(
                     'reports.consolidate.sector', 
-                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'collegesOfSector', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
+                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
                 );
     }
 

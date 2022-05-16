@@ -772,29 +772,29 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
+        // GenerateTable::insert([
+        //     'name' => 'A. Technical Extension Programs/Projects/Activities',
+        //     'is_table' => 1,
+        //     'type_id' => 3,
+        //     'is_individual' => 0,
+        //     'report_category_id' => 23,
+        // ]);
         GenerateTable::insert([
-            'name' => 'A. Technical Extension Programs/Projects/Activities',
-            'is_table' => 1,
-            'type_id' => 3,
-            'is_individual' => 0,
-            'report_category_id' => 23,
-        ]);
-        GenerateTable::insert([
-            'name' => 'B. Community Relations and Outreach Programs',
+            'name' => 'A. Community Relations and Outreach Programs',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
             'report_category_id' => 22,
         ]);
         GenerateTable::insert([
-            'name' => 'C. Viable Demonstration Projects',
+            'name' => 'B. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
             'report_category_id' => 20,
         ]);
         GenerateTable::insert([
-            'name' => 'D. Awards/Recognitions Received by the Department from Reputable Organizations',
+            'name' => 'C. Awards/Recognitions Received by the Department from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 3,
             'is_individual' => 0,
@@ -809,29 +809,29 @@ class GenerateTableSeeder extends Seeder
             'report_category_id' => null,
             'footers' => null
         ]);
+        // GenerateTable::insert([
+        //     'name' => 'A. Technical Extension Programs/Projects/Activities',
+        //     'is_table' => 1,
+        //     'type_id' => 4,
+        //     'is_individual' => 0,
+        //     'report_category_id' => 23,
+        // ]);
         GenerateTable::insert([
-            'name' => 'A. Technical Extension Programs/Projects/Activities',
-            'is_table' => 1,
-            'type_id' => 4,
-            'is_individual' => 0,
-            'report_category_id' => 23,
-        ]);
-        GenerateTable::insert([
-            'name' => 'B. Community Relations and Outreach Programs',
+            'name' => 'A. Community Relations and Outreach Programs',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,
             'report_category_id' => 22,
         ]);
         GenerateTable::insert([
-            'name' => 'C. Viable Demonstration Projects',
+            'name' => 'B. Viable Demonstration Projects',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,
             'report_category_id' => 20,
         ]);
         GenerateTable::insert([
-            'name' => 'D. Awards/Recognitions Received by the College/Branch/Campus/Office from Reputable Organizations',
+            'name' => 'C. Awards/Recognitions Received by the College/Branch/Campus/Office from Reputable Organizations',
             'is_table' => 1,
             'type_id' => 4,
             'is_individual' => 0,

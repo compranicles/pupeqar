@@ -130,33 +130,33 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                 foreach ($table_format as $format) {
 
                     if ($format->is_table == '1') {
-
-                        if($format->name != ''){
-                            $event->sheet->mergeCells('A'.$count.':P'.$count);
-                            $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                            $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
-                            $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
-                            $event->sheet->getRowDimension($count)->setRowHeight(30);
-                            $count++;
-                            
-                            $event->sheet->mergeCells('A'.$count.':P'.$count);
-                            $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                            $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
-                            $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
-                            $event->sheet->getRowDimension($count)->setRowHeight(30);
-                            $count++;
-                        }
                         
                         //columns 
                         $columnTWO = Coordinate::stringFromColumnIndex(2);
                         $length = count($table_columns[$format->id]);
                         if ($length == null){
-                            $length = 2;
+                            $length = 4;
                         }
                         else{
-                            $length = $length+4;
+                            $length = $length+6;
                         }
                         $letter = Coordinate::stringFromColumnIndex($length);
+                        
+                        if($format->name != ''){
+                            $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB('FFC00000');
+                            $event->sheet->getRowDimension($count)->setRowHeight(30);
+                            $count++;
+                            
+                            $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
+                            $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB('FFC00000');
+                            $event->sheet->getRowDimension($count)->setRowHeight(30);
+                            $count++;
+                        }
 
                         $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setWrapText(true);
                         $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -173,6 +173,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                 ],
                             ],
                         ]);
+                        
                         $columnTHREE = Coordinate::stringFromColumnIndex(3);
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);

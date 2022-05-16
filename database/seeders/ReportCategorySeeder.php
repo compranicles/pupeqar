@@ -149,12 +149,12 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 1,
         ]);
-        ReportCategory::insert([
-            'report_type_id' => 2,
-            'name' => 'Technical Extension Program/Project/Activity',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
+        // ReportCategory::insert([
+        //     'report_type_id' => 2,
+        //     'name' => 'Technical Extension Program/Project/Activity',
+        //     'is_active' => 1,
+        //     'order' => 1,
+        // ]);
 
 
         //HRIS Report Category Seeder

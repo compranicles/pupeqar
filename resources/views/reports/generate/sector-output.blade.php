@@ -52,6 +52,7 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                             @endforeach
                             <td><a href="{{ route('report.generate.document-view', $content['id']) }}" target="_blank">View Documents</a></td>
                             <td></td>
+                            <td></td>
                         </tr>
                             
                     @empty

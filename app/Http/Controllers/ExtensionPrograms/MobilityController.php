@@ -89,20 +89,12 @@ class MobilityController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $request->validate([
-            'other_type' => 'required_if:type,173',
-            'end_date' => 'after_or_equal:start_date',
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
-
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'other_type']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
-        $mobility->update(['other_type' => $request->input('other_type')]);
 
         if($request->has('document')){
             
@@ -203,23 +195,14 @@ class MobilityController extends Controller
             'end_date' => $end_date,
         ]);
         
-        $request->validate([
-            'other_type' => 'required_if:type,173',
-            'end_date' => 'after_or_equal:start_date',
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
         
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document', 'other_type']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $mobility->update(['description' => '-clear']);
 
         $mobility->update($input);
-        $mobility->update([
-            'other_type' => $request->input('other_type'),
-        ]);
 
         if($request->has('document')){
             
