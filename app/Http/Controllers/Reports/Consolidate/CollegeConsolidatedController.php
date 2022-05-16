@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\{
     Chairperson,
     Dean,
+    FacultyResearcher,
+    FacultyExtensionist,
     Report,
     SectorHead,
     User,
