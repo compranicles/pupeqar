@@ -12879,6 +12879,7 @@ body {
   left: 80%;
   bottom: 0;
   right: 20%;
+  margin: auto;
 }
 
 @media screen and (max-width: 900px) and (min-width: 400px) { 
@@ -13552,4 +13553,8 @@ overflow-x: auto;
   background-color: #2f6da4;
   color: white;
   text-align: center;
+}
+
+.bi.bi-dash-circle-fill {
+  color: red;
 }

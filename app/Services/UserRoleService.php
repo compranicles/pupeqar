@@ -6,7 +6,7 @@ use App\Models\Authentication\UserRole;
 
 class UserRoleService {
     public function getRolesOfUser($userID) {
-        $roles = UserRole::where('user_id', $userID)->pluck('role_id')->all();
+        $roles = UserRole::where('user_id', $userID)->whereNull('deleted_at')->pluck('role_id')->all();
         return $roles;
     }
 

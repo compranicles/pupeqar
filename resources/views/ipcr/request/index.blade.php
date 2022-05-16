@@ -50,7 +50,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="yearFilter" class="mr-2">Year Added:</label>
+                                    <label for="yearFilter" class="mr-2">Year Covered:</label>
                                     <div class="d-flex">
                                         <select id="yearFilter" class="custom-select" name="yearFilter">
                                         </select>
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="request_table">
                                 <thead>
                                     <tr>
@@ -81,6 +81,8 @@
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
+                                        <th>Date Added</th>
+                                        <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -97,6 +99,20 @@
                                         </td>
                                         <td onclick="window.location.href = '{{ route('request.show', $row->id) }}' " >
                                             {{ $row->report_year }}
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            $created_at = strtotime( $row->created_at );
+                                            $created_at = date( 'M d, Y h:i A', $created_at );
+                                            ?>
+                                            {{ $created_at }}
+                                        </td>
+                                        <td>
+                                        <?php
+                                            $updated_at = strtotime( $row->updated_at );
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
+                                            ?>  
+                                            {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
@@ -157,7 +173,9 @@
                 null,
                 { "search": "{{ $currentQuarterYear->current_quarter }}" },
                 { "search": "{{ $currentQuarterYear->current_year }}" },
-                null
+                null,
+                null,
+                null,
             ],
             initComplete: function () {
                 this.api().columns(5).every( function () {

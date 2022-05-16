@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="reportFilter" class="mr-2">Year Registered:</label>
+                                    <label for="reportFilter" class="mr-2">Year Covered:</label>
                                     <div class="d-flex">
                                         <select id="reportFilter" class="custom-select" name="reportFilter">
                                         </select>
