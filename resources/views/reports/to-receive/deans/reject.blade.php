@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Return') }}
+            {{ __('Return Accomplishment Report') }}
         </h2>
     </x-slot>
 
@@ -26,7 +26,7 @@
                                                 View Accomplishment
                                         </button>
                                         <br>
-                                        <label>Notes:</label><span style='color: red'></span>
+                                        <label>Remarks:</label><span style='color: red'></span>
                                 
                                         <input type="text" class="form-control" name="reason" required>
                                     </div>

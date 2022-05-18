@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h3 class="text-center">
-                                Quarterly Accomplishment Report
+                                Quarterly Accomplishment Reports
                             </h3>
                             <hr>
                         </div>
@@ -321,7 +321,7 @@
                     orderable: false
                 } ],
                 initComplete: function () {
-                this.api().columns(2).every( function () {
+                this.api().columns(3).every( function () {
                     var column = this;
                     var select = $('#reportFilter')
                         .on( 'change', function () {
@@ -338,7 +338,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                this.api().columns(3).every( function () {
+                this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#empFilter')
                         .on( 'change', function () {
@@ -355,7 +355,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                this.api().columns(4).every( function () {
+                this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#collegeFilter')
                         .on( 'change', function () {

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Return') }}
+            {{ __('Return Accomplishment Reports') }}
         </h2>
     </x-slot>
 
@@ -12,8 +12,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('ipqmso.index') }}" class="btn btn-secondary">BACK</a>
-                                <hr>
+                                <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
                             </div>
                         </div>
                         <form action="{{ route('ipqmso.reject-selected') }}" method="post">
@@ -32,7 +31,7 @@
                                                 View Details
                                             </button>
                                             <br>
-                                            <label>Reason:</label><span style='color: red'></span>
+                                            <label>Remarks:</label><span style='color: red'></span>
                                     
                                             <input type="text" class="form-control" name="reason_{{ $row }}">
                                         @endforeach
@@ -55,7 +54,7 @@
         </div>
     </div>
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewReportLabel">View Accomplishment</h5>
@@ -64,28 +63,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 h4 font-weight-bold text-center">Accomplishment Details:</div>
-                    <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
                         <table class="table table-sm table-borderless" id="columns_value_table">
                         </table>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12 h5 font-weight-bold text-center">Documents:</div>
-                    <div class="col-md-12 text-center" id="data_documents">
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12"><hr></div>
-                    <div class="col-md-6 text-center" id="review_btn_accept">
-                    </div>
-                    <div class="col-md-6 text-center" id="review_btn_reject">
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="col-md-11 h5 font-weight-bold">Documents:</div>
+                    <div class="col-md-11" id="data_documents">
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
             </div>
         </div>
@@ -101,9 +93,9 @@
                 $.get('/reports/data/'+catID, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
-                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
-                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-right">'+k+':</td>');
-                        $('#row-'+countColumns).append('<td class="report-content h5 text-left">'+data[k]+'</td>');
+                        $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
+                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
+                        $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
                 $.get('/reports/docs/'+catID, function (data) {

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Return') }}
+            {{ __('Return Accomplishment Report') }}
         </h2>
     </x-slot>
 
@@ -19,7 +19,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Reason:</label><span style='color: red'></span>
+                                        <label>Remarks:</label><span style='color: red'></span>
                                 
                                         <input type="text" class="form-control" name="reason" required>
                                     </div>
