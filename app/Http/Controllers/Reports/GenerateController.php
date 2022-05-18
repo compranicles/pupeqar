@@ -203,7 +203,7 @@ class GenerateController extends Controller
             $q1 = $request->from_quarter_generate;
             $q2 = $request->to_quarter_generate;
             $year = $request->year_generate2;
-            $file_suffix = 'QARs-IPO-Level-Qtr-'.$q1.'-'.$q2.'-'.$year;
+            $file_suffix = 'QARs-IPO-Level-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
 
             return Excel::download(new IPOAccomplishmentReportExport(
                 $type, 
@@ -219,7 +219,7 @@ class GenerateController extends Controller
             $q1 = $request->from_quarter_generate;
             $q2 = $request->to_quarter_generate;
             $year = $request->year_generate2;
-            $file_suffix = 'QARs-'.$data->code.'-Qtr-'.$q1.'-'.$q2.'-'.$year;
+            $file_suffix = 'QARs-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
             
             $asked = 'no one';
 
