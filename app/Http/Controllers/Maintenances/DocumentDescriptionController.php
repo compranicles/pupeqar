@@ -51,7 +51,7 @@ class DocumentDescriptionController extends Controller
         }
         DocumentDescription::create([
             'name' => $request->input('name'),
-            'purpose' => $request->input('purpose'),
+            // 'purpose' => $request->input('purpose'),
             'report_category_id' => $request->input('report_category_id'),
             'is_active' => $active
         ]);
