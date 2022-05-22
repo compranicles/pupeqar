@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Return') }}
+            {{ __('Return Accomplishment Reports') }}
         </h2>
     </x-slot>
 
@@ -32,7 +32,7 @@
                                                 View Details
                                             </button>
                                             <br>
-                                            <label>Reason:</label><span style='color: red'></span>
+                                            <label>Remarks:</label><span style='color: red'></span>
                                     
                                             <input type="text" class="form-control" name="reason_{{ $row }}">
                                         @endforeach

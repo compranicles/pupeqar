@@ -8,7 +8,7 @@
 @if (in_array(5, $roles))
     <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">To Review - Department</a>   
     @forelse ( $departments as $row)
-        <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id ? 'active' : '') : '' }}">  
+        <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id && request()->routeIs('reports.consolidate.department') ? 'active' : '') : '' }}">  
             {{ $row->code }} - Accomplishments
         </a>   
     @empty
