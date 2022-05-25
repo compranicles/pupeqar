@@ -24,9 +24,14 @@ class SectorController extends Controller
     {
         $this->authorize('update', Sector::class);
         Schema::disableForeignKeyConstraints();
+
         Artisan::call('db:seed', ['--class' => 'SectorSeeder']); 
         Artisan::call('db:seed', ['--class' => 'CollegeSeeder']); 
         Artisan::call('db:seed', ['--class' => 'DepartmentSeeder']); 
+
+        Schema::enableForeignKeyConstraints();
+
+
 
         return redirect()->route('sectors.maintenance.index')->with('sync_success', 'Sectors, Offices/Colleges/Branches/Campuses, and Departments data synced successfully');
     }
