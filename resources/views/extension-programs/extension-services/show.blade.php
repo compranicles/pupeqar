@@ -30,9 +30,11 @@
                     <button type="button" value="{{ $extension_service->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </p>
               </div>
+              @if ($extensionRole == '1')
               <div class="alert alert-info" role="alert">
                 Add your co-extensionist/s in this extension to share them this info.
               </div>
+              @endif
               <div class="row">
                 <div class="col-md-12">
                   @include('extension-service-show', ['formFields' => $extensionServiceFields, 'value' => $values])

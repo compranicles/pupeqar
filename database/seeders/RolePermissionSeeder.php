@@ -56,7 +56,7 @@ class RolePermissionSeeder extends Seeder
 
         /***** Chairperson role permissions *****/
         RolePermission::insert(['role_id' => '5', 'permission_id' => 31]);
-        for ($c = 34; $c <= 39; $c++) {
+        for ($c = 34; $c <= 38; $c++) {
             RolePermission::insert(['role_id' => '5', 'permission_id' => $c]);
         }
         RolePermission::insert(['role_id' => '5', 'permission_id' => 41]);
@@ -65,7 +65,7 @@ class RolePermissionSeeder extends Seeder
 
         /***** Dean/Director role permissions *****/
         RolePermission::insert(['role_id' => '6', 'permission_id' => 31]);
-        for ($d = 34; $d <= 39; $d++) {
+        for ($d = 34; $d <= 38; $d++) {
             RolePermission::insert(['role_id' => '6', 'permission_id' => $d]);
         }
         RolePermission::insert(['role_id' => '6', 'permission_id' => 41]);

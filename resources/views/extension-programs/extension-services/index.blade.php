@@ -98,14 +98,14 @@
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                             {{ $extensionService->report_year }} 
                                         </td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                             <?php 
                                             $created_at = strtotime( $extensionService->created_at );
                                             $created_at = date( 'M d, Y h:i A', $created_at );
                                             ?>
                                             {{ $created_at }}
                                         </td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                         <?php
                                             $updated_at = strtotime( $extensionService->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); 

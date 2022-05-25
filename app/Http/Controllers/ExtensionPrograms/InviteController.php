@@ -77,16 +77,16 @@ class InviteController extends Controller
             Notification::send($user, new ExtensionInviteNotification($notificationData));
             $count++;
         }
-        \LogActivity::addToLog('Added Co-Extensionist.');
+        \LogActivity::addToLog('Had added '.$count.' co-extensionist/s in an extension program/project/activity.');
 
-        return redirect()->route('extension.invite.index', $id)->with('success', count($request->input('employees')).' people invited successfully');
+        return redirect()->route('extension.invite.index', $id)->with('success', count($request->input('employees')).' people invited as co-extensionist/s.');
     }
 
     public function confirm($id, Request $request){
 
         $user = User::find(auth()->id());
 
-        \LogActivity::addToLog('Extension Invitation Confirmed.');
+        \LogActivity::addToLog('Had confirmed as a co-extensionist of an extension program/project/activity.');
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         
@@ -101,16 +101,17 @@ class InviteController extends Controller
         ]);
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
+        DB::table('notifications')
+            ->where('id', $request->get('id'))
+            ->delete();
         
-        \LogActivity::addToLog('Extension Invitation Cancelled.');
+        \LogActivity::addToLog('Had denied as a co-extensionist of an extension program/project/activity.');
 
-        return redirect()->route('extension.index')->with('success', 'Invitation cancelled');
+        return redirect()->route('extension.index')->with('success', 'Invitation cancelled.');
     }
 
     public function remove($id, Request $request){
         $extension = ExtensionService::find($id);
-
-
 
         if(ExtensionService::where('user_id', $request->input('user_id'))->where('ext_code', $extension->ext_code)->exists()){
             $coESID = ExtensionService::where('ext_code', $extension->ext_code)->where('user_id', $request->input('user_id'))->pluck('id')->first();
@@ -122,7 +123,7 @@ class InviteController extends Controller
 
             ExtensionInvite::where('extension_service_id', $id)->where('user_id', $request->input('user_id'))->delete();
 
-            return redirect()->route('extension.invite.index', $id)->with('success', 'Action successful');
+            return redirect()->route('extension.invite.index', $id)->with('success', 'Action successful.');
 
         }
         
@@ -131,6 +132,6 @@ class InviteController extends Controller
         \LogActivity::addToLog('Extensionists removed.');
 
         
-        return redirect()->route('extension.invite.index', $id)->with('success', 'Action successful');
+        return redirect()->route('extension.invite.index', $id)->with('success', 'Sending confirmation for co-extensionist has been cancelled.');
     }
 }

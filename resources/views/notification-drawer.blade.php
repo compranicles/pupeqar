@@ -124,7 +124,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div id="noti-all-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="notif-row   noti-message text-dark">'+
-                                item.data.sender+' invited you as Co-Researcher in a Research titled : "'+item.data.title+'"'+
+                                item.data.sender+' shared you a copy of research titled : "'+item.data.title+'"'+
                                 '</div>'+
                                 '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm  btn-primary mr-2">Confirm</a>'+
                                 '<a href="'+item.data.url_deny+'?id='+item.id+'"class="btn btn-sm btn-seconday mr-2">Cancel</a></div>'
@@ -135,7 +135,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div id="noti-all-info-'+countColumns+'" data-url="{{ route("research.index") }}" data-id="'+item.id+'" class="notif-row   noti-message text-dark">'+
-                                item.data.sender+' added you in an extension accomplishment. '+
+                                item.data.sender+' shared you a copy of an extension program/project/activity. '+
                                 '</div>'+
                                 '<div><a href="'+item.data.url_accept+'?id='+item.id+'"class="btn btn-sm  btn-primary mr-2">Confirm</a>'+
                                 '<a href="'+item.data.url_deny+'?id='+item.id+'"class="btn btn-sm btn-seconday mr-2">Cancel</a></div>'
@@ -146,7 +146,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div id="noti-all-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row  noti-message text-dark ml-2">'+
-                                item.data.sender+' accepted your invitation to be part of Research titled : "'+item.data.title+'".'+
+                                item.data.sender+' confirmed as a co-researcher of the research titled : "'+item.data.title+'".'+
                                 '</div>'+
                                 '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
                             );
@@ -155,7 +155,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div id="noti-all-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row  noti-message text-dark ml-2">'+
-                                item.data.sender+' confirmed your invitation to be part of an extension accomplishment.'+
+                                item.data.sender+' confirmed as a co-extensionist of the extension program/project/activity.'+
                                 '</div>'+
                                 '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
                             );

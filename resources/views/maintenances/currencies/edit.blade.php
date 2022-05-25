@@ -13,8 +13,6 @@
     
             <div class="col-md-7 float-none m-0 m-auto">
               <div class="d-flex align-content-center">
-                <h2 class="mr-3">Currencies</h2>
-                <p class="mt-2 mr-3">Edit Currency.</p>
                 <p class="mt-2">
                   <a class="back_link" href="{{ route('currencies.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Currencies</a>
                 </p>
@@ -55,14 +53,16 @@
                           </div>
                         </div>
                       </div>  
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="mb-0 mt-3 ml-auto mr-2 p-2">
-                    <div class="d-flex">
-                      <a href="{{ route('currencies.index') }}" class="btn btn-light mr-3" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
-                      <button type="submit" class="btn btn-success"><i class="bi bi-save mr-2"></i>Save</button>
-                    </div>
+                      <div class="row mt-3">
+                        <div class="col-md-12">
+                          <div class="mb-0">
+                              <div class="d-flex justify-content-end align-items-baseline">
+                                <a href="{{ route('currencies.index') }}" class="btn btn-secondary mr-2" tabindex="-1" role="button" aria-disabled="true">Cancel</a>
+                                <button type="submit" class="btn btn-success">Save</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>   
                   </div>
                 </div>
               </form>

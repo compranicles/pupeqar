@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Invite Co-Extensionists') }}
+            {{ __('Add Co-Extensionists') }}
         </h2>
     </x-slot>
 
@@ -46,7 +46,7 @@
                                 <div class="mb-0">
                                     <div class="d-flex align-items-baseline">
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">
-                                            <i class="fas fa-plus"></i> Invite
+                                            <i class="fas fa-plus"></i> Add
                                         </button>
                                     </div>
                                 </div>

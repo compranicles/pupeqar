@@ -10,9 +10,7 @@
         
         <div class="col-md-9 offset-md-2">
           <div class="d-flex align-content-center">
-            <h2 class="ml-3 mr-3">Users</h2>
-            <p class="mt-2 mr-3">Edit User.</p>
-            <p class="mt-2">
+            <p class="mt-2 ml-3">
               <a class="back_link" href="{{ route('admin.users.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Users</a>
             </p>
           </div>
@@ -122,8 +120,8 @@
                         <x-jet-input-error for="research"></x-jet-input-error>
                       </div> 
                       <div class="form-group d-flex justify-content-end align-items-baseline">
-                        <button type="submit" class="btn btn-success mr-3"><i class="bi bi-save mr-2"></i>Save</button>
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-light" tabindex="-1" role="button" aria-disabled="true"><i class="bi bi-x-circle mr-2"></i>Cancel</a>
+                        <a href="{{ route('admin.users.index') }}" class="btn btn-secondary mr-3" tabindex="-1" role="button" aria-disabled="true">Cancel</a>
+                        <button type="submit" class="btn btn-success">Save</button>
                       </div> 
                     </div>
                   </div>

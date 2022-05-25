@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel">Invite</h5>
+                <h5 class="modal-title" id="addModalLabel">Add Co-researchers</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,7 +20,7 @@
             </div>
             <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success mb-2">Send Invitation</button>
+                    <button type="submit" class="btn btn-success mb-2">Send Confirmation</button>
                 </form>
             </div>
         </div>

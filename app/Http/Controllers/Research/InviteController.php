@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Research;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Models\{
     Report,
@@ -35,6 +36,8 @@ class InviteController extends Controller
         
         $allEmployees = User::whereNotIn('users.id', (ResearchInvite::where('research_id', $research_id)->pluck('user_id')->all()))->
                             where('users.id', '!=', auth()->id())->
+                            join('user_roles', 'user_roles.user_id', 'users.id')->
+                            whereIn('user_roles.role_id', [1,3])->
                             select('users.*')->
                             get();
         
@@ -73,16 +76,16 @@ class InviteController extends Controller
             Notification::send($user, new ResearchInviteNotification($notificationData));
             $count++;
         }
-        \LogActivity::addToLog('Had invited a researcher to the research "'.$research_title.'".');
+        \LogActivity::addToLog('Had added '.$count.' co-researcher/s in the research "'.$research_title.'".');
 
-        return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited successfully');
+        return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited as co-researcher/s.');
     }
 
     public function confirm($research_id, Request $request){
 
         $user = User::find(auth()->id());
 
-        \LogActivity::addToLog('Had confirmed the research invitation.');
+        \LogActivity::addToLog('Had confirmed as a co-researcher of a research.');
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         
@@ -97,10 +100,13 @@ class InviteController extends Controller
         ]);
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
+        DB::table('notifications')
+            ->where('id', $request->get('id'))
+            ->delete();
         
-        \LogActivity::addToLog('Had rejected the research invitation.');
+        \LogActivity::addToLog('Had denied as a co-researcher of a research.');
 
-        return redirect()->route('research.index')->with('success', 'Invitation cancelled');
+        return redirect()->route('research.index')->with('success', 'Invitation cancelled.');
     }
 
     public function remove($research_id, Request $request){
@@ -136,15 +142,14 @@ class InviteController extends Controller
 
             ResearchInvite::where('research_id', $research_id)->where('user_id', $request->input('user_id'))->delete();
 
-            return redirect()->route('research.invite.index', $research_id)->with('success', 'Action successful');
+            return redirect()->route('research.invite.index', $research_id)->with('success', 'Action successful.');
 
         }
         
         ResearchInvite::where('research_id', $research_id)->where('user_id', $request->input('user_id'))->delete();
 
         \LogActivity::addToLog('Research Involvement removed.');
-
         
-        return redirect()->route('research.invite.index', $research_id)->with('success', 'Action successful');
+        return redirect()->route('research.invite.index', $research_id)->with('success', 'Sending invitation for co-researcher has been cancelled.');
     }
 }
