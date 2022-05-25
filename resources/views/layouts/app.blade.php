@@ -48,7 +48,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css"/>
     
     </head>
-    <body class="font-sans antialiased bg-light">
+    <body class="font-sans antialiased bg-light" style="background-image: {{ URL('storage/cover2.png') }}">
         @incompleteAccount
             <x-jet-banner />
         @endincompleteAccount

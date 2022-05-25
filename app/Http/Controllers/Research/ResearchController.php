@@ -571,12 +571,12 @@ class ResearchController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ];
 
-        // $start_date = (new DateContentService())->checkDateContent($request, "start_date");
-        // $target_date = (new DateContentService())->checkDateContent($request, "target_date");
-        // $request->merge([
-        //     'start_date' => $start_date,
-        //     'target_date' => $target_date,
-        // ]);
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+        $request->merge([
+            'start_date' => $start_date,
+            'target_date' => $target_date,
+        ]);
 
         $research = Research::where('id', $research_id)->first()->toArray();
         $research = collect($research);

@@ -13,6 +13,7 @@ class Sector extends Model
     protected $fillable = [
         'name',
         'code',
-        'hris_code'
+        'hris_code',
+        'created_at'
     ];
 }

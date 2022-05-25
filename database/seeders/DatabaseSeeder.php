@@ -105,36 +105,36 @@ class DatabaseSeeder extends Seeder
             GenerateColumn3Seeder::class,
             GenerateColumn4Seeder::class,
         ]);
-        // \App\Models\Report::truncate();
+        \App\Models\Report::truncate();
       
-        // \App\Models\Research::truncate();
+        \App\Models\Research::truncate();
         // \App\Models\Research::factory()->count(20)->create();
 
-        // \App\Models\Invention::truncate();
+        \App\Models\Invention::truncate();
         // \App\Models\Invention::factory()->count(20)->create();
 
-        // \App\Models\Mobility::truncate();
+        \App\Models\Mobility::truncate();
         // \App\Models\Mobility::factory()->count(20)->create();
 
-        // \App\Models\Partnership::truncate();
+        \App\Models\Partnership::truncate();
         // \App\Models\Partnership::factory()->count(20)->create();
 
-        // \App\Models\ExtensionService::truncate();
+        \App\Models\ExtensionService::truncate();
         // \App\Models\ExtensionService::factory()->count(20)->create();
 
-        // \App\Models\ExpertServiceAcademic::truncate();
+        \App\Models\ExpertServiceAcademic::truncate();
         // \App\Models\ExpertServiceAcademic::factory()->count(20)->create();
 
-        // \App\Models\ExpertServiceConference::truncate();
+        \App\Models\ExpertServiceConference::truncate();
         // \App\Models\ExpertServiceConference::factory()->count(20)->create();
 
-        // \App\Models\ExpertServiceConsultant::truncate();
+        \App\Models\ExpertServiceConsultant::truncate();
         // \App\Models\ExpertServiceConsultant::factory()->count(20)->create();
 
-        // \App\Models\Reference::truncate();
+        \App\Models\Reference::truncate();
         // \App\Models\Reference::factory()->count(20)->create();
 
-        // \App\Models\Syllabus::truncate();
+        \App\Models\Syllabus::truncate();
         // \App\Models\Syllabus::factory()->count(20)->create();
 
         Schema::enableForeignKeyConstraints();

@@ -75,7 +75,7 @@ class ResearchInviteNotification extends Notification
                 'date' => $this->notificationData['date'],
                 'type' => $this->notificationData['type']
             ];
-        elseif($this->notificationData['type'] == 'res-cconfirm')
+        elseif($this->notificationData['type'] == 'res-confirm')
             return [
                 'receiver' => $this->notificationData['receiver'],
                 'title' => $this->notificationData['title'],

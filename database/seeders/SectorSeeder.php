@@ -25,6 +25,8 @@ class SectorSeeder extends Seeder
                 'name' => $sector->Department,
                 'code' => $sector->DepartmentCode,
                 'hris_code' =>$sector->DepartmentID,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ]);
         }
     }
