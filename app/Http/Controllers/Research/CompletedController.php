@@ -133,7 +133,7 @@ class CompletedController extends Controller
         $research->update($input);
 
 
-        $completed = ResearchComplete::updateOrCreate([
+        $completed = ResearchComplete::create([
             'research_code' => $research->research_code,
             'research_id' => $research->id
         ]);
