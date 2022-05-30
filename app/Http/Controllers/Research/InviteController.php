@@ -112,6 +112,8 @@ class InviteController extends Controller
     public function remove($research_id, Request $request){
         $research = Research::find($research_id);
 
+
+
         if(Research::where('user_id', $request->input('user_id'))->where('research_code', $research->research_code)->exists()){
             $coResearchID = Research::where('research_code', $research->research_code)->where('user_id', $request->input('user_id'))->pluck('id')->first();
             if(Report::where('report_reference_id', $coResearchID)->where('report_category_id', 1)->where('user_id', $request->input('user_id'))->exists()){
@@ -121,30 +123,21 @@ class InviteController extends Controller
                 'is_active_member' => 0
             ]);
 
-            $researchers = Research::where('research.research_code', $research->research_code)
-            ->pluck('researchers')
-            ->first();
-            $researchersExplode = explode("/", $researchers);
+            $researchers = Research::select('users.first_name', 'users.last_name', 'users.middle_name')
+                ->join('users',  'research.user_id', 'users.id')
+                ->where('research.research_code', $research->research_code)->where('is_active_member', 1)
+                ->get();
 
-            $researcherToRemove = User::select('users.first_name', 'users.last_name', 'users.middle_name')
-                ->where('users.id', $request->input('user_id'))
-                ->first();
-            
-            $middle = '';
-            if ($researcherToRemove['middle_name'] != '') {
-                $middle = substr($researcherToRemove['middle_name'],0,1).'.';
-            }
-            $researcherToRemove = ucwords(strtolower($researcherToRemove->last_name.', '.$researcherToRemove->first_name.' '.$middle));
-            
-
-            foreach($researchersExplode as $key => $researcher){
-                if ($researcher == $researcherToRemove) {
-                        unset($researchersExplode[$key]); 
-                }
+            $researcherNewName = '';
+            foreach($researchers as $researcher){
+                if(count($researchers) == 1)
+                    $researcherNewName = $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name;
+                else
+                    $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
             }
 
             Research::where('research_code', $research->research_code)->update([
-                'researchers' => implode("/", $researchersExplode)
+                'researchers' => $researcherNewName
             ]);
 
             ResearchInvite::where('research_id', $research_id)->where('user_id', $request->input('user_id'))->delete();

@@ -424,6 +424,7 @@ class ResearchController extends Controller
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
+        // dd($request);
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $target_date = (new DateContentService())->checkDateContent($request, "target_date");
         $request->merge([
@@ -543,6 +544,7 @@ class ResearchController extends Controller
         $research = $research->except(['nature_of_involvement', 'college_id', 'department_id']);
         $values = $research->toArray();
         $research = json_decode(json_encode($research), FALSE);
+        // dd($values);
         // $research = collect($research);
         $researchers = Research::where('research_code', $research->research_code)->pluck('researchers')->all();
 
@@ -558,6 +560,7 @@ class ResearchController extends Controller
     }
 
     public function saveResearch($research_id, Request $request){
+        // dd($request->all());
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -582,6 +585,7 @@ class ResearchController extends Controller
         $data = array_merge($researchFiltered->toArray(), $fromRequest);
         $data = array_merge($yearAndQuarter, $data);
         $data = Arr::add($data, 'user_id', auth()->id());
+        // dd($data);
         $saved = Research::create($data); 
         Research::where('research_code', $saved->research_code)->update([
             'researchers' => $request->input('researchers'),
@@ -716,6 +720,7 @@ class ResearchController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.nature_of_involvement')
                 ->where('research.research_code', $research_code)->where('is_active_member', 0)
                 ->get();
+        // dd($researchers);
         $nature_of_involvement_dropdown = DropdownOption::where('dropdown_id', 4)->where('is_active', 1)->orderBy('order')->get();
         return view('research.manage-researchers.index', compact('research', 'research_code', 'researchers', 'inactive_researchers','nature_of_involvement_dropdown'));
     }
