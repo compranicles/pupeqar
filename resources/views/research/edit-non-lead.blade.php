@@ -24,10 +24,7 @@
                         <form action="{{ route('research.update-non-lead', $research->id) }}" method="post">
                             @csrf
                             {{-- @method('put') --}}
-                            <fieldset id="research">
                             @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
-
-                            </fieldset>
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -161,29 +158,16 @@
             $('.document').remove();
            
             $('#title').attr('disabled', true); 
-            $('#keywords').attr('disabled', true);
-            $('#researchers').attr('disabled', true);
+            $("#keywords")[0].selectize.lock();
+            $("#researchers")[0].selectize.lock();
             $('#currency_select_funding_amount').attr('disabled', true);
             $('#funding_amount').attr('disabled', true);
             $('#funding_agency').attr('disabled', true);
             $('#status').attr('disabled', true);
+            $('#start_date').attr('disabled', true);
+            $('#target_date').attr('disabled', true);
             $('#description').attr('disabled', true);
 
-            /* STATUS On page load */
-            if ({{ $research->status }} == 26) {
-                $('#start_date').val("");
-                $('#start_date').attr('readonly', true);
-                $('#start_date').removeAttr('required');
-                $('#target_date').val("");
-                $('#target_date').attr('readonly', true);
-                $('#target_date').removeAttr('required');
-            }
-            else if ({{ $research->status }} == 27) {
-                $('#start_date').removeAttr('readonly');
-                $('#start_date').attr('required', true);
-                $('#target_date').removeAttr('readonly');
-                $('#target_date').attr('required', true);
-            }
         </script>
         <script>
             var report_category_id = 1;
