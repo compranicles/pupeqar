@@ -514,11 +514,9 @@ class SubmissionController extends Controller
                 case '13': 
                     $data = Partnership::select(
                                             'partnerships.*', 
-                                            'colleges.name as college_name', 
-                                            'dropdown_options.name as collab_nature_name'
+                                            'colleges.name as college_name'
                                         )->where('user_id', auth()->id())
                                         ->join('colleges', 'colleges.id', 'partnerships.college_id')  
-                                        ->join('dropdown_options', 'dropdown_options.id', 'partnerships.collab_nature')
                                         ->get();
                 $tempdata = [];
                 foreach($data as $row){
@@ -547,11 +545,9 @@ class SubmissionController extends Controller
                 case '14': 
                     $data = Mobility::select(
                                         'mobilities.*', 
-                                        'colleges.name as college_name', 
-                                        'dropdown_options.name as type_name'
+                                        'colleges.name as college_name'
                                     )->where('user_id', auth()->id())
                                     ->join('colleges', 'colleges.id', 'mobilities.college_id')  
-                                    ->join('dropdown_options', 'dropdown_options.id', 'mobilities.type')
                                     ->get();
                     $tempdata = [];
                     foreach($data as $row){
