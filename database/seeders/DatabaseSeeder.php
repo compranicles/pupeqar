@@ -114,10 +114,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Invention::factory()->count(20)->create();
 
         \App\Models\Mobility::truncate();
-        \App\Models\Mobility::factory()->count(20)->create();
+        // \App\Models\Mobility::factory()->count(20)->create();
 
         \App\Models\Partnership::truncate();
-        \App\Models\Partnership::factory()->count(20)->create();
+        // \App\Models\Partnership::factory()->count(20)->create();
 
         \App\Models\ExtensionService::truncate();
         // \App\Models\ExtensionService::factory()->count(20)->create();
