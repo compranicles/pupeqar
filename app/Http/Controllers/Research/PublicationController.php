@@ -145,10 +145,9 @@ class PublicationController extends Controller
             $researchStatus = 31;
         }
         
-        $research->update([
+        Research::where('research_code', $research->research_code)->update([
             'status' => $researchStatus
         ]);
-
 
         $publication = ResearchPublication::create($input);
         

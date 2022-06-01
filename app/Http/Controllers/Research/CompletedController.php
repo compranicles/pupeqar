@@ -120,8 +120,6 @@ class CompletedController extends Controller
         
         $request->merge([
             'completion_date' => $completion_date,
-            'report_quarter' => $currentQuarterYear->current_quarter,
-            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([
@@ -130,13 +128,15 @@ class CompletedController extends Controller
 
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
         $input = Arr::add($input, 'status', 28);
-        $research->update($input);
-
+        Research::where('research_code', $research->research_code)->update($input);
 
         $completed = ResearchComplete::create([
             'research_code' => $research->research_code,
-            'research_id' => $research->id
+            'research_id' => $research->id,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
+
         $completed->update([
             'description' => $request->input('description'),
         ]);
@@ -247,7 +247,7 @@ class CompletedController extends Controller
         
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
 
-        $research->update($input);
+        Research::where('research_code', $research->research_code)->update($input);
 
         $completed->update(['description' => '-clear']);
 
