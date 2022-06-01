@@ -568,14 +568,18 @@ class ResearchController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ];
 
-        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
-        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
-        $request->merge([
-            'start_date' => $start_date,
-            'target_date' => $target_date,
-        ]);
-
+        
         $research = Research::where('id', $research_id)->first()->toArray();
+        if (empty($research['start_date']))
+            $start_date = null;
+        else
+            $start_date = date("Y-m-d", strtotime($research['start_date']));
+
+        if (empty($research['target_date']))
+            $target_date = null;
+        else
+            $target_date = date("Y-m-d", strtotime($research['target_date']));
+
         $research = collect($research);
         $researchFiltered= $research->except(['id', 'college_id', 'department_id', 'nature_of_involvement', 'user_id', 'created_at', 'updated_at', 'deleted_at']);
         $fromRequest = $request->except(['_token', 'document', 'notif_id']);
@@ -583,6 +587,11 @@ class ResearchController extends Controller
         $data = array_merge($yearAndQuarter, $data);
         $data = Arr::add($data, 'user_id', auth()->id());
         $saved = Research::create($data); 
+
+        Research::where('id', $saved->id)->update([
+            'start_date' => $start_date,
+            'target_date' => $target_date
+        ]);
         Research::where('research_code', $saved->research_code)->update([
             'researchers' => $request->input('researchers'),
         ]);

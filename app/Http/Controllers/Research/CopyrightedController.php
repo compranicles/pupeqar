@@ -44,6 +44,10 @@ class CopyrightedController extends Controller
     {
         $this->authorize('viewAny', ResearchCopyright::class);
 
+        if ($research->nature_of_involvement == 12 || $research->nature_of_involvement == 13) {
+            return redirect()->route('research.show', $research->id)->with('cannot_access', 'Not yet added by the lead researcher.');
+        }
+
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();

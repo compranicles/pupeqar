@@ -148,10 +148,11 @@ class PresentationController extends Controller
         else{
             $researchStatus = 31;
         }
-        $research->update([
+
+        Research::where('research_code', $research->research_code)->update([
             'status' => $researchStatus
         ]);
-        // dd($input);
+
 
         $presentation = ResearchPresentation::create($input);
 
