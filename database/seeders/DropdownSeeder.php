@@ -26,6 +26,7 @@ class DropdownSeeder extends Seeder
             IPCRDropdownSeeder::class,
             MoreDropdownSeeder::class,
             HRISDropdownSeeder::class,
+            SpecialDropdownSeeder::class,
         ]);
     }
 }
