@@ -519,7 +519,7 @@ class DocumentDescriptionSeeder extends Seeder
         ]);
 
         // Attendance in Relevant Faculty/Admin Development Program (Seminars/ Webinars, Fora/Conferences) and Trainings
-        for ($i = 25; $i <= 26; $i++) {
+        for ($i = 24; $i <= 25; $i++) {
             DocumentDescription::insert([
                 'report_category_id' => $i,
                 'name' => 'Special Order',
@@ -543,29 +543,29 @@ class DocumentDescriptionSeeder extends Seeder
         }
         // Outstanding Awards
         DocumentDescription::insert([
-            'report_category_id' => 27,
+            'report_category_id' => 26,
             'name' => 'Citation',
             'is_active' => 1,
         ]);
         DocumentDescription::insert([
-            'report_category_id' => 27,
+            'report_category_id' => 26,
             'name' => 'Certificate of Award',
             'is_active' => 1,
         ]);
         DocumentDescription::insert([
-            'report_category_id' => 27,
+            'report_category_id' => 26,
             'name' => 'Pictures',
             'is_active' => 1,
         ]);
         DocumentDescription::insert([
-            'report_category_id' => 27,
+            'report_category_id' => 26,
             'name' => 'Documentation',
             'is_active' => 1,
         ]);
 
         // Officership
         DocumentDescription::insert([
-            'report_category_id' => 28,
+            'report_category_id' => 27,
             'name' => 'Certificate',
             'is_active' => 1,
         ]);

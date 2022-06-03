@@ -40,6 +40,7 @@ class FieldSeeder extends Seeder
 
             //IPCR Field Seeders
             RequestFormSeeder::class,
+            AdminSpecialTasksFormSeeder::class,
 
             //HRIS Field Seeders
             HRISFieldSeeder::class,

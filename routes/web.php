@@ -263,8 +263,12 @@ Route::group(['middleware' => 'auth'], function() {
 
     /* REQUEST & QUERIES ACCOMPLISHMENTS */
     Route::resource('ipcr/request', \App\Http\Controllers\IPCR\RequestController::class);
+    Route::resource('special-tasks', \App\Http\Controllers\IPCR\SpecialTaskController::class);
+    Route::resource('admin-special-tasks', \App\Http\Controllers\IPCR\AdminSpecialTaskController::class);
+    
     // Remove Documents
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');
+    Route::get('/admin-special-tasks/remove-document/{filename}', [\App\Http\Controllers\IPCR\AdminSpecialTaskController::class, 'removeDoc'])->name('admin-special-tasks.removedoc');
 
     /* REPORTS API */
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getColumnDataPerReportCategory']);
