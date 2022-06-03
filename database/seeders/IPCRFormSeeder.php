@@ -20,5 +20,10 @@ class IPCRFormSeeder extends Seeder
             'table_name' => 'requests',
             'is_active' => 1
         ]);
+        IPCRForm::insert([
+            'label' => 'Special Task (Admin)',
+            'table_name' => 'admin_special_tasks',
+            'is_active' => 1
+        ]);
     }
 }
