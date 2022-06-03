@@ -33,7 +33,7 @@
                                     <select id="catFilter" class="custom-select">
                                         <option value="">Show All</option>
                                         @foreach ($categories as $category)
-                                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -216,7 +216,7 @@
             }
          });
 
-          var statusIndex = 0;
+          var catIndex = 0;
             $("#request_table th").each(function (i) {
                 if ($($(this)).html() == "Category") {
                     catIndex = i; return false;

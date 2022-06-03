@@ -12,7 +12,7 @@
         <div class="row">
 
             <div class="col-lg-12">
-                @if ($message = Session::get('request_success'))
+                @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
                         <i class="bi bi-check-circle"></i> {{ $message }}
                     </div>         
@@ -32,7 +32,103 @@
                             </div>
                         </div>  
                         <hr>
-                        
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="catFilter" class="mr-2">Commitment Measurable by: </label>
+                                    <select id="catFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="yearFilter" class="mr-2">Year Covered:</label>
+                                    <div class="d-flex">
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
+                                    <select id="collegeFilter" class="custom-select">
+                                        <option value="">Show All</option>
+                                        @foreach($tasks_in_colleges as $college)
+                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="table-responsive" style="overflow-x:auto;">
+                            <table class="table" id="special_table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Commitment Measurable by:</th>
+                                        <th>Final Output</th>
+                                        <th>College/Branch/Campus/Office</th>
+                                        <th>Quarter</th>
+                                        <th>Year</th>
+                                        <th>Date Added</th>
+                                        <th>Date Modified</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($specialTasks as $row)
+                                    <tr class="tr-hover" role="button">
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->commitment_measure_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->final_output }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                            {{ $row->report_quarter }}
+                                        </td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                            {{ $row->report_year }}
+                                        </td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                            <?php 
+                                            $created_at = strtotime( $row->created_at );
+                                            $created_at = date( 'M d, Y h:i A', $created_at );
+                                            ?>
+                                            {{ $created_at }}
+                                        </td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                        <?php
+                                            $updated_at = strtotime( $row->updated_at );
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
+                                            ?>  
+                                            {{ $updated_at }}
+                                        </td>
+                                        <td>
+                                            <div role="group">
+                                                <a href="{{ route('special-tasks.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,7 +141,7 @@
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
-     {{-- <script>
+     <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
@@ -53,7 +149,7 @@
         }, 4000);
 
          $(document).ready( function () {
-             $('#request_table').DataTable();
+             $('#special_table').DataTable();
          } );
 
          //Item to delete to display in delete modal
@@ -65,16 +161,15 @@
           var itemToDelete = deleteModal.querySelector('#itemToDelete')
           itemToDelete.textContent = requestTitle
 
-          var url = '{{ route("request.destroy", ":id") }}';
+          var url = '{{ route("special-tasks.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
           
         });
-     </script> --}}
-     {{-- <script>
-         var table =  $("#request_table").DataTable({
+     </script>
+    <script>
+         var table =  $("#special_table").DataTable({
             "searchCols": [
-                null,
                 null,
                 null,
                 null,
@@ -86,7 +181,7 @@
                 null,
             ],
             initComplete: function () {
-                this.api().columns(5).every( function () {
+                this.api().columns(4).every( function () {
                     var column = this;
                     var select = $('#quarterFilter')
                         .on( 'change', function () {
@@ -104,7 +199,7 @@
                     } );
                 });
 
-                this.api().columns(6).every( function () {
+                this.api().columns(5).every( function () {
                     var column = this;
                     var select = $('#yearFilter')
                         .on( 'change', function () {
@@ -124,9 +219,9 @@
             }
          });
 
-          var statusIndex = 0;
-            $("#request_table th").each(function (i) {
-                if ($($(this)).html() == "Category") {
+          var catIndex = 0;
+            $("#special_table th").each(function (i) {
+                if ($($(this)).html() == "Commitment Measurable By:") {
                     catIndex = i; return false;
 
                 }
@@ -144,7 +239,7 @@
             );
 
             var collegeIndex = 0;
-            $("#request_table th").each(function (i) {
+            $("#special_table th").each(function (i) {
                 if ($($(this)).html() == "College/Branch/Campus/Office") {
                     collegeIndex = i; return false;
 
@@ -171,6 +266,6 @@
             });
 
             table.draw();
-     </script> --}}
+     </script>
      @endpush
 </x-app-layout>
