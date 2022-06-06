@@ -95,10 +95,15 @@ class SpecialTaskController extends Controller
         }
         
         $currentQuarterYear = Quarter::find(1);
+        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+        $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
         $request->merge([
+            'target_date' => $target_date,
+            'actual_date' => $actual_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
+
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -166,7 +171,7 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $special_task)
     {
-        if(LockController::isLocked($special_task->id, 29)){
+        if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -208,6 +213,13 @@ class SpecialTaskController extends Controller
             $namePage = 'Accomplishment Based on OPCR';
         }
             
+        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
+        $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
+        $request->merge([
+            'target_date' => $target_date,
+            'actual_date' => $actual_date,
+        ]);
+
 
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -250,7 +262,7 @@ class SpecialTaskController extends Controller
      */
     public function destroy(SpecialTask $special_task)
     {
-        if(LockController::isLocked($special_task->id, 29)){
+        if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)

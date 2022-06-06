@@ -2694,5 +2694,260 @@ class ReportColumnSeeder extends Seeder
         //     'order' => 1,
         // ]);  
 
+
+        //Special Tasks Admin
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Brief Description of Accomplishment',
+            'table' => 'admin_special_tasks',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Output',
+            'table' => 'admin_special_tasks',
+            'column' => 'output',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Outcome',
+            'table' => 'admin_special_tasks',
+            'column' => 'outcome',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Participation/Significant Contribution',
+            'table' => 'admin_special_tasks',
+            'column' => 'participation',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Special Order',
+            'table' => 'admin_special_tasks',
+            'column' => 'special_order',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Level',
+            'table' => 'admin_special_tasks',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Nature of Accomplishment',
+            'table' => 'admin_special_tasks',
+            'column' => 'nature_of_accomplishment',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'From',
+            'table' => 'admin_special_tasks',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);  
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'To',
+            'table' => 'admin_special_tasks',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Proof of Compliance',
+            'table' => 'admin_special_tasks',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        
+        //Special Tasks
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Final Output',
+            'table' => 'special_tasks',
+            'column' => 'final_output',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Target',
+            'table' => 'special_tasks',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Actual',
+            'table' => 'special_tasks',
+            'column' => 'actual_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Description of Accomplishment',
+            'table' => 'special_tasks',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Status',
+            'table' => 'special_tasks',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Remarks',
+            'table' => 'special_tasks',
+            'column' => 'remarks',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'special_tasks',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        //Special Tasks
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Final Output',
+            'table' => 'special_tasks',
+            'column' => 'final_output',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Target',
+            'table' => 'special_tasks',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Actual',
+            'table' => 'special_tasks',
+            'column' => 'actual_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Description of Accomplishment',
+            'table' => 'special_tasks',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Status',
+            'table' => 'special_tasks',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Remarks',
+            'table' => 'special_tasks',
+            'column' => 'remarks',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'special_tasks',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        
+        //Special Tasks
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Final Output',
+            'table' => 'special_tasks',
+            'column' => 'final_output',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Target',
+            'table' => 'special_tasks',
+            'column' => 'target_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Actual',
+            'table' => 'special_tasks',
+            'column' => 'actual_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Description of Accomplishment',
+            'table' => 'special_tasks',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Status',
+            'table' => 'special_tasks',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Remarks',
+            'table' => 'special_tasks',
+            'column' => 'remarks',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'special_tasks',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]); 
     }
 }

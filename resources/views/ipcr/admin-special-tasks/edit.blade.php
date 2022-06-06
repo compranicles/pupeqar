@@ -153,7 +153,6 @@
             });
         </script>
         <script>
-            var report_category_id = 17;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             setTimeout(() => {
                 var urlre = "{{ url('document-upload/description/28') }}";

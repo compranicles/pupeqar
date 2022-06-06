@@ -17,8 +17,8 @@ class CreateSpecialTasksTable extends Migration
             $table->id();
             $table->foreignId('commitment_measure')->nullable();
             $table->text('final_output')->nullable();
-            $table->integer('target')->nullable();
-            $table->integer('actual')->nullable();
+            $table->date('target_date')->nullable();
+            $table->date('actual_date')->nullable();
             $table->text('accomplishment_description')->nullable();
             $table->foreignId('status')->nullable();
             $table->string('remarks')->nullable();

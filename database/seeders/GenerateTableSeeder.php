@@ -98,7 +98,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 30,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -106,7 +106,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 31,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -114,7 +114,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 32,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -140,7 +140,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 0,
-            'report_category_id' => null,
+            'report_category_id' => 29,
             'footers' => json_encode([
                 '* International, National, Local',
             ], JSON_FORCE_OBJECT)
@@ -694,7 +694,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 30,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -702,7 +702,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 31,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -710,7 +710,7 @@ class GenerateTableSeeder extends Seeder
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 32,
             'footers' => null
         ]);
         GenerateTable::insert([
