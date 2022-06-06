@@ -37,6 +37,8 @@ use App\Models\{
     Maintenance\HRISField,
     Maintenance\ReportCategory,
     Maintenance\ReportColumn,
+    AdminSpecialTaskDocument,
+    SpecialTaskDocument,
 };
 
 class ReportDataController extends Controller
@@ -180,7 +182,7 @@ class ReportDataController extends Controller
                     if ($column->column == "start_date" || $column->column == "end_date" || $column->column == "issue_date"
                         || $column->column == "from" || $column->column == "to" || $column->column == "date" 
                         || $column->column == "date_started" || $column->column == "date_completed" || $column->column == "date_published"
-                        || $column->column == "date_finished") {
+                        || $column->column == "date_finished" || $column->column == 'target_date' || $column->column == 'actual_date') {
                         if($data == null)
                             $data = '-';
                         else{
@@ -221,8 +223,8 @@ class ReportDataController extends Controller
                         }
 
                     }
-                    if($column->column == 'partnership_type')
-                        $data = DropdownOption::where('id', $data)->pluck('name')->first();
+                    // if($column->column == 'partnership_type')
+                    //     $data = DropdownOption::where('id', $data)->pluck('name')->first();
                     if($column->column == 'funding_amount'){
                         $curr = DB::table($column->table)->where('id', $id)->value('currency_funding_amount');
                         $currName = Currency::where('id', $curr)->pluck('code')->first();
@@ -353,6 +355,18 @@ class ReportDataController extends Controller
         elseif($report_category_id == 23){
             $report_docs = TechnicalExtensionDocument::where('technical_extension_id', $id)->pluck('filename')->all();
         }
+        elseif($report_category_id == 29){
+            $report_docs = AdminSpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 30){
+            $report_docs = SpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 31){
+            $report_docs = SpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 32){
+            $report_docs = SpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
+        }
         return $report_docs;
         
     }
@@ -377,6 +391,22 @@ class ReportDataController extends Controller
         }
         elseif($report_data->report_category_id == '24'){
             $report_columns = HRISField::where('h_r_i_s_form_id', 1)->where('is_active', 1)->orderBy('order')->get();
+            foreach($report_columns as $row){
+                if($row->name == 'document')
+                    continue;
+                $new_report_details[$row->label] = $report_details[$row->name];
+            }
+        }
+        elseif($report_data->report_category_id == '27'){
+            $report_columns = HRISField::where('h_r_i_s_form_id', 2)->where('is_active', 1)->orderBy('order')->get();
+            foreach($report_columns as $row){
+                if($row->name == 'document')
+                    continue;
+                $new_report_details[$row->label] = $report_details[$row->name];
+            }
+        }
+        elseif($report_data->report_category_id == '28'){
+            $report_columns = HRISField::where('h_r_i_s_form_id', 3)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;

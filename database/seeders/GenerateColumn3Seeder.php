@@ -18,28 +18,28 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Quality',
             'table_id' => 60,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 60,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 60,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Description of Accomplishment',
             'table_id' => 60,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -69,28 +69,28 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Efficiency',
             'table_id' => 61,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 61,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 61,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Description of Accomplishment',
             'table_id' => 61,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -120,21 +120,21 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Timeliness',
             'table_id' => 62,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 62,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 62,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -208,28 +208,28 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Quality',
             'table_id' => 8,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 8,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 8,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Description of Accomplishment',
             'table_id' => 8,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -259,21 +259,21 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Efficiency',
             'table_id' => 9,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 9,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 9,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -310,28 +310,28 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Final Output - Commitment Measurable by Timeliness',
             'table_id' => 10,
-            'report_column' => 'output',
+            'report_column' => 'final_output',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Target',
             'table_id' => 10,
-            'report_column' => 'target',
+            'report_column' => 'target_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Actual',
             'table_id' => 10,
-            'report_column' => 'actual',
+            'report_column' => 'actual_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Description of Accomplishment',
             'table_id' => 10,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -398,7 +398,7 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Brief Description of Accomplishment',
             'table_id' => 13,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -419,7 +419,7 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Participation/Significant Contribution',
             'table_id' => 13,
-            'report_column' => 'contribution',
+            'report_column' => 'participation',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -440,7 +440,7 @@ class GenerateColumn3Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Nature of Accomplishment',
             'table_id' => 13,
-            'report_column' => 'nature',
+            'report_column' => 'nature_of_accomplishment',
             'is_active' => 1,
             'order' => 1
         ]);
