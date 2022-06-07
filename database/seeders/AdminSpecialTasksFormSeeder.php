@@ -14,7 +14,7 @@ class AdminSpecialTasksFormSeeder extends Seeder
      */
     public function run()
     {
-        IPCRField::truncate();
+        // IPCRField::truncate();
         IPCRField::insert([
             'i_p_c_r_form_id' => 2,
             'label' => 'Brief Description of Accomplishment',

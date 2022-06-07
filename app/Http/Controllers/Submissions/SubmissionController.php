@@ -1862,7 +1862,6 @@ class SubmissionController extends Controller
                                         )->where('user_id', auth()->id())
                                         ->join('colleges', 'colleges.id', 'requests.college_id') 
                                         ->where('requests.college_id', $collegeID)
-
                                         ->get();
                     $tempdata = [];
                     foreach($data as $row){

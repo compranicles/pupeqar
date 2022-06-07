@@ -44,7 +44,7 @@
                 
                 @ExceptSuperAdminAndSectorAndIpo
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
+                    <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipo.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                     
@@ -53,7 +53,7 @@
 
                 @sectorHead
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{  route('sector.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
+                    <x-jet-nav-link href="{{  route('sector.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipo.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                     
@@ -62,7 +62,7 @@
 
                 @ipqmso
                 <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{  route('ipqmso.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipqmso.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
+                    <x-jet-nav-link href="{{  route('ipo.index') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipo.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
                     </x-jet-nav-link>
                     
