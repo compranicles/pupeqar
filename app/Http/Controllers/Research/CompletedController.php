@@ -193,6 +193,9 @@ class CompletedController extends Controller
     {   
         $this->authorize('update', ResearchComplete::class);
 
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

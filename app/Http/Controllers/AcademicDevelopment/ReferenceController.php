@@ -152,6 +152,9 @@ class ReferenceController extends Controller
     {
         $this->authorize('view', Reference::class);
 
+        if (auth()->id() !== $rtmmi->user_id)
+            abort(403);
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
@@ -175,6 +178,9 @@ class ReferenceController extends Controller
     {
         $this->authorize('update', Reference::class);
 
+        if (auth()->id() !== $rtmmi->user_id)
+            abort(403);
+            
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 

@@ -126,6 +126,10 @@ class AdminSpecialTaskController extends Controller
      */
     public function show(AdminSpecialTask $admin_special_task)
     {
+
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $specialTaskFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -148,6 +152,10 @@ class AdminSpecialTaskController extends Controller
      */
     public function edit(AdminSpecialTask $admin_special_task)
     {
+
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+            
         if(LockController::isLocked($admin_special_task->id, 29)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

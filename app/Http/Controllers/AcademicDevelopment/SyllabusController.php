@@ -146,6 +146,10 @@ class SyllabusController extends Controller
     {
         $this->authorize('view', Syllabus::class);
 
+        if (auth()->id() !== $syllabu->user_id) {
+            abort(403);
+        }
+
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
@@ -164,6 +168,10 @@ class SyllabusController extends Controller
     public function edit(Syllabus $syllabu)
     {
         $this->authorize('update', Syllabus::class);
+
+        if (auth()->id() !== $syllabu->user_id) {
+            abort(403);
+        }
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -286,6 +294,8 @@ class SyllabusController extends Controller
     }
 
     public function syllabusYearFilter($year, $filter) {
+        $this->authorize('viewAny', Syllabus::class);
+        
         if ($year == "finished") {
             return redirect()->route('syllabus.index');
         }

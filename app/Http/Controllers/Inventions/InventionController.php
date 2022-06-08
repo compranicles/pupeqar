@@ -159,7 +159,9 @@ class InventionController extends Controller
     {
         $this->authorize('view', Invention::class);
 
-        // dd($fields);
+        if (auth()->id() !== $invention_innovation_creative->user_id)
+            abort(403);
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -183,6 +185,10 @@ class InventionController extends Controller
     public function edit(Invention $invention_innovation_creative)
     {
         $this->authorize('update', Invention::class);
+        
+        if (auth()->id() !== $invention_innovation_creative->user_id)
+            abort(403);
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 

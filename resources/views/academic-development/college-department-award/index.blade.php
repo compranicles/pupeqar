@@ -144,7 +144,11 @@
                             } );
         
                         column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                            if ("{{ $currentQuarterYear->current_quarter }}" == d)
+                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
+                            else
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                        
                         } );
                     });
 
@@ -162,7 +166,11 @@
                             } );
         
                         column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                            if ("{{ $currentQuarterYear->current_year }}" == d)
+                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
+                            else
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                        
                         } );
                     });
                 }

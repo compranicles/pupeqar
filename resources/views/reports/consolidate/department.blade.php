@@ -436,7 +436,7 @@
             }, 4000);
         </script>
         <script>
-            var max = new Date().getFullYear();
+            var max = {!! json_encode($year) !!};
             var min = 0;
             var diff = max-2022;
             min = max-diff;
@@ -502,7 +502,7 @@
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
                 var link = "/reports/consolidate/department/reportYearFilter/:department/:year/:quarter";
-                var newLink = link.replace(':department', "{{$id}}").replace(':year', year_reported).replace(':quarter', quarter);
+                var newLink = link.replace(':department', "{{ $id }}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
         </script>

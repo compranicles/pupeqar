@@ -17,7 +17,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <p>
-                                            <a class="back_link" href="{{ route('dean.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
+                                            <a class="back_link" href="{{ url()->previous() }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                                         </p>
                                         @foreach ($reportIds as $row)
                                         <hr>

@@ -146,6 +146,10 @@ class SpecialTaskController extends Controller
      */
     public function show(SpecialTask $special_task)
     {
+
+        if (auth()->id() !== $special_task->user_id)
+            abort(403);
+
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -171,6 +175,10 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $special_task)
     {
+
+        if (auth()->id() !== $special_task->user_id)
+            abort(403);
+            
         if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

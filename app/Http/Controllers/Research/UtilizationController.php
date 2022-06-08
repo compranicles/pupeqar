@@ -140,6 +140,10 @@ class UtilizationController extends Controller
     public function show(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('view', ResearchUtilization::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -169,6 +173,10 @@ class UtilizationController extends Controller
     public function edit(Research $research, ResearchUtilization $utilization)
     {
         $this->authorize('update', ResearchUtilization::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

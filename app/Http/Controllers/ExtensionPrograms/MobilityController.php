@@ -133,6 +133,9 @@ class MobilityController extends Controller
     {
         $this->authorize('view', Mobility::class);
 
+        if (auth()->id() !== $mobility->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
@@ -154,6 +157,9 @@ class MobilityController extends Controller
     {
         $this->authorize('update', Mobility::class);
 
+        if (auth()->id() !== $mobility->user_id)
+            abort(403);
+            
         if(LockController::isLocked($mobility->id, 14)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

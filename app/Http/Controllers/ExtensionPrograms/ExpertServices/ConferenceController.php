@@ -144,6 +144,9 @@ class ConferenceController extends Controller
     {
         $this->authorize('view', ExpertServiceConference::class);
 
+        if (auth()->id() !== $expert_service_in_conference->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -167,6 +170,9 @@ class ConferenceController extends Controller
     {
         $this->authorize('update', ExpertServiceConference::class);
 
+        if (auth()->id() !== $expert_service_in_conference->user_id)
+            abort(403);
+            
         if(LockController::isLocked($expert_service_in_conference->id, 10)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
