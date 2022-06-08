@@ -502,7 +502,7 @@
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
                 var link = "/reports/consolidate/department/reportYearFilter/:department/:year/:quarter";
-                var newLink = link.replace(':department', "{{$departments[0]->department_id}}").replace(':year', year_reported).replace(':quarter', quarter);
+                var newLink = link.replace(':department', "{{$id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
         </script>

@@ -177,13 +177,14 @@ class CollegeConsolidatedController extends Controller
             
             $user = User::find(auth()->id());
             //collegedetails
+            $id = $college;
+            
             $college = College::find($college);
-
             return view(
                         'reports.consolidate.college', 
                         compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names',
                              'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year',
-                             'user')
+                             'user', 'id')
                     );
         }
     }

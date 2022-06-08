@@ -177,12 +177,13 @@ class DepartmentConsolidatedController extends Controller
             $user = User::find(auth()->id());
             //departmentdetails
             $department = Department::find($dept);
+            $id = $dept;
         }
         return view(
                 'reports.consolidate.department', 
                 compact('roles', 'departments', 'colleges', 'department_accomps', 'department' ,
                      'department_names', 'college_names', 'sectors', 'departmentsResearch', 
-                     'departmentsExtension', 'quarter', 'year', 'user')
+                     'departmentsExtension', 'quarter', 'year', 'user', 'id')
             );
     }
 }

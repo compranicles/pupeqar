@@ -462,7 +462,7 @@
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
                 var link = "/reports/consolidate/college/reportYearFilter/:college/:year/:quarter";
-                var newLink = link.replace(':college', "{{$colleges[0]->college_id}}").replace(':year', year_reported).replace(':quarter', quarter);
+                var newLink = link.replace(':college', "{{$id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
         </script>
