@@ -132,7 +132,7 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            'keywords' => new Keyword,
+            // 'keywords' => new Keyword,
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
@@ -365,7 +365,7 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            'keywords' => new Keyword,
+            // 'keywords' => new Keyword,
             'college_id' => 'required',
             'department_id' => 'required',
         ]);

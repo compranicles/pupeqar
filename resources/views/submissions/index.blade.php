@@ -104,9 +104,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="d-flex flex-row">
-                            <div class="col-md-4 mt-3">
+                            <div class="col-md-4 mt-1">
                                 <input type="checkbox" id="all-submit" checked /> <label for="all-submit" class="font-weight-bold all-submit mr-4">Select All</label>
-                                <!-- <a href="" role="button" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh Page</a> -->
+                                <button onClick="window.location.reload();" class="btn btn-secondary" style="color:white;"><i class="bi bi-arrow-clockwise" style="color:white;"></i> Refresh</button>
                             </div>
                             <div class="col-md-8">
                                 <div class="d-flex">
@@ -220,7 +220,7 @@
                                         <th>Award Name</th>
                                         <th>Certifying Body</th>
                                         @elseif($table->id == 19)
-                                        <th>Student Name</th>
+                                        <th>No. of Student Attendees</th>
                                         <th>Title</th>
                                         <th>Classification</th>
                                         @elseif($table->id == 20)
@@ -317,7 +317,7 @@
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_award }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->certifying_body }}</td>
                                             @elseif($table->id == 19)
-                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->name_of_student }}</td>
+                                            <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->no_of_students }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->title }}</td>
                                             <td class="report-view" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') }}" data-code="@isset($row->id){{ $row->id }}@else{{ $row->research_code }}@endisset">{{ $row->classification_name }}</td>
                                             @elseif($table->id == 20)

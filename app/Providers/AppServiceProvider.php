@@ -127,26 +127,38 @@ class AppServiceProvider extends ServiceProvider
 
         Blade::if('sectorHead', function () {            
             $is_vp = UserRole::where('user_roles.user_id', auth()->id())
-            ->get();
-            // dd($is_superadmin);
-            if ($is_vp != null && count($is_vp) == 1 && $is_vp[0]->role_id == 7) {
-                return 1;
-            }
-            else {
+            ->pluck('user_roles.role_id')->all();
+            $i = 0;
+                if (in_array(1, $is_vp) || in_array(3, $is_vp) || in_array(5, $is_vp) || 
+                    in_array(6, $is_vp) || in_array(10, $is_vp) || in_array(11, $is_vp)){
+                    $i++;
+                    if (in_array(7, $is_vp) || in_array(8, $is_vp) || in_array(9, $is_vp)){
+                        $i++;
+                    }
+                }
+
+            if ($i == 1)
                 return 0;
-            }
+            else
+                return 1;
         });
 
         Blade::if('ipqmso', function () {            
-            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->get();
+            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->pluck('user_roles.role_id')->all();
             
-            // dd($is_superadmin);
-            if ($is_ipqmso != null && count($is_ipqmso) == 1 && $is_ipqmso[0]->role_id == 8) {
-                return 1;
-            }
-            else {
+            $i = 0;
+                if (in_array(1, $is_ipqmso) || in_array(3, $is_ipqmso) || in_array(5, $is_ipqmso) || 
+                    in_array(6, $is_ipqmso) || in_array(10, $is_ipqmso) || in_array(11, $is_ipqmso)){
+                    $i++;
+                    if (in_array(7, $is_ipqmso) || in_array(8, $is_ipqmso) || in_array(9, $is_ipqmso)){
+                        $i++;
+                    }
+                }
+
+            if ($i == 1)
                 return 0;
-            }
+            else
+                return 1;
         });
 
         Blade::if('ExceptSuperAdminAndSectorAndIpo', function () {            
@@ -154,14 +166,19 @@ class AppServiceProvider extends ServiceProvider
             ->pluck('user_roles.role_id')
             ->all();
 
+            $i = 0;
                 if (in_array(1, $is_ipqmso) || in_array(3, $is_ipqmso) || in_array(5, $is_ipqmso) || 
                     in_array(6, $is_ipqmso) || in_array(10, $is_ipqmso) || in_array(11, $is_ipqmso)){
-                    return 1;
-                }
-                if (in_array(7, $is_ipqmso) || in_array(8, $is_ipqmso) || in_array(9, $is_ipqmso)){
-                    return 0;
+                    $i++;
+                    if (in_array(7, $is_ipqmso) || in_array(8, $is_ipqmso) || in_array(9, $is_ipqmso)){
+                        $i++;
+                    }
                 }
 
+            if ($i == 1)
+                return 1;
+            else
+                return 0;
         });
 
         Blade::if('ExceptSuperAdmin', function () {            

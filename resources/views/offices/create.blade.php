@@ -18,14 +18,6 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group input-group-md">
-                                        <label for="">Sector</label>
-                                        <select readonly name="sector" id="sector" class="{{ $errors->has('sector') ? 'is-invalid' : '' }} form-control custom-select form-validation sector" required>
-                                            <option value="" selected></option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-group input-group-md">
                                         <label for="">College/Branch/Campus/Office</label>
                                         <select name="cbco" id="cbco" class="{{ $errors->has('cbco') ? 'is-invalid' : '' }} form-control custom-select form-validation cbco" required>
                                             <option value="" selected>Choose</option>
@@ -35,6 +27,15 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-md-8">
+                                    <div class="form-group input-group-md">
+                                        <label for="">Sector</label>
+                                        <select readonly name="sector" id="sector" class="{{ $errors->has('sector') ? 'is-invalid' : '' }} form-control custom-select form-validation sector" required>
+                                            <option value="" selected></option>
+                                        </select>
+                                    </div>
+                                </div>
+                               
                                 <div class="col-md-8">
                                     <div class="form-group input-group-md" id="dept_div">
                                     </div>

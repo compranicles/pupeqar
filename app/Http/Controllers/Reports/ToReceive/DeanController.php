@@ -188,7 +188,7 @@ class DeanController extends Controller
         $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                             ->join('users', 'users.id', 'deans.user_id')
                             ->where('deans.college_id', $report->college_id)
-                            ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -202,7 +202,7 @@ class DeanController extends Controller
             $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -219,7 +219,7 @@ class DeanController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -270,7 +270,7 @@ class DeanController extends Controller
         $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                             ->join('users', 'users.id', 'deans.user_id')
                             ->where('deans.college_id', $report->college_id)
-                            ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -285,7 +285,7 @@ class DeanController extends Controller
             $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -304,7 +304,7 @@ class DeanController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -364,7 +364,7 @@ class DeanController extends Controller
             $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                                 ->join('users', 'users.id', 'deans.user_id')
                                 ->where('deans.college_id', $report->college_id)
-                                ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -378,7 +378,7 @@ class DeanController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -396,7 +396,7 @@ class DeanController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -453,7 +453,7 @@ class DeanController extends Controller
             $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                                 ->join('users', 'users.id', 'deans.user_id')
                                 ->where('deans.college_id', $report->college_id)
-                                ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -468,7 +468,7 @@ class DeanController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -487,7 +487,7 @@ class DeanController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_name.')',
+                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,

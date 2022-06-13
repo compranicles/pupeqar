@@ -215,7 +215,9 @@ class ReportDataController extends Controller
                             $column->column =='year' ||
                             $column->column == 'rate_of_return' ||
                             $column->column == 'has_businesses' ||
-                            $column->column == 'is_borrowed'
+                            $column->column == 'is_borrowed' ||
+                            $column->column == 'no_of_students' ||
+                            $column->column == 'total_hours'
                         )
                             $data = $data;
                         else{

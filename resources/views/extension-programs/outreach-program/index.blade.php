@@ -26,7 +26,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <hr> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="outreach_table">
                                 <thead>
@@ -116,58 +116,60 @@
             });
         }, 4000);
 
-        $(document).ready( function () {
-            var table = $('#outreach_table').DataTable({
-                "searchCols": [
-                    null,
-                    null,
-                    { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                    { "search": "{{ $currentQuarterYear->current_year }}" },
-                    null,
-                    null,
-                    null,
-                ],
-                initComplete: function () {
-                    this.api().columns(2).every( function () {
-                        var column = this;
-                        var select = $('#quarterFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-        
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
-        
-                        column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
+        $('#outreach_table').DataTable();
 
-                    this.api().columns(3).every( function () {
-                        var column = this;
-                        var select = $('#yearFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        // $(document).ready( function () {
+        //     var table = $('#outreach_table').DataTable({
+        //         "searchCols": [
+        //             null,
+        //             null,
+        //             { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //             { "search": "{{ $currentQuarterYear->current_year }}" },
+        //             null,
+        //             null,
+        //             null,
+        //         ],
+        //         initComplete: function () {
+        //             this.api().columns(2).every( function () {
+        //                 var column = this;
+        //                 var select = $('#quarterFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
-                }
-            });
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
 
-            table.draw();
-        } );
+        //             this.api().columns(3).every( function () {
+        //                 var column = this;
+        //                 var select = $('#yearFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
+        
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
+        
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+        //         }
+        //     });
+
+        //     table.draw();
+        // } );
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')

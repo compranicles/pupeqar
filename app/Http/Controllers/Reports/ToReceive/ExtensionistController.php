@@ -108,7 +108,7 @@ class ExtensionistController extends Controller
         $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
                             ->join('users', 'users.id', 'faculty_extensionists.user_id')
                             ->where('faculty_extensionists.department_id', $report->department_id)
-                            ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->select('departments.code as department_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -117,7 +117,7 @@ class ExtensionistController extends Controller
 
 
         $notificationData = [
-            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Extensionist)',
+            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_code.' Extensionist)',
             'receiver' => $receiverData->first_name,
             'url' => $url,
             'category_name' => $report_category_name,
@@ -167,7 +167,7 @@ class ExtensionistController extends Controller
         $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
             ->join('users', 'users.id', 'faculty_extensionists.user_id')
             ->where('faculty_extensionists.department_id', $report->department_id)
-            ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+            ->select('departments.code as department_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
             ->first();
 
 
@@ -177,7 +177,7 @@ class ExtensionistController extends Controller
 
 
         $notificationData = [
-            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Extensionist)',
+            'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_code.' Extensionist)',
             'receiver' => $returnData->first_name,
             'url' => $url,
             'category_name' => $report_category_name,
@@ -213,7 +213,7 @@ class ExtensionistController extends Controller
             $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
                                 ->join('users', 'users.id', 'faculty_extensionists.user_id')
                                 ->where('faculty_extensionists.department_id', $report->department_id)
-                                ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->select('departments.code as department_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
@@ -222,7 +222,7 @@ class ExtensionistController extends Controller
 
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Extensionist)',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_code.' Extensionist)',
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -278,7 +278,7 @@ class ExtensionistController extends Controller
             $senderName = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')
                 ->join('users', 'users.id', 'faculty_extensionists.user_id')
                 ->where('faculty_extensionists.department_id', $report->department_id)
-                ->select('departments.name as department_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                ->select('departments.code as department_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                 ->first();
 
 
@@ -288,7 +288,7 @@ class ExtensionistController extends Controller
 
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_name.' Extensionist)',
+                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->department_code.' Extensionist)',
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,

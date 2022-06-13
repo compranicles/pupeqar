@@ -34,6 +34,10 @@ class QuarterController extends Controller
             Quarter::create($data);
         else
             $quarter->update($data);
+
+        // Announcement::create([
+        //     'subject' => "QAR Submission Deadline for Quarter ".$request->current_quarter." of Year ".$request->current_year."."
+        // ]);
         return redirect()->route('maintenance.quarter.index')->with('success', 'Quarter and Year updated successfully');
     }
 }
