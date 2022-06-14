@@ -81,5 +81,21 @@ class SpecialDropdownSeeder extends Seeder
             'is_active' => 1,
         ]);
 
+
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Status (Attendance in Functions) '
+        ]);
+        DropdownOption::insert([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Attended',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::insert([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Not Attended',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
     }
 }

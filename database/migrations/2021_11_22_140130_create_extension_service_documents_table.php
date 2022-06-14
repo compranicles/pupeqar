@@ -15,7 +15,7 @@ class CreateExtensionServiceDocumentsTable extends Migration
     {
         Schema::create('extension_service_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('extension_service_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('extension_service_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

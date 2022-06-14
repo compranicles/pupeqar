@@ -15,8 +15,8 @@ class CreateFacultyResearchersTable extends Migration
     {
         Schema::create('faculty_researchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

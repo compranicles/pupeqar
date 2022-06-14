@@ -171,6 +171,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/hris-fields/arrange', [\App\Http\Controllers\Maintenances\HRISFieldController::class, 'arrange']);
     Route::resource('hris-forms.hris-fields', \App\Http\Controllers\Maintenances\HRISFieldController::class);
 
+    //IPO Maintenances
+    Route::resource('university-function-manager', \App\Http\Controllers\Maintenances\UniversityFunctionController::class);
+
+    //Dean Director Maintenances
+    Route::resource('college-function-manager', \App\Http\Controllers\Maintenances\CollegeFunctionController::class);
+
     /* RESEARCH ACCOMPLISHMENTS */
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
     Route::resource('research.completed', \App\Http\Controllers\Research\CompletedController::class);
@@ -265,6 +271,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('ipcr/request', \App\Http\Controllers\IPCR\RequestController::class);
     Route::resource('special-tasks', \App\Http\Controllers\IPCR\SpecialTaskController::class);
     Route::resource('admin-special-tasks', \App\Http\Controllers\IPCR\AdminSpecialTaskController::class);
+    Route::resource('attendance-function', \App\Http\Controllers\IPCR\AttendanceFunctionController::class);
     
     // Remove Documents
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');

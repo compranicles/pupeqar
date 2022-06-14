@@ -46,9 +46,9 @@ class CreateExtensionServicesTable extends Migration
             $table->integer('timeliness_very_satisfactory')->nullable();
             $table->integer('timeliness_outstanding')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

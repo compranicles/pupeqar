@@ -15,9 +15,9 @@ class CreateResearchInvitesTable extends Migration
     {
         Schema::create('research_invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('research_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_id')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sender_id');
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('status')->nullable();
             $table->timestamps();
             $table->softDeletes();

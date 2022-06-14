@@ -27,7 +27,7 @@ class CreateTechnicalExtensionsTable extends Migration
             $table->foreignId('currency_total_profit')->nullable();
             $table->decimal('total_profit', 15, 2 )->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

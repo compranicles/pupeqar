@@ -15,7 +15,7 @@ class CreateStudentTrainingDocumentsTable extends Migration
     {
         Schema::create('student_training_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_training_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_training_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

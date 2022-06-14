@@ -135,13 +135,13 @@ class UserController extends Controller
             if ($role == 10) {
                 FacultyResearcher::create([
                     'user_id' => $user_id,
-                    'department_id' => $request->input('research') ?? null
+                    'college_id' => $request->input('research') ?? null
                 ]);
             }
             if ($role == 11) {
                 FacultyExtensionist::create([
                     'user_id' => $user_id,
-                    'department_id' => $request->input('extension') ?? null
+                    'college_id' => $request->input('extension') ?? null
                 ]);
             }
         }
@@ -190,8 +190,8 @@ class UserController extends Controller
         $chairperson = Chairperson::join('departments', 'departments.id', 'chairpeople.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
         $dean = Dean::join('colleges', 'colleges.id', 'deans.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
-        $researcher = FacultyResearcher::join('departments', 'departments.id', 'faculty_researchers.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
-        $extensionist = FacultyExtensionist::join('departments', 'departments.id', 'faculty_extensionists.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
+        $researcher = FacultyResearcher::join('colleges', 'colleges.id', 'faculty_researchers.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
+        $extensionist = FacultyExtensionist::join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
 
         return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist'));
     }
@@ -294,7 +294,7 @@ class UserController extends Controller
             foreach($request->input('research') as $researchDepartment){
                 FacultyResearcher::updateOrCreate([ 
                     'user_id' => $user->id, 
-                    'department_id' => $researchDepartment, 
+                    'college_id' => $researchDepartment, 
                 ]);
             }
         }
@@ -306,7 +306,7 @@ class UserController extends Controller
             foreach($request->input('extension') as $extensionDepartment){
                 FacultyExtensionist::updateOrCreate([ 
                     'user_id' => $user->id, 
-                    'department_id' => $extensionDepartment, 
+                    'college_id' => $extensionDepartment, 
                 ]);
             }
         }

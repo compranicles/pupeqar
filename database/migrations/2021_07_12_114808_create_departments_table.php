@@ -15,7 +15,7 @@ class CreateDepartmentsTable extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name', 300);
             $table->string('code', 255);
             $table->integer('hris_code');

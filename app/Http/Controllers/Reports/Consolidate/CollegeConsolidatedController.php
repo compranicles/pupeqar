@@ -53,13 +53,13 @@ class CollegeConsolidatedController extends Controller
         }
         if(in_array(10, $roles)){
             $departmentsResearch = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
-                                        ->select('faculty_researchers.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+                                        ->select('faculty_researchers.college_id', 'colleges.code')
+                                        ->join('colleges', 'colleges.id', 'faculty_researchers.college_id')->get();
         }
         if(in_array(11, $roles)){
             $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
-                                        ->select('faculty_extensionists.department_id', 'departments.code')
-                                        ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+                                        ->select('faculty_extensionists.college_id', 'colleges.code')
+                                        ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
         $college_accomps = 
@@ -133,13 +133,13 @@ class CollegeConsolidatedController extends Controller
             }
             if(in_array(10, $roles)){
                 $departmentsResearch = FacultyResearcher::where('faculty_researchers.user_id', auth()->id())
-                                            ->select('faculty_researchers.department_id', 'departments.code')
-                                            ->join('departments', 'departments.id', 'faculty_researchers.department_id')->get();
+                                            ->select('faculty_researchers.college_id', 'colleges.code')
+                                            ->join('colleges', 'colleges.id', 'faculty_researchers.college_id')->get();
             }
             if(in_array(11, $roles)){
                 $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
-                                            ->select('faculty_extensionists.department_id', 'departments.code')
-                                            ->join('departments', 'departments.id', 'faculty_extensionists.department_id')->get();
+                                            ->select('faculty_extensionists.college_id', 'colleges.code')
+                                            ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
             }
 
             $college_accomps = 

@@ -15,7 +15,7 @@ class CreateReportColumnsTable extends Migration
     {
         Schema::create('report_columns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('report_category_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->string('table');
             $table->string('column');

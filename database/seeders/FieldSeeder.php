@@ -42,6 +42,7 @@ class FieldSeeder extends Seeder
             RequestFormSeeder::class,
             AdminSpecialTasksFormSeeder::class,
             SpecialTasksFormSeeder::class,
+            AttendanceFunctionFormSeeder::class,
 
             //HRIS Field Seeders
             HRISFieldSeeder::class,
