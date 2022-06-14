@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Models\{
+    AdminSpecialTask,
     User,
     Role,
     Research,
@@ -99,6 +100,7 @@ use App\Policies\Maintenance\SectorPolicy;
 use App\Policies\Maintenance\Research\ResearchFormPolicy;
 use App\Policies\Maintenance\Invention\InventionFormPolicy;
 use App\Policies\Maintenance\ExtensionProgram\ExtensionProgramFormPolicy;
+use App\Policies\OtherAccomplishment\AdminSpecialTaskPolicy;
 use App\Policies\Request\RequestPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -168,6 +170,9 @@ class AuthServiceProvider extends ServiceProvider
         ViableProject::class => ViableProjectPolicy::class,
 
         Request::class => RequestPolicy::class,
+
+        //Other Accomplishments
+        AdminSpecialTask::class => AdminSpecialTaskPolicy::class,
 
         //For authorization of reports (to receive and consolidation), please refer to Services (App/Services)
     ];
