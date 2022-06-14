@@ -25,7 +25,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row my-auto">
+                        <!-- <div class="row my-auto">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="catFilter" class="mr-2">Category: </label>
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <hr> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="rtmmi_table">
                                 <thead>
@@ -134,9 +134,7 @@
             });
         }, 4000);
 
-         $(document).ready( function () {
-             $('#rtmmi_table').DataTable();
-         } );
+        $('#rtmmi_table').DataTable();
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
@@ -153,15 +151,17 @@
           
         });
      </script>
-     <script>
+     <!-- <script>
          var table =  $("#rtmmi_table").DataTable({
             "searchCols": [
                 null,
                 null,
                 null,
                 null,
-                { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                { "search": "{{ $currentQuarterYear->current_year }}" },
+                // { "search": "{{ $currentQuarterYear->current_quarter }}" },
+                // { "search": "{{ $currentQuarterYear->current_year }}" },
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -294,6 +294,6 @@
 
             table.draw();
             
-     </script>
+     </script> -->
      @endpush
 </x-app-layout>

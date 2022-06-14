@@ -25,7 +25,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <hr> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="student_training_table">
                                 <thead>
@@ -120,64 +120,60 @@
             });
         }, 4000);
 
-         $(document).ready( function () {
-             var table = $('#student_training_table').DataTable({
-                "searchCols": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                    { "search": "{{ $currentQuarterYear->current_year }}" },
-                    null,
-                    null,
-                    null,
-                ],
-                initComplete: function () {
-                    this.api().columns(4).every( function () {
-                        var column = this;
-                        var select = $('#quarterFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-        
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
-        
-                        column.data().unique().sort().each( function ( d, j ) {
-                            if ("{{ $currentQuarterYear->current_quarter }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
+        $('#student_training_table').DataTable();
 
-                    this.api().columns(5).every( function () {
-                        var column = this;
-                        var select = $('#yearFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        //  $(document).ready( function () {
+        //      var table = $('#student_training_table').DataTable({
+        //         "searchCols": [
+        //             null,
+        //             null,
+        //             null,
+        //             null,
+        //             { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //             { "search": "{{ $currentQuarterYear->current_year }}" },
+        //             null,
+        //             null,
+        //             null,
+        //         ],
+        //         initComplete: function () {
+        //             this.api().columns(4).every( function () {
+        //                 var column = this;
+        //                 var select = $('#quarterFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            if ("{{ $currentQuarterYear->current_year }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
-                }
-             });
-         } );
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+
+        //             this.api().columns(5).every( function () {
+        //                 var column = this;
+        //                 var select = $('#yearFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
+        
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
+        
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+        //         }
+        //      });
+        //  } );
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')

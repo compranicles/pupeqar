@@ -44,7 +44,7 @@
                                 <hr>
                             </div>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="statusFilter" class="mr-2">Current Status: </label>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                         <small><span style="color:red;">*</span> Selects all records filtered by year.</small>
-                        <hr>
+                        <hr> -->
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -182,102 +182,94 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#researchTable").dataTable();
-        });
+        $("#researchTable").dataTable();
     </script>
     <script>
-        var table =  $("#researchTable").DataTable({
-                "searching":true,
-                "searchCols": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                    { "search": "{{ $currentQuarterYear->current_year }}" },
-                ],
-                initComplete: function () {
-                    this.api().columns(3).every( function () {
-                        var column = this;
-                        var select = $('#statusFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        // var table =  $("#researchTable").DataTable({
+        //         "searching":true,
+        //         "searchCols": [
+        //             null,
+        //             null,
+        //             null,
+        //             null,
+        //             null,
+        //             null,
+        //             null,
+        //             { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //             { "search": "{{ $currentQuarterYear->current_year }}" },
+        //         ],
+        //         initComplete: function () {
+        //             this.api().columns(3).every( function () {
+        //                 var column = this;
+        //                 var select = $('#statusFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
-                    this.api().columns(4).every( function () {
-                        var column = this;
-                        var select = $('#collegeFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+        //             this.api().columns(4).every( function () {
+        //                 var column = this;
+        //                 var select = $('#collegeFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
-                    this.api().columns(7).every( function () {
-                        var column = this;
-                        var select = $('#quarterFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+        //             this.api().columns(7).every( function () {
+        //                 var column = this;
+        //                 var select = $('#quarterFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            if ("{{ $currentQuarterYear->current_quarter }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
 
-                    this.api().columns(8).every( function () {
-                        var column = this;
-                        var select = $('#reportFilter')
-                            .on( 'change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+        //             this.api().columns(8).every( function () {
+        //                 var column = this;
+        //                 var select = $('#reportFilter')
+        //                     .on( 'change', function () {
+        //                         var val = $.fn.dataTable.util.escapeRegex(
+        //                             $(this).val()
+        //                         );
         
-                                column
-                                    .search( val ? '^'+val+'$' : '', true, false )
-                                    .draw();
-                            } );
+        //                         column
+        //                             .search( val ? '^'+val+'$' : '', true, false )
+        //                             .draw();
+        //                     } );
         
-                        column.data().unique().sort().each( function ( d, j ) {
-                            if ("{{ $currentQuarterYear->current_year }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                        } );
-                    });
-                }
-            });
+        //                 column.data().unique().sort().each( function ( d, j ) {
+        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                 } );
+        //             });
+        //         }
+        //     });
 
             var statusIndex = 0;
             $("#researchTable th").each(function (i) {

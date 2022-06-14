@@ -29,7 +29,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="classFilter" class="mr-2">Classification: </label>
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <hr>
+                        <hr> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="esconsultant_table">
                                 <thead>
@@ -139,9 +139,7 @@
             });
         }, 4000);
 
-         $(document).ready( function () {
-             $('#esconsultant_table').DataTable();
-         } );
+        $('#esconsultant_table').DataTable();
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
@@ -159,98 +157,92 @@
         });
      </script>
      <script>
-         var table =  $("#esconsultant_table").DataTable({
-            "searchCols": [
-                null,
-                null,
-                null,
-                null,
-                { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                { "search": "{{ $currentQuarterYear->current_year }}" },
-                null,
-                null,
-                null,
-            ],
-            initComplete: function () {
-                this.api().columns(2).every( function () {
-                    var column = this;
-                    var select = $('#classFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //  var table =  $("#esconsultant_table").DataTable({
+        //     "searchCols": [
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //         { "search": "{{ $currentQuarterYear->current_year }}" },
+        //         null,
+        //         null,
+        //         null,
+        //     ],
+        //     initComplete: function () {
+        //         this.api().columns(2).every( function () {
+        //             var column = this;
+        //             var select = $('#classFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(3).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(3).every( function () {
+        //             var column = this;
+        //             var select = $('#collegeFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#quarterFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(4).every( function () {
+        //             var column = this;
+        //             var select = $('#quarterFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        if ("{{ $currentQuarterYear->current_quarter }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(5).every( function () {
-                    var column = this;
-                    var select = $('#yearFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(5).every( function () {
+        //             var column = this;
+        //             var select = $('#yearFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        if ("{{ $currentQuarterYear->current_year }}" == d)
-                                select.append( '<option value="'+d+'" selected>'+d+'</option>' )
-                            else
-                                select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-            }
-         });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
+        //     }
+        //  });
           var classIndex = 0;
             $("#esconsultant_table th").each(function (i) {
                 if ($($(this)).html() == "Classification") {

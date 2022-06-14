@@ -74,11 +74,13 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '6', 'permission_id' => 45]);
 
         /***** Sector role permissions *****/
+        RolePermission::insert(['role_id' => '7', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '7', 'permission_id' => 46]);
         RolePermission::insert(['role_id' => '7', 'permission_id' => 47]);
 
         /***** IPQMSO role permissions *****/
-        RolePermission::insert(['role_id' => '8', 'permission_id' => 48]);
+        RolePermission::insert(['role_id' => '8', 'permission_id' => 41]);
+        RolePermission::insert(['role_id' => '8 ', 'permission_id' => 48]);
         RolePermission::insert(['role_id' => '8', 'permission_id' => 49]);
 
         Schema::disableForeignKeyConstraints();
