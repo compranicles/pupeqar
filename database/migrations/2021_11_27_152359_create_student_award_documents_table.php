@@ -15,7 +15,7 @@ class CreateStudentAwardDocumentsTable extends Migration
     {
         Schema::create('student_award_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_award_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('student_award_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

@@ -15,13 +15,13 @@ class CreateHRISFieldsTable extends Migration
     {
         Schema::create('h_r_i_s_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('h_r_i_s_form_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('h_r_i_s_form_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('label');
             $table->string('name');
             $table->text('placeholder')->nullable();
             $table->string('size');
-            $table->foreignId('field_type_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('dropdown_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('field_type_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('dropdown_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('required');
             $table->integer('visibility');
             $table->integer('order');

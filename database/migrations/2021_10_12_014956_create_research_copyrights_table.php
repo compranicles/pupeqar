@@ -21,7 +21,7 @@ class CreateResearchCopyrightsTable extends Migration
             $table->string('copyright_year')->nullable();
             $table->foreignId('copyright_level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('research_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_id')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

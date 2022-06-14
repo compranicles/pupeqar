@@ -22,7 +22,7 @@ class CreateStudentAwardsTable extends Migration
             $table->date('date')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

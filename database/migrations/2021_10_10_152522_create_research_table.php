@@ -16,8 +16,8 @@ class CreateResearchTable extends Migration
         Schema::create('research', function (Blueprint $table) {
             $table->id();
             $table->string('research_code');
-            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('classification')->nullable();
             $table->foreignId('category')->nullable();
             $table->foreignId('agenda')->nullable();
@@ -35,7 +35,7 @@ class CreateResearchTable extends Migration
             $table->date('completion_date')->nullable();
             $table->foreignId('status')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('is_active_member')->default(1);
             $table->timestamps();
             $table->softDeletes();

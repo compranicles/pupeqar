@@ -29,9 +29,9 @@ class CreatePartnershipsTable extends Migration
             $table->string('address_of_contact_person')->nullable();
             $table->string('telephone_number')->nullable();
             $table->string('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

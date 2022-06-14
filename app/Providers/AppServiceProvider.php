@@ -125,6 +125,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        //not added in remote
         Blade::if('sectorHead', function () {            
             $is_vp = UserRole::where('user_roles.user_id', auth()->id())
             ->pluck('user_roles.role_id')->all();

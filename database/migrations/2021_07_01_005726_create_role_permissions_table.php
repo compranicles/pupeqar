@@ -16,8 +16,8 @@ class CreateRolePermissionsTable extends Migration
         Schema::dropIfExists('role_permissions');
         Schema::create('role_permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('role_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('permission_id')->constrained()->onUpdate('cascade')->onDelete('cascade');     
+            $table->foreignId('role_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('permission_id')->onUpdate('cascade')->onDelete('cascade');     
             $table->timestamps();
             $table->softDeletes();
         });

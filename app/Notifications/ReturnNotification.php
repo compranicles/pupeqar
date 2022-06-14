@@ -33,7 +33,8 @@ class ReturnNotification extends Notification
         if($this->notificationData['databaseOnly'] == 1)
             return ['database'];
         else
-            return ['mail', 'database'];
+            return ['database'];
+            // return ['mail', 'database'];
     }
 
     /**

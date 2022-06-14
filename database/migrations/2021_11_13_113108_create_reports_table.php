@@ -17,7 +17,7 @@ class CreateReportsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('college_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable();
             $table->foreignId('report_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('report_reference_id')->nullable();
             $table->string('report_code')->nullable();

@@ -166,7 +166,7 @@
               sortField: "text",
               valueField: 'value',
               labelField: 'text',
-              options: @json($departments),
+              options: @json($colleges),
               items: @json($extensionist),
           });
           $("#research").selectize({
@@ -174,7 +174,7 @@
               sortField: "text",
               valueField: 'value',
               labelField: 'text',
-              options: @json($departments),
+              options: @json($colleges),
               items: @json($researcher),
           });
 

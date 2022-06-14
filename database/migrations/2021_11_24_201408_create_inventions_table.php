@@ -16,8 +16,8 @@ class CreateInventionsTable extends Migration
         Schema::dropIfExists('inventions');
         Schema::create('inventions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('college_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('department_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('department_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('classification')->nullable();
             $table->string('nature')->nullable();
             $table->string('title')->nullable();
@@ -33,7 +33,7 @@ class CreateInventionsTable extends Migration
             $table->string('copyright_number')->nullable();
             $table->date('issue_date')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
