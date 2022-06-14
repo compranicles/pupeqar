@@ -29,7 +29,7 @@ class CreateStudentTrainingsTable extends Migration
             $table->date('end_date')->nullable();
             $table->integer('total_hours')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

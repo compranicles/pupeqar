@@ -125,11 +125,12 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        //not added in remote
         Blade::if('sectorHead', function () {            
-            $is_vp = UserRole::where('user_roles.user_id', auth()->id())
-            ->get();
+            $is_vp = UserRole::where('user_roles.user_id', auth()->id())->pluck('role_id')->all();
+            
             // dd($is_superadmin);
-            if ($is_vp != null && count($is_vp) == 1 && $is_vp[0]->role_id == 7) {
+            if (in_array(7, $is_vp)) {
                 return 1;
             }
             else {
@@ -138,10 +139,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::if('ipqmso', function () {            
-            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->get();
+            $is_ipqmso = UserRole::where('user_roles.user_id', auth()->id())->pluck('role_id')->all();
             
             // dd($is_superadmin);
-            if ($is_ipqmso != null && count($is_ipqmso) == 1 && $is_ipqmso[0]->role_id == 8) {
+            if (in_array(8, $is_ipqmso)) {
                 return 1;
             }
             else {

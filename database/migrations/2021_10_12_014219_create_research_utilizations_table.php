@@ -20,7 +20,7 @@ class CreateResearchUtilizationsTable extends Migration
             $table->string('utilization_description')->nullable();
             $table->foreignId('level')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('research_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_id')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

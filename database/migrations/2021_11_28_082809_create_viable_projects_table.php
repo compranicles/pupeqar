@@ -23,7 +23,7 @@ class CreateViableProjectsTable extends Migration
             $table->date('start_date')->nullable();
             $table->string('rate_of_return')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

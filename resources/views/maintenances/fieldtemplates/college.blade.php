@@ -52,11 +52,10 @@
                         $("#department_id").append(new Option(item.name, item.id));
                     });
                 }
-                <?php if (old($fieldInfo->name) == '') { ?>
+                if ("{{ old('department_id') }}" == '')
                     document.getElementById("department_id").value = "{{ $department_id }}";
-                <?php } else { ?>
-                    document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
-                <?php } ?>
+                else
+                    document.getElementById("department_id").value = "{{ old('department_id') }}";
             });
         });
     </script>
@@ -74,11 +73,10 @@
                             
                         });
                     }
-                    <?php if (old($fieldInfo->name) == '') { ?>
-                        document.getElementById("department_id").value = "{{ $department_id }}";
-                    <?php } else { ?>
-                        document.getElementById("department_id").value = "{{ old($fieldInfo->name) }}";
-                    <?php } ?>
+                    if ("{{ old('department_id') }}" == '')
+                    document.getElementById("department_id").value = "{{ $department_id }}";
+                    else
+                        document.getElementById("department_id").value = "{{ old('department_id') }}";
                 });
             }
     </script>

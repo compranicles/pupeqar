@@ -15,13 +15,13 @@ class CreateResearchFieldsTable extends Migration
     {
         Schema::create('research_fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('research_form_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('research_form_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('label');
             $table->string('name');
             $table->text('placeholder')->nullable();
             $table->string('size');
-            $table->foreignId('field_type_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('dropdown_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('field_type_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('dropdown_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('required');
             $table->integer('visibility');
             $table->integer('order');

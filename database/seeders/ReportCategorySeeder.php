@@ -71,7 +71,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Expert Service Rendered in Conference, Workshops, and/or training course for Professional',
+            'name' => 'Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional',
             'is_active' => 1,
             'order' => 10
         ]);
@@ -107,7 +107,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Course Syllabus/ Guide Developed/Revised/Enhanced',
+            'name' => 'Course Syllabus/Guide Developed/Revised/Enhanced',
             'is_active' => 1,
             'order' => 16
         ]);

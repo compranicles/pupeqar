@@ -15,7 +15,7 @@ class CreateViableProjectDocumentsTable extends Migration
     {
         Schema::create('viable_project_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('viable_project_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('viable_project_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

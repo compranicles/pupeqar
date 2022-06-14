@@ -15,7 +15,7 @@ class CreateRequestDocumentsTable extends Migration
     {
         Schema::create('request_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('request_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('request_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

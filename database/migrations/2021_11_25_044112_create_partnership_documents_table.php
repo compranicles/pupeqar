@@ -15,7 +15,7 @@ class CreatePartnershipDocumentsTable extends Migration
     {
         Schema::create('partnership_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('partnership_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('partnership_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

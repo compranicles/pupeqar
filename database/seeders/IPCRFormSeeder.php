@@ -30,5 +30,10 @@ class IPCRFormSeeder extends Seeder
             'table_name' => 'special_tasks',
             'is_active' => 1
         ]);
+        IPCRForm::insert([
+            'label' => 'Attendance in University and College Functions',
+            'table_name' => 'attendance_functions',
+            'is_active' => 1
+        ]);
     }
 }

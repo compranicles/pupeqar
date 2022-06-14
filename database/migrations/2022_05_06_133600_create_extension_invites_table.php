@@ -15,9 +15,9 @@ class CreateExtensionInvitesTable extends Migration
     {
         Schema::create('extension_invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('extension_service_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('extension_service_id')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sender_id');
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('status')->nullable();
             $table->boolean('is_owner');
             $table->timestamps();

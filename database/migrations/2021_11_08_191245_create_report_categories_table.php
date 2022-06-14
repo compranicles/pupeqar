@@ -15,7 +15,7 @@ class CreateReportCategoriesTable extends Migration
     {
         Schema::create('report_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_type_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('report_type_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->integer('is_active');
             $table->integer('order');

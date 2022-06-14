@@ -16,7 +16,7 @@ class CreateCollegesTable extends Migration
         Schema::create('colleges', function (Blueprint $table) {
             $table->id();
             $table->string('name', '200');
-            $table->foreignId('sector_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sector_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->string('code', 255);
             $table->integer('hris_code');
             $table->timestamps();

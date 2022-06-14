@@ -15,7 +15,7 @@ class CreateDocumentDescriptionsTable extends Migration
     {
         Schema::create('document_descriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('report_category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('report_category_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->integer('is_active');
             $table->timestamps();

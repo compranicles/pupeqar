@@ -16,7 +16,7 @@ class CreateInventionDocumentsTable extends Migration
         Schema::dropIfExists('invention_documents');
         Schema::create('invention_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invention_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('invention_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();

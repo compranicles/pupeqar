@@ -43,7 +43,7 @@ class RolePermissionSeeder extends Seeder
             RolePermission::insert(['role_id' => '3', 'permission_id' => 32]);
             RolePermission::insert(['role_id' => '3', 'permission_id' => 33]);
         }
-        RolePermission::insert(['role_id' => '3', 'permission_id' => 39]);
+        // RolePermission::insert(['role_id' => '3', 'permission_id' => 39]);
         RolePermission::insert(['role_id' => '3', 'permission_id' => 41]);
 
         /***** Faculty Researcher role permissions *****/
@@ -56,7 +56,7 @@ class RolePermissionSeeder extends Seeder
 
         /***** Chairperson role permissions *****/
         RolePermission::insert(['role_id' => '5', 'permission_id' => 31]);
-        for ($c = 34; $c <= 38; $c++) {
+        for ($c = 34; $c <= 39; $c++) {
             RolePermission::insert(['role_id' => '5', 'permission_id' => $c]);
         }
         RolePermission::insert(['role_id' => '5', 'permission_id' => 41]);
@@ -65,7 +65,7 @@ class RolePermissionSeeder extends Seeder
 
         /***** Dean/Director role permissions *****/
         RolePermission::insert(['role_id' => '6', 'permission_id' => 31]);
-        for ($d = 34; $d <= 38; $d++) {
+        for ($d = 34; $d <= 39; $d++) {
             RolePermission::insert(['role_id' => '6', 'permission_id' => $d]);
         }
         RolePermission::insert(['role_id' => '6', 'permission_id' => 41]);
@@ -73,10 +73,12 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '6', 'permission_id' => 45]);
 
         /***** Sector role permissions *****/
+        RolePermission::insert(['role_id' => '7', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '7', 'permission_id' => 46]);
         RolePermission::insert(['role_id' => '7', 'permission_id' => 47]);
 
         /***** IPQMSO role permissions *****/
+        RolePermission::insert(['role_id' => '8', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '8', 'permission_id' => 48]);
         RolePermission::insert(['role_id' => '8', 'permission_id' => 49]);
 

@@ -15,7 +15,7 @@ class CreateTechnicalExtensionDocumentsTable extends Migration
     {
         Schema::create('technical_extension_documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('technical_extension_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('technical_extension_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('filename');
             $table->timestamps();
             $table->softDeletes();
