@@ -29,6 +29,8 @@ class AdminSpecialTaskController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', AdminSpecialTask::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $adminSpecialTasks = AdminSpecialTask::where('user_id', auth()->id())
@@ -52,6 +54,8 @@ class AdminSpecialTaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $specialTaskFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -72,6 +76,8 @@ class AdminSpecialTaskController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -126,6 +132,11 @@ class AdminSpecialTaskController extends Controller
      */
     public function show(AdminSpecialTask $admin_special_task)
     {
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+      
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         $specialTaskFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -148,6 +159,11 @@ class AdminSpecialTaskController extends Controller
      */
     public function edit(AdminSpecialTask $admin_special_task)
     {
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+            
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(LockController::isLocked($admin_special_task->id, 29)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
@@ -176,6 +192,8 @@ class AdminSpecialTaskController extends Controller
      */
     public function update(Request $request, AdminSpecialTask $admin_special_task)
     {
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -226,6 +244,8 @@ class AdminSpecialTaskController extends Controller
      */
     public function destroy(AdminSpecialTask $admin_special_task)
     {
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(LockController::isLocked($admin_special_task->id, 29)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
@@ -240,6 +260,8 @@ class AdminSpecialTaskController extends Controller
     }
 
     public function removeDoc($filename){
+        $this->authorize('manage', AdminSpecialTask::class);
+
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
         AdminSpecialTaskDocument::where('filename', $filename)->delete();

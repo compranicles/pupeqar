@@ -19,17 +19,6 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <x-jet-label value="{{ __('Title') }}" />
-                    
-                                        <x-jet-input class="{{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title"
-                                                    :value="old('title')" required autofocus autocomplete="name" />
-                                        <x-jet-input-error for="title"></x-jet-input-error>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
                                         <x-jet-label value="{{ __('Subject') }}" />
                     
                                         <x-jet-input class="{{ $errors->has('subject') ? 'is-invalid' : '' }}" type="text" name="subject"

@@ -67,7 +67,7 @@
                 }
             });
         </script>
-        <script>
+        <!-- <script>
             $('#status').on('change', function(){
                 $('#status option[value=54]').attr('disabled','disabled');
                 $('#status option[value=55]').attr('disabled','disabled');
@@ -80,7 +80,7 @@
                     $('#issue_date').removeAttr('required');
                 }
             });
-        </script>
+        </script> -->
         <script>
             var report_category_id = 8;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

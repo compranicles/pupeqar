@@ -26,7 +26,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="statusFilter" class="mr-2">Current Status: </label>
@@ -64,7 +64,7 @@
                             <div class="col-12">
                                 <hr>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="invention_table">
                                 <thead>
@@ -137,9 +137,7 @@
             });
         }, 4000);
 
-         $(document).ready( function () {
-             $('#invention_table').DataTable();
-         } );
+        $('#invention_table').DataTable();
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
@@ -157,92 +155,93 @@
         });
      </script>
      <script>
-        var table =  $("#invention_table").DataTable({
-            "searchCols": [
-                null,
-                null,
-                null,
-                null,
-                { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                { "search": "{{ $currentQuarterYear->current_year }}" },
-                null,
-                null,
-                null,
-            ],
-            initComplete: function () {
-                this.api().columns(2).every( function () {
-                    var column = this;
-                    var select = $('#statusFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        // var table =  $("#invention_table").DataTable({
+        //     "searchCols": [
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //         { "search": "{{ $currentQuarterYear->current_year }}" },
+        //         null,
+        //         null,
+        //         null,
+        //     ],
+        //     initComplete: function () {
+        //         this.api().columns(2).every( function () {
+        //             var column = this;
+        //             var select = $('#statusFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(3).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(3).every( function () {
+        //             var column = this;
+        //             var select = $('#collegeFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#quarterFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(4).every( function () {
+        //             var column = this;
+        //             var select = $('#quarterFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-    
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
 
-                this.api().columns(5).every( function () {
-                    var column = this;
-                    var select = $('#createFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
+
+        //         this.api().columns(5).every( function () {
+        //             var column = this;
+        //             var select = $('#createFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-    
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-            }
-        });
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
+
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
+        //     }
+        // });
+
 
         var statusIndex = 0;
         $("#invention_table th").each(function (i) {

@@ -13016,7 +13016,7 @@ body {
   margin: 2em 0 .5em;
   padding-top: 1em;
   font-size: 15px;
-  color: #6f080b;
+  color: #0055a9;
   font-weight: bold;
   cursor: default;
 }
@@ -13373,12 +13373,11 @@ table tr .padding_left_show {
 
 /* HOME PAGE */
 .home-icons {
-  background-color: #5b0616;
-  color: white;
-  border-radius: 50%;
-  border: 1px solid #5b0616;
-  padding: 10px;
-  font-size: 2em;
+  background-color: whitesmoke;
+  border-radius: 20%;
+  border: 1px solid white;
+  padding: 5px;
+  font-size: 1.35em;
 }
 
 .home-navigate-icons {
@@ -13411,7 +13410,20 @@ table tr .padding_left_show {
 }
 
 .db-text {
-  padding-top: 10px;
+  color: whitesmoke;
+  /* text-align: center; */
+}
+
+.db-text:hover {
+  color: whitesmoke;
+  /* text-align: center; */
+  text-decoration: none;
+}
+
+.db-stat {
+  font-size: 2em; 
+  margin: 0 15px 0 15px; 
+  
 }
 
 a.home-card-links  {

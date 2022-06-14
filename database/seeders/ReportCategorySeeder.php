@@ -121,7 +121,7 @@ class ReportCategorySeeder extends Seeder
         ]);
         ReportCategory::insert([
             'report_type_id' => 2,
-            'name' => 'Students Awards/ Recognitions from Reputable Organizations',
+            'name' => 'Students Awards/Recognitions from Reputable Organizations',
             'is_active' => 1,
             'order' => 1,
         ]);

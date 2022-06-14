@@ -20,10 +20,6 @@
                                     <td>{{ $announcement->id }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Title</th>
-                                    <td>{{ $announcement->title }}</td>
-                                </tr>
-                                <tr>
                                     <th>Date Created</th>
                                     <td>{{ $announcement->created_at }}</td>
                                 </tr>

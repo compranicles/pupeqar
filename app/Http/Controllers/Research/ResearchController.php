@@ -132,7 +132,7 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            'keywords' => new Keyword,
+            // 'keywords' => new Keyword,
             'college_id' => 'required',
             'department_id' => 'required',
         ]);
@@ -260,6 +260,10 @@ class ResearchController extends Controller
     public function show(Research $research)
     {
         $this->authorize('view', Research::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 
@@ -303,6 +307,9 @@ class ResearchController extends Controller
     {
         $this->authorize('update', Research::class);
 
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
@@ -365,7 +372,7 @@ class ResearchController extends Controller
         ]);
 
         $request->validate([
-            'keywords' => new Keyword,
+            // 'keywords' => new Keyword,
             'college_id' => 'required',
             'department_id' => 'required',
         ]);

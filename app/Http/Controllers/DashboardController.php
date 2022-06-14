@@ -32,11 +32,9 @@ class DashboardController extends Controller
 {
     public function index() {
         $user = User::where('id', auth()->id())->first();
-        // $employee = Employee::where('user_id', $user['id'])->first();
+
         $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
-        // if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
-        //     request()->session()->flash('flash.banner', "Complete your account information. Click here.");
-        // }
+
         $roleNames = Role::whereIn('id', $roles)->pluck('name')->all();
         $userRoleNames = '';
         $i = 0;
@@ -69,81 +67,63 @@ class DashboardController extends Controller
         $department = [];
         $college = [];
         $sector = [];
-        $countFaculty = [];
-        $countAdmin = [];
-        $countChairperson = [];
-        $countDirector = [];
-        $countSectorHead = [];
-        $arrayOfNoOfAllUsers = [];
-        $countReviewed1 = [];
-        $countReviewed2 = [];
-
+        $countToReview = [];
+        $countRegisteredUsers = [];
+        $countExpectedTotal = [];
+        $countReceived = [];
 
         if (in_array(1, $roles)) {
             $department[1] = '';
             $college[1] = '';
             $sector[1] = '';
-            $countFaculty[1] = '';
-            $countAdmin[1] = '';
-            $countChairperson[1] = '';
-            $countDirector[1] = '';
-            $countSectorHead[1] = '';
-            $arrayOfNoOfAllUsers[1] = '';
-            $countReviewed1[1] = '';
-            $countReviewed2[1] = "";
+            $countToReview[1] = '';
+            $countRegisteredUsers[1] = '';
+            $countExpectedTotal[1] = '';
+            $countReceived[1] = '';
+
         }
 
         if (in_array(3, $roles)) {
             $department[3] = '';
             $college[3] = '';
             $sector[3] = '';
-            $countFaculty[3] = '';
-            $countAdmin[3] = '';
-            $countChairperson[3] = '';
-            $countDirector[3] = '';
-            $countSectorHead[3] = '';
-            $arrayOfNoOfAllUsers[3] = '';
-            $countReviewed1[3] = '';
-            $countReviewed2[3] = "";
+            $countToReview[3] = '';
+            $countRegisteredUsers[3] = '';
+            $countExpectedTotal[3] = '';
+            $countReceived[3] = '';
+
         }
         
         if (in_array(10, $roles)) {
             $college[10] = '';
             $sector[10] = '';
-            $arrayOfNoOfAllUsers[10] = '';
+            $countRegisteredUsers[10] = '';
+            $countExpectedTotal[10] = '';
+            $countReceived[10] = '';
+
             $department[10] = Department::join('faculty_researchers', 'departments.id', 'faculty_researchers.department_id')
                     ->whereNull('faculty_researchers.deleted_at')
                     ->where('faculty_researchers.user_id', auth()->id())->get();
             $tempcount = 0;
             $tempvalues = [];
             foreach ($department[10] as $value){
-                $tempcount = Report::where('researcher_approval', 1)
+                $tempcount = Report::whereNull('researcher_approval')
                     ->where('department_id', $value->department_id)
-                    ->whereIn('report_category_id', [1, 2, 3, 4, 5, 6, 7])
+                    ->whereIn('report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
                 $tempvalues[$value->department_id] = $tempcount;
             }
-            $countReviewed1[10] = $tempvalues;
-
-            $tempcount = 0;
-            $tempvalues = [];
-            foreach ($department[10] as $value){
-                $tempcount = Report::where('researcher_approval', 1)
-                    ->where('department_id', $value->department_id)
-                    ->where('report_category_id', 8)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)
-                    ->count();
-                $tempvalues[$value->department_id] = $tempcount;
-            }
-            $countReviewed2[10] = $tempvalues;
+            $countToReview[10] = $tempvalues;
         }
         if (in_array(11, $roles)) {
             $college[11] = '';
             $sector[11] = '';
-            $arrayOfNoOfAllUsers[11] = '';
+            $countRegisteredUsers[11] = '';
+            $countExpectedTotal[11] = '';
+            $countReceived[11] = '';
+
             $department[11] = Department::join('faculty_extensionists', 'departments.id', 'faculty_extensionists.department_id')
                     ->whereNull('faculty_extensionists.deleted_at')
                     ->where('faculty_extensionists.user_id', auth()->id())->get();
@@ -151,107 +131,116 @@ class DashboardController extends Controller
             $tempcount = 0;
             $tempvalues = [];
             foreach ($department[11] as $value){
-                $tempcount = Report::where('extensionist_approval', 1)
+                $tempcount = Report::whereNull('extensionist_approval')
                     ->where('department_id', $value->department_id)
-                    ->whereIn('report_category_id', [9, 10, 11, 12, 13, 14])
+                    ->whereBetween('report_category_id', [8, 15])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
                 $tempvalues[$value->department_id] = $tempcount;
             }
-            $countReviewed1[11] = $tempvalues;
+            $countToReview[11] = $tempvalues;
 
-            $tempcount = 0;
-            $tempvalues = [];
-            foreach ($department[11] as $value){
-                $tempcount = '';
-                $tempvalues[$value->department_id] = $tempcount;
-            }
-            $countReviewed2[11] = $tempvalues;
         }
         if (in_array(5, $roles)) {
             $college[5] = '';
             $sector[5] = '';
-            $arrayOfNoOfAllUsers[5] = '';
+            $countRegisteredUsers[5] = '';
+            $countExpectedTotal[5] = '';
+            $countReceived[5] = '';
+
             $department[5] = Department::join('chairpeople', 'departments.id', 'chairpeople.department_id')->where('chairpeople.user_id', auth()->id())->where('chairpeople.deleted_at', null)->get();
             
             $tempcount = 0;
             $tempvalues = [];
             foreach ($department[5] as $value){
-                $tempcount = (new DashboardService())->countAccomplishmentByOfficerAndDepartmentAndQuarterYear('chairperson_approval', $value->department_id, $currentQuarterYear);
+                $tempcount = Report::whereNull('chairperson_approval')
+                    ->where('department_id', $value->department_id)
+                    ->whereBetween('report_category_id', [14, 32])
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->count();
                 $tempvalues[$value->department_id] = $tempcount;
+                
             }
-            $countReviewed1[5] = $tempvalues;
+            $countToReview[5] = $tempvalues;
 
-            $tempcount = 0;
-            $tempvalues = [];
-            foreach ($department[5] as $value){
-                $tempcount = '';
-                $tempvalues[$value->department_id] = $tempcount;
-            }
-            $countReviewed2[5] = $tempvalues;
         } 
         if (in_array(6, $roles)) {
             $department[6] = '';
             $sector[6] = '';
+            $countRegisteredUsers[6] = '';
+            $countExpectedTotal[6] = '';
+            $countReceived[6] = '';
+
             $college[6] = College::join('deans', 'colleges.id', 'deans.college_id')->where('deans.user_id', auth()->id())->where('deans.deleted_at', null)->get();
             
-            $arrayOfNoOfAllUsers[6] = [];
-            $tempcount1 = 0;
-            $tempcount2 = 0;
-
-            foreach ($college[6] as $value) {
-                $tempcount1 = Employee::where('college_id', $value->college_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 1)->count();
-                $tempcount2 = Employee::where('college_id', $value->college_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 3)->count();
-                $temp = array('faculty' => $tempcount1, 'admin' => $tempcount2);
-                $arrayOfNoOfAllUsers[6] = [$value->college_id => $temp];
-            }
-            
             $tempcount = 0;
             $tempvalues = [];
             foreach ($college[6] as $value){
-                $tempcount = (new DashboardService())->countAccomplishmentByOfficerAndCollegeAndQuarterYear('dean_approval', $value->college_id, $currentQuarterYear);
+                $tempcount = Report::whereNull('dean_approval')
+                    ->where('chairperson_approval', 1)
+                    ->where('college_id', $value->college_id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->count();
                 $tempvalues[$value->college_id] = $tempcount;
+                
             }
-            $countReviewed1[6] = $tempvalues;
-
-            $tempcount = 0;
-            $tempvalues = [];
-            foreach ($college[6] as $value){
-                $tempcount = '';
-                $tempvalues[$value->college_id] = $tempcount;
-            }
-            $countReviewed2[6] = $tempvalues;
+            $countToReview[6] = $tempvalues;
         } 
         if (in_array(7, $roles)) {
             $department[7] = '';
-            $sector[7] = SectorHead::leftjoin('sectors', 'sector_heads.sector_id', 'sectors.id')->where('sector_heads.user_id', auth()->id())->where('sector_heads.deleted_at', null)->first();
-            $college[7] = College::where('sector_id', $sector[7]->sector_id)->count();
-            $countFaculty = Employee::where('sector_id', $sector[7]->sector_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 1)->count();
-            $countAdmin = Employee::where('sector_id', $sector[7]->sector_id)->join('user_roles', 'user_roles.user_id', 'employees.user_id')->where('user_roles.role_id', 3)->count();
-            $arrayOfNoOfAllUsers[7] = array('faculty' => $countFaculty, 'admin' => $countAdmin);
-            $countReviewed1[7] = (new DashboardService())->countAccomplishmentByOfficerAndCollegeAndQuarterYear('sector_approval', $sector[7]->sector_id, $currentQuarterYear);
-            $countReviewed2[7] = "";
+            $countRegisteredUsers[7] = '';
+            $countExpectedTotal[7] = '';
+            $countReceived[7] = '';
+
+            $sector[7] = SectorHead::leftjoin('sectors', 'sector_heads.sector_id', 'sectors.id')->where('sector_heads.user_id', auth()->id())->where('sector_heads.deleted_at', null)->get();
+            
+            foreach ($sector[7] as $value){
+                $tempcount = Report::whereNull('sector_approval')
+                    ->where('dean_approval', 1)
+                    ->where('sector_id', $value->sector_id)
+                    ->where('report_quarter', $currentQuarterYear->current_quarter)
+                    ->where('report_year', $currentQuarterYear->current_year)
+                    ->count();
+                $tempvalues[$value->sector_id] = $tempcount; 
+                
+
+            }
+            $countToReview[7] = $tempvalues;
         } 
-        if (in_array(8, $roles) || in_array(9, $roles)) {
+        if (in_array(8, $roles)) {
             $department[8] = '';
             $college[8] = '';
             $sector[8] = '';
-            $countFaculty = (new UserRoleService())->getNumberOfUserByRole(1);
-            $countAdmin = (new UserRoleService())->getNumberOfUserByRole(3);
-            $countChairperson = (new UserRoleService())->getNumberOfUserByRole(5);
-            $countDirector = (new UserRoleService())->getNumberOfUserByRole(6);
-            $countSectorHead = (new UserRoleService())->getNumberOfUserByRole(7);
-            $countIPO = (new UserRoleService())->getNumberOfUserByRole(8);
-            $arrayOfNoOfAllUsers[8] = array('faculty' => $countFaculty, 'admin' => $countAdmin, 'chairperson' => $countChairperson, 
-                    'director' => $countDirector, 'sectorHead' => $countSectorHead, 'ipo' => $countIPO);
-            $countReviewed1[8] = '';
-            $countReviewed2[8] = "";
+            $countRegisteredUsers[8] = '';
+            $countReceived[8] = Report::where('ipqmso_approval', 1)
+                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                ->where('report_year', $currentQuarterYear->current_year)
+                ->count();
+            $countExpectedTotal[8] = Report::where('report_quarter', $currentQuarterYear->current_quarter)
+                ->where('report_year', $currentQuarterYear->current_year)
+                ->count();
+            $countToReview[8] = Report::whereNull('ipqmso_approval')
+                ->where('sector_approval', 1)
+                ->where('report_quarter', $currentQuarterYear->current_quarter)
+                ->where('report_year', $currentQuarterYear->current_year)
+                ->count();
+        } 
+        if (in_array(9, $roles)) {
+            $department[9] = '';
+            $college[9] = '';
+            $sector[9] = '';
+            $countToReview[9] = '';
+            $countExpectedTotal[9] = '';
+            $countReceived[9] = '';
+            $countRegisteredUsers[9] = User::count();
         } 
 
-        $announcements = Announcement::where('status', 1)->orderBy('updated_at')->paginate(3);
+        $announcements = Announcement::where('status', 1)->orderBy('updated_at', 'DESC')->paginate(5);
         return view('dashboard', compact('user', 'roles', 'userRoleNames', 'currentQuarterYear', 'announcements', 'countAccomplishmentsSubmitted',
-                'countAccomplishmentsReturned', 'countReviewed1', 'countReviewed2', 'arrayOfNoOfAllUsers', 
-                'department', 'college', 'sector'));
+                'countAccomplishmentsReturned', 'countToReview', 'department', 'college', 'sector', 
+                'countRegisteredUsers', 'countExpectedTotal', 'countReceived'));
     }
 }

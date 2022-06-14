@@ -123,6 +123,9 @@ class StudentAwardController extends Controller
     {
         $this->authorize('view', StudentAward::class);
 
+        if (auth()->id() !== $student_award->user_id)
+            abort(403);
+
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -144,6 +147,9 @@ class StudentAwardController extends Controller
     public function edit(StudentAward $student_award)
     {
         $this->authorize('update', StudentAward::class);
+
+        if (auth()->id() !== $student_award->user_id)
+            abort(403);
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');

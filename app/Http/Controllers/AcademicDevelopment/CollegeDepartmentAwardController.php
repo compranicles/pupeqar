@@ -123,6 +123,10 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('view', CollegeDepartmentAward::class);
 
+        if (auth()->id() !== $college_department_award->user_id) {
+            abort(403);
+        }
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
@@ -144,6 +148,10 @@ class CollegeDepartmentAwardController extends Controller
     {
         $this->authorize('update', CollegeDepartmentAward::class);
 
+        if (auth()->id() !== $college_department_award->user_id) {
+            abort(403);
+        }
+        
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
 

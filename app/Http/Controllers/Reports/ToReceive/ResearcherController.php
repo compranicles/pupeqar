@@ -279,6 +279,7 @@ class ResearcherController extends Controller
                             ->join('users', 'users.id', 'faculty_researchers.user_id')
                             ->where('faculty_researchers.college_id', $report->college_id)
                             ->select('colleges.name as college_name', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+
                             ->first();
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();

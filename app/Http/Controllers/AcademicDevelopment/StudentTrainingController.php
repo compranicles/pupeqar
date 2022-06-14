@@ -136,6 +136,9 @@ class StudentTrainingController extends Controller
     {
         $this->authorize('view', StudentTraining::class);
 
+        if (auth()->id() !== $student_training->user_id)
+            abort(403);
+
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
@@ -157,6 +160,9 @@ class StudentTrainingController extends Controller
     public function edit(StudentTraining $student_training)
     {
         $this->authorize('update', StudentTraining::class);
+
+        if (auth()->id() !== $student_training->user_id)
+            abort(403);
 
         if(LockController::isLocked($student_training->id, 19)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

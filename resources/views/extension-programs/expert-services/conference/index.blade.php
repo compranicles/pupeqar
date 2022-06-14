@@ -29,7 +29,7 @@
                             </div>
                         </div>  
                         <hr>
-                        <div class="row">
+                        <!-- <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="natureFilter" class="mr-2">Nature: </label>
@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <hr>
+                        <hr> -->
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="esconference_table">
                                 <thead>
@@ -139,9 +139,7 @@
             });
         }, 4000);
 
-         $(document).ready( function () {
-             $('#esconference_table').DataTable();
-         } );
+        $('#esconference_table').DataTable();
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
@@ -159,92 +157,93 @@
         });
      </script>
      <script>
-         var table =  $("#esconference_table").DataTable({
-            "searchCols": [
-                null,
-                null,
-                null,
-                null,
-                { "search": "{{ $currentQuarterYear->current_quarter }}" },
-                { "search": "{{ $currentQuarterYear->current_year }}" },
-                null,
-                null,
-                null,
-            ],
-            initComplete: function () {
-                this.api().columns(2).every( function () {
-                    var column = this;
-                    var select = $('#natureFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //  var table =  $("#esconference_table").DataTable({
+        //     "searchCols": [
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
+        //         { "search": "{{ $currentQuarterYear->current_year }}" },
+        //         null,
+        //         null,
+        //         null,
+        //     ],
+        //     initComplete: function () {
+        //         this.api().columns(2).every( function () {
+        //             var column = this;
+        //             var select = $('#natureFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(3).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(3).every( function () {
+        //             var column = this;
+        //             var select = $('#collegeFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#quarterFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(4).every( function () {
+        //             var column = this;
+        //             var select = $('#quarterFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
 
-                this.api().columns(5).every( function () {
-                    var column = this;
-                    var select = $('#yearFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+        //         this.api().columns(5).every( function () {
+        //             var column = this;
+        //             var select = $('#yearFilter')
+        //                 .on( 'change', function () {
+        //                     var val = $.fn.dataTable.util.escapeRegex(
+        //                         $(this).val()
+        //                     );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+        //                     column
+        //                         .search( val ? '^'+val+'$' : '', true, false )
+        //                         .draw();
+        //                 } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-            }
-         });
+        //             column.data().unique().sort().each( function ( d, j ) {
+        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
+        //             } );
+        //         });
+        //     }
+        //  });
+
           var natureIndex = 0;
             $("#esconference_table th").each(function (i) {
                 if ($($(this)).html() == "Nature") {

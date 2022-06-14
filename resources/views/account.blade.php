@@ -78,7 +78,7 @@
                                         data-max-files="50"
                                         />
                                         <p class="mt-1"><small>Accepts JPEG, and PNG file formats.</small></p>
-                                        <button type="submit" id="submit" class="btn btn-success float-right">Save</button>
+                                        <button type="submit" id="submit" class="btn btn-success float-right">Save Signature</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

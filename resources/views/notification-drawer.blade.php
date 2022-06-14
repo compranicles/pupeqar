@@ -1,4 +1,4 @@
-<table class="table table-sm table-borderless" style="width: 100%;" id="notification_nav_table">
+<table class="table table-sm" style="width: 100%;" id="notification_nav_table">
     <tbody>
     </tbody>
 </table>

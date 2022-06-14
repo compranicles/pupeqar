@@ -29,7 +29,6 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Title</th>
                                         <th>Subject</th>
                                         <th>Date Created</th>
                                         <th>Show/Hide</th>
@@ -40,7 +39,6 @@
                                     @foreach ($announcements as $announcement)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $announcement->title }}</td>
                                         <td>{{ $announcement->subject }}</td>
                                         <td>{{ $announcement->created_at }}</td>
                                         <td>
