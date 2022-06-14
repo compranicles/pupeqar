@@ -131,6 +131,9 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('view', TechnicalExtension::class);
 
+        if (auth()->id() !== $technical_extension->user_id)
+            abort(403);
+
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
@@ -151,6 +154,9 @@ class TechnicalExtensionController extends Controller
     public function edit(TechnicalExtension $technical_extension)
     {
         $this->authorize('update', TechnicalExtension::class);
+
+        if (auth()->id() !== $technical_extension->user_id)
+            abort(403);
 
         if(LockController::isLocked($technical_extension->id, 23)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

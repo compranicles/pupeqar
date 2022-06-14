@@ -201,6 +201,10 @@ class PublicationController extends Controller
     public function edit(Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($publication->id, 3)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

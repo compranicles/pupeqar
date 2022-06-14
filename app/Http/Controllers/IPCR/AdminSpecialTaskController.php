@@ -132,6 +132,9 @@ class AdminSpecialTaskController extends Controller
      */
     public function show(AdminSpecialTask $admin_special_task)
     {
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+      
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -156,6 +159,9 @@ class AdminSpecialTaskController extends Controller
      */
     public function edit(AdminSpecialTask $admin_special_task)
     {
+        if (auth()->id() !== $admin_special_task->user_id)
+            abort(403);
+            
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(LockController::isLocked($admin_special_task->id, 29)){

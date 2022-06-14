@@ -174,6 +174,10 @@ class CopyrightedController extends Controller
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
         $this->authorize('update', ResearchCopyright::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($copyrighted->id, 7)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
