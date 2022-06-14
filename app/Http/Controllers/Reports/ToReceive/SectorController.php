@@ -165,6 +165,7 @@ class SectorController extends Controller
                             ->where('sector_heads.sector_id', $report->sector_id)
                             ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
+                 
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 

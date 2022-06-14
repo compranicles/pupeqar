@@ -243,6 +243,7 @@
         //         });
         //     }
         //  });
+
           var natureIndex = 0;
             $("#esconference_table th").each(function (i) {
                 if ($($(this)).html() == "Nature") {

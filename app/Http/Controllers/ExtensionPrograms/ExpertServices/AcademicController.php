@@ -150,6 +150,9 @@ class AcademicController extends Controller
     {
         $this->authorize('view', ExpertServiceAcademic::class);
 
+        if (auth()->id() !== $expert_service_in_academic->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -172,6 +175,9 @@ class AcademicController extends Controller
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
         $this->authorize('update', ExpertServiceAcademic::class);
+
+        if (auth()->id() !== $expert_service_in_academic->user_id)
+            abort(403);
 
         if(LockController::isLocked($expert_service_in_academic->id, 11)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

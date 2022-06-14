@@ -520,7 +520,7 @@
             });
         </script>
         <script>
-            var max = new Date().getFullYear();
+            var max = {!! json_encode($year) !!};
             var min = 0;
             var diff = max-2022;
             min = max-diff;

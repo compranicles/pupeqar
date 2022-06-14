@@ -216,7 +216,7 @@
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -234,13 +234,14 @@
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
         //         });
         //     }
         // });
+
 
         var statusIndex = 0;
         $("#invention_table th").each(function (i) {

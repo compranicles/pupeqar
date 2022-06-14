@@ -108,6 +108,12 @@ class PermissionSeeder extends Seeder
         Permission::insert(['name' => 'manage academic module forms', 'group' => '9FORM']); 
         Permission::insert(['name' => 'manage report types', 'group' => '8MAINT']); 
         Permission::insert(['name' => 'manage report generate types', 'group' => '8MAINT']); //59
+
+        /* **********************************OTHER ACCOMPLISHMENTS***************************** */
+        Permission::insert(['name' => 'manage accomplishments based on OPCR', 'group' => '11OTHER']); //60
+        Permission::insert(['name' => 'manage academic special tasks', 'group' => '11OTHER']); //61
+        Permission::insert(['name' => 'manage admin special tasks', 'group' => '11OTHER']); //62
+
         Schema::enableForeignKeyConstraints();
     }
 }

@@ -138,6 +138,10 @@ class RequestController extends Controller
     public function show(RequestModel $request)
     {
         $this->authorize('view', RequestModel::class);
+
+        if (auth()->id() !== $request->user_id)
+            abort(403);
+
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         $requestFields = IPCRField::select('i_p_c_r_fields.*', 'field_types.name as field_type_name')
@@ -161,6 +165,9 @@ class RequestController extends Controller
     public function edit(RequestModel $request)
     {
         $this->authorize('update', RequestModel::class);
+
+        if (auth()->id() !== $request->user_id)
+            abort(403);
 
         if(LockController::isLocked($request->id, 17)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

@@ -169,6 +169,7 @@
         //      });
         //  } );
 
+
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {

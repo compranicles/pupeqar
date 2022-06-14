@@ -207,6 +207,10 @@ class PresentationController extends Controller
     public function edit( Research $research, ResearchPresentation $presentation)
     {
         $this->authorize('update', ResearchPresentation::class);
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         if(LockController::isLocked($presentation->id, 4)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

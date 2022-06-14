@@ -66,15 +66,15 @@
                 <li><a href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
                 @endcan
             </ul>
-        </div>
-        <div class="col-md-4">
-            
             @can('viewAny', \App\Models\Invention::class)
             <ul>
                 <h6 class="menu-category">Inventions, Innovation, & Creativity</h6>
                 <li><a href="{{ route('invention-innovation-creative.index') }}">Inventions, Innovation, and Creativity</a></li>
             </ul>
             @endcan
+        </div>
+        <div class="col-md-4">
+            
             @can('viewAny', \App\Models\Research::class)
             <ul>
                 <h6 class="menu-category">Research & Book Chapter</h6>
@@ -87,6 +87,14 @@
                 <li><a href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
             </ul>
             @endcan
+            <ul>
+                <h6 class="menu-category">Others</h6>
+                <li><a href="">Accomplishments Based on OPCR</a></li>
+                <li><a href="">Academic Special Tasks</a></li>
+                @can('manage', \App\Models\AdminSpecialTask::class)
+                <li><a href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
+                @endcan
+            </ul>
         </div>
     </div>
 </div>

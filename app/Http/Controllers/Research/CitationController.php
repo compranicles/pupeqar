@@ -141,6 +141,10 @@ class CitationController extends Controller
      */
     public function show(Research $research, ResearchCitation $citation)
     {
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+
         $this->authorize('view', ResearchCitation::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -169,6 +173,10 @@ class CitationController extends Controller
      */
     public function edit(Research $research, ResearchCitation $citation)
     {
+
+        if (auth()->id() !== $research->user_id)
+            abort(403);
+            
         $this->authorize('update', ResearchCitation::class);
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

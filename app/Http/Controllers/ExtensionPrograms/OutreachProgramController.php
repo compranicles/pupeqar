@@ -126,6 +126,9 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('view', OutreachProgram::class);
 
+        if (auth()->id() !== $outreach_program->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
@@ -147,6 +150,9 @@ class OutreachProgramController extends Controller
     {
         $this->authorize('update', OutreachProgram::class);
 
+        if (auth()->id() !== $outreach_program->user_id)
+            abort(403);
+            
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

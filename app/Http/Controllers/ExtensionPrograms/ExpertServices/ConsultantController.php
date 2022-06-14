@@ -142,6 +142,9 @@ class ConsultantController extends Controller
     {
         $this->authorize('view', ExpertServiceConsultant::class);
 
+        if (auth()->id() !== $expert_service_as_consultant->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -164,6 +167,9 @@ class ConsultantController extends Controller
     {
         $this->authorize('update', ExpertServiceConsultant::class);
 
+        if (auth()->id() !== $expert_service_as_consultant->user_id)
+            abort(403);
+            
         if(LockController::isLocked($expert_service_as_consultant->id, 9)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

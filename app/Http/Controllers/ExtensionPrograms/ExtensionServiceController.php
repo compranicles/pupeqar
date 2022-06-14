@@ -233,6 +233,9 @@ class ExtensionServiceController extends Controller
     {
         $this->authorize('view', ExtensionService::class);
 
+        if (auth()->id() !== $extension_service->user_id)
+            abort(403);
+
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         
@@ -257,6 +260,9 @@ class ExtensionServiceController extends Controller
     {
         $this->authorize('update', ExtensionService::class);
 
+        if (auth()->id() !== $extension_service->user_id)
+            abort(403);
+            
         if(LockController::isLocked($extension_service->id, 12)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

@@ -147,6 +147,9 @@ class ViableProjectController extends Controller
     {
         $this->authorize('view', ViableProject::class);
 
+        if (auth()->id() !== $viable_project->user_id)
+            abort(403);
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
@@ -168,6 +171,9 @@ class ViableProjectController extends Controller
     public function edit(ViableProject $viable_project)
     {
         $this->authorize('update', ViableProject::class);
+
+        if (auth()->id() !== $viable_project->user_id)
+            abort(403);
 
         if(LockController::isLocked($viable_project->id, 20)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');

@@ -172,6 +172,7 @@
         //         }
         //     });
         //  } );
+                      
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
