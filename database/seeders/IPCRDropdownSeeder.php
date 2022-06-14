@@ -36,27 +36,5 @@ class IPCRDropdownSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-
-        $dropdownId  = Dropdown::insertGetId([
-            'name' => 'Level (ASP)'
-        ]);
-        DropdownOption::insert([
-            'dropdown_id' => $dropdownId,
-            'name' => 'International',
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        DropdownOption::insert([
-            'dropdown_id' => $dropdownId,
-            'name' => 'National',
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        DropdownOption::insert([
-            'dropdown_id' => $dropdownId,
-            'name' => 'Local',
-            'order' => 1,
-            'is_active' => 1,
-        ]);
     }
 }

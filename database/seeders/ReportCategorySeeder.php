@@ -149,12 +149,12 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 1,
         ]);
-        // ReportCategory::insert([
-        //     'report_type_id' => 2,
-        //     'name' => 'Technical Extension Program/Project/Activity',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
+        ReportCategory::insert([
+            'report_type_id' => 2,
+            'name' => 'Technical Extension Program/Project/Activity',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
 
 
         //HRIS Report Category Seeder
@@ -164,7 +164,6 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 17
         ]);
-        //HRIS Report Category Seeder
         ReportCategory::insert([
             'report_type_id' => 1,
             'name' => 'Attendance in Development Programs',
@@ -187,7 +186,32 @@ class ReportCategorySeeder extends Seeder
             'report_type_id' => 1,
             'name' => 'Officership/Membership',
             'is_active' => 1,
-            'order' => 20
+            'order' => 21
+        ]);
+
+        ReportCategory::insert([
+            'report_type_id' => 1, 
+            'name' => 'Special Tasks',
+            'is_active' => 1,
+            'order' => 22,
+        ]);
+        ReportCategory::insert([
+            'report_type_id' => 1, 
+            'name' => 'Special Tasks - Quality',
+            'is_active' => 1,
+            'order' => 23,
+        ]);
+        ReportCategory::insert([
+            'report_type_id' => 1, 
+            'name' => 'Special Tasks - Efficiency',
+            'is_active' => 1,
+            'order' => 24,
+        ]);
+        ReportCategory::insert([
+            'report_type_id' => 1, 
+            'name' => 'Special Tasks - Timeliness',
+            'is_active' => 1,
+            'order' => 25,
         ]);
     }
 }

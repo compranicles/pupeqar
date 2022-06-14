@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\FormBuilder\IPCRField;
 
-class AdminSpecialTasksFormSeeder extends Seeder
+class SpecialTasksFormSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,60 @@ class AdminSpecialTasksFormSeeder extends Seeder
     public function run()
     {
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Brief Description of Accomplishment',
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Commitment Measurable by:',
+            'name' => 'commitment_measure',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 5,
+            'dropdown_id' => 61, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        IPCRField::insert([
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Final Output',
+            'name' => 'final_output',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        IPCRField::insert([
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Target',
+            'name' => 'target_date',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 4,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        IPCRField::insert([
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Actual',
+            'name' => 'actual_date',
+            'placeholder' => null,
+            'size' => 'col-md-4',
+            'field_type_id' => 4,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        IPCRField::insert([
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Description of Accomplishment',
             'name' => 'accomplishment_description',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -28,76 +80,24 @@ class AdminSpecialTasksFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Output',
-            'name' => 'output',
-            'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Outcome',
-            'name' => 'outcome',
-            'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Participation/Significant Contribution',
-            'name' => 'participation',
-            'placeholder' => null,
-            'size' => 'col-md-4',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Special Order',
-            'name' => 'special_order',
-            'placeholder' => null,
-            'size' => 'col-md-4',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Level',
-            'name' => 'level',
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Status',
+            'name' => 'status',
             'placeholder' => null,
             'size' => 'col-md-4',
             'field_type_id' => 5,
-            'dropdown_id' => 60, 
+            'dropdown_id' => 62, 
             'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
         ]);
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Nature of Accomplishment',
-            'name' => 'nature_of_accomplishment',
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Remarks',
+            'name' => 'remarks',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 1,
@@ -106,34 +106,8 @@ class AdminSpecialTasksFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'From (mm/dd/yyyy)',
-            'name' => 'from',
-            'placeholder' => null,
-            'size' => 'col-md-4',
-            'field_type_id' => 4,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'To (mm/dd/yyyy)',
-            'name' => 'to',
-            'placeholder' => null,
-            'size' => 'col-md-4',
-            'field_type_id' => 4,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Proof of Compliance',
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Description of Supporting Documents Submitted',
             'name' => 'description',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -146,7 +120,7 @@ class AdminSpecialTasksFormSeeder extends Seeder
         ]);
 
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
+            'i_p_c_r_form_id' => 3,
             'label' => 'College/Branch/Campus/Office to commit the accomplishment',
             'name' => 'college_id',
             'placeholder' => null,
@@ -159,7 +133,7 @@ class AdminSpecialTasksFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
+            'i_p_c_r_form_id' => 3,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => null,
@@ -173,8 +147,8 @@ class AdminSpecialTasksFormSeeder extends Seeder
         ]);
 
         IPCRField::insert([
-            'i_p_c_r_form_id' => 2,
-            'label' => 'Proof Upload',
+            'i_p_c_r_form_id' => 3,
+            'label' => 'Supporting Documents Upload',
             'name' => 'document',
             'placeholder' => null,
             'size' => 'col-md-12',

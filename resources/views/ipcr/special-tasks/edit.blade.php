@@ -1,7 +1,19 @@
+@php
+    $nameOfPage = '';
+    $nameOfPages = '';
+    if(in_array(1, $roles)){
+        $nameOfPage = 'Special Task';
+        $nameOfPages = 'Special Tasks';
+    }
+    elseif (in_array(3, $roles)) {
+        $nameOfPage = 'Accomplishment Based on OPCR';
+        $nameOfPages = 'Accomplishments Based on OPCR';
+    }
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Special Task') }}
+            {{ __('Edit '.$nameOfPage) }}
         </h2>
     </x-slot>
 
@@ -9,7 +21,7 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('admin-special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Tasks</a>
+              <a class="back_link" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
             </p>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
@@ -19,7 +31,7 @@
             @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" method="post">
+                        <form action="{{ route('special-tasks.update', $special_task->id) }}" method="post">
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $specialTaskFields, 'value' => $values])
@@ -64,7 +76,7 @@
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12">
-                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('admin-special-tasks.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                    <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('special-tasks.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -97,7 +109,7 @@
                                                             <table class="table table-sm my-n3 text-center">
                                                                 <tr>
                                                                     <th>
-                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('admin-special-tasks.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                                                                        <button class="btn btn-danger remove-doc" data-id="doc-{{ $document['id'] }}" data-link="{{ route('special-tasks.removedoc', $document['filename']) }}" data-toggle="modal" data-target="#deleteModal">Delete</button>
                                                                     </th>
                                                                 </tr>
                                                             </table>
@@ -147,15 +159,9 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
-            $('#from').on('change', function () {
-                $('#to').datepicker('setDate', $('#from').val());
-                $('#to').datepicker('setStartDate', $('#from').val());
-            });
-        </script>
-        <script>
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             setTimeout(() => {
-                var urlre = "{{ url('document-upload/description/28') }}";
+                var urlre = "{{ url('document-upload/description/29') }}";
                 $.get(urlre, function (data){
                     if (data != '') {
                         data.forEach(function (item){

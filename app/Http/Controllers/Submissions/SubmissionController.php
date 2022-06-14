@@ -59,6 +59,10 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
     Maintenance\ReportCategory,
+    AdminSpecialTask,
+    AdminSpecialTaskDocument,
+    SpecialTask,
+    SpecialTaskDocument,
 };
 
 
@@ -838,6 +842,106 @@ class SubmissionController extends Controller
                     $report_document_checker[$table->id] = $checker_array;
                     $checker_array = [];
                     break;
+                case '29': 
+                    $data = AdminSpecialTask::where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 29)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('admin_special_tasks', 'admin_special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 29)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = AdminSpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '30': 
+                    $data = SpecialTask::where('commitment_measure', 285)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 30)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 30)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '31': 
+                    $data = SpecialTask::where('commitment_measure', 286)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 31)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 31)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '32': 
+                    $data = SpecialTask::where('commitment_measure', 287)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 32)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 32)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
                 default:
                     $report_array[$table->id] = [];
                     $report_document_checker[$table->id] = [];
@@ -847,6 +951,7 @@ class SubmissionController extends Controller
             
         }
 
+        // dd($report_document_checker[29][3]);
         $colleges = College::select('colleges.name', 'colleges.id')
                                 ->whereIn('colleges.id', Research::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->orWhereIn('colleges.id', Invention::where('user_id', auth()->id())->pluck('college_id')->all())
@@ -860,8 +965,14 @@ class SubmissionController extends Controller
                                 ->orWhereIn('colleges.id', Mobility::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->orWhereIn('colleges.id', RequestModel::where('user_id', auth()->id())->pluck('college_id')->all())
                                 ->get();
+        
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        $role = 'admin';
+        if(in_array('1', $roles))
+            $role = 'faculty';
 
-        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports'));
+
+        return view('submissions.index', compact('report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports', 'role'));
     }
 
     /**
@@ -947,7 +1058,7 @@ class SubmissionController extends Controller
                         $successToSubmit++;
                     
                     break;
-                    case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16:
+                    case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32:
                         switch($report_values_array[1]){
                             case 8:
                                 $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
@@ -984,6 +1095,25 @@ class SubmissionController extends Controller
                             case 16:
                                 $collegeAndDepartment = Syllabus::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                                 $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                            case 16:
+                                $collegeAndDepartment = Syllabus::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                            break;
+                            case 29:
+                                $collegeAndDepartment = AdminSpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                            break;
+                            case 30:
+                                $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                            break;
+                            case 31:
+                                $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                            break;
+                            case 32:
+                                $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                                $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                             break;
                         }
                         $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
@@ -1014,7 +1144,7 @@ class SubmissionController extends Controller
                         $successToSubmit++;
                     
                     break;
-                    case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 24:
+                    case 17: case 18: case 19: case 20: case 21: case 22: case 23:
                         //role and department/ college id
                         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
                         $department_id = '';
@@ -2059,6 +2189,106 @@ class SubmissionController extends Controller
                     $report_document_checker[$table->id] = $checker_array;
                     $checker_array = [];
                     break;
+                case '29': 
+                    $data = AdminSpecialTask::where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 29)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('admin_special_tasks', 'admin_special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 29)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = AdminSpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '30': 
+                    $data = SpecialTask::where('commitment_measure', 285)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 30)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 30)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '31': 
+                    $data = SpecialTask::where('commitment_measure', 286)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 31)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 31)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '32': 
+                    $data = SpecialTask::where('commitment_measure', 287)->where('user_id', auth()->id())->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 32)->where('reports.user_id', auth()->id())->exists() ) {
+                            if ( 
+                                Report::join('special_tasks', 'special_tasks.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 32)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata; 
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = SpecialTaskDocument::where('special_task_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
                 default:
                     $report_array[$table->id] = [];
                     $report_document_checker[$table->id] = [];
@@ -2116,6 +2346,10 @@ class SubmissionController extends Controller
         // dd($reported_accomplishments);
 
         // dd($report_array);
-        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav'));
+        $role = 'admin';
+        if(in_array('1', $roles))
+            $role = 'faculty';
+
+        return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav', 'role'));
     }
 }

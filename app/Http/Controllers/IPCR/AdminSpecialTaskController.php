@@ -158,7 +158,7 @@ class AdminSpecialTaskController extends Controller
     {
         $this->authorize('manage', AdminSpecialTask::class);
 
-        if(LockController::isLocked($admin_special_task->id, 28)){
+        if(LockController::isLocked($admin_special_task->id, 29)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -240,7 +240,7 @@ class AdminSpecialTaskController extends Controller
     {
         $this->authorize('manage', AdminSpecialTask::class);
 
-        if(LockController::isLocked($admin_special_task->id, 28)){
+        if(LockController::isLocked($admin_special_task->id, 29)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
