@@ -15,7 +15,7 @@
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
                         <i class="bi bi-check-circle"></i> {{ $message }}
-                    </div>         
+                    </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
@@ -30,7 +30,7 @@
                                     <i class="bi bi-plus"></i> Add
                                 </a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -49,7 +49,7 @@
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarter">
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
-                                            <?php 
+                                            <?php
                                             $created_at = strtotime( $row->created_at );
                                             $created_at = date( 'M d, Y h:i A', $created_at );
                                             ?>
@@ -114,14 +114,15 @@
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div role="group">
                                                 <a href="{{ route('special-tasks.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                                 <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                                <a href="{{ url('submissions/check/29/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -144,7 +145,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -162,7 +163,7 @@
           var url = '{{ route("special-tasks.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
     <script>
@@ -186,12 +187,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -204,12 +205,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );

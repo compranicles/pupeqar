@@ -15,10 +15,15 @@
                 @if ($message = Session::get('project_success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>              
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
                     {{ $message }}
                 </div>
                 @endif
@@ -28,7 +33,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('viable-project.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Viable Demonstration Project </a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -79,15 +84,15 @@
                                         <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('viable-project.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-project="{{ $row->name }}">Delete</button>
-                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                                <a href="{{ url('submissions/check/20/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -109,7 +114,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -134,12 +139,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -152,12 +157,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -179,7 +184,7 @@
           var url = '{{ route("viable-project.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
      @endpush

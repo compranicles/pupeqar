@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
     Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
     Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
-            
+
     /* NOTIFICATIONS */
     Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
     Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
@@ -128,7 +128,7 @@ Route::group(['middleware' => 'auth'], function() {
     // 9. Research Forms
     Route::get('/research-forms/activate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'activate']);
     Route::get('/research-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\ResearchFormController::class, 'inactivate']);
-    Route::resource('research-forms', \App\Http\Controllers\Maintenances\ResearchFormController::class);    
+    Route::resource('research-forms', \App\Http\Controllers\Maintenances\ResearchFormController::class);
     // 10. Research Fields
     Route::get('/research-fields/activate/{id}', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'activate']);
     Route::get('/research-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\ResearchFieldController::class, 'inactivate']);
@@ -137,7 +137,7 @@ Route::group(['middleware' => 'auth'], function() {
     // 11. Extension Programs and Services Forms
     Route::get('/extension-program-forms/activate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFormController::class, 'activate']);
     Route::get('/extension-program-forms/inactivate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFormController::class, 'inactivate']);
-    Route::resource('extension-program-forms', \App\Http\Controllers\Maintenances\ExtensionProgramFormController::class);    
+    Route::resource('extension-program-forms', \App\Http\Controllers\Maintenances\ExtensionProgramFormController::class);
     // 12. Extension Programs and Services Fields
     Route::get('/extension-program-fields/activate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'activate']);
     Route::get('/extension-program-fields/inactivate/{id}', [\App\Http\Controllers\Maintenances\ExtensionProgramFieldController::class, 'inactivate']);
@@ -250,7 +250,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/viable-project/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ViableProjectController::class, 'removeDoc'])->name('viable-project.removedoc');
     Route::get('/college-department-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class, 'removeDoc'])->name('college-department-award.removedoc');
     Route::get('/technical-extension/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class, 'removeDoc'])->name('technical-extension.removedoc');
-    
+
     /* ACADEMIC DEVELOPMENT ACCOMPLISHMENTS */
     Route::resource('/academic-development/rtmmi', \App\Http\Controllers\AcademicDevelopment\ReferenceController::class);
     Route::resource('/academic-development/syllabus', \App\Http\Controllers\AcademicDevelopment\SyllabusController::class);
@@ -272,7 +272,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('special-tasks', \App\Http\Controllers\IPCR\SpecialTaskController::class);
     Route::resource('admin-special-tasks', \App\Http\Controllers\IPCR\AdminSpecialTaskController::class);
     Route::resource('attendance-function', \App\Http\Controllers\IPCR\AttendanceFunctionController::class);
-    
+
     // Remove Documents
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');
     Route::get('/admin-special-tasks/remove-document/{filename}', [\App\Http\Controllers\IPCR\AdminSpecialTaskController::class, 'removeDoc'])->name('admin-special-tasks.removedoc');
@@ -364,18 +364,19 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/reports/consolidate/college/reportYearFilter/{college}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\CollegeConsolidatedController::class, 'collegeReportYearFilter'])->name('reports.consolidate.college.reportYearFilter');
     Route::get('/reports/consolidate/sector/reportYearFilter/{sector}/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\SectorConsolidatedController::class, 'sectorReportYearFilter'])->name('reports.consolidate.sector.reportYearFilter');
     Route::get('/reports/consolidate/all/{year}/{quarter}', [\App\Http\Controllers\Reports\Consolidate\IpqmsoConsolidatedController::class, 'reportYearFilter'])->name('reports.consolidate.ipo.reportYearFilter');
-    
+
     /* GENERATE/EXPORT REPORT */
     Route::post('/reports/export/individual-export/{source_type}/{report_format}/{source_generate}/{year_generate}/{quarter_generate}/{id}', [\App\Http\Controllers\Reports\GenerateController::class, 'individualExport'])->name('report.individual.export');
 
     /* FOR TESTING PURPOSES */
     Route::get('/test', [\App\Http\Controllers\Test\TestController::class, 'index'])->name('test.index');
-    
+
     /* SUBMISSIONS */
     Route::resource('/submissions/to-finalize', \App\Http\Controllers\Submissions\SubmissionController::class);
     Route::get('/submissions/to-finalize/college/{collegeId}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'getCollege'])->name('submissions.getCollege');
     Route::get('/submissions/denied', [\App\Http\Controllers\Submissions\DeniedController::class, 'index'])->name('submissions.denied.index');
     Route::get('/submissions/approved', [\App\Http\Controllers\Submissions\AcceptedController::class, 'index'])->name('submissions.accepted.index');
+    Route::get('/submissions/check/{report_category_id}/{accomplishment_id}', [\App\Http\Controllers\Submissions\SubmissionController::class, 'check']);
 
     // Route::get('/submissions/faculty/add-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'addDocument'])->name('submissions.faculty.adddoc');
     // Route::post('/submissions/faculty/save-document/{id}/{research_category_id}',  [\App\Http\Controllers\Submissions\SubmissionController::class, 'saveDocument'])->name('submissions.faculty.savedoc');
@@ -405,7 +406,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
     Route::post('/account/store-signature', [\App\Http\Controllers\UserController::class, 'storeSignature'])->name('account.signature.save');
 
-    
+
     /* PROFILE (SYNCHRONIZED WITH HRIS) */
     Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
     Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
@@ -417,7 +418,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/profile/work-experience/{id}', [\App\Http\Controllers\User\ProfileController::class, 'workExperienceView'])->name('profile.workExperience.view');
     Route::get('/profile/voluntary-work', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWork'])->name('profile.voluntaryWork');
     Route::get('/profile/voluntary-work/{id}', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWorkView'])->name('profile.voluntaryWork.view');
-    
+
     /* SUPER ADMIN PERMANENT TASKS */
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         // Maintenance

@@ -15,10 +15,15 @@
                 @if (($accomplishment = Session::get('edit_syllabus_success')) && ($action = Session::get('action')) )
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $accomplishment }} has been {{ $action }}
-                </div>             
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
                     {{ $message }}
                 </div>
                 @endif
@@ -28,7 +33,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('syllabus.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Course Syllabus</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -44,7 +49,7 @@
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarter">
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -115,18 +120,18 @@
                                         <td>
                                         <?php
                                             $updated_at = strtotime( $syllabus->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('syllabus.edit', $syllabus->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button"  value="{{ $syllabus->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}">Delete</button>
-                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                                <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
-                    
+
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -146,7 +151,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -164,8 +169,9 @@
           var url = '{{ route("syllabus.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
+
      </script>
      <script>
         //  var table =  $("#syllabus_table").DataTable({
@@ -188,12 +194,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -206,12 +212,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -224,12 +230,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -242,12 +248,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -297,7 +303,7 @@
         //     $("#taskFilter").change(function (e) {
         //         table.draw();
         //     });
-            
+
         //     $("#collegeFilter").change(function (e) {
         //         table.draw();
         //     });
@@ -305,7 +311,7 @@
         //     table.draw();
      </script>
     <script>
-        
+
     </script>
     <!-- <script>
         $('#finishFilter').on('change', function () {

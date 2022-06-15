@@ -51,6 +51,7 @@
                                                 <th>Brief Description of Research Utilization</th>
                                                 <th>Quarter</th>
                                                 <th>Year</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -65,6 +66,7 @@
                                                     <td>
                                                         {{ $utilization->report_year}}
                                                     </td>
+                                                    <td><a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-success">Submit</a></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -110,7 +112,7 @@
             var rowCount = $('#researchc_table tbody tr').length;
             console.log(rowCount);
             if(rowCount == 1){
-                
+
             }
             $('#researchc_table').on('click', 'tbody td', function(){
                 window.location = $(this).closest('tr').find('td:eq(1) a').attr('href');
@@ -121,7 +123,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

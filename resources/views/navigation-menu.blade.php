@@ -21,27 +21,27 @@
                 @IsReporting
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
                     <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('invention-innovation-creative.*') ||
-                        request()->routeIs('technical-extension.*') || request()->routeIs('college-department-award.*') || 
-                        request()->routeIs('viable-project.*') || request()->routeIs('student-training.*') || 
-                        request()->routeIs('student-award.*') || request()->routeIs('rtmmi.*') || 
-                        request()->routeIs('syllabus.*') || request()->routeIs('outreach-program.*') || 
-                        request()->routeIs('mobility.*') || request()->routeIs('partnership.*') || 
+                        request()->routeIs('technical-extension.*') || request()->routeIs('college-department-award.*') ||
+                        request()->routeIs('viable-project.*') || request()->routeIs('student-training.*') ||
+                        request()->routeIs('student-award.*') || request()->routeIs('rtmmi.*') ||
+                        request()->routeIs('syllabus.*') || request()->routeIs('outreach-program.*') ||
+                        request()->routeIs('mobility.*') || request()->routeIs('partnership.*') ||
                         request()->routeIs('extension-service.*') || request()->routeIs('expert-service-as-consultant.*') ||
                         request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*') ||
                         request()->routeIs('request.*'))
-                        active @endif 
+                        active @endif
                         " role="button">Accomplishments</a>
                     @include('mega-menu')
                 </li>
-                
-                <li class="navbar-nav mr-auto main-nav-item">
+
+                {{-- <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link :active="request()->routeIs('to-finalize.*') || request()->routeIs('submissions.*')" href="{{ route('to-finalize.index') }}">
                         {{ __('Submissions') }}
-                        
+
                     </x-jet-nav-link>
-                </li>
+                </li> --}}
                 @endIsReporting
-                
+
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipo.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
                         {{ __('Reports') }}
@@ -59,7 +59,7 @@
                 @can('viewAny', App\Models\Announcement::class)
                 <li class="navbar-nav mr-auto main-nav-item nav-item">
                     <a href="{{ route('maintenances.index') }}" class="nav-link @if (   request()->routeIs('maintenances.*') ||
-                                request()->routeIs('announcements.*') || 
+                                request()->routeIs('announcements.*') ||
                                 request()->routeIs('sectors.*') ||
                                 request()->routeIs('colleges.*') ||
                                 request()->routeIs('departments.*') ||
@@ -69,7 +69,7 @@
                                 request()->routeIs('report-categories.*') ||
                                 request()->routeIs('maintenance.generate.*') ||
                                 request()->routeIs('research-forms.*') ||
-                                request()->routeIs('invention-forms.*') || 
+                                request()->routeIs('invention-forms.*') ||
                                 request()->routeIs('extension-program-forms.*') ||
                                 request()->routeIs('academic-module-forms.*') ||
                                 request()->routeIs('ipcr-forms.*') ||
@@ -80,7 +80,7 @@
                 </li>
                 @endcan
             </ul>
-            
+
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto align-items-baseline">
 
@@ -92,7 +92,7 @@
                             <div class="row">
                                 <div class="col-md-12 notif-scrollable">
                                     @include('notification-drawer')
-                                
+
                             </div>
                         </div>
                     </li>
@@ -102,7 +102,7 @@
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <img class="rounded-circle" width="32" height="32" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                             @else
-                            
+
                                 {{ Auth::user()->first_name }}
 
                                 <svg class="ml-2" width="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -116,7 +116,7 @@
                             <x-jet-dropdown-link href="{{ route('account') }}">
                                 {{ __('Account') }}
                             </x-jet-dropdown-link>
-                            
+
                             <x-jet-dropdown-link href="{{ route('profile.personal') }}">
                                 {{ __('Profile') }}
                             </x-jet-dropdown-link>
@@ -175,8 +175,8 @@
                         // the click occured outside
                         if (!$(event.target).closest('.menu-sub').length) {
                             menuContent.style.display="";
-                        }      
-                    }  
+                        }
+                    }
                 });
             }
 
@@ -212,8 +212,8 @@
                     // the click occured outside
                     if (!$(event.target).closest('.notifDiv').length) {
                         notifContent.style.display="";
-                    }      
-                }  
+                    }
+                }
             });
         </script>
     @endpush
