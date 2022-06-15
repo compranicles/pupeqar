@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
-        <label for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
                 @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
                     $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
                     $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author' || 

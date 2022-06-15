@@ -1,10 +1,14 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Student Awards and Recognition') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Student Awards & Recognition</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('student_success'))
@@ -58,7 +62,6 @@
                                         <th>Certifying Body</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -77,13 +80,6 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); 
@@ -91,9 +87,10 @@
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('student-award.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->name_of_award }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('student-award.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->name_of_award }}">Delete</button>
+                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -105,7 +102,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
