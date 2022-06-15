@@ -1,7 +1,7 @@
 
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         
         <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }}">
             <div class="form-check form-check-inline">

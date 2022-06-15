@@ -1,10 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Student Attended Seminars and Trainings') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Student Attended Seminars & Trainings</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('student_success'))
@@ -53,12 +58,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>No. of Student Attendees</th>
                                         <th>Title</th>
-                                        <th>Organization</th>
+                                        <th>No. of Student Attendees</th>
+                                        <th>Organizer</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -67,21 +71,14 @@
                                     @foreach ($student_trainings as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organizer }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
                                             {{ $row->report_year }}
-                                        </td>
-                                        <td>
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
                                         </td>
                                         <td>
                                         <?php
@@ -91,9 +88,10 @@
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('student-training.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('student-training.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->title }}">Delete</button>
+                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -105,7 +103,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

@@ -1,14 +1,18 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Expert Services Rendered') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="font-weight-bold mb-2">Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works</h3>
+        </div>
+    </div>
         <div class="row">
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
             @include('extension-programs.navigation-bar')
-            </div>
+            </div> -->
 
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_esacademic_success'))
@@ -78,7 +82,6 @@
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -97,13 +100,6 @@
                                             {{ $expertServiceAcademic->report_year }}
                                         </td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $expertServiceAcademic->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $expertServiceAcademic->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); 
@@ -111,9 +107,10 @@
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $expertServiceAcademic->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->publication_or_audio_visual }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $expertServiceAcademic->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->publication_or_audio_visual }}">Delete</button>
+                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -125,7 +122,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
@@ -245,53 +241,53 @@
         //     }
         //  });
 
-          var classIndex = 0;
-            $("#esacademic_table th").each(function (i) {
-                if ($($(this)).html() == "Classification") {
-                    classIndex = i; return false;
+        //   var classIndex = 0;
+        //     $("#esacademic_table th").each(function (i) {
+        //         if ($($(this)).html() == "Classification") {
+        //             classIndex = i; return false;
 
-                }
-            });
+        //         }
+        //     });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#classFilter').val()
-                    var classification = data[classIndex];
-                    if (selectedItem === "" || classification.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+        //     $.fn.dataTable.ext.search.push(
+        //         function (settings, data, dataIndex) {
+        //             var selectedItem = $('#classFilter').val()
+        //             var classification = data[classIndex];
+        //             if (selectedItem === "" || classification.includes(selectedItem)) {
+        //                 return true;
+        //             }
+        //             return false;
+        //         }
+        //     );
 
-            var collegeIndex = 0;
-            $("#esacademic_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Campus/Office") {
-                    collegeIndex = i; return false;
+        //     var collegeIndex = 0;
+        //     $("#esacademic_table th").each(function (i) {
+        //         if ($($(this)).html() == "College/Branch/Campus/Office") {
+        //             collegeIndex = i; return false;
 
-                }
-            });
+        //         }
+        //     });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#collegeFilter').val()
-                    var college = data[collegeIndex];
-                    if (selectedItem === "" || college.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+        //     $.fn.dataTable.ext.search.push(
+        //         function (settings, data, dataIndex) {
+        //             var selectedItem = $('#collegeFilter').val()
+        //             var college = data[collegeIndex];
+        //             if (selectedItem === "" || college.includes(selectedItem)) {
+        //                 return true;
+        //             }
+        //             return false;
+        //         }
+        //     );
 
-            $("#classFilter").change(function (e) {
-                table.draw();
-            });
+        //     $("#classFilter").change(function (e) {
+        //         table.draw();
+        //     });
         
-            $("#collegeFilter").change(function (e) {
-                table.draw();
-            });
+        //     $("#collegeFilter").change(function (e) {
+        //         table.draw();
+        //     });
 
-            table.draw();
+        //     table.draw();
      </script>
      @endpush
 </x-app-layout>

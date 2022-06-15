@@ -94,8 +94,8 @@ class StudentTrainingFormSeeder extends Seeder
         ]);
         AcademicDevelopmentField::insert([
             'academic_development_form_id' => 4,
-            'label' => 'Organization',
-            'name' => 'organization',
+            'label' => 'organizer',
+            'name' => 'organizer',
             'placeholder' => null,
             'size' => 'col-md-6',
             'field_type_id' => 1,

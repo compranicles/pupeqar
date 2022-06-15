@@ -1,10 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Invention, Innovation & Creative Works') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+    
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Inventions, Innovation & Creative Works</h2>
+            </div>
+        </div>
         <div class="row">
 
             <div class="col-lg-12">
@@ -75,7 +80,6 @@
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -94,13 +98,6 @@
                                             {{ $invention->report_year }}
                                         </td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $invention->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $invention->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); 
@@ -108,9 +105,10 @@
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $invention->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-iicw="{{ $invention->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('invention-innovation-creative.edit', $invention->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $invention->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-iicw="{{ $invention->title }}">Delete</button>
+                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -122,7 +120,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
@@ -242,54 +239,61 @@
         //     }
         // });
 
+<<<<<<< Updated upstream
 
         var statusIndex = 0;
         $("#invention_table th").each(function (i) {
             if ($($(this)).html() == "Status") {
                 statusIndex = i; return false;
+=======
+        // var statusIndex = 0;
+        // $("#invention_table th").each(function (i) {
+        //     if ($($(this)).html() == "Status") {
+        //         statusIndex = i; return false;
+>>>>>>> Stashed changes
 
-            }
-        });
+        //     }
+        // });
 
-        $.fn.dataTable.ext.search.push(
-            function (settings, data, dataIndex) {
-                var selectedItem = $('#statusFilter').val()
-                var status = data[statusIndex];
-                if (selectedItem === "" || status.includes(selectedItem)) {
-                    return true;
-                }
-                return false;
-            }
-        );
+        // $.fn.dataTable.ext.search.push(
+        //     function (settings, data, dataIndex) {
+        //         var selectedItem = $('#statusFilter').val()
+        //         var status = data[statusIndex];
+        //         if (selectedItem === "" || status.includes(selectedItem)) {
+        //             return true;
+        //         }
+        //         return false;
+        //     }
+        // );
 
-        var collegeIndex = 0;
-        $("#invention_table th").each(function (i) {
-            if ($($(this)).html() == "College/Branch/Campus/Office") {
-                collegeIndex = i; return false;
+        // var collegeIndex = 0;
+        // $("#invention_table th").each(function (i) {
+        //     if ($($(this)).html() == "College/Branch/Campus/Office") {
+        //         collegeIndex = i; return false;
 
-            }
-        });
+        //     }
+        // });
 
-        $.fn.dataTable.ext.search.push(
-            function (settings, data, dataIndex) {
-                var selectedItem = $('#collegeFilter').val()
-                var college = data[collegeIndex];
-                if (selectedItem === "" || college.includes(selectedItem)) {
-                    return true;
-                }
-                return false;
-            }
-        );
+        // $.fn.dataTable.ext.search.push(
+        //     function (settings, data, dataIndex) {
+        //         var selectedItem = $('#collegeFilter').val()
+        //         var college = data[collegeIndex];
+        //         if (selectedItem === "" || college.includes(selectedItem)) {
+        //             return true;
+        //         }
+        //         return false;
+        //     }
+        // );
 
-        $("#statusFilter").change(function (e) {
-            table.draw();
-        });
+        // $("#statusFilter").change(function (e) {
+        //     table.draw();
+        // });
 
-        $("#collegeFilter").change(function (e) {
-            table.draw();
-        });
+        // $("#collegeFilter").change(function (e) {
+        //     table.draw();
+        // });
 
-        table.draw();
+        // table.draw();
      </script>
      @endpush
 </x-app-layout>

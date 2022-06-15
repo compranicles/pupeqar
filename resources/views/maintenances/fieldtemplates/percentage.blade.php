@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}"yyyy>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <div class="input-group mb-3">
             <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
