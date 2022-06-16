@@ -18,6 +18,10 @@ Route::get('/', function () {
     return view('hris-regi.check');
 })->name('home')->middleware('guest');
 
+Route::match(['get', 'post'], 'login', function(){
+    return redirect('/');
+})->middleware('guest');
+
 /* DASHBOARD AND HOMEPAGE DISPLAY */
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -29,8 +33,8 @@ Route::get('refresh', [\App\Http\Controllers\RefreshController::class, 'index'])
 /* HRIS REGISTER AND VERIFICATION */
 Route::get('register/hris', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'index'])->name('register.hris');
 Route::post('register/verify', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'verify'])->name('register.verify');
-Route::get('register/create/{key}', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'create'])->name('register.create');
-Route::post('register/save', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'save'])->name('register.save');
+//Route::get('register/create/{key}', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'create'])->name('register.create');
+//Route::post('register/save', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'save'])->name('register.save');
 
 /* AUTH CHECKER */
 Route::group(['middleware' => 'auth'], function() {
