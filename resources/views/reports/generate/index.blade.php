@@ -33,18 +33,10 @@
                     </div>
                     @endif
                     <div class="form-group">
-                        <label for="quarter_generate">Quarter</label>
-                        <select name="quarter_generate" id="quarter_generate" class="form-control">
-                            <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                            <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                            <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                            <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
-                        </select>
+                        <input type="hidden" name="quarter_generate" id="quarter_generate" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label for="quarter_generate">Year</label>
-                        <select name="year_generate" id="year_generate" class="form-control" >
-                        </select>
+                        <input type="hidden" name="year_generate" id="year_generate" class="form-control" >
                     </div>
             </div>
             <div class="modal-footer">
@@ -58,7 +50,7 @@
 
 @push('scripts')
     <script>
-        var max = new Date().getFullYear();
+        var max = {!! json_encode($year) !!};
         var min = 0;
         var diff = max-2022;
         min = max-diff;

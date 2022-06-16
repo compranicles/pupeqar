@@ -5,66 +5,13 @@
 
     <div class="row">
         <div class="col-md-12">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned</button>
-                </li>
-            </ul>
+            <h2 class="font-weight-bold mb-2">Consolidated QAR - IPO Level</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-md-12">
-                            <h5 class="d-inline-block" style="padding-top: 10px;">Consolidated Quarterly Accomplishments</h5>
-                            <div class="float-right">
-                                <button class="btn btn-primary ml-2" data-target="#GenerateIPOLevel" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Consolidated Reports</button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="reportFilter" class="mr-2">Accomplishment: </label>
-                                <div class="d-flex">
-                                    <!-- @include('submissions.accomplishment-filter') -->
-                                    <select name="report" id="reportFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="empFilter" class="mr-2">Employee: </label>
-                                    <select name="emp" id="empFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office: </label>
-                                    <select name="college" id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="deptFilter" class="mr-2">Department: </label>
-                                    <select name="dept" id="deptFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
                     <div class="row">
                         <div class="col-md-2">
                             <div class="form-group">
@@ -75,16 +22,34 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
+                                <label for="quarterFilter" class="mr-2">Quarter Start: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                        <option value="1" class="quarter">1</option>
+                                        <option value="2" class="quarter">2</option>
+                                        <option value="3" class="quarter">3</option>
+                                        <option value="4" class="quarter">4</option>
                                     </select>
-                                    <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group m-0">
+                                <label for="quarterFilter2" class="mr-2">Quarter End: </label>
+                                <div class="d-flex">
+                                    <select id="quarterFilter2" class="custom-select" name="quarter2">
+                                        <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
+                                        <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
+                                        <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
+                                        <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-top: 30px;">
+                            <div class="form-group">
+                                <button id="filter" class="btn btn-primary">GENERATE</button>
+                                <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateIPOLevel" data-toggle="modal">EXPORT</button>
                             </div>
                         </div>
                     </div>
@@ -359,80 +324,81 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            var table = $('#college_accomplishments_table').DataTable({
-                initComplete: function () {
-                this.api().columns(1).every( function () {
-                    var column = this;
-                    var select = $('#reportFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            $('#college_accomplishments_table').DataTable();
+            // var table = $('#college_accomplishments_table').DataTable({
+            //     initComplete: function () {
+            //     this.api().columns(1).every( function () {
+            //         var column = this;
+            //         var select = $('#reportFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
         
-                });
-                this.api().columns(2).every( function () {
-                    var column = this;
-                    var select = $('#empFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            //     });
+            //     this.api().columns(2).every( function () {
+            //         var column = this;
+            //         var select = $('#empFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(3).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
+            //     });
+            //     this.api().columns(3).every( function () {
+            //         var column = this;
+            //         var select = $('#collegeFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#deptFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
+            //     });
+            //     this.api().columns(4).every( function () {
+            //         var column = this;
+            //         var select = $('#deptFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-            }
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
+            //     });
+            // }
 
-            });
+            // });
 
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
@@ -483,9 +449,6 @@
                 $('#deny-details').remove();
                 $('.report-content').remove();
             });
-            $(function(){
-                $('#college_accomplishments_table').DataTable();
-            });
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -508,7 +471,7 @@
                 }
             }
         </script>
-        <script>
+        <!-- <script>
             function received() {
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
@@ -550,7 +513,7 @@
                     });
                     table.draw();
             }
-        </script>
+        </script> -->
         <script>
             $('#filter').on('click', function () {
                 var year_reported = $('#yearFilter').val();
@@ -559,6 +522,16 @@
                 var newLink = link.replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
+        </script>
+        <script>
+            $('#export').on('click', function() {
+                var selectedQuarter = $('#quarterFilter').val();
+                var selectedQuarter2 = $('#quarterFilter2').val();
+                var selectedYear = $('#yearFilter').val();
+                $('#from_quarter_generate').val(selectedQuarter);
+                $('#to_quarter_generate').val(selectedQuarter2);
+                $('#year_generate').val(selectedYear);
+            })
         </script>
     @endpush
 </x-app-layout>

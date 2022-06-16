@@ -5,7 +5,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <h2 class="font-weight-bold mb-2">My Accomplishments</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="false">All</button>
                 </li>
@@ -15,43 +20,11 @@
                 <li class="nav-item" role="presentation">
                     <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
                 </li>
-            </ul>
+            </ul> -->
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12">
-                            <h5 class="d-inline-block" style="padding-top: 10px;">My Accomplishments</h5>
-                            @if(in_array(1, $roles) || in_array(3, $roles)) 
-                                <div class="float-right">
-                                    <button type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Individual Report</button>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-3 ">
-                            <div class="form-group">
-                                <label for="reportFilter" class="mr-2">Accomplishment: </label>
-                                <div class="d-flex">
-                                    <select name="report" id="reportFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 ">
-                            <div class="form-group">
-                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office: </label>
-                                <div class="d-flex">
-                                    <select name="college" id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                        </div>
+                        
                         <div class="col-md-2 ">
                             <div class="form-group">
                                 <label for="yearFilter" class="mr-2">Year Reported: </label>
@@ -64,13 +37,19 @@
                                 <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                                        <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
+                                        <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
+                                        <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
+                                        <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
                                     </select>
-                                    <button id="filter" class="btn btn-secondary ml-4"><i class="bi bi-filter"></i></button>
+                                    
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8" style="padding-top: 30px;">
+                            <div class="form-group">
+                                <button id="filter" class="btn btn-primary">GENERATE</button>
+                                <button id="export" type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
                             </div>
                         </div>
                     </div>
@@ -438,7 +417,7 @@
                 window.location.replace(newLink);
             });
         </script>
-        <script>
+        <!-- <script>
             var table =  $("#my_accomplishments_table").DataTable({
                 initComplete: function () {
                 this.api().columns(1).every( function () {
@@ -497,21 +476,14 @@
                     table.draw();
 
             }
-        </script>
-        <script>
+        </script> -->
+        <!-- <script>
             $(function(){
                 //show all the accomplishments
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
                 $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
 
                 table.draw();
-
-                // var returned = $('td:contains(Returned)');
-                // document.getElementById('badge-returned').innerHTML = returned.length;
-                //Count the returned accomplishments shown in badge in Returned tab
-                // var tbl =  $('#my_accomplishments_table').DataTable().search("Returned");
-                // var count = tbl.$('tr', {"filter":"applied"}).length;
-                // document.getElementById('badge-returned').innerHTML = count;
             });
         </script>
         <script>
@@ -539,6 +511,14 @@
                     });
                     table.draw();
             }
+        </script> -->
+        <script>
+            $('#export').on('click', function() {
+                var selectedQuarter = $('#quarterFilter').val();
+                var selectedYear = $('#yearFilter').val();
+                $('#quarter_generate').val(selectedQuarter);
+                $('#year_generate').val(selectedYear);
+            })
         </script>
     @endpush
 </x-app-layout>

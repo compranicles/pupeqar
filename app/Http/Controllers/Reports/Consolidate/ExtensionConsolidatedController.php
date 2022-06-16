@@ -90,7 +90,7 @@ class ExtensionConsolidatedController extends Controller
         
 
         //departmentdetails
-        $department = Department::find($id);
+        $department = College::find($id);
 
         return view(
                     'reports.consolidate.extension', 
@@ -164,7 +164,7 @@ class ExtensionConsolidatedController extends Controller
             
 
             //departmentdetails
-            $department = Department::find($dept);
+            $department = College::find($dept);
 
             return view(
                         'reports.consolidate.extension', 
