@@ -14,7 +14,7 @@
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
                         <i class="bi bi-check-circle"></i> {{ $message }}
-                    </div>         
+                    </div>
                 @endif
                 @if ($message = Session::get('error'))
                     <div class="alert alert-danger alert-index">
@@ -37,10 +37,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Brief Description of Activity</th>
-                                        <th>Start Date</th>
-                                        <th>Validity Period</th>
                                         <th>College</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -50,29 +47,12 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->activity_description }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->start_date }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >
-                                            <?php 
-                                            $start = strtotime( $row->valid_from );
-                                            $start = date( 'M d, Y', $valid_from );
-                                            $end = strtotime( $row->valid_to );
-                                            $end = date( 'M d, Y', $valid_to );
-                                            ?>
-                                            {{ $start.' - '.$end }}
-                                        </td>
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >
-                                        <?php
-                                            $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            @php
+                                                $updated_at = strtotime( $row->updated_at );
+                                                $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            @endphp
                                             {{ $updated_at }}
                                         </td>
                                         <td>
@@ -101,7 +81,7 @@
     <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -121,7 +101,7 @@
         var url = '{{ route("college-function-manager.destroy", ":id") }}';
         url = url.replace(':id', id);
         document.getElementById('delete_item').action = url;
-        
+
         });
     </script>
     @endpush

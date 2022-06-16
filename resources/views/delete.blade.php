@@ -6,16 +6,16 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-                <h5 class="text-center">Are you sure you want to delete this accomplishment?</h5>
-                <p id="itemToDelete" class="text-center h4"></p>
-                <form action="" id="delete_item" method="POST">
-                    @csrf
-                    @method('delete')
-            </div>
+            <h5 class="text-center">Are you sure you want to delete this accomplishment?</h5>
+            <p id="itemToDelete" class="text-center h4"></p>
+            <form action="" id="delete_item" method="POST">
+                @csrf
+                @method('delete')
+        </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary mb-2" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
-        </form>
+            </form>
         </div>
     </div>
 </div>
