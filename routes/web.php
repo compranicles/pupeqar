@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // GUEST HOMEPAGE
 Route::get('/', function () {
-    return view('auth.login');
+    return view('hris-regi.check');
 })->name('home')->middleware('guest');
 
 /* DASHBOARD AND HOMEPAGE DISPLAY */
