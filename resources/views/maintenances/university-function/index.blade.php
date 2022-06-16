@@ -14,7 +14,7 @@
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
                         <i class="bi bi-check-circle"></i> {{ $message }}
-                    </div>         
+                    </div>
                 @endif
                 @if ($message = Session::get('error'))
                     <div class="alert alert-danger alert-index">
@@ -37,7 +37,6 @@
                                     <tr>
                                         <th></th>
                                         <th>Brief Description of Activity</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -48,17 +47,10 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->activity_description }}</td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
@@ -87,7 +79,7 @@
     <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -107,7 +99,7 @@
         var url = '{{ route("university-function-manager.destroy", ":id") }}';
         url = url.replace(':id', id);
         document.getElementById('delete_item').action = url;
-        
+
         });
     </script>
     @endpush

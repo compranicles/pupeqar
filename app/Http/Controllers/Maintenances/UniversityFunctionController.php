@@ -57,7 +57,7 @@ class UniversityFunctionController extends Controller
      */
     public function show(UniversityFunction $university_function)
     {
-        //
+        return view('maintenances.university-function.edit', compact('university_function_manager'));
     }
 
     /**
