@@ -15,7 +15,7 @@
             @if ($message = Session::get('edit_eservice_success'))
             <div class="alert alert-success alert-index">
                 <i class="bi bi-check-circle"></i> {{ $message }}
-            </div>            
+            </div>
             @endif
             @if ($message = Session::get('cannot_access'))
             <div class="alert alert-danger alert-index">
@@ -35,7 +35,7 @@
                                         <span class="badge badge-secondary">0</span>
                                     @endif
                         </button>
-                    </div>  
+                    </div>
                     <hr>
                     <!-- <div class="row">
                         <div class="col-md-3">
@@ -99,20 +99,20 @@
                                         {{ $extensionService->report_quarter }}
                                     </td>
                                     <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
-                                        {{ $extensionService->report_year }} 
+                                        {{ $extensionService->report_year }}
                                     </td>
                                     <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                     <?php
                                         $updated_at = strtotime( $extensionService->updated_at );
-                                        $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                        ?>  
+                                        $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                        ?>
                                         {{ $updated_at }}
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="button-group">
                                             <a href="{{ route('extension-service.edit', $extensionService) }}" class="btn btn-sm btn-warning">Edit</a>
                                             <button type="button" value="{{ $extensionService->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}">Delete</button>
-                                            <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                            <a href="{{ url('submissions/check/12/'.$extensionService->id) }}" class="btn btn-sm btn-success">Submit</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -136,7 +136,7 @@
      <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -154,7 +154,7 @@
           var url = '{{ route("extension-service.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
      <script>
@@ -178,12 +178,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -196,12 +196,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -214,12 +214,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -232,12 +232,12 @@
         //                     var val = $.fn.dataTable.util.escapeRegex(
         //                         $(this).val()
         //                     );
-    
+
         //                     column
         //                         .search( val ? '^'+val+'$' : '', true, false )
         //                         .draw();
         //                 } );
-    
+
         //             column.data().unique().sort().each( function ( d, j ) {
         //                 select.append( '<option value="'+d+'">'+d+'</option>' )
         //             } );
@@ -286,7 +286,7 @@
         //     $("#statusFilter").change(function (e) {
         //         table.draw();
         //     });
-            
+
         //     $("#collegeFilter").change(function (e) {
         //         table.draw();
         //     });

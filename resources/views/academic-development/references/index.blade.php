@@ -15,10 +15,15 @@
                 @if (($accomplishment = Session::get('edit_rtmmi_success')) && ($action = Session::get('action')) )
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $accomplishment }} has been {{$action}}
-                </div>          
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
                     {{ $message }}
                 </div>
                 @endif
@@ -28,7 +33,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('rtmmi.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Reference, Textbook, Module, Monograph, or Instructional Material</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row my-auto">
                             <div class="col-md-3">
@@ -52,7 +57,7 @@
                                 <div class="form-group">
                                     <label for="yearFilter" class="mr-2">Year Covered:</label>
                                     <div class="d-flex">
-                                        <select id="yearFilter" class="custom-select" name="yearFilter">  
+                                        <select id="yearFilter" class="custom-select" name="yearFilter">
                                         </select>
                                     </div>
                                 </div>
@@ -97,15 +102,15 @@
                                         <td>
                                         <?php
                                             $updated_at = strtotime( $rtmmi->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('rtmmi.edit', $rtmmi->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button"  value="{{ $rtmmi->id }}" class="btn btn-sm btn-danger" value="{{ $rtmmi->id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-rtmmi="{{ $rtmmi->title }}">Delete</button>
-                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                                <a href="{{ url('submissions/check/15/'.$rtmmi->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -127,7 +132,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -145,7 +150,7 @@
           var url = '{{ route("rtmmi.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
      <!-- <script>
@@ -171,12 +176,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
@@ -189,12 +194,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
@@ -207,12 +212,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                             if ("{{ $currentQuarterYear->current_quarter }}" == d)
                                 select.append( '<option value="'+d+'" selected>'+d+'</option>' )
@@ -228,12 +233,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         if ("{{ $currentQuarterYear->current_year }}" == d)
                             select.append( '<option value="'+d+'" selected>'+d+'</option>' )
@@ -290,7 +295,7 @@
             });
 
             table.draw();
-            
+
      </script> -->
      @endpush
 </x-app-layout>

@@ -32,6 +32,7 @@
                                 <h4>Research Presentation</h4>
                             </div>
                             <div class="col-md-6 text-right">
+                                <a href="{{ url('submissions/check/4/'.$value['id']) }}" class="btn btn-sm btn-success">Submit</a>
                                 @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                             </div>
                         </div>
@@ -69,7 +70,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -93,7 +94,7 @@
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
-                                                        
+
                                                     </div>
                                                 </div>
                                             @endif
@@ -142,7 +143,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
