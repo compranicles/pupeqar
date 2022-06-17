@@ -1,4 +1,4 @@
-<x-app-layout>   
+<x-app-layout>
     <x-slot name="header">
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'id'))
     </x-slot>
@@ -44,9 +44,16 @@
                 </div>
                 <div class="col-md-8" style="padding-top: 30px;">
                     <div class="form-group">
-                        <button id="filter" class="btn btn-primary">GENERATE</button>
-                        <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
-                        <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY CHAIRPERSON)</button>
+                        <form action="{{ route('report.generate.index', $user->id)}}" method="POST" id="export_level_form">
+                            @csrf
+                            <input type="hidden" name="source_generate" value="my">
+                            <input type="hidden" name="type_generate" value="department_level">
+                            <input type="hidden" id="ex_quar" name="quarter_generate" value="">
+                            <input type="hidden" id="ex_year" name="year_generate_level" value="">
+                            <button id="filter" type="button" class="btn btn-primary">GENERATE</button>
+                            <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
+                            <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY CHAIRPERSON)</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -145,7 +152,7 @@
                                             @elseif ($row->chairperson_approval === 1)
                                                 <span class="text-success font-weight-bold">Received</span>
                                             @endif
-                                        @endif     
+                                        @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                         @if ($row->chairperson_approval === 0)
@@ -232,7 +239,7 @@
                                     </td>
                                 </tr>
                             @empty
-                                
+
                             @endforelse
                         </tbody>
                     </table>
@@ -241,7 +248,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -328,12 +335,12 @@
             //                 var val = $.fn.dataTable.util.escapeRegex(
             //                     $(this).val()
             //                 );
-    
+
             //                 column
             //                     .search( val ? '^'+val+'$' : '', true, false )
             //                     .draw();
             //             } );
-    
+
             //         column.data().unique().sort().each( function ( d, j ) {
             //             select.append( '<option value="'+d+'">'+d+'</option>' )
             //         } );
@@ -346,12 +353,12 @@
             //                 var val = $.fn.dataTable.util.escapeRegex(
             //                     $(this).val()
             //                 );
-    
+
             //                 column
             //                     .search( val ? '^'+val+'$' : '', true, false )
             //                     .draw();
             //             } );
-    
+
             //         column.data().unique().sort().each( function ( d, j ) {
             //             select.append( '<option value="'+d+'">'+d+'</option>' )
             //         } );
@@ -362,7 +369,7 @@
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
-                
+
                 var countColumns = 0;
                 $.get('/reports/data/'+catID, function (data){
                     Object.keys(data).forEach(function(k){
@@ -387,7 +394,7 @@
 
             $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
-            
+
                 $.get('/reports/reject-details/'+categoryID, function(data){
                     var position = data.position_name;
                     var countColumns = 1;
@@ -411,7 +418,7 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
@@ -505,22 +512,10 @@
         </script>
         <script>
             $("#exportLevel").click(function(){
-                $.ajax({
-                    headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    type: "GET",
-                    url: "{{ route('report.generate.index', $user->id)}}",
-                    dataType: 'JSON',
-                    data: {
-                        source_generate: "my",
-                        type_generate: "department_level",
-                        quarter_generate: $('#quarterFilter').val(),
-                        year_generate_level: $('#yearFilter').val(),
-                        // _token: '{!! csrf_token() !!}',
-                    },
-                });
-
+                $('#ex_quar').val($('#quarterFilter').val());
+                $('#ex_year').val($('#yearFilter').val());
+                var form = document.getElementById('export_level_form');
+                form.submit();
             });
         </script>
     @endpush
