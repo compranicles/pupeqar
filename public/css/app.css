@@ -13016,8 +13016,7 @@ body {
   margin: 2em 0 .5em;
   padding-top: 1em;
   font-size: 15px;
-  color: #0055a9;
-  /* color: #212529; */
+  color: goldenrod;
   font-weight: bold;
   cursor: default;
 }
@@ -13263,22 +13262,18 @@ table tr .padding_left_show {
   margin-right: 20px;
   font-size: 15px;
   color: gainsboro;
-  margin-top: -20px;
-  margin-bottom: -20px;
-
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 .submission-menu.active {
-  color: #212529;
-  background-color: whitesmoke;
-  padding: 20px;
+  color: white;
   font-weight: bolder;
+  border-bottom: 1px white solid;
 }
 
 .submission-menu.active:hover {
-  color: #212529;
-  background-color: whitesmoke;
-  padding: 20px;
+  color: white;
   font-weight: bolder;
 }
 

@@ -3,19 +3,15 @@
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
-<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Quarterly Accomplishment Report - Department Research & Invention</h2>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="text-center">
-                                Quarterly Accomplishment Report - Department Researches
-                            </h3>
-                            <hr>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             @if ($message = Session::get('success'))
@@ -26,17 +22,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6" style="display: none; padding-top: 20px;" id="actionButtons">
+                        <div class="col-md-6" style="display: none;" id="actionButtons">
                             <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
-                        </div>
-                        <div class="col-md-6 ml-auto">
-                            <div class="form-group">
-                                <label class="mt-2 mr-2" for="employeeFilter">Employee:</label>
-                                <select id="employeeFilter" class="custom-select mr-2">
-                                    <option value="">Show All</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                     <hr>
@@ -78,7 +66,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -187,32 +174,34 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        var table = $('#to_review_table').DataTable({
-            order: [[1, 'asc']],
-            columnDefs: [ {
-                targets: 0,
-                orderable: false
-            } ],
-            initComplete: function () {
-            this.api().columns(4).every( function () {
-                var column = this;
-                var select = $('#employeeFilter')
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
+        $('#to_review_table').DataTable();
 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
+        // var table = $('#to_review_table').DataTable({
+        //     order: [[1, 'asc']],
+        //     columnDefs: [ {
+        //         targets: 0,
+        //         orderable: false
+        //     } ],
+        //     initComplete: function () {
+        //     this.api().columns(4).every( function () {
+        //         var column = this;
+        //         var select = $('#employeeFilter')
+        //             .on( 'change', function () {
+        //                 var val = $.fn.dataTable.util.escapeRegex(
+        //                     $(this).val()
+        //                 );
 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            });
-            }
-        });
+        //                 column
+        //                     .search( val ? '^'+val+'$' : '', true, false )
+        //                     .draw();
+        //             } );
+
+        //         column.data().unique().sort().each( function ( d, j ) {
+        //             select.append( '<option value="'+d+'">'+d+'</option>' )
+        //         } );
+        //     });
+        //     }
+        // });
     </script>
     <script>
         $('#select-all').on('click', function(){
@@ -353,30 +342,30 @@
                 $('#actionButtons').show();
             }
             
-            var empIndex = 0;
-            $("#to_review_table th").each(function (i) {
-                if ($($(this)).html() == "Employee") {
-                    empIndex = i; return false;
+            // var empIndex = 0;
+            // $("#to_review_table th").each(function (i) {
+            //     if ($($(this)).html() == "Employee") {
+            //         empIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#employeeFilter').val()
-                    var employee = data[empIndex];
-                    if (selectedItem === "" || employee.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            // $.fn.dataTable.ext.search.push(
+            //     function (settings, data, dataIndex) {
+            //         var selectedItem = $('#employeeFilter').val()
+            //         var employee = data[empIndex];
+            //         if (selectedItem === "" || employee.includes(selectedItem)) {
+            //             return true;
+            //         }
+            //         return false;
+            //     }
+            // );
 
-            $("#employeeFilter").change(function (e) {
-                table.draw();
-            });
+            // $("#employeeFilter").change(function (e) {
+            //     table.draw();
+            // });
 
-            table.draw();
+            // table.draw();
         });
     </script>
     <script>

@@ -3,19 +3,15 @@
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
-<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Quarterly Accomplishment Report - College Level</h2>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="text-center">
-                                Quarterly Accomplishment Report - College/Branch/Campus/Office
-                            </h3>
-                            <hr>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             @if ($message = Session::get('success'))
@@ -30,7 +26,7 @@
                             <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
-                        <div class="col-md-4 ml-auto">
+                        <!-- <div class="col-md-4 ml-auto">
                             <div class="form-group">
                                 <label class="mt-2 mr-2" for="deptFilter">Department:</label>
                                 <select id="deptFilter" class="custom-select mr-2">
@@ -45,7 +41,7 @@
                                     <option value="">Show All</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <hr>
                     <div class="row">
@@ -86,7 +82,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -305,49 +300,50 @@
         });
 
         $(function () {
-            var table = $('#to_review_table').DataTable({
-                order: [[1, 'asc']],
-                columnDefs: [ {
-                    targets: 0,
-                    orderable: false
-                } ],
-                initComplete: function () {
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#employeeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            $('#to_review_table').DataTable();
+            // var table = $('#to_review_table').DataTable({
+            //     order: [[1, 'asc']],
+            //     columnDefs: [ {
+            //         targets: 0,
+            //         orderable: false
+            //     } ],
+            //     initComplete: function () {
+            //     this.api().columns(4).every( function () {
+            //         var column = this;
+            //         var select = $('#employeeFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(6).every( function () {
-                    var column = this;
-                    var select = $('#deptFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
+            //     });
+            //     this.api().columns(6).every( function () {
+            //         var column = this;
+            //         var select = $('#deptFilter')
+            //             .on( 'change', function () {
+            //                 var val = $.fn.dataTable.util.escapeRegex(
+            //                     $(this).val()
+            //                 );
     
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
+            //                 column
+            //                     .search( val ? '^'+val+'$' : '', true, false )
+            //                     .draw();
+            //             } );
     
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                }
-            });
+            //         column.data().unique().sort().each( function ( d, j ) {
+            //             select.append( '<option value="'+d+'">'+d+'</option>' )
+            //         } );
+            //     });
+            //     }
+            // });
             
             var allChecked = 0;
             $(".select-box").each(function(index, element){
@@ -365,53 +361,53 @@
                 $('#actionButtons').show();
             }
 
-            var deptIndex = 0;
-            $("#to_review_table th").each(function (i) {
-                if ($($(this)).html() == "Department") {
-                    deptIndex = i; return false;
+            // var deptIndex = 0;
+            // $("#to_review_table th").each(function (i) {
+            //     if ($($(this)).html() == "Department") {
+            //         deptIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#deptFilter').val()
-                    var department = data[deptIndex];
-                    if (selectedItem === "" || department.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            // $.fn.dataTable.ext.search.push(
+            //     function (settings, data, dataIndex) {
+            //         var selectedItem = $('#deptFilter').val()
+            //         var department = data[deptIndex];
+            //         if (selectedItem === "" || department.includes(selectedItem)) {
+            //             return true;
+            //         }
+            //         return false;
+            //     }
+            // );
 
-            var empIndex = 0;
-            $("#to_review_table th").each(function (i) {
-                if ($($(this)).html() == "Employee") {
-                    empIndex = i; return false;
+            // var empIndex = 0;
+            // $("#to_review_table th").each(function (i) {
+            //     if ($($(this)).html() == "Employee") {
+            //         empIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#employeeFilter').val()
-                    var employee = data[empIndex];
-                    if (selectedItem === "" || employee.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            // $.fn.dataTable.ext.search.push(
+            //     function (settings, data, dataIndex) {
+            //         var selectedItem = $('#employeeFilter').val()
+            //         var employee = data[empIndex];
+            //         if (selectedItem === "" || employee.includes(selectedItem)) {
+            //             return true;
+            //         }
+            //         return false;
+            //     }
+            // );
 
-            $("#deptFilter").change(function (e) {
-                table.draw();
-            });
+            // $("#deptFilter").change(function (e) {
+            //     table.draw();
+            // });
 
-            $("#employeeFilter").change(function (e) {
-                table.draw();
-            });
+            // $("#employeeFilter").change(function (e) {
+            //     table.draw();
+            // });
 
-            table.draw();
+            // table.draw();
 
         });
     </script>
