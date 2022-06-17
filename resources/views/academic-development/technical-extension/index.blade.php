@@ -10,12 +10,17 @@
                 @if ($message = Session::get('extension_success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>            
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
                     {{ $message }}
                 </div>
+            @endif
+            @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-index">
+                {{ $message }}
+            </div>
             @endif
                 <div class="card">
                     <div class="card-body">
@@ -23,7 +28,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('technical-extension.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Technical Extension Programs/ Projects/ Activities</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -72,6 +77,7 @@
                                             <div role="group">
                                                 <a href="{{ route('technical-extension.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                                 <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-extension="{{ $row->name_of_adoptor }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                                <a href="{{ url('submissions/check/23/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -94,7 +100,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -117,12 +123,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -135,12 +141,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );

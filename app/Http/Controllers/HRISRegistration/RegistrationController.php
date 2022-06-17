@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\HRISRegistration;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\{
-    Str,
-    Facades\DB,
-};
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\{
-    User,
-    Authentication\UserRole,
-};
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Authentication\UserRole;
+
 
 class RegistrationController extends Controller
 {
     private $userData;
+
+    public function __construct(){
+        $this->db_ext = DB::connection('mysql_external');
+    }
 
     public function index(){
 
@@ -24,52 +26,64 @@ class RegistrationController extends Controller
 
     public function verify(Request $request){
 
-        $db_ext = DB::connection('mysql_external');
-
-        $user = $db_ext->update("SET NOCOUNT ON; EXEC ValidateLogIn N'$request->email',N'$request->password' ");
+        $user = $this->db_ext->update("SET NOCOUNT ON; EXEC ValidateLogIn N'$request->email',N'$request->password' ");
 
         $userLocal =  User::where('email', $request->email)->first();
 
         if ($user == '-1') {
 
             if (!empty($userLocal)){
-                return redirect()->route('home')->with('error', 'User already registered. Log in to continue');
+                Auth::login($userLocal);
+                return redirect()->route('home');
             }
 
-            $user = $db_ext->select(" EXEC ValidateLogIn N'$request->email',N'$request->password' ");
-            
-            $key = Str::random(10);
+            $user = $this->db_ext->select(" EXEC ValidateLogIn N'$request->email',N'$request->password' ");
 
-            $request->session()->put($key, $user);
-
-            return redirect()->route('register.create', $key);
+            if($this->save($user)){
+                $userLocal = User::where('email', $request->email)->first();
+                Auth::login($userLocal);
+                return redirect()->route('home');
+            }
         }
-        
-        return redirect()->route('register.hris')->with('error', 'Invalid username or password');
+
+        return redirect()->back()->with('error', 'Invalid username or password');
     }
 
     public function create(Request $request, $key){
 
         $user = $request->session()->get($key)[0];
-        
+
         $request->session()->forget($key);
-        
+
         return view('hris-regi.form', compact('user'));
     }
 
-    public function save(Request $request){
-        $user = User::create([
-            'email' => $request->email,
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'emp_code' => $request->emp_code,
-            'emp_id' => $request->emp_id,
-            'user_account_id' => $request->user_account_id
-        ]);
-        
-        UserRole::create(['user_id' => $user->id, 'role_id' => $request->role]);
+    public function save($user){
 
-        return redirect()->route('home')->with('success', 'Account successfully saved. Log In to continue');
+
+        $user = User::create([
+            'email' => $user[0]->UserName,
+            'first_name' => $user[0]->FName,
+            'middle_name' => $user[0]->MName,
+            'last_name' => $user[0]->LName,
+            'emp_code' => $user[0]->EmpCode,
+            'emp_id' => $user[0]->EmpNo,
+            'user_account_id' => $user[0]->UserAccountID
+        ]);
+
+        $currentPos = $this->db_ext->select(" EXEC GetEmployeeCurrentPositionByEmpCode N'$user->emp_code' ");
+        if(empty($currentPos)){
+            return false;
+        }
+
+        $roleID = 1;
+
+        //if admin
+        if($currentPos[0]->EmployeeTypeID == '1')
+            $roleID = 3;
+
+        UserRole::create(['user_id' => $user->id, 'role_id' => $roleID]);
+
+        return true;
     }
 }

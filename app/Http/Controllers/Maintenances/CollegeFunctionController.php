@@ -22,7 +22,7 @@ class CollegeFunctionController extends Controller
                         ->join('colleges', 'colleges.id', 'college_functions.college_id')
                         ->select('college_functions.*', 'colleges.name as college_name')
                         ->get();
-                        
+
         return view('maintenances.college-function.index', compact('collegeFunctions'));
     }
 
@@ -47,7 +47,17 @@ class CollegeFunctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'activity_description' => 'required|string',
+            'college_id' => 'numeric'
+        ]);
+
+        CollegeFunction::create([
+            'activity_description' => $request->input('activity_description'),
+            'college_id' => $request->input('college_id'),
+        ]);
+
+        return redirect()->route('college-function-manager.index')->with('success', 'College Function added successfully');
     }
 
     /**
@@ -56,9 +66,11 @@ class CollegeFunctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(CollegeFunction $college_function_manager)
     {
-        //
+        $colleges = Dean::where('deans.user_id', auth()->id())->join('colleges', 'colleges.id', 'deans.college_id')
+                    ->select('colleges.*')->get();
+        return view('maintenances.college-function.edit', compact('college_function_manager', 'colleges'));
     }
 
     /**
@@ -67,9 +79,11 @@ class CollegeFunctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(CollegeFunction $college_function_manager)
     {
-        //
+        $colleges = Dean::where('deans.user_id', auth()->id())->join('colleges', 'colleges.id', 'deans.college_id')
+                    ->select('colleges.*')->get();
+        return view('maintenances.college-function.edit', compact('college_function_manager', 'colleges'));
     }
 
     /**
@@ -79,9 +93,19 @@ class CollegeFunctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, CollegeFunction $college_function_manager)
     {
-        //
+        $request->validate([
+            'activity_description' => 'required|string',
+            'college_id' => 'numeric'
+        ]);
+
+        $college_function_manager->update([
+            'activity_description' => $request->input('activity_description'),
+            'college_id' => $request->input('college_id'),
+        ]);
+
+        return redirect()->route('college-function-manager.index')->with('success', 'College Function updated successfully');
     }
 
     /**
@@ -90,8 +114,10 @@ class CollegeFunctionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, CollegeFunction $college_function_manager)
     {
-        //
+        $college_function_manager->delete();
+
+        return redirect()->route('college-function-manager.index')->with('success', 'College Function deleted successfully');
     }
 }

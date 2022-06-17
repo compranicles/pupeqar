@@ -1,6 +1,6 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3" id="upload-document">
     <div class="form-group">
-        <label>{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
         <input type="file" 
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"

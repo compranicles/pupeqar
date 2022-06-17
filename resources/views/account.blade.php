@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('User Account') }}
         </h2>
-    </x-slot>
+    </x-slot> -->
 
     <div class="container">
         {{-- Success Message --}}
@@ -12,6 +12,11 @@
             <i class="bi bi-check-circle"></i> {{ $message }}
         </div>
         @endif
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">User Account</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -75,8 +80,8 @@
                                         name="document[]"
                                         id="document"
                                         data-max-file-size="50MB"
-                                        data-max-files="50"
-                                        />
+                                        data-max-files="50" 
+                                        required/>
                                         <p class="mt-1"><small>Accepts JPEG, and PNG file formats.</small></p>
                                         <button type="submit" id="submit" class="btn btn-success float-right">Save Signature</button>
                                     </div>

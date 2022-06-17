@@ -1,32 +1,27 @@
-<div class="modal fade" id="invitesModal" data-backdrop="static" tabindex="-1" aria-labelledby="invitesModalLabel" aria-hidden="true">
+<div class="modal fade" id="universityModal" data-backdrop="static" tabindex="-1" aria-labelledby="universityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="invitesModalLabel">Research Invites</h5>
+                <h5 class="modal-title" id="universityModalLabel">University Functions</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered text-center" id="invitations_table">
+                    <table class="table table-bordered text-center" id="university_functions_table">
                         <thead>
                             <tr>
-                                <th>Sender</th>
-                                <th>Code</th>
-                                <th>Title</th>
+                                <th>Brief Description of Activity</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($invites as $row)
+                            @foreach ($universityFunctions as $row)
                             <tr>
-                                <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.' '.$row->suffix }}</td>
-                                <td>{{ $row->research_code }}</td>
-                                <td>{{ $row->title }}</td>
+                                <td>{{ $row->activity_description }}</td>
                                 <td>
-                                    <a href="{{ route('research.invite.confirm', [ "research_id" => $row->research_id]) }}" class="btn btn-sm btn-primary mr-1">Confirm</a>
-                                    <a href="{{ route('research.invite.cancel', [ "research_id" => $row->research_id]) }}" class="btn btn-sm btn-secondary ">Cancel</a>
+                                    <a href="{{ route('attendance-function.create').'?id='.$row->id.'&type=uni' }}" class="btn btn-sm btn-success ">Add</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -45,6 +40,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
-         $("#invitations_table").dataTable();
+        $('#university_functions_table').DataTable();
     </script>
 @endpush

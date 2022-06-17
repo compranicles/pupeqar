@@ -15,9 +15,9 @@
                         <p class="db-text" style="font-size: 1.25em; margin: 0 30px 0 30px;">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</p>
                         <?php 
                         $deadline = strtotime( $currentQuarterYear->deadline );
-                        $deadline = date( 'M d, Y', $deadline);
+                        $deadline = date( 'F d, Y', $deadline);
                         ?>
-                        <small style="margin: 0 30px 0 30px; color: whitesmoke;">Deadline: {{ $deadline }}</small>
+                        <small style="margin: 0 10px 0 30px; color: whitesmoke;">Deadline: {{ $deadline }}</small>
                     </div>
                 </div>
             </div>

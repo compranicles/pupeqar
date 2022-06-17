@@ -1,19 +1,29 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Student Attended Seminars and Trainings') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Student Attended Seminars & Trainings</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('student_success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>              
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
+                    {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
                     {{ $message }}
                 </div>
                 @endif
@@ -23,7 +33,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('student-training.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Student Attended Seminars and Trainings</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -31,7 +41,7 @@
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarter">
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -41,7 +51,7 @@
                                     <label for="yearFilter" class="mr-2">Year Covered:</label>
                                     <div class="d-flex">
                                         <select id="yearFilter" class="custom-select" name="yearFilter">
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -53,12 +63,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>No. of Student Attendees</th>
                                         <th>Title</th>
-                                        <th>Organization</th>
+                                        <th>No. of Student Attendees</th>
+                                        <th>Organizer</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -67,9 +76,9 @@
                                     @foreach ($student_trainings as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organizer }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
@@ -77,23 +86,18 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('student-training.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->title }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('student-training.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->title }}">Delete</button>
+                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                                <a href="{{ url('submissions/check/19/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -105,7 +109,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
@@ -116,7 +119,7 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
@@ -143,12 +146,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -161,12 +164,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -187,7 +190,7 @@
           var url = '{{ route("student-training.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
      @endpush

@@ -1,11 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Research') }}
         </h2>
-    </x-slot>
+    </x-slot> -->
 
-    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Research & Book Chapter</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -136,7 +140,6 @@
                                                 <th>Research Title</th>
                                                 <th>Status</th>
                                                 <th>College/Branch/Campus/Office</th>
-                                                <th>Date Added</th>
                                                 <th>Date Modified</th>
                                                 <th>Quarter</th>
                                                 <th>Year</th>
@@ -151,17 +154,19 @@
                                                     <td>{{ $research->status_name }}</td>
                                                     <td>{{ $research->college_name }}</td>
                                                     <td>
-                                                        <?php $created_at = strtotime( $research->created_at );
-                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
-                                                        {{ $created_at }}
-                                                    </td>
-                                                    <td>
                                                         <?php $updated_at = strtotime( $research->updated_at );
                                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
                                                         {{ $updated_at }}
                                                     </td>
                                                     <td>{{ $research->report_quarter }}</td>
                                                     <td>{{ $research->report_year }}</td>
+                                                    <!-- <td>
+                                                        <div class="btn-group" role="group" aria-label="button-group">
+                                                            <a href="{{ route('research.edit', $research->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                                                            <button type="button" class="btn btn-sm btn-success">Submit</button>
+                                                        </div>
+                                                    </td> -->
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -173,8 +178,31 @@
                 </div>
             </div>
         </div>
-    </div>
 
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="text-center">Are you sure you want to delete this research?</h5>
+                    <p class="text-center h4">{{ $research->title }}</p>
+                    <form action="{{ route('research.destroy', $research->id) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('research.research-code')
     @include('research.invite-researchers.modal', compact('invites'))
 
@@ -271,62 +299,62 @@
         //         }
         //     });
 
-            var statusIndex = 0;
-            $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Status") {
-                    statusIndex = i; return false;
+            // var statusIndex = 0;
+            // $("#researchTable th").each(function (i) {
+            //     if ($($(this)).html() == "Status") {
+            //         statusIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#statusFilter').val()
-                    var status = data[statusIndex];
-                    if (selectedItem === "" || status.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            // $.fn.dataTable.ext.search.push(
+            //     function (settings, data, dataIndex) {
+            //         var selectedItem = $('#statusFilter').val()
+            //         var status = data[statusIndex];
+            //         if (selectedItem === "" || status.includes(selectedItem)) {
+            //             return true;
+            //         }
+            //         return false;
+            //     }
+            // );
 
-            var collegeIndex = 0;
-            $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Campus/Office") {
-                    collegeIndex = i; return false;
+            // var collegeIndex = 0;
+            // $("#researchTable th").each(function (i) {
+            //     if ($($(this)).html() == "College/Branch/Campus/Office") {
+            //         collegeIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#collegeFilter').val()
-                    var college = data[collegeIndex];
-                    if (selectedItem === "" || college.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+            // $.fn.dataTable.ext.search.push(
+            //     function (settings, data, dataIndex) {
+            //         var selectedItem = $('#collegeFilter').val()
+            //         var college = data[collegeIndex];
+            //         if (selectedItem === "" || college.includes(selectedItem)) {
+            //             return true;
+            //         }
+            //         return false;
+            //     }
+            // );
 
-            var reportIndex = 0;
-            $("#researchTable th").each(function (i) {
-                if ($($(this)).html() == "Date Added") {
-                    reportIndex = i; return false;
+            // var reportIndex = 0;
+            // $("#researchTable th").each(function (i) {
+            //     if ($($(this)).html() == "Date Added") {
+            //         reportIndex = i; return false;
 
-                }
-            });
+            //     }
+            // });
             
 
-            $("#statusFilter").change(function (e) {
-                table.draw();
-            });
+            // $("#statusFilter").change(function (e) {
+            //     table.draw();
+            // });
 
-            $("#collegeFilter").change(function (e) {
-                table.draw();
-            });
+            // $("#collegeFilter").change(function (e) {
+            //     table.draw();
+            // });
 
-            table.draw();
+            // table.draw();
     </script>
     <script>
         // auto hide alert

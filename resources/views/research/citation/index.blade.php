@@ -54,6 +54,7 @@
                                                 <th>Article Author</th>
                                                 <th>Quarter</th>
                                                 <th>Year</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -67,6 +68,9 @@
                                                     </td>
                                                     <td>
                                                         {{ $citation->report_year }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-success">Submit</a>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -119,7 +123,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

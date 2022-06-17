@@ -1,16 +1,26 @@
 <x-app-layout>
-    <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
             {{ __('Awards and Recognition Received by the College/Branch/Campus/Office/Department') }}
         </h2>
-    </x-slot>
-    <div class="container">
+    </x-slot> -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Awards and Recognition Received by the College/Branch/Campus/Office/Department</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('award_success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>            
+                </div>
+                @endif
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    {{ $message }}
+                </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
                 <div class="alert alert-danger alert-index">
@@ -23,7 +33,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('college-department-award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Awards and Recognition Received by the College/Branch/Campus/Office/Department</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         <!-- <div class="row">
                             <div class="col-md-3">
@@ -31,7 +41,7 @@
                                     <label for="quarterFilter" class="mr-2">Quarter Period: </label>
                                     <div class="d-flex">
                                         <select id="quarterFilter" class="custom-select" name="quarterFilter">
-                                           
+
                                         </select>
                                     </div>
                                 </div>
@@ -60,7 +70,6 @@
                                         <th>Certifying Body</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -74,23 +83,17 @@
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_quarter }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_year }}</td>
                                         <td>
-                                            <?php 
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
-                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); 
-                                            ?>  
+                                            $updated_at = date( 'M d, Y h:i A', $updated_at );
+                                            ?>
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('college-department-award.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-award="{{ $row->name_of_award }}" style="font-size: 1.25em;"><i class="bi bi-trash"></i></button>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('college-department-award.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-award="{{ $row->name_of_award }}">Delete</button>
+                                                <a href="{{ url('submissions/check/21/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -102,7 +105,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
@@ -113,11 +115,11 @@
      <script>
          window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
 
-        $('#college_department_award_table').DataTable(); 
+        $('#college_department_award_table').DataTable();
 
         //  $(document).ready( function () {
         //     var table = $('#college_department_award_table').DataTable({
@@ -141,12 +143,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -159,12 +161,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -172,7 +174,7 @@
         //         }
         //     });
         //  } );
-                      
+
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
@@ -186,7 +188,7 @@
           var url = '{{ route("college-department-award.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
      </script>
      @endpush
