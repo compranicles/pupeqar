@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\AttendanceFunctionDocument;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class AttendanceFunctionController extends Controller
 {
@@ -51,10 +52,22 @@ class AttendanceFunctionController extends Controller
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($attendedFunctions as $attendedFunction) {
+            if (LockController::isLocked($attendedFunction->id, 33))
+                $submissionStatus[33][$attendedFunction->id] = 1;
+            else 
+                $submissionStatus[33][$attendedFunction->id] = 0;
+            if (empty($reportdata->getDocuments(33, $attendedFunction->id)))
+                $submissionStatus[33][$attendedFunction->id] = 2;
+        }
+
         return view('ipcr.attendance-function.index',
                         compact('colleges',
                                     'attendedFunctions', 'currentQuarterYear',
-                                    'roles', 'universityFunctions', 'collegeFunctions'));
+                                    'roles', 'universityFunctions', 'collegeFunctions',
+                                    'submissionStatus'));
     }
 
     /**
@@ -97,6 +110,8 @@ class AttendanceFunctionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -151,6 +166,8 @@ class AttendanceFunctionController extends Controller
      */
     public function show(AttendanceFunction $attendance_function)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if (auth()->id() !== $attendance_function->user_id)
             abort(403);
 
@@ -176,6 +193,11 @@ class AttendanceFunctionController extends Controller
      */
     public function edit(AttendanceFunction $attendance_function)
     {
+        if (auth()->id() !== $attendance_function->user_id)
+            abort(403);
+            
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(LockController::isLocked($attendance_function->id, 33)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
@@ -217,6 +239,8 @@ class AttendanceFunctionController extends Controller
      */
     public function update(Request $request, AttendanceFunction $attendance_function)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -270,6 +294,8 @@ class AttendanceFunctionController extends Controller
      */
     public function destroy(AttendanceFunction $attendance_function)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(LockController::isLocked($attendance_function->id, 33)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }

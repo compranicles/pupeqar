@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('student-award.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $studentFields])
+                            @include('form', ['formFields' => $studentFields, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

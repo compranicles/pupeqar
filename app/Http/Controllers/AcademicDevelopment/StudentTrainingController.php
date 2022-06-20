@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{
+    Chairperson,
+    Dean,
     StudentTraining,
     StudentTrainingDocument,
     TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
     Maintenance\Quarter,
 };
 
@@ -68,7 +71,14 @@ class StudentTrainingController extends Controller
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
-        return view('academic-development.student-training.create', compact('studentFields'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.student-training.create', compact('studentFields', 'colleges'));
     }
 
     /**
@@ -189,7 +199,14 @@ class StudentTrainingController extends Controller
 
         $values = $student_training->toArray();
 
-        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values', 'colleges'));
     }
 
     /**

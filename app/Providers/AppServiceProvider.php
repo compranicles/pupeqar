@@ -88,6 +88,16 @@ class AppServiceProvider extends ServiceProvider
                 return 0;
         });
 
+        Blade::if('notpureadmin', function () {            
+            $is_admin = UserRole::where('user_roles.user_id', auth()->id())
+            ->pluck('role_id')->all();
+            
+            if (in_array(3, $is_admin) && !in_array(1, $is_admin))
+                return 0;
+            else
+                return 1;
+        });
+
         Blade::if('chairperson', function () {            
             $is_chairperson = UserRole::where('user_roles.user_id', auth()->id())
             ->where('user_roles.role_id', 5)

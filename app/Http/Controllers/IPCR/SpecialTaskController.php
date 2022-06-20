@@ -210,8 +210,6 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $special_task)
     {
-        
-
         if (auth()->id() !== $special_task->user_id)
             abort(403);
             

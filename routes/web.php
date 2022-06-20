@@ -18,10 +18,6 @@ Route::get('/', function () {
     return view('hris-regi.check');
 })->name('home')->middleware('guest');
 
-Route::match(['get', 'post'], 'login', function(){
-    return redirect('/');
-})->middleware('guest');
-
 /* DASHBOARD AND HOMEPAGE DISPLAY */
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

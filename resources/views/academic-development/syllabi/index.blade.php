@@ -128,15 +128,13 @@
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('syllabus.edit', $syllabus->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button"  value="{{ $syllabus->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}">Delete</button>
-                                                @foreach($submissionStatus as $status)
-                                                    @if ($status[$syllabus->id] == 0)
-                                                        <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                    @elseif ($status[$syllabus->id] == 1)
-                                                        <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-success">Submitted</a>
-                                                    @elseif ($status[$syllabus->id] == 2)
-                                                        <a href="{{ route('syllabus.edit', $syllabus->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                    @endif        
-                                                @endforeach
+                                                @if ($submissionStatus[16][$syllabus->id] == 0)
+                                                    <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                @elseif ($submissionStatus[16][$syllabus->id] == 1)
+                                                    <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                @elseif ($submissionStatus[16][$syllabus->id] == 2)
+                                                    <a href="{{ route('syllabus.edit', $syllabus->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                @endif        
                                             </div>
                                         </td>
 

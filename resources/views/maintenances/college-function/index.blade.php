@@ -26,7 +26,7 @@
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
                                 <a id="add_func" href="{{ route('college-function-manager.create') }}" class="btn btn-success">
-                                    <i class="bi bi-plus"></i> Add
+                                    <i class="bi bi-plus"></i> Add College Function
                                 </a>
                             </div>
                         </div>

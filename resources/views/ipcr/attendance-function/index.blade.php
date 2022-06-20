@@ -38,14 +38,14 @@
                         @if (in_array(6, $roles))
                             <div class="d-inline mr-2">
                                 <a id="man_uni" href="{{ route('college-function-manager.index') }}" class="btn btn-warning text-dark">
-                                    Manage College Functions
+                                    <i class="bi bi-gear-fill"></i> Manage College Functions
                                 </a>
                             </div>
                         @endif
                         @if (in_array(8, $roles))
                             <div class="d-inline mr-2">
                                 <a id="man_uni" href="{{ route('university-function-manager.index') }}" class="btn btn-warning text-dark">
-                                    Manage University Functions
+                                    <i class="bi bi-gear-fill"></i> Manage University Functions
                                 </a>
                             </div>
                         @endif
@@ -72,8 +72,20 @@
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->activity_description }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->classification_name }}</td>
-                                    <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->start_date }}</td>
-                                    <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->end_date }}</td>
+                                    <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >
+                                    <?php
+                                        $start_date = strtotime( $row->start_date );
+                                        $start_date = date( 'F d, Y', $start_date );
+                                        ?>
+                                        {{ $start_date }}
+                                    </td>
+                                    <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >
+                                    <?php
+                                        $end_date = strtotime( $row->end_date );
+                                        $end_date = date( 'F d, Y', $end_date );
+                                        ?>
+                                        {{ $end_date }}
+                                    </td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >
                                         {{ $row->report_quarter }}
                                     </td>
@@ -88,10 +100,16 @@
                                         {{ $updated_at }}
                                     </td>
                                     <td>
-                                        <div role="group">
-                                            <a href="{{ route('attendance-function.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                            <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->activity_description }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                            <a href="{{ url('submissions/check/33/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                        <div class="btn-group" role="group" aria-label="button-group">
+                                            <a href="{{ route('attendance-function.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                            <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->activity_description }}">Delete</button>
+                                            @if ($submissionStatus[33][$row->id] == 0)
+                                                <a href="{{ url('submissions/check/33/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                            @elseif ($submissionStatus[33][$row->id] == 1)
+                                                <a href="{{ url('submissions/check/33/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                            @elseif ($submissionStatus[33][$row->id] == 2)
+                                                <a href="{{ route('attendance-function.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                            @endif        
                                         </div>
                                     </td>
                                 </tr>

@@ -12,6 +12,7 @@ class Chairperson extends Model
 
     protected $fillable = [
         'user_id',
-        'department_id'
+        'department_id',
+        'college_id',
     ];
 }
