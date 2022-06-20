@@ -22,7 +22,7 @@
                         <form action="{{ route('outreach-program.update', $outreach_program->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $outreachFields, 'value' => $values])
+                            @include('form', ['formFields' => $outreachFields, 'value' => $values, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

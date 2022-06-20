@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('outreach-program.store' ) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $outreachFields])
+                            @include('form', ['formFields' => $outreachFields, 'colleges' => $colleges])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

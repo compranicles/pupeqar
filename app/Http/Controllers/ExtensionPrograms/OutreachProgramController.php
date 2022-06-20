@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\{
     Storage,
 };
 use App\Models\{
+    Chairperson,
+    Dean,
     OutreachProgram,
     OutreachProgramDocument,
     TemporaryFile,
     FormBuilder\ExtensionProgramForm,
+    Maintenance\College,
     Maintenance\Quarter,
 };
 
@@ -72,7 +75,14 @@ class OutreachProgramController extends Controller
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
 
-        return view('extension-programs.outreach-program.create', compact('outreachFields'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('extension-programs.outreach-program.create', compact('outreachFields', 'colleges'));
     }
 
     /**
@@ -179,7 +189,14 @@ class OutreachProgramController extends Controller
 
         $documents = OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->get()->toArray();
 
-        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values', 'colleges'));
     }
 
     /**

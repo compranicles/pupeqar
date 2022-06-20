@@ -4,6 +4,8 @@ namespace App\Http\Controllers\IPCR;
 
 use Illuminate\Http\Request;
 use App\Models\{
+    Chairperson,
+    Dean,
     TemporaryFile,
     Employee
 };
@@ -86,7 +88,12 @@ class RequestController extends Controller
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
         
         return view('ipcr.request.create', compact('requestFields', 'colleges'));
     }
@@ -197,7 +204,12 @@ class RequestController extends Controller
 
         $documents = RequestDocument::where('request_id', $request->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
 
         return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges'));
     }

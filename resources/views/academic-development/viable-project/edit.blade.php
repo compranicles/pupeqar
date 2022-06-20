@@ -22,7 +22,7 @@
                         <form action="{{ route('viable-project.update', $viable_project->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $projectFields, 'value' => $values])
+                            @include('form', ['formFields' => $projectFields, 'value' => $values, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

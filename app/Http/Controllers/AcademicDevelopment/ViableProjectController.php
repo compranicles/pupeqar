@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{
+    Chairperson,
+    Dean,
     TemporaryFile,
     ViableProject,
     ViableProjectDocument,
     FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
     Maintenance\Quarter,
 };
 
@@ -70,7 +73,14 @@ class ViableProjectController extends Controller
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
-        return view('academic-development.viable-project.create', compact('projectFields'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.viable-project.create', compact('projectFields', 'colleges'));
     }
 
     /**
@@ -201,8 +211,14 @@ class ViableProjectController extends Controller
         $viable_project->rate_of_return = $viable_project->rate_of_return * 100;
         $values = $viable_project->toArray();
 
-        // dd($values);
-        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values', 'colleges'));
     }
 
     /**
