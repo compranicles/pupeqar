@@ -40,6 +40,16 @@
             $('#end_date').datepicker('setDate', $('#start_date').val());
             $('#end_date').datepicker('setStartDate', $('#start_date').val());
         });
+
+        var type = "{{ $classtype }}";
+        $('#classification').on('change', function () {
+            if(type == 'uni'){
+                $('#classification option[value="294"]').attr("disabled","disabled");
+                $('#classification option[value="295"]').attr("disabled","disabled");
+            }
+            else if(type == 'college')
+                $('#classification option[value="293"]').attr("disabled","disabled");
+        });
     </script>
     <script>
         var report_category_id = 30;

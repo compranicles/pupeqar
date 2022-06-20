@@ -142,7 +142,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 1,
             'name' => 'College/Branch/Campus/Office',
@@ -296,7 +296,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 2,
             'name' => 'College/Branch/Campus/Office',
@@ -442,7 +442,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 3,
             'name' => 'Journal Name',
@@ -668,7 +668,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 4,
             'name' => 'Conference Title',
@@ -854,7 +854,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 5,
             'name' => 'Title of Article Where Your Research has been cited',
@@ -1072,7 +1072,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 6,
             'name' => 'Agency/Organization that utilized the research output',
@@ -1242,7 +1242,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'completion_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 7,
             'name' => 'Copyright Number (ISSN/ISBN)',
@@ -1496,7 +1496,7 @@ class ReportColumnSeeder extends Seeder
             'order' => 1,
         ]);
 
-        // Expert Service in Conferences 
+        // Expert Service in Conferences
         ReportColumn::insert([
             'report_category_id' => 10,
             'name' => 'Nature of services rendered in conferences, workshops, and/or training courses for professionals',
@@ -2212,7 +2212,7 @@ class ReportColumnSeeder extends Seeder
             'is_active' => 1,
             'order' => 1,
         ]);
-        
+
         //syllabi
         ReportColumn::insert([
             'report_category_id' => 16,
@@ -2306,7 +2306,7 @@ class ReportColumnSeeder extends Seeder
             'order' => 1,
         ]);
 
-        //Student Awards and Recognition             
+        //Student Awards and Recognition
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Student Name',
@@ -2314,7 +2314,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'name_of_student',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Name of Award',
@@ -2322,7 +2322,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'name_of_award',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Certifying Body',
@@ -2330,7 +2330,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'certifying_body',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Place',
@@ -2338,7 +2338,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'place',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Date',
@@ -2346,7 +2346,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'date',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Level',
@@ -2354,7 +2354,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'level',
             'is_active' => 1,
             'order' => 1,
-        ]);                                                                                     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 18,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2362,8 +2362,8 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]);        
-        
+        ]);
+
         // Student trainings and seminars
         ReportColumn::insert([
             'report_category_id' => 19,
@@ -2372,7 +2372,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'title',
             'is_active' => 1,
             'order' => 1,
-        ]);   
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'No. of Student Attendees',
@@ -2380,7 +2380,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'no_of_students',
             'is_active' => 1,
             'order' => 1,
-        ]);     
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Classification',
@@ -2388,7 +2388,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'classification',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Nature',
@@ -2396,7 +2396,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'nature',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Budget',
@@ -2404,7 +2404,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'budget',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Source of Fund',
@@ -2412,7 +2412,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'source_of_fund',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Organizer',
@@ -2420,7 +2420,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'organization',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Level',
@@ -2428,7 +2428,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'level',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Venue',
@@ -2436,7 +2436,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'venue',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'From',
@@ -2444,7 +2444,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'start_date',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'To',
@@ -2452,7 +2452,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'end_date',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Total No. of Hours.',
@@ -2460,7 +2460,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'total_hours',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
         ReportColumn::insert([
             'report_category_id' => 19,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2468,7 +2468,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]);    
+        ]);
 
         //Viable Demonstration PRoject
         ReportColumn::insert([
@@ -2478,7 +2478,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'name',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 20,
             'name' => 'Revenues',
@@ -2486,7 +2486,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'revenue',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 20,
             'name' => 'Cost',
@@ -2494,7 +2494,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'cost',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 20,
             'name' => 'Date Started',
@@ -2502,7 +2502,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'start_date',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 20,
             'name' => 'Internal Rate of Return',
@@ -2510,7 +2510,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'rate_of_return',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 20,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2518,7 +2518,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
 
         //Awards of CBC from ROs
         ReportColumn::insert([
@@ -2528,7 +2528,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'name_of_award',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 21,
             'name' => 'Certifying Body',
@@ -2536,7 +2536,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'certifying_body',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 21,
             'name' => 'Place',
@@ -2544,7 +2544,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'place',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 21,
             'name' => 'Date',
@@ -2552,7 +2552,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'date',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 21,
             'name' => 'Level',
@@ -2560,7 +2560,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'level',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 21,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2568,7 +2568,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
 
         // community relation and Outreach Program
         ReportColumn::insert([
@@ -2578,7 +2578,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'title_of_the_program',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 22,
             'name' => 'Date',
@@ -2586,7 +2586,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'date',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 22,
             'name' => 'Place',
@@ -2594,7 +2594,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'place',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 22,
             'name' => 'Level',
@@ -2602,7 +2602,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'level',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 22,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2610,7 +2610,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
 
         //Technical Extensions
         // ReportColumn::insert([
@@ -2620,7 +2620,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'program_title',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Title of the Project',
@@ -2628,7 +2628,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'project_title',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Title of the Activities',
@@ -2636,7 +2636,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'activity_title',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Name of Adoptor',
@@ -2644,7 +2644,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'name_of_adoptor',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Classification',
@@ -2652,7 +2652,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'classification_of_adoptor',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Nature of Business Enterprise',
@@ -2660,7 +2660,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'nature_of_business_enterprise',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Adoptors have established profitable businesses in the last three years?',
@@ -2668,7 +2668,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'has_businesses',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Extension project by the university or borrowed from other institutions?',
@@ -2676,7 +2676,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'is_borrowed',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Total Profit/ Income of the Adoptors',
@@ -2684,7 +2684,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'total_profit',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);   
+        // ]);
         // ReportColumn::insert([
         //     'report_category_id' => 23,
         //     'name' => 'Description of Supporting Documents Submitted',
@@ -2692,7 +2692,7 @@ class ReportColumnSeeder extends Seeder
         //     'column' => 'description',
         //     'is_active' => 1,
         //     'order' => 1,
-        // ]);  
+        // ]);
 
 
         //Special Tasks Admin
@@ -2703,7 +2703,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Output',
@@ -2711,7 +2711,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'output',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Outcome',
@@ -2719,7 +2719,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'outcome',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Participation/Significant Contribution',
@@ -2727,7 +2727,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'participation',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Special Order',
@@ -2735,7 +2735,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'special_order',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Level',
@@ -2759,7 +2759,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'from',
             'is_active' => 1,
             'order' => 1,
-        ]);  
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'To',
@@ -2767,7 +2767,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'to',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 29,
             'name' => 'Proof of Compliance',
@@ -2775,8 +2775,8 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
-        
+        ]);
+
         //Special Tasks
         ReportColumn::insert([
             'report_category_id' => 30,
@@ -2785,7 +2785,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'final_output',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Target',
@@ -2793,7 +2793,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'target_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Actual',
@@ -2801,7 +2801,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'actual_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Description of Accomplishment',
@@ -2809,7 +2809,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Status',
@@ -2825,7 +2825,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'remarks',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2833,7 +2833,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         //Special Tasks
         ReportColumn::insert([
             'report_category_id' => 31,
@@ -2842,7 +2842,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'final_output',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 31,
             'name' => 'Target',
@@ -2850,7 +2850,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'target_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 31,
             'name' => 'Actual',
@@ -2858,7 +2858,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'actual_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 31,
             'name' => 'Description of Accomplishment',
@@ -2866,7 +2866,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 31,
             'name' => 'Status',
@@ -2882,7 +2882,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'remarks',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 31,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2890,8 +2890,8 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
-        
+        ]);
+
         //Special Tasks
         ReportColumn::insert([
             'report_category_id' => 32,
@@ -2900,7 +2900,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'final_output',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 32,
             'name' => 'Target',
@@ -2908,7 +2908,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'target_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 32,
             'name' => 'Actual',
@@ -2916,7 +2916,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'actual_date',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 32,
             'name' => 'Description of Accomplishment',
@@ -2924,7 +2924,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 32,
             'name' => 'Status',
@@ -2940,7 +2940,7 @@ class ReportColumnSeeder extends Seeder
             'column' => 'remarks',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
         ReportColumn::insert([
             'report_category_id' => 32,
             'name' => 'Description of Supporting Documents Submitted',
@@ -2948,6 +2948,55 @@ class ReportColumnSeeder extends Seeder
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,
-        ]); 
+        ]);
+
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Brief Description of Activity',
+            'table' => 'attendance_functions',
+            'column' => 'activity_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Classification',
+            'table' => 'attendance_functions',
+            'column' => 'classification',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Date Started',
+            'table' => 'attendance_functions',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Date Completed',
+            'table' => 'attendance_functions',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Status of Attendance',
+            'table' => 'attendance_functions',
+            'column' => 'status',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Proof of Attendance',
+            'table' => 'attendance_functions',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
     }
 }

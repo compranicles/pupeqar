@@ -2447,7 +2447,7 @@ class SubmissionController extends Controller
                 $successToSubmit++;
 
             break;
-            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32:
+            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33:
                 switch($report_values_array[1]){
                     case 8:
                         $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
@@ -2502,6 +2502,10 @@ class SubmissionController extends Controller
                     break;
                     case 32:
                         $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 32:
+                        $collegeAndDepartment = AttendanceFunction::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                 }

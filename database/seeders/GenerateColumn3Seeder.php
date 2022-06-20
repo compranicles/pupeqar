@@ -176,6 +176,13 @@ class GenerateColumn3Seeder extends Seeder
             'order' => 1
         ]);
         GenerateColumn::insert([
+            'name' => 'Classification',
+            'table_id' => 63,
+            'report_column' => 'classification',
+            'is_active' => 1,
+            'order' => 1
+        ]);
+        GenerateColumn::insert([
             'name' => 'Date Started (mm/dd/yyyy)',
             'table_id' => 63,
             'report_column' => 'date_started',
@@ -362,6 +369,13 @@ class GenerateColumn3Seeder extends Seeder
             'name' => 'Brief Description of Activity',
             'table_id' => 11,
             'report_column' => 'activity_description',
+            'is_active' => 1,
+            'order' => 1
+        ]);
+        GenerateColumn::insert([
+            'name' => 'Classification',
+            'table_id' => 11,
+            'report_column' => 'classification',
             'is_active' => 1,
             'order' => 1
         ]);
