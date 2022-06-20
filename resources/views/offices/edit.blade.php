@@ -72,7 +72,9 @@
     <script>
         $(function() {
             var collegeId = "{{ $office->college_id }}";
-            $.get('/maintenances/sectors/name/'+collegeId, function (data){
+            var link1 = "{{ url('maintenances/sectors/name/:id') }}";
+			var url1 = link1.replace(':id', collegeId);
+            $.get(url1, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#sector").append(new Option(item.name, item.id));
@@ -87,17 +89,21 @@
         $('#cbco').on('input', function(){
             var collegeId = $('#cbco').val();
             $('#department').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/departments/options/'+collegeId, function (data){
+            var link = "{{ url('departments/options/:id') }}";
+			var url = link.replace(':id', collegeId);
+            $.get(url, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#department").append(new Option(item.name, item.id));
-                        
+
                     });
                 }
             });
 
             $('#sector').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/maintenances/sectors/name/'+collegeId, function (data){
+            var link1 = "{{ url('maintenances/sectors/name/:id') }}";
+			var url1 = link1.replace(':id', collegeId);
+            $.get(url2, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#sector").append(new Option(item.name, item.id));

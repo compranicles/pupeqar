@@ -37,33 +37,33 @@
                                             {{-- Name Input --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Label') }}" />
-                            
+
                                                 <input class="form-control" type="text" id="label" name="label" value="{{ $academic_module_field->label }}" required>
-                                                        
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-12">
                                             {{-- Field Name Input --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Column Name') }}" />
-                            
+
                                                 <input class="form-control" type="text" id="field_name" name="field_name" value="{{ $academic_module_field->name }}" disabled required>
-                                                        
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-6">
                                             {{-- Field Size Input --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Field Size') }}" />
-                        
+
                                                 <select name="size" id="size" class="form-control custom-select" required>
                                                     <option value="col-md-12" {{ ($academic_module_field->size === 'col-md-12')? 'selected': '' }}>col-md-12</option>
                                                     <option value="col-md-11" {{ ($academic_module_field->size === 'col-md-11')? 'selected': '' }}>col-md-11</option>
@@ -78,62 +78,62 @@
                                                     <option value="col-md-2" {{ ($academic_module_field->size === 'col-md-2')? 'selected': '' }}>col-md-2</option>
                                                     <option value="col-md-1" {{ ($academic_module_field->size === 'col-md-1')? 'selected': '' }}>col-md-1</option>
                                                 </select>
-                        
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-6">
                                             {{-- Field Type --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Field Type') }}" />
-                
+
                                                 <select name="field_type" id="field_type" class="form-control custom-select" disabled required>
                                                     <option value="" disabled>Choose...</option>
                                                     @foreach ($fieldtypes as $fieldtype)
                                                     <option value="{{ $fieldtype->id }}" {{ ($academic_module_field->field_type_id === $fieldtype->id)? 'selected': '' }} class="{{ $fieldtype->name }}">{{ $fieldtype->name }}</option>
                                                     @endforeach
                                                 </select>
-                
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-12" id="dropdown_field">
                                             {{-- Dropdown --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Dropdown') }}" />
-                
+
                                                 <select name="dropdown" id="dropdown" class="form-control custom-select" disabled>
                                                     <option value="" selected disabled>Choose...</option>
                                                     @foreach ($dropdowns as $dropdown)
                                                     <option value="{{ $dropdown->id }}" {{ ($academic_module_field->dropdown_id === $dropdown->id)? 'selected': '' }}>{{ $dropdown->name }}</option>
                                                     @endforeach
                                                 </select>
-                
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-12" id="placeholderfield">
                                             {{-- Field Placeholder Input --}}
                                             <div class="form-group">
                                                 <x-jet-label value="{{ __('Placeholder') }}" />
-                            
+
                                                 <input class="form-control" type="text" id="placeholder" value="{{ $academic_module_field->placeholder }}" name="placeholder">
-                                                        
+
                                                 <div class="invalid-feedback">
-                                                    This is required. 
+                                                    This is required.
                                                 </div>
                                             </div>
                                         </div>
-                
+
                                         <div class="col-md-12">
                                             {{-- Required --}}
                                             <div class="form-check form-check-inline">
@@ -272,6 +272,7 @@
       </script>
       <script>
         $('.active-switch').on('change', function(){
+			var url = "{{ url('/maintenances/description/isActive/:id1/:id2/:id3')}}";
             var optionID = $(this).data('description-id');
             var reportCategoryID = $(this).data('report-id');
             if ($(this).is(':checked')) {
@@ -279,8 +280,11 @@
             } else {
                 var isActive = 0;
             }
+			var api = url.replace(':id1', reportCategoryID);
+			api = api.replace(':id2', optionID);
+			api = api.replace(':id3', isActive);
             $.ajax({
-                url: '/maintenances/description/isActive/'+reportCategoryID+'/'+optionID+'/'+isActive
+                url: api
             });
         });
     </script>

@@ -16,11 +16,11 @@
                         {{ 'hidden' }}
                         @break
                     @default
-                        
+
                 @endswitch>
 
             <option value="" selected disabled>Choose...</option>
-            
+
         </select>
 
         @error($fieldInfo->name)
@@ -34,22 +34,23 @@
 
 @push('scripts')
     <script>
+        setTimeout(function (){
 
-        $(document).ready(function() {
-            
-            $.get("{{ route('dropdowns.options', $fieldInfo->dropdown_id) }}", function (data){
-                data.forEach(function (item){
-                    $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id)).change();
-                });
-                var value = "{{ $value }}";
-                if (value != ''){
-                    $("#{{ $fieldInfo->name }}").val("{{ $value }}");
+            $.ajax('{{ route('dropdowns.options', $fieldInfo->dropdown_id) }}',   // request url
+            {
+                success: function (data, status, xhr) {    // success callback function
+                    data.forEach(function (item){
+                        $("#{{ $fieldInfo->name }}").append(new Option(item.name, item.id)).change();
+                    });
+                    var value = "{{ $value }}";
+                    if (value != ''){
+                        $("#{{ $fieldInfo->name }}").val("{{ $value }}");
+                    }
+                    <?php if (old($fieldInfo->name) != '') { ?>
+                        $("#{{ $fieldInfo->name }}").val("{{ old($fieldInfo->name) }}");
+                    <?php } ?>
                 }
-                <?php if (old($fieldInfo->name) != '') { ?>
-                    $("#{{ $fieldInfo->name }}").val("{{ old($fieldInfo->name) }}");
-                <?php } ?>
-                
             });
-        });
+        }, Math.floor(Math.random() * (2500 - 1) + 1));
     </script>
 @endpush

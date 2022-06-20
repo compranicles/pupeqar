@@ -1,4 +1,4 @@
-<x-app-layout> 
+<x-app-layout>
     <div class="container">
         <div class="row">
             <div class="d-flex col-md-12">
@@ -13,7 +13,7 @@
                     </div>
                     <div>
                         <p class="db-text" style="font-size: 1.25em; margin: 0 30px 0 30px;">Quarter {{ isset($currentQuarterYear->current_quarter) ? $currentQuarterYear->current_quarter : '' }} of {{ isset($currentQuarterYear->current_year) ? $currentQuarterYear->current_year : '' }}</p>
-                        <?php 
+                        <?php
                         $deadline = strtotime( $currentQuarterYear->deadline );
                         $deadline = date( 'F d, Y', $deadline);
                         ?>
@@ -63,7 +63,7 @@
                     @if (in_array(8, $roles) || in_array(9, $roles))
                     <div class="col-md-12 mb-4">
                         <div class="card">
-                        <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
+                        <h5 class="card-header">Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>
                             <div class="card-body">
                                 <table class="table table-sm table-borderless fixed_header" id="log_activity_table" style="height: 15rem;">
                                     <tbody>
@@ -76,7 +76,7 @@
                     @else
                     <div class="col-md-12 mb-4">
                         <div class="card">
-                        <h5 class="card-header">Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>   
+                        <h5 class="card-header">Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>
                             <div class="card-body">
                                 <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table" style="height: 15rem;">
                                     <tbody>
@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
@@ -222,7 +222,7 @@
             </div>
         </div>
     </div>
-                
+
     @push('scripts')
     <script>
         //Announcement to display in modal
@@ -252,7 +252,7 @@
         function getLog(){
             $('.activity-log-content').remove();
 
-            $.get('/get-dashboard-list', function (data){
+            $.get('{{ url("/get-dashboard-list") }}', function (data){
                 var countColumns = 0;
 
                 if (data.length == 0) {
@@ -273,7 +273,7 @@
         function getLogInd(){
             $('.activity-log-indi-content').remove();
 
-            $.get('/get-dashboard-list-indi', function (data){
+            $.get('{{ url("/get-dashboard-list-indi") }}', function (data){
                 var countColumns = 0;
 
                 if (data.length == 0) {

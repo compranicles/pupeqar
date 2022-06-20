@@ -155,7 +155,7 @@
                                                     <td>{{ $research->college_name }}</td>
                                                     <td>
                                                         <?php $updated_at = strtotime( $research->updated_at );
-                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>  
+                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
                                                         {{ $updated_at }}
                                                     </td>
                                                     <td>{{ $research->report_quarter }}</td>
@@ -178,7 +178,7 @@
                 </div>
             </div>
         </div>
-        
+
     @include('research.research-code')
     @include('research.invite-researchers.modal', compact('invites'))
 
@@ -210,12 +210,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -227,12 +227,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -244,12 +244,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -262,12 +262,12 @@
         //                         var val = $.fn.dataTable.util.escapeRegex(
         //                             $(this).val()
         //                         );
-        
+
         //                         column
         //                             .search( val ? '^'+val+'$' : '', true, false )
         //                             .draw();
         //                     } );
-        
+
         //                 column.data().unique().sort().each( function ( d, j ) {
         //                     select.append( '<option value="'+d+'">'+d+'</option>' )
         //                 } );
@@ -320,7 +320,7 @@
 
             //     }
             // });
-            
+
 
             // $("#statusFilter").change(function (e) {
             //     table.draw();
@@ -336,7 +336,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
@@ -374,25 +374,25 @@
     <script>
         $('#startFilter').on('change', function () {
             var year_started = $('#startFilter').val();
-            var link = "/research/filterByYear/:year/:status";
+            var link = "{{ url('/research/filterByYear/:year/:status') }}";
             var newLink = link.replace(':year', year_started).replace(':status', 'started');
             window.location.replace(newLink);
         });
         $('#completeFilter').on('change', function () {
             var year_completed = $('#completeFilter').val();
-            var link = "/research/filterByYear/:year/:status";
+            var link = "{{ url('/research/filterByYear/:year/:status') }}";
             var newLink = link.replace(':year', year_completed).replace(':status', 'completion');
             window.location.replace(newLink);
         });
         $('#publishFilter').on('change', function () {
             var year_published = $('#publishFilter').val();
-            var link = "/research/filterByYear/:year/:status";
+            var link = "{{ url('/research/filterByYear/:year/:status') }}";
             var newLink = link.replace(':year', year_published).replace(':status', 'published');
             window.location.replace(newLink);
         });
         $('#presentFilter').on('change', function () {
             var year_presented = $('#presentFilter').val();
-            var link = "/research/filterByYear/:year/:status";
+            var link = "{{ url('/research/filterByYear/:year/:status') }}";
             var newLink = link.replace(':year', year_presented).replace(':status', 'presented');
             window.location.replace(newLink);
         });

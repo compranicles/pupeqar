@@ -7,7 +7,7 @@
         @if(array_key_exists($table->id, $report_array))
             @if (count($report_array[$table->id]) == 0)
                 <?php $ctr = 0; ?>
-            @else  
+            @else
                 <?php $ctr = 1; ?>
                 @break
             @endif
@@ -20,7 +20,7 @@
             <div class="alert alert-success text-center p-5" role="alert">
                 <h5>
                     No accomplishments to finalize so far.
-                </h5> 
+                </h5>
                 <small>Submissions this quarter {{$currentQuarterYear->current_quarter}} of {{ $currentQuarterYear->current_year }}: {{$totalReports}}</small>
             </div>
         </div>
@@ -251,7 +251,7 @@
                                 <tbody>
                                     @forelse ($report_array[$table->id] as $row)
                                         <tr role="button">
-                                            <td><input type="checkbox" class="select-submit table-submit-{{ $tableCount }} all-submit" data-id='{{ $count }}' data-table-id={{ $tableCount }} 
+                                            <td><input type="checkbox" class="select-submit table-submit-{{ $tableCount }} all-submit" data-id='{{ $count }}' data-table-id={{ $tableCount }}
                                                 @isset($row->id)
                                                     @if ( count($report_document_checker[$table->id][$row->id]) == 0)
                                                         disabled
@@ -551,7 +551,7 @@
                                 @php
                                     $count2++;
                                 @endphp
-                            @endforeach                        
+                            @endforeach
                         @endforeach
                     </div>
                 <div class="modal-footer">
@@ -576,35 +576,53 @@
 
             var countColumns = 0;
             var countValues = 0;
-            $.get('/reports/tables/data/'+catID, function (data){
-                data.forEach(function (item){
-                    countColumns = countColumns + 1;
-                    $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content d-flex"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+item.name+':</td>');
-                });
-            });
-            $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
-                data.forEach(function (item){
-                    countValues = countValues + 1;
-                    if(item == null)
-                        $('#row-'+countValues).append('<td class="report-content text-left">-  </td>');
-                    else
-                        $('#row-'+countValues).append('<td class="report-content text-left">'+item+'</td>');
-                });
-            });
-            $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
-                if(data == false){
-                    $('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
-                }
-                else{
-                    data.forEach(function (item){
-                        var newlink = link.replace(':filename', item)
-                            $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-success m-1">'+item+'</a>');
-                    });
-                }
-            });
-            
+			setTimeout(function (){
+				var url = "{{ url('reports/tables/data/:id') }}";
+				var newlink = url.replace(':id', catID);
+				$.get(newlink, function (data){
+					data.forEach(function (item){
+						countColumns = countColumns + 1;
+						$('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content d-flex"></tr>')
+						$('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+item.name+':</td>');
+					});
+				});
+			}, 1000 );
+
+			setTimeout(function (){
+				var url2 = "{{ url('reports/tables/data/:id/:rowID') }}";
+				var newlink2 = url2.replace(':id', catID);
+				newlink2 = newlink2.replace(':rowID', rowID);
+				$.get(newlink2, function (data){
+					data.forEach(function (item){
+						countValues = countValues + 1;
+						if(item == null)
+							$('#row-'+countValues).append('<td class="report-content text-left">-  </td>');
+						else
+							$('#row-'+countValues).append('<td class="report-content text-left">'+item+'</td>');
+					});
+				});
+			}, 1000 );
+
+			setTimeout(function (){
+				var url3 = "{{ url('reports/tables/data/documents/:id/:rowID') }}";
+				var newlink3 = url3.replace(':id', catID);
+				newlink3 = newlink3.replace(':rowID', rowID);
+				$.get(newlink3, function (data){
+					if(data == false){
+						$('#data_documents').append('<a class="report-content btn-link text-dark">No Document Attached</a>');
+					}
+					else{
+						data.forEach(function (item){
+							var newlink = link.replace(':filename', item)
+								$('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content btn btn-success m-1">'+item+'</a>');
+						});
+					}
+				});
+			}, 1000 );
+
+
         });
+
 
         $('.select-submit').on('click', function(){
             var inputId = $(this).data('id');
@@ -622,7 +640,7 @@
                 if(this.checked){
                     allChecked++;
                     flag = true;
-                } 
+                }
                 else{
                     flag = false;
                     return false;
@@ -643,7 +661,7 @@
                 if(this.checked){
                     allSubmitChecked++;
                     flagSubmit = true;
-                } 
+                }
                 else{
                     flagSubmit = false;
                     return false;
@@ -657,7 +675,7 @@
             }else{
                 $('#all-submit').prop('checked', false);
             }
-           
+
         });
         $('.select-submit-table').on('change', function(){
             var tableId = $(this).data('id');
@@ -692,7 +710,7 @@
                 if(this.checked){
                     allChecked++;
                     flag = true;
-                } 
+                }
                 else{
                     flag = false;
                     return false;
@@ -738,9 +756,12 @@
 
         $('.button-deny').on('click', function () {
             var catID = $(this).data('id');
-            
+
             var countColumns = 1;
-            $.get('/reports/reject-details/'+catID, function(data){
+
+			var urldetails = "{{ url('reports/reject-details/:id') }}";
+			var newlink2 = urldetails.replace(':id', catID);
+			$.get(newlink2, function (data) {
                 $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.position_name+'</td>');
                 countColumns = countColumns + 1;
                 $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.time+'</td>');
@@ -768,7 +789,7 @@
             }
             if(($('.doc-incomplete').length != 0) && ($('.doc-complete').length != 0)){
                 $('#submitReport').show();
-                
+
             }
             $('#report_denied').DataTable();
         });
@@ -808,7 +829,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".temp-alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

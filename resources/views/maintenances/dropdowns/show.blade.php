@@ -4,14 +4,14 @@
             {{ __('Dropdowns') }}
         </h2>
     </x-slot>
-     
+
     <div class="container mt-n4">
-        
+
         <div class="row mt-3 mb-3">
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-          
+
             <div class="col-md-12">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -36,14 +36,14 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="form-group">
-                    
+
                                         <input class="form-control" type="text" value="{{ $dropdown->name }}" name="name" required>
-                                                
+
                                         <div class="invalid-feedback">
-                                            This is required. 
+                                            This is required.
                                         </div>
                                     </div>
-                
+
                                 </div>
                                 <div class="col-md-2">
                                     <button type="submit" class="btn btn-primary">Update</button>
@@ -79,7 +79,7 @@
                                     <div class="form-group">
                                         <input class="form-control" type="text" name="name" required>
                                         <div class="invalid-feedback">
-                                            This is required. 
+                                            This is required.
                                         </div>
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
                                         </thead>
                                         <tbody id="option_sortable">
                                             @foreach ($dropdown_options as $option)
-                                            <tr id="{{ $option->id }}"> 
+                                            <tr id="{{ $option->id }}">
                                                 <td><div id="option_name">{{ $option->name }}</div></td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
@@ -115,7 +115,7 @@
                                                         <label class="custom-control-label" for="is_active_{{ $option->id }}"></label>
                                                     </div>
                                                 </td>
-                                            </tr>                                                
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -127,19 +127,19 @@
             </div>
         </div>
     </div>
-    
+
     @push('scripts')
         <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
         <script src="{{ asset('js/dropdown.js') }}"></script>
         <script>
             $(function (){
+				var urlArr = "{{ url('dropdowns/options/arrange') }}";
                 $('#option_sortable').sortable({
                     stop: function(e, ui) {
-                        console.log($('#option_sortable').sortable('toArray'));
                         var array_values = $('#option_sortable').sortable('toArray');
                         var array_values = JSON.stringify(array_values);
                         $.ajax({
-                            url: '/dropdowns/options/arrange',
+                            url: urlArr,
                             type: "POST",
                             data: {data: array_values},
                             dataType: 'json',
@@ -147,24 +147,29 @@
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             success: function (success){
-                                console.log(success.data);
+								var messsage = success;
                             },
                         });
                     }
                 });
 
-                $('.active-switch').on('change', function(){
-                    var optionID = $(this).data('id');
-                    if ($(this).is(':checked')) {
-                        $.ajax({
-                            url: '/dropdowns/options/activate/'+optionID
-                        });
-                    } else {
-                        $.ajax({
-                            url: '/dropdowns/options/inactivate/'+optionID
-                        });
-                    }
-                });
+				var urlAct =  "{{ url('dropdowns/options/activate/:id') }}";
+				var urlInaAct =  "{{ url('dropdowns/options/inactivate/:id') }}";
+				$('.active-switch').on('change', function(){
+					var optionID = $(this).data('id');
+					var url1 = urlAct.replace(':id', optionID);
+					var url2 = urlInaAct.replace(':id', optionID);
+					if ($(this).is(':checked')) {
+						$.ajax({
+							url: url1
+						});
+					} else {
+						$.ajax({
+							url: url2
+						});
+					}
+				});
+
             });
         </script>
     @endpush

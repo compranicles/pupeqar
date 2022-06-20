@@ -18,14 +18,14 @@
         <link href="https://unpkg.com/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.css" rel="stylesheet" />
         <link href="https://unpkg.com/filepond/dist/filepond.min.css" rel="stylesheet" />
         <link href="{{ asset('lightbox2/dist/css/lightbox.css') }}" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> <!--added-->    
-        <link rel="stylesheet" href="{{ asset('dist/selectize.bootstrap4.css') }}">    
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> <!--added-->
+        <link rel="stylesheet" href="{{ asset('dist/selectize.bootstrap4.css') }}">
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         @livewireStyles
 
         <!-- Scripts -->
-        
+
         <script src="https://kit.fontawesome.com/b22b0c1d67.js" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
         <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
@@ -46,7 +46,7 @@
         <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css"/>
-    
+
     </head>
     <body class="font-sans antialiased bg-light" style="background-image: {{ URL('storage/cover2.png') }}">
         @incompleteAccount
@@ -75,7 +75,7 @@
 
         @livewireScripts
 
-        
+
         @stack('scripts')
     </body>
 </html>

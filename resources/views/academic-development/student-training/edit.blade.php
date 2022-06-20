@@ -171,7 +171,7 @@
             var url = '';
             var docId = '';
             $('.remove-doc').on('click', function(){
-                url = $(this).data('link');   
+                url = $(this).data('link');
                 docId = $(this).data('id');
             });
             $('#deletedoc').on('click', function(){
@@ -196,7 +196,7 @@
         <script>
             var report_category_id = 19;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            $.get("{{ url('document-upload/description/19') }}", function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});

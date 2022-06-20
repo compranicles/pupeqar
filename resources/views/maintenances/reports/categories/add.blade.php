@@ -17,11 +17,11 @@
                             {{-- Field Name Input --}}
                             <div class="form-group">
                                 <x-jet-label value="{{ __('Column Name') }}" />
-            
+
                                 <input class="form-control" type="text" id="column_name" name="column_name" required>
-                                        
+
                                 <div class="invalid-feedback">
-                                    This is required. 
+                                    This is required.
                                 </div>
                             </div>
                         </div>
@@ -30,7 +30,7 @@
                             {{-- Field Size Input --}}
                             <div class="form-group">
                                 <x-jet-label value="{{ __('Table Reference') }}" />
-        
+
                                 <select name="table" id="table" class="form-control custom-select" required>
                                     <option value="" selected disabled>Choose...</option>
                                     <option value="expert_service_academics">expert_service_academics</option>
@@ -58,9 +58,9 @@
                                     <option value="outreach_programs">outreach_programs</option>
                                     <option value="technical_extensions">technical_extensions</option>
                                 </select>
-        
+
                                 <div class="invalid-feedback">
-                                    This is required. 
+                                    This is required.
                                 </div>
                             </div>
                         </div>
@@ -72,11 +72,11 @@
 
                                 <select name="table_column" id="table_column" class="form-control custom-select" disabled required>
                                     <option value="" selected disabled>Choose...</option>
-                                    
+
                                 </select>
 
                                 <div class="invalid-feedback">
-                                    This is required. 
+                                    This is required.
                                 </div>
                             </div>
                         </div>
@@ -100,11 +100,13 @@
             });
         });
 
+        var url = "{{ url('reports/tables/:id') }}";
         $('#table').on('change', function(){
             $('#table_column').removeAttr('disabled');
             var table = $('#table').val();
+			var api = url.replace(':id', table);
             $('#table_column').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/reports/tables/'+table, function (data){
+            $.get(api, function (data){
                 // console.log(data);
                 data.forEach(function (item){
                     $("#table_column").append(new Option(item, item));

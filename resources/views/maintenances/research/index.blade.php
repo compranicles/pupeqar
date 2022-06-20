@@ -17,7 +17,7 @@
                 @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>         
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -67,20 +67,24 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
         <script>
-             $('.active-switch').on('change', function(){
+             var urlAct =  "{{ url('research-forms/activate/:id') }}";
+			var urlInaAct =  "{{ url('research-forms/inactivate/:id') }}";
+            $('.active-switch').on('change', function(){
                 var optionID = $(this).data('id');
+				var url1 = urlAct.replace(':id', optionID);
+				var url2 = urlInaAct.replace(':id', optionID);
                 if ($(this).is(':checked')) {
                     $.ajax({
-                        url: '/research-forms/activate/'+optionID
+                        url: url1
                     });
                 } else {
                     $.ajax({
-                        url: '/research-forms/inactivate/'+optionID
+                        url: url2
                     });
                 }
             });

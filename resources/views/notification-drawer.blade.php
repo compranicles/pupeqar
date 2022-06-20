@@ -8,8 +8,8 @@
 </div>
 
 {{-- Data that Can be Displayed --}}
-    {{-- 
-        
+    {{--
+
         item.data.sender = name of the sender
         item.data.category_name = name of report category
         item.data.url = link to redirect
@@ -18,14 +18,14 @@
         item.data.type = returned or received (can be added for other notifications)
 
         if returned
-            item.data.reason = reason why 
+            item.data.reason = reason why
 
         if data.read_at == null
             pakilagyan na naka bold para madistinguish yung mga nakita na sa hindi thnks
 
 
         nagrereset sya every 1min
-        
+
         maganda kung scrollable din sya hehe
         thankss
         iniisip ko kung modal na lang sya ehh
@@ -33,7 +33,7 @@
         please help designing this hehe
 
     --}}
-    
+
 @push('scripts')
     <script>
         $(function(){
@@ -45,14 +45,16 @@
         function getNotifications(){
             var count = 0;
             var countALL = 0;
+            setTimeout(function (){
             $('.notification-content').remove();
+            var api = '{{ url("/get-notifications") }}';
 
-            $.get('/get-notifications', function (data){
+            $.get(api, function (data){
                 var countColumns = 0;
 
                 var countUnread = 0;
                 data.forEach(function(item){
-                    
+
 
                     countColumns ++;
                     $('#notification_nav_table').append('<tr role="button" id="notification-'+countColumns+'" class="d-flex notification-content"></tr>');
@@ -184,7 +186,7 @@
                         countUnread++;
                         $('#noti-info-'+countColumns).addClass("font-weight-bold");
                     }
-                   
+
                     countALL++;
                 });
 
@@ -196,20 +198,23 @@
                         $('.see_all_div').remove();
                 }
             });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
 
-            $.get('/notifications/count-not-viewed', function (data){
+            var api = '{{ url("/notifications/count-not-viewed") }}';
+			setTimeout(function (){
+            $.get(api, function (data){
 
                 $('#notificationCounter').text(data);
                 if(data > 0){
-                    document.getElementById('notificationCounter').classList.remove('notif-badge'); 
-                    document.getElementById('notificationCounter').classList.add('badge-danger'); 
+                    document.getElementById('notificationCounter').classList.remove('notif-badge');
+                    document.getElementById('notificationCounter').classList.add('badge-danger');
                 }
                 else{
-                    document.getElementById('notificationCounter').classList.add('notif-badge'); 
-                    document.getElementById('notificationCounter').classList.remove('badge-danger'); 
+                    document.getElementById('notificationCounter').classList.add('notif-badge');
+                    document.getElementById('notificationCounter').classList.remove('badge-danger');
                 }
 
-            });
+            });  }, Math.floor(Math.random() * (2500 - 1) + 1));
         }
 
         $(document).on('click', '.notif-row', function(){
@@ -225,16 +230,17 @@
         $('#notificationLink').on('click', function() {
             $( this ).toggleClass("active");
 
-            $.get('/notifications/count-reset', function (data){
+            var api = '{{ url("/notifications/count-reset") }}';
+            $.get(api, function (data){
 
                 $('#notificationCounter').text(data);
                 if(data > 0){
-                    document.getElementById('notificationCounter').classList.remove('notif-badge'); 
-                    document.getElementById('notificationCounter').classList.add('badge-danger'); 
+                    document.getElementById('notificationCounter').classList.remove('notif-badge');
+                    document.getElementById('notificationCounter').classList.add('badge-danger');
                 }
                 else{
-                    document.getElementById('notificationCounter').classList.add('notif-badge'); 
-                    document.getElementById('notificationCounter').classList.remove('badge-danger'); 
+                    document.getElementById('notificationCounter').classList.add('notif-badge');
+                    document.getElementById('notificationCounter').classList.remove('badge-danger');
                 }
 
             });
@@ -246,9 +252,9 @@
                 if (!$(event.target).closest('#notificationDropdown').length) {
                     // the click occured outside
                     if (!$(event.target).closest('.notifDiv').length) {
-                        document.getElementById('notificationLink').classList.remove('active'); 
-                    }      
-                }  
+                        document.getElementById('notificationLink').classList.remove('active');
+                    }
+                }
             });
     </script>
 @endpush

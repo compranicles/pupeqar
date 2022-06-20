@@ -106,8 +106,9 @@
             var link = $(this).data('url');
             var accept = $(this).data('accept');
             var countColumns = 0;
-            
-            $.get('/reports/data/'+catID, function (data){
+            var url = "{{ url('reports/data/:id') }}";
+			var newlink = url.replace(':id', catID);
+            $.get(newlink, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
@@ -115,7 +116,9 @@
                     $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                 });
             });
-            $.get('/reports/docs/'+catID, function (data) {
+			var urldoc = "{{ url('reports/docs/:id') }}";
+			var newlinkdoc = urldoc.replace(':id', catID);
+            $.get(newlinkdoc, function (data) {
                 data.forEach(function (item){
                     var newlink = link.replace(':filename', item)
                     $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
@@ -135,7 +138,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

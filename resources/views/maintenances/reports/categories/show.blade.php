@@ -4,9 +4,9 @@
             {{ __('Submission: '.$report_category->name) }}
         </h2>
     </x-slot>
-     
+
     <div class="container mt-n4">
-        
+
         <div class="row mt-3 mb-3">
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
@@ -71,7 +71,7 @@
                                                                 {{-- <td>
                                                                     <a href="{{ route('report-categories.report-columns.edit', [$report_category->id, $report_column->id]) }}" class="btn btn-warning btn-sm edit-row">Manage</a>
                                                                 </td>     --}}
-                                                            </tr>                                                
+                                                            </tr>
                                                             @endforeach
                                                         </tbody>
                                                     </table>
@@ -88,11 +88,11 @@
                                                     {{-- Name Input --}}
                                                     <div class="form-group">
                                                         <x-jet-label value="{{ __('Name') }}" />
-                                    
+
                                                         <input class="form-control" type="text" id="label_edit" name="name" value="{{ old('name', $report_category->name) }}" required>
-                                                                
+
                                                         <div class="invalid-feedback">
-                                                            This is required. 
+                                                            This is required.
                                                         </div>
                                                     </div>
                                                 </div>
@@ -114,18 +114,19 @@
             </div>
         </div>
     </div>
-    
+
     @include('maintenances.reports.categories.add', ['report_category' => $report_category->id])
 
     @push('scripts')
         <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
         <script>
+            var url1 = "{{ url('report-columns/arrange') }}";
             $('#field_sortable').sortable({
                 stop: function(e, ui) {
                     var array_values = $('#field_sortable').sortable('toArray');
                     var array_values = JSON.stringify(array_values);
                     $.ajax({
-                        url: '/report-columns/arrange',
+                        url: url1,
                         type: "POST",
                         data: {data: array_values},
                         dataType: 'json',
@@ -137,19 +138,24 @@
                     });
                 }
             });
+
+            var urlAct =  "{{ url('report-columns/activate/:id') }}";
+			var urlInaAct =  "{{ url('report-columns/inactivate/:id') }}";
+			$('.active-switch').on('change', function(){
+				var optionID = $(this).data('id');
+				var url1 = urlAct.replace(':id', optionID);
+				var url2 = urlInaAct.replace(':id', optionID);
+				if ($(this).is(':checked')) {
+					$.ajax({
+						url: url1
+					});
+				} else {
+					$.ajax({
+						url: url2
+					});
+				}
+			});
             
-            $('.active-switch').on('change', function(){
-                var optionID = $(this).data('id');
-                if ($(this).is(':checked')) {
-                    $.ajax({
-                        url: '/report-columns/activate/'+optionID
-                    });
-                } else {
-                    $.ajax({
-                        url: '/report-columns/inactivate/'+optionID
-                    });
-                }
-            });
         </script>
     @endpush
 </x-app-layout>

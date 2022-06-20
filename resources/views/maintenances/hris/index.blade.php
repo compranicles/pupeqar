@@ -17,7 +17,7 @@
                 @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>         
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -64,18 +64,23 @@
     </div>
     @push('scripts')
         <script>
-             $('.active-switch').on('change', function(){
+             var urlAct =  "{{ url('hris-forms/activate/:id') }}";
+			var urlInaAct =  "{{ url('hris-forms/inactivate/:id') }}";
+            $('.active-switch').on('change', function(){
                 var optionID = $(this).data('id');
+				var url1 = urlAct.replace(':id', optionID);
+				var url2 = urlInaAct.replace(':id', optionID);
                 if ($(this).is(':checked')) {
                     $.ajax({
-                        url: '/hris-forms/activate/'+optionID
+                        url: url1
                     });
                 } else {
                     $.ajax({
-                        url: '/hris-forms/inactivate/'+optionID
+                        url: url2
                     });
                 }
             });
+            
         </script>
     @endpush
 </x-app-layout>

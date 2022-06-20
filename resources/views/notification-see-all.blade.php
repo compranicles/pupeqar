@@ -4,7 +4,7 @@
             {{ __('Notifications') }}
         </h2>
     </x-slot>
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -32,14 +32,17 @@
         function getSeeAllNotifications(){
             var count = 0;
             var countALL = 0;
-            $('.notification-seeall-content').remove();
 
-            $.get('/get-notifications', function (data){
+            setTimeout(function (){
+            $('.notification-seeall-content').remove();
+			var api = '{{ url("/get-notifications") }}';
+
+            $.get(api, function (data){
                 var countAllColumns = 0;
 
                 var countUnread = 0;
                 data.forEach(function(item){
-                    
+
 
                     countAllColumns ++;
                     $('#notification_seeall_table').append('<tr role="button" id="notification-all-'+countAllColumns+'" class="d-flex notification-seeall-content"></tr>');
@@ -173,13 +176,13 @@
                         countUnread++;
                         $('#noti-all-info-'+countAllColumns).addClass("font-weight-bold");
                     }
-                   
+
                     countALL++;
                 });
-            });
+            }); }, Math.floor(Math.random() * (2500 - 1) + 1));
         }
 
-       
+
         $(document).on('click', '.notif-all-row', function(){
             var id = $(this).data("id");
             var url = $(this).data("url")

@@ -371,7 +371,9 @@
                 var link = $(this).data('url');
 
                 var countColumns = 0;
-                $.get('/reports/data/'+catID, function (data){
+                var url = "{{ url('reports/data/:id') }}";
+				var newlink = url.replace(':id', catID);
+				$.get(newlink, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
@@ -379,7 +381,9 @@
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
-                $.get('/reports/docs/'+catID, function (data) {
+                var urldoc = "{{ url('reports/docs/:id') }}";
+				var newlinkdoc = urldoc.replace(':id', catID);
+				$.get(newlinkdoc, function (data) {
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
                         $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
@@ -395,7 +399,9 @@
             $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
 
-                $.get('/reports/reject-details/'+categoryID, function(data){
+                var urldetails = "{{ url('reports/reject-details/:id') }}";
+				var newlink2 = urldetails.replace(':id', categoryID);
+				$.get(newlink2, function (data) {
                     var position = data.position_name;
                     var countColumns = 1;
                     var position_name = position.charAt(0).toUpperCase()+position.slice(1);
@@ -488,8 +494,8 @@
             $('#filter').on('click', function () {
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
-                var link = "/reports/consolidate/department/reportYearFilter/:department/:year/:quarter";
-                var newLink = link.replace(':department', "{{ $id }}").replace(':year', year_reported).replace(':quarter', quarter);
+                var link = "{{ url('reports/consolidate/department/reportYearFilter/:department/:year/:quarter') }}";
+                var newLink = link.replace(':department', "{{$id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
         </script>

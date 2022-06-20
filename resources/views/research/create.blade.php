@@ -60,7 +60,7 @@
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
-                $('#nature_of_involvement').removeClass('form-validation'); 
+                $('#nature_of_involvement').removeClass('form-validation');
             });
         </script>
         <script>
@@ -109,15 +109,17 @@
             });
         </script>
         <script>
-            var report_category_id = 1;
+             var report_category_id = 1;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            var apinb = '{{ url("/document-upload/description/1") }}';
+            setTimeout(function (){
+            $.get(apinb, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
-            });
+            }); }, 2000);
         </script>
     @endpush
 </x-app-layout>

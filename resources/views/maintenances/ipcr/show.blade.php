@@ -15,7 +15,7 @@
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-index">
             <i class="bi bi-check-circle"></i> {{ $message }}
-        </div>         
+        </div>
         @endif
         <div class="row">
             <div class="col-md-12">
@@ -85,18 +85,19 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
         <script>
             $(function() {
+				var url1 = "{{ url('ipcr-fields/arrange') }}";
                 $('#field_sortable').sortable({
                     stop: function(e, ui) {
                         var array_values = $('#field_sortable').sortable('toArray');
                         var array_values = JSON.stringify(array_values);
                         $.ajax({
-                            url: '/ipcr-fields/arrange',
+                            url: url1,
                             type: "POST",
                             data: {data: array_values},
                             dataType: 'json',
@@ -109,20 +110,23 @@
                     }
                 });
 
+				var urlAct =  "{{ url('ipcr-fields/activate/:id') }}";
+				var urlInaAct =  "{{ url('ipcr-fields/inactivate/:id') }}";
+				$('.active-switch').on('change', function(){
+					var optionID = $(this).data('id');
+					var url1 = urlAct.replace(':id', optionID);
+					var url2 = urlInaAct.replace(':id', optionID);
+					if ($(this).is(':checked')) {
+						$.ajax({
+							url: url1
+						});
+					} else {
+						$.ajax({
+							url: url2
+						});
+					}
+				});
 
-                $('.active-switch').on('change', function(){
-                    var optionID = $(this).data('id');
-                    if ($(this).is(':checked')) {
-                        $.ajax({
-                            url: '/ipcr-fields/activate/'+optionID
-                        });
-                    } else {
-                        $.ajax({
-                            url: '/ipcr-fields/inactivate/'+optionID
-                        });
-                    }
-                });
             });
-        </script>
     @endpush
 </x-app-layout>

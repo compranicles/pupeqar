@@ -35,7 +35,7 @@
                                         </select>
                                     </div>
                                 </div>
-                               
+
                                 <div class="col-md-8">
                                     <div class="form-group input-group-md" id="dept_div">
                                     </div>
@@ -65,7 +65,9 @@
     <script>
         $('#cbco').on('input', function(){
             var collegeId = $('#cbco').val();
-            $.get('/departments/options/'+collegeId, function (data){
+			var link = "{{ url('departments/options/:id') }}";
+			var url = link.replace(':id', collegeId);
+            $.get(url, function (data){
                 if (data != '') {
                     $("#dept_div").empty();
                     $("#dept_div").append("<p>Departments Belong To The College/Branch/Campus/Office:</p>");
@@ -80,7 +82,9 @@
             });
 
             $('#sector').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/maintenances/sectors/name/'+collegeId, function (data){
+			var link2 = "{{ url('maintenances/sectors/name/:id') }}";
+			var url2 = link2.replace(':id', collegeId);
+            $.get(url2, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#sector").append(new Option(item.name, item.id));

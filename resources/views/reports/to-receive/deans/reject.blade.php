@@ -19,15 +19,15 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <button type="button" class="btn btn-primary button-view mb-2" id="viewButton" 
-                                                data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" 
-                                                data-id="{{ $report_id }}" data-toggle="modal" 
+                                        <button type="button" class="btn btn-primary button-view mb-2" id="viewButton"
+                                                data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}"
+                                                data-id="{{ $report_id }}" data-toggle="modal"
                                                 data-target="#viewReport">
                                                 View Accomplishment
                                         </button>
                                         <br>
                                         <label>Remarks:</label><span style='color: red'></span>
-                                
+
                                         <input type="text" class="form-control" name="reason" required>
                                     </div>
                                 </div>
@@ -82,11 +82,15 @@
                 var reportID = $(this).data('id');
                 var link = $(this).data('url');
                 var countColumns = 0;
-                
-                $.get('/reports/report-category/'+reportID, function (data){
+
+                var labellink = "{{ url('reports/report-category/:id') }}";
+				var link = labellink.replace(':id', reportID);
+                $.get(link, function (data){
                     document.getElementById('viewReportLabel').innerHTML = data;
                 });
-                $.get('/reports/data/'+reportID, function (data){
+                var url = "{{ url('reports/data/:id') }}";
+				var newlink = url.replace(':id', reportID);
+				$.get(newlink, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class=" d-flex report-content"></tr>')
@@ -94,7 +98,9 @@
                         $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                     });
                 });
-                $.get('/reports/docs/'+reportID, function (data) {
+                var urldoc = "{{ url('reports/docs/:id') }}";
+				var newlinkdoc = urldoc.replace(':id', reportID);
+				$.get(newlinkdoc, function (data) {
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
                         $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
@@ -106,6 +112,6 @@
                 $('.report-content').remove();
             });
         </script>
-        
+
     @endpush
 </x-app-layout>

@@ -1,4 +1,4 @@
-<x-app-layout>   
+<x-app-layout>
     <x-slot name="header">
             @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
@@ -45,7 +45,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -89,7 +89,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -127,7 +127,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->dean_approval !== 0 ) data-accept="{{ route('chairperson.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
@@ -171,7 +171,7 @@
                                         @endif
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -215,7 +215,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -253,7 +253,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if( $row->sector_approval == null && $row->chairperson_approval == 1) data-accept="{{ route('dean.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -290,7 +290,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('dean.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->department_name }}</td>
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('dean.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('dean.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                   
+
                                     <td>
                                         @if ($row->user_id == auth()->id())
                                         <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
@@ -298,7 +298,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -338,7 +338,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->ipqmso_approval == null && $row->dean_approval == 1) data-accept="{{ route('sector.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -375,7 +375,7 @@
                                     <td class="button-view text-center" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('sector.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->college_name }}</td>
                                     <td class="button-view text-center" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('sector.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->report_category }}</td>
                                     <td class="button-view text-center" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-relay="{{ route('sector.relay', ':id') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                   
+
                                     <td>
                                         @if ($row->user_id == auth()->id())
                                         <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" class="btn btn-sm btn-secondary" id="view_accomp_documents" data-id="{{ $row->id }}">Edit</a>
@@ -383,7 +383,7 @@
                                     </td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -421,10 +421,10 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->sector_approval == 1 ) data-accept="{{ route('ipqmso.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->department_name }}</td>
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->sector_approval == 1 ) data-accept="{{ route('ipqmso.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->report_category }}</td>
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" @if($row->sector_approval == 1 ) data-accept="{{ route('ipqmso.undo', ':id') }}" @endif data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                    
+
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -525,15 +525,17 @@
             </div>
         </div>
     </div>
-    
+
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $('.button-view').on('click', function(){
             var categoryID = $(this).data('id');
-            
-            $.get('/reports/reject-details/'+categoryID, function(data){
+
+            var urldetails = "{{ url('reports/reject-details/:id') }}";
+			var newlink2 = urldetails.replace(':id', categoryID);
+			$.get(newlink2, function (data) {
                 var position = data.position_name;
                 var countColumns = 1;
                 var position_name = position.charAt(0).toUpperCase()+position.slice(1);
@@ -549,7 +551,9 @@
             var accept = $(this).data('accept');
             var relay = $(this).data('relay');
             var countColumns = 0;
-            $.get('/reports/data/'+catID, function (data){
+            var url = "{{ url('reports/data/:id') }}";
+			var newlink = url.replace(':id', catID);
+			$.get(newlink, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
@@ -557,7 +561,9 @@
                     $('#row-'+countColumns).append('<td class="report-content">'+data[k]+'</td>');
                 });
             });
-            $.get('/reports/docs/'+catID, function (data) {
+            var urldoc = "{{ url('reports/docs/:id') }}";
+			var newlinkdoc = urldoc.replace(':id', catID);
+			$.get(newlinkdoc, function (data) {
                 data.forEach(function (item){
                     var newlink = link.replace(':filename', item)
                     $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
@@ -567,8 +573,8 @@
                 $('#review_btn_relay').append('<a href="'+relay.replace(':id', catID)+'" class="btn btn-success report-content">Relay</a>');
             if(typeof relay == 'undefined' && typeof accept != 'undefined')
                 $('#review_btn_undo').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-dark report-content">Undo</a>');
-            
-            
+
+
         });
 
 
@@ -599,14 +605,14 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
     <script>
         $('.button-deny').on('click', function(){
             var categoryID = $(this).data('id');
-            
+
             $.get('/reports/reject-details/'+categoryID, function(data){
                 var position = data.position_name;
                 var countColumns = 1;

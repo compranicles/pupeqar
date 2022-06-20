@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <input type="file" 
+        <input type="file"
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
@@ -25,30 +25,31 @@
 
 @push('scripts')
     <script>
+        var url = "{{ url('upload') }}";
         FilePond.registerPlugin(
 
             // encodes the file as base64 data
             FilePondPluginFileEncode,
-            
+
             // validates the size of the file
             FilePondPluginFileValidateSize,
-            
+
             // corrects mobile image orientation
             FilePondPluginImageExifOrientation,
-            
+
             // previews dropped images
             FilePondPluginImagePreview,
             FilePondPluginFileValidateType,
-            
+
         );
         // Create a FilePond instance
         const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'));
         pondDocument.setOptions({
             acceptedFileTypes: ['application/pdf', 'image/jpeg', 'image/png'],
-            
+
             server: {
                 process: {
-                    url: "/upload",
+                    url: url,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     }

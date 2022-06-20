@@ -87,7 +87,7 @@
         <script>
             var report_category_id = 13;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            $.get("{{ url('document-upload/description/13') }}", function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
@@ -97,36 +97,42 @@
         </script>
         <script>
             var dropdown_id = 30;
-            $('#collab_nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#collab_nature")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                $('#collab_nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/30') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#collab_nature")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
         <script>
             var dropdown_id = 31;
-            $('#partnership_type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#partnership_type")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                $('#partnership_type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/31') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#partnership_type")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
          <script>
             var dropdown_id = 32;
-            $('#deliverable').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#deliverable")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                $('#deliverable').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/32') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#deliverable")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

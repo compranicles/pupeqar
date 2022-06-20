@@ -44,7 +44,7 @@
     <script>
         var report_category_id = 28;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        
+
         setTimeout(() => {
             var urlre = "{{ url('document-upload/description/28') }}";
             $.get(urlre, function (data){
@@ -54,8 +54,8 @@
                     });
                 }
             });
-        }, 2000);
-        
+        }, Math.floor(Math.random() * (2500 - 1) + 1));
+
     </script>
     @endpush
 </x-app-layout>

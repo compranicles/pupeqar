@@ -1,4 +1,4 @@
-<x-app-layout>   
+<x-app-layout>
     <x-slot name="header">
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'id'))
     </x-slot>
@@ -133,7 +133,7 @@
                                                     @elseif ($row->chairperson_approval === 1)
                                                         <span class="text-success font-weight-bold">Received</span>
                                                     @endif
-                                                @endif     
+                                                @endif
                                             </td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                 @if ($row->chairperson_approval === 0)
@@ -213,16 +213,16 @@
                                                         $row->ipqmso_approval === 0
                                                     )
                                                         <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
-        
+
                                                     @else
                                                         -
                                                     @endif
                                                 @endif
                                             </td>
-        
+
                                         </tr>
                                         @empty
-                                            
+
                                         @endforelse
                                     </tbody>
                                 </table>
@@ -232,7 +232,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -319,12 +319,12 @@
             //                 var val = $.fn.dataTable.util.escapeRegex(
             //                     $(this).val()
             //                 );
-    
+
             //                 column
             //                     .search( val ? '^'+val+'$' : '', true, false )
             //                     .draw();
             //             } );
-    
+
             //         column.data().unique().sort().each( function ( d, j ) {
             //             select.append( '<option value="'+d+'">'+d+'</option>' )
             //         } );
@@ -337,12 +337,12 @@
             //                 var val = $.fn.dataTable.util.escapeRegex(
             //                     $(this).val()
             //                 );
-    
+
             //                 column
             //                     .search( val ? '^'+val+'$' : '', true, false )
             //                     .draw();
             //             } );
-    
+
             //         column.data().unique().sort().each( function ( d, j ) {
             //             select.append( '<option value="'+d+'">'+d+'</option>' )
             //         } );
@@ -354,9 +354,11 @@
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
-                
+
                 var countColumns = 0;
-                $.get('/reports/data/'+catID, function (data){
+                var url = "{{ url('reports/data/:id') }}";
+				var newlink = url.replace(':id', catID);
+				$.get(newlink, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
@@ -364,13 +366,15 @@
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
-                $.get('/reports/docs/'+catID, function (data) {
+                var urldoc = "{{ url('reports/docs/:id') }}";
+				var newlinkdoc = urldoc.replace(':id', catID);
+				$.get(newlinkdoc, function (data) {
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
                         $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
-                
+
                 var viewReport = document.getElementById('viewReport')
                 var reportCategory = $(this).data('report-category')
                 var modalTitle = viewReport.querySelector('.modal-title')
@@ -379,8 +383,10 @@
 
             $(document).on('click', '.button-deny', function () {
                 var categoryID = $(this).data('id');
-            
-                $.get('/reports/reject-details/'+categoryID, function(data){
+
+                var urldetails = "{{ url('reports/reject-details/:id') }}";
+				var newlink2 = urldetails.replace(':id', categoryID);
+				$.get(newlink2, function (data) {
                     var position = data.position_name;
                     var countColumns = 1;
                     var position_name = position.charAt(0).toUpperCase()+position.slice(1);
@@ -403,7 +409,7 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
@@ -476,12 +482,12 @@
                     });
                     table.draw();
             } -->
-        </script>
+        {{-- </script> --}}
         <script>
             $('#quarterYearFilter').on('click', function () {
                 var year_reported = $('#yearFilter').val();
                 var quarter = $('#quarterFilter').val();
-                var link = "/reports/consolidate/research/reportYearFilter/:department/:year/:quarter";
+                var link = "{{ url('reports/consolidate/research/reportYearFilter/:department/:year/:quarter') }}";
                 var newLink = link.replace(':department', "{{$department['id']}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });

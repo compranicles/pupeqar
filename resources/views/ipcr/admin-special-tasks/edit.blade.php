@@ -163,7 +163,7 @@
                         });
                     }
                 });
-            }, 2000);
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

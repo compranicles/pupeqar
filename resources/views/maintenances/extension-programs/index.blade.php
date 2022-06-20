@@ -17,7 +17,7 @@
                 @if ($message = Session::get('success'))
                 <div class="alert alert-success alert-index">
                     <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>         
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -68,24 +68,29 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
         <script>
             $(function() {
-                $('.active-switch').on('change', function(){
-                    var optionID = $(this).data('id');
-                    if ($(this).is(':checked')) {
-                        $.ajax({
-                            url: '/extension-program-forms/activate/'+optionID
-                        });
-                    } else {
-                        $.ajax({
-                            url: '/extension-program-forms/inactivate/'+optionID
-                        });
-                    }
-                });
+				var urlAct =  "{{ url('extension-program-forms/activate/:id') }}";
+				var urlInaAct =  "{{ url('extension-program-forms/inactivate/:id') }}";
+				$('.active-switch').on('change', function(){
+					var optionID = $(this).data('id');
+					var url1 = urlAct.replace(':id', optionID);
+					var url2 = urlInaAct.replace(':id', optionID);
+					if ($(this).is(':checked')) {
+						$.ajax({
+							url: url1
+						});
+					} else {
+						$.ajax({
+							url: url2
+						});
+					}
+				});
+
             });
         </script>
     @endpush

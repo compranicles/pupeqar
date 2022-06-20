@@ -56,7 +56,7 @@
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
 
         setTimeout(() => {
-            var urlre = "{{ url('document-upload/description/30') }}";
+            var urlre = "{{ url('document-upload/description/33') }}";
             $.get(urlre, function (data){
                 if (data != '') {
                     data.forEach(function (item){
@@ -64,7 +64,7 @@
                     });
                 }
             });
-        }, 2000);
+        }, Math.floor(Math.random() * (2500 - 1) + 1));
 
     </script>
     @endpush

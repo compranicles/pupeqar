@@ -35,11 +35,11 @@
     </div>
     @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>   
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script>
         var report_category_id = 16;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        $.get('/document-upload/description/'+report_category_id, function (data){
+        $.get("{{ url('document-upload/description/16') }}", function (data){
             if (data != '') {
                 data.forEach(function (item){
                     $("#description")[0].selectize.addOption({value:item.name, text:item.name});

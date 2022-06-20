@@ -4,9 +4,9 @@
             {{ __('Report Table: '.$table->name) }}
         </h2>
     </x-slot>
-     
+
     <div class="container mt-n4">
-        
+
         <div class="row mt-3 mb-3">
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
@@ -142,17 +142,18 @@
             @endif
         </div>
     </div>
-    
+
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
         <script>
+            var urlGen = "{{ url('maintenances/generate/arrange') }}";
             $('#field_sortable').sortable({
                 stop: function(e, ui) {
                     var array_values = $('#field_sortable').sortable('toArray');
                     var array_values = JSON.stringify(array_values);
                     $.ajax({
-                        url: '/maintenances/generate/arrange',
+                        url: urlGen,
                         type: "POST",
                         data: {data: array_values},
                         dataType: 'json',
@@ -176,15 +177,19 @@
                 },
             });
 
+			var urlAct =  "{{ url('maintenances/generate/:id/activate') }}";
+			var urlInaAct =  "{{ url('maintenances/generate/:id/inactivate') }}";
             $('.active-switch').on('change', function(){
                 var optionID = $(this).data('id');
+				var url1 = urlAct.replace(':id', optionID);
+				var url2 = urlInaAct.replace(':id', optionID);
                 if ($(this).is(':checked')) {
                     $.ajax({
-                        url: '/maintenances/generate/'+optionID+'/activate'
+                        url: url1
                     });
                 } else {
                     $.ajax({
-                        url: '/maintenances/generate/'+optionID+'/inactivate'
+                        url: url2
                     });
                 }
             });

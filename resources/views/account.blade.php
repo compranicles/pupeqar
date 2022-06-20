@@ -75,12 +75,12 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="">Signature <small class="ml-2">Upload your digital signature to be attached in consolidated reports. </small></label>
-                                        <input type="file" 
+                                        <input type="file"
                                         class="{{ $errors->has('document') ? 'is-invalid' : '' }} filepond mb-n1"
                                         name="document[]"
                                         id="document"
                                         data-max-file-size="50MB"
-                                        data-max-files="50" 
+                                        data-max-files="50"
                                         required/>
                                         <p class="mt-1"><small>Accepts JPEG, and PNG file formats.</small></p>
                                         <button type="submit" id="submit" class="btn btn-success float-right">Save Signature</button>
@@ -89,7 +89,7 @@
                                 <div class="col-md-6">
                                     @if (!$user->signature == '')
                                         @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$user->signature)))
-                                        
+
                                         <div class="card bg-light border border-maroon rounded-lg">
                                             <a href="{{ route('document.display', $user->signature) }}" data-lightbox="gallery" data-title="{{ $user->signature }}" target="_blank">
                                                 <img src="{{ route('document.display', $user->signature) }}" class="card-img-top img-resize"/>
@@ -115,7 +115,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('offices.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr>
                         @forelse($employeeSectorsCbcoDepartment as $row)
                         <div class="row">
@@ -142,7 +142,7 @@
                                 <div class="alert alert-success text-center p-5" role="alert">
                                     <h5>
                                         Add College/Branch/Campus/Office Where You Are Reporting.
-                                    </h5> 
+                                    </h5>
                                 </div>
                             </div>
                         @endforelse
@@ -192,7 +192,7 @@
     <script>
         window.setTimeout(function() {
             $(".action-alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
@@ -219,26 +219,26 @@
 
             // encodes the file as base64 data
             FilePondPluginFileEncode,
-            
+
             // validates the size of the file
             FilePondPluginFileValidateSize,
-            
+
             // corrects mobile image orientation
             FilePondPluginImageExifOrientation,
-            
+
             // previews dropped images
             FilePondPluginImagePreview,
             FilePondPluginFileValidateType,
-            
+
         );
         // Create a FilePond instance
         const pondDocument = FilePond.create(document.querySelector('input[name="document[]"]'));
         pondDocument.setOptions({
             acceptedFileTypes: ['image/jpeg', 'image/png'],
-            
+
             server: {
                 process: {
-                    url: "/upload",
+                    url: "{{ url('/upload') }}",
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     }

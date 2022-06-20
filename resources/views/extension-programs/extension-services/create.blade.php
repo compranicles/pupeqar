@@ -107,7 +107,7 @@
         <script>
             var report_category_id = 12;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            $.get("{{ url('document-upload/description/12') }}", function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
@@ -116,26 +116,30 @@
             });
         </script>
         <script>
-            var dropdown_id = 26;
-            $('#classification').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#classification")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                var dropdown_id = 26;
+                $('#classification').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/26') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#classification")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
         <script>
-            var dropdown_id = 29;
-            $('#classification_of_trainees_or_beneficiaries').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#classification_of_trainees_or_beneficiaries")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                var dropdown_id = 29;
+                $('#classification_of_trainees_or_beneficiaries').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/29') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#classification_of_trainees_or_beneficiaries")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

@@ -1,4 +1,4 @@
-<x-app-layout>   
+<x-app-layout>
     <x-slot name="header">
         @include('submissions.navigation', compact('roles', 'departments', 'colleges'))
     </x-slot>
@@ -32,7 +32,7 @@
 
                                     </tr>
                                     @empty
-                                        
+
                                     @endforelse
                                 </tbody>
                             </table>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-        </div>   
+        </div>
     @endif
     @if (in_array(6, $roles))
     <div class="card mb-3">
@@ -72,7 +72,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
     @endif
     @if (in_array(7, $roles))
     <div class="card mb-3">
@@ -112,7 +112,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -120,7 +120,7 @@
                 </div>
             </div>
         </div>
-    </div>     
+    </div>
     @endif
     @if (in_array(8, $roles))
     <div class="card mb-3">
@@ -152,7 +152,7 @@
                                     <td class="button-view" data-toggle="modal" data-target="#viewReport"  data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                 </tr>
                                 @empty
-                                    
+
                                 @endforelse
                             </tbody>
                         </table>
@@ -160,7 +160,7 @@
                 </div>
             </div>
         </div>
-    </div>     
+    </div>
     @endif
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
@@ -204,12 +204,14 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
-            $('.button-view').on('click', function(){
+             $('.button-view').on('click', function(){
                 var catID = $(this).data('id');
                 var link = $(this).data('url');
-                
+
                 var countColumns = 0;
-                $.get('/reports/data/'+catID, function (data){
+                var url = "{{ url('reports/data/:id') }}";
+				var newlink = url.replace(':id', catID);
+				$.get(newlink, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
@@ -217,14 +219,15 @@
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
-                $.get('/reports/docs/'+catID, function (data) {
+                var urldoc = "{{ url('reports/docs/:id') }}";
+				var newlinkdoc = urldoc.replace(':id', catID);
+				$.get(newlinkdoc, function (data) {
                     data.forEach(function (item){
                         var newlink = link.replace(':filename', item)
                         $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
                 
-            });
 
             $('#viewReport').on('hidden.bs.modal', function(event) {
                 $('.report-content').remove();
@@ -235,7 +238,7 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>

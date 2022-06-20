@@ -64,7 +64,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,7 +88,7 @@
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
-                                                        
+
                                                     </div>
                                                 </div>
                                             @endif
@@ -134,30 +134,30 @@
 
         <script>
             $('#classification').on('change', function () {
-                $('#classification').attr('disabled', true); 
+                $('#classification').attr('disabled', true);
             });
             $('#category').on('change', function () {
-                $('#category').attr('disabled', true); 
+                $('#category').attr('disabled', true);
             });
             $('#agenda').on('change', function () {
-                $('#agenda').attr('disabled', true); 
+                $('#agenda').attr('disabled', true);
             });
             $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
             });
             $('#research_type').on('change', function () {
-                $('#research_type').attr('disabled', true); 
+                $('#research_type').attr('disabled', true);
             });
             $('#funding_type').on('change', function () {
-                $('#funding_type').attr('disabled', true); 
+                $('#funding_type').attr('disabled', true);
             });
             $('#currency_select').on('change', function () {
-                $('#currency_select').attr('disabled', true); 
+                $('#currency_select').attr('disabled', true);
             });
             $('.document').remove();
-           
-            $('#title').attr('disabled', true); 
+
+            $('#title').attr('disabled', true);
             $("#keywords")[0].selectize.lock();
             $("#researchers")[0].selectize.lock();
             $('#currency_select_funding_amount').attr('disabled', true);
@@ -170,15 +170,17 @@
 
         </script>
         <script>
-            var report_category_id = 1;
+             var report_category_id = 1;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            var apinb = '{{ url("/document-upload/description/1") }}';
+            setTimeout(function (){
+            $.get(apinb, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
-            });
+            }); }, 2000);
         </script>
     @endpush
 </x-app-layout>

@@ -155,7 +155,7 @@
                     @csrf
                     @foreach ($reportsToReview as $row)
                         <input class="report-{{ $row->id }}" type="hidden" value="{{ $row->id }}" name="report_id[]" disabled>
-                    @endforeach                        
+                    @endforeach
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
@@ -183,7 +183,7 @@
                     @csrf
                     @foreach ($reportsToReview as $row)
                         <input class="report-{{ $row->id }}" type="hidden" value="{{ $row->id }}" name="report_id[]" disabled>
-                    @endforeach                        
+                    @endforeach
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
@@ -228,7 +228,7 @@
             $(".select-box").each(function(index, element){
                 if(this.checked){
                     allChecked++;
-                } 
+                }
             });
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
@@ -255,7 +255,7 @@
             $(".select-box").each(function(index, element){
                 if(this.checked){
                     allChecked++;
-                } 
+                }
                 else{
                     flag = false;
                 }
@@ -284,8 +284,10 @@
             var accept = $(this).data('accept');
             var deny = $(this).data('deny');
             var countColumns = 0;
-            
-            $.get('/reports/data/'+catID, function (data){
+
+            var url = "{{ url('reports/data/:id') }}";
+			var newlink = url.replace(':id', catID);
+			$.get(newlink, function (data){
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
@@ -293,16 +295,18 @@
                     $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                 });
             });
-            $.get('/reports/docs/'+catID, function (data) {
+            var urldoc = "{{ url('reports/docs/:id') }}";
+			var newlinkdoc = urldoc.replace(':id', catID);
+			$.get(newlinkdoc, function (data) {
                 data.forEach(function (item){
                     var newlink = link.replace(':filename', item)
                     $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-dark">'+item+'<a/>');
                 });
             });
-            
+
             $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
             $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Receive</a>');
-            
+
             var viewReport = document.getElementById('viewReport')
             var reportCategory = $(this).data('report-category')
             var modalTitle = viewReport.querySelector('.modal-title')
@@ -328,12 +332,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
@@ -345,12 +349,12 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
@@ -362,24 +366,24 @@
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-    
+
                             column
                                 .search( val ? '^'+val+'$' : '', true, false )
                                 .draw();
                         } );
-    
+
                     column.data().unique().sort().each( function ( d, j ) {
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
                 }
             });
-            
+
             var allChecked = 0;
             $(".select-box").each(function(index, element){
                 if(this.checked){
                     allChecked++;
-                } 
+                }
             });
             if(allChecked == 0){
                 $('#select-all').prop('checked', false);
@@ -396,7 +400,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

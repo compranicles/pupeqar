@@ -39,7 +39,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-        
+
                                     <div class="accordion" id="accordionReport">
                                         @foreach ( $report_tables as $table)
                                             @if (count($report_array[$table->id]) == 0)
@@ -53,7 +53,7 @@
                                                   </button>
                                                 </h2>
                                               </div>
-                                          
+
                                               <div id="collapse-{{ $table->id }}" class="collapse @if ($loop->first) show @endif" aria-labelledby="heading-{{ $table->id }}" data-parent="#accordionReport">
                                                 <div class="card-body border">
                                                     <div class="row justify-content-center">
@@ -99,8 +99,8 @@
                                                                                 <td>{{ $row->course_title }}</td>
                                                                                 @endif
                                                                                 <td>}}" data-code="@isset($row->research_code){{ $row->research_code }}@else{{ $row->row_id }}@endisset">View Data</button>
-                                                                                
-                                                                                    <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename') 
+
+                                                                                    <button class="report-view btn btn-sm btn-primary" role="button" data-toggle="modal" data-target="#viewReport" data-id="{{ $table->id }}" data-url="{{ route('document.view', ':filename')
 
                                                                                     @isset($row->research_code)
                                                                                          @if ( count($report_document_checker[$table->id][$row->research_code]) == 0)
@@ -177,7 +177,7 @@
                                                     </td>
                                                 </tr>
                                                 @empty
-                                                    
+
                                                 @endforelse
                                             </tbody>
                                         </table>
@@ -248,7 +248,7 @@
                                     <input type="hidden" value="{{ ($row->research_code ?? '*').','.$table->id.','.($row->id ?? '*') }}" name="report_values[]">
                                 @endif
                             @endisset
-                        @endforeach                        
+                        @endforeach
                     @endforeach
                 </div>
             <div class="modal-footer">
@@ -304,14 +304,20 @@
 
             var countColumns = 0;
             var countValues = 0;
-            $.get('/reports/tables/data/'+catID, function (data){
+
+			var url = "{{ url('reports/tables/data/:id') }}";
+			var newlink = url.replace(':id', catID);
+			$.get(newlink, function (data){
                 data.forEach(function (item){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="report-content"></tr>')
                     $('#row-'+countColumns).append('<td class="report-content font-weight-bold h5 text-left">'+item.name+':</td>');
                 });
             });
-            $.get('/reports/tables/data/'+catID+'/'+rowID, function (data){
+			var url2 = "{{ url('reports/tables/data/:id/:rowID') }}";
+			var newlink2 = url.replace(':id', catID);
+			newlink2 = newlink2.replace(':rowID', rowID);
+			$.get(newlink2, function (data){
                 data.forEach(function (item){
                     countValues = countValues + 1;
                     if(item == null)
@@ -320,7 +326,11 @@
                         $('#row-'+countValues).append('<td class="report-content h5 text-left">'+item+'</td>');
                 });
             });
-            $.get('/reports/tables/data/documents/'+catID+'/'+rowID, function (data) {
+
+			var url3 = "{{ url('reports/tables/data/documents/:id/:rowID') }}";
+			var newlink3 = url.replace(':id', catID);
+			newlink3 = newlink3.replace(':rowID', rowID);
+			$.get(newlink3, function (data){
                 if(data == false){
                     $('#data_documents').append('<a class="report-content btn-link text-dazrk">No Document Attached</a>');
                 }
@@ -334,11 +344,15 @@
         });
 
 
+
         $('.button-deny').on('click', function () {
             var catID = $(this).data('id');
-            
+
             var countColumns = 1;
-            $.get('/reports/reject-details/'+catID, function(data){
+
+			var link = "{{ url('reports/reject-details/:catID') }}";
+			var newlink = link.replace(':catID', catID);
+            $.get(newlink, function(data){
                 $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.position_name+'</td>');
                 countColumns = countColumns + 1;
                 $('#deny-'+countColumns).append('<td class="deny-details h5 text-left">'+data.time+'</td>');
@@ -365,7 +379,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

@@ -15,12 +15,12 @@
                     @default
                 @endswitch
                 >
-                
+
                 <option value="" selected disabled>Choose...</option>
                 @foreach ($colleges as $row)
                 <option value="{{ $row->id }}" {{ (old($fieldInfo->name) == '') ?  (($college_id == $row->id) ? 'selected' : '') : ((old($fieldInfo->name) == $row->id) ? 'selected' : '') }} >{{ $row->name }}</option>
                 @endforeach
-               
+
             </select>
             <!-- @if ($colleges !== []) -->
             <span id="" role="alert">
@@ -46,7 +46,9 @@
         $('#college_id').on('input', function(){
             var collegeId = $('#college_id').val();
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/departments/options/'+collegeId, function (data){
+            var url = "{{ url('departments/options/:id') }}";
+			var api = url.replace(':id', collegeId);
+            $.get(api, function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#department_id").append(new Option(item.name, item.id));
@@ -66,11 +68,13 @@
                 document.getElementById("department_id").value = "";
             }
             else {
-                $.get('/departments/options/'+collegeId, function (data){
+                var url = "{{ url('departments/options/:id') }}";
+				var api = url.replace(':id', collegeId);
+				$.get(api, function (data){
                     if (data != '') {
                         data.forEach(function (item){
                             $("#department_id").append(new Option(item.name, item.id));
-                            
+
                         });
                     }
                     if ("{{ old('department_id') }}" == '')

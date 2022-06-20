@@ -149,12 +149,12 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
-    <script src="{{ asset('js/remove-document.js') }}"></script>   
+    <script src="{{ asset('js/remove-document.js') }}"></script>
     <script>
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
@@ -166,15 +166,17 @@
         });
     </script>
     <script>
-        var report_category_id = 4;
-        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        $.get('/document-upload/description/'+report_category_id, function (data){
-            if (data != '') {
-                data.forEach(function (item){
-                    $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-                });
-            }
-        });
+        v var report_category_id = 4;
+		$('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+		var apinb = '{{ url("/document-upload/description/4") }}';
+		setTimeout(function (){
+		$.get(apinb, function (data){
+			if (data != '') {
+				data.forEach(function (item){
+					$("#description")[0].selectize.addOption({value:item.name, text:item.name});
+				});
+			}
+		}); }, 2000);
     </script>
 @endpush
 </x-app-layout>

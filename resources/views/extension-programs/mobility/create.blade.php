@@ -61,7 +61,7 @@
         <script>
             var report_category_id = 14;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            $.get('/document-upload/description/'+report_category_id, function (data){
+            $.get("{{ url('document-upload/description/14') }}", function (data){
                 if (data != '') {
                     data.forEach(function (item){
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
@@ -71,14 +71,16 @@
         </script>
         <script>
             var dropdown_id = 35;
-            $('#type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#type")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            setTimeout(function (){
+                $('#type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/35') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#type")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

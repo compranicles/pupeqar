@@ -152,7 +152,7 @@
     <script>
         $('#year').datepicker({
             format: " yyyy", // Notice the Extra space at the beginning
-            viewMode: "years", 
+            viewMode: "years",
             minViewMode: "years"
         });
     </script>
@@ -160,20 +160,21 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>
     <script>
         var report_category_id = 5;
-        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        $.get('/document-upload/description/'+report_category_id, function (data){
+        var apijk = '{{ url("/document-upload/description/5") }}';
+        setTimeout(function (){
+        $.get(apijk, function (data){
             if (data != '') {
                 data.forEach(function (item){
                     $("#description")[0].selectize.addOption({value:item.name, text:item.name});
                 });
             }
-        });
+        }); }, 2000);
     </script>
 @endpush
 </x-app-layout>
