@@ -6,7 +6,7 @@
     </x-slot> --}}
     <div class="row">
         <div class="col-md-12">
-            <h2 class="font-weight-bold mb-2">Attendance in University and College Functions</h2>
+            <h2 class="font-weight-bold mb-2">Attendance in University and College/ Office Functions</h2>
         </div>
     </div>
 
@@ -91,7 +91,7 @@
                                         <div role="group">
                                             <a href="{{ route('attendance-function.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                             <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->activity_description }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                            <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                            <a href="{{ url('submissions/check/33/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                         </div>
                                     </td>
                                 </tr>

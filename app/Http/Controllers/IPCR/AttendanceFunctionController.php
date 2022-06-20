@@ -17,6 +17,7 @@ use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AttendanceFunctionDocument;
 use App\Http\Controllers\StorageFileController;
+use App\Http\Controllers\Maintenances\LockController;
 
 class AttendanceFunctionController extends Controller
 {
@@ -174,7 +175,7 @@ class AttendanceFunctionController extends Controller
         if(LockController::isLocked($attendance_function->id, 33)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
-        
+
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Edit Attendance in University and College Function') }}
+            {{ __('Edit Attendance in University and College/ Office Function') }}
         </h2>
     </x-slot>
 
@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
             <p>
-              <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Tasks</a>
+              <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College Function</a>
             </p>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
