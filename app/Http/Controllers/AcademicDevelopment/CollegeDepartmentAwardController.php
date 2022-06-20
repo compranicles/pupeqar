@@ -12,10 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{
+    Chairperson,
+    Dean,
     CollegeDepartmentAward,
     CollegeDepartmentAwardDocument,
     TemporaryFile,  
     FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
     Maintenance\Quarter,
 };
 
@@ -67,7 +70,14 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
 
-        return view('academic-development.college-department-award.create', compact('awardFields'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.college-department-award.create', compact('awardFields', 'colleges'));
     }
 
     /**
@@ -178,7 +188,14 @@ class CollegeDepartmentAwardController extends Controller
 
         $values = $college_department_award->toArray();
 
-        return view('academic-development.college-department-award.edit', compact('awardFields', 'college_department_award', 'documents', 'values'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_intersect($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', [$colleges])
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.college-department-award.edit', compact('awardFields', 'college_department_award', 'documents', 'values', 'colleges'));
     }
 
     /**
