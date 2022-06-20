@@ -118,11 +118,11 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::insert([
-            'name' => 'III. ATTENDANCE IN UNIVERSITY FUNCTION',
+            'name' => 'III. ATTENDANCE IN UNIVERSITY AND OFFICE FUNCTIONS',
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 33,
             'footers' => null
         ]);
         GenerateTable::insert([
@@ -678,7 +678,7 @@ class GenerateTableSeeder extends Seeder
             'is_individual' => 1,
             'report_category_id' => 15,
             'footers' => json_encode([
-               '* International,National, Regional, Provincial/City/Municipal, Local-PUP' 
+               '* International,National, Regional, Provincial/City/Municipal, Local-PUP'
             ], JSON_FORCE_OBJECT)
         ]);
         GenerateTable::insert([
@@ -714,11 +714,11 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::insert([
-            'name' => 'IV. ATTENDANCE IN UNIVERSITY FUNCTION',
+            'name' => 'IV. ATTENDANCE IN UNIVERSITY AND COLLEGE FUNCTIONS',
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,
-            'report_category_id' => null,
+            'report_category_id' => 33,
             'footers' => null
         ]);
         GenerateTable::insert([

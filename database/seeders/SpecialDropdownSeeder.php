@@ -97,5 +97,27 @@ class SpecialDropdownSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+
+        $dropdownId  = Dropdown::insertGetId([
+            'name' => 'Classification (Attendance in Functions)'
+        ]);
+        DropdownOption::insert([
+            'dropdown_id' => $dropdownId,
+            'name' => 'University',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::insert([
+            'dropdown_id' => $dropdownId,
+            'name' => 'College/ Office',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        DropdownOption::insert([
+            'dropdown_id' => $dropdownId,
+            'name' => 'Department/ Section',
+            'order' => 1,
+            'is_active' => 1,
+        ]);
     }
 }

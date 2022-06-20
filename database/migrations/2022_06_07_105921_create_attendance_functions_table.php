@@ -19,7 +19,7 @@ class CreateAttendanceFunctionsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->foreignId('status');
-            $table->text('proof_of_attendance');
+            $table->text('description');
             $table->foreignId('user_id')->nullable();
             $table->foreignId('college_id')->nullable();
             $table->foreignId('department_id')->nullable();

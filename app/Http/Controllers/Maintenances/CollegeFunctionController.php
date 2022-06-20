@@ -18,7 +18,7 @@ class CollegeFunctionController extends Controller
     {
         $colleges = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        $collegeFunctions = CollegeFunction::whereIn('college_functions.college_id', [$colleges])
+        $collegeFunctions = CollegeFunction::whereIn('college_functions.college_id', $colleges)
                         ->join('colleges', 'colleges.id', 'college_functions.college_id')
                         ->select('college_functions.*', 'colleges.name as college_name')
                         ->get();
