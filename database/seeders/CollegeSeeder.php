@@ -25,7 +25,7 @@ class CollegeSeeder extends Seeder
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
-                if($row->Level == "1"){
+                if($row->Lvl == "1"){
                     if($row->RootID == "0"){
                         if(in_array($row->DepartmentID, $sectorHRISCodes)){
                             $sectorId = Sector::where('hris_code', $row->DepartmentID)->pluck('id')->first();

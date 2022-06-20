@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Inventions;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -55,7 +56,19 @@ class InventionController extends Controller
                         ->orderBy('inventions.updated_at', 'DESC')
                         ->get();
 
-        return view('inventions.index', compact('inventions', 'year', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($inventions as $invention) {
+            if (LockController::isLocked($invention->id, 8))
+                $submissionStatus[8][$invention->id] = 1;
+            else 
+                $submissionStatus[8][$invention->id] = 0;
+            if (empty($reportdata->getDocuments(8, $invention->id)))
+                $submissionStatus[8][$invention->id] = 2;
+        }
+
+        return view('inventions.index', compact('inventions', 'year', 'currentQuarterYear',
+            'submissionStatus'));
 
     }
 

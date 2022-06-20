@@ -23,6 +23,8 @@ class AttendanceFunctionController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -49,6 +51,8 @@ class AttendanceFunctionController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -58,7 +62,7 @@ class AttendanceFunctionController extends Controller
             ->orderBy('i_p_c_r_fields.order')->get();
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $values = UniversityFunction::where('id', $request->get('id'))->first()->toArray();
+        $values = UniversityFunction::where('id', $request->get('id'))->first();
 
         if($request->get('type') == 'college'){
             $values = CollegeFunction::where('id', $request->get('id'))->first()->toArray();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -49,8 +50,19 @@ class PartnershipController extends Controller
                             ->select(DB::raw('partnerships.*, colleges.name as college_name'))
                             ->orderBy('partnerships.updated_at', 'desc')->get();
 
-                            // dd($partnerships);
-        return view('extension-programs.partnership.index', compact('partnerships', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($partnerships as $partnership) {
+            if (LockController::isLocked($partnership->id, 13))
+                $submissionStatus[13][$partnership->id] = 1;
+            else 
+                $submissionStatus[13][$partnership->id] = 0;
+            if (empty($reportdata->getDocuments(13, $partnership->id)))
+                $submissionStatus[13][$partnership->id] = 2;
+        }
+
+        return view('extension-programs.partnership.index', compact('partnerships', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**

@@ -19,6 +19,7 @@ use App\Models\Request as RequestModel;
 use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class RequestController extends Controller
 {
@@ -53,7 +54,20 @@ class RequestController extends Controller
                                 ->select('colleges.name')->where('requests.user_id', auth()->id())
                                 ->distinct()
                                 ->get();
-        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories', 'currentQuarterYear'));
+
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($requests as $request) {
+            if (LockController::isLocked($request->id, 17))
+                $submissionStatus[17][$request->id] = 1;
+            else 
+                $submissionStatus[17][$request->id] = 0;
+            if (empty($reportdata->getDocuments(17, $request->id)))
+                $submissionStatus[17][$request->id] = 2;
+        }
+
+        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories', 
+            'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

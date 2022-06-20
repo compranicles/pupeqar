@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -48,7 +49,19 @@ class AcademicController extends Controller
                                         ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
 
-        return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($expertServicesAcademic as $academic) {
+            if (LockController::isLocked($academic->id, 11))
+                $submissionStatus[11][$academic->id] = 1;
+            else 
+                $submissionStatus[11][$academic->id] = 0;
+            if (empty($reportdata->getDocuments(11, $academic->id)))
+                $submissionStatus[11][$academic->id] = 2;
+        }
+
+        return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic',
+             'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

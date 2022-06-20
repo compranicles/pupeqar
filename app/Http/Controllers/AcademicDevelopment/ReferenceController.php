@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -48,7 +49,18 @@ class ReferenceController extends Controller
                                     ->orderBy('references.updated_at', 'desc')
                                     ->get();
 
-        return view('academic-development.references.index', compact('allRtmmi', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($allRtmmi as $rtmmi) {
+            if (LockController::isLocked($rtmmi->id, 15))
+                $submissionStatus[15][$rtmmi->id] = 1;
+            else 
+                $submissionStatus[15][$rtmmi->id] = 0;
+            if (empty($reportdata->getDocuments(15, $rtmmi->id)))
+                $submissionStatus[15][$rtmmi->id] = 2;
+        }
+
+        return view('academic-development.references.index', compact('allRtmmi', 'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

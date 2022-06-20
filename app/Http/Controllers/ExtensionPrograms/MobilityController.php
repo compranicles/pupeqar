@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -47,7 +48,19 @@ class MobilityController extends Controller
                                 ->select(DB::raw('mobilities.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        return view('extension-programs.mobility.index', compact('mobilities', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($mobilities as $mobility) {
+            if (LockController::isLocked($mobility->id, 14))
+                $submissionStatus[14][$mobility->id] = 1;
+            else 
+                $submissionStatus[14][$mobility->id] = 0;
+            if (empty($reportdata->getDocuments(14, $mobility->id)))
+                $submissionStatus[14][$mobility->id] = 2;
+        }
+
+        return view('extension-programs.mobility.index', compact('mobilities', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**

@@ -28,7 +28,9 @@
                         request()->routeIs('mobility.*') || request()->routeIs('partnership.*') ||
                         request()->routeIs('extension-service.*') || request()->routeIs('expert-service-as-consultant.*') ||
                         request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*') ||
-                        request()->routeIs('request.*'))
+                        request()->routeIs('request.*') || request()->routeIs('submissions.educ.*') || request()->routeIs('submissions.award.*') ||
+                        request()->routeIs('submissions.development.*') || request()->routeIs('submissions.officership.*') ||
+                        request()->routeIs('special-tasks.*') || request()->routeIs('admin-special-tasks.*') || request()->routeIs('attendance-function.*'))
                         active @endif
                         " role="button">Accomplishments</a>
                     @include('mega-menu')

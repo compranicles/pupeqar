@@ -8,7 +8,7 @@
                     $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author' || 
                     $fieldInfo->name == 'name_of_contact_person')
                     <span id="" role="alert" class="ml-3">
-                        <small>[Surname Suffix (if any), First Name M.I]</small>
+                        [Surname Suffix (if any), First Name M.I]
                     </span>
                 @endif
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
@@ -26,14 +26,9 @@
                     @default
                         
                 @endswitch>
-                @if ($fieldInfo->label == 'Please specify')
-                    <span id="" role="alert">
-                        <small>Required if the previous selection is <em>others</em>.</small>
-                    </span>
-                @endif
                 @if ($fieldInfo->name == 'researchers')
                     <span id="" role="alert">
-                        <small> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers within PUP, add them after you save this research to share them info.' : '' }}</small>
+                        <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers within PUP, add them after you save this research to share them info.' : '' }}
                     </span>
                 @endif
                 @error($fieldInfo->name)

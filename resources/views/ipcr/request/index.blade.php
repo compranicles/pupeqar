@@ -4,7 +4,12 @@
             {{ __('Request & Queries Acted Upon') }}
         </h2>
     </x-slot>
-    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Request & Queries Acted Upon</h2>
+            </div>
+        </div>
         <div class="row">
 
             <div class="col-lg-12">
@@ -86,7 +91,6 @@
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -106,13 +110,6 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td>
-                                            <?php
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -123,7 +120,15 @@
                                             <div role="group">
                                                 <a href="{{ route('request.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
                                                 <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->description_of_request }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                                <a href="{{ url('submissions/check/17/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                                @foreach($submissionStatus as $status)
+                                                    @if ($status[$row->id] == 0)
+                                                        <a href="{{ url('submissions/check/17/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    @elseif ($status[$row->id] == 1)
+                                                        <a href="{{ url('submissions/check/17/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    @elseif ($status[$row->id] == 2)
+                                                        <a href="{{ route('request.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                    @endif        
+                                                @endforeach
                                             </div>
                                         </td>
                                     </tr>

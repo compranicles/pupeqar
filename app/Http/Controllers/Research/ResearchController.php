@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Database\Eloquent\Collection;
@@ -82,7 +83,8 @@ class ResearchController extends Controller
                                 ->where('research_invites.status', null)
                                 ->get();
 
-        return view('research.index', compact('researches', 'year', 'statusResearch', 'invites', 'currentQuarterYear'));
+        return view('research.index', compact('researches', 'year', 'statusResearch', 'invites',
+             'currentQuarterYear'));
     }
 
     /**
@@ -294,7 +296,18 @@ class ResearchController extends Controller
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments', 'colleges', 'collegeOfDepartment', 'exists'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+            if (LockController::isLocked($research->id, 1))
+                $submissionStatus[1][$research->id] = 1;
+            else 
+                $submissionStatus[1][$research->id] = 0;
+            if (empty($reportdata->getDocuments(1, $research->id)))
+                $submissionStatus[1][$research->id] = 2;
+
+        return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments',
+             'colleges', 'collegeOfDepartment', 'exists',
+             'submissionStatus'));
     }
 
     /**

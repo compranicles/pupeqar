@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -69,6 +70,16 @@ class ExtensionServiceController extends Controller
             ->where('extension_invites.status', null)
             ->get();
         
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($extensionServices as $extension) {
+            if (LockController::isLocked($extension->id, 12))
+                $submissionStatus[12][$extension->id] = 1;
+            else 
+                $submissionStatus[12][$extension->id] = 0;
+            if (empty($reportdata->getDocuments(12, $extension->id)))
+                $submissionStatus[12][$extension->id] = 2;
+        }
 
         return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites'));
     }

@@ -112,7 +112,15 @@
                                         <div class="btn-group" role="group" aria-label="button-group">
                                             <a href="{{ route('extension-service.edit', $extensionService) }}" class="btn btn-sm btn-warning">Edit</a>
                                             <button type="button" value="{{ $extensionService->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}">Delete</button>
-                                            <a href="{{ url('submissions/check/12/'.$extensionService->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                            @foreach($submissionStatus as $status)
+                                                @if ($status[$extensionService->id] == 0)
+                                                    <a href="{{ url('submissions/check/12/'.$extensionService->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                @elseif ($status[$extensionService->id] == 1)
+                                                    <a href="{{ url('submissions/check/12/'.$extensionService->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                @elseif ($status[$extensionService->id] == 2)
+                                                    <a href="{{ route('extension-service.edit', $extensionService->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                @endif        
+                                            @endforeach
                                         </div>
                                     </td>
                                 </tr>

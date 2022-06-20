@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +51,6 @@ class CompletedController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
     
-                
         $values = ResearchComplete::where('research_code', $research->research_code)->first();
         // dd($values);
         if($values == null){
@@ -67,7 +67,18 @@ class CompletedController extends Controller
         $value = $value->toArray();
         
         $value = array_merge($value, $values);
-        return view('research.completed.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
+
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+            if (LockController::isLocked($research->id, 2))
+                $submissionStatus[2][$research->id] = 1;
+            else 
+                $submissionStatus[2][$research->id] = 0;
+            if (empty($reportdata->getDocuments(2, $research->id)))
+                $submissionStatus[2][$research->id] = 2;
+                
+        return view('research.completed.index', compact('research', 'researchFields', 
+            'value', 'researchDocuments', 'submissionStatus'));
     }
 
     /**

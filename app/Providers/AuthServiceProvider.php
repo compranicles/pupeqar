@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Models\{
     AdminSpecialTask,
+    AttendanceFunction,
     User,
     Role,
     Research,
@@ -26,13 +27,13 @@ use App\Models\{
     Partnership,
     CollegeDepartmentAward,
     Reference,
+    SpecialTask,
     StudentAward,
     StudentTraining,
     Syllabus,
     TechnicalExtension,
     ViableProject,
     Request,
-
     Announcement,
 };
 use App\Models\Maintenance\{
@@ -100,7 +101,9 @@ use App\Policies\Maintenance\SectorPolicy;
 use App\Policies\Maintenance\Research\ResearchFormPolicy;
 use App\Policies\Maintenance\Invention\InventionFormPolicy;
 use App\Policies\Maintenance\ExtensionProgram\ExtensionProgramFormPolicy;
+use App\Policies\OtherAccomplishment\AcadSpecialTaskPolicy;
 use App\Policies\OtherAccomplishment\AdminSpecialTaskPolicy;
+use App\Policies\OtherAccomplishment\AttendanceFunctionPolicy;
 use App\Policies\Request\RequestPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -173,6 +176,8 @@ class AuthServiceProvider extends ServiceProvider
 
         //Other Accomplishments
         AdminSpecialTask::class => AdminSpecialTaskPolicy::class,
+        SpecialTask::class => AcadSpecialTaskPolicy::class,
+        AttendanceFunction::class => AttendanceFunctionPolicy::class,
 
         //For authorization of reports (to receive and consolidation), please refer to Services (App/Services)
     ];

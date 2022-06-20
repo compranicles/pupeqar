@@ -36,7 +36,7 @@ class DepartmentSeeder extends Seeder
                     }
                 }
                 else{
-                    if($row->Level == "1"){
+                    if($row->Lvl == "1"){
                         if(in_array($row->DepartmentID, $collegeHRISCodes)){
                             Department::insert([
                                 'name' => $row->Department,

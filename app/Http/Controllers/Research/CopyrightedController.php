@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -62,7 +63,17 @@ class CopyrightedController extends Controller
         }
         $values = array_merge($research->toArray(), $values->toArray());
     
-        return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+            if (LockController::isLocked($research->id, 7))
+                $submissionStatus[7][$research->id] = 1;
+            else 
+                $submissionStatus[7][$research->id] = 0;
+            if (empty($reportdata->getDocuments(7, $research->id)))
+                $submissionStatus[7][$research->id] = 2;
+
+        return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 
+            'researchDocuments', 'submissionStatus'));
     }
 
     /**

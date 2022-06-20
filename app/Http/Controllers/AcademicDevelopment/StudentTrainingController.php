@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -39,7 +40,19 @@ class StudentTrainingController extends Controller
         $student_trainings = StudentTraining::where('user_id', auth()->id())
                         ->orderBy('student_trainings.updated_at', 'desc')->get();
 
-        return view('academic-development.student-training.index', compact('student_trainings', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($student_trainings as $student_training) {
+            if (LockController::isLocked($student_training->id, 19))
+                $submissionStatus[19][$student_training->id] = 1;
+            else 
+                $submissionStatus[19][$student_training->id] = 0;
+            if (empty($reportdata->getDocuments(19, $student_training->id)))
+                $submissionStatus[19][$student_training->id] = 2;
+        }
+
+        return view('academic-development.student-training.index', compact('student_trainings', 'currentQuarterYear', 
+            'submissionStatus'));
     }
 
     /**

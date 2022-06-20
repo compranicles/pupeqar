@@ -211,12 +211,14 @@
                     $('#end_date').removeAttr('required');
                     $('#issue_date').attr('disabled', true);
                     $('#issue_date').removeAttr('required');
+                    $('#copyright_number').removeAttr('required');
                 }
                 else if ($(this).val() == 54) {
                     //Completed
                     $('#end_date').attr('required', true);
                     $('#end_date').removeAttr('disabled');
                     $('#issue_date').attr('required', true);
+                    $('#copyright_number').attr('required', true);
                     $('#issue_date').removeAttr('disabled');
                     $('#end_date').datepicker('setStartDate', $('#start_date').val());
                     $('#end_date').focus();

@@ -5,7 +5,7 @@
         </div> -->
         <div class="db-text d-flex align-items-center">
             <p class="db-stat">{{ $countToReview }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('researcher.index') }}">Research & Invention to Review</a>
+            <a class="db-text" style="word-wrap: break-word;" href="{{ route('researcher.index') }}">Research & Invention to Review ({{ $collegeCode }})</a>
             <!-- College code -->
         </div>
     </div>

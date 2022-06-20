@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -69,7 +70,17 @@ class PublicationController extends Controller
 
         $value = array_merge($value, $values);
 
-        return view('research.publication.index', compact('research', 'researchFields', 'value', 'researchDocuments'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+            if (LockController::isLocked($research->id, 3))
+                $submissionStatus[3][$research->id] = 1;
+            else 
+                $submissionStatus[3][$research->id] = 0;
+            if (empty($reportdata->getDocuments(2, $research->id)))
+                $submissionStatus[3][$research->id] = 2;
+
+        return view('research.publication.index', compact('research', 'researchFields', 
+            'value', 'researchDocuments', 'submissionStatus'));
     }
 
     /**

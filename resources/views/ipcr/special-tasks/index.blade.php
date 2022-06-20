@@ -8,9 +8,19 @@
             @endif
         </h2>
     </x-slot>
-    <div class="container">
-        <div class="row">
 
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">
+                @if (in_array(1, $roles))
+                    Special Tasks
+                @elseif (in_array(3, $roles))
+                    Accomplishments Based on OPCR
+                @endif
+                </h2>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
@@ -81,12 +91,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Commitment Measurable by:</th>
+                                        <th>Commitment Measure</th>
                                         <th>Final Output</th>
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -105,13 +114,6 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
-                                            <?php
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
-                                        </td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -119,10 +121,41 @@
                                             {{ $updated_at }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('special-tasks.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                                <a href="{{ url('submissions/check/29/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('special-tasks.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}">Delete</button>
+                                                   
+                                                        @if ($row->commitment_measure_name == "Quality")
+                                                            @if (isset($submissionStatus[30]))
+                                                                @if ($submissionStatus[30][$row->id] == 0)
+                                                                    <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                                @elseif ($submissionStatus[30][$row->id] == 1)
+                                                                    <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                                @elseif ($submissionStatus[30][$row->id] == 2)
+                                                                    <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                @endif 
+                                                            @endif 
+                                                        @elseif ($row->commitment_measure_name == "Efficiency")   
+                                                            @if (isset($submissionStatus[31]))
+                                                                @if ($submissionStatus[31][$row->id] == 0)
+                                                                    <a href="{{ url('submissions/check/31/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                                @elseif ($submissionStatus[31][$row->id] == 1)
+                                                                    <a href="{{ url('submissions/check/31/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                                @elseif ($submissionStatus[31][$row->id] == 2)
+                                                                    <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                @endif   
+                                                            @endif   
+                                                        @elseif ($row->commitment_measure_name == "Timeliness")  
+                                                            @if (isset($submissionStatus[32]))
+                                                                @if ($submissionStatus[32][$row->id] == 0)
+                                                                    <a href="{{ url('submissions/check/32/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                                @elseif ($submissionStatus[32][$row->id] == 1)
+                                                                    <a href="{{ url('submissions/check/32/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                                @elseif ($submissionStatus[32][$row->id] == 2)
+                                                                    <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                @endif   
+                                                            @endif   
+                                                        @endif        
                                             </div>
                                         </td>
                                     </tr>
@@ -134,7 +167,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

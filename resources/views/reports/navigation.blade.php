@@ -33,7 +33,10 @@
                 @endif
             </div>
             <div class="col-md-4">
+                @if (in_array(10, $roles) || in_array(11, $roles) || in_array(5, $roles) || in_array(6, $roles) ||
+                    in_array(7, $roles) || in_array(8, $roles))
                 <h6 style="font-weight: bold; color: #eeb510">CONSOLIDATE ACCOMPLISHMENTS</h6>
+                @endif
                 @if (in_array(5, $roles))
                 {{-- Departments' --}}
                     @forelse ( $departments as $row)

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class SpecialTaskController extends Controller
 {
@@ -31,6 +32,8 @@ class SpecialTaskController extends Controller
      */
     public function index()
     {
+        
+
         $currentQuarterYear = Quarter::find(1);
 
         $categories = DropdownOption::where('dropdown_id', 61)->get();
@@ -50,7 +53,35 @@ class SpecialTaskController extends Controller
                                 ->distinct()
                                 ->get();
 
-        return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories', 'specialTasks', 'tasks_in_colleges'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+            foreach ($specialTasks as $task) {
+                if ($task->commitment_measure_name == "Quality") {
+                    if (LockController::isLocked($task->id, 30))
+                        $submissionStatus[30][$task->id] = 1;
+                    else 
+                        $submissionStatus[30][$task->id] = 0;
+                    if (empty($reportdata->getDocuments(30, $task->id)))
+                        $submissionStatus[30][$task->id] = 2;
+                } elseif ($task->commitment_measure_name == "Efficiency") {
+                    if (LockController::isLocked($task->id, 31))
+                        $submissionStatus[31][$task->id] = 1;
+                    else 
+                        $submissionStatus[31][$task->id] = 0;
+                    if (empty($reportdata->getDocuments(31, $task->id)))
+                        $submissionStatus[31][$task->id] = 2;
+                } elseif ($task->commitment_measure_name == "Timeliness") {
+                    if (LockController::isLocked($task->id, 32))
+                        $submissionStatus[32][$task->id] = 1;
+                    else 
+                        $submissionStatus[32][$task->id] = 0;
+                    if (empty($reportdata->getDocuments(32, $task->id)))
+                        $submissionStatus[32][$task->id] = 2;
+                }
+            } 
+
+        return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories', 
+            'specialTasks', 'tasks_in_colleges', 'submissionStatus'));
     }
 
     /**
@@ -60,6 +91,7 @@ class SpecialTaskController extends Controller
      */
     public function create()
     {
+
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -83,6 +115,8 @@ class SpecialTaskController extends Controller
      */
     public function store(Request $request)
     {
+        
+
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -146,6 +180,7 @@ class SpecialTaskController extends Controller
      */
     public function show(SpecialTask $special_task)
     {
+        
 
         if (auth()->id() !== $special_task->user_id)
             abort(403);
@@ -175,6 +210,7 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $special_task)
     {
+        
 
         if (auth()->id() !== $special_task->user_id)
             abort(403);
@@ -210,6 +246,8 @@ class SpecialTaskController extends Controller
      */
     public function update(Request $request, SpecialTask $special_task)
     {
+        
+
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -270,6 +308,8 @@ class SpecialTaskController extends Controller
      */
     public function destroy(SpecialTask $special_task)
     {
+        
+
         if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
