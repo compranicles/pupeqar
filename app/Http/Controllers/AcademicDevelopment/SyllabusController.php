@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -55,7 +56,19 @@ class SyllabusController extends Controller
                     ->distinct()
                     ->get();
 
-        return view('academic-development.syllabi.index', compact('syllabi', 'year', 'syllabiYearsFinished', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($syllabi as $syllabus) {
+            if (LockController::isLocked($syllabus->id, 16))
+                $submissionStatus[16][$syllabus->id] = 1;
+            else 
+                $submissionStatus[16][$syllabus->id] = 0;
+            if (empty($reportdata->getDocuments(16, $syllabus->id)))
+                $submissionStatus[16][$syllabus->id] = 2;
+        }
+
+        return view('academic-development.syllabi.index', compact('syllabi', 'year', 
+            'syllabiYearsFinished', 'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

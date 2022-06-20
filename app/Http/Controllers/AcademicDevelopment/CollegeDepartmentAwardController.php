@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -38,6 +39,18 @@ class CollegeDepartmentAwardController extends Controller
         $currentQuarterYear = Quarter::find(1);
         $college_department_awards = CollegeDepartmentAward::where('user_id', auth()->id())
                                     ->orderBy('college_department_awards.updated_at', 'desc')->get();
+
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($college_department_awards as $college_department_award) {
+            if (LockController::isLocked($college_department_award->id, 21))
+                $submissionStatus[21][$college_department_award->id] = 1;
+            else 
+                $submissionStatus[21][$college_department_award->id] = 0;
+            if (empty($reportdata->getDocuments(21, $college_department_award->id)))
+                $submissionStatus[21][$college_department_award->id] = 2;
+        }
+        
         return view('academic-development.college-department-award.index', compact('college_department_awards', 'currentQuarterYear'));
     }
 

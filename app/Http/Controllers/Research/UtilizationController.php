@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
@@ -45,7 +46,18 @@ class UtilizationController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
-        return view('research.utilization.index', compact('research', 'researchutilizations', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($researchutilizations as $utilization) {
+            if (LockController::isLocked($utilization->id, 6))
+                $submissionStatus[6][$utilization->id] = 1;
+            else 
+                $submissionStatus[6][$utilization->id] = 0;
+            if (empty($reportdata->getDocuments(6, $utilization->id)))
+                $submissionStatus[6][$utilization->id] = 2;
+        }
+        return view('research.utilization.index', compact('research', 'researchutilizations', 
+            'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

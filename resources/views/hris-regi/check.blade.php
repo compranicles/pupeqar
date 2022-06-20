@@ -5,9 +5,9 @@
         </x-slot>
 
         <div class="card-body">
-            <div class="row mb-3 justify-content-center">
-                <div class="col-md-11">
-                    <h5>Log In using your User Name and Password</h5>
+            <div class="row justify-content-center">
+                <div class="col-md-11 mb-3">
+                    <h6 class="text-center">Sign in your account.</h6>
                 </div>
                 <div class="col-md-11">
 
@@ -28,10 +28,10 @@
                     <form method="POST" action="{{ route('register.verify') }}">
                         @csrf
                         <div class="form-group">
-                            <x-jet-label value="{{ __('User Name') }}" />
+                            <x-jet-label value="{{ __('Username') }}" />
 
                             <x-jet-input class="{{ $errors->has('email') ? 'is-invalid' : '' }} login-field rounded-0" type="email"
-                                        name="email" :value="old('email')" required />
+                                        name="email" :value="old('email')" required autocomplete="off" />
                             <x-jet-input-error for="email"></x-jet-input-error>
                         </div>
 

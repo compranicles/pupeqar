@@ -101,19 +101,19 @@ class DashboardController extends Controller
             $countExpectedTotal[10] = '';
             $countReceived[10] = '';
 
-            $department[10] = Department::join('faculty_researchers', 'departments.id', 'faculty_researchers.department_id')
+            $department[10] = College::join('faculty_researchers', 'colleges.id', 'faculty_researchers.college_id')
                     ->whereNull('faculty_researchers.deleted_at')
                     ->where('faculty_researchers.user_id', auth()->id())->get();
             $tempcount = 0;
             $tempvalues = [];
             foreach ($department[10] as $value){
                 $tempcount = Report::whereNull('researcher_approval')
-                    ->where('department_id', $value->department_id)
+                    ->where('college_id', $value->college_id)
                     ->whereIn('report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
-                $tempvalues[$value->department_id] = $tempcount;
+                $tempvalues[$value->college_id] = $tempcount;
             }
             $countToReview[10] = $tempvalues;
         }
@@ -124,7 +124,7 @@ class DashboardController extends Controller
             $countExpectedTotal[11] = '';
             $countReceived[11] = '';
 
-            $department[11] = Department::join('faculty_extensionists', 'departments.id', 'faculty_extensionists.department_id')
+            $department[11] = College::join('faculty_extensionists', 'colleges.id', 'faculty_extensionists.college_id')
                     ->whereNull('faculty_extensionists.deleted_at')
                     ->where('faculty_extensionists.user_id', auth()->id())->get();
 
@@ -132,12 +132,12 @@ class DashboardController extends Controller
             $tempvalues = [];
             foreach ($department[11] as $value){
                 $tempcount = Report::whereNull('extensionist_approval')
-                    ->where('department_id', $value->department_id)
+                    ->where('college_id', $value->college_id)
                     ->whereBetween('report_category_id', [8, 15])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
-                $tempvalues[$value->department_id] = $tempcount;
+                $tempvalues[$value->college_id] = $tempcount;
             }
             $countToReview[11] = $tempvalues;
 

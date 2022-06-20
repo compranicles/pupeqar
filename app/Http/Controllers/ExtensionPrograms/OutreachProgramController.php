@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ExtensionPrograms;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -42,7 +43,20 @@ class OutreachProgramController extends Controller
         $outreach_programs = OutreachProgram::where('user_id', auth()->id())
                                 ->select(DB::raw('outreach_programs.*'))
                                 ->orderBy('outreach_programs.updated_at', 'desc')->get();
-        return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear'));
+
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($outreach_programs as $outreach_program) {
+            if (LockController::isLocked($outreach_program->id, 22))
+                $submissionStatus[22][$outreach_program->id] = 1;
+            else 
+                $submissionStatus[22][$outreach_program->id] = 0;
+            if (empty($reportdata->getDocuments(22, $outreach_program->id)))
+                $submissionStatus[22][$outreach_program->id] = 2;
+        }
+        
+        return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**

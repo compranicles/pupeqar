@@ -1,24 +1,17 @@
 <div class="menu-sub animate slideIn">
     <div class="row">
-        <!-- <div class="col-md-4">
+        <div class="col-md-3">
             <ul>
-                
-                <h6 class="menu-category">Personnel</h6>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="">Professional Study</a></li>
+                <h6 class="menu-category">PERSONNEL</h6>
+                <li><a href="{{ route('submissions.educ.index') }}" class="{{ request()->routeIs('submissions.educ.*') ? 'active' : '' }} ">Ongoing Studies</a></li>
+                <li><a href="{{ route('submissions.award.index') }}" class="{{ request()->routeIs('submissions.award.*') ? 'active' : '' }} ">Outstanding Awards</a></li>
+                <li><a href="{{ route('submissions.development.index') }}" class="{{ request()->routeIs('submissions.development.*') ? 'active' : '' }}">Seminars and Trainings</a></li>
+                <li><a href="{{ route('submissions.officership.index') }}" class="{{ request()->routeIs('submissions.officership.*') ? 'active' : '' }} ">Officerships/Memberships</a></li>
             </ul>
+        </div>
+        <div class="col-md-3">
             <ul>
-                <h6 class="menu-category">Employee Development</h6>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="">Awards & Recognition</a></li>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="">Officership/Membership</a></li>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="">Seminars</a></li>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="">Trainings</a></li>
-            </ul>
-            
-        </div> -->
-        
-        <div class="col-md-4">
-            <ul>
-                <h6 class="menu-category">Academic Program Development</h6>
+                <h6 class="menu-category">ACADEMIC PROGRAM DEVELOPMENT</h6>
                 @can('viewAny', \App\Models\Syllabus::class)
                 <li><a class="{{ request()->routeIs('syllabus.*') ? 'active' : '' }}" href="{{ route('syllabus.index') }}">Course Syllabus</a></li>
                 @endcan
@@ -45,9 +38,9 @@
             </ul>
             
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <ul>
-                <h6 class="menu-category">Extension Programs & Expert Services</h6>
+                <h6 class="menu-category">EXTENSION PROGRAMS & EXPERT SERVICES</h6>
 
                 @can('viewAny', \App\Models\ExpertServiceConsultant::class)
                 <li>
@@ -63,44 +56,50 @@
                 @can('viewAny', \App\Models\ExtensionService::class)
                 <li><a class="{{ request()->routeIs('extension-service.*') ? 'active' : '' }}" href="{{ route('extension-service.index') }}">Extension Program/Project/Activity</a></li>
                 @endcan
-                @can('viewAny', \App\Models\Partnership::class)
-                <li><a class="{{ request()->routeIs('partnership.*') ? 'active' : '' }}" href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>
-                @endcan
                 @can('viewAny', \App\Models\Mobility::class)
                 <li><a class="{{ request()->routeIs('mobility.*') ? 'active' : '' }}" href="{{ route('mobility.index') }}">Inter-country Mobility</a></li>
+                @endcan
+                @can('viewAny', \App\Models\Partnership::class)
+                <li><a class="{{ request()->routeIs('partnership.*') ? 'active' : '' }}" href="{{ route('partnership.index') }}">Partnership/Linkages/Network</a></li>
                 @endcan
                 {{-- For College and Departments --}}
                 @can('viewAny', \App\Models\OutreachProgram::class)
                 <li><a class="{{ request()->routeIs('outreach-program.*') ? 'active' : '' }}" href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
                 @endcan
             </ul>
+        </div>
+        <div class="col-md-3">
             @can('viewAny', \App\Models\Invention::class)
             <ul>
-                <h6 class="menu-category">Inventions, Innovation, & Creativity</h6>
+                <h6 class="menu-category">INVENTIONS, INNOVATION & CREATIVITY</h6>
                 <li><a class="{{ request()->routeIs('invention-innovation-creative.*') ? 'active' : '' }}" href="{{ route('invention-innovation-creative.index') }}">Inventions, Innovation, and Creativity</a></li>
             </ul>
             @endcan
-        </div>
-        <div class="col-md-4">
-            
             @can('viewAny', \App\Models\Research::class)
             <ul>
-                <h6 class="menu-category">Research & Book Chapter</h6>
+                <h6 class="menu-category">RESEARCH & BOOK CHAPTER</h6>
                 <li><a class="{{ request()->routeIs('research.*') ? 'active' : '' }}" href="{{ route('research.index') }}">Research Registration</a></li>
             </ul>
             @endcan
             @can('viewAny', \App\Models\Request::class)
             <ul>
-                <h6 class="menu-category">Requests & Queries</h6>
+                <h6 class="menu-category">REQUESTS & QUERIES</h6>
                 <li><a class="{{ request()->routeIs('request.*') ? 'active' : '' }}" href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
             </ul>
             @endcan
             <ul>
-                <h6 class="menu-category">Others</h6>
-                <li><a href="">Accomplishments Based on OPCR</a></li>
-                <li><a href="">Academic Special Tasks</a></li>
+                <h6 class="menu-category">OTHERS</h6>
+                @admin
+                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Accomplishments Based on OPCR</a></li>
+                @endadmin
+                @faculty
+                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Academic Special Tasks</a></li>
+                @endfaculty
                 @can('manage', \App\Models\AdminSpecialTask::class)
-                <li><a href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
+                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
+                @endcan
+                @can('manage', \App\Models\AttendanceFunction::class)
+                <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">Attendance in University Functions</a></li>
                 @endcan
             </ul>
         </div>

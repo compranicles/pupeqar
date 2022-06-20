@@ -43,7 +43,7 @@ class MobilityFormSeeder extends Seeder
 
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
-            'label' => 'Hosting Institution/ Organization/ Agency',
+            'label' => 'Host Institution/ Organization/ Agency',
             'name' => 'host_name',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -56,7 +56,7 @@ class MobilityFormSeeder extends Seeder
         ]);
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
-            'label' => 'Full Address',
+            'label' => 'Address of Host Institution/ Organization/ Agency/ Country',
             'name' => 'host_address',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -82,7 +82,7 @@ class MobilityFormSeeder extends Seeder
         ]);
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
-            'label' => 'From',
+            'label' => 'Inclusive Date',
             'name' => 'start_date',
             'placeholder' => null,
             'size' => 'col-md-2',
@@ -95,7 +95,7 @@ class MobilityFormSeeder extends Seeder
         ]);
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
-            'label' => 'To',
+            'label' => '-',
             'name' => 'end_date',
             'placeholder' => null,
             'size' => 'col-md-2',

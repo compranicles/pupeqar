@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -41,7 +42,19 @@ class ViableProjectController extends Controller
                             ->select(DB::raw('viable_projects.*'))
                             ->orderBy('viable_projects.updated_at', 'desc')->get();
                             
-        return view('academic-development.viable-project.index', compact('viable_projects', 'currentQuarterYear'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($viable_projects as $viable_project) {
+            if (LockController::isLocked($viable_project->id, 20))
+                $submissionStatus[20][$viable_project->id] = 1;
+            else 
+                $submissionStatus[20][$viable_project->id] = 0;
+            if (empty($reportdata->getDocuments(20, $viable_project->id)))
+                $submissionStatus[20][$viable_project->id] = 2;
+        }
+
+        return view('academic-development.viable-project.index', compact('viable_projects', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**

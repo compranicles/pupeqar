@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\AdminSpecialTaskDocument;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class AdminSpecialTaskController extends Controller
 {
@@ -44,7 +45,18 @@ class AdminSpecialTaskController extends Controller
             ->distinct()
             ->get();
 
-        return view('ipcr.admin-special-tasks.index', compact('currentQuarterYear', 'adminSpecialTasks', 'tasksInColleges'));
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($adminSpecialTasks as $adminTask) {
+            if (LockController::isLocked($adminTask->id, 29))
+                $submissionStatus[29][$adminTask->id] = 1;
+            else 
+                $submissionStatus[29][$adminTask->id] = 0;
+            if (empty($reportdata->getDocuments(29, $adminTask->id)))
+                $submissionStatus[29][$adminTask->id] = 2;
+        }
+        return view('ipcr.admin-special-tasks.index', compact('currentQuarterYear', 'adminSpecialTasks', 
+            'tasksInColleges', 'submissionStatus'));
     }
 
     /**

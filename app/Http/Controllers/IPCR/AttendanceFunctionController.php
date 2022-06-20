@@ -32,6 +32,8 @@ class AttendanceFunctionController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -61,6 +63,8 @@ class AttendanceFunctionController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('manage', AttendanceFunction::class);
+
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 

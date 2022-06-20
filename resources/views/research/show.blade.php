@@ -39,8 +39,17 @@
                                         @else --}}
                                             {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
                                         @endif --}}
+                                        @foreach($submissionStatus as $status)
+                                            @if ($status[$value['id']] == 0)
+                                                <a href="{{ url('submissions/check/1/'.$research->id) }}" class="btn btn-sm btn-primary mr-3">Submit</a>
+                                            @elseif ($status[$value['id']] == 1)
+                                                <a href="{{ url('submissions/check/1/'.$research->id) }}" class="btn btn-sm btn-success mr-3">Submitted</a>
+                                            @elseif ($status[$value['id']] == 2)
+                                                <a href="{{ route('research.edit', $research->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                            @endif        
+                                        @endforeach
                                         @if ($research->nature_of_involvement == 11)
-                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-2">Add Co-Researchers</a>
+                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-3"><i class="bi bi-person-plus-fill mr-1"></i> Add Co-Researchers</a>
                                         @endif
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>

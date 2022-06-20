@@ -5,6 +5,7 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -38,7 +39,20 @@ class StudentAwardController extends Controller
 
         $student_awards = StudentAward::where('user_id', auth()->id())
                             ->orderBy('student_awards.updated_at', 'desc')->get();
-        return view('academic-development.student-awards.index', compact('student_awards', 'currentQuarterYear'));
+
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($student_awards as $student_award) {
+            if (LockController::isLocked($student_award->id, 18))
+                $submissionStatus[18][$student_award->id] = 1;
+            else 
+                $submissionStatus[18][$student_award->id] = 0;
+            if (empty($reportdata->getDocuments(18, $student_award->id)))
+                $submissionStatus[18][$student_award->id] = 2;
+        }
+
+        return view('academic-development.student-awards.index', compact('student_awards', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**

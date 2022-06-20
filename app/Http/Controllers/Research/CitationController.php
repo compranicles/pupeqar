@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Research;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -51,7 +52,20 @@ class CitationController extends Controller
         $research = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                     ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                     ->select('research.*', 'dropdown_options.name as status_name')->first();
-        return view('research.citation.index', compact('research', 'researchcitations', 'currentQuarterYear'));
+        
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($researchcitations as $citation) {
+            if (LockController::isLocked($citation->id, 5))
+                $submissionStatus[5][$citation->id] = 1;
+            else 
+                $submissionStatus[5][$citation->id] = 0;
+            if (empty($reportdata->getDocuments(5, $citation->id)))
+                $submissionStatus[5][$citation->id] = 2;
+        }
+
+        return view('research.citation.index', compact('research', 'researchcitations', 
+            'currentQuarterYear', 'submissionStatus'));
     }
 
     /**

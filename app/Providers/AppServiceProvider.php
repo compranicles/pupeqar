@@ -33,7 +33,6 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [1, 2, 3, 4, 5, 6])
             ->first();
             
-            // dd($is_superadmin);
             if ($is_reporting != null) {
                 return 1;
             }
@@ -46,7 +45,6 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [5, 6, 7, 8])
             ->first();
             
-            // dd($is_superadmin);
             if ($is_reporting != null) {
                 return 1;
             }
@@ -60,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [1, 2, 3, 4])
             ->first();
             
-            // dd($is_superadmin);
             if ($is_reporting != null) {
                 return 1;
             }
@@ -74,13 +71,10 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [1, 2])
             ->first();
             
-            // dd($is_superadmin);
-            if ($is_faculty != null) {
+            if ($is_faculty != null) 
                 return 1;
-            }
-            else {
+            else
                 return 0;
-            }
         });
 
         Blade::if('admin', function () {            
@@ -88,13 +82,10 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [3, 4])
             ->first();
             
-            // dd($is_superadmin);
-            if ($is_admin != null) {
+            if ($is_admin != null)
                 return 1;
-            }
-            else {
+            else
                 return 0;
-            }
         });
 
         Blade::if('chairperson', function () {            
@@ -102,13 +93,10 @@ class AppServiceProvider extends ServiceProvider
             ->where('user_roles.role_id', 5)
             ->first();
             
-            // dd($is_superadmin);
-            if ($is_chairperson != null) {
+            if ($is_chairperson != null) 
                 return 1;
-            }
-            else {
+            else
                 return 0;
-            }
         });
 
         Blade::if('director', function () {            
@@ -116,13 +104,10 @@ class AppServiceProvider extends ServiceProvider
             ->where('user_roles.role_id', 6)
             ->first();
             
-            // dd($is_superadmin);
-            if ($is_director != null) {
+            if ($is_director != null)
                 return 1;
-            }
-            else {
+            else
                 return 0;
-            }
         });
 
         //not added in remote
@@ -187,7 +172,6 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [1, 3, 5, 6, 7, 8, 10, 11])
             ->first();
             
-            // dd($is_superadmin);
             if ($is_ipqmso != null) {
                 return 1;
             }
@@ -201,7 +185,6 @@ class AppServiceProvider extends ServiceProvider
             ->whereIn('user_roles.role_id', [5, 6, 7, 8, 10, 11])
             ->first();
             
-            // dd($is_superadmin);
             if ($is_ipqmso != null) {
                 return 1;
             }

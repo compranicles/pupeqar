@@ -42,6 +42,8 @@ use App\Models\{
     Research,
     ResearchCitation,
     ResearchDocument,
+    ResearchPresentation,
+    ResearchPublication,
     ResearchUtilization,
     SectorHead,
     StudentAward,
@@ -2404,7 +2406,7 @@ class SubmissionController extends Controller
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 else {
-                    $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[3])->first();
+                    $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
 
                 }

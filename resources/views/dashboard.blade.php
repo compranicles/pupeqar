@@ -26,27 +26,27 @@
             @endif
             @if (in_array(10, $roles))
                 @foreach ($department[10] as $value)
-                    @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->department_id] ])
+                    @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->college_id], 'collegeCode' => $value->code ])
                 @endforeach
             @endif
             @if (in_array(11, $roles))
                 @foreach ($department[11] as $value)
-                    @include('dashboard.extensionist', ['countToReview' => $countToReview[11][$value->department_id]])
+                    @include('dashboard.extensionist', ['countToReview' => $countToReview[11][$value->college_id], 'collegeCode' => $value->code ])
                 @endforeach
             @endif
             @if (in_array(5, $roles))
                 @foreach ($department[5] as $value)
-                    @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'department_id' => $value->department_id, 'department_code' => $value->code])
+                    @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'departmentID' => $value->department_id, 'departmentCode' => $value->code])
                 @endforeach
             @endif
             @if (in_array(6, $roles))
                 @foreach ($college[6] as $value)
-                    @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'college_id' => $value->college_id, 'college_code' => $value->code])
+                    @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'collegeID' => $value->college_id, 'collegeCode' => $value->code])
                 @endforeach
             @endif
             @if (in_array(7, $roles))
                 @foreach ($sector[7] as $value)
-                    @include('dashboard.sector-head', ['countToReview' => $countToReview[7][$value->sector_id], 'sector_code' => $value->code])
+                    @include('dashboard.sector-head', ['countToReview' => $countToReview[7][$value->sector_id], 'sectorCode' => $value->code])
                     @endforeach
             @endif
             @if (in_array(8, $roles))
@@ -68,7 +68,7 @@
                                 <table class="table table-sm table-borderless fixed_header" id="log_activity_table" style="height: 15rem;">
                                     <tbody>
                                     </tbody>
-                                    <p class="align-middle text-center no-data-message">No recent logs to show.</p>
+                                    <p class="align-middle text-center" id="no-data-message-admin"></p>
                                 </table>
                             </div>
                         </div>
@@ -81,13 +81,13 @@
                                 <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table" style="height: 15rem;">
                                     <tbody>
                                     </tbody>
-                                    <p class="align-middle text-center no-data-message">No recent activities to show.</p>
+                                    <p class="align-middle text-center" id="no-data-message-indi"></p>
                                 </table>
                             </div>
                         </div>
                     </div>
                     @endif
-                    <div class="col-md-12">
+                    <div class="col-md-12 mb-4">
                         <div class="card">
                         <h5 class="card-header">Add Your Quarterly Accomplishment</h5>
                             <div class="card-body">
@@ -255,8 +255,11 @@
             $.get('/get-dashboard-list', function (data){
                 var countColumns = 0;
 
+                if (data.length == 0) {
+                    $('#no-data-message-admin').text('No recent logs to show.');
+                } else
+                    $("#no-data-message-admin").css("display", "none");
                 data.forEach(function(item){
-                    $('.no-data-message').remove();
                     $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
                     $('#activity-log-'+countColumns)
                         .append('<td class="activity-log-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #820001;"></i>'+
@@ -273,8 +276,11 @@
             $.get('/get-dashboard-list-indi', function (data){
                 var countColumns = 0;
 
+                if (data.length == 0) {
+                    $('#no-data-message-indi').text('No recent activities to show.');
+                } else
+                    $("#no-data-message-indi").css("display", "none");
                 data.forEach(function(item){
-                    $('.no-data-message').remove();
                     $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
                     $('#activity-log-indi-'+countColumns)
                         .append('<td class="activity-log-indi-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #820001;"></i>'+

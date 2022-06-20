@@ -11,6 +11,9 @@
                 <p>
                     <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
                 </p>
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('outreach-program.store' ) }}" method="post">

@@ -110,7 +110,15 @@
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('rtmmi.edit', $rtmmi->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button"  value="{{ $rtmmi->id }}" class="btn btn-sm btn-danger" value="{{ $rtmmi->id }}" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-rtmmi="{{ $rtmmi->title }}">Delete</button>
-                                                <a href="{{ url('submissions/check/15/'.$rtmmi->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                                @foreach($submissionStatus as $status)
+                                                    @if ($status[$rtmmi->id] == 0)
+                                                        <a href="{{ url('submissions/check/15/'.$rtmmi->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    @elseif ($status[$rtmmi->id] == 1)
+                                                        <a href="{{ url('submissions/check/15/'.$rtmmi->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    @elseif ($status[$rtmmi->id] == 2)
+                                                        <a href="{{ route('rtmmi.edit', $rtmmi->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                    @endif        
+                                                @endforeach
                                             </div>
                                         </td>
                                     </tr>

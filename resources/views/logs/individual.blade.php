@@ -4,7 +4,12 @@
             {{ __('Activity Log') }}
         </h2>
     </x-slot>
-    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Activity Log</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -32,7 +37,11 @@
                                             {{--<td><label class="label label-info">{{ $log->method }}</label></td>
                                             <td class="text-secondary">{{ $log->ip }}</td>
                                             <td class="text-danger">{{ $log->agent }}</td>--}}
-                                            <td>{{ $log->created_at }}</td>
+                                            <td>
+                                                <?php $created_at = strtotime( $log->created_at );
+                                                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  
+                                                        {{ $created_at }}
+                                            </td>
                                         </tr>
                                         @endforeach
                                     @endif
@@ -43,7 +52,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
