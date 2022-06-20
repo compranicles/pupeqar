@@ -3,7 +3,7 @@
 <div class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
         <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-        @if ($fieldInfo->name == 'amount_of_funding' || $fieldInfo->name == 'funding_amount' ||  
+        @if ($fieldInfo->name == 'amount_of_funding' || $fieldInfo->name == 'funding_amount' ||
             $fieldInfo->name == 'revenue' || $fieldInfo->name == 'cost')
                     <span id="" role="alert">
                         (No commas)
@@ -15,7 +15,7 @@
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
-            <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
+            <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} step="0.01" placeholder="{{ $fieldInfo->placeholder }}"
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -28,16 +28,16 @@
                         {{ 'hidden' }}
                         @break
                     @default
-                        
+
                 @endswitch>
-                
+
                 @error($fieldInfo->name)
                     <span class='invalid-feedback' role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
         </div>
-        
+
 
     </div>
 </div>
@@ -59,15 +59,20 @@
         });
     </script>
     <script>
-        $("#{{ $fieldInfo->name }}").on('change' , function() {       
+        $("#{{ $fieldInfo->name }}").on('focus click' , function() {
+            $(this).val('');
+
+        });
+
+        $("#{{ $fieldInfo->name }}").on('change' , function() {
             var value = parseFloat($(this).val());
             var actual = number_format(value, 2, '.', ',');
             $(this).val(actual);
-            
-        }); 
+
+        });
 
         function number_format(number, decimals, dec_point, thousands_sep) {
-            var n = !isFinite(+number) ? 0 : +number, 
+            var n = !isFinite(+number) ? 0 : +number,
                 prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
                 sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
                 dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
