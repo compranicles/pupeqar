@@ -66,6 +66,7 @@ use App\Models\{
     AdminSpecialTaskDocument,
     SpecialTask,
     SpecialTaskDocument,
+    AttendanceFunction,
 };
 
 
@@ -2506,7 +2507,7 @@ class SubmissionController extends Controller
                         $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
-                    case 32:
+                    case 33:
                         $collegeAndDepartment = AttendanceFunction::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;

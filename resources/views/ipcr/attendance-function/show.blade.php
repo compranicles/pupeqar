@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('View Attendance in University and College Function') }}
+            {{ __('View Attendance in University and College/ Office Function') }}
         </h2>
     </x-slot>
 
@@ -15,7 +15,7 @@
                 @endif
                 <div class="d-flex mr-2">
                     <p class="mr-auto">
-                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Task</a>
+                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College/ Office Function</a>
 
                     </p>
                     <p>

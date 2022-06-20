@@ -370,7 +370,7 @@ class ReportDataController extends Controller
         elseif($report_category_id == 32){
             $report_docs = SpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
         }
-        elseif($report_category_id == 32){
+        elseif($report_category_id == 33){
             $report_docs = AttendanceFunctionDocument::where('attendance_function_id', $id)->pluck('filename')->all();
         }
         return $report_docs;
