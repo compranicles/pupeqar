@@ -22,7 +22,7 @@
                         <form action="{{ route('student-award.update', $student_award->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $studentFields, 'value' => $values])
+                            @include('form', ['formFields' => $studentFields, 'value' => $values, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

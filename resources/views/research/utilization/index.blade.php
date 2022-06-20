@@ -67,15 +67,13 @@
                                                         {{ $utilization->report_year}}
                                                     </td>
                                                     <td>
-                                                    @foreach($submissionStatus as $status)
-                                                        @if ($status[$utilization->id] == 0)
-                                                            <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                        @elseif ($status[$utilization->id] == 1)
-                                                            <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-success">Submitted</a>
-                                                        @elseif ($status[$utilization->id] == 2)
-                                                            <a href="{{ route('research.utilization.edit', [$research->id, $utilization->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                        @endif        
-                                                    @endforeach
+                                                    @if ($submissionStatus[6][$utilization->id] == 0)
+                                                        <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    @elseif ($submissionStatus[6][$utilization->id] == 1)
+                                                        <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    @elseif ($submissionStatus[6][$utilization->id] == 2)
+                                                        <a href="{{ route('research.utilization.edit', [$research->id, $utilization->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                    @endif        
                                                     </td>
                                                 </tr>
                                             @endforeach

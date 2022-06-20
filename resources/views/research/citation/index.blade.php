@@ -70,15 +70,13 @@
                                                         {{ $citation->report_year }}
                                                     </td>
                                                     <td>
-                                                        @foreach($submissionStatus as $status)
-                                                        @if ($status[$citation->id] == 0)
+                                                        @if ($submissionStatus[5][$citation->id] == 0)
                                                             <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                        @elseif ($status[$citation->id] == 1)
+                                                        @elseif ($submissionStatus[5][$citation->id] == 1)
                                                             <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-success">Submitted</a>
-                                                        @elseif ($status[$citation->id] == 2)
+                                                        @elseif ($submissionStatus[5][$citation->id] == 2)
                                                             <a href="{{ route('research.citation.edit', [$research->id, $citation->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                         @endif        
-                                                    @endforeach
                                                     </td>
                                                 </tr>
                                             @endforeach

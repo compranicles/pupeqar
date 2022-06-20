@@ -115,15 +115,13 @@
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('expert-service-in-conference.edit', $expertServiceConference) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $expertServiceConference->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconference="{{ $expertServiceConference->title }}">Delete</button>
-                                                @foreach($submissionStatus as $status)
-                                                    @if ($status[$expertServiceConference->id] == 0)
-                                                        <a href="{{ url('submissions/check/10/'.$expertServiceConference->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                    @elseif ($status[$expertServiceConference->id] == 1)
-                                                        <a href="{{ url('submissions/check/10/'.$expertServiceConference->id) }}" class="btn btn-sm btn-success">Submitted</a>
-                                                    @elseif ($status[$expertServiceConference->id] == 2)
-                                                        <a href="{{ route('expert-service-in-conference.edit', $expertServiceConference->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                    @endif        
-                                                @endforeach
+                                                @if ($submissionStatus[10][$expertServiceConference->id] == 0)
+                                                    <a href="{{ url('submissions/check/10/'.$expertServiceConference->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                @elseif ($submissionStatus[10][$expertServiceConference->id] == 1)
+                                                    <a href="{{ url('submissions/check/10/'.$expertServiceConference->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                @elseif ($submissionStatus[10][$expertServiceConference->id] == 2)
+                                                    <a href="{{ route('expert-service-in-conference.edit', $expertServiceConference->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                @endif        
                                             </div>
                                         </td>
                                     </tr>
