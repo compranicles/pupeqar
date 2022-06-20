@@ -39,6 +39,7 @@ use App\Models\{
     Maintenance\ReportColumn,
     AdminSpecialTaskDocument,
     SpecialTaskDocument,
+    AttendanceFunctionDocument,
 };
 
 class ReportDataController extends Controller
@@ -112,18 +113,18 @@ class ReportDataController extends Controller
                         }
                     }
                 }
-                
-               
+
+
                 if(is_int($data)){
                     if(is_int($data)){
-                        if(   
-                            $column->column == 'no_of_trainees_or_beneficiaries' || 
-                            $column->column == 'quality_poor' || 
+                        if(
+                            $column->column == 'no_of_trainees_or_beneficiaries' ||
+                            $column->column == 'quality_poor' ||
                             $column->column == 'quality_fair' ||
                             $column->column == 'quality_satisfactory' ||
                             $column->column == 'quality_very_satisfactory' ||
                             $column->column == 'quality_outstanding' ||
-                            $column->column == 'timeliness_poor' || 
+                            $column->column == 'timeliness_poor' ||
                             $column->column == 'timeliness_fair' ||
                             $column->column == 'timeliness_satisfactory' ||
                             $column->column == 'timeliness_very_satisfactory' ||
@@ -169,10 +170,10 @@ class ReportDataController extends Controller
                 }
                 if($column->column == 'researchers'){
                     $data = DB::table($column->table)->where('id', $research_id)->pluck($column->column)->first();
-                } 
-    
+                }
+
                 array_push($report_data_array, $data);
-            }  
+            }
         }
         else{
             if($report_category_id >= 8){
@@ -180,7 +181,7 @@ class ReportDataController extends Controller
                     $data = DB::table($column->table)->where('id', $id)->value($column->column);
 
                     if ($column->column == "start_date" || $column->column == "end_date" || $column->column == "issue_date"
-                        || $column->column == "from" || $column->column == "to" || $column->column == "date" 
+                        || $column->column == "from" || $column->column == "to" || $column->column == "date"
                         || $column->column == "date_started" || $column->column == "date_completed" || $column->column == "date_published"
                         || $column->column == "date_finished" || $column->column == 'target_date' || $column->column == 'actual_date') {
                         if($data == null)
@@ -194,14 +195,14 @@ class ReportDataController extends Controller
                     if($data == null)
                         $data = '-';
                     if(is_int($data)){
-                        if(   
-                            $column->column == 'no_of_trainees_or_beneficiaries' || 
-                            $column->column == 'quality_poor' || 
+                        if(
+                            $column->column == 'no_of_trainees_or_beneficiaries' ||
+                            $column->column == 'quality_poor' ||
                             $column->column == 'quality_fair' ||
                             $column->column == 'quality_satisfactory' ||
                             $column->column == 'quality_very_satisfactory' ||
                             $column->column == 'quality_outstanding' ||
-                            $column->column == 'timeliness_poor' || 
+                            $column->column == 'timeliness_poor' ||
                             $column->column == 'timeliness_fair' ||
                             $column->column == 'timeliness_satisfactory' ||
                             $column->column == 'timeliness_very_satisfactory' ||
@@ -262,24 +263,24 @@ class ReportDataController extends Controller
                             ->join('colleges', 'colleges.id', $column->table.'.college_id')
                             ->pluck('colleges.name')->first();
 
-                    } 
+                    }
                     if($column->column == 'department_id'){
                         $data = DB::table($column->table)->where($column->table.'.id', $id)
                             ->join('departments', 'departments.id', $column->table.'.department_id')
                             ->pluck('departments.name')->first();
-                    } 
+                    }
                     array_push($report_data_array, $data);
                 }
             }
         }
-        
+
         if ($column)
         return $report_data_array;
     }
 
     public function getDocuments($report_category_id, $id){
         $report_docs;
-        
+
         if($report_category_id == 1){
             $research_code = Research::where('id', $id)->pluck('research_code')->first();
             $report_docs = ResearchDocument::where('research_code', $research_code)->where('research_form_id', 1)->pluck('filename')->all();
@@ -369,12 +370,15 @@ class ReportDataController extends Controller
         elseif($report_category_id == 32){
             $report_docs = SpecialTaskDocument::where('special_task_id', $id)->pluck('filename')->all();
         }
+        elseif($report_category_id == 32){
+            $report_docs = AttendanceFunctionDocument::where('attendance_function_id', $id)->pluck('filename')->all();
+        }
         return $report_docs;
-        
+
     }
 
     public function getReportCategory($reportID) {
-        $category = Report::where('reports.id', $reportID)->join('report_categories', 'reports.report_category_id', 
+        $category = Report::where('reports.id', $reportID)->join('report_categories', 'reports.report_category_id',
                 'report_categories.id')->pluck('report_categories.name')->first();
         return $category;
     }
@@ -450,7 +454,7 @@ class ReportDataController extends Controller
 
     public function viewReportOrigin($report_id, $report_category_id){
         switch($report_category_id){
-            case 1: 
+            case 1:
                 $id = Report::where('id', $report_id)->pluck('report_reference_id')->all();
                 return redirect()->route('research.edit', $id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
@@ -567,6 +571,18 @@ class ReportDataController extends Controller
             case 28:
                 $report = Report::where('id', $report_id)->first();
                 return redirect()->route('submissions.officership.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 29:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('admin-special-tasks.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 30: case 31: case 32:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('special-tasks.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 33:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('attendance-function.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
         }
     }

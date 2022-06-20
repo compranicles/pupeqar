@@ -25,7 +25,7 @@ class DepartmentSeeder extends Seeder
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
-                if($row->RootID == "0"){
+                if($row->Lvl == "1" && $row->RootID == '226'){
                     if(in_array($row->DepartmentID, $collegeHRISCodes)){
                         Department::insert([
                             'name' => $row->Department,
@@ -35,31 +35,17 @@ class DepartmentSeeder extends Seeder
                         ]);
                     }
                 }
-                else{
-                    if($row->Lvl == "1"){
-                        if(in_array($row->DepartmentID, $collegeHRISCodes)){
-                            Department::insert([
-                                'name' => $row->Department,
-                                'code' => $row->DepartmentCode,
-                                'hris_code' => $row->DepartmentID,
-                                'college_id' => College::where('hris_code', $row->DepartmentID)->pluck('id')->first()
-                            ]);
-                        }
-                    }
-                    else{
-                        if(in_array($row->RootID, $collegeHRISCodes)){
-                            Department::insert([
-                                'name' => $row->Department,
-                                'code' => $row->DepartmentCode,
-                                'hris_code' => $row->DepartmentID,
-                                'college_id' => College::where('hris_code', $row->RootID)->pluck('id')->first()
-                            ]);
-                        }
+                elseif($row->Lvl == '2'){
+                    if(in_array($row->RootID, $collegeHRISCodes)){
+                        Department::insert([
+                            'name' => $row->Department,
+                            'code' => $row->DepartmentCode,
+                            'hris_code' => $row->DepartmentID,
+                            'college_id' => College::where('hris_code', $row->RootID)->pluck('id')->first()
+                        ]);
                     }
                 }
-
             }
-            
         }
     }
 }

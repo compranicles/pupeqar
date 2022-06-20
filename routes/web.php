@@ -281,6 +281,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');
     Route::get('/admin-special-tasks/remove-document/{filename}', [\App\Http\Controllers\IPCR\AdminSpecialTaskController::class, 'removeDoc'])->name('admin-special-tasks.removedoc');
     Route::get('/special-tasks/remove-document/{filename}', [\App\Http\Controllers\IPCR\SpecialTaskController::class, 'removeDoc'])->name('special-tasks.removedoc');
+    Route::get('/attendance-function/remove-document/{filename}', [\App\Http\Controllers\IPCR\AttendanceFunctionController::class, 'removeDoc'])->name('attendance-function.removedoc');
 
     /* REPORTS API */
     Route::get('/reports/tables/data/{id}', [\App\Http\Controllers\Reports\ReportDataController::class, 'getColumnDataPerReportCategory']);

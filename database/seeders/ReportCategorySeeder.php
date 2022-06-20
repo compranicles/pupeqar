@@ -190,28 +190,34 @@ class ReportCategorySeeder extends Seeder
         ]);
 
         ReportCategory::insert([
-            'report_type_id' => 1, 
+            'report_type_id' => 1,
             'name' => 'Special Tasks',
             'is_active' => 1,
             'order' => 22,
         ]);
         ReportCategory::insert([
-            'report_type_id' => 1, 
+            'report_type_id' => 1,
             'name' => 'Special Tasks - Quality',
             'is_active' => 1,
             'order' => 23,
         ]);
         ReportCategory::insert([
-            'report_type_id' => 1, 
+            'report_type_id' => 1,
             'name' => 'Special Tasks - Efficiency',
             'is_active' => 1,
             'order' => 24,
         ]);
         ReportCategory::insert([
-            'report_type_id' => 1, 
+            'report_type_id' => 1,
             'name' => 'Special Tasks - Timeliness',
             'is_active' => 1,
             'order' => 25,
+        ]);
+        ReportCategory::insert([
+            'report_type_id' => 1,
+            'name' => 'Attendance in University and College Functions',
+            'is_active' => 1,
+            'order' => 26,
         ]);
     }
 }

@@ -35,20 +35,20 @@
                                 <i class="bi bi-plus"></i> Add Attended College Function
                             </button>
                         </div>
-                        {{-- @if (in_array(6, $roles)) --}}
+                        @if (in_array(6, $roles))
                             <div class="d-inline mr-2">
                                 <a id="man_uni" href="{{ route('college-function-manager.index') }}" class="btn btn-warning text-dark">
                                     Manage College Functions
                                 </a>
                             </div>
-                        {{-- @endif --}}
-                        {{-- @if (in_array(8, $roles)) --}}
+                        @endif
+                        @if (in_array(8, $roles))
                             <div class="d-inline mr-2">
                                 <a id="man_uni" href="{{ route('university-function-manager.index') }}" class="btn btn-warning text-dark">
                                     Manage University Functions
                                 </a>
                             </div>
-                        {{-- @endif --}}
+                        @endif
                     </div>
                     <hr>
                     <div class="table-responsive" style="overflow-x:auto;">
@@ -57,6 +57,7 @@
                                 <tr>
                                     <th></th>
                                     <th>Brief Description of Activity</th>
+                                    <th>Classification</th>
                                     <th>Date Started</th>
                                     <th>Date Completed</th>
                                     <th>Quarter</th>
@@ -70,6 +71,7 @@
                                 <tr class="tr-hover" role="button">
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->activity_description }}</td>
+                                    <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->classification_name }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->start_date }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >{{ $row->end_date }}</td>
                                     <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >

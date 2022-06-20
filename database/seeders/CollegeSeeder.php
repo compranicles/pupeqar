@@ -20,41 +20,20 @@ class CollegeSeeder extends Seeder
 
         $db_ext = DB::connection('mysql_external');
         $allDepartments = $db_ext->select(" EXEC GetDepartment");
-        $sectors = Sector::all(); 
+        $sectors = Sector::all();
         $sectorHRISCodes = Sector::pluck('hris_code')->all();
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
                 if($row->Lvl == "1"){
-                    if($row->RootID == "0"){
-                        if(in_array($row->DepartmentID, $sectorHRISCodes)){
-                            $sectorId = Sector::where('hris_code', $row->DepartmentID)->pluck('id')->first();
-                            College::insert([
-                                'name' => $row->Department,
-                                'code' => $row->DepartmentCode,
-                                'hris_code' => $row->DepartmentID,
-                                'sector_id' => $sectorId,
-                            ]);
-                        }
-                        else{
-                            College::insert([
-                                'name' => $row->Department,
-                                'code' => $row->DepartmentCode,
-                                'hris_code' => $row->DepartmentID,
-                                'sector_id' => 0
-                            ]);
-                        }
-                    }
-                    else{
-                        if(in_array($row->RootID, $sectorHRISCodes)){
-                            $sectorId = Sector::where('hris_code', $row->RootID)->pluck('id')->first();
-                            College::insert([
-                                'name' => $row->Department,
-                                'code' => $row->DepartmentCode,
-                                'hris_code' => $row->DepartmentID,
-                                'sector_id' => $sectorId
-                            ]);
-                        }
+                    if(in_array($row->RootID, $sectorHRISCodes)){
+                        $sectorId = Sector::where('hris_code', $row->RootID)->pluck('id')->first();
+                        College::insert([
+                            'name' => $row->Department,
+                            'code' => $row->DepartmentCode,
+                            'hris_code' => $row->DepartmentID,
+                            'sector_id' => $sectorId
+                        ]);
                     }
                 }
             }
