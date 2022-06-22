@@ -1,9 +1,9 @@
 <x-app-layout>
-    {{-- <x-slot name="header">
+    <!-- <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            {{ __('Attendance in University and College Functions') }}
+            {{ __('Invention, Innovation & Creative Works') }}
         </h2>
-    </x-slot> --}}
+    </x-slot> -->
     <div class="row">
         <div class="col-md-12">
             <h2 class="font-weight-bold mb-2">Attendance in University and College/ Office Functions</h2>
@@ -109,7 +109,7 @@
                                                 <a href="{{ url('submissions/check/33/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                             @elseif ($submissionStatus[33][$row->id] == 2)
                                                 <a href="{{ route('attendance-function.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                            @endif        
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

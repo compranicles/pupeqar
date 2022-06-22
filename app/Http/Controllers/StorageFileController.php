@@ -25,7 +25,7 @@ class StorageFileController extends Controller
 
         return $response;
 
-    }	
+    }
 
     public function downloadFile($filename){
         $path = storage_path('app/documents/'.$filename);
@@ -50,6 +50,9 @@ class StorageFileController extends Controller
     }
 
     public function abbrev($string){
+
+        if($string == '' || is_null($string))
+            return 'NA';
         $parts = explode(' ',$string);
         $initials = '';
         $count = 0;
