@@ -21,7 +21,7 @@ class AccountController extends Controller
     public function index()
     {
         $user = User::find(auth()->id());
-        
+
         $db_ext = DB::connection('mysql_external');
 
         $employeeDetail = $db_ext->select("EXEC GetEmployeeByEmpCode N'$user->emp_code'");

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HRISRegistration;
 
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,15 +35,20 @@ class RegistrationController extends Controller
 
             if (!empty($userLocal)){
                 Auth::login($userLocal);
-                return redirect()->route('home');
+                if(Employee::where('user_id', $userLocal->id)->exists()){
+                    return redirect()->route('home');
+                }
+                return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
 
             $user = $this->db_ext->select(" EXEC ValidateLogIn N'$request->email',N'$request->password' ");
 
             if($this->save($user)){
                 $userLocal = User::where('email', $request->email)->first();
-                Auth::login($userLocal);
-                return redirect()->route('home');
+                if(Employee::where('user_id', $userLocal->id)->exists()){
+                    return redirect()->route('home');
+                }
+                return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
         }
 

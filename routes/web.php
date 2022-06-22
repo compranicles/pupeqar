@@ -19,7 +19,7 @@ Route::get('/', function () {
 })->name('home')->middleware('guest');
 
 /* DASHBOARD AND HOMEPAGE DISPLAY */
-Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'account']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -32,37 +32,9 @@ Route::post('register/verify', [\App\Http\Controllers\HRISRegistration\Registrat
 //Route::get('register/create/{key}', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'create'])->name('register.create');
 //Route::post('register/save', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'save'])->name('register.save');
 
-/* AUTH CHECKER */
+
+
 Route::group(['middleware' => 'auth'], function() {
-
-    /* UPLOAD AND REMOVE DOCUMENTS/IMAGES */
-    Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
-    Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
-
-    /* DOCUMENT/IMAGE ACCESS ROUTES */
-    Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
-    Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
-    Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
-
-    /* NOTIFICATIONS */
-    Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
-    Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
-    Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
-    Route::get('/notifications/count-not-viewed', [\App\Http\Controllers\NotificationController::class, 'getCount']);
-    Route::get('/notifications/count-reset', [\App\Http\Controllers\NotificationController::class, 'resetCount']);
-
-    /* ACTIVITY LOG */
-    Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);
-    Route::get('get-dashboard-list-indi', [\App\Http\Controllers\ActivityLogController::class, 'getTenIndi']);
-    Route::get('view-logs', [\App\Http\Controllers\ActivityLogController::class, 'getAll'])->name('logs.all');
-    Route::get('view-logs-user', [\App\Http\Controllers\ActivityLogController::class, 'getAllIndi'])->name('logs.user');
-
-    /* ANNOUNCEMENTS */
-    Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
-    Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');
-    Route::get('/announcements/activate/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'activate'])->name('announcements.activate');
-    Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class);
-
     /* MAINTENANCES */
     Route::get('/maintenances', [\App\Http\Controllers\Maintenances\MaintenanceController::class, 'index'])->name('maintenances.index');
 
@@ -176,6 +148,59 @@ Route::group(['middleware' => 'auth'], function() {
 
     //Dean Director Maintenances
     Route::resource('college-function-manager', \App\Http\Controllers\Maintenances\CollegeFunctionController::class);
+
+    /* ANNOUNCEMENTS */
+    Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
+    Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');
+    Route::get('/announcements/activate/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'activate'])->name('announcements.activate');
+    Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class);
+
+    /* NOTIFICATIONS */
+    Route::get('/get-notifications', [\App\Http\Controllers\NotificationController::class, 'getByUser']);
+    Route::get('/notifications/mark-as-read', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
+    Route::get('/notifications/all', [\App\Http\Controllers\NotificationController::class, 'seeAll'])->name('notif.all');
+    Route::get('/notifications/count-not-viewed', [\App\Http\Controllers\NotificationController::class, 'getCount']);
+    Route::get('/notifications/count-reset', [\App\Http\Controllers\NotificationController::class, 'resetCount']);
+
+    /* ACTIVITY LOG */
+    Route::get('get-dashboard-list', [\App\Http\Controllers\ActivityLogController::class, 'getTen']);
+    Route::get('get-dashboard-list-indi', [\App\Http\Controllers\ActivityLogController::class, 'getTenIndi']);
+    Route::get('view-logs', [\App\Http\Controllers\ActivityLogController::class, 'getAll'])->name('logs.all');
+    Route::get('view-logs-user', [\App\Http\Controllers\ActivityLogController::class, 'getAllIndi'])->name('logs.user');
+
+    /* PROFILE (SYNCHRONIZED WITH HRIS) */
+    Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
+    Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
+    Route::get('/profile/educational-background', [\App\Http\Controllers\User\ProfileController::class, 'educationalBackground'])->name('profile.educationalBackground');
+    Route::get('/profile/educational-degree', [\App\Http\Controllers\User\ProfileController::class, 'educationalDegree'])->name('profile.educationalDegree');
+    Route::get('/profile/professional-study', [\App\Http\Controllers\User\ProfileController::class, 'professionalStudy'])->name('profile.professionalStudy');
+    Route::get('/profile/eligibility', [\App\Http\Controllers\User\ProfileController::class, 'eligibility'])->name('profile.eligibility');
+    Route::get('/profile/work-experience', [\App\Http\Controllers\User\ProfileController::class, 'workExperience'])->name('profile.workExperience');
+    Route::get('/profile/work-experience/{id}', [\App\Http\Controllers\User\ProfileController::class, 'workExperienceView'])->name('profile.workExperience.view');
+    Route::get('/profile/voluntary-work', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWork'])->name('profile.voluntaryWork');
+    Route::get('/profile/voluntary-work/{id}', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWorkView'])->name('profile.voluntaryWork.view');
+
+    //User Account
+    Route::resource('/offices', \App\Http\Controllers\User\EmployeeController::class);
+    Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
+    Route::post('/account/store-signature', [\App\Http\Controllers\UserController::class, 'storeSignature'])->name('account.signature.save');
+});
+
+/* AUTH CHECKER */
+Route::group(['middleware' => ['auth', 'account']], function() {
+
+    /* UPLOAD AND REMOVE DOCUMENTS/IMAGES */
+    Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
+    Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
+
+    /* DOCUMENT/IMAGE ACCESS ROUTES */
+    Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
+    Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
+    Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
+
+
+
+
 
     /* RESEARCH ACCOMPLISHMENTS */
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);
@@ -402,42 +427,25 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');
     Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'save'])->name('submissions.award.save');
 
-    /* USER ACCOUNT */
-    Route::resource('/offices', \App\Http\Controllers\User\EmployeeController::class);
-    Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
-    Route::post('/account/store-signature', [\App\Http\Controllers\UserController::class, 'storeSignature'])->name('account.signature.save');
 
+});
+/* SUPER ADMIN PERMANENT TASKS */
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function(){
+    // Maintenance
+    Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
+    Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
+    // Authentication Management
+    Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
+    Route::resource('/authentication/roles', \App\Http\Controllers\Authentication\RoleController::class);
+    Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
 
-    /* PROFILE (SYNCHRONIZED WITH HRIS) */
-    Route::get('/profile/personal', [\App\Http\Controllers\User\ProfileController::class, 'personal'])->name('profile.personal');
-    Route::get('/profile/employment', [\App\Http\Controllers\User\ProfileController::class, 'employment'])->name('profile.employment');
-    Route::get('/profile/educational-background', [\App\Http\Controllers\User\ProfileController::class, 'educationalBackground'])->name('profile.educationalBackground');
-    Route::get('/profile/educational-degree', [\App\Http\Controllers\User\ProfileController::class, 'educationalDegree'])->name('profile.educationalDegree');
-    Route::get('/profile/professional-study', [\App\Http\Controllers\User\ProfileController::class, 'professionalStudy'])->name('profile.professionalStudy');
-    Route::get('/profile/eligibility', [\App\Http\Controllers\User\ProfileController::class, 'eligibility'])->name('profile.eligibility');
-    Route::get('/profile/work-experience', [\App\Http\Controllers\User\ProfileController::class, 'workExperience'])->name('profile.workExperience');
-    Route::get('/profile/work-experience/{id}', [\App\Http\Controllers\User\ProfileController::class, 'workExperienceView'])->name('profile.workExperience.view');
-    Route::get('/profile/voluntary-work', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWork'])->name('profile.voluntaryWork');
-    Route::get('/profile/voluntary-work/{id}', [\App\Http\Controllers\User\ProfileController::class, 'voluntaryWorkView'])->name('profile.voluntaryWork.view');
+    // forms
+    // Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
+    // Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
+    // form's fields
+    // Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
+    // Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
+    // Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
+    // Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
 
-    /* SUPER ADMIN PERMANENT TASKS */
-    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
-        // Maintenance
-        Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
-        Route::resource('/maintenances/departments', \App\Http\Controllers\Maintenances\DepartmentController::class);
-        // Authentication Management
-        Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
-        Route::resource('/authentication/roles', \App\Http\Controllers\Authentication\RoleController::class);
-        Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
-
-        // forms
-        // Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
-        // Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);
-        // form's fields
-        // Route::get('/forms/fields/info/{id}',[\App\Http\Controllers\FormBuilder\FieldController::class, 'getInfo']);
-        // Route::post('/forms/fields/save-arrange/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'arrange'])->name('fields.arrange');
-        // Route::get('/forms/fields/preview/{id}', [\App\Http\Controllers\FormBuilder\FieldController::class, 'preview'])->name('fields.preview');
-        // Route::resource('forms.fields', \App\Http\Controllers\FormBuilder\FieldController::class);
-
-    });
 });

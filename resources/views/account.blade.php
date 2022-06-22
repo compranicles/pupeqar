@@ -151,25 +151,46 @@
             </div>
         </div>
     </div>
+
+    @if (Session::has('incomplete_account'))
+        <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="accountModalLabel">Account Details Incomplete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            <h5 class="text-center">Complete Your Account Details</h5>
+                            <p id="itemToDelete2" class="text-center font-weight-bold">Add College/Branch/Campus/College where to commit the accomplishments</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ route('offices.create') }}" type="button" class="btn btn-primary mb-2">OK</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                    <h5 class="text-center">Are you sure you want to remove this in your account?</h5>
-                    <p id="itemToDelete1" class="text-center font-weight-bold"></p>
-                    <p id="itemToDelete2" class="text-center font-weight-bold"></p>
-                    <form action="" id="delete_item" method="POST">
-                        @csrf
-                        @method('delete')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary mb-2" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
-            </form>
+                <div class="modal-body">
+                        <h5 class="text-center">Are you sure you want to remove this in your account?</h5>
+                        <p id="itemToDelete1" class="text-center font-weight-bold"></p>
+                        <p id="itemToDelete2" class="text-center font-weight-bold"></p>
+                        <form action="" id="delete_item" method="POST">
+                            @csrf
+                            @method('delete')
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mb-2" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger mb-2 mr-2">Delete</button>
+                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -246,5 +267,15 @@
             }
         });
     </script>
+
+    @if (Session::has('incomplete_account'))
+        <script>
+            $(function(){
+                $(window).on('load', function(){
+                    $('#accountModal').modal('show');
+                });
+            });
+        </script>
+    @endif
     @endpush
 </x-app-layout>
