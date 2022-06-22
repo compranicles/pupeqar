@@ -177,7 +177,7 @@ class IpqmsoConsolidatedController extends Controller
             }
 
         }
-        $colleges = Colleges::all();
+        $colleges = College::all();
         $sector_names = Sector::all();
         
         return view(
