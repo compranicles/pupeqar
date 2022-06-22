@@ -188,7 +188,7 @@ class StudentTrainingController extends Controller
             abort(403);
 
         if(LockController::isLocked($student_training->id, 19)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -287,7 +287,7 @@ class StudentTrainingController extends Controller
         $this->authorize('delete', StudentTraining::class);
 
         if(LockController::isLocked($student_training->id, 19)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)

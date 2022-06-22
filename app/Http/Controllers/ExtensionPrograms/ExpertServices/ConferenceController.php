@@ -187,7 +187,7 @@ class ConferenceController extends Controller
             abort(403);
             
         if(LockController::isLocked($expert_service_in_conference->id, 10)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -281,7 +281,7 @@ class ConferenceController extends Controller
         $this->authorize('delete', ExpertServiceConference::class);
 
         if(LockController::isLocked($expert_service_in_conference->id, 10)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
 

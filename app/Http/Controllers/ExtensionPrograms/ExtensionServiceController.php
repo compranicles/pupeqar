@@ -81,7 +81,7 @@ class ExtensionServiceController extends Controller
                 $submissionStatus[12][$extension->id] = 2;
         }
 
-        return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites'));
+        return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites', 'submissionStatus'));
     }
 
     /**
@@ -275,7 +275,7 @@ class ExtensionServiceController extends Controller
             abort(403);
             
         if(LockController::isLocked($extension_service->id, 12)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -396,7 +396,7 @@ class ExtensionServiceController extends Controller
         $this->authorize('delete', ExtensionService::class);
 
         if(LockController::isLocked($extension_service->id, 12)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -459,13 +459,11 @@ class ExtensionServiceController extends Controller
         $departments = Department::all();
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        $extensionServiceDocuments = ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->get()->toArray();
-
         $notificationID = $request->get('id');
 
         $is_owner = 0;
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'notificationID'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'collegeOfDepartment', 'is_owner', 'notificationID'));
     }
 
 

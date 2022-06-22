@@ -177,7 +177,7 @@ class AdminSpecialTaskController extends Controller
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(LockController::isLocked($admin_special_task->id, 29)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -259,7 +259,7 @@ class AdminSpecialTaskController extends Controller
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(LockController::isLocked($admin_special_task->id, 29)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');

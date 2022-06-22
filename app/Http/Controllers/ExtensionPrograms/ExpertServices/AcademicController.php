@@ -105,19 +105,10 @@ class AcademicController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $request->validate([
-            'other_nature' => 'required_if:nature,86',
-            'to' => 'after_or_equal:from',
-            'copyright_no' => 'max:100',
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
-
-        $input = $request->except(['_token', '_method', 'document', 'other_nature']);
+        $input = $request->except(['_token', '_method', 'document']);
 
         $esAcademic = ExpertServiceAcademic::create($input);
         $esAcademic->update(['user_id' => auth()->id()]);
-        $esAcademic->update(['other_nature' => $request->input('other_nature')]);
 
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
@@ -193,7 +184,7 @@ class AcademicController extends Controller
             abort(403);
 
         if(LockController::isLocked($expert_service_in_academic->id, 11)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -242,20 +233,12 @@ class AcademicController extends Controller
             'to' => $to,
         ]);
 
-        $request->validate([
-            'other_nature' => 'required_if:nature,86',
-            'to' => 'after_or_equal:from',
-            'copyright_no' => 'max:100',
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'other_nature']);
+        $input = $request->except(['_token', '_method', 'document']);
         
         $expert_service_in_academic->update(['description' => '-clear']);
 
         $expert_service_in_academic->update($input);
-        $expert_service_in_academic->update(['other_nature' => $request->input('other_nature')]);
 
         if($request->has('document')){
             
@@ -299,7 +282,7 @@ class AcademicController extends Controller
         $this->authorize('delete', ExpertServiceAcademic::class);
 
         if(LockController::isLocked($expert_service_in_academic->id, 11)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)

@@ -178,7 +178,7 @@ class OutreachProgramController extends Controller
             abort(403);
             
         if(LockController::isLocked($outreach_program->id, 22)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -265,7 +265,7 @@ class OutreachProgramController extends Controller
         $this->authorize('delete', OutreachProgram::class);
 
         if(LockController::isLocked($outreach_program->id, 22)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)

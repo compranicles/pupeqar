@@ -14,6 +14,9 @@
                 <div class="alert alert-warning" role="alert">
                     <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
                 </div>
+                <div class="alert alert-info" role="alert">
+                    Add your co-extensionist/s in this extension to share them this info, after you save this extension. Your documents will <strong>not</strong> be shared.
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('extension-service.store' ) }}" method="post">

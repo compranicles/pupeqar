@@ -25,6 +25,11 @@
                         {{ $message }}
                     </div>
                 @endif
+                @if ($research->nature_of_involvement == 11)
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting.
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -143,7 +148,7 @@
     <script>
         // auto hide alert
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove(); 
             });
         }, 4000);

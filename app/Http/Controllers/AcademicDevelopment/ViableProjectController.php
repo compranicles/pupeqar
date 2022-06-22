@@ -199,7 +199,7 @@ class ViableProjectController extends Controller
             abort(403);
 
         if(LockController::isLocked($viable_project->id, 20)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -302,7 +302,7 @@ class ViableProjectController extends Controller
         $this->authorize('delete', ViableProject::class);
 
         if(LockController::isLocked($viable_project->id, 20)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)

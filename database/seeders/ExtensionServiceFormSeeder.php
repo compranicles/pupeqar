@@ -255,7 +255,7 @@ class ExtensionServiceFormSeeder extends Seeder
 
         ExtensionProgramField::insert([
             'extension_program_form_id' => 4,
-            'label' => 'Keywords (at least five (5) keywords, separated by commas (,))',
+            'label' => 'Keywords (at least five (5) keywords)',
             'name' => 'keywords',
             'placeholder' => null,
             'size' => 'col-md-6',

@@ -132,7 +132,7 @@ class ResearcherController extends Controller
 
         \LogActivity::addToLog('Researcher received an accomplishment.');
 
-        return redirect()->route('researcher.index')->with('success', 'Report has been added in department consolidation of reports');
+        return redirect()->route('researcher.index')->with('success', 'Report has been added in college consolidation of reports');
     
     }
     public function rejectCreate($report_id){
@@ -239,7 +239,7 @@ class ResearcherController extends Controller
 
         \LogActivity::addToLog('Researcher received '.$count.' accomplishments.');
 
-        return redirect()->route('researcher.index')->with('success', 'Report/s added in department consolidation of reports.');
+        return redirect()->route('researcher.index')->with('success', 'Report/s added in college consolidation of reports.');
     }
 
     public function denySelected(Request $request){

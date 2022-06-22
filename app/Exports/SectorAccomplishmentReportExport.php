@@ -35,9 +35,11 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
         if($this->type == "academic") {
             //get the table names
             $table_format = GenerateTable::where('type_id', 2)->get();
+            $employee_type = 1; //Admin
         }
         elseif ($this->type == 'admin') {
             $table_format = GenerateTable::where('type_id', 1)->get();
+            $employee_type = 3; //Admin
         }
 
         //get the table columns/headers
@@ -55,7 +57,10 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
             else
                 if($this->asked = 'ipo')
                     $table_contents[$format->id] =
-                        Report::select('reports.*', 
+                        Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                            ->where('user_roles.role_id', $employee_type)
+                            ->whereNull('user_roles.deleted_at')
+                            ->select('reports.*', 
                             DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                 'sectors.name as sector_name',
                                 'departments.name as department_name',

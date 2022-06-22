@@ -8,7 +8,7 @@
             id="{{ $fieldInfo->name }}"
             multiple
             data-max-file-size="50MB"
-            data-max-files="50"
+            data-max-files="20"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             >
 
@@ -57,4 +57,22 @@
             }
         });
     </script>
+    <!-- <script>
+        $( "#document" ).on( "input", function() {
+            const inputElement = document.querySelector('input[type="file"]');
+            const pond = FilePond.create(inputElement, {
+                onaddfilestart: (file) => { isLoadingCheck(); },
+                onprocessfile: (files) => { isLoadingCheck(); }
+            });
+    
+            function isLoadingCheck(){
+                var isLoading = pond.getFiles().filter(x=>x.status !== 5).length !== 0;
+                if(isLoading) {
+                    $('#submit').attr("disabled", "disabled");
+                } else {
+                    $('#submit').removeAttr("disabled");
+                }
+            }
+        });
+    </script> -->
 @endpush
