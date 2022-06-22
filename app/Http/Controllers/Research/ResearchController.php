@@ -324,7 +324,7 @@ class ResearchController extends Controller
             abort(403);
             
         if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already committed this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
@@ -469,7 +469,7 @@ class ResearchController extends Controller
         $this->authorize('delete', Research::class);
 
         if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
@@ -654,7 +654,7 @@ class ResearchController extends Controller
             return view('inactive');
         $research = Research::where('research_code', $research_code)->where('user_id', auth()->id())->first();
         if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         $researchLead = Research::where('research_code', $research_code)->first()->toArray();
         $researchLead = collect($researchLead);
@@ -807,7 +807,7 @@ class ResearchController extends Controller
     public function removeSelf($research_code){
         $research_id = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
         if(LockController::isLocked($research_id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         Research::where('research_code', $research_code)->where('user_id', auth()->id())->delete();

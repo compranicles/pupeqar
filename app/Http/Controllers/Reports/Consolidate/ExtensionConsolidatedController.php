@@ -165,10 +165,11 @@ class ExtensionConsolidatedController extends Controller
 
             //departmentdetails
             $department = College::find($dept);
+            $id = $department->id;
 
             return view(
                         'reports.consolidate.extension', 
-                        compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter')
+                        compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter', 'id')
                     );
         }
     }

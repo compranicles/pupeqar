@@ -131,7 +131,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist received an accomplishment.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report has been added in department consolidation of reports.');
+        return redirect()->route('extensionist.index')->with('success', 'Report has been added in college consolidation of reports.');
     
     }
     public function rejectCreate($report_id){
@@ -239,7 +239,7 @@ class ExtensionistController extends Controller
 
         \LogActivity::addToLog('Extensionist received '.$count.' accomplishments.');
 
-        return redirect()->route('extensionist.index')->with('success', 'Report/s added in department consolidation of reports.');
+        return redirect()->route('extensionist.index')->with('success', 'Report/s added in college consolidation of reports.');
     }
 
     public function denySelected(Request $request){

@@ -92,7 +92,10 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                            ->where('user_roles.role_id', 1)
+                            ->whereNull('user_roles.deleted_at')
+                            ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->where('reports.user_id', $user_id)
@@ -122,7 +125,10 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                            ->where('user_roles.role_id', 3)
+                            ->whereNull('user_roles.deleted_at')
+                            ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->where('reports.user_id', $user_id)

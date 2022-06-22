@@ -179,7 +179,7 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
 
         if(LockController::isLocked($college_department_award->id, 21)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         $awardFields = DB::select("CALL get_academic_development_fields_by_form_id(6)");
@@ -266,7 +266,7 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
 
         if(LockController::isLocked($college_department_award->id, 21)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();

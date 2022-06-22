@@ -174,7 +174,7 @@ class MobilityController extends Controller
             abort(403);
             
         if(LockController::isLocked($mobility->id, 14)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -263,7 +263,7 @@ class MobilityController extends Controller
         $this->authorize('delete', Mobility::class);
 
         if(LockController::isLocked($mobility->id, 14)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)

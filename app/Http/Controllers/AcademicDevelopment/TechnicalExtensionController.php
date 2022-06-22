@@ -159,7 +159,7 @@ class TechnicalExtensionController extends Controller
             abort(403);
 
         if(LockController::isLocked($technical_extension->id, 23)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -244,7 +244,7 @@ class TechnicalExtensionController extends Controller
         $this->authorize('delete', TechnicalExtension::class);
 
         if(LockController::isLocked($technical_extension->id, 23)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)

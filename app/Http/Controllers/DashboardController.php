@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\{
     College,
@@ -31,6 +32,7 @@ use App\Services\{
 class DashboardController extends Controller
 {
     public function index() {
+
         $user = User::where('id', auth()->id())->first();
 
         $roles = (new UserRoleService())->getRolesOfUser(auth()->id());

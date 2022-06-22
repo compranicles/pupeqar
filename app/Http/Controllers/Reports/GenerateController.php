@@ -132,8 +132,6 @@ class GenerateController extends Controller
                     $file_suffix.'.xlsx');
             } elseif ($request->input("type_generate") == "department_level") {
                 $file_suffix = 'QARs-Dept-Level-'.$data->code.'-'.$request->input('year_generate_level').'-'.$quarter_generate.'-'.$request->input('year_generate_level');
-                $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.college_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first('users.*');
-                $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.college_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first('users.*');
                 return Excel::download(new DepartmentLevelConsolidatedExport(
                     $source_type, 
                     $reportFormat, 
@@ -143,8 +141,6 @@ class GenerateController extends Controller
                     $department = $data->id, 
                     $id, 
                     $departmentName = $data->name,
-                    $faculty_researcher,
-                    $faculty_extensionist,
                     ),
                     $file_suffix.'.xlsx');
             } elseif ($request->input("type_generate") == "college_level") {
@@ -158,6 +154,8 @@ class GenerateController extends Controller
                     $id, 
                     $college = $data->id,
                     $collegeName = $data->name,
+                    $faculty_researcher, 
+                    $faculty_extensionist
                     ),
                     $file_suffix.'.xlsx');
             }
@@ -194,6 +192,8 @@ class GenerateController extends Controller
                 $quarter_generate,
                 $id, 
                 $cbco,
+                $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.college_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first('users.*'),
+                $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.college_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first('users.*')
                 ),
                 $file_suffix.'.xlsx');
         }

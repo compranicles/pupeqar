@@ -199,7 +199,7 @@ class AttendanceFunctionController extends Controller
         $this->authorize('manage', AttendanceFunction::class);
 
         if(LockController::isLocked($attendance_function->id, 33)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -297,7 +297,7 @@ class AttendanceFunctionController extends Controller
         $this->authorize('manage', AttendanceFunction::class);
 
         if(LockController::isLocked($attendance_function->id, 33)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

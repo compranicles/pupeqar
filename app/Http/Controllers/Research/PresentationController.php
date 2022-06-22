@@ -94,7 +94,7 @@ class PresentationController extends Controller
         $this->authorize('create', ResearchPresentation::class);
 
         if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -223,10 +223,10 @@ class PresentationController extends Controller
             abort(403);
             
         if(LockController::isLocked($presentation->id, 4)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');

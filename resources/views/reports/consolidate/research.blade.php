@@ -303,7 +303,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $department, 'source_type' => 'department', 'special_type' => ''])
+    @include('reports.generate.index', ['data' => $department, 'source_type' => 'college', 'special_type' => ''])
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>

@@ -11,18 +11,6 @@
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="float-right">
-                        <button type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate Report</button>
-                    </div>
-                    <div class="float-right">
-                        <button type="button" class="btn btn-primary ml-2" data-target="#GenerateLevelReport" data-toggle="modal"><i class="bi bi-file-earmark-text"></i> Generate College Level Report</button>
-                    </div>
-                </div>
-                {{-- Generate Report Button --}}
-            </div>
-            <hr>
-            <div class="row">
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="yearFilter" class="mr-2">Year Reported: </label>

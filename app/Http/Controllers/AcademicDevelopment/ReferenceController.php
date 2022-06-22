@@ -197,7 +197,7 @@ class ReferenceController extends Controller
             return view('inactive');
 
         if(LockController::isLocked($rtmmi->id, 15)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
@@ -320,7 +320,7 @@ class ReferenceController extends Controller
             return view('inactive');
         
         if(LockController::isLocked($rtmmi->id, 15)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         $rtmmi->delete();

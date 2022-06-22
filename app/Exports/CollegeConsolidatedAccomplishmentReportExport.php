@@ -5,6 +5,9 @@ namespace App\Exports;
 // use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\User;
 use App\Models\Report;
+use App\Models\Dean;
+use App\Models\FacultyExtensionist;
+use App\Models\FacultyResearcher;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use Illuminate\Contracts\View\View;
@@ -22,7 +25,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEvents
 {
     function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate,
-         $id, $cbco, ) {
+         $id, $cbco, $faculty_researcher, $faculty_extensionist) {
         $this->source_type = $source_type;
         $this->report_format = $reportFormat;
         $this->source_generate = $source_generate;
@@ -31,9 +34,25 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
         $this->id = $id;
         $this->cbco = $cbco;
 
-        $user = User::where('id', auth()->id())->first();
-        $this->signature = $user->signature;
+        $user = Dean::where('deans.college_id', $this->id)->join('users', 'users.id', 'deans.user_id')->select('users.*')->first();
+            $this->signature = $user->signature;
+
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
+        if ($faculty_researcher != null) {
+            $this->fr_signature = User::where('id', $faculty_researcher['user_id'])->pluck('users.signature')->first();
+            $this->fr_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_researcher, "Researcher");
+        } else {
+            $this->fr_name = '';
+            $this->fr_signature = '';
+        }
+
+        if ($faculty_extensionist != null) {
+            $this->fe_signature = User::where('id', $faculty_extensionist['user_id'])->pluck('users.signature')->first();
+            $this->fe_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($faculty_extensionist, "Extensionist");
+        } else {
+            $this->fe_name = '';
+            $this->fe_signature = '';
+        }
     }
 
     public function view(): View
@@ -69,9 +88,16 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                            ->where('user_roles.role_id', 1)
+                            ->whereNull('user_roles.deleted_at')
+                            ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.college_id', $college_id)
-                            ->where('reports.dean_approval', 1)
+                            ->where(function($query) {
+                                $query->where('reports.researcher_approval', 1)
+                                    ->orWhere('reports.extensionist_approval', 1)
+                                    ->orWhere('reports.dean_approval', 1);
+                            })
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')
@@ -99,9 +125,16 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                            ->where('user_roles.role_id', 3)
+                            ->whereNull('user_roles.deleted_at')
+                            ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.college_id', $college_id)
-                            ->where('reports.dean_approval', 1)
+                            ->where(function($query) {
+                                $query->orwhere('reports.researcher_approval', 1)
+                                    ->orWhere('reports.extensionist_approval', 1)
+                                    ->orWhere('reports.dean_approval', 1);
+                            })
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')
@@ -158,54 +191,61 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 ]);
 
                 // Name
-                $event->sheet->setCellValue('C3', 'DEAN/DIRECTOR:');
+                // if ($this->isFacultyRes != null) {
+                //     $event->sheet->setCellValue('C3', 'FACULTY RESEARCHER:');
+                // } elseif ($this->isFacultyExt != null) {
+                //     $event->sheet->setCellValue('C3', 'FACULTY EXTENSIONIST:');
+                // } else {
+                //     $event->sheet->setCellValue('C3', 'DEAN/DIRECTOR:');
+                // }
+
+                // $event->sheet->getStyle('C3')->applyFromArray([
+                //     'font' => [
+                //         'size' => 16,
+                //     ]
+                // ]);
+                // $event->sheet->getStyle('C3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                // $event->sheet->mergeCells('D3:F3');
+                // $event->sheet->setCellValue('D3', $this->arranged_name);
+                // $event->sheet->getStyle('D3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                // $event->sheet->getStyle('D3:F3')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                // $event->sheet->getStyle('D3')->applyFromArray([
+                //     'font' => [
+                //         'size' => 16,
+                //     ]
+                // ]);
+
+                $event->sheet->setCellValue('C3', 'QUARTER:');
                 $event->sheet->getStyle('C3')->applyFromArray([
                     'font' => [
                         'size' => 16,
                     ]
                 ]);
                 $event->sheet->getStyle('C3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->mergeCells('D3:F3');
-                $event->sheet->setCellValue('D3', $this->arranged_name);
-                $event->sheet->getStyle('D3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('D3:F3')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->setCellValue('D3', $this->quarter_generate);
                 $event->sheet->getStyle('D3')->applyFromArray([
                     'font' => [
                         'size' => 16,
                     ]
                 ]);
+                $event->sheet->getStyle('D3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getStyle('D3')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
-                $event->sheet->setCellValue('C4', 'QUARTER:');
-                $event->sheet->getStyle('C4')->applyFromArray([
+                $event->sheet->setCellValue('E3', 'CALENDAR YEAR:');
+                $event->sheet->getStyle('E3')->applyFromArray([
                     'font' => [
                         'size' => 16,
                     ]
                 ]);
-                $event->sheet->getStyle('C4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->setCellValue('D4', $this->quarter_generate);
-                $event->sheet->getStyle('D4')->applyFromArray([
+                $event->sheet->getStyle('E3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->setCellValue('F3', $this->year_generate);
+                $event->sheet->getStyle('F3')->applyFromArray([
                     'font' => [
                         'size' => 16,
                     ]
                 ]);
-                $event->sheet->getStyle('D4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('D4')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
-                $event->sheet->setCellValue('E4', 'CALENDAR YEAR:');
-                $event->sheet->getStyle('E4')->applyFromArray([
-                    'font' => [
-                        'size' => 16,
-                    ]
-                ]);
-                $event->sheet->getStyle('E4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->setCellValue('F4', $this->year_generate);
-                $event->sheet->getStyle('F4')->applyFromArray([
-                    'font' => [
-                        'size' => 16,
-                    ]
-                ]);
-                $event->sheet->getStyle('F4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->getStyle('F4')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('F3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getStyle('F3')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                 $count = 7;
                 $table_format = $this->table_format;
@@ -345,7 +385,9 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 } 
 
                 $event->sheet->setCellValue('A'.$count, $this->arranged_name);
-                $event->sheet->getStyle('A'.$count)->applyFromArray([
+                $event->sheet->setCellValue('C'.$count, $this->fr_name);
+                $event->sheet->setCellValue('E'.$count, $this->fe_name);
+                $event->sheet->getStyle('A'.$count.':'.'E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
                         'bold' => true, 
@@ -353,10 +395,14 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     ],
                 ]);
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
                 $count = $count + 1;
-                $event->sheet->setCellValue('A'.$count, 'Director, '.$this->cbco);
-                $event->sheet->getStyle('A'.$count)->applyFromArray([
+                    $event->sheet->setCellValue('A'.$count, 'Researcher, '.$this->cbco);
+                    $event->sheet->setCellValue('C'.$count, 'Extensionist, '.$this->cbco);
+                    $event->sheet->setCellValue('E'.$count, 'Director, '.$this->cbco);
+                $event->sheet->getStyle('A'.$count.':'.'E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
                         'bold' => true, 
@@ -367,6 +413,14 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                
+                $event->sheet->getStyle('C'.$count)->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('C'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('C'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+                $event->sheet->getStyle('E'.$count)->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('E'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+                $event->sheet->getStyle('E'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
             }
 
         ];

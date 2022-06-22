@@ -182,7 +182,7 @@ class PartnershipController extends Controller
             abort(403);
             
         if(LockController::isLocked($partnership->id, 13)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -277,7 +277,7 @@ class PartnershipController extends Controller
         $this->authorize('delete', Partnership::class);
 
         if(LockController::isLocked($partnership->id, 13)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)

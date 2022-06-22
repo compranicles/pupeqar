@@ -179,7 +179,7 @@ class StudentAwardController extends Controller
             return view('inactive');
 
         if(LockController::isLocked($student_award->id, 18)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
@@ -263,7 +263,7 @@ class StudentAwardController extends Controller
         $this->authorize('delete', StudentAward::class);
 
         if(LockController::isLocked($student_award->id, 18)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited.');
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
         StudentAwardDocument::where('student_award_id', $student_award->id)->delete();

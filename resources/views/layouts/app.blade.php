@@ -49,9 +49,6 @@
 
     </head>
     <body class="font-sans antialiased bg-light" style="background-image: {{ URL('storage/cover2.png') }}">
-        @incompleteAccount
-            <x-jet-banner />
-        @endincompleteAccount
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
