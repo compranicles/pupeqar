@@ -25,10 +25,10 @@
                                 <label for="quarterFilter" class="mr-2">Quarter Start: </label>
                                 <div class="d-flex">
                                     <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" class="quarter">1</option>
-                                        <option value="2" class="quarter">2</option>
-                                        <option value="3" class="quarter">3</option>
-                                        <option value="4" class="quarter">4</option>
+                                        <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
+                                        <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
+                                        <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
+                                        <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
                                     </select>
                                 </div>
                             </div>
