@@ -48,7 +48,7 @@ class StudentAwardController extends Controller
         foreach ($student_awards as $student_award) {
             if (LockController::isLocked($student_award->id, 18))
                 $submissionStatus[18][$student_award->id] = 1;
-            else 
+            else
                 $submissionStatus[18][$student_award->id] = 0;
             if (empty($reportdata->getDocuments(18, $student_award->id)))
                 $submissionStatus[18][$student_award->id] = 2;
@@ -97,7 +97,7 @@ class StudentAwardController extends Controller
         $date = date("Y-m-d", strtotime($request->input('date')));
 
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
@@ -110,7 +110,7 @@ class StudentAwardController extends Controller
         $student_award->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -143,8 +143,9 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentAward $student_award)
+    public function show(StudentAward $stdnt_award)
     {
+		$student_award = $stdnt_award;
         $this->authorize('view', StudentAward::class);
 
         if (auth()->id() !== $student_award->user_id)
@@ -168,8 +169,9 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(StudentAward $student_award)
+    public function edit(StudentAward $stdnt_award)
     {
+		$student_award = $stdnt_award;
         $this->authorize('update', StudentAward::class);
 
         if (auth()->id() !== $student_award->user_id)
@@ -205,15 +207,16 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StudentAward $student_award)
+    public function update(Request $request, StudentAward $stdnt_award)
     {
+		$student_award = $stdnt_award;
         $this->authorize('update', StudentAward::class);
-        
+
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $date = date("Y-m-d", strtotime($request->input('date')));
-        
+
         $request->merge([
             'date' => $date,
         ]);
@@ -225,7 +228,7 @@ class StudentAwardController extends Controller
         $student_award->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -258,8 +261,9 @@ class StudentAwardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StudentAward $student_award)
+    public function destroy(StudentAward $stdnt_award)
     {
+		$student_award = $stdnt_award;
         $this->authorize('delete', StudentAward::class);
 
         if(LockController::isLocked($student_award->id, 18)){
