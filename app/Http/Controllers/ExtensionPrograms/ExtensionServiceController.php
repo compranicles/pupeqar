@@ -99,9 +99,13 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments'));
     }
 
     /**
@@ -175,6 +179,7 @@ class ExtensionServiceController extends Controller
             'to' => $to,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         // dd($request->input('to'));
@@ -284,7 +289,10 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         if ($extension_service->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
@@ -300,10 +308,10 @@ class ExtensionServiceController extends Controller
 
         if (ExtensionInvite::where('user_id', auth()->id())->where('ext_code', $extension_service->ext_code)->pluck('is_owner')->first() == '1'){
             $is_owner = 1;
-            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner'));
+            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments'));
         }
         $is_owner = 0;
-        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner'));
+        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments'));
     }
 
     /**
@@ -331,6 +339,7 @@ class ExtensionServiceController extends Controller
             'amount_of_funding' => $value,
             'from' => $from,
             'to' => $to,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -439,7 +448,10 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
 
         $extension_service = ExtensionService::where('id', $id)->first();
@@ -464,7 +476,7 @@ class ExtensionServiceController extends Controller
         $is_owner = 0;
         $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'collegeOfDepartment', 'is_owner', 'notificationID', 'extensionServiceDocuments'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'collegeOfDepartment', 'is_owner', 'notificationID', 'extensionServiceDocuments', 'departments'));
     }
 
 
@@ -478,6 +490,10 @@ class ExtensionServiceController extends Controller
         $extensionService = collect($extensionService);
         $extensionService = $extensionService->except(['id']);
         $extensionService = $extensionService->toArray();
+
+        $request->merge([
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+        ]);
 
         $input = $request->except(['_token', '_method', 'notif_id']);
 

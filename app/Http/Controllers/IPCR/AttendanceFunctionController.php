@@ -57,7 +57,7 @@ class AttendanceFunctionController extends Controller
         foreach ($attendedFunctions as $attendedFunction) {
             if (LockController::isLocked($attendedFunction->id, 33))
                 $submissionStatus[33][$attendedFunction->id] = 1;
-            else 
+            else
                 $submissionStatus[33][$attendedFunction->id] = 0;
             if (empty($reportdata->getDocuments(33, $attendedFunction->id)))
                 $submissionStatus[33][$attendedFunction->id] = 2;
@@ -87,7 +87,10 @@ class AttendanceFunctionController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+         $departments = Department::whereIn('college_id', $colleges)->get();
         $values = [];
         if($request->get('type') == 'uni'){
             $values = UniversityFunction::where('id', $request->get('id'))->first()->toArray();
@@ -99,7 +102,7 @@ class AttendanceFunctionController extends Controller
 
         $classtype = $request->get('type');
 
-        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype'));
+        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments'));
     }
 
     /**
@@ -124,6 +127,7 @@ class AttendanceFunctionController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
             'user_id' => auth()->id(),
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -195,7 +199,7 @@ class AttendanceFunctionController extends Controller
     {
         if (auth()->id() !== $attendance_function->user_id)
             abort(403);
-            
+
         $this->authorize('manage', AttendanceFunction::class);
 
         if(LockController::isLocked($attendance_function->id, 33)){
@@ -210,7 +214,10 @@ class AttendanceFunctionController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+         $departments = Department::whereIn('college_id', $colleges)->get();
         $values = $attendance_function->toArray();
         $classtype = '';
         if($attendance_function->classification == 293){
@@ -227,7 +234,7 @@ class AttendanceFunctionController extends Controller
 
         $documents = AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->get()->toArray();
 
-        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function'));
+        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function', 'departments'));
     }
 
     /**
@@ -250,6 +257,7 @@ class AttendanceFunctionController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

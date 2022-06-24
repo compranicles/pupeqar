@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('syllabus.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $syllabusFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $syllabusFields, 'colleges' => $colleges, 'departments'=> $departments])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

@@ -35,7 +35,7 @@ class CollegeController extends Controller
         $this->authorize('create', College::class);
 
         // return view('maintenances.colleges.create');
-        Artisan::call('db:seed', ['--class' => 'CollegeSeeder']); 
+        Artisan::call('db:seed', ['--class' => 'CollegeSeeder']);
 
         return redirect()->route('colleges.index')->with('edit_college_success', 'Office/College/Branch/Campus data synced successfully');
     }
@@ -71,7 +71,7 @@ class CollegeController extends Controller
     public function show($id)
     {
         $this->authorize('view', College::class);
-        
+
     }
 
     /**
@@ -89,7 +89,7 @@ class CollegeController extends Controller
         // dd($departments);
 
         return view('maintenances.colleges.edit', compact('college', 'departments'));
-        
+
     }
 
     /**
@@ -132,7 +132,12 @@ class CollegeController extends Controller
     }
 
     public function getCollegeName($id){
-        
+
         return College::where('id', $id)->pluck('name')->first();
+    }
+
+    public function getCollegeNameUsingDept($deptID){
+        $college_id  = Department::where('id', $deptID)->pluck('college_id')->first();
+        return College::where('id', $college_id)->pluck('name')->first();
     }
 }

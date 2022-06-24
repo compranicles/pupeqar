@@ -54,7 +54,7 @@ class ReferenceController extends Controller
         foreach ($allRtmmi as $rtmmi) {
             if (LockController::isLocked($rtmmi->id, 15))
                 $submissionStatus[15][$rtmmi->id] = 1;
-            else 
+            else
                 $submissionStatus[15][$rtmmi->id] = 0;
             if (empty($reportdata->getDocuments(15, $rtmmi->id)))
                 $submissionStatus[15][$rtmmi->id] = 2;
@@ -76,9 +76,12 @@ class ReferenceController extends Controller
             return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('academic-development.references.create', compact('referenceFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('academic-development.references.create', compact('referenceFields', 'colleges', 'departments'));
     }
 
     /**
@@ -93,11 +96,11 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-      
+
         $date_started = date("Y-m-d", strtotime($request->input('date_started')));
         $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
         $date_published = date("Y-m-d", strtotime($request->input('date_published')));
-        
+
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -106,6 +109,7 @@ class ReferenceController extends Controller
             'date_published' => $date_published,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -121,7 +125,7 @@ class ReferenceController extends Controller
         $rtmmi->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -192,7 +196,7 @@ class ReferenceController extends Controller
 
         if (auth()->id() !== $rtmmi->user_id)
             abort(403);
-            
+
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -206,8 +210,11 @@ class ReferenceController extends Controller
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-      
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
         if ($rtmmi->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$rtmmi->department_id.")");
         }
@@ -219,8 +226,8 @@ class ReferenceController extends Controller
         $value->toArray();
         $value = collect($rtmmi);
         $value = $value->toArray();
-        
-        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment'));
+
+        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment', 'departments'));
     }
 
     /**
@@ -240,11 +247,12 @@ class ReferenceController extends Controller
         $date_started = date("Y-m-d", strtotime($request->input('date_started')));
         $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
         $date_published = date("Y-m-d", strtotime($request->input('date_published')));
-        
+
         $request->merge([
             'date_started' => $date_started,
             'date_completed' => $date_completed,
             'date_published' => $date_published,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -273,7 +281,7 @@ class ReferenceController extends Controller
         $rtmmi->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -318,7 +326,7 @@ class ReferenceController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         if(LockController::isLocked($rtmmi->id, 15)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -338,7 +346,7 @@ class ReferenceController extends Controller
     }
 
     public function removeDoc($filename){
-        
+
         $this->authorize('delete', Reference::class);
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)

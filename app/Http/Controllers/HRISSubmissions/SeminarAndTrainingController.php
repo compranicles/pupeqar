@@ -69,7 +69,7 @@ class SeminarAndTrainingController extends Controller
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 4)->where('h_r_i_s_fields.is_active', 1)
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
-        
+
         foreach($developments as $development){
             if($development->EmployeeTrainingProgramID == $id){
                 $seminar = $development;
@@ -91,9 +91,12 @@ class SeminarAndTrainingController extends Controller
             'total_hours' => $seminar->NumberOfHours
         ];
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        //HRIS Document 
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        //HRIS Document
         $hrisDocuments = [];
         $collegeOfDepartment = '';
         if(LockController::isNotLocked($id, 25) && Report::where('report_reference_id', $id)
@@ -131,10 +134,10 @@ class SeminarAndTrainingController extends Controller
                 'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
                 'total_hours' => $seminar->NumberOfHours,
                 'description' => $description
-            ]; 
+            ];
         }
 
-        return view('submissions.hris.development.seminar.add', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
+        return view('submissions.hris.development.seminar.add', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
 
     public function saveSeminar(Request $request, $id){
@@ -143,15 +146,16 @@ class SeminarAndTrainingController extends Controller
         }
 
 
-        $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+        $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $seminarFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
             ->where('h_r_i_s_fields.h_r_i_s_form_id', 4)->where('h_r_i_s_fields.is_active', 1)
             ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
             ->orderBy('h_r_i_s_fields.order')->get();
-    
+
         $data = [];
-        
+
         foreach($seminarFields as $field){
             if($field->field_type_id == '5'){
                 $data[$field->name] = DropdownOption::where('id', $request->input($field->name))->pluck('name')->first();
@@ -176,11 +180,11 @@ class SeminarAndTrainingController extends Controller
                     $data[$field->name] = $request->input($field->name);
             }
         }
-        
+
         $filenames = [];
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -216,7 +220,7 @@ class SeminarAndTrainingController extends Controller
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
-            'college_id' => $request->college_id,
+            'college_id' => $college_id,
             'department_id' => $request->department_id,
             'report_category_id' => 25,
             'report_code' => null,
@@ -262,7 +266,7 @@ class SeminarAndTrainingController extends Controller
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 5)->where('h_r_i_s_fields.is_active', 1)
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
-        
+
         foreach($developments as $development){
             if($development->EmployeeTrainingProgramID == $id){
                 $training = $development;
@@ -284,9 +288,12 @@ class SeminarAndTrainingController extends Controller
             'total_hours' => $training->NumberOfHours
         ];
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        //HRIS Document 
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        //HRIS Document
         $hrisDocuments = [];
         $collegeOfDepartment = '';
         if(LockController::isNotLocked($id, 26) && Report::where('report_reference_id', $id)
@@ -324,27 +331,28 @@ class SeminarAndTrainingController extends Controller
                 'to' => date('m/d/Y', strtotime($training->IncDateTo)),
                 'total_hours' => $training->NumberOfHours,
                 'description' => $description
-            ]; 
+            ];
         }
 
-        return view('submissions.hris.development.training.add', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
+        return view('submissions.hris.development.training.add', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
 
     public function saveTraining(Request $request, $id){
-        
+
         if($request->document[0] == null){
             return redirect()->back()->with('error', 'Document upload are required');
         }
 
-        $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+        $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $trainingFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
             ->where('h_r_i_s_fields.h_r_i_s_form_id', 5)->where('h_r_i_s_fields.is_active', 1)
             ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
             ->orderBy('h_r_i_s_fields.order')->get();
-        
+
         $data = [];
-        
+
         foreach($trainingFields as $field){
             if($field->field_type_id == '5'){
                 $data[$field->name] = DropdownOption::where('id', $request->input($field->name))->pluck('name')->first();
@@ -372,7 +380,7 @@ class SeminarAndTrainingController extends Controller
 
         $filenames = [];
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -408,7 +416,7 @@ class SeminarAndTrainingController extends Controller
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
-            'college_id' => $request->college_id,
+            'college_id' => $college_id,
             'department_id' => $request->department_id,
             'report_category_id' => 26,
             'report_code' => null,

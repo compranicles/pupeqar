@@ -1,7 +1,7 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-            {{-- <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+            <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
                         {{ 'readonly' }}
@@ -21,9 +21,9 @@
                 <option value="{{ $row->id }}" {{ (old($fieldInfo->name) == '') ?  (($college_id == $row->id) ? 'selected' : '') : ((old($fieldInfo->name) == $row->id) ? 'selected' : '') }} >{{ $row->name }}</option>
                 @endforeach
 
-            </select> --}}
+            </select>
 
-            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly>
+            {{-- <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly> --}}
 
             <!-- @if ($colleges !== []) -->
             <!-- <span id="" role="alert">
@@ -39,13 +39,13 @@
     </div>
 
 @push('scripts')
-    {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
          $("#college_id").selectize({
               sortField: "text",
           });
-    </script> --}}
-    {{-- <script>
+    </script>
+    <script>
         $('#college_id').on('input', function(){
             var collegeId = $('#college_id').val();
             $('#department_id').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -56,6 +56,7 @@
                     data.forEach(function (item){
                         $("#department_id").append(new Option(item.name, item.id));
                     });
+                    $("#department_id").append(new Option('N/A', '0'));
                 }
                 if ("{{ old('department_id') }}" == '')
                     document.getElementById("department_id").value = "{{ $department_id }}";
@@ -63,9 +64,9 @@
                     document.getElementById("department_id").value = "{{ old('department_id') }}";
             });
         });
-    </script> --}}
+    </script>
 
-    @if(request()->routeIs('*.edit'))
+    {{-- @if(request()->routeIs('*.edit'))
     <script>
         var collegeId = {{ $college_id }};
         var url = "{{ route('college.name',':id') }}";
@@ -79,8 +80,8 @@
                 }
             });
     </script>
-    @endif
-    {{-- <script>
+    @endif --}}
+    <script>
         var collegeId = $('#college_id').val();
 
             if (collegeId == '') {
@@ -95,6 +96,7 @@
                             $("#department_id").append(new Option(item.name, item.id));
 
                         });
+                        $("#department_id").append(new Option('N/A', '0'));
                     }
                     if ("{{ old('department_id') }}" == '')
                     document.getElementById("department_id").value = "{{ $department_id }}";
@@ -102,5 +104,5 @@
                         document.getElementById("department_id").value = "{{ old('department_id') }}";
                 });
             }
-    </script> --}}
+    </script>
 @endpush

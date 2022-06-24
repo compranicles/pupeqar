@@ -7,6 +7,7 @@
 
         <title>PUP eQAR</title>
 
+        <link rel="icon" href="{{ url('favicon.ico') }}">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
 

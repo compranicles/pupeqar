@@ -1062,8 +1062,8 @@ class SubmissionController extends Controller
                         $successToSubmit++;
 
                     break;
-                    case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: 
-                            case 17: case 18: case 19: case 20: case 21: case 22: case 29: case 30: 
+                    case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16:
+                            case 17: case 18: case 19: case 20: case 21: case 22: case 29: case 30:
                             case 31: case 32:
                         switch($report_values_array[1]){
                             case 8:
@@ -2489,20 +2489,41 @@ class SubmissionController extends Controller
                 $department_id = '';
                 $college_id = '';
                 $sector_id = '';
-                if(in_array(5, $roles)){
-                    $department_id = Chairperson::where('user_id', auth()->id())->pluck('department_id')->first();
-                    $college_id = Department::where('id', $department_id)->pluck('college_id')->first();
-                    $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
-                }
-                if(in_array(6, $roles)){
-                    $college_id = Dean::where('user_id', auth()->id())->pluck('college_id')->first();
-                    $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
+                switch($report_values_array[1]){
+                    case 17:
+                        $collegeAndDepartment = RequestModel::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 18:
+                        $collegeAndDepartment = StudentAward::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 19:
+                        $collegeAndDepartment = StudentTraining::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 20:
+                        $collegeAndDepartment = ViableProject::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 21:
+                        $collegeAndDepartment = CollegeDepartmentAward::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 22:
+                        $collegeAndDepartment = OutreachProgram::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 23:
+                        $collegeAndDepartment = TechnicalExtension::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
                 }
                 $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                 $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
                 $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                 $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
-                if(in_array(5, $roles)){
+                if(in_array(5, $roles) && $collegeAndDepartment->department_id != 0){
 
                     Report::where('report_reference_id', $report_values_array[2])
                         ->where('report_code', $report_values_array[0])
@@ -2514,8 +2535,8 @@ class SubmissionController extends Controller
                     Report::create([
                         'user_id' =>  $user_id,
                         'sector_id' => $sector_id,
-                        'college_id' => $college_id ?? null,
-                        'department_id' => $department_id ?? null,
+                        'college_id' => $collegeAndDepartment->college_id ?? null,
+                        'department_id' => $collegeAndDepartment->department_id ?? null,
                         'report_category_id' => $report_values_array[1],
                         'report_code' => $report_values_array[0] ?? null,
                         'report_reference_id' => $report_values_array[2] ?? null,
@@ -2529,7 +2550,7 @@ class SubmissionController extends Controller
 
                     $successToSubmit++;
                 }
-                if(in_array(6, $roles)){
+                if(in_array(6, $roles) && $collegeAndDepartment->department_id == 0){
 
                     Report::where('report_reference_id', $report_values_array[2])
                         ->where('report_code', $report_values_array[0])
@@ -2541,8 +2562,8 @@ class SubmissionController extends Controller
                     Report::create([
                         'user_id' =>  $user_id,
                         'sector_id' => $sector_id ?? null,
-                        'college_id' => $college_id ?? null,
-                        'department_id' => $department_id ?? null,
+                        'college_id' => $collegeAndDepartment->college_id ?? null,
+                        'department_id' => $collegeAndDepartment->department_id ?? null,
                         'report_category_id' => $report_values_array[1],
                         'report_code' => $report_values_array[0] ?? null,
                         'report_reference_id' => $report_values_array[2] ?? null,

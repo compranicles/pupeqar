@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('request.store' ) }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $requestFields])
+                            @include('form', ['formFields' => $requestFields , 'colaccomp' => 1])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

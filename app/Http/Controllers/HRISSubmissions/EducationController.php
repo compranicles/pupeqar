@@ -57,9 +57,9 @@ class EducationController extends Controller
         if(LockController::isLocked($educID, 24)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        
+
         $db_ext = DB::connection('mysql_external');
-        
+
         $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code',$educID");
 
         $educFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
@@ -80,9 +80,12 @@ class EducationController extends Controller
             'units_enrolled' =>$educationData[0]->UnitsEnrolled
         ];
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        //HRIS Document 
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        //HRIS Document
         $hrisDocuments = [];
         $collegeOfDepartment = '';
         if(LockController::isNotLocked($educID, 24) && Report::where('report_reference_id', $educID)
@@ -120,10 +123,10 @@ class EducationController extends Controller
                 'units_earned' => $educationData[0]->UnitsEarned,
                 'units_enrolled' =>$educationData[0]->UnitsEnrolled,
                 'description' => $description
-            ]; 
+            ];
         }
 
-        return view('submissions.hris.education.add', compact('educID', 'educationData', 'educFields', 'values', 'colleges' , 'collegeOfDepartment', 'hrisDocuments'));
+        return view('submissions.hris.education.add', compact('educID', 'educationData', 'educFields', 'values', 'colleges' , 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
 
     public function save(Request $request, $educID){
@@ -162,11 +165,12 @@ class EducationController extends Controller
 
         $data = collect($data);
 
-        $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+        $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $filenames = [];
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -198,11 +202,11 @@ class EducationController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-        
+
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
-            'college_id' => $request->college_id,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
             'department_id' => $request->department_id,
             'report_category_id' => 24,
             'report_code' => null,

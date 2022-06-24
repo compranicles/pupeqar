@@ -50,12 +50,12 @@ class AdminSpecialTaskController extends Controller
         foreach ($adminSpecialTasks as $adminTask) {
             if (LockController::isLocked($adminTask->id, 29))
                 $submissionStatus[29][$adminTask->id] = 1;
-            else 
+            else
                 $submissionStatus[29][$adminTask->id] = 0;
             if (empty($reportdata->getDocuments(29, $adminTask->id)))
                 $submissionStatus[29][$adminTask->id] = 2;
         }
-        return view('ipcr.admin-special-tasks.index', compact('currentQuarterYear', 'adminSpecialTasks', 
+        return view('ipcr.admin-special-tasks.index', compact('currentQuarterYear', 'adminSpecialTasks',
             'tasksInColleges', 'submissionStatus'));
     }
 
@@ -74,10 +74,13 @@ class AdminSpecialTaskController extends Controller
             ->where('i_p_c_r_fields.i_p_c_r_form_id', 2)->where('i_p_c_r_fields.is_active', 1)
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
-        
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges'));
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+         $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments'));
     }
 
     /**
@@ -92,7 +95,7 @@ class AdminSpecialTaskController extends Controller
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $currentQuarterYear = Quarter::find(1);
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
@@ -101,6 +104,7 @@ class AdminSpecialTaskController extends Controller
             'to' => $to,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
@@ -109,7 +113,7 @@ class AdminSpecialTaskController extends Controller
         $taskdata->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -146,7 +150,7 @@ class AdminSpecialTaskController extends Controller
     {
         if (auth()->id() !== $admin_special_task->user_id)
             abort(403);
-      
+
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
@@ -155,11 +159,11 @@ class AdminSpecialTaskController extends Controller
                         ->where('i_p_c_r_fields.i_p_c_r_form_id', 2)->where('i_p_c_r_fields.is_active', 1)
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
-        
+
         $documents = AdminSpecialTaskDocument::where('special_task_id', $admin_special_task->id)->get()->toArray();
 
         $values = $admin_special_task->toArray();
-    
+
         return view('ipcr.admin-special-tasks.show', compact('admin_special_task', 'specialTaskFields', 'documents', 'values'));
     }
 
@@ -173,7 +177,7 @@ class AdminSpecialTaskController extends Controller
     {
         if (auth()->id() !== $admin_special_task->user_id)
             abort(403);
-            
+
         $this->authorize('manage', AdminSpecialTask::class);
 
         if(LockController::isLocked($admin_special_task->id, 29)){
@@ -190,9 +194,12 @@ class AdminSpecialTaskController extends Controller
 
         $documents = AdminSpecialTaskDocument::where('special_task_id', $admin_special_task->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges'));
+         $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'departments'));
     }
 
     /**
@@ -208,12 +215,13 @@ class AdminSpecialTaskController extends Controller
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -222,7 +230,7 @@ class AdminSpecialTaskController extends Controller
         $admin_special_task->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

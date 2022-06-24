@@ -55,7 +55,7 @@ class ResearchController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         $this->authorize('viewAny', Research::class);
         $year = 'started';
         $statusResearch = "started";//for filter
@@ -71,7 +71,7 @@ class ResearchController extends Controller
                                 ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
                                 ->orderBy('research.updated_at', 'DESC')
                                 ->get();
-        
+
         $invites = ResearchInvite::join('research', 'research.id', 'research_invites.research_id')
                                 ->join('users', 'users.id', 'research_invites.sender_id')
                                 ->where('research_invites.user_id', auth()->id())
@@ -100,9 +100,12 @@ class ResearchController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('research.create', compact('researchFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('research.create', compact('researchFields', 'colleges', 'departments'));
     }
 
     /**
@@ -131,6 +134,7 @@ class ResearchController extends Controller
             'funding_amount' => $value,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -143,7 +147,7 @@ class ResearchController extends Controller
         $classIni = '';
         $catIni = '';
         $resIni = '';
-        
+
         $year = date("Y").'-';
         $expr = '/(?<=\s|^)[a-z]{0,4}/i';
         $expr2 = '/(?<=\s|^)[a-z]/i';
@@ -186,15 +190,15 @@ class ResearchController extends Controller
         $researchCodeIni = $classIni.$catIni.$departmentIni.'-'.$resIni.$year;
         $lastID = Research::withTrashed()->where('research_code', 'like', '%'.$researchCodeIni.'%')
             ->pluck('research_code')->last();
-        
+
         if($lastID == null){
             $researchCode = $researchCodeIni.'01';
         }
         else{
             $lastIdSplit = preg_split('/-/',$lastID);
-            
+
             if($lastIdSplit[count($lastIdSplit) - 3].'-' == $resIni){
-                
+
                 $lastIdDigit = (int) end($lastIdSplit);
                 $lastIdDigit++;
                 if($lastIdDigit < 10){
@@ -208,13 +212,13 @@ class ResearchController extends Controller
 
         }
 
-        $funding_amount = $request->funding_amount;    
+        $funding_amount = $request->funding_amount;
 
         $funding_amount = str_replace( ',' , '', $funding_amount);
 
         $research = Research::create([
-            'research_code' => $researchCode, 
-            'user_id' => auth()->id(), 
+            'research_code' => $researchCode,
+            'user_id' => auth()->id(),
             'funding_amount' => $funding_amount,
             // 'nature_of_involvement' => 11
         ]);
@@ -222,7 +226,7 @@ class ResearchController extends Controller
         Research::where('id', $research->id)->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -241,7 +245,7 @@ class ResearchController extends Controller
                         'research_code' => $researchCode,
                         'research_form_id' => 1,
                         'filename' => $fileName,
-                        
+
                     ]);
                 }
             }
@@ -300,7 +304,7 @@ class ResearchController extends Controller
         $reportdata = new ReportDataController;
             if (LockController::isLocked($research->id, 1))
                 $submissionStatus[1][$research->id] = 1;
-            else 
+            else
                 $submissionStatus[1][$research->id] = 0;
             if (empty($reportdata->getDocuments(1, $research->id)))
                 $submissionStatus[1][$research->id] = 2;
@@ -322,7 +326,7 @@ class ResearchController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already committed this accomplishment. You can edit it again in the next quarter.');
         }
@@ -338,11 +342,14 @@ class ResearchController extends Controller
                         ->first()->toArray();
         }
         else{
-            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->first()->toArray(); 
+            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->first()->toArray();
         }
-    
+
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         if ($research->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
@@ -353,9 +360,9 @@ class ResearchController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement ==  11 || $research->nature_of_involvement == 224)
-            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
+            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments'));
 
-        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment'));
+        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments'));
 
     }
 
@@ -382,6 +389,7 @@ class ResearchController extends Controller
             'funding_amount' => $value,
             'start_date' => $start_date,
             'target_date' => $target_date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -393,11 +401,11 @@ class ResearchController extends Controller
 
         $input = $request->except(['_token', '_method', 'document', 'funding_amount']);
         $inputOtherResearchers = $request->except(['_token', '_method', 'document', 'funding_amount', 'college_id', 'department_id', 'nature_of_involvement']);
-        $funding_amount = $request->funding_amount;    
+        $funding_amount = $request->funding_amount;
         $funding_amount = str_replace( ',' , '', $funding_amount);
-        
+
         $research->update(['description' => '-clear']);
-        
+
         $research->update($input);
         Research::where('research_code', $research->research_code)->update($inputOtherResearchers);
         Research::where('research_code', $research->research_code)->update([
@@ -424,7 +432,7 @@ class ResearchController extends Controller
                         'research_code' => $research->research_code,
                         'research_form_id' => 1,
                         'filename' => $fileName,
-                        
+
                     ]);
                 }
             }
@@ -440,6 +448,9 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
+        $request->merge([
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+        ]);
         $request->validate([
             'college_id' => 'required',
             'department_id' => 'required',
@@ -536,7 +547,7 @@ class ResearchController extends Controller
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         if(Research::where('research_code', $request->input('code'))->where('user_id', auth()->id())->exists()){
             return redirect()->route('research.index')->with('code-missing', 'Research Already added. If it is not displayed, you are already removed by the Lead Researcher/ Team Leader');
         }
@@ -568,13 +579,16 @@ class ResearchController extends Controller
 
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
 
         $notificationID = $request->get('id');
 
-        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID'));
+        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID', 'departments'));
     }
 
     public function saveResearch($research_id, Request $request){
@@ -587,8 +601,11 @@ class ResearchController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ];
-
         
+        $request->merge([
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+        ]);
+
         $research = Research::where('id', $research_id)->first()->toArray();
         if (empty($research['start_date']))
             $start_date = null;
@@ -606,7 +623,7 @@ class ResearchController extends Controller
         $data = array_merge($researchFiltered->toArray(), $fromRequest);
         $data = array_merge($yearAndQuarter, $data);
         $data = Arr::add($data, 'user_id', auth()->id());
-        $saved = Research::create($data); 
+        $saved = Research::create($data);
 
         Research::where('id', $saved->id)->update([
             'start_date' => $start_date,
@@ -644,7 +661,7 @@ class ResearchController extends Controller
                         ->delete();
 
         \LogActivity::addToLog('Had saved a research entitled "'.$research_title.'".');
-        
+
 
         return redirect()->route('research.index')->with('success', 'Research has been saved.');
     }
@@ -722,7 +739,7 @@ class ResearchController extends Controller
                             'research_code' => $research_code,
                             'research_form_id' => $report_category_id,
                             'filename' => $fileName,
-                            
+
                         ]);
                     }
                 }
@@ -772,7 +789,7 @@ class ResearchController extends Controller
             else
                 $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
         }
-        
+
         Research::where('research_code', $research_code)->update([
             'researchers' => $researcherNewName
         ]);
@@ -796,7 +813,7 @@ class ResearchController extends Controller
             else
                 $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
         }
-        
+
         Research::where('research_code', $research_code)->update([
             'researchers' => $researcherNewName
         ]);
@@ -823,7 +840,7 @@ class ResearchController extends Controller
             else
                 $researcherNewName .= $researcher->first_name.' '.(($researcher->middle_name == null) ? '' : $researcher->middle_name.' ').$researcher->last_name.', ';
         }
-        
+
         Research::where('research_code', $research_code)->update([
             'researchers' => $researcherNewName
         ]);
@@ -834,7 +851,7 @@ class ResearchController extends Controller
     }
 
     public function researchYearFilter($year, $statusResearch) {
-        
+
         if ($year == "started" || $year == "completion" || $year == "published" || $year == "presented" || $year == "created") {
             return redirect()->route('research.index');
         }
@@ -858,7 +875,7 @@ class ResearchController extends Controller
                     ->whereYear('research.start_date', $year)
                     ->orderBy('research.updated_at', 'desc')
                     ->get();
-        }       
+        }
 
         elseif ($statusResearch == 'completion') {
             $researches = Research::where('user_id', auth()->id())->where('is_active_member', 1)->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -918,7 +935,7 @@ class ResearchController extends Controller
                                 ->get();
 
         return view('research.index', compact('researches', 'researchStatus', 'research_in_colleges', 'year', 'statusResearch', 'invites', 'currentQuarterYear'));
-        
+
     }
 }
 
