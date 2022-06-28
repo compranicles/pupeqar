@@ -54,7 +54,7 @@ class OtherAccomplishmentController extends Controller
         foreach ($otherAccomplishments as $otherAccomplishment) {
             if (LockController::isLocked($otherAccomplishment->id, 38))
                 $submissionStatus[38][$otherAccomplishment->id] = 1;
-            else 
+            else
                 $submissionStatus[38][$otherAccomplishment->id] = 0;
             if (empty($reportdata->getDocuments(38, $otherAccomplishment->id)))
                 $submissionStatus[38][$otherAccomplishment->id] = 2;
@@ -76,9 +76,9 @@ class OtherAccomplishmentController extends Controller
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-
-        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges'));
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $departments = Department::whereIn('college_id', $colleges)->get();
+        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments'));
     }
 
     /**
@@ -110,7 +110,7 @@ class OtherAccomplishmentController extends Controller
         $otherAccomplishment->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -154,9 +154,9 @@ class OtherAccomplishmentController extends Controller
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
         $documents = OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->get()->toArray();
-    
+
         $values = $otherAccomplishment->toArray();
-        
+
         return view('extension-programs.other-accomplishments.show', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values'));
     }
 
@@ -172,7 +172,7 @@ class OtherAccomplishmentController extends Controller
 
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($otherAccomplishment->id, 38)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -213,8 +213,8 @@ class OtherAccomplishmentController extends Controller
             'from' => $from,
             'to' => $to,
         ]);
-        
-        
+
+
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -224,7 +224,7 @@ class OtherAccomplishmentController extends Controller
         $otherAccomplishment->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

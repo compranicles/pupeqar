@@ -68,7 +68,7 @@ class ExtensionistController extends Controller
                 ->join('colleges', 'reports.college_id', 'colleges.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14])
+                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14, 23, 34, 35, 36, 37])
                 ->where('college_id', $row->college_id)->where('extensionist_approval', null)->get();
 
             $reportsToReview = $reportsToReview->concat($tempReports);

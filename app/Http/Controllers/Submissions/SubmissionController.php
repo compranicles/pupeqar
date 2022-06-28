@@ -67,6 +67,7 @@ use App\Models\{
     SpecialTask,
     SpecialTaskDocument,
     AttendanceFunction,
+    CommunityEngagement,
 };
 
 
@@ -2325,7 +2326,7 @@ class SubmissionController extends Controller
             if($report_category_id == 7)
                 ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
         }
-        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id)) 
+        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id))
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
         return redirect()->back()->with('cannot_submit', 'Fail to submit accomplishment');
     }
@@ -2393,7 +2394,7 @@ class SubmissionController extends Controller
                 $successToSubmit++;
 
             break;
-            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33:
+            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33: case 34:
                 switch($report_values_array[1]){
                     case 8:
                         $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
@@ -2490,7 +2491,7 @@ class SubmissionController extends Controller
                 $successToSubmit++;
 
             break;
-            case 17: case 18: case 19: case 20: case 21: case 22: case 23:
+            case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 35: case 36: case 37: case 39:
                 //role and department/ college id
                 $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
                 $department_id = '';
@@ -2523,6 +2524,22 @@ class SubmissionController extends Controller
                     break;
                     case 23:
                         $collegeAndDepartment = TechnicalExtension::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 35:
+                        $collegeAndDepartment = Mobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 36:
+                        $collegeAndDepartment = IntraMobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 37:
+                        $collegeAndDepartment = CommunityEngagement::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 39:
+                        $collegeAndDepartment = OtherDeptAccomplishment::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                 }

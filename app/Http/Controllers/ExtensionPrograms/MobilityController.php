@@ -51,12 +51,22 @@ class MobilityController extends Controller
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($mobilities as $mobility) {
-            if (LockController::isLocked($mobility->id, 14))
-                $submissionStatus[14][$mobility->id] = 1;
-            else
-                $submissionStatus[14][$mobility->id] = 0;
-            if (empty($reportdata->getDocuments(14, $mobility->id)))
-                $submissionStatus[14][$mobility->id] = 2;
+            if($mobility->classification_of_person == '298'){
+                if (LockController::isLocked($mobility->id, 14))
+                    $submissionStatus[35][$mobility->id] = 1;
+                else
+                    $submissionStatus[35][$mobility->id] = 0;
+                if (empty($reportdata->getDocuments(14, $mobility->id)))
+                    $submissionStatus[35][$mobility->id] = 2;
+            }
+            else{
+                if (LockController::isLocked($mobility->id, 14))
+                    $submissionStatus[14][$mobility->id] = 1;
+                else
+                    $submissionStatus[14][$mobility->id] = 0;
+                if (empty($reportdata->getDocuments(14, $mobility->id)))
+                    $submissionStatus[14][$mobility->id] = 2;
+            }
         }
 
         return view('extension-programs.mobility.index', compact('mobilities', 'currentQuarterYear',
@@ -103,7 +113,6 @@ class MobilityController extends Controller
             'end_date' => $end_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
-            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -177,9 +186,15 @@ class MobilityController extends Controller
         if (auth()->id() !== $mobility->user_id)
             abort(403);
 
-        if(LockController::isLocked($mobility->id, 14)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
+        if($mobility->classification_of_person == '298')
+            if(LockController::isLocked($mobility->id, 35)){
+                return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
+            }
+        else
+            if(LockController::isLocked($mobility->id, 14)){
+                return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
+            }
+
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -219,7 +234,6 @@ class MobilityController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
-            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
 

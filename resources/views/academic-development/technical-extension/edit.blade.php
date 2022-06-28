@@ -25,7 +25,7 @@
                         <form action="{{ route('technical-extension.update', $technical_extension->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $extensionFields, 'value' => $values])
+                            @include('form', ['formFields' => $extensionFields, 'value' => $values, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

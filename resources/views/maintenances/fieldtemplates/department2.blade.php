@@ -18,7 +18,9 @@
 
         <option value="" selected disabled>Choose...</option>
     </select>
-
+    <span id="" role="alert">
+        <p>Select <strong>N/A</strong> if the accomplishment will be submitted to College/Branch/Campus/Office.</p>
+    </span>
     @error($fieldInfo->name)
         <span class='invalid-feedback' role="alert">
             <strong>{{ $message }}</strong>

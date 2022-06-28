@@ -91,7 +91,7 @@ class ChairpersonController extends Controller
                     $tempReports = $tempReports->push($report);
                 }
             }
-            elseif($report->report_category_id >= 9 && $report->report_category_id <= 14){
+            elseif(($report->report_category_id >= 9 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 38) || $report->report_category_id == 23){
                 if($report->extensionist_approval === 1){
                     $tempReports = $tempReports->push($report);
                 }

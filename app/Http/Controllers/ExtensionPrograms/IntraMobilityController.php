@@ -49,12 +49,23 @@ class IntraMobilityController extends Controller
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($intraMobilities as $intraMobility) {
-            if (LockController::isLocked($intraMobility->id, 34))
-                $submissionStatus[34][$intraMobility->id] = 1;
-            else 
-                $submissionStatus[34][$intraMobility->id] = 0;
-            if (empty($reportdata->getDocuments(34, $intraMobility->id)))
-                $submissionStatus[34][$intraMobility->id] = 2;
+            if($intraMobility->classification_of_person == '298'){
+                if (LockController::isLocked($intraMobility->id, 36))
+                    $submissionStatus[36][$intraMobility->id] = 1;
+                else
+                    $submissionStatus[36][$intraMobility->id] = 0;
+                if (empty($reportdata->getDocuments(34, $intraMobility->id)))
+                    $submissionStatus[36][$intraMobility->id] = 2;
+            }
+            else{
+                if (LockController::isLocked($intraMobility->id, 34))
+                    $submissionStatus[34][$intraMobility->id] = 1;
+                else
+                    $submissionStatus[34][$intraMobility->id] = 0;
+                if (empty($reportdata->getDocuments(34, $intraMobility->id)))
+                    $submissionStatus[34][$intraMobility->id] = 2;
+            }
+
         }
 
         return view('extension-programs.intra-mobilities.index', compact('intraMobilities', 'currentQuarterYear',
@@ -73,7 +84,6 @@ class IntraMobilityController extends Controller
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('8')");
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-
         return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges'));
     }
 
@@ -104,7 +114,7 @@ class IntraMobilityController extends Controller
         $intraMobility->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -148,7 +158,7 @@ class IntraMobilityController extends Controller
         $documents = IntraMobilityDocument::where('intra_mobility_id', $intraMobility->id)->get()->toArray();
 
         $values = $intraMobility->toArray();
-        
+
         return view('extension-programs.intra-mobilities.show', compact('intraMobility', 'mobilityFields', 'documents', 'values'));
     }
 
@@ -162,10 +172,15 @@ class IntraMobilityController extends Controller
     {
         if (auth()->id() !== $intraMobility->user_id)
             abort(403);
-            
-        if(LockController::isLocked($intraMobility->id, 34)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
+
+        if($intraMobility->classification_of_person == '298')
+            if(LockController::isLocked($intraMobility->id, 36)){
+                return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
+            }
+        else
+            if(LockController::isLocked($intraMobility->id, 34)){
+                return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
+            }
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -201,8 +216,8 @@ class IntraMobilityController extends Controller
             'start_date' => $start_date,
             'end_date' => $end_date,
         ]);
-        
-        
+
+
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -212,7 +227,7 @@ class IntraMobilityController extends Controller
         $intraMobility->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('intra-mobility.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

@@ -22,6 +22,8 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Department,
     Maintenance\Quarter,
+    Dean,
+    Chairperson,
 };
 
 class OtherDeptAccomplishmentController extends Controller
@@ -52,7 +54,7 @@ class OtherDeptAccomplishmentController extends Controller
         foreach ($otherAccomplishments as $otherAccomplishment) {
             if (LockController::isLocked($otherAccomplishment->id, 39))
                 $submissionStatus[39][$otherAccomplishment->id] = 1;
-            else 
+            else
                 $submissionStatus[39][$otherAccomplishment->id] = 0;
             if (empty($reportdata->getDocuments(39, $otherAccomplishment->id)))
                 $submissionStatus[39][$otherAccomplishment->id] = 2;
@@ -73,7 +75,12 @@ class OtherDeptAccomplishmentController extends Controller
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
 
         return view('extension-programs.other-dept-accomplishments.create', compact('otherAccomplishmentFields', 'colleges'));
     }
@@ -107,7 +114,7 @@ class OtherDeptAccomplishmentController extends Controller
         $otherDeptAccomplishment->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -151,9 +158,9 @@ class OtherDeptAccomplishmentController extends Controller
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
         $documents = OtherDeptAccomplishmentDocument::where('other_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
-    
+
         $values = $otherDeptAccomplishment->toArray();
-        
+
         return view('extension-programs.other-dept-accomplishments.show', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values'));
     }
 
@@ -169,7 +176,7 @@ class OtherDeptAccomplishmentController extends Controller
 
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($otherDeptAccomplishment->id, 39)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -185,8 +192,12 @@ class OtherDeptAccomplishmentController extends Controller
 
         $values = $otherDeptAccomplishment->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
 
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
         $documents = OtherDeptAccomplishmentDocument::where('other_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
         return view('extension-programs.other-dept-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
@@ -211,8 +222,8 @@ class OtherDeptAccomplishmentController extends Controller
             'from' => $from,
             'to' => $to,
         ]);
-        
-        
+
+
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -222,7 +233,7 @@ class OtherDeptAccomplishmentController extends Controller
         $otherDeptAccomplishment->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

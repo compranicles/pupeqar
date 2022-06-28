@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('community-engagement.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $communityEngagementFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $communityEngagementFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

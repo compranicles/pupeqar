@@ -44,13 +44,13 @@ class TechnicalExtensionController extends Controller
         $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
                                 ->select(DB::raw('technical_extensions.*'))
                                 ->orderBy('technical_extensions.updated_at', 'desc')->get();
-              
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($technical_extensions as $technical_extension) {
             if (LockController::isLocked($technical_extension->id, 23))
                 $submissionStatus[23][$technical_extension->id] = 1;
-            else 
+            else
                 $submissionStatus[23][$technical_extension->id] = 0;
             if (empty($reportdata->getDocuments(23, $technical_extension->id)))
                 $submissionStatus[23][$technical_extension->id] = 2;
@@ -225,7 +225,7 @@ class TechnicalExtensionController extends Controller
         $technical_extension->update(['description' => '-clear']);
 
         $technical_extension->update($input);
-        
+
         if($request->has('document')){
             $documents = $request->input('document');
             foreach($documents as $document){

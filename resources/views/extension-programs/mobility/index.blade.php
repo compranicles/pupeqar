@@ -103,12 +103,22 @@
                                                 <a href="{{ route('mobility.show', $row->id) }}" class="btn btn-sm btn-primary">View</a>
                                                 <a href="{{ route('mobility.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-mobility="{{ $row->host_name }}">Delete</button>
-                                                @if ($submissionStatus[14][$row->id] == 0)
-                                                    <a href="{{ url('submissions/check/14/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                @elseif ($submissionStatus[14][$row->id] == 1)
-                                                    <a href="{{ url('submissions/check/14/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
-                                                @elseif ($submissionStatus[14][$row->id] == 2)
-                                                    <a href="{{ route('mobility.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                @if($row->classification_of_person == '298')
+                                                    @if ($submissionStatus[35][$row->id] == 0)
+                                                        <a href="{{ url('submissions/check/35/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    @elseif ($submissionStatus[35][$row->id] == 1)
+                                                        <a href="{{ url('submissions/check/35/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    @elseif ($submissionStatus[35][$row->id] == 2)
+                                                        <a href="{{ route('mobility.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                    @endif
+                                                @else
+                                                    @if ($submissionStatus[14][$row->id] == 0)
+                                                        <a href="{{ url('submissions/check/14/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    @elseif ($submissionStatus[14][$row->id] == 1)
+                                                        <a href="{{ url('submissions/check/14/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    @elseif ($submissionStatus[14][$row->id] == 2)
+                                                        <a href="{{ route('mobility.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </td>
