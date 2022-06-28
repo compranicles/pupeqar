@@ -13,6 +13,7 @@ use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\IPCRForm;
 use App\Models\FormBuilder\IPCRField;
+use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AttendanceFunctionDocument;

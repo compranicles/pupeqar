@@ -40,7 +40,7 @@ class MyAccomplishmentController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -65,10 +65,10 @@ class MyAccomplishmentController extends Controller
         }
 
         $report_categories = ReportCategory::all();
-        $my_accomplishments = 
+        $my_accomplishments =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
+                            'reports.*',
+                            'report_categories.name as report_category',
                         )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->where('reports.report_year', $year)
@@ -84,34 +84,36 @@ class MyAccomplishmentController extends Controller
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
+            $row->report_details = json_decode($row->report_details, false);
+
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
-                $college_names[$row->id] = $temp_college_name;
+                $college_names[$row->id] = $temp_college_name->name;
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-            $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name->name;
         }
 
         //Get distinct colleges from the colleges that had been reported with repeatedly
         $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        return view(   
-            'reports.consolidate.myaccomplishments', 
-            compact( 
-                'roles', 
-                'colleges', 
-                'departments', 
-                'my_accomplishments', 
-                'college_names', 
-                'department_names', 
+        return view(
+            'reports.consolidate.myaccomplishments',
+            compact(
+                'roles',
+                'colleges',
+                'departments',
+                'my_accomplishments',
+                'college_names',
+                'department_names',
                 'sectors', 'departmentsResearch','departmentsExtension',
                 'year', 'quarter', 'report_categories',
                 'user',
                 'collegeList'
             ));
-        
+
     }
 
 
@@ -120,7 +122,7 @@ class MyAccomplishmentController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $report_categories = ReportCategory::all();
         if ($year == "default") {
             return redirect()->route('submissions.myaccomp.index');
@@ -133,7 +135,7 @@ class MyAccomplishmentController extends Controller
             $sectors = [];
             $departmentsResearch = [];
             $departmentsExtension = [];
-            
+
             if(in_array(5, $roles)){
                 $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name', 'departments.code')
                                             ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -157,10 +159,10 @@ class MyAccomplishmentController extends Controller
                                             ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
             }
 
-            $my_accomplishments = 
+            $my_accomplishments =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
+                            'reports.*',
+                            'report_categories.name as report_category',
                             )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->where('reports.report_year', $year)
@@ -174,17 +176,17 @@ class MyAccomplishmentController extends Controller
                 $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
                 $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
-
+                $row->report_details = json_decode($row->report_details, false);
                 if($temp_college_name == null)
                     $college_names[$row->id] = '-';
                 else
-                    $college_names[$row->id] = $temp_college_name;
+                    $college_names[$row->id] = $temp_college_name->name;
                 if($temp_department_name == null)
                     $department_names[$row->id] = '-';
                 else
-                    $department_names[$row->id] = $temp_department_name;
+                $department_names[$row->id] = $temp_department_name->name;
 
-                    
+
                 }
             }
 

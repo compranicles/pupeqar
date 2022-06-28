@@ -44,7 +44,7 @@ class SectorController extends Controller
             ->join('users', 'reports.user_id', 'users.id')
             ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', null)->get();
-        
+
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments_nav = [];
@@ -52,7 +52,7 @@ class SectorController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-       
+
         if(in_array(5, $roles)){
             $departments_nav = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -75,7 +75,11 @@ class SectorController extends Controller
                                         ->select('faculty_extensionists.college_id', 'colleges.code')
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
-            
+
+        foreach($reportsToReview as $row){
+            $row->report_details = json_decode($row->report_details, false);
+        }
+
         $colleges = College::select('colleges.id', 'colleges.name')
                             ->orderBy('colleges.name')
                             ->get();
@@ -157,15 +161,15 @@ class SectorController extends Controller
         Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
         $report = Report::find($report_id);
-        
-        
+
+
         $receiverData = User::find($report->user_id);
         $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                             ->join('users', 'users.id', 'sector_heads.user_id')
                             ->where('sector_heads.sector_id', $report->sector_id)
                             ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
-                 
+
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -209,7 +213,7 @@ class SectorController extends Controller
                     'department_name' => $department_name,
                 ];
             }
-            
+
 
         }
         else{
@@ -320,7 +324,7 @@ class SectorController extends Controller
 
                 ];
             }
-            
+
         }
         else{
             $url = route('report.manage', [$report_id, $report->report_category_id]);
@@ -338,10 +342,10 @@ class SectorController extends Controller
                 'date' => date('F j, Y, g:i a'),
                 'databaseOnly' => 0
             ];
-    
+
         }
 
-        
+
         Notification::send($returnData, new ReturnNotification($notificationData));
 
         \LogActivity::addToLog('Sector Head returned an accomplishment.');
@@ -383,8 +387,8 @@ class SectorController extends Controller
             Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
             $report = Report::find($report_id);
-        
-        
+
+
             $receiverData = User::find($report->user_id);
             $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                                 ->join('users', 'users.id', 'sector_heads.user_id')
@@ -434,7 +438,7 @@ class SectorController extends Controller
                         'department_name' => $department_name,
                     ];
                 }
-                
+
 
             }
             else{
@@ -479,7 +483,7 @@ class SectorController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -494,7 +498,7 @@ class SectorController extends Controller
                 'reason' => $request->input('reason_'.$report_id),
             ]);
 
-            
+
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
@@ -552,7 +556,7 @@ class SectorController extends Controller
 
                     ];
                 }
-                
+
             }
             else{
                 $url = route('report.manage', [$report_id, $report->report_category_id]);
@@ -570,12 +574,12 @@ class SectorController extends Controller
                     'date' => date('F j, Y, g:i a'),
                     'databaseOnly' => 0
                 ];
-        
+
             }
 
-            
+
             Notification::send($returnData, new ReturnNotification($notificationData));
-            
+
             $count++;
         }
 

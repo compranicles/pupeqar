@@ -38,7 +38,7 @@ class ResearcherController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -80,6 +80,7 @@ class ResearcherController extends Controller
         foreach($reportsToReview as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
+            $row->report_details = json_decode($row->report_details, false);
 
 
             if($temp_college_name == null)
@@ -133,7 +134,7 @@ class ResearcherController extends Controller
         \LogActivity::addToLog('Researcher received an accomplishment.');
 
         return redirect()->route('researcher.index')->with('success', 'Report has been added in college consolidation of reports');
-    
+
     }
     public function rejectCreate($report_id){
         $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualResearch();
@@ -161,7 +162,7 @@ class ResearcherController extends Controller
             'researcher_approval' => 0
         ]);
 
-         
+
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
@@ -257,7 +258,7 @@ class ResearcherController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -271,7 +272,7 @@ class ResearcherController extends Controller
                 'position_name' => 'researcher',
                 'reason' => $request->input('reason_'.$report_id),
             ]);
-            
+
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
