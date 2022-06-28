@@ -5,7 +5,7 @@
         </div> -->
         <div class="db-text d-flex align-items-center">
             <p class="db-stat">{{ $countToReview }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('director.index') }}">Accomplishments to Review (College - {{ $collegeCode }})</a>
+            <a class="db-text" style="word-wrap: break-word;" href="{{ route('director.index') }}">Accomplishments to Review (Dean/Director - {{ $collegeCode }})</a>
             <!-- College code -->
         </div>
     </div>

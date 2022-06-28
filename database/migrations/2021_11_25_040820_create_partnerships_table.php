@@ -15,7 +15,6 @@ class CreatePartnershipsTable extends Migration
     {
         Schema::create('partnerships', function (Blueprint $table) {
             $table->id();
-            $table->string('moa_code')->nullable();
             $table->string('collab_nature')->nullable();
             $table->string('partnership_type')->nullable();
             $table->string('deliverable')->nullable();

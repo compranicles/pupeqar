@@ -73,9 +73,9 @@ class StudentAwardController extends Controller
 
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
-        $colleges = array_intersect($deans, $chairpersons);
+        $colleges = array_merge($deans, $chairpersons);
 
-        $colleges = College::whereIn('id', [$colleges])
+        $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
         return view('academic-development.student-awards.create', compact('studentFields', 'colleges'));
@@ -190,10 +190,10 @@ class StudentAwardController extends Controller
 
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
-        $colleges = array_intersect($deans, $chairpersons);
+        $colleges = array_merge($deans, $chairpersons);
 
-        $colleges = College::whereIn('id', [$colleges])
-        ->select('colleges.*')->get();
+        $colleges = College::whereIn('id', array_values($colleges))
+                ->select('colleges.*')->get();
 
         return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values', 'colleges'));
     }

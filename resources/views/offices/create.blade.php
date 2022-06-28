@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-12">
                 <p>
-                    <a class="back_link" href="{{ route('account') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
+                    <a class="back_link" href="{{ session('url') ? url(session('url')) : route('account') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
                 </p>
                 <div class="card">
                     <div class="card-body">
@@ -43,7 +43,7 @@
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
-                                            <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
+                                            <a href="{{ session('url') ? url(session('url')) : route('account') }}" class="btn btn-secondary mr-2">Cancel</a>
                                             <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
@@ -56,7 +56,7 @@
         </div>
     </div>
     @push('scripts')
-    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script src="{{ asset('diszt/selectize.min.js') }}"></script>
     <script>
          $("#cbco").selectize({
               sortField: "text",
@@ -70,7 +70,7 @@
             $.get(url, function (data){
                 if (data != '') {
                     $("#dept_div").empty();
-                    $("#dept_div").append("<p>Departments Belong To The College/Branch/Campus/Office:</p>");
+                    $("#dept_div").append("<p>List of Departments:</p>");
                     data.forEach(function (item){
                         $("#dept_div").append("<span class='badge bg-primary ml-1 mr-1'>"+item.name+"</span>");
                     });

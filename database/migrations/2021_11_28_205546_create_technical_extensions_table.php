@@ -15,7 +15,6 @@ class CreateTechnicalExtensionsTable extends Migration
     {
         Schema::create('technical_extensions', function (Blueprint $table) {
             $table->id();
-            $table->string('moa_code')->nullable();
             $table->string('program_title')->nullable();
             $table->string('project_title')->nullable();
             $table->string('activity_title')->nullable();

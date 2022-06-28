@@ -4,11 +4,12 @@
     <div class="form-group">
         <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if ($fieldInfo->name == 'amount_of_funding' || $fieldInfo->name == 'funding_amount' ||
-            $fieldInfo->name == 'revenue' || $fieldInfo->name == 'cost')
-                    <span id="" role="alert">
-                        (No commas)
-                    </span>
-                @endif
+            $fieldInfo->name == 'revenue' || $fieldInfo->name == 'cost' || $fieldInfo->name == 'budget'
+            )
+            <span id="" role="alert">
+                (No commas)
+            </span>
+        @endif
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <select class="custom-select" name="currency_{{ $fieldInfo->name }}" id="currency_select_{{ $fieldInfo->name }}">

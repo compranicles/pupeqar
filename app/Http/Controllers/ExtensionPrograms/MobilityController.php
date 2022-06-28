@@ -118,7 +118,7 @@ class MobilityController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'M-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);
@@ -232,7 +232,7 @@ class MobilityController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'M-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

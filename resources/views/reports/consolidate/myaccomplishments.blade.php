@@ -205,7 +205,7 @@
                                                     )
                                                         <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                                         <br>
-                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" onclick="{{ session(['myaccomplishment_url' => url()->current()]) }}" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
                                                     @else
                                                         -
                                                     @endif
@@ -219,7 +219,7 @@
                                                     )
                                                         <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                                         <br>
-                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" onclick="{{ session(['myaccomplishment_url' => url()->current()]) }}" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
                                                     @else
                                                         -
                                                     @endif
@@ -232,7 +232,7 @@
                                                     )
                                                         <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
                                                         <br>
-                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" target="_blank" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
+                                                        <a href="{{ route('report.manage', [$row->id, $row->report_category_id]) }}" onclick="{{ session(['myaccomplishment_url' => url()->current()]) }}" class="action-edit" id="view_accomp_documents" data-id="{{ $row->id }}"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i> Edit</a>
                                                     @else
                                                         -
                                                     @endif
@@ -342,7 +342,7 @@
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>');
-                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
+                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold text-right">'+k+':</td>');
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
@@ -351,7 +351,7 @@
 				$.get(newlinkdoc, function (data) {
 					data.forEach(function (item){
                         var newlink = link.replace(':filename', item);
-                        $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
+                        $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
 

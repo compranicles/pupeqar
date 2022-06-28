@@ -52,12 +52,10 @@ class PresentationController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
             
-                // dd($research);    
         $values = ResearchPresentation::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
-        // $values = array_merge($research->toArray(), $values->toArray());
         
         $values = collect($values->toArray());
         $values = $values->except(['research_code']);
@@ -73,12 +71,12 @@ class PresentationController extends Controller
         
         $submissionStatus = [];
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 4))
-                $submissionStatus[4][$research->id] = 1;
+            if (LockController::isLocked($values['id'], 4))
+                $submissionStatus[4][$values['id']] = 1;
             else 
-                $submissionStatus[4][$research->id] = 0;
-            if (empty($reportdata->getDocuments(4, $research->id)))
-                $submissionStatus[4][$research->id] = 2;
+                $submissionStatus[4][$values['id']] = 0;
+            if (empty($reportdata->getDocuments(4, $values['id'])))
+                $submissionStatus[4][$values['id']] = 2;
 
         return view('research.presentation.index', compact('research', 'researchFields', 
             'value', 'researchDocuments', 'submissionStatus'));

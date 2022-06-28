@@ -22,11 +22,11 @@
                 @endforeach
 
             </select>
-            <!-- @if ($colleges !== []) -->
-            <!-- <span id="" role="alert">
-                <p><a href="{{ route('offices.create') }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
-            </span> -->
-            <!-- @endif -->
+            @if ($colleges !== [])
+            <span id="" role="alert">
+                <p><a href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
+            </span>
+            @endif
             @error($fieldInfo->name)
                 <span class='invalid-feedback' role="alert">
                     <strong>{{ $message }}</strong>

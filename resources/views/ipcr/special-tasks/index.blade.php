@@ -198,6 +198,7 @@
         });
      </script>
     <script>
+        $("#special_table").DataTable();
         //  var table =  $("#special_table").DataTable({
         //     "searchCols": [
         //         null,
@@ -249,53 +250,53 @@
         //     }
         //  });
 
-          var catIndex = 0;
-            $("#special_table th").each(function (i) {
-                if ($($(this)).html() == "Commitment Measurable By:") {
-                    catIndex = i; return false;
+        //   var catIndex = 0;
+        //     $("#special_table th").each(function (i) {
+        //         if ($($(this)).html() == "Commitment Measurable By:") {
+        //             catIndex = i; return false;
 
-                }
-            });
+        //         }
+        //     });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#catFilter').val()
-                    var category = data[catIndex];
-                    if (selectedItem === "" || category.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+        //     $.fn.dataTable.ext.search.push(
+        //         function (settings, data, dataIndex) {
+        //             var selectedItem = $('#catFilter').val()
+        //             var category = data[catIndex];
+        //             if (selectedItem === "" || category.includes(selectedItem)) {
+        //                 return true;
+        //             }
+        //             return false;
+        //         }
+        //     );
 
-            var collegeIndex = 0;
-            $("#special_table th").each(function (i) {
-                if ($($(this)).html() == "College/Branch/Campus/Office") {
-                    collegeIndex = i; return false;
+        //     var collegeIndex = 0;
+        //     $("#special_table th").each(function (i) {
+        //         if ($($(this)).html() == "College/Branch/Campus/Office") {
+        //             collegeIndex = i; return false;
 
-                }
-            });
+        //         }
+        //     });
 
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#collegeFilter').val()
-                    var college = data[collegeIndex];
-                    if (selectedItem === "" || college.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-            );
+        //     $.fn.dataTable.ext.search.push(
+        //         function (settings, data, dataIndex) {
+        //             var selectedItem = $('#collegeFilter').val()
+        //             var college = data[collegeIndex];
+        //             if (selectedItem === "" || college.includes(selectedItem)) {
+        //                 return true;
+        //             }
+        //             return false;
+        //         }
+        //     );
 
-            $("#catFilter").change(function (e) {
-                table.draw();
-            });
+        //     $("#catFilter").change(function (e) {
+        //         table.draw();
+        //     });
 
-            $("#collegeFilter").change(function (e) {
-                table.draw();
-            });
+        //     $("#collegeFilter").change(function (e) {
+        //         table.draw();
+        //     });
 
-            table.draw();
+        //     table.draw();
      </script>
      @endpush
 </x-app-layout>

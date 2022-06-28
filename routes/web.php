@@ -276,6 +276,16 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('/college-department-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class, 'removeDoc'])->name('college-department-award.removedoc');
     Route::get('/technical-extension/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class, 'removeDoc'])->name('technical-extension.removedoc');
 
+    /* INTER AND INTRA-COUNTRY MOBILITIES */
+    Route::resource('mobility', \App\Http\Controllers\ExtensionPrograms\MobilityController::class);
+    Route::get('/mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');
+    Route::resource('intra-mobility', \App\Http\Controllers\ExtensionPrograms\IntraMobilityController::class);
+    Route::get('/intra-mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\IntraMobilityController::class, 'removeDoc'])->name('intra-mobility.removedoc');
+
+    /* COMMUNITY ENGAGEMENT CONDUCTED BY COLLEGE/DEPARTMENT */
+    Route::resource('community-engagement', \App\Http\Controllers\ExtensionPrograms\CommunityEngagementController::class);
+    Route::get('/community-engagement/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\CommunityEngagementController::class, 'removeDoc'])->name('community-engagement.removedoc');
+
     /* ACADEMIC DEVELOPMENT ACCOMPLISHMENTS */
     Route::resource('/academic-development/rtmmi', \App\Http\Controllers\AcademicDevelopment\ReferenceController::class);
     Route::resource('/academic-development/syllabus', \App\Http\Controllers\AcademicDevelopment\SyllabusController::class);
@@ -285,12 +295,16 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     // Filter
     Route::get('/academic-development/syllabus/{year}/{filter}', [\App\Http\Controllers\AcademicDevelopment\SyllabusController::class, 'syllabusYearFilter'])->name('syllabus.filterByYear');
 
+    /* OTHER ACCOMPLISHMENTS */
+    Route::resource('other-accomplishment', \App\Http\Controllers\ExtensionPrograms\OtherAccomplishmentController::class);
+    Route::get('/other-accomplishment/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\OtherAccomplishmentController::class, 'removeDoc'])->name('other-accomplishment.removedoc');
+    Route::resource('other-dept-accomplishment', \App\Http\Controllers\ExtensionPrograms\OtherDeptAccomplishmentController::class);
+    Route::get('/other-dept-accomplishment/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\OtherDeptAccomplishmentController::class, 'removeDoc'])->name('other-dept-accomplishment.removedoc');
+
     /* PARTNERSHIP, LINKAGES, AND NETWORK ACCOMPLISHMENTS*/
     Route::resource('partnership', \App\Http\Controllers\ExtensionPrograms\PartnershipController::class);
-    Route::get('/mobility/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\MobilityController::class, 'removeDoc'])->name('mobility.removedoc');
     //Remove Documents
     Route::get('/partnership/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\PartnershipController::class, 'removeDoc'])->name('partnership.removedoc');
-    Route::resource('mobility', \App\Http\Controllers\ExtensionPrograms\MobilityController::class);
 
     /* REQUEST & QUERIES ACCOMPLISHMENTS */
     Route::resource('ipcr/request', \App\Http\Controllers\IPCR\RequestController::class);

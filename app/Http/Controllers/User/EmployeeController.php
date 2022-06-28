@@ -35,6 +35,7 @@ class EmployeeController extends Controller
     {
         $sectors = Sector::all();
         $cbco = College::all();
+        session(['url' => route('home') ]);
         return view('offices.create', compact('sectors', 'cbco'));
     }
 
@@ -54,7 +55,11 @@ class EmployeeController extends Controller
 
         $officeName = College::where('id', $request->input('cbco'))->first();
         \LogActivity::addToLog('Had added '.$officeName['name'].' as office to report with.');
-        return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been added in your account.');
+
+        if (session('url'))
+            return redirect(session('url'));
+        else
+            return redirect()->route('account')->with('success', 'College/Branch/Campus/Office has been added in your account.');
     }
 
     /**

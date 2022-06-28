@@ -2325,7 +2325,7 @@ class SubmissionController extends Controller
             if($report_category_id == 7)
                 ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
         }
-        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id))
+        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id)) 
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
         return redirect()->back()->with('cannot_submit', 'Fail to submit accomplishment');
     }
@@ -2452,6 +2452,13 @@ class SubmissionController extends Controller
                     break;
                     case 33:
                         $collegeAndDepartment = AttendanceFunction::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    break;
+                    case 34:
+                        $collegeAndDepartment = IntraMobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                        $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
+                    case 38:
+                        $collegeAndDepartment = OtherAccomplishment::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                 }

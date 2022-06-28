@@ -21,6 +21,9 @@
                     </div>
                 </div>
             </div>
+            @if (in_array(9, $roles))
+                @include('dashboard.superadmin', ['countRegisteredUsers' => $countRegisteredUsers[9]])
+            @endif
             @if (in_array(1, $roles) || in_array(3, $roles))
                 @include('dashboard.faculty-admin')
             @endif
@@ -51,9 +54,6 @@
             @endif
             @if (in_array(8, $roles))
                 @include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 'countExpectedTotal' => $countExpectedTotal[8], 'countReceived' => $countReceived[8]])
-            @endif
-            @if (in_array(9, $roles))
-                @include('dashboard.superadmin', ['countRegisteredUsers' => $countRegisteredUsers[9]])
             @endif
         </div>
 

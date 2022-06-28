@@ -89,4 +89,4 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
     @endif
 @endforeach
 
-<p>PUP: {{ date(' m/d/Y h:i:s a') }} </p>
+<p>This report was generated using the PUP eQAR system on {{ date(' m/d/Y h:i:s a') }} </p>
