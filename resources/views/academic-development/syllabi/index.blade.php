@@ -117,7 +117,7 @@
                                         <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >
                                             {{ $syllabus->report_year }}
                                         </td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' ">
                                         <?php
                                             $updated_at = strtotime( $syllabus->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -126,6 +126,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('syllabus.show', $syllabus->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                 <a href="{{ route('syllabus.edit', $syllabus->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button"  value="{{ $syllabus->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-syllabus="{{ $syllabus->course_title }}">Delete</button>
                                                 @if ($submissionStatus[16][$syllabus->id] == 0)
@@ -134,7 +135,7 @@
                                                     <a href="{{ url('submissions/check/16/'.$syllabus->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                 @elseif ($submissionStatus[16][$syllabus->id] == 2)
                                                     <a href="{{ route('syllabus.edit', $syllabus->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                @endif        
+                                                @endif
                                             </div>
                                         </td>
 

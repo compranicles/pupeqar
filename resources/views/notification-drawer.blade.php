@@ -198,7 +198,7 @@
                         $('.see_all_div').remove();
                 }
             });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
+            }, Math.floor(Math.random() * (3000 - 1) + 1));
 
             var api = '{{ url("/notifications/count-not-viewed") }}';
 			setTimeout(function (){
@@ -214,7 +214,7 @@
                     document.getElementById('notificationCounter').classList.remove('badge-danger');
                 }
 
-            });  }, Math.floor(Math.random() * (2500 - 1) + 1));
+            });  }, Math.floor(Math.random() * (3000 - 1) + 1));
         }
 
         $(document).on('click', '.notif-row', function(){
