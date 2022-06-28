@@ -179,7 +179,7 @@
 
                     countALL++;
                 });
-            }); }, Math.floor(Math.random() * (2500 - 1) + 1));
+            }); }, Math.floor(Math.random() * (3000 - 1) + 1));
         }
 
 

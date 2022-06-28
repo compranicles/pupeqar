@@ -46,7 +46,7 @@ class AwardController extends Controller
         if(LockController::isLocked($id, 27)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        
+
         $db_ext = DB::connection('mysql_external');
 
         $awardData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCodeAndID N'$user->emp_code',$id");
@@ -67,33 +67,36 @@ class AwardController extends Controller
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
         ];
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-         //HRIS Document 
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+         //HRIS Document
          $hrisDocuments = [];
          $collegeOfDepartment = '';
          if(LockController::isNotLocked($id, 27) && Report::where('report_reference_id', $id)
                      ->where('report_quarter', $currentQuarterYear->current_quarter)
                      ->where('report_year', $currentQuarterYear->current_year)
                      ->where('report_category_id', 27)->exists()){
- 
+
              $hrisDocuments = HRISDocument::where('hris_form_id', 2)->where('reference_id', $id)->get()->toArray();
              $report = Report::where('report_reference_id',$id)->where('report_category_id', 27)->first();
              $report_details = json_decode($report->report_details, true);
              $description;
- 
+
              foreach($awardFields as $row){
                  if($row->name == 'description')
                      $description = $report_details[$row->name];
              }
- 
+
              if ($report->department_id != null) {
                  $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$report->department_id.")");
              }
              else {
                  $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
              }
- 
+
              $values = [
                 'award' =>  $awardData[0]->Achievement,
                 'classification' => $awardData[0]->Classification,
@@ -103,10 +106,10 @@ class AwardController extends Controller
                 'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
                 'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
                  'description' => $description
-             ]; 
+             ];
          }
 
-        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
+        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
 
     public function save(Request $request, $id){
@@ -144,11 +147,12 @@ class AwardController extends Controller
 
         $data = collect($data);
 
-        $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+        $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $filenames = [];
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -180,11 +184,11 @@ class AwardController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-        
+
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
-            'college_id' => $request->college_id,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
             'department_id' => $request->department_id,
             'report_category_id' => 27,
             'report_code' => null,

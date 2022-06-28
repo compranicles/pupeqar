@@ -62,13 +62,13 @@ class RequestController extends Controller
         foreach ($requests as $request) {
             if (LockController::isLocked($request->id, 17))
                 $submissionStatus[17][$request->id] = 1;
-            else 
+            else
                 $submissionStatus[17][$request->id] = 0;
             if (empty($reportdata->getDocuments(17, $request->id)))
                 $submissionStatus[17][$request->id] = 2;
         }
 
-        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories', 
+        return view('ipcr.request.index', compact('requests', 'requests_in_colleges', 'categories',
             'currentQuarterYear', 'submissionStatus'));
     }
 
@@ -94,7 +94,7 @@ class RequestController extends Controller
 
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
-        
+
         return view('ipcr.request.create', compact('requestFields', 'colleges'));
     }
 
@@ -123,7 +123,7 @@ class RequestController extends Controller
         $requestdata->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -173,7 +173,7 @@ class RequestController extends Controller
         $documents = RequestDocument::where('request_id', $request->id)->get()->toArray();
 
         $values = $request->toArray();
-    
+
     return view('ipcr.request.show', compact('request', 'requestFields', 'documents', 'values'));
     }
 
@@ -226,7 +226,7 @@ class RequestController extends Controller
         $this->authorize('update', RequestModel::class);
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $input = $requestdata->except(['_token', '_method', 'document']);
 
         $request->update(['description' => '-clear']);
@@ -234,7 +234,7 @@ class RequestController extends Controller
         $request->update($input);
 
         if($requestdata->has('document')){
-            
+
             $documents = $requestdata->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

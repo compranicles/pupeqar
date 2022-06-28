@@ -30,14 +30,14 @@ class ResearchConsolidatedController extends Controller
         $currentQuarterYear = Quarter::find(1);
         $quarter = $currentQuarterYear->current_quarter;
         $year = $currentQuarterYear->current_year;
-        
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments = [];
         $colleges = [];
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -61,13 +61,13 @@ class ResearchConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
-        $department_accomps = 
+        $department_accomps =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
-                            'users.last_name', 
+                            'reports.*',
+                            'report_categories.name as report_category',
+                            'users.last_name',
                             'users.first_name',
-                            'users.middle_name', 
+                            'users.middle_name',
                             'users.suffix'
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -82,29 +82,29 @@ class ResearchConsolidatedController extends Controller
         foreach($department_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+            $row->report_details = json_decode($row->report_details, false);
 
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
-                $college_names[$row->id] = $temp_college_name;
+                $college_names[$row->id] = $temp_college_name->name;
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-                $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name->name;
         }
 
         //departmentdetails
         $department = College::find($id);
 
         return view(
-                    'reports.consolidate.research', 
-                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 
+                    'reports.consolidate.research',
+                    compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names',
                         'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter', 'id')
                 );
     }
 
-    public function departmentResReportYearFilter($dept, $year, $quarter) { 
+    public function departmentResReportYearFilter($dept, $year, $quarter) {
         if ($year == "default") {
             return redirect()->route('reports.consolidate.research');
         }
@@ -115,7 +115,7 @@ class ResearchConsolidatedController extends Controller
             $sectors = [];
             $departmentsResearch = [];
             $departmentsExtension = [];
-            
+
             if(in_array(5, $roles)){
                 $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                             ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -138,14 +138,14 @@ class ResearchConsolidatedController extends Controller
                                             ->select('faculty_extensionists.college_id', 'colleges.code')
                                             ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
             }
-    
-            $department_accomps = 
+
+            $department_accomps =
                 Report::select(
-                                'reports.*', 
-                                'report_categories.name as report_category', 
-                                'users.last_name', 
+                                'reports.*',
+                                'report_categories.name as report_category',
+                                'users.last_name',
                                 'users.first_name',
-                                'users.middle_name', 
+                                'users.middle_name',
                                 'users.suffix'
                               )
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -160,16 +160,16 @@ class ResearchConsolidatedController extends Controller
             foreach($department_accomps as $row){
                 $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
                 $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+                $row->report_details = json_decode($row->report_details, false);
 
                 if($temp_college_name == null)
                     $college_names[$row->id] = '-';
                 else
-                    $college_names[$row->id] = $temp_college_name;
+                    $college_names[$row->id] = $temp_college_name->name;
                 if($temp_department_name == null)
                     $department_names[$row->id] = '-';
                 else
-                    $department_names[$row->id] = $temp_department_name;
+                $department_names[$row->id] = $temp_department_name->name;
             }
 
             //departmentdetails
@@ -177,7 +177,7 @@ class ResearchConsolidatedController extends Controller
             $id = $department->id;
 
             return view(
-                        'reports.consolidate.research', 
+                        'reports.consolidate.research',
                         compact('roles', 'departments', 'colleges', 'department_accomps', 'department' , 'department_names', 'college_names', 'sectors', 'departmentsResearch', 'departmentsExtension', 'year', 'quarter', 'id')
                     );
         }

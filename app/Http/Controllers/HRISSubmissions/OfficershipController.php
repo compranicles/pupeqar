@@ -28,7 +28,7 @@ use App\Models\{
 class OfficershipController extends Controller
 {
     public function index(){
-        
+
         $user = User::find(auth()->id());
 
         $db_ext = DB::connection('mysql_external');
@@ -46,7 +46,7 @@ class OfficershipController extends Controller
         if(LockController::isLocked($id, 28)){
             return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
         }
-        
+
         $db_ext = DB::connection('mysql_external');
 
         $officeData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code',$id");
@@ -66,9 +66,12 @@ class OfficershipController extends Controller
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
         ];
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        //HRIS Document 
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        //HRIS Document
         $hrisDocuments = [];
         $collegeOfDepartment = '';
         if(LockController::isNotLocked($id, 28) && Report::where('report_reference_id', $id)
@@ -102,11 +105,11 @@ class OfficershipController extends Controller
                 'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
                 'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
                 'description' => $description
-            ]; 
+            ];
         }
 
 
-        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments'));
+        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
 
     public function save(Request $request, $id){
@@ -118,7 +121,7 @@ class OfficershipController extends Controller
             ->where('h_r_i_s_fields.h_r_i_s_form_id', 3)->where('h_r_i_s_fields.is_active', 1)
             ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
             ->orderBy('h_r_i_s_fields.order')->get();
-            
+
         $data = [];
 
         foreach($officeFields as $field){
@@ -145,11 +148,12 @@ class OfficershipController extends Controller
 
         $data = collect($data);
 
-        $sector_id = College::where('id', $request->college_id)->pluck('sector_id')->first();
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+        $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $filenames = [];
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -181,11 +185,11 @@ class OfficershipController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-        
+
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
-            'college_id' => $request->college_id,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
             'department_id' => $request->department_id,
             'report_category_id' => 28,
             'report_code' => null,

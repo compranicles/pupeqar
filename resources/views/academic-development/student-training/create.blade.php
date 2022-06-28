@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('student-training.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $studentFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $studentFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

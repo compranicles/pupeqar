@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row justify-content-center">
 
-        
+
         <div class="col-md-9 offset-md-2">
           <div class="d-flex align-content-center">
             <p class="mt-2 ml-3">
@@ -44,7 +44,7 @@
                             <option value="V" {{ (old('suffix', $user->suffix) == 'V') ? 'selected' : '' }}>V</option>
                         </select>
                         <x-jet-input-error for="suffix"></x-jet-input-error>
-                      </div>  
+                      </div>
                       <div class="form-group">
                         <x-jet-label value="{{ __('Email') }}" />
                         <x-jet-input type="email" name="email" :value="old('email', $user->email)" disabled autocomplete="email" />
@@ -59,7 +59,7 @@
                         </div>
                         <div class="row">
                         @foreach ($roles as $role)
-                          
+
                           <div class="col-sm-6">
                             <label for="role-{{ $role->id }}">
                               <input type="checkbox" class="role-checkbox" id="role-{{ $role->id }}" data-id="{{ $role->id }}" value="{{ $role->id }}" name="roles[]" @if (in_array($role->id, $yourroles)) checked @endif >
@@ -67,62 +67,68 @@
                             </label>
                           </div>
                         @endforeach
-      
+
                         </div>
                       </div>
-        
+
                       <div class="form-group department-input" style="@if($chairperson == null) display: none; @endif">
-                        <x-jet-label value="{{ __('Department') }}" />
+                        <x-jet-label value="{{ __('Chairperson - Department/Section') }}" />
                         <select name="department[]" id="department" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                             {{-- @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ (old('department', $chairperson) == $department->id) ? 'selected' : '' }}>{{ $department->name }}</option>  
+                                <option value="{{ $department->id }}" {{ (old('department', $chairperson) == $department->id) ? 'selected' : '' }}>{{ $department->name }}</option>
                             @endforeach --}}
+
                         </select>
+                        <span class="text-danger" id="chairperson_error">This is required</span>
                         <x-jet-input-error for="department"></x-jet-input-error>
-                      </div>  
+                      </div>
 
                       <div class="form-group college-input" style="@if($dean == null) display: none; @endif">
-                        <x-jet-label value="{{ __('Office/College/Branch/Campus') }}" />
+                        <x-jet-label value="{{ __('Dean/Director - Office/College/Branch/Campus') }}" />
                         <select name="college[]" id="college" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                             {{-- @foreach ($colleges as $college)
-                                <option value="{{ $college->id }}" {{ (old('college', $dean) == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>  
+                                <option value="{{ $college->id }}" {{ (old('college', $dean) == $college->id) ? 'selected' : '' }}>{{ $college->name }}</option>
                             @endforeach --}}
                         </select>
+                        <span class="text-danger" id="dean_error">This is required</span>
                         <x-jet-input-error for="college"></x-jet-input-error>
-                      </div>  
-                      
+                      </div>
+
                       <div class="form-group sector-input" style="@if($sectorhead == null) display: none; @endif">
-                        <x-jet-label value="{{ __('Sectors') }}" />
+                        <x-jet-label value="{{ __('Sectors/VP') }}" />
                         <select name="sector[]" id="sector" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                             {{-- @foreach ($sectors as $sector)
-                                <option value="{{ $sector->id }}" {{ (old('sector', $sectorhead) == $sector->id) ? 'selected' : '' }}>{{ $sector->name }}</option>  
+                                <option value="{{ $sector->id }}" {{ (old('sector', $sectorhead) == $sector->id) ? 'selected' : '' }}>{{ $sector->name }}</option>
                             @endforeach --}}
                         </select>
+                        <span class="text-danger" id="sector_error">This is required</span>
                         <x-jet-input-error for="sector"></x-jet-input-error>
-                      </div>  
+                      </div>
 
                       <div class="form-group extension-input" style="@if($extensionist == null) display: none; @endif">
                         <x-jet-label value="{{ __('Extensionist of:') }}" />
                         <select name="extension[]" id="extension" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                         </select>
+                        <span class="text-danger" id="extensionist_error">This is required</span>
                         <x-jet-input-error for="extension"></x-jet-input-error>
-                      </div>  
+                      </div>
 
                       <div class="form-group research-input" style="@if($researcher == null) display: none; @endif">
                         <x-jet-label value="{{ __('Researcher of:') }}" />
                         <select name="research[]" id="research" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                         </select>
+                        <span class="text-danger" id="researcher_error">This is required</span>
                         <x-jet-input-error for="research"></x-jet-input-error>
-                      </div> 
+                      </div>
                       <div class="form-group d-flex justify-content-end align-items-baseline">
                         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary mr-3" tabindex="-1" role="button" aria-disabled="true">Cancel</a>
                         <button type="submit" class="btn btn-success">Save</button>
-                      </div> 
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -135,7 +141,13 @@
     @push('scripts')
       <script src="{{ asset('dist/selectize.min.js') }}"></script>
       <script>
-
+        $(function() {
+            $('#department_error').hide();
+            $('#dean_error').hide();
+            $('#sector_error').hide();
+            $('#extensionist_error').hide();
+            $('#researcher_error').hide();
+        });
           $("#department").selectize({
               maxItems: null,
               valueField: 'value',
@@ -151,7 +163,7 @@
               sortField: "text",
               options: @json($colleges),
               items: @json($dean),
-              
+
           });
           $("#sector").selectize({
               maxItems: null,
@@ -202,11 +214,14 @@
                  $('.college-input').show();
                  $('#college').removeAttr('disabled');
                  $('#college').attr('required', true);
+                $('#dean_error').show();
+
               }
               else{
                 $('.college-input').hide();
                 $('#college').removeAttr('required');
                 $('#college').attr('disabled', true);
+                $('#dean_error').hide();
               }
           }
 
@@ -215,11 +230,14 @@
                  $('.department-input').show();
                  $('#department').removeAttr('disabled');
                  $('#department').attr('required', true);
+                 $('#department_error').show();
+
               }
               else{
                 $('.department-input').hide();
                 $('#department').removeAttr('required');
                 $('#department').attr('disabled', true);
+                $('#department_error').hide();
               }
           }
 
@@ -228,11 +246,14 @@
                  $('.sector-input').show();
                  $('#sector').removeAttr('disabled');
                  $('#sector').attr('required', true);
+                 $('#sector_error').show();
+
               }
               else{
                 $('.sector-input').hide();
                 $('#sector').removeAttr('required');
                 $('#sector').attr('disabled', true);
+                $('#sector_error').hide();
               }
           }
           function changeExtensionDisp(id){
@@ -240,11 +261,14 @@
                  $('.extension-input').show();
                  $('#extension').removeAttr('disabled');
                  $('#extension').attr('required', true);
+                 $('#extensionist_error').show();
+
               }
               else{
                 $('.extension-input').hide();
                 $('#extension').removeAttr('required');
                 $('#extension').attr('disabled', true);
+                $('#extensionist_error').hide();
               }
           }
           function changeResearchDisp(id){
@@ -252,11 +276,13 @@
                  $('.research-input').show();
                  $('#research').removeAttr('disabled');
                  $('#research').attr('required', true);
+                 $('#researcher_error').show();
               }
               else{
                 $('.research-input').hide();
                 $('#research').removeAttr('required');
                 $('#research').attr('disabled', true);
+                $('#researcher_error').hide();
               }
           }
 
@@ -281,7 +307,7 @@
       <script>
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
       </script>

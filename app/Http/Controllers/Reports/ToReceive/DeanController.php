@@ -43,7 +43,7 @@ class DeanController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -69,7 +69,7 @@ class DeanController extends Controller
 
         $reportsToReview = collect();
         $department_list = collect();
-        
+
         foreach ($colleges as $row){
             $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
@@ -82,17 +82,17 @@ class DeanController extends Controller
                 ->select('departments.id', 'departments.name', 'colleges.name as college_name')
                 ->join('colleges', 'colleges.id', 'departments.college_id')
                 ->get();
-            
+
             $reportsToReview = $reportsToReview->concat($tempReports);
             $department_list = $department_list->concat($tempDepartment_list);
         }
-        
+
         $college_names = [];
         $department_names = [];
         foreach($reportsToReview as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+            $row->report_details = json_decode($row->report_details, false);
 
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
@@ -182,8 +182,8 @@ class DeanController extends Controller
         Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
         $report = Report::find($report_id);
-        
-        
+
+
         $receiverData = User::find($report->user_id);
         $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                             ->join('users', 'users.id', 'deans.user_id')
@@ -234,7 +234,7 @@ class DeanController extends Controller
         Notification::send($receiverData, new ReceiveNotification($notificationData));
 
         \LogActivity::addToLog('Dean received an accomplishment.');
-        
+
         return redirect()->route('director.index')->with('success', 'Report has been added in college/branch/campus consolidation of reports.');
     }
 
@@ -314,10 +314,10 @@ class DeanController extends Controller
                 'date' => date('F j, Y, g:i a'),
                 'databaseOnly' => 0
             ];
-    
+
         }
 
-        
+
         Notification::send($returnData, new ReturnNotification($notificationData));
 
         \LogActivity::addToLog('Dean returned an accomplishment.');
@@ -358,8 +358,8 @@ class DeanController extends Controller
             Report::where('id', $report_id)->update(['dean_approval' => 1]);
 
             $report = Report::find($report_id);
-        
-        
+
+
             $receiverData = User::find($report->user_id);
             $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                                 ->join('users', 'users.id', 'deans.user_id')
@@ -432,7 +432,7 @@ class DeanController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -497,10 +497,10 @@ class DeanController extends Controller
                     'date' => date('F j, Y, g:i a'),
                     'databaseOnly' => 0
                 ];
-        
+
             }
 
-            
+
             Notification::send($returnData, new ReturnNotification($notificationData));
             $count++;
         }

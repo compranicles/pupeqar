@@ -44,7 +44,7 @@ class ChairpersonController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -69,7 +69,7 @@ class ChairpersonController extends Controller
         }
 
         $reportsToReview = collect();
-        
+
         foreach ($departments as $row){
             $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
@@ -77,7 +77,7 @@ class ChairpersonController extends Controller
                 ->join('users', 'reports.user_id', 'users.id')
                 ->where('department_id', $row->department_id)->where('chairperson_approval', null)->get();
 
-            
+
             $reportsToReview = $reportsToReview->concat($tempReports);
         }
 
@@ -107,7 +107,7 @@ class ChairpersonController extends Controller
         foreach($reportsToReview as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+            $row->report_details = json_decode($row->report_details, false);
 
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
@@ -118,7 +118,7 @@ class ChairpersonController extends Controller
             else
                 $department_names[$row->id] = $temp_department_name;
         }
-        
+
 
         return view('reports.to-receive.chairpersons.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
@@ -370,7 +370,7 @@ class ChairpersonController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -422,6 +422,6 @@ class ChairpersonController extends Controller
         return redirect()->route('chairperson.index')->with('success', 'Report/s returned to the owner/s.');
 
     }
-    
+
 
 }

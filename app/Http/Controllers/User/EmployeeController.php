@@ -34,8 +34,10 @@ class EmployeeController extends Controller
     public function create()
     {
         $sectors = Sector::all();
-        $cbco = College::all();
         session(['url' => route('home') ]);
+
+        $existingCol = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $cbco = College::whereNotIn('id', $existingCol)->get();
         return view('offices.create', compact('sectors', 'cbco'));
     }
 

@@ -122,6 +122,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('special-tasks.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                 <a href="{{ route('special-tasks.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}">Delete</button>
                                                 @if ($row->commitment_measure_name == "Quality")
@@ -132,9 +133,9 @@
                                                             <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                         @elseif ($submissionStatus[30][$row->id] == 2)
                                                             <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                        @endif 
-                                                    @endif 
-                                                @elseif ($row->commitment_measure_name == "Efficiency")   
+                                                        @endif
+                                                    @endif
+                                                @elseif ($row->commitment_measure_name == "Efficiency")
                                                     @if (isset($submissionStatus[31]))
                                                         @if ($submissionStatus[31][$row->id] == 0)
                                                             <a href="{{ url('submissions/check/31/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
@@ -142,9 +143,9 @@
                                                             <a href="{{ url('submissions/check/31/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                         @elseif ($submissionStatus[31][$row->id] == 2)
                                                             <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                        @endif   
-                                                    @endif   
-                                                @elseif ($row->commitment_measure_name == "Timeliness")  
+                                                        @endif
+                                                    @endif
+                                                @elseif ($row->commitment_measure_name == "Timeliness")
                                                     @if (isset($submissionStatus[32]))
                                                         @if ($submissionStatus[32][$row->id] == 0)
                                                             <a href="{{ url('submissions/check/32/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
@@ -152,9 +153,9 @@
                                                             <a href="{{ url('submissions/check/32/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                         @elseif ($submissionStatus[32][$row->id] == 2)
                                                             <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                        @endif   
-                                                    @endif   
-                                                @endif        
+                                                        @endif
+                                                    @endif
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

@@ -55,7 +55,7 @@ class PartnershipController extends Controller
         foreach ($partnerships as $partnership) {
             if (LockController::isLocked($partnership->id, 13))
                 $submissionStatus[13][$partnership->id] = 1;
-            else 
+            else
                 $submissionStatus[13][$partnership->id] = 0;
             if (empty($reportdata->getDocuments(13, $partnership->id)))
                 $submissionStatus[13][$partnership->id] = 2;
@@ -78,9 +78,12 @@ class PartnershipController extends Controller
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges' , 'departments'));
     }
 
     /**
@@ -96,12 +99,13 @@ class PartnershipController extends Controller
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -117,7 +121,7 @@ class PartnershipController extends Controller
         $partnership->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -162,9 +166,9 @@ class PartnershipController extends Controller
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
-    
+
         $values = $partnership->toArray();
-        
+
         return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values'));
     }
 
@@ -180,7 +184,7 @@ class PartnershipController extends Controller
 
         if (auth()->id() !== $partnership->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($partnership->id, 13)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -196,11 +200,14 @@ class PartnershipController extends Controller
 
         $values = $partnership->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
 
-        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
+        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments'));
     }
 
     /**
@@ -213,13 +220,14 @@ class PartnershipController extends Controller
     public function update(Request $request, Partnership $partnership)
     {
         $this->authorize('update', Partnership::class);
-        
+
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
 
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -229,7 +237,7 @@ class PartnershipController extends Controller
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $partnership->update(['description' => '-clear']);
@@ -237,7 +245,7 @@ class PartnershipController extends Controller
         $partnership->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

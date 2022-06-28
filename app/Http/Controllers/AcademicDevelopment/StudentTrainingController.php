@@ -48,13 +48,13 @@ class StudentTrainingController extends Controller
         foreach ($student_trainings as $student_training) {
             if (LockController::isLocked($student_training->id, 19))
                 $submissionStatus[19][$student_training->id] = 1;
-            else 
+            else
                 $submissionStatus[19][$student_training->id] = 0;
             if (empty($reportdata->getDocuments(19, $student_training->id)))
                 $submissionStatus[19][$student_training->id] = 2;
         }
 
-        return view('academic-development.student-training.index', compact('student_trainings', 'currentQuarterYear', 
+        return view('academic-development.student-training.index', compact('student_trainings', 'currentQuarterYear',
             'submissionStatus'));
     }
 
@@ -112,7 +112,7 @@ class StudentTrainingController extends Controller
             'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);
-        
+
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -122,7 +122,7 @@ class StudentTrainingController extends Controller
         $student_training->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -155,8 +155,9 @@ class StudentTrainingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(StudentTraining $student_training)
+    public function show(StudentTraining  $stdnt_training)
     {
+		$student_training = $stdnt_training;
         $this->authorize('view', StudentTraining::class);
 
         if (auth()->id() !== $student_training->user_id)
@@ -180,8 +181,9 @@ class StudentTrainingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(StudentTraining $student_training)
+    public function edit(StudentTraining $stdnt_training)
     {
+		$student_training = $stdnt_training;
         $this->authorize('update', StudentTraining::class);
 
         if (auth()->id() !== $student_training->user_id)
@@ -216,8 +218,9 @@ class StudentTrainingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, StudentTraining $student_training)
+    public function update(Request $request, StudentTraining $stdnt_training)
     {
+		$student_training = $stdnt_training;
         $this->authorize('update', StudentTraining::class);
 
         $value = $request->input('budget');
@@ -232,13 +235,13 @@ class StudentTrainingController extends Controller
             'start_date' => $start_date,
             'end_date' => $end_date,
         ]);
-        
+
         $request->validate([
             // 'budget' => 'numeric',
             'end_date' => 'after_or_equal:start_date',
             'total_hours' => 'numeric',
         ]);
-        
+
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -249,7 +252,7 @@ class StudentTrainingController extends Controller
         $student_training->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -282,8 +285,9 @@ class StudentTrainingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(StudentTraining $student_training)
+    public function destroy(StudentTraining  $stdnt_training)
     {
+		$student_training = $stdnt_training;
         $this->authorize('delete', StudentTraining::class);
 
         if(LockController::isLocked($student_training->id, 19)){

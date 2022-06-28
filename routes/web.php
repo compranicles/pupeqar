@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     // 1. Colleges
     Route::get('/maintenances/colleges/name/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeName'])->name('college.name');
+    Route::get('/maintenances/colleges/name/department/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeNameUsingDept']);
     Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
     // 2. Departments
     Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);
@@ -250,8 +251,26 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::resource('/extension-programs/expert-service-in-academic', \App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class);
     Route::resource('/extension-programs/extension-service', \App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class);
     Route::resource('outreach-program', \App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class);
-    Route::resource('student-award', \App\Http\Controllers\AcademicDevelopment\StudentAwardController::class);
-    Route::resource('student-training', \App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class);
+    Route::resource('stdnt-award', \App\Http\Controllers\AcademicDevelopment\StudentAwardController::class)->
+			names([
+				'create' => 'student-award.create',
+				'index' => 'student-award.index',
+				'edit' => 'student-award.edit',
+				'update' => 'student-award.update',
+				'show' => 'student-award.show',
+				'store' => 'student-award.store',
+				'destroy' => 'student-award.destroy'
+			]);
+    Route::resource('stdnt-training', \App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class)->
+			names([
+				'create' => 'student-training.create',
+				'index' => 'student-training.index',
+				'edit' => 'student-training.edit',
+				'update' => 'student-training.update',
+				'show' => 'student-training.show',
+				'store' => 'student-training.store',
+				'destroy' => 'student-training.destroy'
+			]);
     Route::resource('viable-project', \App\Http\Controllers\AcademicDevelopment\ViableProjectController::class);
     Route::resource('college-department-award', \App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class);
     Route::resource('technical-extension', \App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class);
@@ -270,8 +289,8 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('/extension-programs/expert-service-in-academic/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExpertServices\AcademicController::class, 'removeDoc'])->name('esacademic.removedoc');
     Route::get('/extension-programs/extension-service/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\ExtensionServiceController::class, 'removeDoc'])->name('extension-service.removedoc');
     Route::get('/outreach-program/remove-document/{filename}', [\App\Http\Controllers\ExtensionPrograms\OutreachProgramController::class, 'removeDoc'])->name('outreach-program.removedoc');
-    Route::get('/student-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentAwardController::class, 'removeDoc'])->name('student-award.removedoc');
-    Route::get('/student-training/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class, 'removeDoc'])->name('student-training.removedoc');
+    Route::get('/stdnt-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentAwardController::class, 'removeDoc'])->name('student-award.removedoc');
+    Route::get('/stdnt-training/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\StudentTrainingController::class, 'removeDoc'])->name('student-training.removedoc');
     Route::get('/viable-project/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\ViableProjectController::class, 'removeDoc'])->name('viable-project.removedoc');
     Route::get('/college-department-award/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\CollegeDepartmentAwardController::class, 'removeDoc'])->name('college-department-award.removedoc');
     Route::get('/technical-extension/remove-document/{filename}', [\App\Http\Controllers\AcademicDevelopment\TechnicalExtensionController::class, 'removeDoc'])->name('technical-extension.removedoc');
