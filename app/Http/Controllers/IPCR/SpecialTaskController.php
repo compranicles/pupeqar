@@ -32,7 +32,7 @@ class SpecialTaskController extends Controller
      */
     public function index()
     {
-        
+
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -59,28 +59,28 @@ class SpecialTaskController extends Controller
                 if ($task->commitment_measure_name == "Quality") {
                     if (LockController::isLocked($task->id, 30))
                         $submissionStatus[30][$task->id] = 1;
-                    else 
+                    else
                         $submissionStatus[30][$task->id] = 0;
                     if (empty($reportdata->getDocuments(30, $task->id)))
                         $submissionStatus[30][$task->id] = 2;
                 } elseif ($task->commitment_measure_name == "Efficiency") {
                     if (LockController::isLocked($task->id, 31))
                         $submissionStatus[31][$task->id] = 1;
-                    else 
+                    else
                         $submissionStatus[31][$task->id] = 0;
                     if (empty($reportdata->getDocuments(31, $task->id)))
                         $submissionStatus[31][$task->id] = 2;
                 } elseif ($task->commitment_measure_name == "Timeliness") {
                     if (LockController::isLocked($task->id, 32))
                         $submissionStatus[32][$task->id] = 1;
-                    else 
+                    else
                         $submissionStatus[32][$task->id] = 0;
                     if (empty($reportdata->getDocuments(32, $task->id)))
                         $submissionStatus[32][$task->id] = 2;
                 }
-            } 
+            }
 
-        return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories', 
+        return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories',
             'specialTasks', 'tasks_in_colleges', 'submissionStatus'));
     }
 
@@ -101,10 +101,13 @@ class SpecialTaskController extends Controller
             ->where('i_p_c_r_fields.i_p_c_r_form_id', 3)->where('i_p_c_r_fields.is_active', 1)
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
-        
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles'));
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+         $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments'));
     }
 
     /**
@@ -115,7 +118,7 @@ class SpecialTaskController extends Controller
      */
     public function store(Request $request)
     {
-        
+
 
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -127,7 +130,7 @@ class SpecialTaskController extends Controller
             $type = 'ABO-';
             $namePage = 'Accomplishment Based on OPCR';
         }
-        
+
         $currentQuarterYear = Quarter::find(1);
         $target_date = date("Y-m-d", strtotime($request->input('target_date')));
         $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
@@ -136,6 +139,7 @@ class SpecialTaskController extends Controller
             'actual_date' => $actual_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
 
@@ -145,7 +149,7 @@ class SpecialTaskController extends Controller
         $taskdata->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -180,7 +184,7 @@ class SpecialTaskController extends Controller
      */
     public function show(SpecialTask $special_task)
     {
-        
+
 
         if (auth()->id() !== $special_task->user_id)
             abort(403);
@@ -194,11 +198,11 @@ class SpecialTaskController extends Controller
                         ->where('i_p_c_r_fields.i_p_c_r_form_id', 3)->where('i_p_c_r_fields.is_active', 1)
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
-        
+
         $documents = SpecialTaskDocument::where('special_task_id', $special_task->id)->get()->toArray();
 
         $values = $special_task->toArray();
-    
+
         return view('ipcr.special-tasks.show', compact('special_task', 'specialTaskFields', 'documents', 'values', 'roles'));
     }
 
@@ -212,7 +216,7 @@ class SpecialTaskController extends Controller
     {
         if (auth()->id() !== $special_task->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -230,9 +234,12 @@ class SpecialTaskController extends Controller
 
         $documents = SpecialTaskDocument::where('special_task_id', $special_task->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles'));
+         $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments'));
     }
 
     /**
@@ -244,7 +251,7 @@ class SpecialTaskController extends Controller
      */
     public function update(Request $request, SpecialTask $special_task)
     {
-        
+
 
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -256,12 +263,13 @@ class SpecialTaskController extends Controller
             $type = 'ABO-';
             $namePage = 'Accomplishment Based on OPCR';
         }
-            
+
         $target_date = date("Y-m-d", strtotime($request->input('target_date')));
         $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
         $request->merge([
             'target_date' => $target_date,
             'actual_date' => $actual_date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
 
@@ -272,7 +280,7 @@ class SpecialTaskController extends Controller
         $special_task->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -306,7 +314,7 @@ class SpecialTaskController extends Controller
      */
     public function destroy(SpecialTask $special_task)
     {
-        
+
 
         if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');

@@ -45,7 +45,7 @@ class InventionController extends Controller
         $this->authorize('viewAny', Invention::class);
 
         $year = "created";
-        
+
         $currentQuarterYear = Quarter::find(1);
         $inventions = Invention::where('inventions.report_quarter', $currentQuarterYear->current_quarter)
                         ->where('inventions.report_year', $currentQuarterYear->current_year)
@@ -61,7 +61,7 @@ class InventionController extends Controller
         foreach ($inventions as $invention) {
             if (LockController::isLocked($invention->id, 8))
                 $submissionStatus[8][$invention->id] = 1;
-            else 
+            else
                 $submissionStatus[8][$invention->id] = 0;
             if (empty($reportdata->getDocuments(8, $invention->id)))
                 $submissionStatus[8][$invention->id] = 2;
@@ -85,9 +85,12 @@ class InventionController extends Controller
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('inventions.create', compact('inventionFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('inventions.create', compact('inventionFields', 'colleges', 'departments'));
     }
 
     /**
@@ -111,7 +114,7 @@ class InventionController extends Controller
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -119,6 +122,7 @@ class InventionController extends Controller
             'funding_amount' => $value,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -132,7 +136,7 @@ class InventionController extends Controller
         $iicw->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -179,7 +183,7 @@ class InventionController extends Controller
             return view('inactive');
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
-        
+
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
         $values = $invention_innovation_creative->toArray();
@@ -198,7 +202,7 @@ class InventionController extends Controller
     public function edit(Invention $invention_innovation_creative)
     {
         $this->authorize('update', Invention::class);
-        
+
         if (auth()->id() !== $invention_innovation_creative->user_id)
             abort(403);
 
@@ -212,8 +216,12 @@ class InventionController extends Controller
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
-        
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
 
         if ($invention_innovation_creative->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$invention_innovation_creative->department_id.")");
@@ -221,7 +229,7 @@ class InventionController extends Controller
         else {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
-      
+
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
         $value = $invention_innovation_creative;
@@ -230,7 +238,7 @@ class InventionController extends Controller
         $value = $value->toArray();
         // dd($value);
 
-        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification'));
+        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification', 'departments'));
     }
 
     /**
@@ -260,6 +268,7 @@ class InventionController extends Controller
             'end_date' => $end_date,
             'issue_date' => $issue_date,
             'funding_amount' => $value,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -272,7 +281,7 @@ class InventionController extends Controller
         $invention_innovation_creative->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -314,7 +323,7 @@ class InventionController extends Controller
         if(LockController::isLocked($invention_innovation_creative->id, 8)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited.');
         }
-        
+
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -334,7 +343,7 @@ class InventionController extends Controller
 
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
-            
+
         InventionDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
@@ -344,7 +353,7 @@ class InventionController extends Controller
     }
 
     public function inventionYearFilter($year, $filter) {
-    
+
         if($filter == "created") {
             if ($year == "created") {
                 return redirect()->route('invention-innovation-creative.index');
@@ -356,7 +365,7 @@ class InventionController extends Controller
                                     ->select(DB::raw('inventions.*, dropdown_options.name as status_name, colleges.name as college_name, QUARTER(inventions.updated_at) as quarter'))
                                     ->whereYear('inventions.created_at', $year)
                                     ->orderBy('inventions.updated_at', 'desc')->get();
-            }   
+            }
         }
         else {
             return redirect()->route('invention-innovation-creative.index');

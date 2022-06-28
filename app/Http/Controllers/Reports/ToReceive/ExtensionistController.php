@@ -37,7 +37,7 @@ class ExtensionistController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -79,7 +79,7 @@ class ExtensionistController extends Controller
         foreach($reportsToReview as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+            $row->report_details = json_decode($row->report_details, false);
 
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
@@ -132,7 +132,7 @@ class ExtensionistController extends Controller
         \LogActivity::addToLog('Extensionist received an accomplishment.');
 
         return redirect()->route('extensionist.index')->with('success', 'Report has been added in college consolidation of reports.');
-    
+
     }
     public function rejectCreate($report_id){
         $authorize = (new ToReceiveReportAuthorizationService())->authorizeReceiveIndividualExtension();
@@ -160,7 +160,7 @@ class ExtensionistController extends Controller
             'extensionist_approval' => 0
         ]);
 
-        
+
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
@@ -257,7 +257,7 @@ class ExtensionistController extends Controller
         if (!($authorize)) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -271,7 +271,7 @@ class ExtensionistController extends Controller
                 'position_name' => 'extensionist',
                 'reason' => $request->input('reason_'.$report_id),
             ]);
-                
+
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
@@ -299,7 +299,7 @@ class ExtensionistController extends Controller
             ];
 
             Notification::send($returnData, new ReturnNotification($notificationData));
-            
+
             $count++;
         }
 

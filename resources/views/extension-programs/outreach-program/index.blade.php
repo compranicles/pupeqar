@@ -80,7 +80,7 @@
                                         <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >
                                             {{ $row->report_year }}
                                         </td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -89,6 +89,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('outreach-program.show', $row->id) }}" class="btn btn-sm btn-primary">View</a>
                                                 <a href="{{ route('outreach-program.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-outreach="{{ $row->title_of_the_program }}">Delete</button>
                                                 @if ($submissionStatus[22][$row->id] == 0)
@@ -97,7 +98,7 @@
                                                     <a href="{{ url('submissions/check/22/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                 @elseif ($submissionStatus[22][$row->id] == 2)
                                                     <a href="{{ route('outreach-program.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                @endif        
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

@@ -41,20 +41,20 @@ class ConsultantController extends Controller
         $this->authorize('viewAny', ExpertServiceConsultant::class);
 
         $currentQuarterYear = Quarter::find(1);
-        
+
         $expertServicesConsultant = ExpertServiceConsultant::where('user_id', auth()->id())
                                         ->join('dropdown_options', 'dropdown_options.id', 'expert_service_consultants.classification')
                                         ->join('colleges', 'colleges.id', 'expert_service_consultants.college_id')
                                         ->select(DB::raw('expert_service_consultants.*, dropdown_options.name as classification_name, colleges.name as college_name'))
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
-        
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($expertServicesConsultant as $consultant) {
             if (LockController::isLocked($consultant->id, 9))
                 $submissionStatus[9][$consultant->id] = 1;
-            else 
+            else
                 $submissionStatus[9][$consultant->id] = 0;
             if (empty($reportdata->getDocuments(9, $consultant->id)))
                 $submissionStatus[9][$consultant->id] = 2;
@@ -77,9 +77,12 @@ class ConsultantController extends Controller
             return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges', 'departments'));
     }
 
     /**
@@ -104,6 +107,7 @@ class ConsultantController extends Controller
             'to' => $to,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -118,7 +122,7 @@ class ConsultantController extends Controller
         $esConsultant->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -162,9 +166,9 @@ class ConsultantController extends Controller
             return view('inactive');
 
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
-       
+
         $documents = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
-        
+
         $values = $expert_service_as_consultant->toArray();
 
         return view('extension-programs.expert-services.consultant.show', compact('expertServiceConsultantFields','expert_service_as_consultant', 'documents', 'values'));
@@ -182,7 +186,7 @@ class ConsultantController extends Controller
 
         if (auth()->id() !== $expert_service_as_consultant->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($expert_service_as_consultant->id, 9)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -194,14 +198,17 @@ class ConsultantController extends Controller
 
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         $value = $expert_service_as_consultant;
         $value->toArray();
         $value = collect($expert_service_as_consultant);
         $value = $value->toArray();
-        
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value'));
+
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value', 'departments'));
     }
 
     /**
@@ -224,6 +231,7 @@ class ConsultantController extends Controller
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -239,7 +247,7 @@ class ConsultantController extends Controller
         $expert_service_as_consultant->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

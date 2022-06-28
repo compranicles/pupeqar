@@ -49,7 +49,7 @@ class SyllabusController extends Controller
                     ->select(DB::raw('syllabi.*, dropdown_options.name as assigned_task_name, colleges.name as college_name'))
                     ->orderBy('syllabi.updated_at', 'desc')
                     ->get();
-    
+
         $syllabiYearsFinished = Syllabus::where('user_id', auth()->id())
                     ->where('syllabi.deleted_at', null)
                     ->selectRaw("YEAR(syllabi.date_finished) as finished")->where('syllabi.user_id', auth()->id())
@@ -61,13 +61,13 @@ class SyllabusController extends Controller
         foreach ($syllabi as $syllabus) {
             if (LockController::isLocked($syllabus->id, 16))
                 $submissionStatus[16][$syllabus->id] = 1;
-            else 
+            else
                 $submissionStatus[16][$syllabus->id] = 0;
             if (empty($reportdata->getDocuments(16, $syllabus->id)))
                 $submissionStatus[16][$syllabus->id] = 2;
         }
 
-        return view('academic-development.syllabi.index', compact('syllabi', 'year', 
+        return view('academic-development.syllabi.index', compact('syllabi', 'year',
             'syllabiYearsFinished', 'currentQuarterYear', 'submissionStatus'));
     }
 
@@ -85,8 +85,11 @@ class SyllabusController extends Controller
 
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges'));
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments'));
     }
 
     /**
@@ -104,11 +107,12 @@ class SyllabusController extends Controller
 
         $date = date("Y-m-d", strtotime($request->input('date_finished')));
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'date_finished' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -121,7 +125,7 @@ class SyllabusController extends Controller
         $syllabus->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -197,7 +201,10 @@ class SyllabusController extends Controller
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         if ($syllabu->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$syllabu->department_id.")");
@@ -206,12 +213,10 @@ class SyllabusController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        $value = $syllabu;
-        $value->toArray();
         $value = collect($syllabu);
         $value = $value->toArray();
-        
-        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment'));
+
+        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment', 'departments'));
     }
 
     /**
@@ -229,17 +234,18 @@ class SyllabusController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date_finished')));
-        
+
         $request->merge([
             'date_finished' => $date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
-        
+
         $input = $request->except(['_token', '_method', 'document']);
         $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -308,13 +314,13 @@ class SyllabusController extends Controller
 
     public function syllabusYearFilter($year, $filter) {
         $this->authorize('viewAny', Syllabus::class);
-        
+
         if ($year == "finished") {
             return redirect()->route('syllabus.index');
         }
-      
+
         $currentQuarterYear = Quarter::find(1);
-        
+
         if ($filter == "finished") {
             $syllabi = Syllabus::where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'syllabi.assigned_task')
@@ -329,7 +335,7 @@ class SyllabusController extends Controller
         }
 
         $syllabiTask = DropdownOption::where('dropdown_id', 39)->get();
-        
+
         $syllabiYearsAdded = Syllabus::where('user_id', auth()->id())
                         ->where('syllabi.deleted_at', null)
                         ->selectRaw("YEAR(syllabi.created_at) as created")->where('syllabi.user_id', auth()->id())

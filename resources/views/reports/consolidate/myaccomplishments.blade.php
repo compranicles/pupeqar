@@ -62,8 +62,8 @@
                                         <tr>
                                             <th class="text-center" rowspan="2"></th>
                                             <th rowspan="2">Accomplishment Report</th>
-                                            <th rowspan="2">College/Branch/Campus/Office</th>
-                                            <th rowspan="2">Department</th>
+                                            <th rowspan="2">Title</th>
+                                            <th rowspan="2">Department/Section</th>
                                             <th class="text-center" colspan="6">Status</th>
                                             <th rowspan="2"></th>
 
@@ -82,8 +82,39 @@
                                         <tr role="button">
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
                                             <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name ?? '-' }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                @if (isset($row->report_details->title))
+                                                    {{ $row->report_details->title }}
+                                                @elseif (isset($row->report_details->publication_or_audio_visual))
+                                                    {{ $row->report_details->publication_or_audio_visual }}
+                                                @elseif (isset($row->report_details->title_of_extension_program))
+                                                    {{ $row->report_details->title_of_extension_program }}
+                                                @elseif (isset($row->report_details->title_of_extension_project))
+                                                    {{ $row->report_details->title_of_extension_project }}
+                                                @elseif (isset($row->report_details->title_of_extension_activity))
+                                                    {{ $row->report_details->title_of_extension_activity }}
+                                                @elseif (isset($row->report_details->title_of_partnership))
+                                                    {{ $row->report_details->title_of_partnership }}
+                                                @elseif (isset($row->report_details->mobility_description))
+                                                    {{ $row->report_details->mobility_description }}
+                                                @elseif (isset($row->report_details->course_title))
+                                                    {{ $row->report_details->course_title }}
+                                                @elseif (isset($row->report_details->description_of_request))
+                                                    {{ $row->report_details->description_of_request }}
+                                                @elseif (isset($row->report_details->name_of_award))
+                                                    {{ $row->report_details->name_of_award }}
+                                                @elseif (isset($row->report_details->name))
+                                                    {{ $row->report_details->name }}
+                                                @elseif (isset($row->report_details->title_of_the_program))
+                                                    {{ $row->report_details->title_of_the_program }}
+                                                @elseif (isset($row->report_details->output))
+                                                    {{ $row->report_details->output }}
+                                                @elseif (isset($row->report_details->final_output))
+                                                    {{ $row->report_details->final_output }}
+                                                @endif
+                                            </td>
+                                            {{-- <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id] ?? '-' }}</td> --}}
+                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id] ?? '-' }}</td>
                                             <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                 @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                                     @if ($row->researcher_approval === null)
@@ -122,7 +153,7 @@
                                                         @elseif ($row->chairperson_approval === 0)
                                                             <span class="text-danger font-weight-bold">Returned</span>
                                                         @elseif ($row->chairperson_approval === 1)
-                                                            <span class="text-success font-weight-bold">Received</span>
+                                                            <span class="text-success font-weight-bold">Viewed</span>
                                                         @endif
                                                     @endif
                                                 @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
@@ -136,15 +167,17 @@
                                                         @elseif ($row->chairperson_approval === 0)
                                                             <span class="text-danger font-weight-bold">Returned</span>
                                                         @elseif ($row->chairperson_approval === 1)
-                                                            <span class="text-success font-weight-bold">Received</span>
+                                                            <span class="text-success font-weight-bold">Viewed</span>
                                                         @endif
                                                     @endif
                                                 @else
-                                                    @if ($row->chairperson_approval === null)
+                                                    @if ($row->chairperson_approval === null && $department_names[$row->id] != '-')
                                                         Receiving...
-                                                    @elseif ($row->chairperson_approval === 0)
+                                                    @elseif($department_names[$row->id] == '-')
+                                                        N/A
+                                                    @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
                                                         <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->chairperson_approval === 1)
+                                                    @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
                                                         <span class="text-success font-weight-bold">Received</span>
                                                     @endif
                                                 @endif
@@ -258,7 +291,7 @@
 
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewReportLabel"></h5>
@@ -342,7 +375,7 @@
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>');
-                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
+                        $('#row-'+countColumns).append('<td class="report-content font-weight-bold text-right" width="50%">'+k+':</td>');
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });

@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     // 1. Colleges
     Route::get('/maintenances/colleges/name/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeName'])->name('college.name');
+    Route::get('/maintenances/colleges/name/department/{id}', [\App\Http\Controllers\Maintenances\CollegeController::class, 'getCollegeNameUsingDept']);
     Route::resource('/maintenances/colleges', \App\Http\Controllers\Maintenances\CollegeController::class);
     // 2. Departments
     Route::get('/departments/options/{id}', [\App\Http\Controllers\Maintenances\DepartmentController::class, 'options']);

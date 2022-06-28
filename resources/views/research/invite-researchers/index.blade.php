@@ -38,9 +38,9 @@
                             </div>
                             <div class="col-md-6 text-right">
                                 <div class="mb-0">
-                                    <div class="d-flex justify-content-end align-items-baseline">
+                                    {{-- <div class="d-flex justify-content-end align-items-baseline">
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-md-12"> 
+                            <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table table-bordered text-center" id="invite_table">
                                         <thead>
@@ -141,14 +141,14 @@
     </div>
 
     @include('research.invite-researchers.add', compact('allEmployees', 'research'))
-   
+
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
 
     <script>
         var id;
-        var name; 
+        var name;
 
         $("#invite_table").dataTable();
 
@@ -164,7 +164,7 @@
         // auto hide alert
         window.setTimeout(function() {
             $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove(); 
+                $(this).remove();
             });
         }, 4000);
     </script>

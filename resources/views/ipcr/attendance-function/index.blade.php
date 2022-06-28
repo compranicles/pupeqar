@@ -101,6 +101,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="button-group">
+                                            <a href="{{ route('attendance-function.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                             <a href="{{ route('attendance-function.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                             <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->activity_description }}">Delete</button>
                                             @if ($submissionStatus[33][$row->id] == 0)

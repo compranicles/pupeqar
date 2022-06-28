@@ -53,7 +53,7 @@ class MobilityController extends Controller
         foreach ($mobilities as $mobility) {
             if (LockController::isLocked($mobility->id, 14))
                 $submissionStatus[14][$mobility->id] = 1;
-            else 
+            else
                 $submissionStatus[14][$mobility->id] = 0;
             if (empty($reportdata->getDocuments(14, $mobility->id)))
                 $submissionStatus[14][$mobility->id] = 2;
@@ -76,9 +76,12 @@ class MobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments'));
     }
 
     /**
@@ -100,6 +103,7 @@ class MobilityController extends Controller
             'end_date' => $end_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -110,7 +114,7 @@ class MobilityController extends Controller
         $mobility->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -154,9 +158,9 @@ class MobilityController extends Controller
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
-    
+
         $values = $mobility->toArray();
-        
+
         return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values'));
     }
 
@@ -172,7 +176,7 @@ class MobilityController extends Controller
 
         if (auth()->id() !== $mobility->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($mobility->id, 14)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -188,11 +192,14 @@ class MobilityController extends Controller
 
         $values = $mobility->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
 
-        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
+        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments'));
     }
 
     /**
@@ -212,9 +219,10 @@ class MobilityController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
-        
-        
+
+
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -224,7 +232,7 @@ class MobilityController extends Controller
         $mobility->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

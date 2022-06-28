@@ -64,9 +64,10 @@
                                             <th></th>
                                             <th></th>
                                             <th>Accomplishment Report</th>
+                                            <th>Title</th>
                                             <th>Employee</th>
                                             <th>College/Branch/Campus/Office</th>
-                                            <th>Department</th>
+                                            <th>Department/Section</th>
                                             <th>Report Date</th>
                                         </tr>
                                     </thead>
@@ -77,6 +78,37 @@
                                                 <td class="button-view text-center" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}"><i class="bi bi-three-dots-vertical"></i></td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                                <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">
+                                                    @if (isset($row->report_details->title))
+                                                        {{ $row->report_details->title }}
+                                                    @elseif (isset($row->report_details->publication_or_audio_visual))
+                                                        {{ $row->report_details->publication_or_audio_visual }}
+                                                    @elseif (isset($row->report_details->title_of_extension_program))
+                                                        {{ $row->report_details->title_of_extension_program }}
+                                                    @elseif (isset($row->report_details->title_of_extension_project))
+                                                        {{ $row->report_details->title_of_extension_project }}
+                                                    @elseif (isset($row->report_details->title_of_extension_activity))
+                                                        {{ $row->report_details->title_of_extension_activity }}
+                                                    @elseif (isset($row->report_details->title_of_partnership))
+                                                        {{ $row->report_details->title_of_partnership }}
+                                                    @elseif (isset($row->report_details->mobility_description))
+                                                        {{ $row->report_details->mobility_description }}
+                                                    @elseif (isset($row->report_details->course_title))
+                                                        {{ $row->report_details->course_title }}
+                                                    @elseif (isset($row->report_details->description_of_request))
+                                                        {{ $row->report_details->description_of_request }}
+                                                    @elseif (isset($row->report_details->name_of_award))
+                                                        {{ $row->report_details->name_of_award }}
+                                                    @elseif (isset($row->report_details->name))
+                                                        {{ $row->report_details->name }}
+                                                    @elseif (isset($row->report_details->title_of_the_program))
+                                                        {{ $row->report_details->title_of_the_program }}
+                                                    @elseif (isset($row->report_details->output))
+                                                        {{ $row->report_details->output }}
+                                                    @elseif (isset($row->report_details->final_output))
+                                                        {{ $row->report_details->final_output }}
+                                                    @endif
+                                                </td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->college_name ?? '-' }}</td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('sector.accept', ':id') }}" data-deny="{{ route('sector.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->dept_name ?? '-'}}</td>
@@ -94,7 +126,7 @@
     </div>
 
 <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="viewReportLabel"></h5>
@@ -282,7 +314,7 @@
                 Object.keys(data).forEach(function(k){
                     countColumns = countColumns + 1;
                     $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
-                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold">'+k+':</td>');
+                    $('#row-'+countColumns).append('<td class="report-content font-weight-bold text-right" width="50%">'+k+':</td>');
                     $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                 });
             });

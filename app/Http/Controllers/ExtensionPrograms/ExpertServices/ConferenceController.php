@@ -39,7 +39,7 @@ class ConferenceController extends Controller
     public function index()
     {
         $this->authorize('viewAny', ExpertServiceConference::class);
-        
+
         $currentQuarterYear = Quarter::find(1);
 
         $expertServicesConference = ExpertServiceConference::where('user_id', auth()->id())
@@ -54,11 +54,11 @@ class ConferenceController extends Controller
         foreach ($expertServicesConference as $conference) {
             if (LockController::isLocked($conference->id, 10))
                 $submissionStatus[10][$conference->id] = 1;
-            else 
+            else
                 $submissionStatus[10][$conference->id] = 0;
             if (empty($reportdata->getDocuments(15, $conference->id)))
                 $submissionStatus[10][$conference->id] = 2;
-        }      
+        }
 
         return view('extension-programs.expert-services.conference.index', compact('expertServicesConference',
              'currentQuarterYear', 'submissionStatus'));
@@ -77,9 +77,12 @@ class ConferenceController extends Controller
             return view('inactive');
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges'));
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges', 'departments'));
     }
 
     /**
@@ -104,6 +107,7 @@ class ConferenceController extends Controller
             'to' => $to,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         $request->validate([
@@ -120,7 +124,7 @@ class ConferenceController extends Controller
         $esConference->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -162,13 +166,13 @@ class ConferenceController extends Controller
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $expertServiceConferenceFields = DB::select("CALL get_extension_program_fields_by_form_id('2')");
 
         $documents = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
-        
+
         $values = $expert_service_in_conference->toArray();
-        
+
 
         return view('extension-programs.expert-services.conference.show', compact('expertServiceConferenceFields','expert_service_in_conference', 'documents', 'values'));
     }
@@ -185,7 +189,7 @@ class ConferenceController extends Controller
 
         if (auth()->id() !== $expert_service_in_conference->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($expert_service_in_conference->id, 10)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -196,14 +200,17 @@ class ConferenceController extends Controller
 
         $expertServiceConferenceDocuments = ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->get()->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
         $value = $expert_service_in_conference;
         $value->toArray();
         $value = collect($expert_service_in_conference);
         $value = $value->toArray();
 
-        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value'));
+        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value', 'departments'));
     }
 
     /**
@@ -226,8 +233,9 @@ class ConferenceController extends Controller
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
-        
+
         $request->validate([
             'to' => 'after_or_equal:from',
             'title' => 'max:500',
@@ -240,9 +248,9 @@ class ConferenceController extends Controller
         $expert_service_in_conference->update(['description' => '-clear']);
 
         $expert_service_in_conference->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

@@ -62,13 +62,13 @@ class CollegeConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
-        $college_accomps = 
+        $college_accomps =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
-                            'users.last_name', 
+                            'reports.*',
+                            'report_categories.name as report_category',
+                            'users.last_name',
                             'users.first_name',
-                            'users.middle_name', 
+                            'users.middle_name',
                             'users.suffix'
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -83,30 +83,30 @@ class CollegeConsolidatedController extends Controller
         foreach($college_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
-
+            $row->report_details = json_decode($row->report_details, false);
 
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
-                $college_names[$row->id] = $temp_college_name;
+                $college_names[$row->id] = $temp_college_name->name;
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-                $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name->name;
         }
-        
+
         $user = User::find(auth()->id());
         //collegedetails
         $college = College::find($id);
 
         return view(
-                    'reports.consolidate.college', 
-                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 
+                    'reports.consolidate.college',
+                    compact('roles', 'departments', 'colleges', 'college_accomps', 'college' ,
                         'department_names', 'college_names', 'sectors', 'departmentsResearch',
                         'departmentsExtension', 'quarter', 'year', 'id', 'user')
                 );
     }
-    
+
     public function collegeReportYearFilter($college, $year, $quarter) {
         if ($year == "default") {
             return redirect()->route('reports.consolidate.college');
@@ -142,13 +142,13 @@ class CollegeConsolidatedController extends Controller
                                             ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
             }
 
-            $college_accomps = 
+            $college_accomps =
                 Report::select(
-                                'reports.*', 
-                                'report_categories.name as report_category', 
-                                'users.last_name', 
+                                'reports.*',
+                                'report_categories.name as report_category',
+                                'users.last_name',
                                 'users.first_name',
-                                'users.middle_name', 
+                                'users.middle_name',
                                 'users.suffix'
                             )
                     ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -164,24 +164,24 @@ class CollegeConsolidatedController extends Controller
                 $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
                 $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
-
+                $row->report_details = json_decode($row->report_details, false);
                 if($temp_college_name == null)
                     $college_names[$row->id] = '-';
                 else
-                    $college_names[$row->id] = $temp_college_name;
+                    $college_names[$row->id] = $temp_college_name->name;
                 if($temp_department_name == null)
                     $department_names[$row->id] = '-';
                 else
-                    $department_names[$row->id] = $temp_department_name;
+                $department_names[$row->id] = $temp_department_name->name;
             }
-            
+
             $user = User::find(auth()->id());
             //collegedetails
-            $id = $college; 
-            
+            $id = $college;
+
             $college = College::find($college);
             return view(
-                        'reports.consolidate.college', 
+                        'reports.consolidate.college',
                         compact('roles', 'departments', 'colleges', 'college_accomps', 'college' , 'department_names',
                              'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year',
                              'user', 'id' )

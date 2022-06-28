@@ -16,7 +16,7 @@ use App\Models\{
     Dean,
     CollegeDepartmentAward,
     CollegeDepartmentAwardDocument,
-    TemporaryFile,  
+    TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
     Maintenance\College,
     Maintenance\Quarter,
@@ -48,13 +48,13 @@ class CollegeDepartmentAwardController extends Controller
         foreach ($college_department_awards as $college_department_award) {
             if (LockController::isLocked($college_department_award->id, 21))
                 $submissionStatus[21][$college_department_award->id] = 1;
-            else 
+            else
                 $submissionStatus[21][$college_department_award->id] = 0;
             if (empty($reportdata->getDocuments(21, $college_department_award->id)))
                 $submissionStatus[21][$college_department_award->id] = 2;
         }
-        
-        return view('academic-development.college-department-award.index', compact('college_department_awards', 'currentQuarterYear'));
+
+        return view('academic-development.college-department-award.index', compact('college_department_awards', 'currentQuarterYear', 'submissionStatus'));
     }
 
     /**
@@ -96,7 +96,7 @@ class CollegeDepartmentAwardController extends Controller
         $date = date("Y-m-d", strtotime($request->input('date')));
 
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
@@ -109,7 +109,7 @@ class CollegeDepartmentAwardController extends Controller
         $college_department_award->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -174,7 +174,7 @@ class CollegeDepartmentAwardController extends Controller
         if (auth()->id() !== $college_department_award->user_id) {
             abort(403);
         }
-        
+
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -213,7 +213,7 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date')));
-        
+
         $request->merge([
             'date' => $date,
         ]);
@@ -225,7 +225,7 @@ class CollegeDepartmentAwardController extends Controller
         $college_department_award->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

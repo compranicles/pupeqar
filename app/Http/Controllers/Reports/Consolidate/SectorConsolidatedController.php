@@ -36,7 +36,7 @@ class SectorConsolidatedController extends Controller
         $currentQuarterYear = Quarter::find(1);
         $quarter = $currentQuarterYear->current_quarter;
         $year = $currentQuarterYear->current_year;
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -60,13 +60,13 @@ class SectorConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
-        $sector_accomps = 
+        $sector_accomps =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
-                            'users.last_name', 
+                            'reports.*',
+                            'report_categories.name as report_category',
+                            'users.last_name',
                             'users.first_name',
-                            'users.middle_name', 
+                            'users.middle_name',
                             'users.suffix'
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -81,26 +81,26 @@ class SectorConsolidatedController extends Controller
         foreach($sector_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             // $temp_college_name = College::where('id', $row->college_id)->first();
-
-            $temp_department_name = Department::where('id', $row->department_id)->pluck('name')->first();
+            $row->report_details = json_decode($row->report_details, false);
+            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
             // $temp_department_name = $temp_college_name->department()->where('id', $row->department_id)->pluck('name')->first();
             // dd($temp_department_name);
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
-                $college_names[$row->id] = $temp_college_name;
+                $college_names[$row->id] = $temp_college_name->name;
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-                $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name->name;
         }
 
         //SectorDetails
         $sector = Sector::find($id);
 
         return view(
-                    'reports.consolidate.sector', 
+                    'reports.consolidate.sector',
                     compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
                 );
     }
@@ -121,7 +121,7 @@ class SectorConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
-        
+
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                         ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
@@ -145,13 +145,13 @@ class SectorConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
-        $sector_accomps = 
+        $sector_accomps =
             Report::select(
-                            'reports.*', 
-                            'report_categories.name as report_category', 
-                            'users.last_name', 
+                            'reports.*',
+                            'report_categories.name as report_category',
+                            'users.last_name',
                             'users.first_name',
-                            'users.middle_name', 
+                            'users.middle_name',
                             'users.suffix'
                           )
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
@@ -166,19 +166,19 @@ class SectorConsolidatedController extends Controller
         foreach($sector_accomps as $row){
             $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
             // $temp_college_name = College::where('id', $row->college_id)->first();
-
-            $temp_department_name = Department::where('id', $row->department_id)->pluck('name')->first();
+            $row->report_details = json_decode($row->report_details, false);
+            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
             // $temp_department_name = $temp_college_name->department()->where('id', $row->department_id)->pluck('name')->first();
             // dd($temp_department_name);
             if($temp_college_name == null)
                 $college_names[$row->id] = '-';
             else
-                $college_names[$row->id] = $temp_college_name;
+                $college_names[$row->id] = $temp_college_name->name;
             if($temp_department_name == null)
                 $department_names[$row->id] = '-';
             else
-                $department_names[$row->id] = $temp_department_name;
+            $department_names[$row->id] = $temp_department_name->name;
         }
 
         //SectorDetails
@@ -187,7 +187,7 @@ class SectorConsolidatedController extends Controller
         $collegesOfSector = College::where('sector_id', $sector)->get();
 
         return view(
-                    'reports.consolidate.sector', 
+                    'reports.consolidate.sector',
                     compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'collegesOfSector', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
                 );
     }
