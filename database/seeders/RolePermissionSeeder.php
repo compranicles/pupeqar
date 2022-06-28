@@ -38,6 +38,8 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '1', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '1', 'permission_id' => 60]);
         RolePermission::insert(['role_id' => '1', 'permission_id' => 62]);
+        RolePermission::insert(['role_id' => '1', 'permission_id' => 63]);
+        RolePermission::insert(['role_id' => '1', 'permission_id' => 65]);
         
         /***** Admin role permissions *****/
         for ($a = 15; $a <= 30; $a++) {
@@ -49,6 +51,8 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '3', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '3', 'permission_id' => 61]);
         RolePermission::insert(['role_id' => '3', 'permission_id' => 62]);
+        RolePermission::insert(['role_id' => '3', 'permission_id' => 63]);
+        RolePermission::insert(['role_id' => '3', 'permission_id' => 65]);
 
         /***** Faculty Researcher role permissions *****/
         RolePermission::insert(['role_id' => '10', 'permission_id' => 50]);
@@ -59,6 +63,7 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '11', 'permission_id' => 53]);
 
         /***** Chairperson role permissions *****/
+        RolePermission::insert(['role_id' => '5', 'permission_id' => 29]);
         RolePermission::insert(['role_id' => '5', 'permission_id' => 31]);
         for ($c = 34; $c <= 39; $c++) {
             RolePermission::insert(['role_id' => '5', 'permission_id' => $c]);
@@ -66,8 +71,11 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '5', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '5', 'permission_id' => 42]);
         RolePermission::insert(['role_id' => '5', 'permission_id' => 43]);
+        RolePermission::insert(['role_id' => '5', 'permission_id' => 63]);
+        RolePermission::insert(['role_id' => '5', 'permission_id' => 64]);
 
         /***** Dean/Director role permissions *****/
+        RolePermission::insert(['role_id' => '6', 'permission_id' => 29]);
         RolePermission::insert(['role_id' => '6', 'permission_id' => 31]);
         for ($d = 34; $d <= 39; $d++) {
             RolePermission::insert(['role_id' => '6', 'permission_id' => $d]);
@@ -75,6 +83,8 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '6', 'permission_id' => 41]);
         RolePermission::insert(['role_id' => '6', 'permission_id' => 44]);
         RolePermission::insert(['role_id' => '6', 'permission_id' => 45]);
+        RolePermission::insert(['role_id' => '6', 'permission_id' => 63]);
+        RolePermission::insert(['role_id' => '6', 'permission_id' => 64]);
 
         /***** Sector role permissions *****/
         RolePermission::insert(['role_id' => '7', 'permission_id' => 41]);

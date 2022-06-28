@@ -115,6 +115,11 @@ class PermissionSeeder extends Seeder
         Permission::insert(['name' => 'manage admin special tasks', 'group' => '11OTHER']); //61
         Permission::insert(['name' => 'manage attendance in functions', 'group' => '11OTHER']); //62
 
+        Permission::insert(['name' => 'manage intra-country mobility', 'group' => '2EXT']); //63
+        Permission::insert(['name' => 'manage community engagements conducted by college/department', 'group' => '2EXT']); 
+        Permission::insert(['name' => 'manage other individual accomplishments', 'group' => '2EXT']); 
+        Permission::insert(['name' => 'manage other accomplishments of college/department', 'group' => '2EXT']); //66
+
         Schema::enableForeignKeyConstraints();
     }
 }

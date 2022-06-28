@@ -5,16 +5,20 @@ namespace App\Http\Controllers\AcademicDevelopment;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{
+    Chairperson,
+    Dean,
     TechnicalExtension,
     TechnicalExtensionDocument,
     TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
+    Maintenance\College,
     Maintenance\Quarter,
 };
 
@@ -40,8 +44,20 @@ class TechnicalExtensionController extends Controller
         $technical_extensions = TechnicalExtension::where('user_id', auth()->id())
                                 ->select(DB::raw('technical_extensions.*'))
                                 ->orderBy('technical_extensions.updated_at', 'desc')->get();
-                                
-        return view('academic-development.technical-extension.index', compact('technical_extensions', 'currentQuarterYear'));
+              
+        $submissionStatus = [];
+        $reportdata = new ReportDataController;
+        foreach ($technical_extensions as $technical_extension) {
+            if (LockController::isLocked($technical_extension->id, 23))
+                $submissionStatus[23][$technical_extension->id] = 1;
+            else 
+                $submissionStatus[23][$technical_extension->id] = 0;
+            if (empty($reportdata->getDocuments(23, $technical_extension->id)))
+                $submissionStatus[23][$technical_extension->id] = 2;
+        }
+
+        return view('academic-development.technical-extension.index', compact('technical_extensions', 'currentQuarterYear',
+            'submissionStatus'));
     }
 
     /**
@@ -57,7 +73,14 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
 
-        return view('academic-development.technical-extension.create', compact('extensionFields'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.technical-extension.create', compact('extensionFields', 'colleges'));
     }
 
     /**
@@ -80,10 +103,6 @@ class TechnicalExtensionController extends Controller
             'total_profit' => $value,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
-        ]);
-        $request->validate([
-            'moa_code' => 'required',
-            // 'total_profit' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -170,7 +189,14 @@ class TechnicalExtensionController extends Controller
 
         $values = $technical_extension->toArray();
 
-        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values'));
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
+
+        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values', 'colleges'));
     }
 
     /**
@@ -190,11 +216,6 @@ class TechnicalExtensionController extends Controller
 
         $request->merge([
             'total_profit' => $value,
-        ]);
-        
-        $request->validate([
-            'moa_code' => 'required',
-            // 'total_profit' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)

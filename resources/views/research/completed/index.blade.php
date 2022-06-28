@@ -34,9 +34,9 @@
                             <div class="col-md-6 text-right">
                                 <div class="d-flex justify-content-end align-items-baseline">
                                     @if ($submissionStatus[2][$value['id']] == 0)
-                                        <a href="{{ url('submissions/check/2/'.$value['id']) }}" class="btn btn-sm btn-primary mr-3">Submit</a>
+                                        <a href="{{ url('submissions/check/2/'.$value['id']) }}" class="btn btn-sm btn-primary mr-3">Submit Completed Research</a>
                                     @elseif ($submissionStatus[2][$value['id']] == 1)
-                                        <a href="{{ url('submissions/check/2/'.$value['id']) }}" class="btn btn-sm btn-success mr-3">Submitted</a>
+                                        <a href="{{ url('submissions/check/2/'.$value['id']) }}" class="btn btn-sm btn-success mr-3">Completed Research Submitted</a>
                                     @elseif ($submissionStatus[2][$value['id']] == 2)
                                         <a href="{{ route('research.complete', $value['id']) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                     @endif        

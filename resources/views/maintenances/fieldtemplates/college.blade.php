@@ -20,16 +20,13 @@
                 @foreach ($colleges as $row)
                 <option value="{{ $row->id }}" {{ (old($fieldInfo->name) == '') ?  (($college_id == $row->id) ? 'selected' : '') : ((old($fieldInfo->name) == $row->id) ? 'selected' : '') }} >{{ $row->name }}</option>
                 @endforeach
-
             </select> --}}
 
             <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly>
 
-            <!-- @if ($colleges !== []) -->
-            <!-- <span id="" role="alert">
-                <p><a href="{{ route('offices.create') }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
-            </span> -->
-            <!-- @endif -->
+            <span id="" role="alert">
+                <p><a href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
+            </span>
             @error($fieldInfo->name)
                 <span class='invalid-feedback' role="alert">
                     <strong>{{ $message }}</strong>

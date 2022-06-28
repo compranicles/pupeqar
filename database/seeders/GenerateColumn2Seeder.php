@@ -1419,60 +1419,81 @@ class GenerateColumn2Seeder extends Seeder
 
         //Faculty involvement in inter-country mobility
         GenerateColumn::insert([
-            'name' => 'Nature of Engagement*',
+            'name' => 'Classification of Persons Involved (Faculty, Admin, Students)',
             'table_id' => 56,
-            'report_column' => 'nature_of_engagement',
+            'report_column' => 'classification_of_person',
             'is_active' => 1,
             'order' => 1,
         ]);
         GenerateColumn::insert([
-            'name' => 'Type **',
+            'name' => 'Types (Inbound/Outbound)',
             'table_id' => 56,
             'report_column' => 'type',
             'is_active' => 1,
             'order' => 2,
         ]);
         GenerateColumn::insert([
+            'name' => 'Nature of Engagement*',
+            'table_id' => 56,
+            'report_column' => 'nature_of_engagement',
+            'is_active' => 1,
+            'order' => 3,
+        ]);
+        GenerateColumn::insert([
+            'name' => 'Classification of Mobility **',
+            'table_id' => 56,
+            'report_column' => 'type',
+            'is_active' => 1,
+            'order' => 4,
+        ]);
+        GenerateColumn::insert([
             'name' => 'Host Institution/ Organization/ Agency',
             'table_id' => 56,
             'report_column' => 'host_name',
             'is_active' => 1,
-            'order' => 3,
+            'order' => 5,
         ]);
         GenerateColumn::insert([
             'name' => 'Address of Host Institution/ Organization/ Agency',
             'table_id' => 56,
             'report_column' => 'host_address',
             'is_active' => 1,
-            'order' => 4,
+            'order' => 6,
         ]);
-        // GenerateColumn::insert([
-        //     'name' => 'Description of Inter-Country Mobility',
-        //     'table_id' => 30,
-        //     'report_column' => 'mobility_description',
-        //     'is_active' => 0,
-        //     'order' => 1,
-        // ]);
+        GenerateColumn::insert([
+            'name' => 'Collaborating Country and Institution/Organization/Agency',
+            'table_id' => 56,
+            'report_column' => 'collaborating_country',
+            'is_active' => 1,
+            'order' => 7,
+        ]);
+        GenerateColumn::insert([
+            'name' => 'Description of Inter-Country Mobility',
+            'table_id' => 30,
+            'report_column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 8,
+        ]);
         GenerateColumn::insert([
             'name' => 'From (mm/dd/yyyy)',
             'table_id' => 56,
             'report_column' => 'start_date',
             'is_active' => 1,
-            'order' => 5,
+            'order' => 9,
         ]);
         GenerateColumn::insert([
             'name' => 'To (mm/dd/yyyy)',
             'table_id' => 56,
             'report_column' => 'end_date',
             'is_active' => 1,
-            'order' => 6,
+            'order' => 10,
         ]);
         GenerateColumn::insert([
             'name' => 'Description of Supporting Documents',
             'table_id' => 56,
             'report_column' => 'description',
             'is_active' => 1,
-            'order' => 7,
+            'order' => 11,
         ]);
 
         //viable projects

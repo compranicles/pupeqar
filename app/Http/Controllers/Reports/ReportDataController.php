@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\{
     CollegeDepartmentAwardDocument,
+    CommunityEngagementDocument,
     DenyReason,
     ExpertServiceAcademicDocument,
     ExpertServiceConferenceDocument,
     ExpertServiceConsultantDocument,
     ExtensionServiceDocument,
+    IntraMobilityDocument,
     InventionDocument,
     MobilityDocument,
+    OtherAccomplishmentDocument,
+    OtherDeptAccomplishmentDocument,
     OutreachProgramDocument,
     PartnershipDocument,
     ReferenceDocument,
@@ -373,6 +377,24 @@ class ReportDataController extends Controller
         elseif($report_category_id == 33){
             $report_docs = AttendanceFunctionDocument::where('attendance_function_id', $id)->pluck('filename')->all();
         }
+        elseif($report_category_id == 34){
+            $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 35){
+            $report_docs = MobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 36){
+            $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 37){
+            $report_docs = CommunityEngagementDocument::where('community_engagement_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 38){
+            $report_docs = OtherAccomplishmentDocument::where('other_accomplishment_id', $id)->pluck('filename')->all();
+        }
+        elseif($report_category_id == 39){
+            $report_docs = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $id)->pluck('filename')->all();
+        }
         return $report_docs;
 
     }
@@ -447,9 +469,9 @@ class ReportDataController extends Controller
 
     public function getRejectDetails($report_id){
         $deny_details = DenyReason::where('report_id', $report_id)->latest()->first();
-        $newtime = strtotime($deny_details->created_at);
+        $newtime = strtotime($deny_details['created_at']);
         $deny_details->time = date("F j, Y, g:i a", $newtime);
-        return $deny_details;
+        return json_decode($deny_details);
     }
 
     public function viewReportOrigin($report_id, $report_category_id){
@@ -583,6 +605,22 @@ class ReportDataController extends Controller
             case 33:
                 $report = Report::where('id', $report_id)->first();
                 return redirect()->route('attendance-function.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 34:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('intra-mobility.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 37:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('community-engagement.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 38:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('other-accomplishment.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                break;
+            case 39:
+                $report = Report::where('id', $report_id)->first();
+                return redirect()->route('other-dept-accomplishment.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
         }
     }

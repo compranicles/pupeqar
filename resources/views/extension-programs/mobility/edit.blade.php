@@ -157,7 +157,20 @@
             });
         </script>
         <script>
-            $("#type").selectize({
+            $("#classification_of_mobility").selectize({
+                maxItems: 5,
+                delimiter: ",",
+                persist: true,
+                create: function (input) {
+                    return {
+                    value: input,
+                    text: input,
+                    };
+                },
+            });
+        </script>
+        <script>
+            $("#nature_of_engagement").selectize({
                 maxItems: 5,
                 delimiter: ",",
                 persist: true,
@@ -181,13 +194,24 @@
             });
         </script>
         <script>
-            var dropdown_id = 35;
             setTimeout(function (){
-                $('#type').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $('#classification_of_mobility').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
                 $.get("{{ url('dropdowns/options/35') }}", function (data){
                     if (data != '') {
                         data.forEach(function (item){
-                            $("#type")[0].selectize.addOption({value:item.name, text:item.name});
+                            $("#classification_of_mobility")[0].selectize.addOption({value:item.name, text:item.name});
+                        });
+                    }
+                });
+            }, Math.floor(Math.random() * (2500 - 1) + 1));
+        </script>
+        <script>
+            setTimeout(function (){
+                $('#nature_of_engagement').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
+                $.get("{{ url('dropdowns/options/34') }}", function (data){
+                    if (data != '') {
+                        data.forEach(function (item){
+                            $("#nature_of_engagement")[0].selectize.addOption({value:item.name, text:item.name});
                         });
                     }
                 });

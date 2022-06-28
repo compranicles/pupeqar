@@ -154,8 +154,6 @@ class GenerateController extends Controller
                     $id, 
                     $college = $data->id,
                     $collegeName = $data->name,
-                    $faculty_researcher, 
-                    $faculty_extensionist
                     ),
                     $file_suffix.'.xlsx');
             }

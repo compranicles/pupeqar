@@ -1449,13 +1449,13 @@ class GenerateColumnSeeder extends Seeder
             'is_active' => 1,
             'order' => 4,
         ]);
-        // GenerateColumn::insert([
-        //     'name' => 'Description of Inter-Country Mobility',
-        //     'table_id' => 30,
-        //     'report_column' => 'mobility_description',
-        //     'is_active' => 0,
-        //     'order' => 1,
-        // ]);
+        GenerateColumn::insert([
+            'name' => 'Description of Inter-Country Mobility',
+            'table_id' => 30,
+            'report_column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 1,
+        ]);
         GenerateColumn::insert([
             'name' => 'From (mm/dd/yyyy)',
             'table_id' => 30,

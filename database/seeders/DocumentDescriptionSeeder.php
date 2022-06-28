@@ -388,6 +388,40 @@ class DocumentDescriptionSeeder extends Seeder
             'is_active' => 1,
         ]);
 
+        //RTMMI
+        DocumentDescription::insert([
+            'report_category_id' => 15,
+            'name' => 'Instructional Material',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::insert([
+            'report_category_id' => 15,
+            'name' => 'Module',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::insert([
+            'report_category_id' => 15,
+            'name' => 'Monographs',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::insert([
+            'report_category_id' => 15,
+            'name' => 'Reference',
+            'is_active' => 1,
+        ]);
+        DocumentDescription::insert([
+            'report_category_id' => 15,
+            'name' => 'Textbook',
+            'is_active' => 1,
+        ]);
+
+        //Syllabus
+        DocumentDescription::insert([
+            'report_category_id' => 16,
+            'name' => 'Syllabus',
+            'is_active' => 1,
+        ]);
+
         //Student Awards
         DocumentDescription::insert([
             'report_category_id' => 18,

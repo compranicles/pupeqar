@@ -41,7 +41,6 @@ class CompletedController extends Controller
      */
     public function index(Research $research)
     {
-        // dd($research);
         $this->authorize('viewAny', ResearchComplete::class);
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
@@ -52,7 +51,7 @@ class CompletedController extends Controller
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
     
         $values = ResearchComplete::where('research_code', $research->research_code)->first();
-        // dd($values);
+
         if($values == null){
             return redirect()->route('research.completed.create', $research->id);
         }
@@ -70,12 +69,12 @@ class CompletedController extends Controller
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 2))
-                $submissionStatus[2][$research->id] = 1;
+            if (LockController::isLocked($value['id'], 2))
+                $submissionStatus[2][$value['id']] = 1;
             else 
-                $submissionStatus[2][$research->id] = 0;
-            if (empty($reportdata->getDocuments(2, $research->id)))
-                $submissionStatus[2][$research->id] = 2;
+                $submissionStatus[2][$value['id']] = 0;
+            if (empty($reportdata->getDocuments(2, $value['id'])))
+                $submissionStatus[2][$value['id']] = 2;
                 
         return view('research.completed.index', compact('research', 'researchFields', 
             'value', 'researchDocuments', 'submissionStatus'));

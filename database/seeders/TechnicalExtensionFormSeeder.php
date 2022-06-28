@@ -16,19 +16,6 @@ class TechnicalExtensionFormSeeder extends Seeder
     {
         AcademicDevelopmentField::insert([
             'academic_development_form_id' => 7,
-            'label' => 'MOA/MOU Code Number',
-            'name' => 'moa_code',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
             'label' => 'Title of the Program',
             'name' => 'program_title',
             'placeholder' => null,
@@ -138,6 +125,33 @@ class TechnicalExtensionFormSeeder extends Seeder
             'placeholder' => '0.00',
             'size' => 'col-md-6',
             'field_type_id' => 3,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        AcademicDevelopmentField::insert([
+            'academic_development_form_id' => 7,
+            'label' => 'College/Branch/Campus/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        AcademicDevelopmentField::insert([
+            'academic_development_form_id' => 7,
+            'label' => 'Department to commit the accomplishment',
+            'name' => 'department_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 13,
             'dropdown_id' => null, 
             'required' => 1,
             'visibility' => 1,

@@ -119,12 +119,9 @@
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-md-11">
-{{--                        <div class="alert alert-danger alert-index">
-                            @foreach($reportsToReview as $row)
-                            <i class="bi bi-x-circle"></i> Denied by {{ $row->reason }} at <?php $created_at = strtotime( $row->created_at );
-                            $created_at = date( 'M d, Y h:i A', $created_at ); ?>  {{ $created_at }}: {{ $row->reason }}
-                            @endforeach
-                        </div>--}}
+                        <!-- <div class="alert alert-danger return-details">
+
+                        </div> -->
                         <table class="table table-sm table-borderless" id="columns_value_table">
                         </table>
                     </div>
@@ -356,6 +353,14 @@
                 }
             });
 
+            // var urlreturn = "{{ url('reports/reject-details/:id') }}";
+			// var newlinkreturndetails = urlreturn.replace(':id', catID);
+            // $.get(newlinkreturndetails, function (data){
+ 
+            //         $('.return-details').append('<p>Reason for returning the accomplishment: "'+data['reason']+'"</a>');
+               
+            // });
+
             $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Accept</a>');
             $('#review_btn_reject').append('<a href="'+deny.replace(':id', catID)+'" class="btn btn-secondary report-content"><i class="bi bi-slash-circle"></i> Return</a>');
 
@@ -418,7 +423,7 @@
     <script>
         // auto hide alert
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);

@@ -17,6 +17,9 @@
                 <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
             </div>
             @endif
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('technical-extension.update', $technical_extension->id) }}" method="post">

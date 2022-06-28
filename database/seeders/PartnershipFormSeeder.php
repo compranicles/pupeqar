@@ -16,19 +16,6 @@ class PartnershipFormSeeder extends Seeder
     {
         ExtensionProgramField::insert([
             'extension_program_form_id' => 5,
-            'label' => 'MOA/MOU Code Number',
-            'name' => 'moa_code',
-            'placeholder' => null,
-            'size' => 'col-md-4',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        ExtensionProgramField::insert([
-            'extension_program_form_id' => 5,
             'label' => 'Nature of Collaboration',
             'name' => 'collab_nature',
             'placeholder' => "If others, please specify.",

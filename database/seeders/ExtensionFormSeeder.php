@@ -51,5 +51,25 @@ class ExtensionFormSeeder extends Seeder
             'table_name' => 'outreach_programs',
             'is_active' => 1
         ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Intra-Country Mobility',
+            'table_name' => 'intra_mobilities',
+            'is_active' => 1
+        ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Community Engagement Conducted by College/Department',
+            'table_name' => 'community_engagements',
+            'is_active' => 1
+        ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Other Accomplishment Beyond the Mandatory Requirements',
+            'table_name' => 'other_accomplishments',
+            'is_active' => 1
+        ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Other Accomplishment',
+            'table_name' => 'other_dept_accomplishments',
+            'is_active' => 1
+        ]);
     }
 }

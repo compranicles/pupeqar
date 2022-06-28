@@ -34,7 +34,7 @@
                                             <br>
                                             <label>Remarks:</label><span style='color: red'></span>
 
-                                            <input type="text" class="form-control" name="reason_{{ $row }}">
+                                            <input type="text" class="form-control" name="reason_{{ $row }}" required>
                                         @endforeach
                                     </div>
                                 </div>
