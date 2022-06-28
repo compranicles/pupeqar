@@ -29,7 +29,7 @@
                             <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Program/Project/Activity</a>
                         </div>
                         <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
-                            Extensions shared by Co-extensionist @if (count($invites) != 0)
+                            Extensions to Add (Shared by your Partner) @if (count($invites) != 0)
                                         <span class="badge badge-secondary">{{ count($invites) }}</span>
                                     @else
                                         <span class="badge badge-secondary">0</span>

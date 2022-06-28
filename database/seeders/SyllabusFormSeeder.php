@@ -17,6 +17,19 @@ class SyllabusFormSeeder extends Seeder
         // AcademicDevelopmentField::where('academic_development_form_id',2)->truncate();
         AcademicDevelopmentField::insert([
             'academic_development_form_id' => 2,
+            'label' => 'Course Code',
+            'name' => 'course_code',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        AcademicDevelopmentField::insert([
+            'academic_development_form_id' => 2,
             'label' => 'Course Title',
             'name' => 'course_title',
             'placeholder' => null,

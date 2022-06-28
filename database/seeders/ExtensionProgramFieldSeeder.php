@@ -24,6 +24,9 @@ class ExtensionProgramFieldSeeder extends Seeder
             PartnershipFormSeeder::class,
             MobilityFormSeeder::class,
             OutreachProgramFormSeeder::class,
+            IntraMobilityFormSeeder::class,
+            CommunityEngagementFormSeeder::class,
+            OtherAccomplishmentFormSeeder::class,
         ]);
     }
 }

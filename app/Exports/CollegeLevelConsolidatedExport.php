@@ -5,8 +5,6 @@ namespace App\Exports;
 use App\Models\{
     User,
     Report,
-    FacultyResearcher,
-    FacultyExtensionist,
 };
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;

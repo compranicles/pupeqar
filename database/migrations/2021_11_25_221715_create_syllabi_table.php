@@ -15,6 +15,7 @@ class CreateSyllabiTable extends Migration
     {
         Schema::create('syllabi', function (Blueprint $table) {
             $table->id();
+            $table->string('course_code')->nullable();
             $table->string('course_title')->nullable();
             $table->foreignId('assigned_task')->nullable();
             $table->date('date_finished')->nullable();

@@ -2012,6 +2012,30 @@ class ReportColumnSeeder extends Seeder
         //Faculty involvement in inter-country mobility
         ReportColumn::insert([
             'report_category_id' => 14,
+            'name' => 'Classification of Person Involved',
+            'table' => 'mobilities',
+            'column' => 'classification_of_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 14,
+            'name' => 'Type',
+            'table' => 'mobilities',
+            'column' => 'type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 14,
+            'name' => 'Classification of Mobility',
+            'table' => 'mobilities',
+            'column' => 'classification_of_mobility',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 14,
             'name' => 'Nature of Engagement',
             'table' => 'mobilities',
             'column' => 'nature_of_engagement',
@@ -2040,14 +2064,6 @@ class ReportColumnSeeder extends Seeder
             'table' => 'mobilities',
             'column' => 'mobility_description',
             'is_active' => 0,
-            'order' => 1,
-        ]);
-        ReportColumn::insert([
-            'report_category_id' => 14,
-            'name' => 'Type',
-            'table' => 'mobilities',
-            'column' => 'type',
-            'is_active' => 1,
             'order' => 1,
         ]);
         ReportColumn::insert([
@@ -2612,87 +2628,87 @@ class ReportColumnSeeder extends Seeder
             'order' => 1,
         ]);
 
-        //Technical Extensions
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Title of the Program',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'program_title',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Title of the Project',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'project_title',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Title of the Activities',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'activity_title',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Name of Adoptor',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'name_of_adoptor',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Classification',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'classification_of_adoptor',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Nature of Business Enterprise',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'nature_of_business_enterprise',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Adoptors have established profitable businesses in the last three years?',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'has_businesses',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Extension project by the university or borrowed from other institutions?',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'is_borrowed',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Total Profit/ Income of the Adoptors',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'total_profit',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
-        // ReportColumn::insert([
-        //     'report_category_id' => 23,
-        //     'name' => 'Description of Supporting Documents Submitted',
-        //     'table' => 'technical_extensions',
-        //     'column' => 'description',
-        //     'is_active' => 1,
-        //     'order' => 1,
-        // ]);
+        // Technical Extensions
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Title of the Program',
+            'table' => 'technical_extensions',
+            'column' => 'program_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Title of the Project',
+            'table' => 'technical_extensions',
+            'column' => 'project_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Title of the Activities',
+            'table' => 'technical_extensions',
+            'column' => 'activity_title',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Name of Adoptor',
+            'table' => 'technical_extensions',
+            'column' => 'name_of_adoptor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Classification',
+            'table' => 'technical_extensions',
+            'column' => 'classification_of_adoptor',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Nature of Business Enterprise',
+            'table' => 'technical_extensions',
+            'column' => 'nature_of_business_enterprise',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Adoptors have established profitable businesses in the last three years?',
+            'table' => 'technical_extensions',
+            'column' => 'has_businesses',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Extension project by the university or borrowed from other institutions?',
+            'table' => 'technical_extensions',
+            'column' => 'is_borrowed',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Total Profit/ Income of the Adoptors',
+            'table' => 'technical_extensions',
+            'column' => 'total_profit',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Description of Supporting Documents Submitted',
+            'table' => 'technical_extensions',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
 
 
         //Special Tasks Admin
@@ -2994,6 +3010,506 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 33,
             'name' => 'Proof of Attendance',
             'table' => 'attendance_functions',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Involvement in Intra-Country Mobility
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Classification of Person Involved',
+            'table' => 'intra_mobilities',
+            'column' => 'classification_of_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Type',
+            'table' => 'intra_mobilities',
+            'column' => 'type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Classification of Mobility',
+            'table' => 'intra_mobilities',
+            'column' => 'classification_of_mobility',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Nature of Engagement',
+            'table' => 'intra_mobilities',
+            'column' => 'nature_of_engagement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Host Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'host_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Address of Host Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Description of Inter-Country Mobility',
+            'table' => 'intra_mobilities',
+            'column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'From',
+            'table' => 'intra_mobilities',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'To',
+            'table' => 'intra_mobilities',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'intra_mobilities',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Department',
+            'table' => 'intra_mobilities',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'intra_mobilities',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Inter-Country Mobility by College/Department
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Classification of Person Involved',
+            'table' => 'mobilities',
+            'column' => 'classification_of_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Type',
+            'table' => 'mobilities',
+            'column' => 'type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Classification of Mobility',
+            'table' => 'mobilities',
+            'column' => 'classification_of_mobility',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Nature of Engagement',
+            'table' => 'mobilities',
+            'column' => 'nature_of_engagement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Host Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'host_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Address of Host Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Description of Inter-Country Mobility',
+            'table' => 'mobilities',
+            'column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'From',
+            'table' => 'mobilities',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'To',
+            'table' => 'mobilities',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'mobilities',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Department',
+            'table' => 'mobilities',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'mobilities',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Intra-Country Mobility by College/Department
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Classification of Person Involved',
+            'table' => 'intra_mobilities',
+            'column' => 'classification_of_person',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Type',
+            'table' => 'intra_mobilities',
+            'column' => 'type',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Classification of Mobility',
+            'table' => 'intra_mobilities',
+            'column' => 'classification_of_mobility',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Nature of Engagement',
+            'table' => 'intra_mobilities',
+            'column' => 'nature_of_engagement',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Host Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'host_name',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Address of Host Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Description of Inter-Country Mobility',
+            'table' => 'intra_mobilities',
+            'column' => 'mobility_description',
+            'is_active' => 0,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'From',
+            'table' => 'intra_mobilities',
+            'column' => 'start_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'To',
+            'table' => 'intra_mobilities',
+            'column' => 'end_date',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'intra_mobilities',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Department',
+            'table' => 'intra_mobilities',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'intra_mobilities',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Community Engagement Conducted by the College/Department
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'List of Active Linkages/Partnerships Covered by MOA',
+            'table' => 'community_engagements',
+            'column' => 'active_linkages',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'Classification of Agro-industrial Technology',
+            'table' => 'community_engagements',
+            'column' => 'classification_of_agro',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'Inclusive Period',
+            'table' => 'community_engagements',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => '-',
+            'table' => 'community_engagements',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'Partnership Coverage (LGU, Industry, SMEs (Small & Medium Enteprises), NGOs, and Pos)',
+            'table' => 'community_engagements',
+            'column' => 'partnership_coverage',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => '-',
+            'table' => 'community_engagements',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'community_engagements',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'Department',
+            'table' => 'community_engagements',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 37,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'community_engagements',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Other Accomplishments Beyond the Mandatory Requirements
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Brief Description of Accomplishment',
+            'table' => 'other_accomplishments',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Inclusive Date',
+            'table' => 'other_accomplishments',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => '-',
+            'table' => 'other_accomplishments',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Place',
+            'table' => 'other_accomplishments',
+            'column' => 'place',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Level',
+            'table' => 'other_accomplishments',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'other_accomplishments',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Department',
+            'table' => 'other_accomplishments',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 38,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'other_accomplishments',
+            'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+
+        //Other Accomplishments (College and Department)
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Brief Description of Accomplishment',
+            'table' => 'other_accomplishments',
+            'column' => 'accomplishment_description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Inclusive Date',
+            'table' => 'other_accomplishments',
+            'column' => 'from',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => '-',
+            'table' => 'other_accomplishments',
+            'column' => 'to',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Place',
+            'table' => 'other_accomplishments',
+            'column' => 'place',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Level',
+            'table' => 'other_accomplishments',
+            'column' => 'level',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'other_accomplishments',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Department',
+            'table' => 'other_accomplishments',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 39,
+            'name' => 'Description of Supporting Documents',
+            'table' => 'other_accomplishments',
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,

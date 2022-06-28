@@ -219,5 +219,43 @@ class ReportCategorySeeder extends Seeder
             'is_active' => 1,
             'order' => 26,
         ]);
+
+        // 2 Continuation
+        ReportCategory::insert([
+            'report_type_id' => 1,
+            'name' => 'Involvement in Intra-Country Mobility',
+            'is_active' => 1,
+            'order' => 27
+        ]); //34
+        ReportCategory::insert([
+            'report_type_id' => 2,
+            'name' => 'Inter-Country Mobility',
+            'is_active' => 1,
+            'order' => 28
+        ]); //35
+        ReportCategory::insert([
+            'report_type_id' => 2,
+            'name' => 'Intra-Country Mobility',
+            'is_active' => 1,
+            'order' => 29
+        ]); //36
+        ReportCategory::insert([
+            'report_type_id' => 2,
+            'name' => 'Community Engagement Conducted by College/Department',
+            'is_active' => 1,
+            'order' => 30
+        ]);
+        ReportCategory::insert([
+            'report_type_id' => 1,
+            'name' => 'Other Accomplishments Beyond the Mandatory Requirements',
+            'is_active' => 1,
+            'order' => 31
+        ]); // 38
+        ReportCategory::insert([
+            'report_type_id' => 2,
+            'name' => 'Other Accomplishments',
+            'is_active' => 1,
+            'order' => 32
+        ]);
     }
 }

@@ -1,10 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Technical Extension Programs/Projects/Activities') }}
-        </h2>
-    </x-slot>
-    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Technical Extension Programs/Projects/Activities</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('extension_success'))
@@ -57,6 +57,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Title</th>
+                                        <th>Name of the Adoptor</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
                                         <th>Actions</th>
@@ -67,6 +68,7 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ ($row->program_title != null ? $row->program_title : ($row->project_title != null ? $row->project_title : ($row->activity_title != null ? $row->activity_title : ''))) }}</td>
+                                        <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $row->name_of_adoptor }}</td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
@@ -74,10 +76,16 @@
                                             {{ $row->report_year }}
                                         </td>
                                         <td>
-                                            <div role="group">
-                                                <a href="{{ route('technical-extension.edit', $row->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
-                                                <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-extension="{{ $row->name_of_adoptor }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                                <a href="{{ url('submissions/check/23/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
+                                            <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('technical-extension.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-project="{{ $row->name }}">Delete</button>
+                                                @if ($submissionStatus[23][$row->id] == 0)
+                                                    <a href="{{ url('submissions/check/23/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                @elseif ($submissionStatus[23][$row->id] == 1)
+                                                    <a href="{{ url('submissions/check/23/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                @elseif ($submissionStatus[23][$row->id] == 2)
+                                                    <a href="{{ route('technical-extension.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                @endif        
                                             </div>
                                         </td>
                                     </tr>
@@ -89,7 +97,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 
     {{-- Delete Modal --}}
     @include('delete')

@@ -49,10 +49,7 @@ class PublicationController extends Controller
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 3)->get()->toArray();
-        $research = Research::join('dropdown_options', 'dropdown_options.id', 'research.status')
-            ->where('research_code', $research->research_code)->where('user_id', auth()->id())
-            ->select('research.*', 'dropdown_options.name as status_name')->first();
-                
+
         $values = ResearchPublication::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
@@ -72,12 +69,12 @@ class PublicationController extends Controller
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 3))
-                $submissionStatus[3][$research->id] = 1;
+            if (LockController::isLocked($values['id'], 3))
+                $submissionStatus[3][$values['id']] = 1;
             else 
-                $submissionStatus[3][$research->id] = 0;
-            if (empty($reportdata->getDocuments(2, $research->id)))
-                $submissionStatus[3][$research->id] = 2;
+                $submissionStatus[3][$values['id']] = 0;
+            if (empty($reportdata->getDocuments(3, $values['id'])))
+                $submissionStatus[3][$values['id']] = 2;
 
         return view('research.publication.index', compact('research', 'researchFields', 
             'value', 'researchDocuments', 'submissionStatus'));

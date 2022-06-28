@@ -808,9 +808,9 @@ class ExtensionDropdownSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        //Type of mobility
+        //classification of mobility
         $dropdownId  = Dropdown::insertGetId([
-            'name' => 'Type of Mobility'
+            'name' => 'Classification of Mobility'
         ]);
         DropdownOption::insert([
             'dropdown_id' => $dropdownId,
