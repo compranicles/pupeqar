@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('technical-extension.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $extensionFields])
+                            @include('form', ['formFields' => $extensionFields, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

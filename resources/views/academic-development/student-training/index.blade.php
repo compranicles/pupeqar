@@ -97,8 +97,6 @@
                                                 <a href="{{ route('student-training.show', $row->id) }}" class="btn btn-sm btn-primary">View</a>
                                                 <a href="{{ route('student-training.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-student="{{ $row->title }}">Delete</button>
-                                                <button type="button" class="btn btn-sm btn-success">Submit</button>
-                                                <a href="{{ url('submissions/check/19/'.$row->id) }}" class="btn btn-sm btn-success">Submit</a>
                                                 @if ($submissionStatus[19][$row->id] == 0)
                                                     <a href="{{ url('submissions/check/19/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
                                                 @elseif ($submissionStatus[19][$row->id] == 1)

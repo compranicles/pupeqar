@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('other-accomplishment.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $otherAccomplishmentFields, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $otherAccomplishmentFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">

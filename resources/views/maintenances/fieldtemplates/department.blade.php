@@ -22,7 +22,6 @@
         @endforeach
         {{-- <option value="0"></option> --}}
     </select>
-
     @error($fieldInfo->name)
         <span class='invalid-feedback' role="alert">
             <strong>{{ $message }}</strong>

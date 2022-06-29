@@ -34,8 +34,9 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
 
         $officershipFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCode N'$user->emp_code'");
+        $officeReports = Report::where('report_category_id', 28)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
 
-        return view('submissions.hris.officership.index', compact('officershipFinal'));
+        return view('submissions.hris.officership.index', compact('officershipFinal', 'officeReports'));
     }
 
     public function add(Request $request, $id){

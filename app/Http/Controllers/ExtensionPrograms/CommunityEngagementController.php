@@ -22,6 +22,8 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Department,
     Maintenance\Quarter,
+    Dean,
+    Chairperson,
 };
 
 class CommunityEngagementController extends Controller
@@ -51,7 +53,7 @@ class CommunityEngagementController extends Controller
         foreach ($communityEngagements as $communityEngagement) {
             if (LockController::isLocked($communityEngagement->id, 37))
                 $submissionStatus[37][$communityEngagement->id] = 1;
-            else 
+            else
                 $submissionStatus[37][$communityEngagement->id] = 0;
             if (empty($reportdata->getDocuments(37, $communityEngagement->id)))
                 $submissionStatus[37][$communityEngagement->id] = 2;
@@ -72,7 +74,12 @@ class CommunityEngagementController extends Controller
             return view('inactive');
         $communityEngagementFields = DB::select("CALL get_extension_program_fields_by_form_id('9')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
 
         return view('extension-programs.community-engagements.create', compact('communityEngagementFields', 'colleges'));
     }
@@ -104,7 +111,7 @@ class CommunityEngagementController extends Controller
         $communityEngagement->update(['user_id' => auth()->id()]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -148,7 +155,7 @@ class CommunityEngagementController extends Controller
         $documents = CommunityEngagementDocument::where('community_engagement_id', $communityEngagement->id)->get()->toArray();
 
         $values = $communityEngagement->toArray();
-        
+
         return view('extension-programs.community-engagements.show', compact('communityEngagement', 'communityEngagementFields', 'documents', 'values'));
     }
 
@@ -162,7 +169,7 @@ class CommunityEngagementController extends Controller
     {
         if (auth()->id() !== $communityEngagement->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($communityEngagement->id, 37)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -178,7 +185,12 @@ class CommunityEngagementController extends Controller
 
         $values = $communityEngagement->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+        $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+        $colleges = array_merge($deans, $chairpersons);
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
 
         $documents = CommunityEngagementDocument::where('community_engagement_id', $communityEngagement->id)->get()->toArray();
 
@@ -201,8 +213,8 @@ class CommunityEngagementController extends Controller
             'from' => $from,
             'to' => $to,
         ]);
-        
-        
+
+
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -212,7 +224,7 @@ class CommunityEngagementController extends Controller
         $communityEngagement->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

@@ -91,7 +91,7 @@
                                         <td onclick="window.location.href = '{{ route('other-accomplishment.show', $row->id) }}' ">
                                             {{ $row->report_year }}
                                         </td>
-                                        <td>
+                                        <td onclick="window.location.href = '{{ route('other-accomplishment.show', $row->id) }}' ">
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -100,6 +100,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
+                                                <a href="{{ route('other-accomplishment.show', $row->id) }}" class="btn btn-sm btn-warning">View</a>
                                                 <a href="{{ route('other-accomplishment.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-description="{{ $row->accomplishment_description }}">Delete</button>
                                                 @if ($submissionStatus[38][$row->id] == 0)
@@ -108,7 +109,7 @@
                                                     <a href="{{ url('submissions/check/38/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
                                                 @elseif ($submissionStatus[38][$row->id] == 2)
                                                     <a href="{{ route('other-accomplishment.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                @endif        
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

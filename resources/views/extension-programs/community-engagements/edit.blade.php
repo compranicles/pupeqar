@@ -17,7 +17,7 @@
                         <form action="{{ route('community-engagement.update', $communityEngagement->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $communityEngagementFields, 'value' => $values, 'colleges' => $colleges])
+                            @include('form', ['formFields' => $communityEngagementFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

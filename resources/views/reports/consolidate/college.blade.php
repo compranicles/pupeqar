@@ -117,7 +117,7 @@
                                         @endif
                                     </td>
                                     <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                        @if ($row->report_category_id >= 9 && $row->report_category_id <= 14)
+                                        @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
                                             @if ($row->extensionist_approval === null)
                                                 Receiving...
                                             @elseif ($row->extensionist_approval == 0)
@@ -144,7 +144,7 @@
                                                     <span class="text-success font-weight-bold">Viewed</span>
                                                 @endif
                                             @endif
-                                        @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
+                                        @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
                                             @if ($row->extensionist_approval === null)
                                                 -
                                             @elseif ($row->extensionist_approval == 0)
