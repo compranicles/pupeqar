@@ -24,6 +24,7 @@
                                                 <th>Date</th>
                                                 <th>Level</th>
                                                 <th>Action</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -35,9 +36,28 @@
                                                     <td>{{ $award->Date }}</td>
                                                     <td>{{ $award->Level }}</td>
                                                     <td>
-                                                        <td>
-                                                            <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="text-primary h4"><i class="fas fa-plus"></i></i></a>
-                                                        </td>
+                                                        @if ($awardReports != null)
+                                                            @foreach ($awardReports as $awardReport)
+                                                                @if ($awardReport->report_reference_id == $award->EmployeeOutstandingAchievementID)
+                                                                    <a class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
+                                                                    @break
+                                                                @else
+                                                                    <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($awardReports != null)
+                                                            @foreach ($awardReports as $awardReport)
+                                                                @if ($awardReport->report_reference_id == $award->EmployeeOutstandingAchievementID)
+                                                                    <span class="badge bg-success">Submitted</span>
+                                                                    <span class="badge bg-secondary">Quarter {{ $awardReport->report_quarter.' of '. $awardReport->report_year}}</span>
+                                                                    @break
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -52,7 +72,7 @@
         </div>
     </div>
 
- 
+
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
@@ -65,7 +85,7 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".temp-alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>

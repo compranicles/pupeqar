@@ -33,6 +33,7 @@
                                                 <th>Level</th>
                                                 <th>Inclusive Dates of Attendance</th>
                                                 <th>Action</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -52,7 +53,28 @@
                                                             {{ $education->IncDate }}
                                                         </td>
                                                         <td>
-                                                            <a href="{{ route('submissions.educ.add', $education->EmployeeEducationBackgroundID) }}" class="text-primary h4"><i class="fas fa-plus"></i></i></a>
+                                                            @if ($educReports != null)
+                                                                @foreach ($educReports as $educReport)
+                                                                    @if ($educReport->report_reference_id == $education->EmployeeEducationBackgroundID)
+                                                                        <a class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                                        @break
+                                                                    @else
+                                                                    <a href="{{ route('submissions.educ.add', $education->EmployeeEducationBackgroundID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                                        @break
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if ($educReports != null)
+                                                                @foreach ($educReports as $educReport)
+                                                                    @if ($educReport->report_reference_id == $education->EmployeeEducationBackgroundID)
+                                                                        <span class="badge bg-success">Submitted</span>
+                                                                        <span class="badge bg-secondary">Quarter {{ $educReport->report_quarter.' of '. $educReport->report_year}}</span>
+                                                                        @break
+                                                                    @endif
+                                                                @endforeach
+                                                            @endif
                                                         </td>
                                                     </tr>
                                                 @endif
@@ -68,7 +90,7 @@
         </div>
     </div>
 
- 
+
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
@@ -81,7 +103,7 @@
             // auto hide alert
             window.setTimeout(function() {
                 $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove(); 
+                    $(this).remove();
                 });
             }, 4000);
         </script>
