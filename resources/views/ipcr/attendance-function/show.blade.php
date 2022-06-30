@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Attendance in University and College/ Office Function') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Attendance in University/College Functions |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -13,20 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College/ Office Function</a>
-
-                    </p>
-                    <p>
-                        <a href="{{ route('attendance-function.edit', $attendance_function->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $attendance_function->id }}"  data-bs-request="{{ $attendance_function->activity_description }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Attendance in University/College Function</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College/ Office Function</a>
+                    <a href="{{ route('attendance-function.edit', $attendance_function->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $attendance_function->id }}"  data-bs-request="{{ $attendance_function->activity_description }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $fields, 'value' => $values])
-
         <div class="row mt-3">
             <div class="col-md-12">
                 <div class="card">

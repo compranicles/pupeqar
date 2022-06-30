@@ -29,13 +29,15 @@ class AwardController extends Controller
 {
     public function index(){
 
+        $currentQuarterYear = Quarter::find(1);
+
         $user = User::find(auth()->id());
 
         $db_ext = DB::connection('mysql_external');
 
         $awardFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCode N'$user->emp_code'");
         $awardReports = Report::where('report_category_id', 27)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
-        return view('submissions.hris.award.index', compact('awardFinal', 'awardReports'));
+        return view('submissions.hris.award.index', compact('awardFinal', 'awardReports', 'currentQuarterYear'));
     }
 
     public function add(Request $request, $id){

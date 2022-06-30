@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Report Attendance in Training') }}
-        </h2>
-    </x-slot>
-
+@section('title', 'Trainings |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">

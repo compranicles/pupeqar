@@ -1,6 +1,6 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
-        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
             {{-- <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -25,7 +25,7 @@
             <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly>
 
             <span id="" role="alert">
-                <p><a href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
+                <p><i class="bi bi-plus-circle-fill text-success mr-1"></i><a class="text-dark" href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
             </span>
             @error($fieldInfo->name)
                 <span class='invalid-feedback' role="alert">

@@ -1,19 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Extension Program/Project/Activity') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Extension Programs/Projects/Activities |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Add Extension Program/ Project/Activity</h3>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
-                </p>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('extension.code.save', $value['id'] ) }}" method="post">
+                        <form action="{{ route('extension.code.save', $value['id'] ) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @if($notificationID != null)
                                 <input type="hidden" name="notif_id" value="{{ $notificationID }}">

@@ -69,6 +69,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         <form action="{{ route('account.signature.save') }}" method="post">
                             @csrf
                             <div class="row">
@@ -107,7 +108,7 @@
         <div class="row mt-5">
             <div class="col-md-12">
                 <h2 class="h4 font-weight-bold">
-                    Sector, College/Branch/Campus/Office, and Department
+                    College/Branch/Campus/Office You are Reporting With
                 </h2>
                 <div class="card">
                     <div class="card-body">

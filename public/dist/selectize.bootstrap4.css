@@ -125,7 +125,7 @@
 }
 
 .selectize-input {
-    border: 1px solid #ced4da;
+    border: 0.02em solid gray;
     padding: .375rem .75rem;
     display: inline-block;
     width: 100%;
@@ -168,9 +168,9 @@
     cursor: pointer;
     margin: 0 3px 3px 0;
     padding: 1px 5px;
-    background: #efefef;
-    color: #343a40;
-    border: 0px solid #dee2e6
+    color: #fff;
+    background-color: #3490dc;
+    border: 0px solid #3490dc;
 }
 
 .selectize-control.multi .selectize-input>div.active {
@@ -500,3 +500,5 @@
     overflow: unset;
     border-radius: 0 .25rem .25rem 0
 }
+
+

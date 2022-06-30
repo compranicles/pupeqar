@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.citation.store', $research['id']) }}" method="post">
+                        <form action="{{ route('research.citation.store', $research['id']) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @include('form', ['formFields' => $researchFields, 'value' => $research])
                             <div class="col-md-12">

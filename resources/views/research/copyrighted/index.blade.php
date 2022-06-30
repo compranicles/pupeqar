@@ -25,6 +25,11 @@
                         {{ $message }}
                     </div>
                 @endif
+                @if ($research->nature_of_involvement == 11)
+                <div class="alert alert-info" role="alert-reminder">
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting. Go to <strong>"Registration"</strong> and click <strong>"Add Co-researchers"</strong>.
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -34,7 +39,7 @@
                             <div class="col-md-6 text-right">
                                 <div class="d-flex justify-content-end align-items-baseline">
                                     @if ($submissionStatus[7][$research->id] == 0)
-                                        <a href="{{ url('submissions/check/7/'.$research->id) }}" class="btn btn-sm btn-primary mr-3">Submit</a>
+                                        <a href="{{ url('submissions/check/7/'.$research->id) }}" class="btn btn-sm btn-primary mr-3">Submit Research Copyright</a>
                                     @elseif ($submissionStatus[7][$research->id] == 1)
                                         <a href="{{ url('submissions/check/7/'.$research->id) }}" class="btn btn-sm btn-success mr-3">Submitted</a>
                                     @elseif ($submissionStatus[7][$research->id] == 2)
@@ -150,7 +155,7 @@
     <script>
         // auto hide alert
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);

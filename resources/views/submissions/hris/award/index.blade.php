@@ -1,8 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        @include('submissions.hris.navigation')
-    </x-slot>
-
+@section('title', 'Outstanding Awards/Achievements |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -14,6 +11,7 @@
                                 <hr>
                             </div>
                             <div class="col-md-12">
+                                @include('instructions')
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="award_table">
                                         <thead>

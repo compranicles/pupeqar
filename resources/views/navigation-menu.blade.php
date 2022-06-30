@@ -30,7 +30,12 @@
                         request()->routeIs('expert-service-in-conference.*') || request()->routeIs('expert-service-in-academic.*') ||
                         request()->routeIs('request.*') || request()->routeIs('submissions.educ.*') || request()->routeIs('submissions.award.*') ||
                         request()->routeIs('submissions.development.*') || request()->routeIs('submissions.officership.*') ||
-                        request()->routeIs('special-tasks.*') || request()->routeIs('admin-special-tasks.*') || request()->routeIs('attendance-function.*'))
+                        request()->routeIs('special-tasks.*') || request()->routeIs('admin-special-tasks.*') || request()->routeIs('attendance-function.*') ||
+                        request()->routeIs('other-accomplishment.*') || request()->routeIs('other-dept-accomplishment.*') ||
+                        request()->routeIs('intra-mobility.*') || request()->routeIs('community-engagement.*')
+                        
+                        
+                        )
                         active @endif
                         " role="button">Accomplishments</a>
                     @include('mega-menu')

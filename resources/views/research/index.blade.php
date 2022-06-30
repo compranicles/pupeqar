@@ -1,10 +1,5 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Research') }}
-        </h2>
-    </x-slot> -->
-
+        @section('title', 'Research & Book Chapter |')
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Research & Book Chapter</h2>
@@ -48,91 +43,24 @@
                                 <hr>
                             </div>
                         </div>
-                        <!-- <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="statusFilter" class="mr-2">Current Status: </label>
-                                    <select id="statusFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="reportFilter" class="mr-2">Year Covered:</label>
-                                    <div class="d-flex">
-                                        <select id="reportFilter" class="custom-select" name="reportFilter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                    <div class="d-flex">
-                                        <select id="quarterFilter" class="custom-select" name="quarter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                    <select id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row mt-3">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="startFilter" class="mr-2">Year Started: <span style="color:red;">*</span></label>
-                                    <div class="d-flex">
-                                        <select id="startFilter" class="custom-select yearFilter" name="startFilter">
-                                        <option value="started" {{ $year == "started" ? 'selected' : '' }} class="present_year">--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="completeFilter" class="mr-2">Year Completed: <span style="color:red;">*</span> </label>
-                                    <div class="d-flex">
-                                        <select id="completeFilter" class="custom-select yearFilter" name="completeFilter">
-                                            <option value="completion" {{ $year == "completion" ? 'selected' : '' }} class="present_year">--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="publishFilter" class="mr-2">Year Published: <span style="color:red;">*</span> </label>
-                                    <div class="d-flex">
-                                        <select id="publishFilter" class="custom-select yearFilter" name="publishFilter">
-                                            <option value="published" {{ $year == "published" ? 'selected' : '' }} class="present_year">--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="presentFilter" class="mr-2">Year Presented: <span style="color:red;">*</span> </label>
-                                    <div class="d-flex">
-                                        <select id="presentFilter" class="custom-select yearFilter" name="presentFilter">
-                                            <option value="presented" {{ $year == "presented" ? 'selected' : '' }} class="present_year">--</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <small><span style="color:red;">*</span> Selects all records filtered by year.</small>
-                        <hr> -->
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="alert alert-warning" role="alert">
-                                    <i class="bi bi-lightbulb-fill"></i> <strong>Note: </strong> Click on the row to View/Edit/Delete Research.
+                                <div class="alert alert-info" role="alert">
+                                    <i class="bi bi-lightbulb-fill"></i> <strong>Instructions & Reminders: </strong> <br>
+                                    <div class="ml-3">
+                                        &#8226; Click on the row to View/Edit/Delete/Submit Research. <br>
+                                        &#8226; Only the <u>Lead Researcher</u> can register the research (except for independent researchers). You must add your co-researchers to share them the research you encode. <br>
+                                        &#8226; If you are a <u>Lead Researcher</u>, add your co-researchers first before submitting. <br>
+                                        <span class="ml-3"><i class="bi bi-arrow-right ml-1"></i></i> Click "Add Co-researchers" button after you encode and view the research.</span><br>
+                                        &#8226; If you are a <u>Co-Researcher</u>, check your <u>notifications</u> or click the "Research to Add" button to <u>confirm and add</u> the research registered by your Lead Researcher. <br>
+                                        &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
+                                            <?php
+                                                $deadline = strtotime( $currentQuarterYear->deadline );
+                                                $deadline = date( 'F d, Y', $deadline);
+                                                ?>
+                                                <u>{{ $deadline }}</u>. <br>
+                                                &#8226; Once you <u>submit</u> an accomplishment, you are <u>not allowed to edit</u> until the quarter period ends.
+                                    </div>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table my-3 table-hover" id="researchTable" >
@@ -142,7 +70,7 @@
                                                 <th>Research Code</th>
                                                 <th>Research Title</th>
                                                 <th>Status</th>
-                                                <th>College/Branch/Campus/Office</th>
+                                                <th>College/Branch/ Campus/Office</th>
                                                 <th>Date Modified</th>
                                                 <th>Quarter</th>
                                                 <th>Year</th>
@@ -163,13 +91,6 @@
                                                     </td>
                                                     <td>{{ $research->report_quarter }}</td>
                                                     <td>{{ $research->report_year }}</td>
-                                                    <!-- <td>
-                                                        <div class="btn-group" role="group" aria-label="button-group">
-                                                            <a href="{{ route('research.edit', $research->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-                                                            <button type="button" class="btn btn-sm btn-success">Submit</button>
-                                                        </div>
-                                                    </td> -->
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -190,150 +111,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
     <script>
         $("#researchTable").dataTable();
-    </script>
-    <script>
-        // var table =  $("#researchTable").DataTable({
-        //         "searching":true,
-        //         "searchCols": [
-        //             null,
-        //             null,
-        //             null,
-        //             null,
-        //             null,
-        //             null,
-        //             null,
-        //             { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //             { "search": "{{ $currentQuarterYear->current_year }}" },
-        //         ],
-        //         initComplete: function () {
-        //             this.api().columns(3).every( function () {
-        //                 var column = this;
-        //                 var select = $('#statusFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-        //             this.api().columns(4).every( function () {
-        //                 var column = this;
-        //                 var select = $('#collegeFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-        //             this.api().columns(7).every( function () {
-        //                 var column = this;
-        //                 var select = $('#quarterFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-
-        //             this.api().columns(8).every( function () {
-        //                 var column = this;
-        //                 var select = $('#reportFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-        //         }
-        //     });
-
-            // var statusIndex = 0;
-            // $("#researchTable th").each(function (i) {
-            //     if ($($(this)).html() == "Status") {
-            //         statusIndex = i; return false;
-
-            //     }
-            // });
-
-            // $.fn.dataTable.ext.search.push(
-            //     function (settings, data, dataIndex) {
-            //         var selectedItem = $('#statusFilter').val()
-            //         var status = data[statusIndex];
-            //         if (selectedItem === "" || status.includes(selectedItem)) {
-            //             return true;
-            //         }
-            //         return false;
-            //     }
-            // );
-
-            // var collegeIndex = 0;
-            // $("#researchTable th").each(function (i) {
-            //     if ($($(this)).html() == "College/Branch/Campus/Office") {
-            //         collegeIndex = i; return false;
-
-            //     }
-            // });
-
-            // $.fn.dataTable.ext.search.push(
-            //     function (settings, data, dataIndex) {
-            //         var selectedItem = $('#collegeFilter').val()
-            //         var college = data[collegeIndex];
-            //         if (selectedItem === "" || college.includes(selectedItem)) {
-            //             return true;
-            //         }
-            //         return false;
-            //     }
-            // );
-
-            // var reportIndex = 0;
-            // $("#researchTable th").each(function (i) {
-            //     if ($($(this)).html() == "Date Added") {
-            //         reportIndex = i; return false;
-
-            //     }
-            // });
-
-
-            // $("#statusFilter").change(function (e) {
-            //     table.draw();
-            // });
-
-            // $("#collegeFilter").change(function (e) {
-            //     table.draw();
-            // });
-
-            // table.draw();
     </script>
     <script>
         // auto hide alert

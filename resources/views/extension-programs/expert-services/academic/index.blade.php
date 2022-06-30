@@ -1,19 +1,11 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Expert Services Rendered') }}
-        </h2>
-    </x-slot> -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="font-weight-bold mb-2">Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works</h3>
-        </div>
-    </div>
+        @section('title', 'Expert Services Rendered in Rendered in Academic Works |')
         <div class="row">
-            <!-- <div class="col-md-12">
-            @include('extension-programs.navigation-bar')
-            </div> -->
-
+            <div class="col-md-12">
+                <h3 class="font-weight-bold mb-2">Expert Services Rendered in Academic Journals/ Books/ Publication/ Newsletter/ Creative Works</h3>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_esacademic_success'))
                 <div class="alert alert-success alert-index">
@@ -38,45 +30,7 @@
                             </div>
                         </div>
                         <hr>
-                        <!-- <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="classFilter" class="mr-2">Classification: </label>
-                                    <select id="classFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                    <div class="d-flex">
-                                        <select id="quarterFilter" class="custom-select" name="quarter">
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="yearFilter" class="mr-2">Year Covered:</label>
-                                    <div class="d-flex">
-                                        <select id="yearFilter" class="custom-select" name="yearFilter">
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                    <select id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <hr> -->
+                        @include('instructions')
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="esacademic_table">
                                 <thead>
@@ -113,8 +67,8 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('expert-service-in-academic.show', $expertServiceAcademic) }}" class="btn btn-sm btn-primary">View</a>
-                                                <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <a href="{{ route('expert-service-in-academic.show', $expertServiceAcademic) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                <a href="{{ route('expert-service-in-academic.edit', $expertServiceAcademic) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button" value="{{ $expertServiceAcademic->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esacademic="{{ $expertServiceAcademic->publication_or_audio_visual }}">Delete</button>
                                                 @if ($submissionStatus[11][$expertServiceAcademic->id] == 0)
                                                     <a href="{{ url('submissions/check/11/'.$expertServiceAcademic->id) }}" class="btn btn-sm btn-primary">Submit</a>
@@ -143,7 +97,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
      <script>
          window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);
@@ -164,142 +118,6 @@
           document.getElementById('delete_item').action = url;
 
         });
-     </script>
-     <script>
-        //  var table =  $("#esacademic_table").DataTable({
-        //     "searchCols": [
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //         { "search": "{{ $currentQuarterYear->current_year }}" },
-        //         null,
-        //         null,
-        //         null,
-        //     ],
-        //     initComplete: function () {
-        //         this.api().columns(2).every( function () {
-        //             var column = this;
-        //             var select = $('#classFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(3).every( function () {
-        //             var column = this;
-        //             var select = $('#collegeFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(4).every( function () {
-        //             var column = this;
-        //             var select = $('#quarterFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(5).every( function () {
-        //             var column = this;
-        //             var select = $('#yearFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-        //     }
-        //  });
-
-        //   var classIndex = 0;
-        //     $("#esacademic_table th").each(function (i) {
-        //         if ($($(this)).html() == "Classification") {
-        //             classIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#classFilter').val()
-        //             var classification = data[classIndex];
-        //             if (selectedItem === "" || classification.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     var collegeIndex = 0;
-        //     $("#esacademic_table th").each(function (i) {
-        //         if ($($(this)).html() == "College/Branch/Campus/Office") {
-        //             collegeIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#collegeFilter').val()
-        //             var college = data[collegeIndex];
-        //             if (selectedItem === "" || college.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     $("#classFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     $("#collegeFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     table.draw();
      </script>
      @endpush
 </x-app-layout>

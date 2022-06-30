@@ -1,9 +1,6 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Report Officerships/Memberships') }}
-        </h2>
-    </x-slot>
+@section('title', 'Officerships & Memberships |')
+
 
     <div class="container">
         <div class="row">

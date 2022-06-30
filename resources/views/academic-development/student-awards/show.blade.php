@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Student Awards and Recognition') }}
-        </h2>
-    </x-slot>
+@section('title', 'Student Award & Recognition |')
 
     <div class="container">
         <div class="row justify-content-center">
@@ -13,19 +9,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                        <a class="back_link" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
-                    </p>
-                    <p>
-                    <a href="{{ route('student-award.edit', $student_award->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Student Award & Recognition</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
+                    <a href="{{ route('student-award.edit', $student_award->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     <button type="button" value="{{ $student_award->id }}" data-bs-student="{{ $student_award->name_of_award }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
                 </div>
                 @include('show', ['formFields' => $studentFields, 'value' => $values])
-    
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">

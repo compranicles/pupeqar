@@ -1,22 +1,19 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/Creative Works') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Expert Service Rendered in Rendered in Academic Works |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
-                    <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services in Academic Journals, Books, Publication, Newsletter, & Creative Works</a>
-                </p>
-                <div class="alert alert-warning" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
+                <h3 class="font-weight-bold mr-2">Add Expert Service Rendered in Academic Works</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('expert-service-in-academic.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Service in in Academic Works</a>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('expert-service-in-academic.store' ) }}" method="post">
+                        <form action="{{ route('expert-service-in-academic.store' ) }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div>
+                            <hr>
                             @csrf
                             @include('form', ['formFields' => $expertServiceAcademicFields, 'colleges' => $colleges])
                             <div class="row">

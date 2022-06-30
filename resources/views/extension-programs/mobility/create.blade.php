@@ -1,22 +1,20 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add Inter-Country Mobility') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Inter-Country Mobility |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Add Inter-Country Mobility</h3>
+                </div>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
-                </p>
-                <div class="alert alert-warning" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('mobility.store') }}" method="post">
+                        <form action="{{ route('mobility.store') }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div> 
+                            <hr>
                             @csrf
                             @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges,  'colaccomp' => 1])
                             <div class="row">

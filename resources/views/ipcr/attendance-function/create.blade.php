@@ -1,19 +1,19 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add Attendance in a University or College Function') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Attendance in University/College Functions |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Add Attendance in a University/College Function</h3>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to Attendance in University and College Functions</a>
-                </p>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('attendance-function.store' ) }}" method="post">
+                        <form action="{{ route('attendance-function.store' ) }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div> 
+                            <hr>
                             @csrf
                             @include('form', ['formFields' => $fields, 'value' => $values])
                             <div class="row">
@@ -37,7 +37,6 @@
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script>
         $('#start_date').on('change', function () {
-            $('#end_date').datepicker('setDate', $('#start_date').val());
             $('#end_date').datepicker('setStartDate', $('#start_date').val());
         });
 

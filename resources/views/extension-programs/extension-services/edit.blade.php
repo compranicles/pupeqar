@@ -1,16 +1,12 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Extension Program/Project/Activity') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Extension Program/Project/Activity |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Edit Extension Program/Project/Activity</h3>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
-                </p>
+                </div>
                 {{-- Denied Details --}}
                 @if ($deniedDetails = Session::get('denied'))
                 <div class="alert alert-info" role="alert">
@@ -19,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post">
+                        <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
@@ -194,22 +190,6 @@
             });
         </script>
         <script>
-            $('#status').on('change', function(){
-                // $('#status option[value=107]').attr('disabled','disabled'); //Deferred
-                if ($(this).val() == 105) { // Ongoing
-                    $('#from').removeAttr('disabled');
-                    $('#from').attr('required', true);
-                    $('#to').val("");
-                    $('#to').attr('disabled', true);
-                    $('#to').removeAttr('required');
-                }
-                else if ($(this).val() == 106) {
-                    $('#to').removeAttr('disabled');
-                    $('#to').attr('required', true);
-                }
-            });
-        </script>
-                <script>
             $("#classification").selectize({
                 maxItems: 5,
                 delimiter: ",",

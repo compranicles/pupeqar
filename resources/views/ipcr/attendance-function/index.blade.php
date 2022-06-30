@@ -1,9 +1,5 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Invention, Innovation & Creative Works') }}
-        </h2>
-    </x-slot> -->
+    @section('title', 'Attendance in University/College Functions |')
     <div class="row">
         <div class="col-md-12">
             <h2 class="font-weight-bold mb-2">Attendance in University and College/ Office Functions</h2>
@@ -51,6 +47,7 @@
                         @endif
                     </div>
                     <hr>
+                    @include('instructions')
                     <div class="table-responsive" style="overflow-x:auto;">
                         <table class="table" id="attendance_table">
                             <thead>
@@ -135,7 +132,7 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
             window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                     $(this).remove();
                 });
             }, 4000);
@@ -158,84 +155,6 @@
             document.getElementById('delete_item').action = url;
 
             });
-        </script>
-        <script>
-            // var table =  $("#attendance_table").DataTable({
-            //     "searchCols": [
-            //         null,
-            //         null,
-            //         null,
-            //         null,
-            //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
-            //         { "search": "{{ $currentQuarterYear->current_year }}" },
-            //         null,
-            //         null,
-            //         null,
-            //     ],
-            //     initComplete: function () {
-            //         this.api().columns(4).every( function () {
-            //             var column = this;
-            //             var select = $('#quarterFilter')
-            //                 .on( 'change', function () {
-            //                     var val = $.fn.dataTable.util.escapeRegex(
-            //                         $(this).val()
-            //                     );
-
-            //                     column
-            //                         .search( val ? '^'+val+'$' : '', true, false )
-            //                         .draw();
-            //                 } );
-
-            //             column.data().unique().sort().each( function ( d, j ) {
-            //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-            //             } );
-            //         });
-
-            //         this.api().columns(5).every( function () {
-            //             var column = this;
-            //             var select = $('#yearFilter')
-            //                 .on( 'change', function () {
-            //                     var val = $.fn.dataTable.util.escapeRegex(
-            //                         $(this).val()
-            //                     );
-
-            //                     column
-            //                         .search( val ? '^'+val+'$' : '', true, false )
-            //                         .draw();
-            //                 } );
-
-            //             column.data().unique().sort().each( function ( d, j ) {
-            //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-            //             } );
-            //         });
-            //     }
-            // });
-
-            // var collegeIndex = 0;
-            // $("#admin_table th").each(function (i) {
-            //     if ($($(this)).html() == "College/Branch/Campus/Office") {
-            //         collegeIndex = i; return false;
-
-            //     }
-            // });
-
-            // $.fn.dataTable.ext.search.push(
-            //     function (settings, data, dataIndex) {
-            //         var selectedItem = $('#collegeFilter').val()
-            //         var college = data[collegeIndex];
-            //         if (selectedItem === "" || college.includes(selectedItem)) {
-            //             return true;
-            //         }
-            //         return false;
-            //     }
-            // );
-
-
-            // $("#collegeFilter").change(function (e) {
-            //     table.draw();
-            // });
-
-            //table.draw();
         </script>
     @endpush
 </x-app-layout>

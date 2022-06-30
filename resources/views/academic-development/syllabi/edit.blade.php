@@ -1,16 +1,12 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Course Syllabus') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Syllabus |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
-            </p>
+                <h3 class="font-weight-bold">Edit Course Syllabus</h3>
+            <div class="mb-3">
+                <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
+            </div>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
             <div class="alert alert-info" role="alert">
@@ -19,7 +15,11 @@
             @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('syllabus.update', $value['id']) }}" method="post">
+                        <form action="{{ route('syllabus.update', $value['id']) }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div>
+                            <hr>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $syllabusFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])

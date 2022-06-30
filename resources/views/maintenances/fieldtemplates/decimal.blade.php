@@ -2,9 +2,10 @@
 
 <div class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
-        <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if ($fieldInfo->name == 'amount_of_funding' || $fieldInfo->name == 'funding_amount' ||
-            $fieldInfo->name == 'revenue' || $fieldInfo->name == 'cost' || $fieldInfo->name == 'budget'
+            $fieldInfo->name == 'revenue' || $fieldInfo->name == 'cost' || $fieldInfo->name == 'budget' ||
+            $fieldInfo->name == 'total_profit'
             )
             <span id="" role="alert">
                 (No commas)
@@ -16,7 +17,7 @@
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
-            <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation"
+            <input type="decimal" autocomplete="off" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  number_format(($value == null) ? 0.00 : $value, 2, '.', ',') : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} step="0.01" placeholder="{{ $fieldInfo->placeholder }}"
                 @switch($fieldInfo->visibility)
                     @case(2)

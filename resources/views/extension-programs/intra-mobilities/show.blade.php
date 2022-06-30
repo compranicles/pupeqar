@@ -1,4 +1,5 @@
 <x-app-layout>
+    @section('title', 'Intra-Country Mobility |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -7,19 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                        <a class="back_link" href="{{ route('intra-mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Intra-Country Mobility</a>
-                    </p>
-                    <p>
-                        <a href="{{ route('intra-mobility.edit', $intraMobility->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $intraMobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $intraMobility->mobility_description }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Intra-Country Mobility</h3>
                 </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('intra-mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Intra-Country Mobility</a>
+                    <a href="{{ route('intra-mobility.edit', $intraMobility->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $intraMobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $intraMobility->mobility_description }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                <p>
                 @include('show', ['formFields' => $mobilityFields, 'value' => $values])
-
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">

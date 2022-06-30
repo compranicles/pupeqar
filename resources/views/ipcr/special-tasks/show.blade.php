@@ -11,12 +11,7 @@
     }
 @endphp
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View '.$nameOfPage) }}
-        </h2>
-    </x-slot>
-
+    @section('title', $nameOfPage.' | ')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -25,20 +20,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                    <a class="back_link" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
-
-                    </p>
-                    <p>
-                        <a href="{{ route('special-tasks.edit', $special_task->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $special_task->id }}"  data-bs-request="{{ $special_task->final_output }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">{{ $nameOfPage }}</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
+                    <a href="{{ route('special-tasks.edit', $special_task->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $special_task->id }}"  data-bs-request="{{ $special_task->final_output }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $specialTaskFields, 'value' => $values])
-
         <div class="row mt-3">
             <div class="col-md-12">
                 <div class="card">

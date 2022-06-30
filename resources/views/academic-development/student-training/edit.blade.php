@@ -1,15 +1,13 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Student Attended Seminars and Trainings') }}
-        </h2>
-    </x-slot>
-
+@section('title', 'Student Attended Seminar & Training |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+            <h3 class="font-weight-bold mr-2">Edit Student Attended Seminar & Training</h3>
+            <div class="mb-3">
+                <a class="back_link" href="{{ route('student-training.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Attended Seminars and Trainings</a>
+            </div>
             <p>
-              <a class="back_link" href="{{ route('student-training.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Attended Seminars and Trainings</a>
             </p>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))

@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-                Special Tasks
-        </h2>
-    </x-slot>
+        @section('title', 'Admin Special Tasks | ')
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Admin Special Tasks</h2>
@@ -31,39 +27,7 @@
                             </div>
                         </div>
                         <hr>
-                        <!-- <div class="row">
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                    <div class="d-flex">
-                                        <select id="quarterFilter" class="custom-select" name="quarter">
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="yearFilter" class="mr-2">Year Covered:</label>
-                                    <div class="d-flex">
-                                        <select id="yearFilter" class="custom-select" name="yearFilter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                    <select id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                        @foreach($tasksInColleges as $college)
-                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <hr> -->
+                        @include('instructions')
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="admin_table">
                                 <thead>
@@ -110,7 +74,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('admin-special-tasks.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Edit</a>
+                                                <a href="{{ route('admin-special-tasks.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                 <a href="{{ route('admin-special-tasks.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}">Delete</button>
                                                 @if ($submissionStatus[29][$row->id] == 0)
@@ -140,7 +104,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
      <script>
          window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);
@@ -161,84 +125,6 @@
           document.getElementById('delete_item').action = url;
 
         });
-     </script>
-     <script>
-        //  var table =  $("#admin_table").DataTable({
-        //     "searchCols": [
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //         { "search": "{{ $currentQuarterYear->current_year }}" },
-        //         null,
-        //         null,
-        //         null,
-        //     ],
-        //     initComplete: function () {
-        //         this.api().columns(5).every( function () {
-        //             var column = this;
-        //             var select = $('#quarterFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(6).every( function () {
-        //             var column = this;
-        //             var select = $('#yearFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-        //     }
-        //  });
-
-        var collegeIndex = 0;
-        $("#admin_table th").each(function (i) {
-            if ($($(this)).html() == "College/Branch/Campus/Office") {
-                collegeIndex = i; return false;
-
-            }
-        });
-
-        $.fn.dataTable.ext.search.push(
-            function (settings, data, dataIndex) {
-                var selectedItem = $('#collegeFilter').val()
-                var college = data[collegeIndex];
-                if (selectedItem === "" || college.includes(selectedItem)) {
-                    return true;
-                }
-                return false;
-            }
-        );
-
-
-        $("#collegeFilter").change(function (e) {
-            table.draw();
-        });
-
-        table.draw();
      </script>
      @endpush
 </x-app-layout>

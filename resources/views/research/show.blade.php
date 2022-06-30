@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Research Information') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Research & Book Chapter |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -26,7 +21,7 @@
                     </div>
                 @endif
                 @if ($research->nature_of_involvement == 11)
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-info" role="alert">
                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting.
                 </div>
                 @endif
@@ -34,7 +29,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4>Research Registration </h4>
+                                <h4>Research Registration - {{ $research->research_code }}</h4>
                             </div>
                             <div class="col-md-6 text-right">
                                 <div class="mb-0">

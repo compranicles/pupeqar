@@ -1,5 +1,5 @@
 <x-app-layout>
-
+        @section('title', 'Technical Extension Programs/Project/Activity |')
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Technical Extension Programs/Projects/Activities</h2>
@@ -30,27 +30,7 @@
                             </div>
                         </div>
                         <hr>
-                        <!-- <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                    <div class="d-flex">
-                                        <select id="quarterFilter" class="custom-select" name="quarter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="yearFilter" class="mr-2">Year Added:</label>
-                                    <div class="d-flex">
-                                        <select id="yearFilter" class="custom-select" name="yearFilter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr> -->
+                        @include('instructions')
                         <div class="table-responsive">
                             <table class="table" id="technical_extension_table">
                                 <thead>
@@ -77,7 +57,8 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('technical-extension.edit', $row->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                                <a href="{{ route('technical-extension.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                <a href="{{ route('technical-extension.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-project="{{ $row->name }}">Delete</button>
                                                 @if ($submissionStatus[23][$row->id] == 0)
                                                     <a href="{{ url('submissions/check/23/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
@@ -107,61 +88,12 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
      <script>
          window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);
 
         $('#technical_extension_table').DataTable();
-
-        //  $(document).ready( function () {
-        //     var table = $('#technical_extension_table').DataTable({
-        //         "searchCols": [
-        //             null,
-        //             null,
-        //             { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //             { "search": "{{ $currentQuarterYear->current_year }}" },
-        //             null
-        //         ],
-        //         initComplete: function () {
-        //             this.api().columns(2).every( function () {
-        //                 var column = this;
-        //                 var select = $('#quarterFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-
-        //             this.api().columns(3).every( function () {
-        //                 var column = this;
-        //                 var select = $('#yearFilter')
-        //                     .on( 'change', function () {
-        //                         var val = $.fn.dataTable.util.escapeRegex(
-        //                             $(this).val()
-        //                         );
-
-        //                         column
-        //                             .search( val ? '^'+val+'$' : '', true, false )
-        //                             .draw();
-        //                     } );
-
-        //                 column.data().unique().sort().each( function ( d, j ) {
-        //                     select.append( '<option value="'+d+'">'+d+'</option>' )
-        //                 } );
-        //             });
-        //         }
-        //     });
-        //  } );
 
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')

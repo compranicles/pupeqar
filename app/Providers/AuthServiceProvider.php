@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\{
     AdminSpecialTask,
     AttendanceFunction,
+    CommunityEngagement,
     User,
     Role,
     Research,
@@ -17,12 +18,15 @@ use App\Models\{
     ResearchCopyright,
     ResearchCitation,
     ResearchUtilization,
+    IntraMobility,
     Invention,
     ExpertServiceAcademic,
     ExpertServiceConference,
     ExpertServiceConsultant,
     ExtensionService,
     Mobility,
+    OtherAccomplishment,
+    OtherDeptAccomplishment,
     OutreachProgram,
     Partnership,
     CollegeDepartmentAward,
@@ -104,6 +108,10 @@ use App\Policies\Maintenance\ExtensionProgram\ExtensionProgramFormPolicy;
 use App\Policies\OtherAccomplishment\AcadSpecialTaskPolicy;
 use App\Policies\OtherAccomplishment\AdminSpecialTaskPolicy;
 use App\Policies\OtherAccomplishment\AttendanceFunctionPolicy;
+use App\Policies\OtherAccomplishment\IntraMobilityPolicy;
+use App\Policies\OtherAccomplishment\CommunityEngagementPolicy;
+use App\Policies\OtherAccomplishment\OtherAccomplishmentPolicy;
+use App\Policies\OtherAccomplishment\OtherDeptAccomplishmentPolicy;
 use App\Policies\Request\RequestPolicy;
 
 class AuthServiceProvider extends ServiceProvider
@@ -178,7 +186,10 @@ class AuthServiceProvider extends ServiceProvider
         AdminSpecialTask::class => AdminSpecialTaskPolicy::class,
         SpecialTask::class => AcadSpecialTaskPolicy::class,
         AttendanceFunction::class => AttendanceFunctionPolicy::class,
-
+        IntraMobility::class => IntraMobilityPolicy::class,
+        CommunityEngagement::class => CommunityEngagementPolicy::class,
+        OtherAccomplishment::class => OtherAccomplishmentPolicy::class,
+        OtherDeptAccomplishment::class => OtherDeptAccomplishmentPolicy::class,
         //For authorization of reports (to receive and consolidation), please refer to Services (App/Services)
     ];
 

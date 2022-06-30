@@ -1,19 +1,19 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add Special Task') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Admin Special Tasks | ')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Add Admin Special Task</h3>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('admin-special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Tasks</a>
-                </p>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin-special-tasks.store' ) }}" method="post">
+                        <form action="{{ route('admin-special-tasks.store' ) }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div> 
+                            <hr>    
                             @csrf
                             @include('form', ['formFields' => $specialTaskFields])
                             <div class="row">

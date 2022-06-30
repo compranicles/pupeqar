@@ -29,6 +29,8 @@ class OfficershipController extends Controller
 {
     public function index(){
 
+        $currentQuarterYear = Quarter::find(1);
+
         $user = User::find(auth()->id());
 
         $db_ext = DB::connection('mysql_external');
@@ -36,7 +38,7 @@ class OfficershipController extends Controller
         $officershipFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCode N'$user->emp_code'");
         $officeReports = Report::where('report_category_id', 28)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
 
-        return view('submissions.hris.officership.index', compact('officershipFinal', 'officeReports'));
+        return view('submissions.hris.officership.index', compact('officershipFinal', 'officeReports', 'currentQuarterYear'));
     }
 
     public function add(Request $request, $id){

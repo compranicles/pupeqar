@@ -1,5 +1,5 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
-    <label class="{{ ($fieldInfo->required == 1) ? 'font-weight-bold' : '' }}" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+    <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
     <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
         @switch($fieldInfo->visibility)
@@ -16,7 +16,7 @@
             @endswitch
         >
 
-        <option value="" selected disabled>Choose...</option>
+        <option value="" selected disabled>Choose/Search...</option>
         @foreach ($departments as $department)
         <option value="{{ $department->id }}" {{ $department->id == old('department_id', $department_id) ? 'selected' : '' }}>{{ $department->name }}</option>
         @endforeach

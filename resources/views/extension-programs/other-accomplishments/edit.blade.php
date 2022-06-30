@@ -1,19 +1,21 @@
 <x-app-layout>
+    @section('title', 'Other Individual Accomplishments |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('other-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Accomplishments</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit Other Individual Accomplishment</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('other-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Accomplishments</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('other-accomplishment.update', $otherAccomplishment->id) }}" method="post">
+                        <form action="{{ route('other-accomplishment.update', $otherAccomplishment->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $otherAccomplishmentFields, 'value' => $values, 'colleges' => $colleges])
@@ -142,7 +144,6 @@
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             $('#from').on('change', function () {
-                $('#to').datepicker('setDate', $('#from').val());
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>

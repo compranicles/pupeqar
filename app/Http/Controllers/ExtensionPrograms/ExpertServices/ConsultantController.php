@@ -20,6 +20,7 @@ use App\Models\{
     FormBuilder\ExtensionProgramField,
     FormBuilder\ExtensionProgramForm,
     Maintenance\College,
+    Maintenance\Department,
     Maintenance\Quarter,
 };
 

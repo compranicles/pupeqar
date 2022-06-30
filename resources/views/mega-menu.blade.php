@@ -17,7 +17,7 @@
                 <li><a class="{{ request()->routeIs('student-training.*') ? 'active' : '' }}" href="{{ route('student-training.index') }}">&#8226; Student Attended Seminars and Trainings</a></li>
                 @endcan
                 {{-- For College and Departments --}}
-                <li><a class="{{ request()->routeIs('community-engagement.*') ? 'active' : '' }}" href="{{ route('community-engagement.index') }}">&#8226; Community Engagement Conducted by College/Department</a></li>
+                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">&#8226; Awards and Recognition Received by the College/Department</a></li>
                 @can('viewAny', \App\Models\ViableProject::class)
                 <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }}" href="{{ route('viable-project.index') }}">&#8226; Viable Demonstration Projects</a></li>
                 @endcan
@@ -30,7 +30,7 @@
                 @can('viewAny', \App\Models\ExpertServiceConsultant::class)
                 <li><a class="{{ request()->routeIs('expert-service-as-consultant.*') ? 'active' : '' }}" href="{{ route('expert-service-as-consultant.index') }}">&#8226; Expert Service Rendered as Consultant</a></li>
                 <li><a class="{{ request()->routeIs('expert-service-in-conference.*') ? 'active' : '' }}" href="{{ route('expert-service-in-conference.index') }}">&#8226; Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</a></li>
-                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="{{ route('expert-service-in-academic.index') }}">&#8226; Expert Service Rendered in Academic Journals/Books/Publication/Newsletter/ Creative Works</a></li>
+                <li><a class="{{ request()->routeIs('expert-service-in-academic.*') ? 'active' : '' }}" href="{{ route('expert-service-in-academic.index') }}">&#8226; Expert Service Rendered in Academic Journals/Books/Publication/ Newsletter/ Creative Works</a></li>
                 @endcan
                 @can('viewAny', \App\Models\ExtensionService::class)
                 <li><a class="{{ request()->routeIs('extension-service.*') ? 'active' : '' }}" href="{{ route('extension-service.index') }}">&#8226; Extension Program/Project/Activity</a></li>
@@ -83,9 +83,30 @@
             </ul>
             @endcan
             <ul>
+                <h6 class="menu-category">TASKS & FUNCTIONS</h6>
+                @can('manage', \App\Models\SpecialTask::class)
+                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">&#8226; Academic Special Tasks</a></li>
+                @endcan
+                @can('manage', \App\Models\AdminSpecialTask::class)
+                    @faculty
+                    <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
+                    @endfaculty
+                @endcan
+                @admin
+                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">&#8226; Accomplishments Based on OPCR</a></li>
+                @endadmin
+                @can('manage', \App\Models\AttendanceFunction::class)
+                <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">&#8226; Attendance in College & University Functions</a></li>
+                @endcan
+            </ul>
+            <ul>
                 <h6 class="menu-category">OTHERS</h6>
+                @can('manage', \App\Models\OtherAccomplishment::class)
                 <li><a class="{{ request()->routeIs('other-accomplishment.*') ? 'active' : '' }}" href="{{ route('other-accomplishment.index') }}">&#8226; Other Individual Accomplishments</a></li>
+                @endcan
+                @can('manage', \App\Models\OtherDeptAccomplishment::class)
                 <li><a class="{{ request()->routeIs('other-dept-accomplishment.*') ? 'active' : '' }}" href="{{ route('other-dept-accomplishment.index') }}">&#8226; Other Department/College Accomplishments</a></li>
+                @endcan
             </ul>
         </div>
     </div>

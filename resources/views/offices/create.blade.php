@@ -6,8 +6,9 @@
     </x-slot>
 
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h3>Add College/Branch/Campus/Office You are Reporting With</h3>
                 <p>
                     <a class="back_link" href="{{ session('url') ? url(session('url')) : route('account') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
                 </p>
@@ -16,7 +17,7 @@
                         <form action="{{ route('offices.store') }}" method="post">
                             @csrf
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <div class="form-group input-group-md">
                                         <label for="">College/Branch/Campus/Office</label>
                                         <select name="cbco" id="cbco" class="{{ $errors->has('cbco') ? 'is-invalid' : '' }} form-control custom-select form-validation cbco" required>
@@ -27,19 +28,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-8">
+                                <select hidden name="sector" id="sector" class="{{ $errors->has('sector') ? 'is-invalid' : '' }} form-control custom-select form-validation sector" required>
+                                    <option value="" selected></option>
+                                </select>
+                                <!-- <div class="col-md-8">
                                     <div class="form-group input-group-md">
                                         <label for="">Sector</label>
-                                        <select readonly name="sector" id="sector" class="{{ $errors->has('sector') ? 'is-invalid' : '' }} form-control custom-select form-validation sector" required>
-                                            <option value="" selected></option>
-                                        </select>
                                     </div>
-                                </div>
-
-                                <div class="col-md-8">
-                                    <div class="form-group input-group-md" id="dept_div">
-                                    </div>
-                                </div>
+                                </div> -->
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
@@ -56,7 +52,7 @@
         </div>
     </div>
     @push('scripts')
-    <script src="{{ asset('diszt/selectize.min.js') }}"></script>
+    <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
          $("#cbco").selectize({
               sortField: "text",

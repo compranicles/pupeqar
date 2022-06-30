@@ -30,6 +30,7 @@
                                         <th></th>
                                         <th>Name</th>
                                         <th>Roles</th>
+                                        <th>Reporting With</th>
                                         <th>Date Joined</th>
                                         <th>Actions</th>
                                     </tr>
@@ -45,6 +46,17 @@
                                                         {{ $user_role->name }}
                                                     @else
                                                         {{ $user_role->name }},
+                                                    @endif
+                                                @empty
+                                                    -
+                                                @endforelse
+                                            </td>
+                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >
+                                                @forelse ($collegesreportingwith[$user->id] as $college)
+                                                    @if ($loop->last)
+                                                        {{ $college->name }}
+                                                    @else
+                                                        {{ $college->name }},
                                                     @endif
                                                 @empty
                                                     -

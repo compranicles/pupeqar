@@ -1,25 +1,21 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Special Task') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Admin Special Tasks | ')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('admin-special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Tasks</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit {{ $category[0]->name }}</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('admin-special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Special Tasks</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" method="post">
+                        <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $specialTaskFields, 'value' => $values])

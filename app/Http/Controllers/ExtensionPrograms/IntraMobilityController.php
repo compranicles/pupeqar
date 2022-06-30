@@ -39,6 +39,8 @@ class IntraMobilityController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', IntraMobility::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $intraMobilities = IntraMobility::where('user_id', auth()->id())
@@ -79,6 +81,8 @@ class IntraMobilityController extends Controller
      */
     public function create()
     {
+        $this->authorize('manage', IntraMobility::class);
+
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('8')");
@@ -95,6 +99,8 @@ class IntraMobilityController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('manage', IntraMobility::class);
+
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
         $currentQuarterYear = Quarter::find(1);
@@ -148,6 +154,8 @@ class IntraMobilityController extends Controller
      */
     public function show(IntraMobility $intraMobility)
     {
+        $this->authorize('manage', IntraMobility::class);
+
         if (auth()->id() !== $intraMobility->user_id)
         abort(403);
 
@@ -170,6 +178,8 @@ class IntraMobilityController extends Controller
      */
     public function edit(IntraMobility $intraMobility)
     {
+        $this->authorize('manage', IntraMobility::class);
+
         if (auth()->id() !== $intraMobility->user_id)
             abort(403);
 
@@ -209,6 +219,8 @@ class IntraMobilityController extends Controller
      */
     public function update(Request $request, IntraMobility $intraMobility)
     {
+        $this->authorize('manage', IntraMobility::class);
+
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
 
@@ -263,6 +275,8 @@ class IntraMobilityController extends Controller
      */
     public function destroy(IntraMobility $intraMobility)
     {
+        $this->authorize('manage', IntraMobility::class);
+
         if(LockController::isLocked($intraMobility->id, 34)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -278,7 +292,7 @@ class IntraMobilityController extends Controller
     }
 
     public function removeDoc($filename){
-        // $this->authorize('delete', Mobility::class);
+        $this->authorize('manage', IntraMobility::class);
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -25,6 +25,7 @@ use App\Models\{
     Dean,
     Chairperson,
 };
+use App\Services\DateContentService;
 
 class CommunityEngagementController extends Controller
 {
@@ -41,6 +42,8 @@ class CommunityEngagementController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', CommunityEngagement::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $communityEngagements = CommunityEngagement::where('user_id', auth()->id())
@@ -70,6 +73,8 @@ class CommunityEngagementController extends Controller
      */
     public function create()
     {
+        $this->authorize('manage', CommunityEngagement::class);
+
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');
         $communityEngagementFields = DB::select("CALL get_extension_program_fields_by_form_id('9')");
@@ -92,8 +97,10 @@ class CommunityEngagementController extends Controller
      */
     public function store(Request $request)
     {
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $this->authorize('manage', CommunityEngagement::class);
+
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -145,6 +152,8 @@ class CommunityEngagementController extends Controller
      */
     public function show(CommunityEngagement $communityEngagement)
     {
+        $this->authorize('manage', CommunityEngagement::class);
+
         if (auth()->id() !== $communityEngagement->user_id)
         abort(403);
 
@@ -167,6 +176,8 @@ class CommunityEngagementController extends Controller
      */
     public function edit(CommunityEngagement $communityEngagement)
     {
+        $this->authorize('manage', CommunityEngagement::class);
+
         if (auth()->id() !== $communityEngagement->user_id)
             abort(403);
 
@@ -206,8 +217,10 @@ class CommunityEngagementController extends Controller
      */
     public function update(Request $request, CommunityEngagement $communityEngagement)
     {
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $this->authorize('manage', CommunityEngagement::class);
+
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
 
         $request->merge([
             'from' => $from,
@@ -260,6 +273,8 @@ class CommunityEngagementController extends Controller
      */
     public function destroy(CommunityEngagement $communityEngagement)
     {
+        $this->authorize('manage', CommunityEngagement::class);
+
         if(LockController::isLocked($communityEngagement->id, 37)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -275,7 +290,7 @@ class CommunityEngagementController extends Controller
     }
 
     public function removeDoc($filename){
-        // $this->authorize('delete', Mobility::class);
+        $this->authorize('manage', CommunityEngagement::class);
 
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -25,6 +25,7 @@ use App\Models\{
     Dean,
     Chairperson,
 };
+use App\Services\DateContentService;
 
 class OtherDeptAccomplishmentController extends Controller
 {
@@ -41,6 +42,8 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function index()
     {
+        $this->authorize('manage', OtherDeptAccomplishment::class);
+
         $currentQuarterYear = Quarter::find(1);
 
         $otherAccomplishments = OtherDeptAccomplishment::where('user_id', auth()->id())
@@ -71,6 +74,8 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function create()
     {
+        $this->authorize('manage', OtherDeptAccomplishment::class);
+
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
@@ -93,10 +98,10 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->authorize('create', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -128,8 +133,8 @@ class OtherDeptAccomplishmentController extends Controller
                     Storage::deleteDirectory("documents/tmp/".$document);
                     $temporaryFile->delete();
 
-                    OtherAccomplishmentDocument::create([
-                        'other_accomplishment_id' => $otherDeptAccomplishment->id,
+                    OtherDeptAccomplishmentDocument::create([
+                        'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
                         'filename' => $fileName,
                     ]);
                 }
@@ -148,7 +153,7 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function show(OtherDeptAccomplishment $otherDeptAccomplishment)
     {
-        // $this->authorize('view', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
@@ -157,11 +162,11 @@ class OtherDeptAccomplishmentController extends Controller
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
-        $documents = OtherDeptAccomplishmentDocument::where('other_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
+        $documents = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
         $values = $otherDeptAccomplishment->toArray();
 
-        return view('extension-programs.other-dept-accomplishments.show', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values'));
+        return view('extension-programs.other-dept-accomplishments.show', compact('otherDeptAccomplishment', 'otherAccomplishmentFields', 'documents', 'values'));
     }
 
     /**
@@ -172,7 +177,7 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function edit(OtherDeptAccomplishment $otherDeptAccomplishment)
     {
-        // $this->authorize('update', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
@@ -198,9 +203,9 @@ class OtherDeptAccomplishmentController extends Controller
 
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
-        $documents = OtherDeptAccomplishmentDocument::where('other_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
+        $documents = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
-        return view('extension-programs.other-dept-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
+        return view('extension-programs.other-dept-accomplishments.edit', compact('otherDeptAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
     }
 
     /**
@@ -212,11 +217,10 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $this->authorize('update', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
 
         $request->merge([
             'from' => $from,
@@ -248,7 +252,7 @@ class OtherDeptAccomplishmentController extends Controller
                     $temporaryFile->delete();
 
                     OtherDeptAccomplishmentDocument::create([
-                        'other_accomplishment_id' => $otherDeptAccomplishment->id,
+                        'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
                         'filename' => $fileName,
                     ]);
                 }
@@ -269,7 +273,7 @@ class OtherDeptAccomplishmentController extends Controller
      */
     public function destroy(OtherDeptAccomplishment $otherDeptAccomplishment)
     {
-        // $this->authorize('delete', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
         if(LockController::isLocked($otherDeptAccomplishment->id, 39)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
@@ -277,7 +281,7 @@ class OtherDeptAccomplishmentController extends Controller
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
-        OtherDeptAccomplishmentDocument::where('other_accomplishment_id', $otherDeptAccomplishment->id)->delete();
+        OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->delete();
         $otherDeptAccomplishment->delete();
         \LogActivity::addToLog('Had deleted other department/college accomplishment.');
 
@@ -285,7 +289,7 @@ class OtherDeptAccomplishmentController extends Controller
     }
 
     public function removeDoc($filename){
-        // $this->authorize('delete', OtherDeptAccomplishment::class);
+        $this->authorize('manage', OtherDeptAccomplishment::class);
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');

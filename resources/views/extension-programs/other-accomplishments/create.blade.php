@@ -1,16 +1,19 @@
 <x-app-layout>
+    @section('title', 'Other Individual Accomplishments |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <p>
+                <h3 class="font-weight-bold mr-2">Add Other Individual Accomplishment</h3>
+                <div class="mb-3">
                     <a class="back_link" href="{{ route('other-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Accomplishments</a>
-                </p>
-                <div class="alert alert-warning" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('other-accomplishment.store') }}" method="post">
+                        <form action="{{ route('other-accomplishment.store') }}" method="post" class="needs-validation" novalidate>
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                            </div> 
+                            <hr>
                             @csrf
                             @include('form', ['formFields' => $otherAccomplishmentFields, 'colleges' => $colleges])
                             <div class="row">
@@ -35,7 +38,6 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
             $('#from').on('change', function () {
-                $('#to').datepicker('setDate', $('#from').val());
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>

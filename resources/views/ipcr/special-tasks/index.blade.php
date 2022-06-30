@@ -42,50 +42,7 @@
                             </div>
                         </div>
                         <hr>
-                        <!-- <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label for="catFilter" class="mr-2">Commitment Measurable by: </label>
-                                    <select id="catFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                        @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                    <div class="d-flex">
-                                        <select id="quarterFilter" class="custom-select" name="quarter">
-
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="yearFilter" class="mr-2">Year Covered:</label>
-                                    <div class="d-flex">
-                                        <select id="yearFilter" class="custom-select" name="yearFilter">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                    <select id="collegeFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                        @foreach($tasks_in_colleges as $college)
-                                        <option value="{{ $college->name }}">{{ $college->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <hr> -->
+                        @include('instructions')
                         <div class="table-responsive" style="overflow-x:auto;">
                             <table class="table" id="special_table">
                                 <thead>
@@ -170,19 +127,19 @@
 
     {{-- Delete Modal --}}
     @include('delete')
-
+    
     @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
-     <script>
+    <script>
          window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);
 
-             $('#special_table').DataTable();
-
+        $('#special_table').DataTable();
+             
          //Item to delete to display in delete modal
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
@@ -197,107 +154,6 @@
           document.getElementById('delete_item').action = url;
 
         });
-     </script>
-    <script>
-        $("#special_table").DataTable();
-        //  var table =  $("#special_table").DataTable({
-        //     "searchCols": [
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //         { "search": "{{ $currentQuarterYear->current_year }}" },
-        //         null,
-        //         null,
-        //         null,
-        //     ],
-        //     initComplete: function () {
-        //         this.api().columns(4).every( function () {
-        //             var column = this;
-        //             var select = $('#quarterFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(5).every( function () {
-        //             var column = this;
-        //             var select = $('#yearFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-        //     }
-        //  });
-
-        //   var catIndex = 0;
-        //     $("#special_table th").each(function (i) {
-        //         if ($($(this)).html() == "Commitment Measurable By:") {
-        //             catIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#catFilter').val()
-        //             var category = data[catIndex];
-        //             if (selectedItem === "" || category.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     var collegeIndex = 0;
-        //     $("#special_table th").each(function (i) {
-        //         if ($($(this)).html() == "College/Branch/Campus/Office") {
-        //             collegeIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#collegeFilter').val()
-        //             var college = data[collegeIndex];
-        //             if (selectedItem === "" || college.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     $("#catFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     $("#collegeFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     table.draw();
      </script>
      @endpush
 </x-app-layout>
