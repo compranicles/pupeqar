@@ -4,6 +4,7 @@ namespace App\Policies\OtherAccomplishment;
 
 use App\Models\OtherDeptAccomplishment;
 use App\Models\User;
+use App\Models\Authentication\UserRole;
 use App\Models\Authentication\RolePermission;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\DB;
