@@ -39,6 +39,7 @@
                                         <th>Title</th>
                                         <th>No. of Student Attendees</th>
                                         <th>Organizer</th>
+                                        <th>College/Branch/ Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
                                         <th>Date Modified</th>
@@ -52,6 +53,7 @@
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->title }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->no_of_students }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->organization }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('student-training.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>

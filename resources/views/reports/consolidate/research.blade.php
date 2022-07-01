@@ -98,6 +98,18 @@
                                                     {{ $row->report_details->output }}
                                                 @elseif (isset($row->report_details->final_output))
                                                     {{ $row->report_details->final_output }}
+                                                @elseif (isset($row->report_details->activity_description))
+                                                    {{ $row->report_details->activity_description }}
+                                                @elseif (isset($row->report_details->active_linkages))
+                                                    {{ $row->report_details->active_linkages }}
+                                                @elseif (isset($row->report_details->program_title))
+                                                    {{ $row->report_details->program_title }}
+                                                @elseif (isset($row->report_details->project_title))
+                                                        {{ $row->report_details->project_title }}
+                                                @elseif (isset($row->report_details->activity_title))
+                                                    {{ $row->report_details->activity_title }}
+                                                @elseif (isset($row->report_details->accomplishment_description))
+                                                    {{ $row->report_details->accomplishment_description }}
                                                 @endif
                                             </td>
                                             <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>

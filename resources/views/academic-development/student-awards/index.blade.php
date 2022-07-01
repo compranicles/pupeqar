@@ -38,9 +38,9 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Name of Student</th>
                                         <th>Name of Award</th>
                                         <th>Certifying Body</th>
+                                        <th>College/Branch/ Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
                                         <th>Date Modified</th>
@@ -51,9 +51,9 @@
                                     @foreach ($student_awards as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >{{ $row->name_of_student }}</td>
                                         <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >{{ $row->name_of_award }}</td>
                                         <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >{{ $row->certifying_body }}</td>
+                                        <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('student-award.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>

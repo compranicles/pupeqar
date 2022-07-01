@@ -41,7 +41,10 @@ class StudentAwardController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $student_awards = StudentAward::where('user_id', auth()->id())
-                            ->orderBy('student_awards.updated_at', 'desc')->get();
+                            ->join('colleges', 'colleges.id', 'student_awards.college_id')
+                            ->orderBy('student_awards.updated_at', 'desc')
+                            ->select('student_awards.*', 'colleges.name as college_name')
+                            ->get();
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;

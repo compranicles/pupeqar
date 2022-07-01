@@ -41,7 +41,10 @@ class StudentTrainingController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $student_trainings = StudentTraining::where('user_id', auth()->id())
-                        ->orderBy('student_trainings.updated_at', 'desc')->get();
+                        ->join('colleges', 'colleges.id', 'student_trainings.college_id')
+                        ->orderBy('student_trainings.updated_at', 'desc')
+                        ->select('student_trainings.*', 'colleges.name as college_name')
+                        ->get();
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;

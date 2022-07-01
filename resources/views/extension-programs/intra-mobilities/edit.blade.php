@@ -143,6 +143,13 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
+            $('#classification_of_person').on('change', function() {
+                if ({!! json_encode($is_dean) !!} == null || {!! json_encode($is_chair) !!} == null) {
+                    $('#classification_of_person option[value=298]').attr('disabled', 'disabled');
+                }
+            });
+        </script>
+        <script>
             $(function() {
                 var type = '{{ $values['type'] }}';
             });

@@ -2,18 +2,6 @@
     <x-slot name="header">
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'id'))
     </x-slot>
-
-    <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="true">All</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
-        </li>
-    </ul> -->
     <div class="row">
         <div class="col-md-12">
             <h2 class="font-weight-bold mb-2">Consolidated QAR - {{ $department->code }} Department</h2>
@@ -116,6 +104,18 @@
                                             {{ $row->report_details->output }}
                                         @elseif (isset($row->report_details->final_output))
                                             {{ $row->report_details->final_output }}
+                                        @elseif (isset($row->report_details->activity_description))
+                                            {{ $row->report_details->activity_description }}
+                                        @elseif (isset($row->report_details->active_linkages))
+                                            {{ $row->report_details->active_linkages }}
+                                        @elseif (isset($row->report_details->program_title))
+                                            {{ $row->report_details->program_title }}
+                                        @elseif (isset($row->report_details->project_title))
+                                                {{ $row->report_details->project_title }}
+                                        @elseif (isset($row->report_details->activity_title))
+                                            {{ $row->report_details->activity_title }}
+                                        @elseif (isset($row->report_details->accomplishment_description))
+                                            {{ $row->report_details->accomplishment_description }}
                                         @endif
                                     </td>
                                     <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>
@@ -360,45 +360,6 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $('#department_accomplishments_table').DataTable();
-            // var table = $('#department_accomplishments_table').DataTable({
-            //     initComplete: function () {
-            //     this.api().columns(2).every( function () {
-            //         var column = this;
-            //         var select = $('#empFilter')
-            //             .on( 'change', function () {
-            //                 var val = $.fn.dataTable.util.escapeRegex(
-            //                     $(this).val()
-            //                 );
-
-            //                 column
-            //                     .search( val ? '^'+val+'$' : '', true, false )
-            //                     .draw();
-            //             } );
-
-            //         column.data().unique().sort().each( function ( d, j ) {
-            //             select.append( '<option value="'+d+'">'+d+'</option>' )
-            //         } );
-            //     });
-
-            //     this.api().columns(1).every( function () {
-            //         var column = this;
-            //         var select = $('#reportFilter')
-            //             .on( 'change', function () {
-            //                 var val = $.fn.dataTable.util.escapeRegex(
-            //                     $(this).val()
-            //                 );
-
-            //                 column
-            //                     .search( val ? '^'+val+'$' : '', true, false )
-            //                     .draw();
-            //             } );
-
-            //         column.data().unique().sort().each( function ( d, j ) {
-            //             select.append( '<option value="'+d+'">'+d+'</option>' )
-            //         } );
-            //     });
-            //     }
-            // });
 
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
@@ -477,53 +438,7 @@
                 }
             }
         </script>
-        <!-- <script>
-            function received() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#department_accomplishments_table').DataTable().search("");
 
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        // table.columns().search('').draw();
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Received")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-
-            }
-        </script>
-        <script>
-             function showall() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#department_accomplishments_table').DataTable().search("");
-
-                table.draw();
-            }
-        </script>
-        <script>
-            function returned() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-                $('#department_accomplishments_table').DataTable().search("");
-
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Returned")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-            }
-        </script> -->
         <script>
             $('#filter').on('click', function () {
                 var year_reported = $('#yearFilter').val();
@@ -533,15 +448,6 @@
                 window.location.replace(newLink);
             });
         </script>
-        <!-- <script>
-            $(function(){
-                //show all the accomplishments
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-
-                table.draw();
-            });
-        </script> -->
         <script>
             $('#export').on('click', function() {
                 var selectedQuarter = $('#quarterFilter').val();

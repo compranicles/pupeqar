@@ -10,22 +10,10 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button onclick="showall();" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="home" aria-selected="false">All</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button onclick="received();" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#received" type="button" role="tab" aria-controls="profile" aria-selected="false">Received</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button onclick="returned();" class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button" role="tab" aria-controls="messages" aria-selected="false">Returned <span class="badge bg-dark" id="badge-returned"></span></button>
-                </li>
-            </ul> -->
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
-
-                        <div class="col-md-2 ">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label for="yearFilter" class="mr-2">Year Reported: </label>
                                 <select id="yearFilter" class="custom-select">
@@ -42,7 +30,6 @@
                                         <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
                                         <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
                                     </select>
-
                                 </div>
                             </div>
                         </div>
@@ -111,6 +98,18 @@
                                                     {{ $row->report_details->output }}
                                                 @elseif (isset($row->report_details->final_output))
                                                     {{ $row->report_details->final_output }}
+                                                @elseif (isset($row->report_details->activity_description))
+                                                    {{ $row->report_details->activity_description }}
+                                                @elseif (isset($row->report_details->active_linkages))
+                                                    {{ $row->report_details->active_linkages }}
+                                                @elseif (isset($row->report_details->program_title))
+                                                    {{ $row->report_details->program_title }}
+                                                @elseif (isset($row->report_details->project_title))
+                                                        {{ $row->report_details->project_title }}
+                                                @elseif (isset($row->report_details->activity_title))
+                                                    {{ $row->report_details->activity_title }}
+                                                @elseif (isset($row->report_details->accomplishment_description))
+                                                    {{ $row->report_details->accomplishment_description }}
                                                 @endif
                                             </td>
                                             {{-- <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id] ?? '-' }}</td> --}}
@@ -294,12 +293,12 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel"></h5>
+                <h5 class="modal-title w-100 text-center" id="viewReportLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body w-100 text-center">
                 <div class="row justify-content-center">
                     <div class="col-md-11 h5 font-weight-bold">Documents</div>
                     <div class="col-md-11" id="data_documents">
@@ -456,101 +455,6 @@
                 window.location.replace(newLink);
             });
         </script>
-        <!-- <script>
-            var table =  $("#my_accomplishments_table").DataTable({
-                initComplete: function () {
-                this.api().columns(1).every( function () {
-                    var column = this;
-                    var select = $('#reportFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(2).every( function () {
-                    var column = this;
-                    var select = $('#collegeFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                }
-            });
-        </script>
-        <script>
-            function received() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#my_accomplishments_table').DataTable().search("");
-
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        // table.columns().search('').draw();
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Received")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-
-            }
-        </script> -->
-        <!-- <script>
-            $(function(){
-                //show all the accomplishments
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-
-                table.draw();
-            });
-        </script>
-        <script>
-             function showall() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#my_accomplishments_table').DataTable().search("");
-                table.draw();
-            }
-        </script>
-        <script>
-            function returned() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-
-                $('#my_accomplishments_table').DataTable().search("");
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Returned")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-            }
-        </script> -->
         <script>
             $('#export').on('click', function() {
                 var selectedQuarter = $('#quarterFilter').val();

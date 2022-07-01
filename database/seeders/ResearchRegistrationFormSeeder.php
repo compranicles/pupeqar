@@ -181,7 +181,7 @@ class ResearchRegistrationFormSeeder extends Seeder
             'label' => 'Status',
             'name' => 'status',
             'placeholder' => null,
-            'size' => 'col-md-3',
+            'size' => 'col-md-5',
             'field_type_id' => 5,
             'dropdown_id' => 7, 
             'required' => 1,

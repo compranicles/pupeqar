@@ -23,6 +23,19 @@
 
         </select>
 
+        @if (isset($fieldInfo->research_form_id))
+            @if ($fieldInfo->name == 'status' && $fieldInfo->research_form_id == 1)
+            <span>
+                <p>Please select <strong>new commitment</strong> or <strong>ongoing</strong> before proceeding for completion, etc.</p>
+            </span>
+            @endif
+        @endif
+        @if ($fieldInfo->name == 'classification_of_person')
+        <span>
+            <p>Please select your designation. <br>Chair/Dean/Director will encode for <strong>student</strong> mobility.</p>
+        </span>
+        @endif
+        
         @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>

@@ -75,6 +75,7 @@ class ChairpersonController extends Controller
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
+                ->orderBy('reports.updated_at', 'DESC')
                 ->where('department_id', $row->department_id)->where('chairperson_approval', null)->get();
 
 

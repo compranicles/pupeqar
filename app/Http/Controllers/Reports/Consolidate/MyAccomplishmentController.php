@@ -74,7 +74,7 @@ class MyAccomplishmentController extends Controller
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
                 ->where('reports.user_id', auth()->id())
-                ->orderBy('reports.updated_at')
+                ->orderBy('reports.updated_at', 'DESC')
                 ->get(); //get my individual accomplishment
 
         //get_department_and_college_name

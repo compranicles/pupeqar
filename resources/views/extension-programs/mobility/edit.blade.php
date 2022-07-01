@@ -148,6 +148,13 @@
             });
         </script>
         <script>
+            $('#classification_of_person').on('change', function() {
+                if ({!! json_encode($is_dean) !!} == null || {!! json_encode($is_chair) !!} == null) {
+                    $('#classification_of_person option[value=298]').attr('disabled', 'disabled');
+                }
+            });
+        </script>
+        <script>
             $('#start_date').on('change', function () {
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
             });

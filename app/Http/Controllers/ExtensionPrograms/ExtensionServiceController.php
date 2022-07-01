@@ -410,7 +410,7 @@ class ExtensionServiceController extends Controller
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        if(ExtensionInvite::where('ext_code', $extension_service->ext_code())->where('user_id', auth()->id())->pluck('is_owner')->first() == '1'){
+        if(ExtensionInvite::where('ext_code', $extension_service->ext_code)->where('user_id', auth()->id())->pluck('is_owner')->first() == '1'){
             $extension_service->delete();
             ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
         }

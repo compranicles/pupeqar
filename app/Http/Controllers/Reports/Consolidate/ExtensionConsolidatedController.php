@@ -74,7 +74,9 @@ class ExtensionConsolidatedController extends Controller
                 ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14, 23, 34, 35, 36, 37])
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
-                ->where('reports.college_id', $id)->get();
+                ->where('reports.college_id', $id)
+                ->orderBy('reports.updated_at', 'DESC')
+                ->get();
 
         //get_department_and_college_name
         $college_names = [];

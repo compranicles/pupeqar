@@ -11,9 +11,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use App\Models\{
+    AttendanceFunction,
+    AttendanceFunctionDocument,
     Chairperson,
     CollegeDepartmentAward,
     CollegeDepartmentAwardDocument,
+    CommunityEngagement,
+    CommunityEngagementDocument,
     Dean,
     ExpertServiceAcademic,
     ExpertServiceAcademicDocument,
@@ -25,11 +29,17 @@ use App\Models\{
     ExtensionServiceDocument,
     FacultyExtensionist,
     FacultyResearcher,
+    IntraMobility,
+    IntraMobilityDocument,
     Invention,
     InventionDocument,
     LogActivity,
     Mobility,
     MobilityDocument,
+    OtherAccomplishment,
+    OtherAccomplishmentDepartment,
+    OtherDeptAccomplishment,
+    OtherDeptAccomplishmentDepartment,
     OutreachProgram,
     OutreachProgramDocument,
     Partnership,
@@ -41,6 +51,8 @@ use App\Models\{
     RequestDocument,
     Research,
     ResearchCitation,
+    ResearchComplete,
+    ResearchCopyright,
     ResearchDocument,
     ResearchPresentation,
     ResearchPublication,
@@ -66,8 +78,6 @@ use App\Models\{
     AdminSpecialTaskDocument,
     SpecialTask,
     SpecialTaskDocument,
-    AttendanceFunction,
-    CommunityEngagement,
 };
 
 
@@ -2237,6 +2247,269 @@ class SubmissionController extends Controller
                     $report_document_checker[$table->id] = $checker_array;
                     $checker_array = [];
                     break;
+                case '33':
+                    $data = AttendanceFunction::select(
+                                                    'attendance_functions.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'attendance_functions.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'attendance_functions.classification')
+                                                ->where('attendance_functions.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 33)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('attendance_functions', 'attendance_functions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 33)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = AttendanceFunctionDocument::where('attendance_function_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                    case '33':
+                    $data = AttendanceFunction::select(
+                                                    'attendance_functions.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'attendance_functions.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'attendance_functions.classification')
+                                                ->where('attendance_functions.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 33)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('attendance_functions', 'attendance_functions.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 33)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = AttendanceFunctionDocument::where('attendance_function_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '34':
+                    $data = IntraMobility::select(
+                                        'intra_mobilities.*',
+                                        'colleges.name as college_name'
+                                    )->where('user_id', auth()->id())
+                                    ->join('colleges', 'colleges.id', 'intra_mobilities.college_id')
+                                    ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 34)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('intra_mobilities', 'intra_mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 34)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = IntraMobilityDocument::where('intra_mobility_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '35':
+                    $data = Mobility::select(
+                                                    'mobilities.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->where('classification_of_persons', 298) //Students
+                                                ->join('colleges', 'colleges.id', 'mobilities.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'mobilities.classification')
+                                                ->where('mobilities.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 35)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('mobilities', 'mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 35)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = MobilityDocument::where('mobility_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '36':
+                    $data = IntraMobility::select(
+                                                    'intra_mobilities.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->where('classification_of_persons', 298) //Students
+                                                ->join('colleges', 'colleges.id', 'intra_mobilities.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'intra_mobilities.classification')
+                                                ->where('intra_mobilities.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 36)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('intra_mobilities', 'intra_mobilities.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 36)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = IntraMobilityDocument::where('intra_mobility_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '37':
+                    $data = CommunityEngagement::select(
+                                                    'community_engagements.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'community_engagements.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'community_engagements.classification')
+                                                ->where('community_engagements.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 37)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('community_engagements', 'community_engagements.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 37)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = CommunityEngagementDocument::where('community_engagement_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '38':
+                    $data = OtherAccomplishment::select(
+                                                    'other_accomplishments.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'other_accomplishments.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'other_accomplishments.classification')
+                                                ->where('other_accomplishments.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 38)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('other_accomplishments', 'other_accomplishments.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 38)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = OtherAccomplishmentDocument::where('other_accomplishment_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
+                case '39':
+                    $data = OtherDeptAccomplishment::select(
+                                                    'other_dept_accomplishments.*',
+                                                    'colleges.name as college_name',
+                                                    'dropdown_options.name as classification_name'
+                                                )->where('user_id', auth()->id())
+                                                ->join('colleges', 'colleges.id', 'other_dept_accomplishments.college_id')
+                                                ->join('dropdown_options', 'dropdown_options.id', 'other_dept_accomplishments.classification')
+                                                ->where('other_dept_accomplishments.college_id', $collegeID)
+                                                ->get();
+                    $tempdata = [];
+                    foreach($data as $row){
+                        if ( Report::where('report_reference_id', $row->id)->where('report_category_id', 39)->where('reports.user_id', auth()->id())->exists() ) {
+                            if (
+                                Report::join('other_dept_accomplishments', 'other_dept_accomplishments.id', 'reports.report_reference_id')->where('reports.report_reference_id', $row->id)
+                                ->where('reports.user_id', auth()->id())->where('reports.report_category_id', 39)->where('reports.created_at', '<=', $row->updated_at)->exists()
+                            )
+                                array_push($tempdata, $row);
+                        }
+                        else
+                            array_push($tempdata, $row);
+                    }
+                    $data = $tempdata;
+                    if($data != null){
+                        foreach($data as $row){
+                            $checker = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $row->id)->get();
+                            $checker_array[$row->id] = $checker;
+                        }
+                    }
+                    $report_array[$table->id] = $data;
+                    $report_document_checker[$table->id] = $checker_array;
+                    $checker_array = [];
+                    break;
                 default:
                     $report_array[$table->id] = [];
                     $report_document_checker[$table->id] = [];
@@ -2346,14 +2619,12 @@ class SubmissionController extends Controller
         switch($report_values_array[1]){
             case 1: case 2: case 3: case 4: case 5: case 6: case 7:
                 if ($report_values_array[1] == 1) {
-
                     $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 else {
                     $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
-
                 }
                 $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
                 if($report_values_array[1] == 5){
@@ -2394,7 +2665,7 @@ class SubmissionController extends Controller
                 $successToSubmit++;
 
             break;
-            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33: case 34:
+            case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33: case 34: case 38:
                 switch($report_values_array[1]){
                     case 8:
                         $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();

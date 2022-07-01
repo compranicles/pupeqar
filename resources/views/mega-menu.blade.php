@@ -38,7 +38,9 @@
                 @can('viewAny', \App\Models\Mobility::class)
                 <li><a class="{{ request()->routeIs('mobility.*') ? 'active' : '' }}" href="{{ route('mobility.index') }}">&#8226; Inter-country Mobility</a></li>
                 @endcan
+                @can('manage', \App\Models\IntraMobility::class)
                 <li><a class="{{ request()->routeIs('intra-mobility.*') ? 'active' : '' }}" href="{{ route('intra-mobility.index') }}">&#8226; Intra-country Mobility</a></li>
+                @endcan
                 @can('viewAny', \App\Models\Partnership::class)
                 <li><a class="{{ request()->routeIs('partnership.*') ? 'active' : '' }}" href="{{ route('partnership.index') }}">&#8226; Partnership/Linkages/Network</a></li>
                 @endcan
@@ -47,7 +49,9 @@
         <div class="col-md-3">
             <ul>
                 {{-- For College and Departments --}}
+                @can('manage', \App\Models\CommunityEngagement::class)
                 <li><a class="{{ request()->routeIs('community-engagement.*') ? 'active' : '' }}" href="{{ route('community-engagement.index') }}">&#8226; Community Engagement Conducted by College/Department</a></li>
+                @endcan
                 @can('viewAny', \App\Models\OutreachProgram::class)
                 <li><a class="{{ request()->routeIs('outreach-program.*') ? 'active' : '' }}" href="{{ route('outreach-program.index') }}">&#8226; Community Relation and Outreach Program</a></li>
                 @endcan

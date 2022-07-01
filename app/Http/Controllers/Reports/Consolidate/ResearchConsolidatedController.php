@@ -75,7 +75,9 @@ class ResearchConsolidatedController extends Controller
                 ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
-                ->where('reports.college_id', $id)->get();
+                ->where('reports.college_id', $id)
+                ->orderBy('reports.updated_at', 'DESC')
+                ->get();
         //get_department_and_college_name
         $college_names = [];
         $department_names = [];

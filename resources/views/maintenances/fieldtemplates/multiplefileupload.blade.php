@@ -1,7 +1,13 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3" id="upload-document">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-
+        @if (isset($fieldInfo->i_p_c_r_form_id))
+            @if ($fieldInfo->i_p_c_r_form_id == 4 && $fieldInfo->name == 'document')
+                <span class="ml-3" role="alert">
+                    Note: If you <strong>did not attend</strong> the function, please upload one of any file to allow you submit the accomplishment later.
+                </span>
+            @endif
+        @endif
         <input type="file"
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"
             name="{{ $fieldInfo->name }}[]"

@@ -70,8 +70,8 @@
         </div>
     </x-jet-authentication-card>
     <div class="footer">
-        <p><p>By using this service, you understood and agree to the PUP Online Services 
+        By using this service, you understood and agree to the PUP Online Services 
             <a href="https://www.pup.edu.ph/terms/" style="color: white; text-decoration: underline;"> Terms of Use </a>and
-            <a href="https://www.pup.edu.ph/privacy/" style="color: white; text-decoration: underline;"> Privacy Statement </a></p>
+            <a href="https://www.pup.edu.ph/privacy/" style="color: white; text-decoration: underline;"> Privacy Statement </a>
     </div>
 </x-guest-layout>
