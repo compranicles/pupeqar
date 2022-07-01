@@ -84,25 +84,25 @@
     <script>
         var collegeId = $('#college_id').val();
 
-            if (collegeId == '') {
-                document.getElementById("department_id").value = "";
-            }
-            else {
-                var url = "{{ url('departments/options/:id') }}";
-				var api = url.replace(':id', collegeId);
-				$.get(api, function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#department_id").append(new Option(item.name, item.id));
+        if (collegeId == '') {
+            document.getElementById("department_id").value = "";
+        }
+        else {
+            var url = "{{ url('departments/options/:id') }}";
+            var api = url.replace(':id', collegeId);
+            $.get(api, function (data){
+                if (data != '') {
+                    data.forEach(function (item){
+                        $("#department_id").append(new Option(item.name, item.id));
 
-                        });
-                        $("#department_id").append(new Option('N/A', '0'));
-                    }
-                    if ("{{ old('department_id') }}" == '')
-                    document.getElementById("department_id").value = "{{ $department_id }}";
-                    else
-                        document.getElementById("department_id").value = "{{ old('department_id') }}";
-                });
-            }
+                    });
+                    $("#department_id").append(new Option('N/A', '0'));
+                }
+                if ("{{ old('department_id') }}" == '')
+                document.getElementById("department_id").value = "{{ $department_id }}";
+                else
+                    document.getElementById("department_id").value = "{{ old('department_id') }}";
+            });
+        }
     </script>
 @endpush

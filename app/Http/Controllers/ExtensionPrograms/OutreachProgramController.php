@@ -2,27 +2,21 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Dean;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    DB,
-    Storage,
-};
-use App\Models\{
-    Chairperson,
-    Dean,
-    OutreachProgram,
-    OutreachProgramDocument,
-    TemporaryFile,
-    FormBuilder\ExtensionProgramForm,
-    Maintenance\College,
-    Maintenance\Quarter,
-};
+use App\Models\TemporaryFile;
+use App\Models\OutreachProgram;
+use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use App\Models\OutreachProgramDocument;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class OutreachProgramController extends Controller
 {
@@ -52,12 +46,12 @@ class OutreachProgramController extends Controller
         foreach ($outreach_programs as $outreach_program) {
             if (LockController::isLocked($outreach_program->id, 22))
                 $submissionStatus[22][$outreach_program->id] = 1;
-            else 
+            else
                 $submissionStatus[22][$outreach_program->id] = 0;
             if (empty($reportdata->getDocuments(22, $outreach_program->id)))
                 $submissionStatus[22][$outreach_program->id] = 2;
         }
-        
+
         return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear',
             'submissionStatus'));
     }
@@ -111,9 +105,9 @@ class OutreachProgramController extends Controller
 
         $outreach = OutreachProgram::create($input);
         $outreach->update(['user_id' => auth()->id()]);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -176,7 +170,7 @@ class OutreachProgramController extends Controller
 
         if (auth()->id() !== $outreach_program->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -214,7 +208,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date')));
-        
+
         $request->merge([
             'date' => $date,
         ]);
@@ -224,9 +218,9 @@ class OutreachProgramController extends Controller
         $outreach_program->update(['description' => '-clear']);
 
         $outreach_program->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -267,7 +261,7 @@ class OutreachProgramController extends Controller
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
-        
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();

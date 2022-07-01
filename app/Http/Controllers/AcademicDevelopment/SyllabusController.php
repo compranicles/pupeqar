@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Employee;
+use App\Models\Syllabus;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
+use App\Models\SyllabusDocument;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
-use App\Models\{
-    Employee,
-    Report,
-    Syllabus,
-    SyllabusDocument,
-    TemporaryFile,
-    FormBuilder\DropdownOption,
-    FormBuilder\AcademicDevelopmentForm,
-    Maintenance\College,
-    Maintenance\Quarter,
-    Maintenance\Department,
-};
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class SyllabusController extends Controller
 {

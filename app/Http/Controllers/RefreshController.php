@@ -12,9 +12,14 @@ class RefreshController extends Controller
         \Artisan::call('cache:clear');
         \Artisan::call('route:clear');
         \Artisan::call('view:clear');
+
+        return redirect()->route('home');
+    }
+
+    public function migrate(){
         \Artisan::call('migrate');
         \Artisan::call('db:seed');
-
+        
         return redirect()->route('home');
     }
 }

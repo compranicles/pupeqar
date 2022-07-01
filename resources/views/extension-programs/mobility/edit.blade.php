@@ -22,7 +22,7 @@
                         <form action="{{ route('mobility.update', $mobility->id) }}" method="post">
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => 1])
+                            @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => $colaccomp])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -216,6 +216,12 @@
                     }
                 });
             }, Math.floor(Math.random() * (2500 - 1) + 1));
+
+            $('#classification_of_person').on('change', function (){
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                }
+            });
         </script>
     @endpush
 </x-app-layout>

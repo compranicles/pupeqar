@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Dean;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
+use App\Models\ViableProject;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use App\Models\ViableProjectDocument;
 use Illuminate\Support\Facades\Storage;
-use App\Models\{
-    Chairperson,
-    Dean,
-    TemporaryFile,
-    ViableProject,
-    ViableProjectDocument,
-    FormBuilder\AcademicDevelopmentForm,
-    Maintenance\College,
-    Maintenance\Quarter,
-};
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\AcademicDevelopmentForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class ViableProjectController extends Controller
 {
@@ -44,13 +40,13 @@ class ViableProjectController extends Controller
         $viable_projects = ViableProject::where('user_id', auth()->id())
                             ->select(DB::raw('viable_projects.*'))
                             ->orderBy('viable_projects.updated_at', 'desc')->get();
-                            
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($viable_projects as $viable_project) {
             if (LockController::isLocked($viable_project->id, 20))
                 $submissionStatus[20][$viable_project->id] = 1;
-            else 
+            else
                 $submissionStatus[20][$viable_project->id] = 0;
             if (empty($reportdata->getDocuments(20, $viable_project->id)))
                 $submissionStatus[20][$viable_project->id] = 2;
@@ -126,13 +122,13 @@ class ViableProjectController extends Controller
 
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
-        
+
         $return_rate = ($request->input('rate_of_return') / 100 );
-        
+
         $viable_project->update(['rate_of_return' => $return_rate]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -253,7 +249,7 @@ class ViableProjectController extends Controller
             // 'cost' => 'numeric',
             'rate_of_return' => 'numeric',
         ]);
-        
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -261,9 +257,9 @@ class ViableProjectController extends Controller
         $viable_project->update(['description' => '-clear']);
 
         $viable_project->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

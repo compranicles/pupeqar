@@ -113,13 +113,13 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('expert-service-as-consultant.show', $expertServiceConsultant) }}" class="btn btn-sm btn-primary">View</a>
-                                                <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}" class="btn btn-sm btn-warning">Edit</a>
-                                                <button type="button" value="{{ $expertServiceConsultant->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconsultant="{{ $expertServiceConsultant->title }}">Delete</button>
+                                                <a href="{{ route('expert-service-as-consultant.show', $expertServiceConsultant) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                <button type="button" value="{{ $expertServiceConsultant->id }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-esconsultant="{{ $expertServiceConsultant->title }}">Delete</button>
                                                 @if ($submissionStatus[9][$expertServiceConsultant->id] == 0)
-                                                    <a href="{{ url('submissions/check/9/'.$expertServiceConsultant->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    <a href="{{ url('submissions/check/9/'.$expertServiceConsultant->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
                                                 @elseif ($submissionStatus[9][$expertServiceConsultant->id] == 1)
-                                                    <a href="{{ url('submissions/check/9/'.$expertServiceConsultant->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    <a href="{{ url('submissions/check/9/'.$expertServiceConsultant->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                 @elseif ($submissionStatus[9][$expertServiceConsultant->id] == 2)
                                                     <a href="{{ route('expert-service-as-consultant.edit', $expertServiceConsultant->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                 @endif

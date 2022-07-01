@@ -2,29 +2,21 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Dean;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    DB,
-    Storage,
-};
-use App\Models\{
-    Employee,
-    CommunityEngagement,
-    CommunityEngagementDocument,
-    TemporaryFile,
-    FormBuilder\ExtensionProgramForm,
-    Maintenance\College,
-    Maintenance\Department,
-    Maintenance\Quarter,
-    Dean,
-    Chairperson,
-};
+use App\Models\TemporaryFile;
+use Illuminate\Support\Facades\DB;
+use App\Models\CommunityEngagement;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Models\CommunityEngagementDocument;
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class CommunityEngagementController extends Controller
 {

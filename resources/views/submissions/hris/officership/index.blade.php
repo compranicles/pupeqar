@@ -36,17 +36,17 @@
                                                     <td>{{ $officership->IncDate }}</td>
                                                     <td>{{ $officership->Level }}</td>
                                                     <td>
-                                                        @if ($officeReports != null)
-                                                            @foreach ($officeReports as $officeReport)
-                                                                @if ($officeReport->report_reference_id == $officership->EmployeeOfficershipMembershipID)
-                                                                    <a class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
-                                                                    @break
-                                                                @else
-                                                                    <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
+                                                        @forelse ($officeReports as $officeReport)
+                                                            @if ($officeReport->report_reference_id == $officership->EmployeeOfficershipMembershipID)
+                                                                <a class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                                @break
+                                                            @else
+                                                                <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                                @break
+                                                            @endif
+                                                        @empty
+                                                            <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                        @endforelse
                                                     </td>
                                                     <td>
                                                         @if ($officeReports != null)

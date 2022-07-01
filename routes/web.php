@@ -471,7 +471,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::resource('/authentication/users', \App\Http\Controllers\UserController::class);
     Route::resource('/authentication/roles', \App\Http\Controllers\Authentication\RoleController::class);
     Route::resource('/authentication/permissions', \App\Http\Controllers\Authentication\PermissionController::class);
-
+    Route::get('refresh/migrate', [\App\Http\Controllers\RefreshController::class, 'migrate']);
     // forms
     // Route::post('/forms/save-arrange', [\App\Http\Controllers\FormBuilder\FormController::class, 'arrange'])->name('forms.arrange');
     // Route::resource('forms', \App\Http\Controllers\FormBuilder\FormController::class);

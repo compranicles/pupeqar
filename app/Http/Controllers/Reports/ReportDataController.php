@@ -381,7 +381,7 @@ class ReportDataController extends Controller
             $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 35){
-            $report_docs = MobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
+            $report_docs = MobilityDocument::where('mobility_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 36){
             $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
@@ -411,7 +411,7 @@ class ReportDataController extends Controller
         $new_report_details = [];
         $report_columns;
 
-        if($report_data->report_category_id <= '23'){
+        if($report_data->report_category_id <= '23' || $report_data->report_category_id >= '29'){
             $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
                 $new_report_details[$row->name] = $report_details[$row->column];

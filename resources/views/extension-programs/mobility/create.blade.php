@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <form action="{{ route('mobility.store') }}" method="post">
                             @csrf
-                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges,  'colaccomp' => 1])
+                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges,  'colaccomp' => $colaccomp])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -104,6 +104,12 @@
                     }
                 });
             }, Math.floor(Math.random() * (2500 - 1) + 1));
+
+            $('#classification_of_person').on('change', function (){
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                }
+            });
         </script>
     @endpush
 </x-app-layout>

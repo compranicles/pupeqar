@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Dean;
+use App\Models\Employee;
+use App\Models\Mobility;
+use App\Models\Chairperson;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    DB,
-    Storage,
-};
-use App\Models\{
-    Employee,
-    Mobility,
-    MobilityDocument,
-    TemporaryFile,
-    FormBuilder\ExtensionProgramForm,
-    Maintenance\College,
-    Maintenance\Department,
-    Maintenance\Quarter,
-};
+use App\Models\TemporaryFile;
+use App\Models\MobilityDocument;
+use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Department;
+use App\Models\Authentication\UserRole;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
+
+
 
 class MobilityController extends Controller
 {
@@ -86,12 +85,35 @@ class MobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $colaccomp = 0;
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        if(in_array(5, $roles)){
 
-        $departments = Department::whereIn('college_id', $colleges)->get();
+            $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+            $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+            $colleges = array_merge($deans, $chairpersons);
+            $colleges = College::whereIn('id', array_values($colleges))
+                        ->select('colleges.*')->get();
+            $departments = [];
+            $colaccomp = 1;
+        }
+        elseif(in_array(6, $roles)){
 
-        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments'));
+            $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+            $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+            $colleges = array_merge($deans, $chairpersons);
+            $colleges = College::whereIn('id', array_values($colleges))
+                        ->select('colleges.*')->get();
+            $departments = [];
+            $colaccomp = 1;
+        }
+        else{
+            $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+            $departments = Department::whereIn('college_id', $colleges)->get();
+            $colaccomp = 0;
+        }
+
+        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp'));
     }
 
     /**
@@ -108,12 +130,32 @@ class MobilityController extends Controller
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
         $currentQuarterYear = Quarter::find(1);
 
-        $request->merge([
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-            'report_quarter' => $currentQuarterYear->current_quarter,
-            'report_year' => $currentQuarterYear->current_year,
-        ]);
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        if(in_array(5, $roles)){
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
+            ]);
+        }
+        elseif(in_array(6, $roles)){
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
+            ]);
+        }
+        else{
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
+                'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            ]);
+        }
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -207,14 +249,27 @@ class MobilityController extends Controller
 
         $values = $mobility->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $colaccomp = 0;
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        if(in_array(5, $roles) || in_array(6, $roles)){
 
-        $departments = Department::whereIn('college_id', $colleges)->get();
+            $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
+            $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
+            $colleges = array_merge($deans, $chairpersons);
+            $colleges = College::whereIn('id', array_values($colleges))
+                        ->select('colleges.*')->get();
+            $departments = [];
+            $colaccomp = 1;
+        }
+        else{
+            $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+            $departments = Department::whereIn('college_id', $colleges)->get();
+            $colaccomp = 0;
+        }
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
 
-        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments'));
+        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp'));
     }
 
     /**
@@ -231,10 +286,26 @@ class MobilityController extends Controller
         $start_date = date("Y-m-d", strtotime($request->input('start_date')));
         $end_date = date("Y-m-d", strtotime($request->input('end_date')));
 
-        $request->merge([
-            'start_date' => $start_date,
-            'end_date' => $end_date,
-        ]);
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        if(in_array(5, $roles)){
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+            ]);
+        }
+        elseif(in_array(6, $roles)){
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+            ]);
+        }
+        else{
+            $request->merge([
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            ]);
+        }
 
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)

@@ -35,8 +35,15 @@
                 @include('maintenances.fieldtemplates.numberdecimal', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
             @case("college")
-                @if(isset($colaccomp))
+                @if(isset($colaccomp) && $colaccomp == 1)
                     @include('maintenances.fieldtemplates.college2', [
+                        'fieldInfo' => $field,
+                        'colleges' => $colleges ?? '',
+                        'college_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : ((isset($collegeOfDepartment[0]->id)) ? $collegeOfDepartment[0]->id : '' )) ,
+                        'department_id' => $value['department_id'] ?? ''
+                    ])
+                @elseif(isset($colaccomp) && $colaccomp == 0)
+                    @include('maintenances.fieldtemplates.college', [
                         'fieldInfo' => $field,
                         'colleges' => $colleges ?? '',
                         'college_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : ((isset($collegeOfDepartment[0]->id)) ? $collegeOfDepartment[0]->id : '' )) ,
@@ -52,8 +59,10 @@
                 @endif
                 @break
             @case("department")
-                @if(isset($colaccomp))
+                @if(isset($colaccomp) && $colaccomp == 1)
                     @include('maintenances.fieldtemplates.department2', ['fieldInfo' => $field])
+                @elseif(isset($colaccomp) && $colaccomp == 0)
+                    @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field, 'departments' => $departments,'department_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : '' ) ])
                 @else
                     @include('maintenances.fieldtemplates.department', ['fieldInfo' => $field, 'departments' => $departments,'department_id' => ((array_key_exists($field->name, $value)) ? $value[$field->name] : '' ) ])
                 @endif

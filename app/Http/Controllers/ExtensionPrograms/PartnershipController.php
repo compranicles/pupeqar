@@ -2,29 +2,20 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-    Reports\ReportDataController,
-    StorageFileController,
-};
+use App\Models\Employee;
+use App\Models\Partnership;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    DB,
-    Storage,
-};
-use App\Models\{
-    Employee,
-    Partnership,
-    PartnershipDocument,
-    TemporaryFile,
-    FormBuilder\DropdownOption,
-    FormBuilder\ExtensionProgramField,
-    FormBuilder\ExtensionProgramForm,
-    Maintenance\College,
-    Maintenance\Department,
-    Maintenance\Quarter,
-};
+use App\Models\TemporaryFile;
+use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\Quarter;
+use App\Models\PartnershipDocument;
+use App\Http\Controllers\Controller;
+use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\StorageFileController;
+use App\Models\FormBuilder\ExtensionProgramForm;
+use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class PartnershipController extends Controller
 {
