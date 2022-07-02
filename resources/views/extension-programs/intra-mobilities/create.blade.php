@@ -12,10 +12,10 @@
                         <form action="{{ route('intra-mobility.store') }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
-                            </div> 
+                            </div>
                             <hr>
                             @csrf
-                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges, 'colaccomp' => 1])
+                            @include('form', ['formFields' => $mobilityFields, 'colleges' => $colleges, 'colaccomp' => $colaccomp])
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -37,9 +37,9 @@
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
-            $('#classification_of_person').on('change', function() {
-                if ({!! json_encode($is_dean) !!} == null || {!! json_encode($is_chair) !!} == null) {
-                    $('#classification_of_person option[value=298]').attr('disabled', 'disabled');
+            $('#classification_of_person').on('change', function (){
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
                 }
             });
         </script>

@@ -64,11 +64,11 @@
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('outreach-program.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                 <a href="{{ route('outreach-program.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-outreach="{{ $row->title_of_the_program }}">Delete</button>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-outreach="{{ $row->title_of_the_program }}">Delete</button>
                                                 @if ($submissionStatus[22][$row->id] == 0)
-                                                    <a href="{{ url('submissions/check/22/'.$row->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                    <a href="{{ url('submissions/check/22/'.$row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
                                                 @elseif ($submissionStatus[22][$row->id] == 1)
-                                                    <a href="{{ url('submissions/check/22/'.$row->id) }}" class="btn btn-sm btn-success">Submitted</a>
+                                                    <a href="{{ url('submissions/check/22/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                 @elseif ($submissionStatus[22][$row->id] == 2)
                                                     <a href="{{ route('outreach-program.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                 @endif
