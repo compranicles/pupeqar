@@ -74,7 +74,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $source_type = "college";
                 $college_id = $id;
                 $data = College::where('id', $college_id)->first();
-                $table_format = GenerateTable::where('type_id', 2)->get();
+                $table_format = GenerateTable::whereIn('type_id', [2, 4])->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")
@@ -102,6 +102,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
+                            ->orderBy('users.last_name')
                             ->get()->toArray();
                 }
             }
@@ -111,7 +112,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $source_type = "college";
                 $college_id = $id;
                 $data = College::where('id', $college_id)->first();
-                $table_format = GenerateTable::where('type_id', 1)->get();
+                $table_format = GenerateTable::whereIn('type_id', [1, 4])->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")
@@ -138,7 +139,10 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
                             ->join('users', 'users.id', 'reports.user_id')
+                            ->join('departments', 'departments.id', 'reports.department_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
+                            ->orderBy('departments.name')
+                            ->orderBy('users.last_name')
                             ->get()->toArray();
                 }
             }

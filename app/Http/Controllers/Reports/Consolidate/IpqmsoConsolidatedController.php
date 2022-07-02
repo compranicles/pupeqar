@@ -75,6 +75,7 @@ class IpqmsoConsolidatedController extends Controller
                 ->join('users', 'users.id', 'reports.user_id')
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
+                ->orderBy('reports.updated_at', 'DESC')
                 ->get();
 
         //get_department_and_college_name

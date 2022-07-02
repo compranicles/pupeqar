@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\{
     Storage,
 };
 use App\Models\{
+    Chairperson,
+    Dean,
     Employee,
     IntraMobility,
     IntraMobilityDocument,
@@ -23,6 +25,7 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\DateContentService;
 
 class IntraMobilityController extends Controller
 {
@@ -56,7 +59,7 @@ class IntraMobilityController extends Controller
                     $submissionStatus[36][$intraMobility->id] = 1;
                 else
                     $submissionStatus[36][$intraMobility->id] = 0;
-                if (empty($reportdata->getDocuments(34, $intraMobility->id)))
+                if (empty($reportdata->getDocuments(36, $intraMobility->id)))
                     $submissionStatus[36][$intraMobility->id] = 2;
             }
             else{
@@ -87,8 +90,15 @@ class IntraMobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('8')");
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges'));
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
+
+        $is_dean = Dean::where('user_id', auth()->id())->first();
+        $is_chair = Chairperson::where('user_id', auth()->id())->first();
+
+        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges', 'is_dean', 'is_chair'));
     }
 
     /**
@@ -101,8 +111,8 @@ class IntraMobilityController extends Controller
     {
         $this->authorize('manage', IntraMobility::class);
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -113,9 +123,9 @@ class IntraMobilityController extends Controller
         ]);
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
-            return view('inactive');
+        return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
-
+        
         $intraMobility = IntraMobility::create($input);
         $intraMobility->update(['user_id' => auth()->id()]);
 
@@ -203,11 +213,17 @@ class IntraMobilityController extends Controller
 
         $values = $intraMobility->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $colleges = College::whereIn('id', array_values($colleges))
+                    ->select('colleges.*')->get();
 
         $documents = IntraMobilityDocument::where('intra_mobility_id', $intraMobility->id)->get()->toArray();
 
-        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment'));
+        $is_dean = Dean::where('user_id', auth()->id())->first();
+        $is_chair = Chairperson::where('user_id', auth()->id())->first();
+
+        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'is_dean', 'is_chair'));
     }
 
     /**
@@ -221,8 +237,8 @@ class IntraMobilityController extends Controller
     {
         $this->authorize('manage', IntraMobility::class);
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
         $request->merge([
             'start_date' => $start_date,

@@ -2055,7 +2055,7 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Description of Inter-Country Mobility',
             'table' => 'mobilities',
             'column' => 'mobility_description',
-            'is_active' => 0,
+            'is_active' => 1,
             'order' => 1,
         ]);
         ReportColumn::insert([
@@ -2647,7 +2647,7 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 23,
-            'name' => 'Title of the Activities',
+            'name' => 'Title of the Activity',
             'table' => 'technical_extensions',
             'column' => 'activity_title',
             'is_active' => 1,
@@ -2655,7 +2655,7 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 23,
-            'name' => 'Name of Adoptor',
+            'name' => 'Name of the Adoptor',
             'table' => 'technical_extensions',
             'column' => 'name_of_adoptor',
             'is_active' => 1,

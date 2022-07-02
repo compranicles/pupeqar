@@ -224,6 +224,7 @@ class RequestController extends Controller
     public function update(Request $requestdata, RequestModel $request)
     {
         $this->authorize('update', RequestModel::class);
+
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -242,7 +243,7 @@ class RequestController extends Controller
                     $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                     $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
                     $ext = $info['extension'];
-                    $fileName = 'R-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                    $fileName = 'R-'.$this->storageFileController->abbrev($requestdata->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
                     $newPath = "documents/".$fileName;
                     Storage::move($temporaryPath, $newPath);
                     Storage::deleteDirectory("documents/tmp/".$document);

@@ -101,7 +101,7 @@ class ReportDataController extends Controller
                             $data = '-';
                         else{
                             $date = strtotime( $data );
-                            $data = date( 'M d, Y', $date );
+                            $data = date( 'F d, Y', $date );
                         }
                     }
                 }
@@ -113,7 +113,7 @@ class ReportDataController extends Controller
                             $data = '-';
                         else{
                             $date = strtotime( $data );
-                            $data = date( 'M d, Y', $date );
+                            $data = date( 'F d, Y', $date );
                         }
                     }
                 }
@@ -141,8 +141,7 @@ class ReportDataController extends Controller
                             $column->column == 'page_no' ||
                             $column->column == 'year' ||
                             $column->column == 'rate_of_return' ||
-                            $column->column == 'has_businesses' ||
-                            $column->column == 'is_borrowed'
+                            $column->column == 'has_businesses'
                         )
                             $data = $data;
                         else{
@@ -192,7 +191,7 @@ class ReportDataController extends Controller
                             $data = '-';
                         else{
                             $date = strtotime( $data );
-                        $data = date( 'M d, Y', $date );
+                        $data = date( 'F d, Y', $date );
                         }
                     }
 
@@ -220,7 +219,6 @@ class ReportDataController extends Controller
                             $column->column =='year' ||
                             $column->column == 'rate_of_return' ||
                             $column->column == 'has_businesses' ||
-                            $column->column == 'is_borrowed' ||
                             $column->column == 'no_of_students' ||
                             $column->column == 'total_hours'
                         )
@@ -381,7 +379,7 @@ class ReportDataController extends Controller
             $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 35){
-            $report_docs = MobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
+            $report_docs = MobilityDocument::where('mobility_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 36){
             $report_docs = IntraMobilityDocument::where('intra_mobility_id', $id)->pluck('filename')->all();
@@ -455,6 +453,12 @@ class ReportDataController extends Controller
                 if($row->name == 'document')
                     continue;
                 $new_report_details[$row->label] = $report_details[$row->name];
+            }
+        }
+        if($report_data->report_category_id >= '29'){
+            $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
+            foreach($report_columns as $row){
+                $new_report_details[$row->name] = $report_details[$row->column];
             }
         }
 

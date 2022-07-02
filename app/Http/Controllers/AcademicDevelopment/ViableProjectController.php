@@ -42,8 +42,10 @@ class ViableProjectController extends Controller
         $currentQuarterYear = Quarter::find(1);
 
         $viable_projects = ViableProject::where('user_id', auth()->id())
-                            ->select(DB::raw('viable_projects.*'))
-                            ->orderBy('viable_projects.updated_at', 'desc')->get();
+                            ->join('colleges', 'colleges.id', 'viable_projects.college_id')
+                            ->orderBy('viable_projects.updated_at', 'desc')
+                            ->select('viable_projects.*', 'colleges.name as college_name')
+                            ->get();
                             
         $submissionStatus = [];
         $reportdata = new ReportDataController;

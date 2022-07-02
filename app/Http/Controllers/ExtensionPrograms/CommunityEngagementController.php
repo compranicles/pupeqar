@@ -286,7 +286,7 @@ class CommunityEngagementController extends Controller
 
         \LogActivity::addToLog('Had deleted a community engagement conducted by college/department.');
 
-        return redirect()->route('community_engagement.index')->with('community_success', 'Community engagement conducted by college/department has been deleted.');
+        return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been deleted.');
     }
 
     public function removeDoc($filename){

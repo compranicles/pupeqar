@@ -38,7 +38,6 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script>
             $('#from').on('change', function () {
-                $('#to').datepicker('setDate', $('#from').val());
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>

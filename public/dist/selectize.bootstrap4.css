@@ -3,12 +3,12 @@
     background: #f2f2f2 !important;
     background: rgba(0, 0, 0, .06) !important;
     border: 0 none !important;
-    box-shadow: inset 0 0 12px 4px #fff
+    box-shadow: inset 0 0 12px 4px #fff;
 }
 
 .selectize-control.plugin-drag_drop .ui-sortable-placeholder::after {
     content: "!";
-    visibility: hidden
+    visibility: hidden;
 }
 
 .selectize-control.plugin-drag_drop .ui-sortable-helper {
@@ -276,7 +276,14 @@
 
 .selectize-dropdown [data-selectable].option {
     opacity: 1;
-    cursor: pointer
+    cursor: pointer;
+    color: #000;
+}
+
+.selectize-dropdown [data-selectable].option:hover {
+    opacity: 1;
+    cursor: pointer;
+    background-color: gainsboro;
 }
 
 .selectize-dropdown .optgroup:first-child .optgroup-header {

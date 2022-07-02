@@ -37,6 +37,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Name of Viable Demonstration Project</th>
+                                        <th>College/Branch/ Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
                                         <th>Date Modified</th>
@@ -48,6 +49,7 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $row->name }}</td>
+                                        <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('viable-project.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>

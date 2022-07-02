@@ -38,6 +38,7 @@
                                         <th></th>
                                         <th>Name of Award</th>
                                         <th>Certifying Body</th>
+                                        <th>College/Branch/ Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
                                         <th>Date Modified</th>
@@ -50,6 +51,7 @@
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->name_of_award }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->certifying_body }}</td>
+                                        <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_quarter }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' " >{{ $row->report_year }}</td>
                                         <td onclick="window.location.href = '{{ route('college-department-award.show', $row->id) }}' ">

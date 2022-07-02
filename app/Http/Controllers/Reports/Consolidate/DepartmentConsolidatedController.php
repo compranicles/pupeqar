@@ -75,7 +75,9 @@ class DepartmentConsolidatedController extends Controller
                 ->join('users', 'users.id', 'reports.user_id')
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
-                ->where('reports.department_id', $id)->get();
+                ->where('reports.department_id', $id)
+                ->orderBy('reports.updated_at', 'DESC')
+                ->get();
 
         //get_department_and_college_name
         $college_names = [];
