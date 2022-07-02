@@ -3069,7 +3069,7 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Description of Inter-Country Mobility',
             'table' => 'intra_mobilities',
             'column' => 'mobility_description',
-            'is_active' => 0,
+            'is_active' => 1,
             'order' => 1,
         ]);
         ReportColumn::insert([

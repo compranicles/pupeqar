@@ -18,7 +18,7 @@
                         <form action="{{ route('intra-mobility.update', $intraMobility->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
-                            @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => 1])
+                            @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => $colaccomp])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
@@ -143,9 +143,9 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
-            $('#classification_of_person').on('change', function() {
-                if ({!! json_encode($is_dean) !!} == null || {!! json_encode($is_chair) !!} == null) {
-                    $('#classification_of_person option[value=298]').attr('disabled', 'disabled');
+            $('#classification_of_person').on('change', function (){
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
                 }
             });
         </script>

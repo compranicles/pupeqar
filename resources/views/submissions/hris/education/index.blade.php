@@ -51,17 +51,17 @@
                                                             {{ $education->IncDate }}
                                                         </td>
                                                         <td>
-                                                            @if ($educReports != null)
-                                                                @foreach ($educReports as $educReport)
-                                                                    @if ($educReport->report_reference_id == $education->EmployeeEducationBackgroundID)
-                                                                        <a class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
-                                                                        @break
-                                                                    @else
+                                                            @forelse ($educReports as $educReport)
+                                                                @if ($educReport->report_reference_id == $education->EmployeeEducationBackgroundID)
+                                                                    <a class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                                    @break
+                                                                @else
                                                                     <a href="{{ route('submissions.educ.add', $education->EmployeeEducationBackgroundID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
-                                                                        @break
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
+                                                                    @break
+                                                                @endif
+                                                            @empty
+                                                                <a href="{{ route('submissions.educ.add', $education->EmployeeEducationBackgroundID) }}" class="text-primary h4"><i class="fas fa-plus"></i> Add</a>
+                                                            @endforelse
                                                         </td>
                                                         <td>
                                                             @if ($educReports != null)

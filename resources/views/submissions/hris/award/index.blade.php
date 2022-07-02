@@ -34,17 +34,17 @@
                                                     <td>{{ $award->Date }}</td>
                                                     <td>{{ $award->Level }}</td>
                                                     <td>
-                                                        @if ($awardReports != null)
-                                                            @foreach ($awardReports as $awardReport)
-                                                                @if ($awardReport->report_reference_id == $award->EmployeeOutstandingAchievementID)
-                                                                    <a class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
-                                                                    @break
-                                                                @else
-                                                                    <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
+                                                        @forelse ($awardReports as $awardReport)
+                                                            @if ($awardReport->report_reference_id == $award->EmployeeOutstandingAchievementID)
+                                                                <a class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
+                                                                @break
+                                                            @else
+                                                                <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
+                                                                @break
+                                                            @endif
+                                                        @empty
+                                                            <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i> Add</a>
+                                                        @endforelse
                                                     </td>
                                                     <td>
                                                         @if ($awardReports != null)

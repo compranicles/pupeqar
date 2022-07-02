@@ -409,7 +409,7 @@ class ReportDataController extends Controller
         $new_report_details = [];
         $report_columns;
 
-        if($report_data->report_category_id <= '23'){
+        if($report_data->report_category_id <= '23' || $report_data->report_category_id >= '29'){
             $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
                 $new_report_details[$row->name] = $report_details[$row->column];
@@ -453,12 +453,6 @@ class ReportDataController extends Controller
                 if($row->name == 'document')
                     continue;
                 $new_report_details[$row->label] = $report_details[$row->name];
-            }
-        }
-        if($report_data->report_category_id >= '29'){
-            $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
-            foreach($report_columns as $row){
-                $new_report_details[$row->name] = $report_details[$row->column];
             }
         }
 

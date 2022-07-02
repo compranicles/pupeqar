@@ -32,9 +32,9 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
-         $("#department_id").selectize({
-              sortField: "text",
-          });
+        //  $("#department_id").selectize({
+        //       sortField: "text",
+        //   });
     </script>
     <script>
          $(document).on('input', '#department_id', function(){
@@ -50,5 +50,19 @@
                 }
             });
         });
+
+        var departmentID = $('#department_id').val();
+        if (departmentID == '') {
+            document.getElementById("college_id").value = "";
+        }
+        else {
+            var url = "{{ url('maintenances/colleges/name/department/:id') }}";
+            var api = url.replace(':id', departmentID);
+            $.get(api, function (data){
+                if (data != '') {
+                    $('#college_id').val(data)
+                }
+            });
+        }
     </script>
 @endpush

@@ -42,29 +42,29 @@
                                                     <td>{{ $development->IncDate }}</td>
                                                     <td>{{ $development->Level }}</td>
                                                     <td>
-                                                        @if ($seminarReports != null)
-                                                            @foreach ($seminarReports as $seminarReport)
-                                                                @if ($seminarReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                    <a class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
-                                                                    @break
-                                                                @else
-                                                                    <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
+                                                        @forelse ($seminarReports as $seminarReport)
+                                                            @if ($seminarReport->report_reference_id == $development->EmployeeTrainingProgramID)
+                                                                <a class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
+                                                                @break
+                                                            @else
+                                                                <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
+                                                                @break
+                                                            @endif
+                                                        @empty
+                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
+                                                        @endforelse
 
-                                                        @if ($trainingReports != null)
-                                                            @foreach ($trainingReports as $trainingReport)
-                                                                @if ($trainingReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                    <a class="btn btn-sm btn-primary">Add as Training</a>
-                                                                    @break
-                                                                @else
-                                                                    <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
-                                                                    @break
-                                                                @endif
-                                                            @endforeach
-                                                        @endif
+                                                        @forelse ($trainingReports as $trainingReport)
+                                                            @if ($trainingReport->report_reference_id == $development->EmployeeTrainingProgramID)
+                                                                <a class="btn btn-sm btn-primary">Add as Training</a>
+                                                                @break
+                                                            @else
+                                                                <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
+                                                                @break
+                                                            @endif
+                                                        @empty
+                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
+                                                        @endforelse
 
 
                                                     </td>
