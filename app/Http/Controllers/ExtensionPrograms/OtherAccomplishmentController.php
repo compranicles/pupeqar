@@ -24,6 +24,8 @@ use App\Models\{
     Maintenance\Quarter,
 };
 
+use App\Services\DateContentService;
+
 class OtherAccomplishmentController extends Controller
 {
     protected $storageFileController;
@@ -39,7 +41,7 @@ class OtherAccomplishmentController extends Controller
      */
     public function index()
     {
-        // $this->authorize('viewAny', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -72,6 +74,8 @@ class OtherAccomplishmentController extends Controller
      */
     public function create()
     {
+        $this->authorize('manage', OtherAccomplishment::class);
+
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
@@ -89,22 +93,24 @@ class OtherAccomplishmentController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->authorize('create', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
-
+        
         $request->merge([
             'from' => $from,
             'to' => $to,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
+            'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
-            return view('inactive');
+        return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
+        // dd($input);
 
         $otherAccomplishment = OtherAccomplishment::create($input);
         $otherAccomplishment->update(['user_id' => auth()->id()]);
@@ -144,7 +150,7 @@ class OtherAccomplishmentController extends Controller
      */
     public function show(OtherAccomplishment $otherAccomplishment)
     {
-        // $this->authorize('view', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
@@ -168,8 +174,8 @@ class OtherAccomplishmentController extends Controller
      */
     public function edit(OtherAccomplishment $otherAccomplishment)
     {
-        // $this->authorize('update', OtherAccomplishment::class);
-
+        $this->authorize('manage', OtherAccomplishment::class);
+        
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
 
@@ -204,10 +210,10 @@ class OtherAccomplishmentController extends Controller
      */
     public function update(Request $request, OtherAccomplishment $otherAccomplishment)
     {
-        // $this->authorize('update', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
-        $from = date("Y-m-d", strtotime($request->input('from')));
-        $to = date("Y-m-d", strtotime($request->input('to')));
+        $from = (new DateContentService())->checkDateContent($request, "from");
+        $to = (new DateContentService())->checkDateContent($request, "to");
 
         $request->merge([
             'from' => $from,
@@ -260,7 +266,7 @@ class OtherAccomplishmentController extends Controller
      */
     public function destroy(OtherAccomplishment $otherAccomplishment)
     {
-        // $this->authorize('delete', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
         if(LockController::isLocked($otherAccomplishment->id, 38)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
@@ -276,7 +282,7 @@ class OtherAccomplishmentController extends Controller
     }
 
     public function removeDoc($filename){
-        // $this->authorize('delete', OtherAccomplishment::class);
+        $this->authorize('manage', OtherAccomplishment::class);
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');

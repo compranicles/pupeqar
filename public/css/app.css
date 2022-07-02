@@ -1973,7 +1973,7 @@ pre code {
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 0.02em solid gray;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -3615,7 +3615,7 @@ input[type=button].btn-block {
   color: #495057;
   vertical-align: middle;
   background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") right 0.75rem center/8px 10px no-repeat;
-  border: 1px solid #ced4da;
+  border: 0.02em solid gray;
   border-radius: 0.25rem;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -12849,9 +12849,9 @@ body {
   background-attachment: fixed;
 }
 
-@media screen and (max-width: 900px) and (min-width: 400px) {
+@media screen and (max-width: 641px) {
   body {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url(/storage/cover2.png) no-repeat;
+    background: linear-gradient(0deg, rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url(/storage/cover2.png) no-repeat;
   
     /* Center and scale the image nicely */
     background-position: right;
@@ -12874,7 +12874,7 @@ body {
 .login-card {
   background: inherit;
   background-color: rgba(255, 255, 255, .80);  
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   top: 0;
   left: 80%;
   bottom: 0;
@@ -12882,21 +12882,28 @@ body {
   margin: auto;
 }
 
-@media screen and (max-width: 900px) and (min-width: 400px) { 
+@media screen and (max-width: 641px) { 
   .login-card {
+    position: absolute;
     background: inherit;
     background-color: rgba(255, 255, 255, .80);  
-    backdrop-filter: blur(10px);
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    z-index: 100; /* Just to keep it at the very top */
   }
 }
 
 .login-container {
-  margin-top: 90px;
-  margin-bottom: 90px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(20%);
+  -ms-transform: translateY(20%);
+  transform: translateY(20%); /* or try 50% */
 }
 
 .system-name {

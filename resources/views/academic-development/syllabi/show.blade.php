@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Course Syllabus') }}
-        </h2>
-    </x-slot>
+@section('title', 'Syllabus |')
     <div class="container">
         <div class="row justify-content-center">
             @if ($message = Session::get('cannot_access'))
@@ -12,18 +8,14 @@
                 </div>
             @endif
             <div class="col-lg-9">
-            <div class="d-flex mr-2">
-                <p class="mr-auto">
-                  <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
-                </p>
-                <p>
-                  <a href="{{ route('syllabus.edit', $syllabu->id) 
-                  }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                </p>
-                <p>
-                  <button type="button" value="{{ $syllabu->id }}" data-bs-syllabus="{{ $syllabu->course_title }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                </p>
-              </div>
+                <div>
+                  <h3 class="font-weight-bold mr-2">Course Syllabus</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
+                    <a href="{{ route('syllabus.edit', $syllabu->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $syllabu->id }}" data-bs-syllabus="{{ $syllabu->course_title }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                </div>
                 <div class="row">
                   <div class="col-md-12">
                     @include('show', ['formFields' => $syllabusFields, 'value' => $values])

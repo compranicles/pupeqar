@@ -1,16 +1,14 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Student Awards and Recognition') }}
-        </h2>
-    </x-slot>
+@section('title', 'Student Award & Recognition |')
+
 
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
-            </p>
+                <h3 class="font-weight-bold mr-2">Edit Student Award</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
+                </div>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
             <div class="alert alert-info" role="alert">

@@ -1,20 +1,21 @@
 <x-app-layout>
-
+    @section('title', 'Community Engagements Conducted by College/Department |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('community-engagement.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Engagements</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit Community Engagement Conducted</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('community-engagement.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Engagements</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('community-engagement.update', $communityEngagement->id) }}" method="post">
+                        <form action="{{ route('community-engagement.update', $communityEngagement->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $communityEngagementFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])

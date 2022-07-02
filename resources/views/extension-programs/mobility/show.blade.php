@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Inter-Country Mobility') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Inter-Country Mobility |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -13,19 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                        <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
-                    </p>
-                    <p>
-                        <a href="{{ route('mobility.edit', $mobility->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $mobility->host_name }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Inter-Country Mobility</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
+                    <a href="{{ route('mobility.edit', $mobility->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $mobility->host_name }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $mobilityFields, 'value' => $values])
-
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">

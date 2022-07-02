@@ -1,25 +1,21 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Attendance in University and College/ Office Function') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Attendance in University/College Functions |')   
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College Function</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit Attendance in University/College Function</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attendance in University and College Function</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('attendance-function.update', $attendance_function->id) }}" method="post">
+                        <form action="{{ route('attendance-function.update', $attendance_function->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $fields, 'value' => $values])
@@ -148,7 +144,6 @@
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             $('#start_date').on('change', function () {
-                $('#end_date').datepicker('setDate', $('#start_date').val());
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
             });
 

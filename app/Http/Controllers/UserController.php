@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\{
 use App\Models\{
     Chairperson,
     Dean,
+    Employee,
     FacultyExtensionist,
     FacultyResearcher,
     Invite,
@@ -52,9 +53,14 @@ class UserController extends Controller
                     ->join('roles', 'roles.id', 'user_roles.role_id')
                     ->select('roles.name')
                     ->get();
+
+            $collegesreportingwith[$user->id] = Employee::where('employees.user_id', $user->id)
+                    ->join('colleges', 'colleges.id', 'employees.college_id')
+                    ->select('colleges.name')
+                    ->get();
         }
 
-        return view('users.index', compact('users', 'rolesperuser'));
+        return view('users.index', compact('users', 'rolesperuser', 'collegesreportingwith'));
     }
 
     /**

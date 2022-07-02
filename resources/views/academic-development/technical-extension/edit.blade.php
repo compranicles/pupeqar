@@ -1,28 +1,21 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Award and Recognition Received by the College and Department') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Technical Extension Programs/Project/Activity |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('technical-extension.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Awards and Recognition Received by the College and Department</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
-                <div class="alert alert-warning" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> Tip: Press <strong>Enter</strong> <i class="bi bi-arrow-return-left"></i> key to add more item (applicable for elements that allow multiple inputs e.g., names, keywords, description of supporting documents, etc.).
+                <h3 class="font-weight-bold mr-2">Edit Technical Extension</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('technical-extension.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Technical Extensions</a>
                 </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('technical-extension.update', $technical_extension->id) }}" method="post">
+                        <form action="{{ route('technical-extension.update', $technical_extension->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $extensionFields, 'value' => $values, 'colaccomp' => 1])

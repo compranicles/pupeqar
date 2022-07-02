@@ -1,22 +1,18 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit Expert Service as Consultant') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Expert Service Rendered as Consultant |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit Expert Service Rendered as Consultant</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" method="post">

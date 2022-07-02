@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View '.$category[0]->name) }}
-        </h2>
-    </x-slot>
+@section('title', 'RTMMI |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9">
@@ -12,16 +8,13 @@
                     {{ $message }}
                 </div>
             @endif
-              <div class="d-flex mr-2">
-                <p class="mr-auto">
-                  <a class="back_link" href="{{ route('rtmmi.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Reference, Textbook, Module, Monographs, and Instructional Materials</a>
-                </p>
-                <p>
-                  <a href="{{ route('rtmmi.edit', $rtmmi->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                </p>
-                <p>
+              <div>
+                <h3 class="font-weight-bold mr-2">{{ $category[0]->name }}</h3>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                  <a class="mr-auto back_link ml-2" href="{{ route('rtmmi.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all RTMMI</a>
+                  <a href="{{ route('rtmmi.edit', $rtmmi->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                   <button type="button" value="{{ $rtmmi->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                </p>
               </div>
                 <div class="row">
                 <div class="col-md-12">

@@ -20,6 +20,7 @@ use App\Models\AttendanceFunctionDocument;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\DateContentService;
 
 class AttendanceFunctionController extends Controller
 {
@@ -120,8 +121,9 @@ class AttendanceFunctionController extends Controller
             return view('inactive');
 
         $currentQuarterYear = Quarter::find(1);
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -253,8 +255,8 @@ class AttendanceFunctionController extends Controller
             return view('inactive');
 
         $currentQuarterYear = Quarter::find(1);
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,

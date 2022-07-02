@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\SpecialTask;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Department;
 use App\Models\Maintenance\Quarter;
 use App\Models\SpecialTaskDocument;
 use App\Http\Controllers\Controller;
@@ -17,6 +19,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\DateContentService;
 
 class SpecialTaskController extends Controller
 {
@@ -132,8 +135,10 @@ class SpecialTaskController extends Controller
         }
 
         $currentQuarterYear = Quarter::find(1);
-        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
-        $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
+
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+        $actual_date = (new DateContentService())->checkDateContent($request, "actual_date");
+
         $request->merge([
             'target_date' => $target_date,
             'actual_date' => $actual_date,
@@ -264,8 +269,9 @@ class SpecialTaskController extends Controller
             $namePage = 'Accomplishment Based on OPCR';
         }
 
-        $target_date = date("Y-m-d", strtotime($request->input('target_date')));
-        $actual_date = date("Y-m-d", strtotime($request->input('actual_date')));
+        $target_date = (new DateContentService())->checkDateContent($request, "target_date");
+        $actual_date = (new DateContentService())->checkDateContent($request, "actual_date");
+        
         $request->merge([
             'target_date' => $target_date,
             'actual_date' => $actual_date,

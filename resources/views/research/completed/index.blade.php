@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Research Completion') }}
-        </h2>
-    </x-slot>
+    @section('title', 'Research & Book Chapter |')
 
     <div class="container">
         <div class="row">
@@ -24,6 +20,11 @@
                     <div class="alert alert-danger alert-index">
                         {{ $message }}
                     </div>
+                @endif
+                @if ($research->nature_of_involvement == 11)
+                <div class="alert alert-info" role="alert-reminder">
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting. Go to <strong>"Registration"</strong> and click <strong>"Add Co-researchers"</strong>.
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">
@@ -126,7 +127,7 @@
     <script>
         // auto hide alert
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);

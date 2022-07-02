@@ -11,6 +11,11 @@
                 @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
+        @if ($research->nature_of_involvement == 11)
+        <div class="alert alert-info" role="alert-reminder">
+            <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting. Go to <strong>"Registration"</strong> and click <strong>"Add Co-researchers"</strong>.
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -130,7 +135,7 @@
     <script>
         // auto hide alert
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);

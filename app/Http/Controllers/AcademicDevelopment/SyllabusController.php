@@ -23,6 +23,7 @@ use App\Models\{
     Maintenance\Quarter,
     Maintenance\Department,
 };
+use App\Services\DateContentService;
 
 class SyllabusController extends Controller
 {
@@ -105,7 +106,7 @@ class SyllabusController extends Controller
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date = date("Y-m-d", strtotime($request->input('date_finished')));
+        $date = (new DateContentService())->checkDateContent($request, "date_finished");
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -233,7 +234,7 @@ class SyllabusController extends Controller
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date = date("Y-m-d", strtotime($request->input('date_finished')));
+        $date = (new DateContentService())->checkDateContent($request, "date_finished");
 
         $request->merge([
             'date_finished' => $date,

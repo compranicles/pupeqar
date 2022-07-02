@@ -30,6 +30,8 @@ class EducationController extends Controller
 {
     public function index(){
 
+        $currentQuarterYear = Quarter::find(1);
+
         $user = User::find(auth()->id());
 
         $db_ext = DB::connection('mysql_external');
@@ -46,7 +48,7 @@ class EducationController extends Controller
         }
         $educReports = Report::where('report_category_id', 24)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
 
-        return view('submissions.hris.education.index', compact('educationFinal', 'educationLevel', 'educReports'));
+        return view('submissions.hris.education.index', compact('educationFinal', 'educationLevel', 'educReports', 'currentQuarterYear'));
     }
 
     public function add(Request $request,$educID){

@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Update Research Information') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Research & Book Chapter |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -17,11 +12,12 @@
             <i class="bi bi-x-circle"></i> Remarks: {{ $deniedDetails->reason }}
         </div>
         @endif
+        <h3 class="font-weight-bold mr-2">Edit {{ $research->research_code }}</h3>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.update', $research->id) }}" method="post">
+                        <form action="{{ route('research.update', $research->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])

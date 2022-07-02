@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Extension Service') }}
-        </h2>
-    </x-slot>
+    @section('title', 'Extension Program/Project/Activity |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9">
@@ -12,23 +8,18 @@
                     {{ $message }}
                 </div>
               @endif
-              <div class="d-flex mr-2">
-                <p class="mr-auto">
-                  <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
-                </p>
-                @if ($extensionRole == '1')
-                <p>
-                  <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="btn btn-primary btn-sm mr-3">
-                     Add Co-Extensionists
-                  </a>
-                </p>
-                @endif
-                <p>
-                    <a href="{{ route('extension-service.edit', $extension_service->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                </p>
-                <p>
+              <div>
+                <h3 class="font-weight-bold mr-2">Extension Program/Project/Activity</h3>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Awards and Recognition</a>
+                    @if ($extensionRole == '1')
+                      <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="btn btn-primary btn-sm mr-3 ml-3">
+                        Add Co-Extensionists
+                      </a>
+                    @endif
+                    <a href="{{ route('extension-service.edit', $extension_service->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     <button type="button" value="{{ $extension_service->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                </p>
+                </div>
               </div>
               @if ($extensionRole == '1')
               <div class="alert alert-info" role="alert">

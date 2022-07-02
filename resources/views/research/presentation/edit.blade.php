@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.presentation.update', [$research['id'], $value['id']]) }}" method="post">
+                        <form action="{{ route('research.presentation.update', [$research['id'], $value['id']]) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $researchFields, 'value' => $value])

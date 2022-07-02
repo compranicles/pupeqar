@@ -1,9 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Mark Research as Completed') }}
-        </h2>
-    </x-slot>
+    @section('title', 'Research & Book Chapter |')
 
     <div class="container">
         <div class="row">
@@ -16,7 +12,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.completed.store', $research->id) }}" method="post">
+                        <form action="{{ route('research.completed.store', $research->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @include('form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">

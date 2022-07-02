@@ -1,19 +1,21 @@
 <x-app-layout>
+    @section('title', 'Other Department/College Accomplishments |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('other-dept-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Department/College Accomplishments</a>
-            </p>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <h3 class="font-weight-bold mr-2">Edit Other Department/College Accomplishment</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('other-dept-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Department/College Accomplishments</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('other-dept-accomplishment.update', $otherDeptAccomplishment->id) }}" method="post">
+                        <form action="{{ route('other-dept-accomplishment.update', $otherDeptAccomplishment->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $otherAccomplishmentFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
@@ -142,7 +144,6 @@
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script>
             $('#from').on('change', function () {
-                $('#to').datepicker('setDate', $('#from').val());
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>

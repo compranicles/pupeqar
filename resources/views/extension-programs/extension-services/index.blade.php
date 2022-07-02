@@ -1,10 +1,5 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Extension Programs/Projects/Activities') }}
-        </h2>
-    </x-slot> -->
-
+    @section('title', 'Extension Programs/Projects/Activities |')
     <div class="row">
         <div class="col-md-12">
             <h2 class="font-weight-bold mb-2">Extension Programs/Projects/Activities</h2>
@@ -37,43 +32,21 @@
                         </button>
                     </div>
                     <hr>
-                    <!-- <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="statusFilter" class="mr-2">Current Status: </label>
-                                <select id="statusFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="quarterFilter" class="mr-2">Quarter Period: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="yearFilter" class="mr-2">Year Covered:</label>
-                                <div class="d-flex">
-                                    <select id="yearFilter" class="custom-select" name="yearFilter">
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="collegeFilter" class="mr-2">College/Branch/Campus/Office where committed: </label>
-                                <select id="collegeFilter" class="custom-select">
-                                    <option value="">Show All</option>
-                                </select>
-                            </div>
+                    <div class="alert alert-info" role="alert">
+                        <i class="bi bi-lightbulb-fill"></i> <strong>Instructions & Reminders: </strong> <br>
+                        <div class="ml-3">
+                            &#8226; You must add your partners in the extension program/project/activity to share them the extension you encode. <br>
+                            &#8226; Add your extension partners first before submitting. <br>
+                            <span class="ml-3"><i class="bi bi-arrow-right ml-1"></i> Click "Add Extension Partners" button after you encode and view the extension.</span><br>
+                            &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
+                                <?php
+                                    $deadline = strtotime( $currentQuarterYear->deadline );
+                                    $deadline = date( 'F d, Y', $deadline);
+                                    ?>
+                                    <u>{{ $deadline }}</u>. <br>
+                            &#8226; Once you <u>submit</u> an accomplishment, you are <u>not allowed to edit</u> until the quarter period ends.
                         </div>
                     </div>
-                    <hr> -->
                     <div class="table-responsive" style="overflow-x:auto;">
                         <table class="table" id="eservice_table">
                             <thead>
@@ -110,8 +83,8 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="button-group">
-                                            <a href="{{ route('extension-service.show', $extensionService) }}" class="btn btn-sm btn-primary">View</a>
-                                            <a href="{{ route('extension-service.edit', $extensionService) }}" class="btn btn-sm btn-warning">Edit</a>
+                                            <a href="{{ route('extension-service.show', $extensionService) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                            <a href="{{ route('extension-service.edit', $extensionService) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                             <button type="button" value="{{ $extensionService->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-eservice="{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}">Delete</button>
                                             @if ($submissionStatus[12][$extensionService->id] == 0)
                                                 <a href="{{ url('submissions/check/12/'.$extensionService->id) }}" class="btn btn-sm btn-primary">Submit</a>
@@ -142,7 +115,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
      <script>
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 4000);
@@ -163,142 +136,6 @@
           document.getElementById('delete_item').action = url;
 
         });
-     </script>
-     <script>
-        //  var table =  $("#eservice_table").DataTable({
-        //     "searchCols": [
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         { "search": "{{ $currentQuarterYear->current_quarter }}" },
-        //         { "search": "{{ $currentQuarterYear->current_year }}" },
-        //         null,
-        //         null,
-        //         null,
-        //     ],
-        //     initComplete: function () {
-        //         this.api().columns(2).every( function () {
-        //             var column = this;
-        //             var select = $('#statusFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(3).every( function () {
-        //             var column = this;
-        //             var select = $('#collegeFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(4).every( function () {
-        //             var column = this;
-        //             var select = $('#quarterFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-
-        //         this.api().columns(5).every( function () {
-        //             var column = this;
-        //             var select = $('#yearFilter')
-        //                 .on( 'change', function () {
-        //                     var val = $.fn.dataTable.util.escapeRegex(
-        //                         $(this).val()
-        //                     );
-
-        //                     column
-        //                         .search( val ? '^'+val+'$' : '', true, false )
-        //                         .draw();
-        //                 } );
-
-        //             column.data().unique().sort().each( function ( d, j ) {
-        //                 select.append( '<option value="'+d+'">'+d+'</option>' )
-        //             } );
-        //         });
-        //     }
-        //  });
-
-        //   var statusIndex = 0;
-        //     $("#eservice_table th").each(function (i) {
-        //         if ($($(this)).html() == "Status") {
-        //             statusIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#statusFilter').val()
-        //             var status = data[statusIndex];
-        //             if (selectedItem === "" || status.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     var collegeIndex = 0;
-        //     $("#eservice_table th").each(function (i) {
-        //         if ($($(this)).html() == "College/Branch/Campus/Office") {
-        //             collegeIndex = i; return false;
-
-        //         }
-        //     });
-
-        //     $.fn.dataTable.ext.search.push(
-        //         function (settings, data, dataIndex) {
-        //             var selectedItem = $('#collegeFilter').val()
-        //             var college = data[collegeIndex];
-        //             if (selectedItem === "" || college.includes(selectedItem)) {
-        //                 return true;
-        //             }
-        //             return false;
-        //         }
-        //     );
-
-        //     $("#statusFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     $("#collegeFilter").change(function (e) {
-        //         table.draw();
-        //     });
-
-        //     table.draw();
      </script>
      @endpush
 </x-app-layout>

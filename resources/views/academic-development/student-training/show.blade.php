@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Student Attended Seminars and Trainings') }}
-        </h2>
-    </x-slot>
-
+@section('title', 'Student Attended Seminar & Training |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -13,19 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                        <a class="back_link" href="{{ route('student-training.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Attended Seminars and Trainings</a>
-                    </p>
-                    <p>
-                        <a href="{{ route('student-training.edit', $student_training->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $student_training->id }}" data-bs-student="{{ $student_training->title }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Student Attended Seminar/ Training</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('student-training.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Student Attended Seminars & Trainings</a>
+                    <a href="{{ route('student-training.edit', $student_training->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $student_training->id }}" data-bs-student="{{ $student_training->title }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $studentFields, 'value' => $values])
-
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">

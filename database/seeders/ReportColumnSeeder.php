@@ -1882,14 +1882,6 @@ class ReportColumnSeeder extends Seeder
         //Partnerships
         ReportColumn::insert([
             'report_category_id' => 13,
-            'name' => 'Code',
-            'table' => 'partnerships',
-            'column' => 'moa_code',
-            'is_active' => 1,
-            'order' => 1,
-        ]);
-        ReportColumn::insert([
-            'report_category_id' => 13,
             'name' => 'Title',
             'table' => 'partnerships',
             'column' => 'title_of_partnership',
@@ -2230,6 +2222,14 @@ class ReportColumnSeeder extends Seeder
         ]);
 
         //syllabi
+        ReportColumn::insert([
+            'report_category_id' => 16,
+            'name' => 'Course Code',
+            'table' => 'syllabi',
+            'column' => 'course_code',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
         ReportColumn::insert([
             'report_category_id' => 16,
             'name' => 'Course Title',

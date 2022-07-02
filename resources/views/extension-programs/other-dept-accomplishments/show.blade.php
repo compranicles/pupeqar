@@ -1,4 +1,5 @@
 <x-app-layout>
+    @section('title', 'Other Department/College Accomplishments |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -7,19 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                        <a class="back_link" href="{{ route('other-dept-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Department/College Accomplishments</a>
-                    </p>
-                    <p>
-                        <a href="{{ route('other-dept-accomplishment.edit', $otherDeptAccomplishment->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
-                        <button type="button" value="{{ $otherDeptAccomplishment->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-description="{{ $otherDeptAccomplishment->accomplishment_description }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Other Department/College Accomplishment</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('other-dept-accomplishment.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Other Department/College Accomplishments</a>
+                    <a href="{{ route('other-dept-accomplishment.edit', $otherDeptAccomplishment->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <button type="button" value="{{ $otherDeptAccomplishment->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-description="{{ $otherDeptAccomplishment->accomplishment_description }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $otherAccomplishmentFields, 'value' => $values])
-
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">

@@ -1,8 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        @include('submissions.hris.navigation')
-    </x-slot>
-
+    @section('title', 'Seminars & Trainings |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -24,6 +21,7 @@
                                 <hr>
                             </div>
                             <div class="col-md-12">
+                                @include('instructions')
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="development_table">
                                         <thead>
@@ -118,7 +116,7 @@
             } );
             // auto hide alert
             window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                     $(this).remove();
                 });
             }, 4000);

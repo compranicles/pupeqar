@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Report Ongoing Advanced/Professional Study') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Ongoing Advanced/Professional Studies |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">

@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Partnership, Linkages & Network') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Partnership, Linkages & Network |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">
@@ -13,19 +8,15 @@
                     {{ $message }}
                 </div>
                 @endif
-                <div class="d-flex mr-2">
-                    <p class="mr-auto">
-                    <a class="back_link" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages and Network</a>
-                    </p>
-                    <p>
-                        <a href="{{ route('partnership.edit', $partnership->id) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    </p>
-                    <p>
+                <div>
+                    <h3 class="font-weight-bold mr-2">Partnership, Linkage & Network</h3>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <a class="mr-auto back_link ml-2" href="{{ route('partnership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Partnership, Linkages and Network</a>
+                    <a href="{{ route('partnership.edit', $partnership->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     <button type="button" value="{{ $partnership->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-partnership="{{ $partnership->title_of_partnership }}"><i class="bi bi-trash"></i> Delete</button>
-                    </p>
                 </div>
                 @include('show', ['formFields' => $partnershipFields, 'value' => $values])
-
                 <div class="row mt-3">
                     <div class="col-md-12">
                         <div class="card">
