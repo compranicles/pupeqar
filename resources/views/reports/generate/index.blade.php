@@ -11,6 +11,26 @@
             <div class="modal-body">
                 <form action="{{ route('report.generate.index', $data->id ?? '') }}" method="post" id="generate_form">
                     @csrf
+                    @if ($source_type == 'my')
+                        @if (in_array(1, $roles) && in_array(3, $roles))
+                        <input type="hidden" name="source_generate" value="{{ $source_type }}">
+                        <div class="form-group">
+                            <label for="type_generate">Format</label>
+                            <select name="type_generate" id="type_generate" class="form-control" required>
+                                <option value="" selected disabled>Choose...</option>
+                                <option value="academic" {{ in_array(1, $roles) && !in_array(3, $roles) ? 'selected' : '' }}>Academic</option>
+                                <option value="admin" {{ in_array(3, $roles) && !in_array(1, $roles) ? 'selected' : '' }}>Admin</option>
+                            </select>
+                        </div>
+                        @else
+                        <input type="hidden" name="source_generate" value="{{ $source_type }}">
+                        <select hidden name="type_generate" id="type_generate" class="form-control" required>
+                            <option value="" selected disabled>Choose...</option>
+                            <option value="academic" {{ in_array(1, $roles) && !in_array(3, $roles) ? 'selected' : '' }}>Academic</option>
+                            <option value="admin" {{ in_array(3, $roles) && !in_array(1, $roles) ? 'selected' : '' }}>Admin</option>
+                        </select>
+                        @endif
+                    @else
                     <input type="hidden" name="source_generate" value="{{ $source_type }}">
                     <div class="form-group">
                         <label for="type_generate">Format</label>
@@ -20,6 +40,7 @@
                             <option value="admin">Admin</option>
                         </select>
                     </div>
+                    @endif
                     <!-- CBCO (College/Branch/Campus/Office) -->
                     @if($source_type == "my" || $special_type == 'sector' || $special_type == 'ipqmso')
                     <div class="form-group">

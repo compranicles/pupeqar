@@ -71,7 +71,7 @@
                 {{-- Colleges/Branches/Offices --}}
                 @if (in_array(6, $roles))
                     @forelse ( $colleges as $row)
-                        <a href="{{ route('reports.consolidate.college', $row->college_id) }}" class="submission-menu  {{ isset($id) ? ($row->college_id == $id ? 'active' : '') : '' }} ">
+                        <a href="{{ route('reports.consolidate.college', $row->college_id) }}" class="submission-menu  {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.college') ? 'active' : '') : '' }} ">
                             {{ $row->code }} College
                         </a><br>
                     @empty
