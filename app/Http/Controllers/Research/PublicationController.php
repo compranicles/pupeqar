@@ -71,12 +71,12 @@ class PublicationController extends Controller
         $reportdata = new ReportDataController;
             if (LockController::isLocked($values['id'], 3))
                 $submissionStatus[3][$values['id']] = 1;
-            else 
+            else
                 $submissionStatus[3][$values['id']] = 0;
             if (empty($reportdata->getDocuments(3, $values['id'])))
                 $submissionStatus[3][$values['id']] = 2;
 
-        return view('research.publication.index', compact('research', 'researchFields', 
+        return view('research.publication.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
 
@@ -88,9 +88,6 @@ class PublicationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPublication::class);
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -98,7 +95,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
-        
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
@@ -140,7 +137,7 @@ class PublicationController extends Controller
             'report_year' => $currentQuarterYear->current_year,
             'research_id' => $research->id,
         ]);
-        
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
 
@@ -152,15 +149,15 @@ class PublicationController extends Controller
         else{
             $researchStatus = 31;
         }
-        
+
         Research::where('research_code', $research->research_code)->update([
             'status' => $researchStatus
         ]);
 
         $publication = ResearchPublication::create($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -212,11 +209,8 @@ class PublicationController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($publication->id, 3)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
-        if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
@@ -225,7 +219,7 @@ class PublicationController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
-    
+
         // $research = array_merge($research->toArray(), $publication->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 3)->get()->toArray();
 
@@ -243,7 +237,7 @@ class PublicationController extends Controller
         else{
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
-        
+
         return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
     }
 
@@ -257,7 +251,7 @@ class PublicationController extends Controller
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
         $this->authorize('update', ResearchPublication::class);
-        
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -268,7 +262,7 @@ class PublicationController extends Controller
         $request->merge([
             'publish_date' => $publish_date,
         ]);
-        
+
         $input = $request->except(['_token', '_method', 'status', 'document']);
 
         $publication->update(['description' => '-clear']);
@@ -276,7 +270,7 @@ class PublicationController extends Controller
         $publication->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

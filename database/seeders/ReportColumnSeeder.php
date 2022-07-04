@@ -2786,6 +2786,22 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 29,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'admin_special_tasks',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 29,
+            'name' => 'Department',
+            'table' => 'admin_special_tasks',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 29,
             'name' => 'Proof of Compliance',
             'table' => 'admin_special_tasks',
             'column' => 'description',
@@ -2844,6 +2860,22 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 30,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'special_tasks',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Department',
+            'table' => 'special_tasks',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 30,
             'name' => 'Description of Supporting Documents Submitted',
             'table' => 'special_tasks',
             'column' => 'description',
@@ -2896,6 +2928,22 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Remarks',
             'table' => 'special_tasks',
             'column' => 'remarks',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'special_tasks',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 31,
+            'name' => 'Department',
+            'table' => 'special_tasks',
+            'column' => 'department_id',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -2954,6 +3002,22 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Remarks',
             'table' => 'special_tasks',
             'column' => 'remarks',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'special_tasks',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 32,
+            'name' => 'Department',
+            'table' => 'special_tasks',
+            'column' => 'department_id',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -3011,6 +3075,22 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Proof of Attendance',
             'table' => 'attendance_functions',
             'column' => 'description',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'attendance_functions',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 33,
+            'name' => 'Department',
+            'table' => 'attendance_functions',
+            'column' => 'department_id',
             'is_active' => 1,
             'order' => 1,
         ]);
