@@ -20,9 +20,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::truncate();
-        SectorHead::truncate();
-        
+        // User::truncate();
+        // SectorHead::truncate();
+
         //Super Admin
         // 1
 //         User::insert([

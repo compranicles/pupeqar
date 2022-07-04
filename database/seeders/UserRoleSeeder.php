@@ -14,7 +14,7 @@ class UserRoleSeeder extends Seeder
      */
     public function run()
     {
-        UserRole::truncate();
+        // UserRole::truncate();
 //         //Super admin user role
 //         UserRole::insert(['user_id' => '1', 'role_id' => '9']);
 //         UserRole::insert(['user_id' => '2', 'role_id' => '9']);
