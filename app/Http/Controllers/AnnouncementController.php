@@ -44,14 +44,12 @@ class AnnouncementController extends Controller
         $this->authorize('create', Announcement::class);
         
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required'],
             'status' => ['required']
         ]);        
 
         Announcement::create([
-            'title' => $request->input('title'),
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
             'status' => $request->input('status'),
@@ -98,14 +96,12 @@ class AnnouncementController extends Controller
         $this->authorize('update', Announcement::class);
 
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required'],
             'status' => ['required']
         ]);        
 
         $announcement->update([
-            'title' => $request->input('title'),
             'subject' => $request->input('subject'),
             'message' => $request->input('message'),
             'status' => $request->input('status'),

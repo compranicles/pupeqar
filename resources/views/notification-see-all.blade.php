@@ -1,10 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Notifications') }}
-        </h2>
-    </x-slot>
-
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Notifications</h2>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card">

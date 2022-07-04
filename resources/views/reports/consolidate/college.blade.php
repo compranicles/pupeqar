@@ -59,7 +59,7 @@
                                             <th rowspan="2">Accomplishment Report</th>
                                             <th rowspan="2">Title</th>
                                             <th rowspan="2">Employee</th>
-                                            <th rowspan="2">Department/Section</th>
+                                            <th rowspan="2">Department/ Section</th>
                                             <th class="text-center" colspan="6">Status</th>
                                             <th rowspan="2"></th>
                                         </tr>

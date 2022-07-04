@@ -32,7 +32,7 @@
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
         <span>
-            <p>Please select your designation. <br>Chair/Dean/Director will encode for <strong>student</strong> mobility.</p>
+            <p>Please select your designation. <br>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
         </span>
         @endif
         

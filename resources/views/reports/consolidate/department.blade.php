@@ -288,22 +288,22 @@
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewReportLabel"></h5>
+                <h5 class="modal-title w-100 text-center" id="viewReportLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body w-100 text-center">
                 <div class="row justify-content-center">
-                    <div class="col-md-11">
-                        <table class="table table-sm table-borderless" id="columns_value_table">
-                        </table>
+                    <div class="col-md-11 h5 font-weight-bold">Documents</div>
+                    <div class="col-md-11" id="data_documents">
                     </div>
                 </div>
                 <hr>
                 <div class="row justify-content-center">
-                    <div class="col-md-11 h5 font-weight-bold">Documents</div>
-                    <div class="col-md-11" id="data_documents">
+                    <div class="col-md-11">
+                        <table class="table table-sm table-borderless" id="columns_value_table">
+                        </table>
                     </div>
                 </div>
                 <div class="row mt-3">

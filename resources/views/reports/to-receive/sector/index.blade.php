@@ -122,15 +122,15 @@
         </div>
         <div class="modal-body">
             <div class="row justify-content-center">
-                <div class="col-md-11">
-                    <table class="table table-sm table-borderless" id="columns_value_table">
-                    </table>
+                <div class="col-md-11 h5 font-weight-bold">Documents:</div>
+                <div class="col-md-11" id="data_documents">
                 </div>
             </div>
             <hr>
             <div class="row justify-content-center">
-                <div class="col-md-11 h5 font-weight-bold">Documents:</div>
-                <div class="col-md-11" id="data_documents">
+                <div class="col-md-11">
+                    <table class="table table-sm table-borderless" id="columns_value_table">
+                    </table>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
-        <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="font-weight-bold">{{ $fieldInfo->label }}</label>
             <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
@@ -25,11 +25,6 @@
 
             {{-- <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly> --}}
 
-            <!-- @if ($colleges !== []) -->
-            <!-- <span id="" role="alert">
-                <p><a href="{{ route('offices.create') }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
-            </span> -->
-            <!-- @endif -->
             @error($fieldInfo->name)
                 <span class='invalid-feedback' role="alert">
                     <strong>{{ $message }}</strong>
