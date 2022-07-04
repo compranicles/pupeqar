@@ -368,62 +368,6 @@
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/dataTables.bootstrap4.min.js"></script>
         <script>
             $('#college_accomplishments_in_sector_table').DataTable();
-            // var table = $('#college_accomplishments_in_sector_table').DataTable({
-            //     initComplete: function () {
-            //     this.api().columns(1).every( function () {
-            //         var column = this;
-            //         var select = $('#reportFilter')
-            //             .on( 'change', function () {
-            //                 var val = $.fn.dataTable.util.escapeRegex(
-            //                     $(this).val()
-            //                 );
-
-            //                 column
-            //                     .search( val ? '^'+val+'$' : '', true, false )
-            //                     .draw();
-            //             } );
-
-            //         column.data().unique().sort().each( function ( d, j ) {
-            //             select.append( '<option value="'+d+'">'+d+'</option>' )
-            //         } );
-            //     });
-            //     this.api().columns(2).every( function () {
-            //         var column = this;
-            //         var select = $('#empFilter')
-            //             .on( 'change', function () {
-            //                 var val = $.fn.dataTable.util.escapeRegex(
-            //                     $(this).val()
-            //                 );
-
-            //                 column
-            //                     .search( val ? '^'+val+'$' : '', true, false )
-            //                     .draw();
-            //             } );
-
-            //         column.data().unique().sort().each( function ( d, j ) {
-            //             select.append( '<option value="'+d+'">'+d+'</option>' )
-            //         } );
-            //     });
-            //     this.api().columns(3).every( function () {
-            //         var column = this;
-            //         var select = $('#collegeFilter')
-            //             .on( 'change', function () {
-            //                 var val = $.fn.dataTable.util.escapeRegex(
-            //                     $(this).val()
-            //                 );
-
-            //                 column
-            //                     .search( val ? '^'+val+'$' : '', true, false )
-            //                     .draw();
-            //             } );
-
-            //         column.data().unique().sort().each( function ( d, j ) {
-            //             select.append( '<option value="'+d+'">'+d+'</option>' )
-            //         } );
-            //     });
-
-            //     }
-            // });
 
             $(document).on('click', '.button-view', function(){
                 var catID = $(this).data('id');
@@ -489,61 +433,6 @@
                 });
             }, 4000);
         </script>
-        <!-- <script>
-            function received() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#college_accomplishments_in_sector_table').DataTable().search("");
-
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        // table.columns().search('').draw();
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Received")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-            }
-        </script>
-        <script>
-             function showall() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $('#college_accomplishments_in_sector_table').DataTable().search("");
-
-                table.draw();
-            }
-        </script>
-        <script>
-            function returned() {
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(showall, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-                $('#college_accomplishments_in_sector_table').DataTable().search("");
-
-                $.fn.dataTable.ext.search.push(
-                    function (settings, data, dataIndex) {
-                        for (let i = 4; i <= 9; i++) {
-                            var report = data[i];
-                            if (report.includes("Returned")) {
-                                return true;
-                            }
-                        }
-                    });
-                    table.draw();
-            }
-        </script>
-        <script>
-            $(function(){
-                //show all the accomplishments
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(returned, 1));
-                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(received, 1));
-
-                table.draw();
-            });
-        </script> -->
         <script>
             var max = {!! json_encode($year) !!};
             var min = 0;
@@ -558,17 +447,6 @@
                     document.getElementById("yearFilter").value = i;
                 }
             }
-        </script>
-        <script>
-            $('#quarterFilter').on('input', function () {
-                document.querySelectorAll("#quarterFilter2 option").forEach(opt => {
-                    if (opt.value < document.getElementById('quarterFilter').value) {
-                        opt.disabled = true;
-                    }
-                        document.getElementById('quarterFilter2').value = document.getElementById('quarterFilter').value;
-                });
-            });
-
         </script>
         <script>
             $('#filter').on('click', function () {

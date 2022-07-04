@@ -21,36 +21,20 @@
                         </select>
                     </div>
                     <input type="hidden" name="sector" value="{{ $sector->id }}">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="from_quarter_generate">Quarter Start</label>
-                                <select name="from_quarter_generate" id="from_quarter_generate" class="form-control">
-                                    <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                    <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                    <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                    <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="to_quarter_generate">Quarter End</label>
-                                <select name="to_quarter_generate" id="to_quarter_generate" class="form-control">
-                                    <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
-                                    <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
-                                    <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
-                                    <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
-                                </select>
-                            </div>
-                       </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="year_generate2">Year</label>
-                        <select name="year_generate2" id="year_generate2" class="form-control" >
-                        </select>
-                    </div>
-                    
+                    <select hidden name="from_quarter_generate" id="from_quarter_generate" class="form-control">
+                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                    </select>
+                    <select hidden name="to_quarter_generate" id="to_quarter_generate" class="form-control">
+                        <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
+                        <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
+                        <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
+                        <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
+                    </select>
+                    <select hidden name="year_generate2" id="year_generate2" class="form-control" >
+                    </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
