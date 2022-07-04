@@ -160,19 +160,6 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 1,
-            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
-            'name' => 'college_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 12,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 1,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => "",
@@ -184,6 +171,20 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 1,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         HRISField::insert([
             'h_r_i_s_form_id' => 1,
             'label' => 'Description of Supporting Documents',
@@ -357,19 +358,6 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
-            'name' => 'college_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 12,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 4,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => "",
@@ -381,6 +369,20 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 4,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
             'label' => 'Description of Supporting Documents',
@@ -554,19 +556,6 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
-            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
-            'name' => 'college_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 12,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 5,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => "",
@@ -578,6 +567,20 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 5,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
             'label' => 'Description of Supporting Documents',
@@ -700,19 +703,6 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 2,
-            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
-            'name' => 'college_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 12,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 2,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => "",
@@ -724,6 +714,20 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 2,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         HRISField::insert([
             'h_r_i_s_form_id' => 2,
             'label' => 'Description of Supporting Documents',
@@ -845,19 +849,6 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 3,
-            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
-            'name' => 'college_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 12,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 3,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => "",
@@ -869,6 +860,20 @@ class HRISFieldSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 3,
+            'label' => 'College/Campus/Branch/Office to commit the accomplishment',
+            'name' => 'college_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 12,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
         HRISField::insert([
             'h_r_i_s_form_id' => 3,
             'label' => 'Description of Supporting Documents',

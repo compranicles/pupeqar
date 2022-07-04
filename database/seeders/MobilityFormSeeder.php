@@ -88,7 +88,7 @@ class MobilityFormSeeder extends Seeder
             'size' => 'col-md-12',
             'field_type_id' => 1,
             'dropdown_id' => null, 
-            'required' => 1,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
@@ -145,6 +145,7 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
@@ -158,6 +159,7 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
             'label' => 'Department to commit the accomplishment',
@@ -171,6 +173,7 @@ class MobilityFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        
         ExtensionProgramField::insert([
             'extension_program_form_id' => 6,
             'label' => 'Description of Supporting Documents',
