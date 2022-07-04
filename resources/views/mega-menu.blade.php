@@ -95,6 +95,9 @@
                     @faculty
                     <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
                     @endfaculty
+                    @admin
+                    <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
+                    @endadmin
                 @endcan
                 @admin
                 <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">&#8226; Accomplishments Based on OPCR</a></li>

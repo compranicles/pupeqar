@@ -197,19 +197,19 @@ class ReportCategorySeeder extends Seeder
         ]); //29
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Special Tasks - Quality',
+            'name' => 'Special Tasks(Faculty)/Accomplishments Based on OPCR(Admin) - Quality',
             'is_active' => 1,
             'order' => 30,
         ]); //30
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Special Tasks - Efficiency',
+            'name' => 'Special Tasks(Faculty)/Accomplishments Based on OPCR(Admin) - Efficiency',
             'is_active' => 1,
             'order' => 31,
         ]); //31
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Special Tasks - Timeliness',
+            'name' => 'Special Tasks(Faculty)/Accomplishments Based on OPCR(Admin) - Timeliness',
             'is_active' => 1,
             'order' => 32,
         ]); //32

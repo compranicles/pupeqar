@@ -44,7 +44,7 @@ class CitationController extends Controller
     public function index(Research $research)
     {
         $this->authorize('viewAny', ResearchCitation::class);
-        
+
         $currentQuarterYear = Quarter::find(1);
 
         $researchcitations = ResearchCitation::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
@@ -52,19 +52,19 @@ class CitationController extends Controller
         $research = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                     ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                     ->select('research.*', 'dropdown_options.name as status_name')->first();
-        
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($researchcitations as $citation) {
             if (LockController::isLocked($citation->id, 5))
                 $submissionStatus[5][$citation->id] = 1;
-            else 
+            else
                 $submissionStatus[5][$citation->id] = 0;
             if (empty($reportdata->getDocuments(5, $citation->id)))
                 $submissionStatus[5][$citation->id] = 2;
         }
 
-        return view('research.citation.index', compact('research', 'researchcitations', 
+        return view('research.citation.index', compact('research', 'researchcitations',
             'currentQuarterYear', 'submissionStatus'));
     }
 
@@ -76,11 +76,7 @@ class CitationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCitation::class);
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
-        if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
-            return view('inactive');
+
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -105,7 +101,7 @@ class CitationController extends Controller
             return view('inactive');
 
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
@@ -115,9 +111,9 @@ class CitationController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
 
         $citation = ResearchCitation::create($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -171,8 +167,8 @@ class CitationController extends Controller
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-                
+
+
         $values = ResearchCitation::find($citation->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
@@ -190,11 +186,9 @@ class CitationController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         $this->authorize('update', ResearchCitation::class);
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
+
         if(LockController::isLocked($citation->id, 5)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -210,8 +204,8 @@ class CitationController extends Controller
 
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-                
+
+
         $values = ResearchCitation::find($citation->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
@@ -242,7 +236,7 @@ class CitationController extends Controller
         $citation->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

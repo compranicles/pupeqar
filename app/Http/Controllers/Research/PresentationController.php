@@ -51,12 +51,12 @@ class PresentationController extends Controller
         $research = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
+
         $values = ResearchPresentation::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.show', $research->research_code);
         }
-        
+
         $values = collect($values->toArray());
         $values = $values->except(['research_code']);
         $values = $values->toArray();
@@ -66,19 +66,19 @@ class PresentationController extends Controller
         $value = collect($research);
         $value = $value->except(['description']);
         $value = $value->toArray();
-        
+
         $value = array_merge($value, $values);
-        
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
             if (LockController::isLocked($values['id'], 4))
                 $submissionStatus[4][$values['id']] = 1;
-            else 
+            else
                 $submissionStatus[4][$values['id']] = 0;
             if (empty($reportdata->getDocuments(4, $values['id'])))
                 $submissionStatus[4][$values['id']] = 2;
 
-        return view('research.presentation.index', compact('research', 'researchFields', 
+        return view('research.presentation.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
 
@@ -91,9 +91,6 @@ class PresentationController extends Controller
     {
         $this->authorize('create', ResearchPresentation::class);
 
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -111,7 +108,7 @@ class PresentationController extends Controller
         $value = $value->toArray();
 
         $publicationChecker = ResearchPublication::where('research_code', $research->research_code)->first();
-        
+
         if($publicationChecker == null){
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 29)->first();
         }
@@ -166,7 +163,7 @@ class PresentationController extends Controller
         $presentation = ResearchPresentation::create($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -219,11 +216,8 @@ class PresentationController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($presentation->id, 4)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
-        if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
@@ -269,7 +263,7 @@ class PresentationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $date_presented = date("Y-m-d", strtotime($request->input('date_presented')));
 
         $request->merge([
@@ -283,7 +277,7 @@ class PresentationController extends Controller
         $presentation->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

@@ -39,7 +39,7 @@ class GenerateColumn4Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Name of the Adoptor',
             'table_id' => 33,
-            'report_column' => 'Name of the Adoptor',
+            'report_column' => 'name_of_adoptor',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -482,7 +482,7 @@ class GenerateColumn4Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Name of the Adoptor',
             'table_id' => 75,
-            'report_column' => 'Name of the Adoptor',
+            'report_column' => 'name_of_adoptor',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -801,7 +801,7 @@ class GenerateColumn4Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Name of the Adoptor',
             'table_id' => 84,
-            'report_column' => 'Name of the Adoptor',
+            'report_column' => 'name_of_adoptor',
             'is_active' => 1,
             'order' => 1
         ]);
@@ -1390,7 +1390,7 @@ class GenerateColumn4Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Description of Accomplishment',
             'table_id' => 10,
-            'report_column' => 'accomp_description',
+            'report_column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1
         ]);
