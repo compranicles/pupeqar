@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="{{ route('dashboard') }}" style="color:white">
-            <img src="{{ URL('storage/logo2.png') }}" width="36" class="mr-1">
+            <img src="{{ URL('storage/PUP.png') }}" width="36" class="mr-1">
             PUP eQAR
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
