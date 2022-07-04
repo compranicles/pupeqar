@@ -13,7 +13,9 @@ class Changes2OnMobilitiesTable extends Migration
      */
     public function up()
     {
-        $table->string('nature_of_engagement')->nullable()->after('type');
+        Schema::table('mobilities', function (Blueprint $table) {
+            $table->string('nature_of_engagement')->nullable()->after('type');
+        });
     }
 
     /**
