@@ -92,9 +92,6 @@
                 <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">&#8226; Academic Special Tasks</a></li>
                 @endcan
                 @can('manage', \App\Models\AdminSpecialTask::class)
-                    @faculty
-                    <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
-                    @endfaculty
                     @admin
                     <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
                     @endadmin
