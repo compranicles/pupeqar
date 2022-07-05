@@ -10,6 +10,7 @@ use App\Models\ExtensionService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\ExtensionInviteNotification;
+use Illuminate\Support\Facades\DB;
 
 class InviteController extends Controller
 {
@@ -107,7 +108,7 @@ class InviteController extends Controller
         
         \LogActivity::addToLog('Had denied as a co-extensionist of an extension program/project/activity.');
 
-        return redirect()->route('extension.index')->with('success', 'Invitation cancelled.');
+        return redirect()->route('extension-service.index')->with('success', 'Invitation cancelled.');
     }
 
     public function remove($id, Request $request){
