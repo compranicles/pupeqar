@@ -58,41 +58,6 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="card">
-                        <h5 class="card-header">Announcements</h5>
-                            <div class="card-body">
-                                <table style="background-color: white;">
-                                    @php $i = 0; @endphp
-                                    @forelse($announcements as $announcement)
-                                    <thead>
-                                        <tr>
-                                            <th role="button" class="font-weight-bold home-titles" style="{{ $i == 0 ? ' ' : 'border-top: 1px solid #dee2e6; padding-top: 10px;' }}"
-                                                    data-bs-toggle="modal" data-bs-target="#announcementModal" data-bs-subject="{{ $announcement->subject }}"
-                                                    data-bs-message="{{ $announcement->message }}" data-bs-date="{{ date( 'F j, Y', strtotime($announcement->updated_at)) }}">
-                                                <small style="color: var(--gray-dark)">{{ date( "F j, Y", strtotime($announcement->updated_at)) }}</small>
-                                                <br>
-                                                {{$announcement->subject}}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="home-report-list" style="padding-bottom: 10px;"><small>{{substr_replace($announcement->message, "...", 100)}}</small></td>
-                                        </tr>
-                                    </tbody>
-                                    @php $i++; @endphp
-                                    @empty
-                                        <p class="align-middle text-center">No announcements to show.</p>
-                                    @endforelse
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="col-md-8">
                 <div class="row">
                     @if (in_array(8, $roles) || in_array(9, $roles))
@@ -189,6 +154,41 @@
                                     <li><a href="{{ route('request.create') }}">Requests and Queries Acted Upon</a></li>
                                 </ul>
                                 @endcan
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                        <h5 class="card-header">Announcements</h5>
+                            <div class="card-body">
+                                <table style="background-color: white;">
+                                    @php $i = 0; @endphp
+                                    @forelse($announcements as $announcement)
+                                    <thead>
+                                        <tr>
+                                            <th role="button" class="font-weight-bold home-titles" style="{{ $i == 0 ? ' ' : 'border-top: 1px solid #dee2e6; padding-top: 10px;' }}"
+                                                    data-bs-toggle="modal" data-bs-target="#announcementModal" data-bs-subject="{{ $announcement->subject }}"
+                                                    data-bs-message="{{ $announcement->message }}" data-bs-date="{{ date( 'F j, Y', strtotime($announcement->updated_at)) }}">
+                                                <small style="color: var(--gray-dark)">{{ date( "F j, Y", strtotime($announcement->updated_at)) }}</small>
+                                                <br>
+                                                {{$announcement->subject}}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="home-report-list" style="padding-bottom: 10px;"><small>{{substr_replace($announcement->message, "...", 100)}}</small></td>
+                                        </tr>
+                                    </tbody>
+                                    @php $i++; @endphp
+                                    @empty
+                                        <p class="align-middle text-center">No announcements to show.</p>
+                                    @endforelse
+                                </table>
                             </div>
                         </div>
                     </div>
