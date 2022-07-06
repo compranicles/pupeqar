@@ -17,7 +17,9 @@
                 <li><a class="{{ request()->routeIs('student-training.*') ? 'active' : '' }}" href="{{ route('student-training.index') }}">&#8226; Student Attended Seminars and Trainings</a></li>
                 @endcan
                 {{-- For College and Departments --}}
+                @can('viewAny', \App\Models\CollegeDepartmentAward::class)
                 <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">&#8226; Awards and Recognition Received by the College/Department</a></li>
+                @endcan
                 @can('viewAny', \App\Models\ViableProject::class)
                 <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }}" href="{{ route('viable-project.index') }}">&#8226; Viable Demonstration Projects</a></li>
                 @endcan

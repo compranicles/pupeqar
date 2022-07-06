@@ -57,7 +57,7 @@ class ConferenceController extends Controller
                 $submissionStatus[10][$conference->id] = 1;
             else
                 $submissionStatus[10][$conference->id] = 0;
-            if (empty($reportdata->getDocuments(15, $conference->id)))
+            if (empty($reportdata->getDocuments(10, $conference->id)))
                 $submissionStatus[10][$conference->id] = 2;
         }
 

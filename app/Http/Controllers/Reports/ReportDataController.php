@@ -412,7 +412,10 @@ class ReportDataController extends Controller
         if($report_data->report_category_id <= '23' || $report_data->report_category_id >= '29'){
             $report_columns = ReportColumn::where('report_category_id', $report_data->report_category_id)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
-                $new_report_details[$row->name] = $report_details[$row->column];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->name] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->name] = '-';
             }
         }
         elseif($report_data->report_category_id == '24'){
@@ -420,7 +423,10 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                $new_report_details[$row->label] = $report_details[$row->name];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->label] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->label] = '-';
             }
         }
         elseif($report_data->report_category_id == '27'){
@@ -428,7 +434,10 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                $new_report_details[$row->label] = $report_details[$row->name];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->label] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->label] = '-';
             }
         }
         elseif($report_data->report_category_id == '28'){
@@ -436,7 +445,10 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                $new_report_details[$row->label] = $report_details[$row->name];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->label] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->label] = '-';
             }
         }
         elseif($report_data->report_category_id == '25'){
@@ -444,7 +456,10 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                $new_report_details[$row->label] = $report_details[$row->name];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->label] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->label] = '-';
             }
         }
         elseif($report_data->report_category_id == '26'){
@@ -452,7 +467,10 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                $new_report_details[$row->label] = $report_details[$row->name];
+                if(isset($report_details[$row->column]))
+                    $new_report_details[$row->label] = $report_details[$row->column];
+                else
+                    $new_report_details[$row->label] = '-';
             }
         }
 

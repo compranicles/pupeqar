@@ -112,13 +112,6 @@ class ReferenceController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $request->validate([
-            'date_completed' => 'after_or_equal:date_started',
-            'date_published' => 'after:date_completed',
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
-
         $input = $request->except(['_token', '_method', 'document']);
 
         $rtmmi = Reference::create($input);
@@ -253,25 +246,6 @@ class ReferenceController extends Controller
             'date_completed' => $date_completed,
             'date_published' => $date_published,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
-        ]);
-
-        $request->validate([
-            'category' => 'required',
-            'level' => 'required',
-            'date_started' => 'required|date',
-            'date_completed' => 'required|date|after_or_equal:date_started',
-            'title' => 'required',
-            'authors_compilers' => 'required',
-            // 'editor_name' => ''
-            // 'editor_profession' => ''
-            'volume_no' => 'integer',
-            'issue_no' => 'integer',
-            'date_published' => 'date|after:date_completed',
-            // 'copyright_regi_no' => ''
-            'college_id' => 'required',
-            // 'department_id' => 'required',
-            // 'description' => 'required',
-            'department_id' => 'required'
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

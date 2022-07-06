@@ -185,6 +185,9 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/offices', \App\Http\Controllers\User\EmployeeController::class);
     Route::get('/account', [\App\Http\Controllers\User\AccountController::class, 'index'])->name('account');
     Route::post('/account/store-signature', [\App\Http\Controllers\UserController::class, 'storeSignature'])->name('account.signature.save');
+
+    //document view
+    Route::get('/reports/{id}/documents', [\App\Http\Controllers\Reports\GenerateController::class, 'documentView'])->name('report.generate.document-view');
 });
 
 /* AUTH CHECKER */
