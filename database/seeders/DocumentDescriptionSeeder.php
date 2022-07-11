@@ -106,7 +106,7 @@ class DocumentDescriptionSeeder extends Seeder
         //Research Citation
         DocumentDescription::insert([
             'report_category_id' => 5,
-            'name' => 'Print Screen from Goole Scholar/Internet indicating the title of papers citing the paper',
+            'name' => 'Print Screen from Google Scholar/Internet indicating the title of papers citing the paper',
             'is_active' => 1,
         ]);
         DocumentDescription::insert([

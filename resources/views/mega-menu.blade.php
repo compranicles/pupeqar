@@ -17,7 +17,9 @@
                 <li><a class="{{ request()->routeIs('student-training.*') ? 'active' : '' }}" href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
                 @endcan
                 {{-- For College and Departments --}}
-                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">Awards and Recognition Received by the College/Department</a></li>
+                @can('viewAny', \App\Models\CollegeDepartmentAward::class)
+                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">&#8226; Awards and Recognition Received by the College/Department</a></li>
+                @endcan
                 @can('viewAny', \App\Models\ViableProject::class)
                 <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }}" href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
                 @endcan
@@ -92,9 +94,9 @@
                 <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Academic Special Tasks</a></li>
                 @endcan
                 @can('manage', \App\Models\AdminSpecialTask::class)
-                    @faculty
-                    <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
-                    @endfaculty
+                @admin
+                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
+                @endadmin
                 @endcan
                 @admin
                 <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Accomplishments Based on OPCR</a></li>

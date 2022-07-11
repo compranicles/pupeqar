@@ -45,18 +45,18 @@ class UtilizationController extends Controller
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($researchutilizations as $utilization) {
             if (LockController::isLocked($utilization->id, 6))
                 $submissionStatus[6][$utilization->id] = 1;
-            else 
+            else
                 $submissionStatus[6][$utilization->id] = 0;
             if (empty($reportdata->getDocuments(6, $utilization->id)))
                 $submissionStatus[6][$utilization->id] = 2;
         }
-        return view('research.utilization.index', compact('research', 'researchutilizations', 
+        return view('research.utilization.index', compact('research', 'researchutilizations',
             'currentQuarterYear', 'submissionStatus'));
     }
 
@@ -68,9 +68,7 @@ class UtilizationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
+
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
@@ -95,7 +93,7 @@ class UtilizationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -112,7 +110,7 @@ class UtilizationController extends Controller
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -167,8 +165,8 @@ class UtilizationController extends Controller
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-                
+
+
         $values = ResearchUtilization::find($utilization->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
@@ -188,10 +186,7 @@ class UtilizationController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
+
         if(LockController::isLocked($utilization->id, 6)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -206,8 +201,8 @@ class UtilizationController extends Controller
 
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-                
+
+
         $values = ResearchUtilization::find($utilization->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
@@ -229,7 +224,7 @@ class UtilizationController extends Controller
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $utilization->update(['description' => '-clear']);
@@ -240,7 +235,7 @@ class UtilizationController extends Controller
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

@@ -1647,7 +1647,7 @@ class GenerateColumnSeeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Name of the Adoptor',
             'table_id' => 33,
-            'report_column' => 'Name of the Adoptor',
+            'report_column' => 'name_of_adoptor',
             'is_active' => 1,
             'order' => 1
         ]);

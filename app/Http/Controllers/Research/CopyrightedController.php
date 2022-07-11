@@ -55,24 +55,24 @@ class CopyrightedController extends Controller
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-            
-                
+
+
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
         if($values == null){
             return redirect()->route('research.copyrighted.create', $research->id);
         }
         $values = array_merge($research->toArray(), $values->toArray());
-    
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
             if (LockController::isLocked($research->id, 7))
                 $submissionStatus[7][$research->id] = 1;
-            else 
+            else
                 $submissionStatus[7][$research->id] = 0;
             if (empty($reportdata->getDocuments(7, $research->id)))
                 $submissionStatus[7][$research->id] = 2;
 
-        return view('research.copyrighted.index', compact('research', 'researchFields', 'values', 
+        return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
             'researchDocuments', 'submissionStatus'));
     }
 
@@ -85,9 +85,6 @@ class CopyrightedController extends Controller
     {
         $this->authorize('create', ResearchCopyright::class);
 
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 7)->pluck('is_active')->first() == 0)
@@ -133,9 +130,9 @@ class CopyrightedController extends Controller
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyright = ResearchCopyright::create($input);
-       
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -188,11 +185,8 @@ class CopyrightedController extends Controller
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($copyrighted->id, 7)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
-        if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
@@ -229,7 +223,7 @@ class CopyrightedController extends Controller
         $request->validate([
             'copyright_year' => 'after_or_equal:'.$date_parts[0],
         ]);
-        
+
         $input = $request->except(['_token', '_method', 'document']);
 
         $copyrighted->update(['description' => '-clear']);
@@ -237,7 +231,7 @@ class CopyrightedController extends Controller
         $copyrighted->update($input);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

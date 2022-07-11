@@ -13,7 +13,9 @@ class ChangesOnMobilitiesTable extends Migration
      */
     public function up()
     {
-        $table->dropColumn('nature_of_engagement');
+        Schema::table('mobilities', function (Blueprint $table) {
+            $table->dropColumn('nature_of_engagement');
+        });
     }
 
     /**
