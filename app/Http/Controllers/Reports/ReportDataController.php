@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Reports;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use App\Models\{
     CollegeDepartmentAwardDocument,
     CommunityEngagementDocument,
@@ -88,13 +89,22 @@ class ReportDataController extends Controller
             }
             foreach($report_columns as $column){
                 if($column->table == 'research_citations'){
-                    $data = DB::table('research_citations')->where('id', $id)->value($column->column);
+                    if (Schema::hasColumn('research_citations', $column->column))
+                        $data = DB::table('research_citations')->where('id', $id)->value($column->column);
+                    else
+                        $data = null;
                 }
                 elseif($column->table == 'research_utilizations'){
-                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    if (Schema::hasColumn($column->table, $column->column))
+                        $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    else
+                        $data = null;
                 }
                 elseif($column->table == 'research'){
-                    $data = DB::table($column->table)->where('id', $research_id)->value($column->column);
+                    if (Schema::hasColumn($column->table, $column->column))
+                        $data = DB::table($column->table)->where('id', $research_id)->value($column->column);
+                    else
+                        $data = null;
 
                     if ($column->column == "start_date" || $column->column == "target_date" || $column->column == "completion_date" ) {
                         if($data == null)
@@ -106,7 +116,10 @@ class ReportDataController extends Controller
                     }
                 }
                 else {
-                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    if (Schema::hasColumn($column->table, $column->column))
+                        $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    else
+                        $data = null;
 
                     if ($column->column == "completion_date" || $column->column == "publish_date" || $column->column == "date_presented") {
                         if($data == null)
@@ -181,7 +194,10 @@ class ReportDataController extends Controller
         else{
             if($report_category_id >= 8){
                 foreach($report_columns as $column){
-                    $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    if (Schema::hasColumn($column->table, $column->column))
+                        $data = DB::table($column->table)->where('id', $id)->value($column->column);
+                    else
+                        $data = null;
 
                     if ($column->column == "start_date" || $column->column == "end_date" || $column->column == "issue_date"
                         || $column->column == "from" || $column->column == "to" || $column->column == "date"
