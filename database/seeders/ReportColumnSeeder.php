@@ -1690,7 +1690,7 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 12,
             'name' => 'Source of Fund',
             'table' => 'extension_services',
-            'column' => 'funding_agency',
+            'column' => 'type_of_funding',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -1699,6 +1699,14 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Amount of Fund',
             'table' => 'extension_services',
             'column' => 'amount_of_funding',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 12,
+            'name' => 'Funding Agency',
+            'table' => 'extension_services',
+            'column' => 'funding_agency',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -2047,6 +2055,14 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Address of Host Institution/ Organization/ Agency',
             'table' => 'mobilities',
             'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 14,
+            'name' => 'Collaborating Country and Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'collaborating_country',
             'is_active' => 1,
             'order' => 1,
         ]);
@@ -3066,6 +3082,14 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 34,
+            'name' => 'Collaborating Country and Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'collaborating_country',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 34,
             'name' => 'Description of Inter-Country Mobility',
             'table' => 'intra_mobilities',
             'column' => 'mobility_description',
@@ -3157,6 +3181,14 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 35,
             'name' => 'Address of Host Institution/ Organization/ Agency',
+            'table' => 'mobilities',
+            'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 35,
+            'name' => 'Collaborating Country and Institution/ Organization/ Agency',
             'table' => 'mobilities',
             'column' => 'host_address',
             'is_active' => 1,
@@ -3257,6 +3289,14 @@ class ReportColumnSeeder extends Seeder
             'name' => 'Address of Host Institution/ Organization/ Agency',
             'table' => 'intra_mobilities',
             'column' => 'host_address',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 36,
+            'name' => 'Collaborating Country and Institution/ Organization/ Agency',
+            'table' => 'intra_mobilities',
+            'column' => 'collaborating_country',
             'is_active' => 1,
             'order' => 1,
         ]);

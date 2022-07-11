@@ -25,6 +25,7 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\DateContentService;
 
 class PartnershipController extends Controller
 {
@@ -96,8 +97,9 @@ class PartnershipController extends Controller
     {
         $this->authorize('create', Partnership::class);
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -106,11 +108,6 @@ class PartnershipController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
-        ]);
-
-        $request->validate([
-            'college_id' => 'required',
-            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
@@ -221,18 +218,13 @@ class PartnershipController extends Controller
     {
         $this->authorize('update', Partnership::class);
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
-        ]);
-
-        $request->validate([
-            'college_id' => 'required',
-            'department_id' => 'required'
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)

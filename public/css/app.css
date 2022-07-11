@@ -2024,7 +2024,7 @@ input[type=month].form-control {
 }
 
 select.form-control:focus::-ms-value {
-  color: #495057;
+  color: #000;
   background-color: #fff;
 }
 
@@ -3636,7 +3636,7 @@ input[type=button].btn-block {
   background-image: none;
 }
 .custom-select:disabled {
-  color: #6c757d;
+  color: #000;
   background-color: #e9ecef;
 }
 .custom-select::-ms-expand {
@@ -12992,7 +12992,6 @@ body {
   display: none;
   padding: 2em;
   left: 0;
-  /* margin-left: 4.75em; */
   margin-top: 4px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
@@ -13000,8 +12999,11 @@ body {
 }
 
 .menu-sub li {
+  margin-left: 1em;
   display: block;
   padding-bottom: .70em;
+  display: list-item;
+  list-style-type: disc;
 }
 
 .menu-sub a {

@@ -21,6 +21,7 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Quarter,
 };
+use App\Services\DateContentService;
 
 class StudentAwardController extends Controller
 {
@@ -97,7 +98,7 @@ class StudentAwardController extends Controller
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date = date("Y-m-d", strtotime($request->input('date')));
+        $date = (new DateContentService())->checkDateContent($request, "date");
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -218,7 +219,7 @@ class StudentAwardController extends Controller
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date = date("Y-m-d", strtotime($request->input('date')));
+        $date = (new DateContentService())->checkDateContent($request, "date");
 
         $request->merge([
             'date' => $date,

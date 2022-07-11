@@ -52,16 +52,6 @@
             };
         },
     });
-    $("#utilization").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
 
     $("#editor_profession").selectize({
         delimiter: ",",
@@ -93,16 +83,7 @@
             };
         },
     });
-    $("#nature_of_business_enterprise").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
+ 
     $("#journal_publisher").selectize({
         delimiter: "/",
         persist: false,
@@ -123,16 +104,7 @@
             };
         },
     });
-    $("#organization").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
+
 </script>
 <!-- For people names separated by ('/') -->
 <script>

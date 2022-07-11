@@ -2599,9 +2599,10 @@ class SubmissionController extends Controller
             if($report_category_id == 7)
                 ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
         }
-        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id))
+        if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
-        return redirect()->back()->with('cannot_submit', 'Fail to submit accomplishment');
+        else
+            return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment. For chairperson/chief and dean/director, please edit the department of your accomplishment as instructed in the edit form.');
     }
 
     public function submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id){
@@ -2663,7 +2664,7 @@ class SubmissionController extends Controller
                     'report_year' => $currentQuarterYear->current_year,
                 ]);
                 $successToSubmit++;
-
+                return 1;
             break;
             case 8: case 9: case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 29: case 30: case 31: case 32: case 33: case 34: case 38:
                 switch($report_values_array[1]){
@@ -2761,7 +2762,7 @@ class SubmissionController extends Controller
                     'report_year' => $currentQuarterYear->current_year,
                 ]);
                 $successToSubmit++;
-
+                return 1;
             break;
             case 17: case 18: case 19: case 20: case 21: case 22: case 23: case 35: case 36: case 37: case 39:
                 //role and department/ college id
@@ -2845,7 +2846,11 @@ class SubmissionController extends Controller
                     ]);
 
                     $successToSubmit++;
+                    return 1;
+                } else {
+                    return 0;
                 }
+
                 if(in_array(6, $roles) && $collegeAndDepartment->department_id == 0){
 
                     Report::where('report_reference_id', $report_values_array[2])
@@ -2872,6 +2877,9 @@ class SubmissionController extends Controller
                         'report_year' => $currentQuarterYear->current_year,
                     ]);
                     $successToSubmit++;
+                    return 1;
+                } else {
+                    return 0;
                 }
             break;
         }

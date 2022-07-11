@@ -341,12 +341,6 @@ class ExtensionServiceController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $request->validate([
-            // 'keywords' => new Keyword,
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
-
         if ($request->input('total_no_of_hours') != '') {
             $request->validate([
                 'total_no_of_hours' => 'numeric',
@@ -460,22 +454,15 @@ class ExtensionServiceController extends Controller
         $value = $value->except(['nature_of_involvement', 'college_id', 'department_id']);
         $value = $value->toArray();
 
-        if ($extension_service->department_id != null) {
-            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
-        }
-        else {
-            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
-        }
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
-        $departments = Department::all();
-        $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         $notificationID = $request->get('id');
 
         $is_owner = 0;
-        $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'collegeOfDepartment', 'is_owner', 'notificationID', 'extensionServiceDocuments', 'departments'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments'));
     }
 
 
