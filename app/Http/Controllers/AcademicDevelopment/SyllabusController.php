@@ -116,10 +116,6 @@ class SyllabusController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $request->validate([
-            'college_id' => 'required',
-            'department_id' => 'required'
-        ]);
         $input = $request->except(['_token', '_method', 'document']);
 
         $syllabus = Syllabus::create($input);

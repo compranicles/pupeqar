@@ -21,6 +21,7 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Quarter,
 };
+use App\Services\DateContentService;
 
 class StudentTrainingController extends Controller
 {
@@ -98,8 +99,9 @@ class StudentTrainingController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
+
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -108,12 +110,6 @@ class StudentTrainingController extends Controller
             'end_date' => $end_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
-        ]);
-
-        $request->validate([
-            // 'budget' => 'numeric',
-            'end_date' => 'after_or_equal:start_date',
-            'total_hours' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -230,19 +226,13 @@ class StudentTrainingController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
-        $end_date = date("Y-m-d", strtotime($request->input('end_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
+        $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
         $request->merge([
             'budget' => $value,
             'start_date' => $start_date,
             'end_date' => $end_date,
-        ]);
-
-        $request->validate([
-            // 'budget' => 'numeric',
-            'end_date' => 'after_or_equal:start_date',
-            'total_hours' => 'numeric',
         ]);
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)

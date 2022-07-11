@@ -78,19 +78,7 @@ class OtherDeptAccomplishmentFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        ExtensionProgramField::insert([
-            'extension_program_form_id' => 11,
-            'label' => 'Department to commit the accomplishment',
-            'name' => 'department_id',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 13,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
+        
         ExtensionProgramField::insert([
             'extension_program_form_id' => 11,
             'label' => 'College/Campus/Branch/Office to commit the accomplishment',
@@ -105,7 +93,19 @@ class OtherDeptAccomplishmentFormSeeder extends Seeder
             'is_active' => 1,
         ]);
         
-
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 11,
+            'label' => 'Department to commit the accomplishment',
+            'name' => 'department_id',
+            'placeholder' => null,
+            'size' => 'col-md-6',
+            'field_type_id' => 13,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
         ExtensionProgramField::insert([
             'extension_program_form_id' => 11,
             'label' => 'Proof of Compliance',

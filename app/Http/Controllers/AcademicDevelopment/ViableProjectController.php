@@ -21,6 +21,7 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Quarter,
 };
+use App\Services\DateContentService;
 
 class ViableProjectController extends Controller
 {
@@ -95,6 +96,9 @@ class ViableProjectController extends Controller
     {
         $this->authorize('create', ViableProject::class);
 
+        $request->validate([
+            'rate_of_return' => 'numeric'
+        ]);
         $value = $request->input('revenue');
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
@@ -103,7 +107,7 @@ class ViableProjectController extends Controller
         $value2 = (float) str_replace(",", "", $value2);
         $value2 = number_format($value2,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -113,12 +117,6 @@ class ViableProjectController extends Controller
             'start_date' => $start_date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
-        ]);
-
-        $request->validate([
-            // 'revenue' => 'numeric',
-            // 'cost' => 'numeric',
-            'rate_of_return' => 'numeric',
         ]);
 
         $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
@@ -234,6 +232,9 @@ class ViableProjectController extends Controller
     {
         $this->authorize('update', ViableProject::class);
 
+        $request->validate([
+            'rate_of_return' => 'numeric'
+        ]);
         $value = $request->input('revenue');
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
@@ -242,18 +243,12 @@ class ViableProjectController extends Controller
         $value2 = (float) str_replace(",", "", $value2);
         $value2 = number_format($value2,2,'.','');
 
-        $start_date = date("Y-m-d", strtotime($request->input('start_date')));
+        $start_date = (new DateContentService())->checkDateContent($request, "start_date");
 
         $request->merge([
             'revenue' => $value,
             'cost' => $value2,
             'start_date' => $start_date,
-        ]);
-
-        $request->validate([
-            // 'revenue' => 'numeric',
-            // 'cost' => 'numeric',
-            'rate_of_return' => 'numeric',
         ]);
         
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)

@@ -266,7 +266,7 @@ class ExtensionistController extends Controller
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
-            Report::where('id', $ireport_idd)->update(['extensionist_approval' => 0]);
+            Report::where('id', $report_id)->update(['extensionist_approval' => 0]);
             DenyReason::create([
                 'report_id' => $report_id,
                 'user_id' => auth()->id(),
