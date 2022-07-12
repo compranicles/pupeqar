@@ -6038,7 +6038,7 @@ a.close.disabled {
   width: 2rem;
   height: 2rem;
   vertical-align: text-bottom;
-  border: 0.25em solid currentColor;
+  border: 0.50em solid currentColor;
   border-right-color: transparent;
   border-radius: 50%;
   -webkit-animation: 0.75s linear infinite spinner-border;
@@ -13603,4 +13603,19 @@ padding: 3px;
 
 .bi.bi-dash-circle-fill {
   color: red;
+}
+
+#loading {
+position: fixed;
+width: 100%;
+height: 100vh;
+background: #fff no-repeat center center;
+z-index: 9999;
+}
+
+.page-spinner {
+  position: fixed;
+  z-index: 1031;
+  top: 40%;
+  left: 50%;
 }

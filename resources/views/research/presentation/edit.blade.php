@@ -150,6 +150,7 @@
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/remove-document.js') }}"></script>
+    <script src="{{ asset('js/spinner.js') }}"></script>
     <script>
         // auto hide alert
         window.setTimeout(function() {

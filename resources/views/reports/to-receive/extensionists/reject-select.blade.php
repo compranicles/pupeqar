@@ -1,11 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Return Accomplishment Reports') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Return Accomplishment Reports</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -64,7 +63,7 @@
                 </button>
             </div>
             <div class="modal-body w-100 text-center">
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col-md-11 h5 font-weight-bold text-center">Documents:</div>
                     <div class="col-md-11 text-center" id="data_documents">
                     </div>
@@ -92,6 +91,7 @@
     </div>
 
     @push('scripts')
+        <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $('.button-view').on('click', function(){
                 var catID = $(this).data('id');

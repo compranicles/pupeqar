@@ -144,6 +144,7 @@
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/remove-document.js') }}"></script>
+        <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $('#date_started').on('change', function () {
                 $('#date_completed').datepicker('setStartDate', $('#date_started').val());

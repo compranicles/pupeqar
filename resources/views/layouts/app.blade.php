@@ -50,6 +50,13 @@
 
     </head>
     <body class="font-sans antialiased bg-light" style="background-image: {{ URL('storage/cover2.png') }}">
+        <div id="loading">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-danger font-weight-bold page-spinner" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+        </div>
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
@@ -105,6 +112,11 @@
             js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <script>
+            window.addEventListener('load', function () {
+                $('#loading').fadeOut();
+            });
         </script>
     </body>
 </html>

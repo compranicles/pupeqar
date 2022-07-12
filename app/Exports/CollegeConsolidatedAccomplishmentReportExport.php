@@ -35,7 +35,10 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
         $this->cbco = $cbco;
 
         $user = Dean::where('deans.college_id', $this->id)->join('users', 'users.id', 'deans.user_id')->select('users.*')->first();
+        if (isset($user))
             $this->signature = $user->signature;
+        else
+            $this->signature = '';
 
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
         if ($faculty_researcher != null) {
@@ -388,9 +391,9 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                     echo $this->addImage($path, $coordinates, $sheet);
                 } 
 
-                $event->sheet->setCellValue('A'.$count, $this->arranged_name);
-                $event->sheet->setCellValue('C'.$count, $this->fr_name);
-                $event->sheet->setCellValue('E'.$count, $this->fe_name);
+                $event->sheet->setCellValue('A'.$count, $this->fr_name);
+                $event->sheet->setCellValue('C'.$count, $this->fe_name);
+                $event->sheet->setCellValue('E'.$count, $this->arranged_name);
                 $event->sheet->getStyle('A'.$count.':'.'E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',

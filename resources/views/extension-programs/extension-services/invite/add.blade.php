@@ -20,7 +20,7 @@
             </div>
             <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mb-2" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success mb-2">Send Confirmation</button>
+                    <button type="submit" id="submit" class="btn btn-success mb-2">Send Confirmation</button>
                 </form>
             </div>
         </div>
@@ -30,6 +30,11 @@
 @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
+        $('form').on('submit', function() {
+            $('#submit').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...');
+            $('#submit').attr('disabled', 'disabled');
+        });
+    </script><script>
         $("#employees").selectize({
             maxItems: null,
             sortField: "text",
