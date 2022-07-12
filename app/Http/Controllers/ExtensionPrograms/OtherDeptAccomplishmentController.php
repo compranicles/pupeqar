@@ -104,6 +104,11 @@ class OtherDeptAccomplishmentController extends Controller
         $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -113,7 +118,7 @@ class OtherDeptAccomplishmentController extends Controller
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $otherDeptAccomplishment = OtherDeptAccomplishment::create($input);
         $otherDeptAccomplishment->update(['user_id' => auth()->id()]);
@@ -141,6 +146,10 @@ class OtherDeptAccomplishmentController extends Controller
             }
         }
         \LogActivity::addToLog('Had added other department/college accomplishment.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/39/'.$otherDeptAccomplishment->id).'?r=other-dept-accomplishment.index');
+        }
 
         return redirect()->route('other-dept-accomplishment.index')->with('other_dept_success', 'Other department/college accomplishment has been added.');
     }
@@ -222,6 +231,11 @@ class OtherDeptAccomplishmentController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -230,7 +244,7 @@ class OtherDeptAccomplishmentController extends Controller
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $otherDeptAccomplishment->update(['description' => '-clear']);
 
@@ -261,6 +275,9 @@ class OtherDeptAccomplishmentController extends Controller
 
         \LogActivity::addToLog('Had updated other department/college accomplishment.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/39/'.$otherDeptAccomplishment->id).'?r=other-dept-accomplishment.index');
+        }
 
         return redirect()->route('other-dept-accomplishment.index')->with('other_dept_success', 'Other department/college accomplishment has been updated.');
     }

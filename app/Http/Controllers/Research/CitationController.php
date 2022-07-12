@@ -102,13 +102,18 @@ class CitationController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
             'research_id' => $research->id,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $citation = ResearchCitation::create($input);
 
@@ -139,6 +144,10 @@ class CitationController extends Controller
         }
 
         \LogActivity::addToLog('Had added a research citation for "'.$research->title.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/5/'.$citation->id).'?r=research.citation.index');
+        }
 
         return redirect()->route('research.citation.index', $research->id)->with('success', 'Research citation has been added.');
     }
@@ -229,7 +238,12 @@ class CitationController extends Controller
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $citation->update(['description' => '-clear']);
 
@@ -262,6 +276,10 @@ class CitationController extends Controller
         }
 
         \LogActivity::addToLog('Had updated a research citation of "'.$research->title.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/5/'.$citation->id).'?r=research.citation.index');
+        }
 
         return redirect()->route('research.citation.show', [$research->id, $citation->id])->with('success', 'Research Citation Updated Successfully');
     }

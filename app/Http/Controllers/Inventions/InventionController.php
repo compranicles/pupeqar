@@ -115,6 +115,11 @@ class InventionController extends Controller
         $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -130,7 +135,7 @@ class InventionController extends Controller
             'department_id' => 'required'
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
@@ -162,7 +167,10 @@ class InventionController extends Controller
 
         \LogActivity::addToLog("Had added ".ucfirst($classification[0]->name).' entitled "'.$request->input('title').'".');
 
-        // dd($classification);
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/8/'.$iicw->id).'?r=invention-innovation-creative.index');
+        }
+
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
     }
 
@@ -263,6 +271,11 @@ class InventionController extends Controller
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $issue_date = (new DateContentService())->checkDateContent($request, "issue_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -276,7 +289,7 @@ class InventionController extends Controller
             'department_id' => 'required'
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
         $invention_innovation_creative->update(['description' => '-clear']);
         $invention_innovation_creative->update($input);
 
@@ -306,6 +319,10 @@ class InventionController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
 
         \LogActivity::addToLog("Had updated ".ucfirst($classification[0]->name).'.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/8/'.$invention_innovation_creative->id).'?r=invention-innovation-creative.index');
+        }
 
         return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }

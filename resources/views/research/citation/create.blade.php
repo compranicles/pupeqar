@@ -15,14 +15,15 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('research.citation.store', $research['id']) }}" method="post" class="needs-validation" novalidate>
+                        <form id="create_form" action="{{ route('research.citation.store', $research['id']) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @include('form', ['formFields' => $researchFields, 'value' => $research])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
                                         <a href="{{ route('research.citation.index', $research['id']) }}" class="btn btn-secondary mr-2">Cancel</a>
-                                        <button type="submit" id="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" id="submit" class="btn btn-success mr-2">Save</button>
+                                        <button type="submit" id="submit_save" class="btn btn-primary">Save and Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -55,6 +56,12 @@
                     });
                 }
             }); }, 2000);
+        </script>
+        <script>
+            $('#submit_save').on('click', function () {
+                $('#create_form').attr('action', "{{ route('research.citation.store', $research['id']) }}"+"?o=submit");
+                $('#create_form').submit();
+            });
         </script>
     @endpush
 </x-app-layout>

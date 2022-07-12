@@ -104,6 +104,11 @@ class StudentTrainingController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'budget' => $value,
             'start_date' => $start_date,
@@ -114,7 +119,7 @@ class StudentTrainingController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
         // dd($input);
 
         $student_training = StudentTraining::create($input);
@@ -144,6 +149,10 @@ class StudentTrainingController extends Controller
         }
 
         \LogActivity::addToLog('Had added a student attended seminar and training "'.$request->input('title').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/19/'.$student_training->id).'?r=student-training.index');
+        }
 
         return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been added.');
     }
@@ -229,6 +238,11 @@ class StudentTrainingController extends Controller
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'budget' => $value,
             'start_date' => $start_date,
@@ -237,7 +251,7 @@ class StudentTrainingController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
 
         $student_training->update(['description' => '-clear']);
@@ -268,6 +282,10 @@ class StudentTrainingController extends Controller
         }
 
         \LogActivity::addToLog('Had updated the student attended seminar and training "'.$student_training->title.'".');
+        
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/19/'.$student_training->id).'?r=student-training.index');
+        }
 
         return redirect()->route('student-training.index')->with('student_success', 'Student attended seminar and training has been updated.');
     }

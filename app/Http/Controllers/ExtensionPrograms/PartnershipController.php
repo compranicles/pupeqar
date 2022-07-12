@@ -102,6 +102,11 @@ class PartnershipController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -112,7 +117,7 @@ class PartnershipController extends Controller
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
@@ -141,6 +146,9 @@ class PartnershipController extends Controller
         }
         \LogActivity::addToLog('Had added a partnership/linkage/network "'.$request->input('title_of_partnership').'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/13/'.$partnership->id).'?r=partnership.index');
+        }
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
     }
@@ -221,6 +229,11 @@ class PartnershipController extends Controller
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'start_date' => $start_date,
             'end_date' => $end_date,
@@ -230,7 +243,7 @@ class PartnershipController extends Controller
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $partnership->update(['description' => '-clear']);
 
@@ -261,6 +274,9 @@ class PartnershipController extends Controller
 
         \LogActivity::addToLog('Had updated the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/13/'.$partnership->id).'?r=partnership.index');
+        }
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
 

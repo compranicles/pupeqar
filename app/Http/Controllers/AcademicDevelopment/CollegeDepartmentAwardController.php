@@ -101,13 +101,18 @@ class CollegeDepartmentAwardController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $college_department_award = CollegeDepartmentAward::create($input);
         $college_department_award->update(['user_id' => auth()->id()]);
@@ -136,6 +141,10 @@ class CollegeDepartmentAwardController extends Controller
         }
 
         \LogActivity::addToLog('Had added an award and recognition received by the college and dept.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/21/'.$college_department_award->id).'?r=college-department-award.index');
+        }
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been added.');
     }
@@ -222,7 +231,12 @@ class CollegeDepartmentAwardController extends Controller
             'date' => $date,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $college_department_award->update(['description' => '-clear']);
 
@@ -252,6 +266,10 @@ class CollegeDepartmentAwardController extends Controller
         }
 
         \LogActivity::addToLog('Had updated an award and recognition received by the college and dept.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/21/'.$college_department_award->id).'?r=college-department-award.index');
+        }
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been updated.');
     }

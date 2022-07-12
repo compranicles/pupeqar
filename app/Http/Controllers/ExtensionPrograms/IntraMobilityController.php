@@ -130,6 +130,11 @@ class IntraMobilityController extends Controller
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         if(in_array(6, $roles)|| in_array(5, $roles)){
             $request->merge([
@@ -151,7 +156,7 @@ class IntraMobilityController extends Controller
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
         return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $intraMobility = IntraMobility::create($input);
         $intraMobility->update(['user_id' => auth()->id()]);
@@ -179,6 +184,13 @@ class IntraMobilityController extends Controller
             }
         }
         \LogActivity::addToLog('Had added an intra-country mobility.');
+
+        if($is_submit == 'yes'){
+            if(in_array(6, $roles)|| in_array(5, $roles))
+                return redirect(url('submissions/check/36/'.$intraMobility->id).'?r=intra-mobility.index');
+            else
+                return redirect(url('submissions/check/34/'.$intraMobility->id).'?r=intra-mobility.index');
+        }
 
         return redirect()->route('intra-mobility.index')->with('mobility_success', 'Intra-Country mobility has been added.');
     }
@@ -278,6 +290,11 @@ class IntraMobilityController extends Controller
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         if(in_array(6, $roles)|| in_array(5, $roles)){
             $request->merge([
@@ -295,7 +312,7 @@ class IntraMobilityController extends Controller
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $intraMobility->update(['description' => '-clear']);
 
@@ -326,6 +343,12 @@ class IntraMobilityController extends Controller
 
         \LogActivity::addToLog('Had updated an intra-country mobility.');
 
+        if($is_submit == 'yes'){
+            if(in_array(6, $roles)|| in_array(5, $roles))
+                return redirect(url('submissions/check/36/'.$intraMobility->id).'?r=intra-mobility.index');
+            else
+                return redirect(url('submissions/check/34/'.$intraMobility->id).'?r=intra-mobility.index');
+        }
 
         return redirect()->route('intra-mobility.index')->with('mobility_success', 'Intra-Country mobility has been updated.');
     }

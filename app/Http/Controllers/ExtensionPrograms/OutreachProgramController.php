@@ -52,12 +52,12 @@ class OutreachProgramController extends Controller
         foreach ($outreach_programs as $outreach_program) {
             if (LockController::isLocked($outreach_program->id, 22))
                 $submissionStatus[22][$outreach_program->id] = 1;
-            else 
+            else
                 $submissionStatus[22][$outreach_program->id] = 0;
             if (empty($reportdata->getDocuments(22, $outreach_program->id)))
                 $submissionStatus[22][$outreach_program->id] = 2;
         }
-        
+
         return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear',
             'submissionStatus'));
     }
@@ -101,19 +101,24 @@ class OutreachProgramController extends Controller
         $date = date("Y-m-d", strtotime($request->input('date')));
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $outreach = OutreachProgram::create($input);
         $outreach->update(['user_id' => auth()->id()]);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -136,6 +141,10 @@ class OutreachProgramController extends Controller
         }
 
         \LogActivity::addToLog('Had added a community relations and outreach program "'.$request->input('title_of_the_program').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/22/'.$outreach->id).'?r=outreach-program.index');
+        }
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
     }
@@ -176,7 +185,7 @@ class OutreachProgramController extends Controller
 
         if (auth()->id() !== $outreach_program->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -214,19 +223,24 @@ class OutreachProgramController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date')));
-        
+
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date' => $date,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $outreach_program->update(['description' => '-clear']);
 
         $outreach_program->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -250,6 +264,9 @@ class OutreachProgramController extends Controller
 
         \LogActivity::addToLog('Had updated the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/22/'.$outreach_program->id).'?r=outreach-program.index');
+        }
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
     }
@@ -267,7 +284,7 @@ class OutreachProgramController extends Controller
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
-        
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();

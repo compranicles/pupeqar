@@ -44,5 +44,11 @@
             }
         });
     </script>
+    <script>
+        $('#submit_save').on('click', function () {
+            $('#create_form').attr('action', "{{ route('viable-project.store') }}"+"?o=submit");
+            $('#create_form').submit();
+        });
+    </script>
     @endpush
 </x-app-layout>

@@ -101,6 +101,11 @@ class ReferenceController extends Controller
         $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
         $date_published = date("Y-m-d", strtotime($request->input('date_published')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -112,7 +117,7 @@ class ReferenceController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $rtmmi = Reference::create($input);
         $rtmmi->update(['user_id' => auth()->id()]);
@@ -147,6 +152,9 @@ class ReferenceController extends Controller
 
         \LogActivity::addToLog('Had added '.$request->input('category').' entitled "'.$request->input('title').'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/15/'.$rtmmi->id).'?r=rtmmi.index');
+        }
 
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
     }
@@ -241,6 +249,11 @@ class ReferenceController extends Controller
         $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
         $date_published = date("Y-m-d", strtotime($request->input('date_published')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date_started' => $date_started,
             'date_completed' => $date_completed,
@@ -248,7 +261,7 @@ class ReferenceController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $rtmmi->update(['description' => '-clear']);
 
@@ -283,6 +296,10 @@ class ReferenceController extends Controller
         $accomplishment = $accomplished->pluck('name');
 
         \LogActivity::addToLog('Had updated the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/15/'.$rtmmi->id).'?r=rtmmi.index');
+        }
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');

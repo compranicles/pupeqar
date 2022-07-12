@@ -103,6 +103,11 @@ class CommunityEngagementController extends Controller
         $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -112,7 +117,7 @@ class CommunityEngagementController extends Controller
 
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $communityEngagement = CommunityEngagement::create($input);
         $communityEngagement->update(['user_id' => auth()->id()]);
@@ -140,6 +145,10 @@ class CommunityEngagementController extends Controller
             }
         }
         \LogActivity::addToLog('Had added a community engagement conducted by college/department.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/37/'.$communityEngagement->id).'?r=community-engagement.index');
+        }
 
         return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been added.');
     }
@@ -222,6 +231,11 @@ class CommunityEngagementController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -230,7 +244,7 @@ class CommunityEngagementController extends Controller
 
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $communityEngagement->update(['description' => '-clear']);
 
@@ -261,7 +275,10 @@ class CommunityEngagementController extends Controller
 
         \LogActivity::addToLog('Had updated a community engagement conducted by college/department.');
 
-
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/37/'.$communityEngagement->id).'?r=community-engagement.index');
+        }
+        
         return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been updated.');
     }
 

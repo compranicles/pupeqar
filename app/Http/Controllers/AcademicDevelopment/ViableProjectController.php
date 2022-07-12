@@ -47,13 +47,13 @@ class ViableProjectController extends Controller
                             ->orderBy('viable_projects.updated_at', 'desc')
                             ->select('viable_projects.*', 'colleges.name as college_name')
                             ->get();
-                            
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($viable_projects as $viable_project) {
             if (LockController::isLocked($viable_project->id, 20))
                 $submissionStatus[20][$viable_project->id] = 1;
-            else 
+            else
                 $submissionStatus[20][$viable_project->id] = 0;
             if (empty($reportdata->getDocuments(20, $viable_project->id)))
                 $submissionStatus[20][$viable_project->id] = 2;
@@ -111,6 +111,11 @@ class ViableProjectController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'revenue' => $value,
             'cost' => $value2,
@@ -122,17 +127,17 @@ class ViableProjectController extends Controller
         $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
-        
+
         $return_rate = ($request->input('rate_of_return') / 100 );
-        
+
         $viable_project->update(['rate_of_return' => $return_rate]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -156,6 +161,9 @@ class ViableProjectController extends Controller
 
         \LogActivity::addToLog('Had added a viable demo project "'.$request->input('name').'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/20/'.$viable_project->id).'?r=viable-project.index');
+        }
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
     }
@@ -245,22 +253,27 @@ class ViableProjectController extends Controller
 
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'revenue' => $value,
             'cost' => $value2,
             'start_date' => $start_date,
         ]);
-        
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $viable_project->update(['description' => '-clear']);
 
         $viable_project->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -284,6 +297,9 @@ class ViableProjectController extends Controller
 
         \LogActivity::addToLog('Had updated the viable demo project "'.$viable_project->name.'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/20/'.$viable_project->id).'?r=viable-project.index');
+        }
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
     }

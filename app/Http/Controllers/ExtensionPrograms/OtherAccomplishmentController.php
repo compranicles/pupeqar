@@ -98,7 +98,12 @@ class OtherAccomplishmentController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
-        
+
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -109,7 +114,7 @@ class OtherAccomplishmentController extends Controller
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
         return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
         // dd($input);
 
         $otherAccomplishment = OtherAccomplishment::create($input);
@@ -138,6 +143,10 @@ class OtherAccomplishmentController extends Controller
             }
         }
         \LogActivity::addToLog('Had added other individual accomplishment.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/38/'.$otherAccomplishment->id).'?r=other-accomplishment.index');
+        }
 
         return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been added.');
     }
@@ -175,7 +184,7 @@ class OtherAccomplishmentController extends Controller
     public function edit(OtherAccomplishment $otherAccomplishment)
     {
         $this->authorize('manage', OtherAccomplishment::class);
-        
+
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
 
@@ -217,6 +226,11 @@ class OtherAccomplishmentController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -230,7 +244,7 @@ class OtherAccomplishmentController extends Controller
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $otherAccomplishment->update(['description' => '-clear']);
 
@@ -261,6 +275,9 @@ class OtherAccomplishmentController extends Controller
 
         \LogActivity::addToLog('Had updated other accomplishment.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/38/'.$otherAccomplishment->id).'?r=other-accomplishment.index');
+        }
 
         return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been updated.');
     }

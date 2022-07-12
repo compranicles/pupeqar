@@ -130,6 +130,11 @@ class MobilityController extends Controller
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         if(in_array(6, $roles)|| in_array(5, $roles)){
             $request->merge([
@@ -151,7 +156,7 @@ class MobilityController extends Controller
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
@@ -179,6 +184,13 @@ class MobilityController extends Controller
             }
         }
         \LogActivity::addToLog('Had added an inter-country mobility.');
+
+        if($is_submit == 'yes'){
+            if(in_array(6, $roles)|| in_array(5, $roles))
+                return redirect(url('submissions/check/35/'.$mobility->id).'?r=mobility.index');
+            else
+                return redirect(url('submissions/check/14/'.$mobility->id).'?r=mobility.index');
+        }
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been added.');
     }
@@ -279,6 +291,11 @@ class MobilityController extends Controller
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         if(in_array(6, $roles)|| in_array(5, $roles)){
             $request->merge([
@@ -296,7 +313,7 @@ class MobilityController extends Controller
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $mobility->update(['description' => '-clear']);
 
@@ -327,7 +344,13 @@ class MobilityController extends Controller
 
         \LogActivity::addToLog('Had updated an inter-country mobility.');
 
-
+        if($is_submit == 'yes'){
+            if(in_array(6, $roles)|| in_array(5, $roles))
+                return redirect(url('submissions/check/35/'.$mobility->id).'?r=mobility.index');
+            else
+                return redirect(url('submissions/check/14/'.$mobility->id).'?r=mobility.index');
+        }
+        
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been updated.');
     }
 

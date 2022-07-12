@@ -2574,7 +2574,7 @@ class SubmissionController extends Controller
         return view('submissions.index', compact('roles', 'departments_nav', 'colleges_nav', 'report_tables', 'report_array' , 'report_document_checker',  'colleges', 'collegeID', 'currentQuarterYear', 'totalReports', 'sectors_nav', 'departmentsResearch_nav','departmentsExtension_nav', 'role'));
     }
 
-    public function check($report_category_id, $accomplishment_id){
+    public function check($report_category_id, $accomplishment_id, Request $request){
         if(LockController::isLocked($accomplishment_id, $report_category_id))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
@@ -2600,7 +2600,10 @@ class SubmissionController extends Controller
                 ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
         }
         if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
-            return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
+            if ($request->has('r'))
+                return redirect()->route($request->get('r'))->with('success', 'Accomplishment submitted succesfully.');
+            else
+                return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
         else
             return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment. For chairperson/chief and dean/director, please edit the department of your accomplishment as instructed in the edit form.');
     }

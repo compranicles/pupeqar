@@ -101,6 +101,11 @@ class AcademicController extends Controller
         $to = date("Y-m-d", strtotime($request->input('to')));
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -109,7 +114,7 @@ class AcademicController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $esAcademic = ExpertServiceAcademic::create($input);
         $esAcademic->update(['user_id' => auth()->id()]);
@@ -144,6 +149,9 @@ class AcademicController extends Controller
 
         \LogActivity::addToLog('Had added an expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/11/'.$esAcademic->id).'?r=sexpert-service-in-academic.index');
+        }
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
     }
@@ -235,6 +243,11 @@ class AcademicController extends Controller
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -242,7 +255,7 @@ class AcademicController extends Controller
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $expert_service_in_academic->update(['description' => '-clear']);
 
@@ -275,6 +288,9 @@ class AcademicController extends Controller
 
         \LogActivity::addToLog('Had updated the expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/11/'.$expert_service_in_academic->id).'?r=sexpert-service-in-academic.index');
+        }
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
     }

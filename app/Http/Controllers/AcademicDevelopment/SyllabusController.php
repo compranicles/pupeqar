@@ -109,6 +109,11 @@ class SyllabusController extends Controller
         $date = (new DateContentService())->checkDateContent($request, "date_finished");
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date_finished' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
@@ -116,7 +121,7 @@ class SyllabusController extends Controller
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $syllabus = Syllabus::create($input);
         $syllabus->update(['user_id' => auth()->id()]);
@@ -145,6 +150,10 @@ class SyllabusController extends Controller
         }
 
         \LogActivity::addToLog('Had added a course syllabus "'.$request->input('course_title').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/16/'.$syllabus->id).'?r=syllabus.index');
+        }
 
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                 ->with('action', 'added.');
@@ -232,12 +241,17 @@ class SyllabusController extends Controller
 
         $date = (new DateContentService())->checkDateContent($request, "date_finished");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date_finished' => $date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
         $syllabu->update(['description' => '-clear']);
         $syllabu->update($input);
 
@@ -265,6 +279,10 @@ class SyllabusController extends Controller
         }
 
         \LogActivity::addToLog('Had updated the course syllabus "'.$syllabu->course_title.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/16/'.$syllabu->id).'?r=syllabus.index');
+        }
 
         return redirect()->route('syllabus.index')->with('edit_syllabus_success', 'Course syllabus')
                                     ->with('action', 'updated.');

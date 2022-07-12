@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('intra-mobility.update', $intraMobility->id) }}" method="post" class="needs-validation" novalidate>
+                        <form id="edit_form" action="{{ route('intra-mobility.update', $intraMobility->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => $colaccomp])
@@ -23,7 +23,8 @@
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
                                         <a href="{{ route('intra-mobility.index') }}" class="btn btn-secondary mr-2">Cancel</a>
-                                        <button type="submit" id="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" id="submit" class="btn btn-success mr-2">Save</button>
+                                        <button type="submit" id="submit_save" class="btn btn-primary">Save and Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -218,6 +219,12 @@
                     }
                 });
             }, Math.floor(Math.random() * (2500 - 1) + 1));
+        </script>
+        <script>
+            $('#submit_save').on('click', function () {
+                $('#edit_form').attr('action', "{{ route('intra-mobility.update', $intraMobility->id) }}"+"?o=submit");
+                $('#edit_form').submit();
+            });
         </script>
     @endpush
 </x-app-layout>

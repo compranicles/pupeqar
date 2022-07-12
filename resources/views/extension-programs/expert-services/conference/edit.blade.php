@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
+                        <form id="edit_form" action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $expertServiceConferenceFields, 'colleges' => $colleges, 'value' => $value])
@@ -23,7 +23,8 @@
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                        <button type="submit" id="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" id="submit" class="btn btn-success mr-2">Save</button>
+                                        <button type="submit" id="submit_save" class="btn btn-primary">Save and Submit</button>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +157,12 @@
                         $("#description")[0].selectize.addOption({value:item.name, text:item.name});
                     });
                 }
+            });
+        </script>
+        <script>
+            $('#submit_save').on('click', function () {
+                $('#edit_form').attr('action', "{{ route('syllabus.update', $value['id']) }}"+"?o=submit");
+                $('#edit_form').submit();
             });
         </script>
     @endpush

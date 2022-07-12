@@ -102,13 +102,18 @@ class StudentAwardController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $student_award = StudentAward::create($input);
         $student_award->update(['user_id' => auth()->id()]);
@@ -137,6 +142,10 @@ class StudentAwardController extends Controller
         }
 
         \LogActivity::addToLog('Had added a student award and recognition "'.$request->input('name_of_award').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/18/'.$student_award->id).'?r=student-award.index');
+        }
 
         return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been added.');
     }
@@ -221,11 +230,16 @@ class StudentAwardController extends Controller
 
         $date = (new DateContentService())->checkDateContent($request, "date");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'date' => $date,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $student_award->update(['description' => '-clear']);
 
@@ -255,6 +269,10 @@ class StudentAwardController extends Controller
         }
 
         \LogActivity::addToLog('Had updated the student award and recognition "'.$student_award->name_of_award.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/18/'.$student_award->id).'?r=student-award.index');
+        }
 
         return redirect()->route('student-award.index')->with('student_success', 'Student award and recognition has been saved.');
     }

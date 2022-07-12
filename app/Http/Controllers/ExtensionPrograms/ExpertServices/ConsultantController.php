@@ -103,6 +103,11 @@ class ConsultantController extends Controller
         $to = date("Y-m-d", strtotime($request->input('to')));
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -117,7 +122,7 @@ class ConsultantController extends Controller
             'department_id' => 'required'
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $esConsultant = ExpertServiceConsultant::create($input);
         $esConsultant->update(['user_id' => auth()->id()]);
@@ -146,6 +151,10 @@ class ConsultantController extends Controller
         }
 
         \LogActivity::addToLog('Had added an expert service rendered as consultant "'.$request->input('title').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/9/'.$esConsultant->id).'?r=expert-service-as-consultant.index');
+        }
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
     }
@@ -229,6 +238,11 @@ class ConsultantController extends Controller
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -241,7 +255,7 @@ class ConsultantController extends Controller
             'department_id' => 'required'
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $expert_service_as_consultant->update(['description' => '-clear']);
 
@@ -272,6 +286,10 @@ class ConsultantController extends Controller
 
 
         \LogActivity::addToLog('Had updated the xpert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/9/'.$expert_service_as_consultant->id).'?r=expert-service-as-consultant.index');
+        }
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been updated.');
     }

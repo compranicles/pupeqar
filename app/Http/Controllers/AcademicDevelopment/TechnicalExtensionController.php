@@ -99,6 +99,11 @@ class TechnicalExtensionController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'total_profit' => $value,
             'report_quarter' => $currentQuarterYear->current_quarter,
@@ -107,7 +112,7 @@ class TechnicalExtensionController extends Controller
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $technical_extension = TechnicalExtension::create($input);
         $technical_extension->update(['user_id' => auth()->id()]);
@@ -136,6 +141,9 @@ class TechnicalExtensionController extends Controller
 
         \LogActivity::addToLog('Had added a technical extension program, project, or activity.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/23/'.$technical_extension->id).'?r=technical-extension.index');
+        }
 
         return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been added.');
     }
@@ -214,13 +222,18 @@ class TechnicalExtensionController extends Controller
         $value = (float) str_replace(",", "", $value);
         $value = number_format($value,2,'.','');
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'total_profit' => $value,
         ]);
 
         if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $technical_extension->update(['description' => '-clear']);
 
@@ -250,6 +263,9 @@ class TechnicalExtensionController extends Controller
 
         \LogActivity::addToLog('Had updated a technical extension program, project, or activity.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/23/'.$technical_extension->id).'?r=technical-extension.index');
+        }
 
         return redirect()->route('technical-extension.index')->with('extension_success', 'Technical extension program, project, or activity has been updated.');
     }

@@ -129,6 +129,11 @@ class ExtensionServiceController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $abbr = '';
         if($request->has('title_of_extension_program'))
             $abbr = 'EXT-PRG';
@@ -194,7 +199,7 @@ class ExtensionServiceController extends Controller
             ]);
         }
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $eService = ExtensionService::create($input);
         $eService->update(['user_id' => auth()->id()]);
@@ -234,6 +239,9 @@ class ExtensionServiceController extends Controller
 
         \LogActivity::addToLog('Had added an extension program/project/activity.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/12/'.$eService->id).'?r=extension-service.index');
+        }
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension program/project/activity has been added.');
     }
@@ -334,6 +342,11 @@ class ExtensionServiceController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'amount_of_funding' => $value,
             'from' => $from,
@@ -347,7 +360,7 @@ class ExtensionServiceController extends Controller
             ]);
         }
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $extension_service->update(['description' => '-clear']);
 
@@ -383,6 +396,10 @@ class ExtensionServiceController extends Controller
         }
 
         \LogActivity::addToLog('Had updated an extension program/project/activity.');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/12/'.$extension_service->id).'?r=extension-service.index');
+        }
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension program/project/activity has been updated.');
     }
@@ -477,12 +494,16 @@ class ExtensionServiceController extends Controller
         $extensionService = $extensionService->except(['id']);
         $extensionService = $extensionService->toArray();
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
         ]);
 
-        $input = $request->except(['_token', '_method', 'notif_id']);
-
+        $input = $request->except(['_token', '_method', 'notif_id', 'o']);
 
         $eService = ExtensionService::create($extensionService);
         $eService->update(['user_id' => auth()->id()]);
@@ -518,6 +539,10 @@ class ExtensionServiceController extends Controller
 
         \LogActivity::addToLog('Extension program/project/activity was added.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/12/'.$eService->id).'?r=extension-service.index');
+        }
+        
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension program/project/activity has been added.');
     }
 }

@@ -49,7 +49,7 @@ class CompletedController extends Controller
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-    
+
         $values = ResearchComplete::where('research_code', $research->research_code)->first();
 
         if($values == null){
@@ -64,19 +64,19 @@ class CompletedController extends Controller
         $value = collect($research);
         $value = $value->except(['description']);
         $value = $value->toArray();
-        
+
         $value = array_merge($value, $values);
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;
             if (LockController::isLocked($value['id'], 2))
                 $submissionStatus[2][$value['id']] = 1;
-            else 
+            else
                 $submissionStatus[2][$value['id']] = 0;
             if (empty($reportdata->getDocuments(2, $value['id'])))
                 $submissionStatus[2][$value['id']] = 2;
-                
-        return view('research.completed.index', compact('research', 'researchFields', 
+
+        return view('research.completed.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
 
@@ -127,7 +127,12 @@ class CompletedController extends Controller
 
         $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
         $currentQuarterYear = Quarter::find(1);
-        
+
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'completion_date' => $completion_date,
         ]);
@@ -136,7 +141,7 @@ class CompletedController extends Controller
             'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
 
-        $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
+        $input = $request->except(['_token', '_method', 'research_code', 'description', 'document', 'o']);
         $input = Arr::add($input, 'status', 28);
         Research::where('research_code', $research->research_code)->update($input);
 
@@ -152,7 +157,7 @@ class CompletedController extends Controller
         ]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -178,6 +183,9 @@ class CompletedController extends Controller
 
         \LogActivity::addToLog('Had marked the research "'.$research->title.'" as completed.');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/2/'.$research->id).'?r=research.completed.index');
+        }
 
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been added.');
     }
@@ -200,12 +208,12 @@ class CompletedController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Research $research, ResearchComplete $completed)
-    {   
+    {
         $this->authorize('update', ResearchComplete::class);
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -219,15 +227,15 @@ class CompletedController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
-        
+
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 2)->get()->toArray();
-        
+
         $value = $research->toArray();
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
         $value = array_merge($value, $completed->toArray());
-        
+
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
 
         return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
@@ -250,6 +258,11 @@ class CompletedController extends Controller
 
         $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'completion_date' => $completion_date,
         ]);
@@ -257,8 +270,8 @@ class CompletedController extends Controller
         $request->validate([
             'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
-        
-        $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
+
+        $input = $request->except(['_token', '_method', 'research_code', 'description', 'document', 'o']);
 
         Research::where('research_code', $research->research_code)->update($input);
 
@@ -270,7 +283,7 @@ class CompletedController extends Controller
         ]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -296,9 +309,11 @@ class CompletedController extends Controller
 
         \LogActivity::addToLog('Had updated the completion details of research "'.$research->title.'".');
 
-        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
-        
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/2/'.$research->id).'?r=research.completed.index');
+        }
 
+        return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
     }
 
     /**

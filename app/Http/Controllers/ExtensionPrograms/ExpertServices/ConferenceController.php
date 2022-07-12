@@ -103,6 +103,11 @@ class ConferenceController extends Controller
         $to = date("Y-m-d", strtotime($request->input('to')));
         $currentQuarterYear = Quarter::find(1);
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -119,7 +124,7 @@ class ConferenceController extends Controller
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $esConference = ExpertServiceConference::create($input);
         $esConference->update(['user_id' => auth()->id()]);
@@ -148,6 +153,10 @@ class ConferenceController extends Controller
         }
 
         \LogActivity::addToLog('Had added an expert service rendered in conference "'.$request->input('title').'".');
+
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/10/'.$esConference->id).'?r=expert-service-in-conference.index');
+        }
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been added.');
     }
@@ -231,6 +240,11 @@ class ConferenceController extends Controller
         $from = date("Y-m-d", strtotime($request->input('from')));
         $to = date("Y-m-d", strtotime($request->input('to')));
 
+        $is_submit = '';
+        if($request->has('o')){
+            $is_submit = 'yes';
+        }
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -244,7 +258,7 @@ class ConferenceController extends Controller
             'department_id' => 'required'
         ]);
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'o']);
 
         $expert_service_in_conference->update(['description' => '-clear']);
 
@@ -275,6 +289,9 @@ class ConferenceController extends Controller
 
         \LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
 
+        if($is_submit == 'yes'){
+            return redirect(url('submissions/check/10/'.$expert_service_in_conference->id).'?r=expert-service-in-conference.index');
+        }
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
     }
