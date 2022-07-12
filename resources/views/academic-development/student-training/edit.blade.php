@@ -142,6 +142,7 @@
     </div>
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $(document).ready(function() {
                 $('.datepicker').datepicker({

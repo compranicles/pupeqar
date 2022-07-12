@@ -126,7 +126,7 @@
     @push('scripts')
         <script src="{{ asset('dist/selectize.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
-
+        <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $('#classification').on('change', function () {
                 $('#classification').attr('disabled', true);

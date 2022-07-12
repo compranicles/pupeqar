@@ -149,6 +149,7 @@
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/remove-document.js') }}"></script>
+    <script src="{{ asset('js/spinner.js') }}"></script>
     <script>
         $(function() {
             $('#copyright_year').datepicker('setStartDate', "{{ date('Y', strtotime($value['completion_date'])) }}"); //Set min. date

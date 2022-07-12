@@ -47,6 +47,7 @@
     @push('scripts')
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('js/spinner.js') }}"></script>
     <script>
         var report_category_id = 29;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

@@ -50,7 +50,9 @@ class AttendanceFunctionController extends Controller
         $attendedFunctions = AttendanceFunction::
                         join('dropdown_options', 'attendance_functions.classification', 'dropdown_options.id')->
                         where('attendance_functions.user_id', auth()->id())->
-                        select('attendance_functions.*', 'dropdown_options.name as classification_name')->get();
+                        select('attendance_functions.*', 'dropdown_options.name as classification_name')->
+                        orderBy('attendance_functions.updated_at', 'DESC')->
+                        get();
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
@@ -61,8 +63,12 @@ class AttendanceFunctionController extends Controller
                 $submissionStatus[33][$attendedFunction->id] = 1;
             else
                 $submissionStatus[33][$attendedFunction->id] = 0;
-            if (empty($reportdata->getDocuments(33, $attendedFunction->id)))
+            if (empty($reportdata->getDocuments(33, $attendedFunction->id)) && $attendedFunction->status == 291) // 291 = Attended
                 $submissionStatus[33][$attendedFunction->id] = 2;
+            elseif ($attendedFunction->status == 292 && LockController::isNotLocked($attendedFunction->id, 33))
+                $submissionStatus[33][$attendedFunction->id] = 0;
+            elseif (LockController::isLocked($attendedFunction->id, 33) && $attendedFunction->status == 292) //292 = Not Attended
+                $submissionStatus[33][$attendedFunction->id] = 1;
         }
 
         return view('ipcr.attendance-function.index',

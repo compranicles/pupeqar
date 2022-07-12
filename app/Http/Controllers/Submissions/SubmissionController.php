@@ -2578,9 +2578,11 @@ class SubmissionController extends Controller
         if(LockController::isLocked($accomplishment_id, $report_category_id))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
-        $reportdata = new ReportDataController;
-        if(empty($reportdata->getDocuments($report_category_id, $accomplishment_id)))
-            return redirect()->back()->with('cannot_access', 'Missing Supporting Documents.');
+        if ($report_category_id != 33) {
+            $reportdata = new ReportDataController;
+            if(empty($reportdata->getDocuments($report_category_id, $accomplishment_id)))
+                return redirect()->back()->with('cannot_access', 'Missing Supporting Documents.');
+        }
 
         $research_code = '*';
         $research_id = '*';
@@ -2756,7 +2758,7 @@ class SubmissionController extends Controller
                     'report_code' => $report_values_array[0] ?? null,
                     'report_reference_id' => $report_values_array[2] ?? null,
                     'report_details' => json_encode($report_details),
-                    'report_documents' => json_encode($report_documents),
+                    'report_documents' => json_encode($report_documents) ?? null,
                     'report_date' => date("Y-m-d", time()),
                     'report_quarter' => $currentQuarterYear->current_quarter,
                     'report_year' => $currentQuarterYear->current_year,
