@@ -12987,7 +12987,7 @@ body {
 /* ------Mega Menu-------- */
 .menu-sub {
   position: absolute;
-  background: white;
+  /* background: white; */
   width: 100%;
   display: none;
   padding: 2em;
@@ -12996,6 +12996,12 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
+  background: linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)), url(/storage/PUP.png) no-repeat;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .menu-sub li {
