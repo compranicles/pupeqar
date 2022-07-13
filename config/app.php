@@ -179,6 +179,7 @@ return [
         App\Providers\JetstreamServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -233,7 +234,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'LogActivity' => App\Helpers\LogActivity::class,
-
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

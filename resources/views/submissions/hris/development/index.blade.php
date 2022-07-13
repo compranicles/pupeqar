@@ -13,6 +13,11 @@
                         {{ $message }}
                     </div>
                 @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -31,7 +36,6 @@
                                                 <th>Inclusive Date</th>
                                                 <th>Level</th>
                                                 <th>Action</th>
-                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -42,54 +46,37 @@
                                                     <td>{{ $development->IncDate }}</td>
                                                     <td>{{ $development->Level }}</td>
                                                     <td>
-                                                        @forelse ($seminarReports as $seminarReport)
-                                                            @if ($seminarReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                <a class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
-                                                                @break
+                                                        <div class="btn-group" role="group" aria-label="button-group">
+                                                            @if(in_array($development->EmployeeTrainingProgramID, $savedSeminars)||in_array($development->EmployeeTrainingProgramID, $savedTrainings))
+                                                                <a href="{{ route('submissions.development.show', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                                <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                                <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button>
+                                                                @if(isset($submissionStatus[25]))
+                                                                    @if(isset($submissionStatus[25][$development->EmployeeTrainingProgramID]))
+                                                                        @if ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 0 )
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
+                                                                        @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 1 )
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
+                                                                        @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 2 )
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
+                                                                @if(isset($submissionStatus[26]))
+                                                                    @if(isset($submissionStatus[26][$development->EmployeeTrainingProgramID]))
+                                                                        @if ( $submissionStatus[26][$development->EmployeeTrainingProgramID] == 0)
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
+                                                                        @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 1)
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
+                                                                        @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 2)
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
                                                             @else
-                                                                <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
-                                                                @break
+                                                                <a href="{{ route('submissions.development.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Add</a>
                                                             @endif
-                                                        @empty
-                                                            <a href="{{ route('submissions.development.seminar.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary mb-2">Add as Seminar</a>
-                                                        @endforelse
-
-                                                        @forelse ($trainingReports as $trainingReport)
-                                                            @if ($trainingReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                <a class="btn btn-sm btn-primary">Add as Training</a>
-                                                                @break
-                                                            @else
-                                                                <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
-                                                                @break
-                                                            @endif
-                                                        @empty
-                                                            <a href="{{ route('submissions.development.training.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary">Add as Training</a>
-                                                        @endforelse
-
-
-                                                    </td>
-                                                    <td class="text-center">
-
-                                                    @if ($seminarReports != null)
-                                                        @foreach ($seminarReports as $seminarReport)
-                                                            @if ($seminarReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                <span class="badge bg-success">Submitted as seminar</span>
-                                                                <span class="badge bg-secondary">Quarter {{ $seminarReport->report_quarter.' of '. $seminarReport->report_year}}</span>
-                                                                @break
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-<!--  -->
-                                                    @if ($trainingReports != null)
-                                                        @foreach ($trainingReports as $trainingReport)
-                                                            @if ($trainingReport->report_reference_id == $development->EmployeeTrainingProgramID)
-                                                                <span class="badge bg-success">Submitted as training</span>
-                                                                <span class="badge bg-secondary">Quarter {{ $trainingReport->report_quarter.' of '. $trainingReport->report_year}}</span>
-                                                                @break
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -100,6 +87,25 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="text-center">Are you sure you want to delete this accomplishment?</h5>
+                <p id="itemToDelete" class="text-center h4"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mb-2" data-bs-dismiss="modal">Cancel</button>
+                <a href="" type="button" class="btn btn-danger mb-2 mr-2" id="delete_modal">Delete</a>
+                </form>
             </div>
         </div>
     </div>
@@ -120,6 +126,20 @@
                     $(this).remove();
                 });
             }, 4000);
+
+             //Item to delete to display in delete modal
+            var deleteModal = document.getElementById('deleteModal')
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget
+            var id = button.getAttribute('value')
+            var developmentTitle = button.getAttribute('data-bs-development')
+            var itemToDelete = deleteModal.querySelector('#itemToDelete')
+            itemToDelete.textContent = developmentTitle
+
+            var url = '{{ route("submissions.development.destroy", ":id") }}';
+            url = url.replace(':id', id);
+            $('#delete_modal').attr('href', url);
+            });
         </script>
     @endpush
 

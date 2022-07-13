@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Image;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 
@@ -62,5 +65,30 @@ class StorageFileController extends Controller
             $count++;
         }
         return $initials;
+    }
+
+    public function fetch_image($id, $hris){
+        $user = User::find(auth()->id());
+
+        $db_ext = DB::connection('mysql_external');
+
+        if($hris == '4' || $hris == '5'){
+            $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCodeAndID N'$user->emp_code', '$id'");
+        }
+        
+        if($data['0']->Attachment == null){
+            $path = storage_path('app/public/no-document-attached.jpg');
+            $file = File::get($path);
+            $type = File::mimeType($path);
+            $headers = ['Content-Type: '.$type];
+
+            return response()->file($path, $headers);
+        }
+        else{
+            $image_file = Image::make($data['0']->Attachment);
+        }
+        $response = Response::make($image_file->encode('jpeg'));
+        $response->header('Content-Type', 'image/jpeg');
+        return $response;
     }
 }

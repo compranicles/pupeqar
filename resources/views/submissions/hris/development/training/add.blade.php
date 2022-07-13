@@ -3,6 +3,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Add as Training</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 @if ($message = Session::get('error'))
                     <div class="alert alert-danger">
                         {{ $message }}
@@ -19,23 +24,31 @@
                  @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.development.training.save', $id) }}" method="post">
+                        <form action="{{ route('submissions.development.training.store', $id) }}" method="post">
                             @csrf
-                            @if ($collegeOfDepartment == '')
+                            @if (!isset($collegeOfDepartment))
                                 @include('form', ['formFields' => $trainingFields, 'value' => $values])
                             @else
                                 @include('form', ['formFields' => $trainingFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+
                             @endif
+                            <div class="form-group">
+                                <label class="font-weight-bold" >Document</label>
+                                <br>
+                                <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                            </div>
+                            @if(!isset($forview))
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -43,23 +56,28 @@
         </div>
     </div>
     @push('scripts')
-    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
     <script>
-        var report_category_id = 26;
-        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        var api = '{{ url("/document-upload/description/26") }}';
-		$.get(api, function (data){
-            if (data != '') {
-                data.forEach(function (item){
-                    $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-                });
-            }
-        });
+        // var report_category_id = 26;
+        // $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+        // var api = '{{ url("/document-upload/description/26") }}';
+		// $.get(api, function (data){
+        //     if (data != '') {
+        //         data.forEach(function (item){
+        //             $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+        //         });
+        //     }
+        // });
 
 
-        $(function(){
-            $("input[name='document[]']").attr('required', true);
-        });
+        // $(function(){
+        //     $("input[name='document[]']").attr('required', true);
+        // });
     </script>
+    @if(isset($forview))
+    <script>
+        $('#department_id').attr('disabled', 'disabled')
+    </script>
+    @endif
     @endpush
 </x-app-layout>
