@@ -1434,14 +1434,14 @@ class GenerateColumn4Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Date Started (mm/dd/yyyy)',
             'table_id' => 11,
-            'report_column' => 'date_started',
+            'report_column' => 'start_date',
             'is_active' => 1,
             'order' => 1
         ]);
         GenerateColumn::insert([
             'name' => 'Date Completed (mm/dd/yyyy)',
             'table_id' => 11,
-            'report_column' => 'date_completed',
+            'report_column' => 'end_date',
             'is_active' => 1,
             'order' => 1
         ]);

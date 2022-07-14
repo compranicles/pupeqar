@@ -60,7 +60,7 @@
         @livewire('navigation-menu')
 
         <!-- Page Heading -->
-        @if(request()->routeIs('reports.*', 'chairperson.*', 'researcher.*', 'extensionist.*', 'director.*', 'sector.*', 'ipo.*', 'profile.*'))
+        @if(request()->routeIs('reports.*', 'chairperson.index', 'researcher.index', 'extensionist.index', 'director.index', 'sector.index', 'ipo.index', 'profile.*'))
         <!-- Page Heading -->
         <header class="d-flex py-3" style="background-color: #212529; border-color: #212529; color: whitesmoke;">
         <div class="container">

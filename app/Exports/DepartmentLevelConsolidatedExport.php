@@ -76,6 +76,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                             ->where('reports.department_id', $this->department)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
+                            ->where('reports.chairperson_approval', 1)
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
                             ->get()->toArray();

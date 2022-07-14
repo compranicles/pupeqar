@@ -381,6 +381,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 23,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'B. Community Engagement Conducted by Section/Office',
@@ -388,6 +389,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 37,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'C. Viable Demonstration Projects',
@@ -395,6 +397,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 20,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'D. Awards/Recognitions Received by the Office from Reputable Organizations',
@@ -402,6 +405,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 21,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'E. Community Relations and Outreach Programs',
@@ -409,6 +413,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 22,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'F. Intercountry Mobility',
@@ -416,6 +421,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 35,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'G. Intra-Country Mobility',
@@ -423,6 +429,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 36,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'H. Other Accomplishments',
@@ -430,6 +437,7 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 0,
             'report_category_id' => 39,
+            'deleted_at' => NOW()
         ]);
 
         //Academic
