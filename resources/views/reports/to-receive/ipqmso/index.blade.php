@@ -30,7 +30,7 @@
                             <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Receive</button>
                             <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
                         </div>
-                        <div class="col-md-3 ml-auto">
+                        <div class="col-md-4 ml-auto">
                             <div class="form-group">
                                 <label class="mr-2" for="collegeFilter">College/Branch/Campus/Office:</label>
                                 <select id="collegeFilter" class="custom-select mr-2">
@@ -38,7 +38,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="reportFilter" class="mr-2">Accomplishment: </label>
                                 <div class="d-flex">
@@ -46,14 +46,6 @@
                                         <option value="">Show All</option>
                                     </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="empFilter" class="mr-2">Employee: </label>
-                                    <select name="emp" id="empFilter" class="custom-select">
-                                        <option value="">Show All</option>
-                                    </select>
                             </div>
                         </div>
                     </div>
@@ -386,24 +378,8 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                this.api().columns(4).every( function () {
-                    var column = this;
-                    var select = $('#empFilter')
-                        .on( 'change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-
-                            column
-                                .search( val ? '^'+val+'$' : '', true, false )
-                                .draw();
-                        } );
-
-                    column.data().unique().sort().each( function ( d, j ) {
-                        select.append( '<option value="'+d+'">'+d+'</option>' )
-                    } );
-                });
-                this.api().columns(5).every( function () {
+                
+                this.api().columns(6).every( function () {
                     var column = this;
                     var select = $('#collegeFilter')
                         .on( 'change', function () {

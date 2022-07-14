@@ -34,11 +34,11 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
 
         if($this->type == "academic") {
             //get the table names
-            $table_format = GenerateTable::where('type_id', 2)->get();
+            $table_format = GenerateTable::whereIn('type_id', [2,])->get();
             $employee_type = 1; //Admin
         }
         elseif ($this->type == 'admin') {
-            $table_format = GenerateTable::where('type_id', 1)->get();
+            $table_format = GenerateTable::whereIn('type_id', [1, 4])->get();
             $employee_type = 3; //Admin
         }
 
