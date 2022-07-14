@@ -579,6 +579,17 @@ class Stringable implements JsonSerializable
     }
 
     /**
+     * Parse input from a string to a collection, according to a format.
+     *
+     * @param  string  $format
+     * @return \Illuminate\Support\Collection
+     */
+    public function scan($format)
+    {
+        return collect(sscanf($this->value, $format));
+    }
+
+    /**
      * Begin a string with a single instance of a given value.
      *
      * @param  string  $prefix
@@ -715,11 +726,22 @@ class Stringable implements JsonSerializable
      * @param  string|array  $replace
      * @param  array|int  $offset
      * @param  array|int|null  $length
-     * @return string|array
+     * @return static
      */
     public function substrReplace($replace, $offset = 0, $length = null)
     {
         return new static(Str::substrReplace($this->value, $replace, $offset, $length));
+    }
+
+    /**
+     * Swap multiple keywords in a string with other keywords.
+     *
+     * @param  array  $map
+     * @return static
+     */
+    public function swap(array $map)
+    {
+        return new static(strtr($this->value, $map));
     }
 
     /**
@@ -763,6 +785,16 @@ class Stringable implements JsonSerializable
     public function ucfirst()
     {
         return new static(Str::ucfirst($this->value));
+    }
+
+    /**
+     * Split a string by uppercase characters.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function ucsplit()
+    {
+        return collect(Str::ucsplit($this->value));
     }
 
     /**

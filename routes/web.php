@@ -29,6 +29,8 @@ Route::get('refresh', [\App\Http\Controllers\RefreshController::class, 'index'])
 /* HRIS REGISTER AND VERIFICATION */
 Route::get('register/hris', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'index'])->name('register.hris');
 Route::post('register/verify', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'verify'])->name('register.verify');
+Route::get('register/alternate', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'alternate']);
+Route::post('register/alternate-log', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'alternateLog'])->name('register.alternate.log');
 //Route::get('register/create/{key}', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'create'])->name('register.create');
 //Route::post('register/save', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'save'])->name('register.save');
 
@@ -201,7 +203,7 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('image/{filename}', [\App\Http\Controllers\StorageFileController::class, 'getDocumentFile'])->name('document.display');
     Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
     Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
-
+    Route::get('fetch_image/{id}/{hris}', [\App\Http\Controllers\StorageFileController::class, 'fetch_image']);
 
 
 
@@ -450,10 +452,16 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::post('/submissions/educational-background/{educID}/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'save'])->name('submissions.educ.save');
     // Webinars and Seminars
     Route::get('/submissions/development/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'index'])->name('submissions.development.index');
-    Route::get('/submissions/development/seminar/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'addSeminar'])->name('submissions.development.seminar.add');
-    Route::post('/submissions/development/seminar/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'saveSeminar'])->name('submissions.development.seminar.save');
+    Route::get('/submissions/development/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'add'])->name('submissions.development.add');
+    Route::get('/submissions/development/{id}/show/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'show'])->name('submissions.development.show');
+    Route::get('/submissions/development/{id}/edit/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'edit'])->name('submissions.development.edit');
+    Route::get('/submissions/development/{id}/delete/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'delete'])->name('submissions.development.destroy');
+    Route::get('/submissions/development/{id}/check/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'check'])->name('submissions.development.check');
+    Route::post('/submissions/development/seminar/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'storeSeminar'])->name('submissions.development.seminar.store');
+    Route::post('/submissions/development/seminar/{id}/update/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'updateSeminar'])->name('submissions.development.seminar.update');
     Route::get('/submissions/development/training/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'addTraining'])->name('submissions.development.training.add');
-    Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'saveTraining'])->name('submissions.development.training.save');
+    Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'storeTraining'])->name('submissions.development.training.store');
+    Route::post('/submissions/development/training/{id}/update/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'updateTraining'])->name('submissions.development.training.update');
     //Officership/Memberhips
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
     Route::get('/submissions/officership/{id}/add', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'add'])->name('submissions.officership.add');

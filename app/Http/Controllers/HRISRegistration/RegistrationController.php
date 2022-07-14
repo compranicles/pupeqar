@@ -45,6 +45,7 @@ class RegistrationController extends Controller
 
             if($this->save($user)){
                 $userLocal = User::where('email', $request->email)->first();
+                Auth::login($userLocal);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
                     return redirect()->route('home');
                 }
@@ -91,5 +92,34 @@ class RegistrationController extends Controller
         UserRole::create(['user_id' => $user->id, 'role_id' => $roleID]);
 
         return true;
+    }
+
+    public function alternate(){
+        return view('hris-regi.alternate');
+    }
+
+    public function alternateLog(Request $request){
+        $userLocal = User::where('user_account_id', $request->email)->first();
+
+        if($userLocal == null){
+            $user = $this->db_ext->select(" EXEC GetUserAccount '$request->email' ");
+
+            if($this->save($user)){
+                $userLocal = User::where('user_account_id', $request->email)->first();
+                Auth::login($userLocal);
+                if(Employee::where('user_id', $userLocal->id)->exists()){
+                    return redirect()->route('home');
+                }
+                return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
+            }
+        }
+        else{
+            Auth::login($userLocal);
+            if(Employee::where('user_id', $userLocal->id)->exists()){
+                return redirect()->route('home');
+            }
+            return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
+        }
+        dd($userLocal);
     }
 }

@@ -472,8 +472,8 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                if(isset($report_details[$row->column]))
-                    $new_report_details[$row->label] = $report_details[$row->column];
+                if(isset($report_details[$row->name]))
+                    $new_report_details[$row->label] = $report_details[$row->name];
                 else
                     $new_report_details[$row->label] = '-';
             }
@@ -483,8 +483,8 @@ class ReportDataController extends Controller
             foreach($report_columns as $row){
                 if($row->name == 'document')
                     continue;
-                if(isset($report_details[$row->column]))
-                    $new_report_details[$row->label] = $report_details[$row->column];
+                if(isset($report_details[$row->name]))
+                    $new_report_details[$row->label] = $report_details[$row->name];
                 else
                     $new_report_details[$row->label] = '-';
             }
