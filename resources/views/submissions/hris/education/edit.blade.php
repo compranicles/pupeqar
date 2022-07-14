@@ -19,7 +19,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.educ.store', $id) }}" method="post">
+                        <form action="{{ route('submissions.educ.update', $id) }}" method="post">
                             @csrf
                             @if (!isset($collegeOfDepartment))
                                 @include('form', ['formFields' => $educFields, 'value' => $values])
@@ -31,7 +31,6 @@
                                 <br>
                                 <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
                             </div>
-                            @if(!isset($forview))
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -42,7 +41,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @endif
                         </form>
                     </div>
                 </div>
@@ -67,10 +65,5 @@
             $("input[name='document[]']").attr('required', true);
         });
     </script> --}}
-    @if(isset($forview))
-    <script>
-        $('#department_id').attr('disabled', 'disabled')
-    </script>
-    @endif
     @endpush
 </x-app-layout>
