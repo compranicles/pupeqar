@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use Image;
 use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
@@ -9,12 +10,12 @@ use App\Models\Employee;
 use App\Models\HRISDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use App\Http\Controllers\Maintenances\LockController;
-use Image;
 
 class OfficershipController extends Controller
 {
@@ -64,7 +65,7 @@ class OfficershipController extends Controller
             'classification' => $officeData[0]->Classification,
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
-            'orgnization_address' => $officeData[0]->Address,
+            'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
             'document' => $officeData[0]->Attachment,
@@ -106,7 +107,7 @@ class OfficershipController extends Controller
                 'classification' => $officeData[0]->Classification,
                 'position' => $officeData[0]->Position,
                 'level' => $officeData[0]->Level,
-                'orgnization_address' => $officeData[0]->Address,
+                'organization_address' => $officeData[0]->Address,
                 'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
                 'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
                 'document' => $officeData[0]->Attachment,
@@ -158,14 +159,13 @@ class OfficershipController extends Controller
             'classification' => $officeData[0]->Classification,
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
-            'orgnization_address' => $officeData[0]->Address,
+            'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_id,
         ];
-
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
@@ -205,7 +205,7 @@ class OfficershipController extends Controller
             'classification' => $officeData[0]->Classification,
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
-            'orgnization_address' => $officeData[0]->Address,
+            'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
             'document' => $officeData[0]->Attachment,
@@ -294,10 +294,10 @@ class OfficershipController extends Controller
             'classification' => $officeData[0]->Classification,
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
-            'orgnization_address' => $officeData[0]->Address,
+            'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
-            'document' => $officeData[0]->Attachment,
+            // 'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_name,
             'college_id' => $college_name

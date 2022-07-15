@@ -81,6 +81,9 @@ class StorageFileController extends Controller
         elseif($hris == '1'){
             $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code',$id");
         }
+        elseif($hris == '2'){
+            $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCodeAndID N'$user->emp_code',$id");
+        }
 
         if($data['0']->Attachment == null){
             $path = storage_path('app/public/no-document-attached.jpg');

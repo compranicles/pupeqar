@@ -479,7 +479,12 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     //Outstanding Awards
     Route::get('/submissions/outstanding-awards', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'index'])->name('submissions.award.index');
     Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');
-    Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'save'])->name('submissions.award.save');
+    Route::get('/submissions/outstanding-awards/{id}/show', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'show'])->name('submissions.award.show');
+    Route::get('/submissions/outstanding-awards/{id}/edit', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'edit'])->name('submissions.award.edit');
+    Route::get('/submissions/outstanding-awards/{id}/delete', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'delete'])->name('submissions.award.destroy');
+    Route::get('/submissions/outstanding-awards/{id}/check', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'check'])->name('submissions.award.check');
+    Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'store'])->name('submissions.award.store');
+    Route::post('/submissions/outstanding-awards/{id}/update', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'update'])->name('submissions.award.update');
 
 
 });

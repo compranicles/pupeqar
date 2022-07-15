@@ -95,7 +95,7 @@ class EducationController extends Controller
             'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
             'units_enrolled' =>$educationData[0]->UnitsEnrolled,
-            'description' => $educationData[0]->UnitsEnrolled,
+            'description' => $educationData[0]->Description,
             'document' => $educationData[0]->Attachment
         ];
 
@@ -141,7 +141,7 @@ class EducationController extends Controller
                 'status' => $educationData[0]->EnrollmentStatus,
                 'units_earned' => $educationData[0]->UnitsEarned,
                 'units_enrolled' =>$educationData[0]->UnitsEnrolled,
-                'description' => $educationData[0]->UnitsEnrolled,
+                'description' => $educationData[0]->Description,
                 'document' => $educationData[0]->Attachment
             ];
         }
@@ -194,7 +194,7 @@ class EducationController extends Controller
             'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
             'units_enrolled' =>$educationData[0]->UnitsEnrolled,
-            'description' => $educationData[0]->UnitsEnrolled,
+            'description' => $educationData[0]->Description,
             'document' => $educationData[0]->Attachment,
             'department_id' => $department_id
         ];
@@ -242,7 +242,7 @@ class EducationController extends Controller
             'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
             'units_enrolled' =>$educationData[0]->UnitsEnrolled,
-            'description' => $educationData[0]->UnitsEnrolled,
+            'description' => $educationData[0]->Description,
             'document' => $educationData[0]->Attachment,
             'department_id' => $department_id
         ];
@@ -305,7 +305,7 @@ class EducationController extends Controller
 
         $db_ext = DB::connection('mysql_external');
 
-        $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code',$education->hris_id");
+        $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code',$education->hris_id");
 
         $sector_id = College::where('id', $education->college_id)->pluck('sector_id')->first();
         $department_name = Department::where('id', $education->department_id)->pluck('name')->first();
@@ -319,7 +319,7 @@ class EducationController extends Controller
 
         HRISDocument::create([
             'hris_form_id' => 1,
-            'reference_id' => $officership_id,
+            'reference_id' => $education_id,
             'filename' => $fileName,
         ]);
         array_push($filenames, $fileName);
@@ -336,7 +336,7 @@ class EducationController extends Controller
             'status' => $educationData[0]->EnrollmentStatus,
             'units_earned' => $educationData[0]->UnitsEarned,
             'units_enrolled' =>$educationData[0]->UnitsEnrolled,
-            'description' => $educationData[0]->UnitsEnrolled,
+            'description' => $educationData[0]->Description,
             'department_id' => $department_name,
             'college_id' => $college_name
         ];

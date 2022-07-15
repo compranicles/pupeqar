@@ -667,7 +667,7 @@ class HRISFieldSeeder extends Seeder
             'label' => 'Venue',
             'name' => 'venue',
             'placeholder' => null,
-            'size' => 'col-md-4',
+            'size' => 'col-md-8',
             'field_type_id' => 1,
             'dropdown_id' => null,
             'required' => 1,
@@ -732,28 +732,28 @@ class HRISFieldSeeder extends Seeder
             'h_r_i_s_form_id' => 2,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
-            'placeholder' => "*Citation/Certificate of Award/Other similar supporting documents, *Pictures/Documentation/Other similar supporting documents",
+            'placeholder' => "",
             'size' => 'col-md-12',
-            'field_type_id' => 16,
+            'field_type_id' => 1,
             'dropdown_id' => null,
             'required' => 0,
-            'visibility' => 1,
+            'visibility' => 2,
             'order' => 1,
             'is_active' => 1,
         ]);
-        HRISField::insert([
-            'h_r_i_s_form_id' => 2,
-            'label' => 'Document Upload',
-            'name' => 'document',
-            'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 10,
-            'dropdown_id' => null,
-            'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
+        // HRISField::insert([
+        //     'h_r_i_s_form_id' => 2,
+        //     'label' => 'Document Upload',
+        //     'name' => 'document',
+        //     'placeholder' => null,
+        //     'size' => 'col-md-12',
+        //     'field_type_id' => 10,
+        //     'dropdown_id' => null,
+        //     'required' => 0,
+        //     'visibility' => 1,
+        //     'order' => 1,
+        //     'is_active' => 1,
+        // ]);
 
         //Officership
         HRISField::insert([
