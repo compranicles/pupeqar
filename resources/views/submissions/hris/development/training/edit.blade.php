@@ -56,6 +56,7 @@
             </div>
         </div>
         @push('scripts')
+        <script src="{{ asset('js/spinner.js') }}"></script>
         {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
         <script>
             // var report_category_id = 26;

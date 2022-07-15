@@ -3,7 +3,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if(!isset($forview))
                 <h2 class="font-weight-bold mb-2">Add as Training</h2>
+                @else
+                <h2 class="font-weight-bold mb-2">View Training</h2>
+                @endif
             </div>
         </div>
         <div class="row">
@@ -56,6 +60,7 @@
         </div>
     </div>
     @push('scripts')
+    <script src="{{ asset('js/spinner.js') }}"></script>
     {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
     <script>
         // var report_category_id = 26;

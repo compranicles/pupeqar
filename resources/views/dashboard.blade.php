@@ -135,9 +135,19 @@
                                     @can('viewAny', \App\Models\Mobility::class)
                                     <li><a href="{{ route('mobility.create') }}">Inter-country Mobility</a></li>
                                     @endcan
+                                    @can('manage', \App\Models\IntraMobility::class)
+                                    <li><a href="{{ route('intra-mobility.create') }}">Intra-country Mobility</a></li>
+                                    @endcan
                                     @can('viewAny', \App\Models\OutreachProgram::class)
                                     <li><a href="{{ route('outreach-program.create') }}">Community Relation and Outreach Program (Department/College Level)</a></li>
                                     @endcan
+                                </ul>
+                                <h6 class="ml-3 home-titles"><i class="bi bi-person-circle home-titles mr-1"></i> Personal Data</h6>
+                                <ul class="home-report-list">
+                                    <li><a href="{{ route('submissions.officership.index') }}">Officerships/ Memberships</a></li>
+                                    <li><a href="{{ route('submissions.educ.index') }}">Ongoing Studies</a></li>
+                                    <li><a href="{{ route('submissions.award.index') }}">Outstanding Awards</a></li>
+                                    <li><a href="{{ route('submissions.development.index') }}">Seminars and Trainings</a></li>
                                 </ul>
                                 <h6 class="ml-3 home-titles"><i class="bi bi-search home-titles mr-1"></i> Research & Invention</h6>
                                 <ul class="home-report-list">
@@ -149,11 +159,37 @@
                                     @endcan
                                 </ul>
                                 @can('viewAny', \App\Models\Request::class)
-                                <h6 class="ml-3 home-titles"><i class="bi bi-question-circle-fill home-titles mr-1"></i> Requests & Queries</h6>
+                                <h6 class="ml-3 home-titles"><i class="bi bi-info-circle-fill home-titles mr-1"></i> Requests & Queries</h6>
                                 <ul class="home-report-list">
                                     <li><a href="{{ route('request.create') }}">Requests and Queries Acted Upon</a></li>
                                 </ul>
                                 @endcan
+                                <h6 class="ml-3 home-titles"><i class="bi bi-bookmark-star-fill home-titles mr-1"></i> Tasks & Functions</h6>
+                                <ul class="home-report-list">
+                                    @can('manage', \App\Models\SpecialTask::class)
+                                    <li><a href="{{ route('special-tasks.create') }}">Academic Special Tasks</a></li>
+                                    @endcan
+                                    @can('manage', \App\Models\AdminSpecialTask::class)
+                                    @admin
+                                    <li><a href="{{ route('admin-special-tasks.create') }}">&#8226; Admin Special Tasks</a></li>
+                                    @endadmin
+                                    @endcan
+                                    @admin
+                                    <li><a href="{{ route('special-tasks.create') }}">Accomplishments Based on OPCR</a></li>
+                                    @endadmin
+                                    @can('manage', \App\Models\AttendanceFunction::class)
+                                    <li><a href="{{ route('attendance-function.index') }}">Attendance in College & University Functions</a></li>
+                                    @endcan
+                                </ul>
+                                <h6 class="ml-3 home-titles"><i class="bi bi-file-plus-fill home-titles mr-1"></i> Others</h6>
+                                <ul class="home-report-list">
+                                    @can('manage', \App\Models\OtherAccomplishment::class)
+                                    <li><a href="{{ route('other-accomplishment.create') }}">Other Individual Accomplishments</a></li>
+                                    @endcan
+                                    @can('manage', \App\Models\OtherDeptAccomplishment::class)
+                                    <li><a href="{{ route('other-dept-accomplishment.create') }}">Other Department/College Accomplishments</a></li>
+                                    @endcan
+                                </ul>
                             </div>
                         </div>
                     </div>

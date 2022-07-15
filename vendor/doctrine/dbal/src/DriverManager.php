@@ -45,6 +45,7 @@ use function substr;
  * @psalm-type Params = array{
  *     charset?: string,
  *     dbname?: string,
+ *     defaultTableOptions?: array<string, mixed>,
  *     default_dbname?: string,
  *     driver?: key-of<self::DRIVER_MAP>,
  *     driverClass?: class-string<Driver>,
@@ -61,6 +62,7 @@ use function substr;
  *     port?: int,
  *     primary?: OverrideParams,
  *     replica?: array<OverrideParams>,
+ *     serverVersion?: string,
  *     sharding?: array<string,mixed>,
  *     slaves?: array<OverrideParams>,
  *     user?: string,
@@ -143,9 +145,8 @@ final class DriverManager
      * <b>driverClass</b>:
      * The driver class to use.
      *
-     * @param array<string,mixed> $params
-     * @param Configuration|null  $config       The configuration to use.
-     * @param EventManager|null   $eventManager The event manager to use.
+     * @param Configuration|null $config       The configuration to use.
+     * @param EventManager|null  $eventManager The event manager to use.
      * @psalm-param array{
      *     charset?: string,
      *     dbname?: string,
@@ -170,7 +171,6 @@ final class DriverManager
      *     user?: string,
      *     wrapperClass?: class-string<T>,
      * } $params
-     * @phpstan-param array<string,mixed> $params
      *
      * @psalm-return ($params is array{wrapperClass:mixed} ? T : Connection)
      *

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Constraints\SeeInOrder;
+use Livewire\Component;
 use Livewire\Features\SupportRootElementTracking;
 use PHPUnit\Framework\Assert as PHPUnit;
 
@@ -205,6 +206,10 @@ trait MakesAssertions
 
     protected function testEmittedTo($target, $value)
     {
+        $target = is_subclass_of($target, Component::class)
+            ? $target::getName()
+            : $target;
+
         return (bool) collect(data_get($this->payload, 'effects.emits'))->first(function ($item) use ($target, $value) {
             return $item['event'] === $value
                 && $item['to'] === $target;
@@ -225,15 +230,15 @@ trait MakesAssertions
         $assertionSuffix = '.';
 
         if (is_null($data)) {
-            $test = collect($this->payload['effects']['dispatches'])->contains('event', '=', $name);
+            $test = collect(data_get($this->payload, 'effects.dispatches'))->contains('event', '=', $name);
         } elseif (is_callable($data)) {
-            $event = collect($this->payload['effects']['dispatches'])->first(function ($item) use ($name) {
+            $event = collect(data_get($this->payload, 'effects.dispatches'))->first(function ($item) use ($name) {
                 return $item['event'] === $name;
             });
 
             $test = $event && $data($event['event'], $event['data']);
         } else {
-            $test = (bool) collect($this->payload['effects']['dispatches'])->first(function ($item) use ($name, $data) {
+            $test = (bool) collect(data_get($this->payload, 'effects.dispatches'))->first(function ($item) use ($name, $data) {
                 return $item['event'] === $name
                     && $item['data'] === $data;
             });
@@ -245,6 +250,20 @@ trait MakesAssertions
 
         return $this;
     }
+
+    public function assertNotDispatchedBrowserEvent($name)
+    {
+        if (! array_key_exists('dispatches', $this->payload['effects'])){
+            $test = false;
+        } else {
+            $test = collect($this->payload['effects']['dispatches'])->contains('event', '=', $name);
+        }
+
+        PHPUnit::assertFalse($test, "Failed asserting that an event [{$name}] was not fired");
+
+        return $this;
+    }
+
 
     public function assertHasErrors($keys = [])
     {
@@ -262,6 +281,10 @@ trait MakesAssertions
                 $rules = array_keys(Arr::get($failed, $key, []));
 
                 foreach ((array) $value as $rule) {
+                    if (Str::contains($rule, ':')){
+                        $rule = Str::before($rule, ':');
+                    }
+
                     PHPUnit::assertContains(Str::studly($rule), $rules, "Component has no [{$rule}] errors for [{$key}] attribute.");
                 }
             }
@@ -290,6 +313,10 @@ trait MakesAssertions
                 $rules = array_keys(Arr::get($failed, $key, []));
 
                 foreach ((array) $value as $rule) {
+                    if (Str::contains($rule, ':')){
+                        $rule = Str::before($rule, ':');
+                    }
+
                     PHPUnit::assertNotContains(Str::studly($rule), $rules, "Component has [{$rule}] errors for [{$key}] attribute.");
                 }
             }

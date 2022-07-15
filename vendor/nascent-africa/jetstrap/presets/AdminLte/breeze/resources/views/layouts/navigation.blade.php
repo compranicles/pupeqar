@@ -16,26 +16,26 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ms-auto">
+    <ul class="navbar-nav ml-auto">
         <!-- Authentication Links -->
         @auth
-            <x-dropdown id="navbarDropdown" class="user-menu">
-                <x-slot name="trigger">
-                    <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-                </x-slot>
+        <x-dropdown id="navbarDropdown" class="user-menu">
+            <x-slot name="trigger">
+                <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+            </x-slot>
 
-                <x-slot name="content">
-                    <!-- Authentication -->
-                    <form method="POST" id="logout-form" action="{{ route('logout') }}">
-                        @csrf
-                        <x-dropdown-link href="{{ route('logout') }}"
-                                         onclick="event.preventDefault();
-                                                             document.getElementById('logout-form').submit();">
-                            {{ __('Log Out') }}
-                        </x-dropdown-link>
-                    </form>
-                </x-slot>
-            </x-dropdown>
+            <x-slot name="content">
+                <!-- Authentication -->
+                <form method="POST" id="logout-form" action="{{ route('logout') }}">
+                    @csrf
+                    <x-dropdown-link href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                        {{ __('Log Out') }}
+                    </x-dropdown-link>
+                </form>
+            </x-slot>
+        </x-dropdown>
         @endauth
     </ul>
 </nav>
