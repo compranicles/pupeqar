@@ -50,7 +50,7 @@
                                                             @if(in_array($development->EmployeeTrainingProgramID, $savedSeminars)||in_array($development->EmployeeTrainingProgramID, $savedTrainings))
                                                                 <a href="{{ route('submissions.development.show', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                                 <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
-                                                                <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button>
+                                                                <!-- <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button> -->
                                                                 @if(isset($submissionStatus[25]))
                                                                     @if(isset($submissionStatus[25][$development->EmployeeTrainingProgramID]))
                                                                         @if ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 0 )

@@ -16,7 +16,7 @@
             @endswitch
         >
 
-        <option value="" selected disabled>Choose/Search...</option>
+        <option value="" selected disabled>Choose...</option>
         @foreach ($departments as $department)
         <option value="{{ $department->id }}" {{ $department->id == old('department_id', $department_id) ? 'selected' : '' }}>{{ $department->name }}</option>
         @endforeach

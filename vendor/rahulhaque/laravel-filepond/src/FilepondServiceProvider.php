@@ -3,7 +3,9 @@
 namespace RahulHaque\Filepond;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rule;
 use RahulHaque\Filepond\Console\FilepondClear;
+use RahulHaque\Filepond\Rules\FilepondRule;
 
 class FilepondServiceProvider extends ServiceProvider
 {
@@ -14,15 +16,19 @@ class FilepondServiceProvider extends ServiceProvider
     {
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
+        Rule::macro('filepond', function ($args) {
+            return new FilepondRule($args);
+        });
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/filepond.php' => base_path('config/filepond.php'),
-            ], 'config');
+            ], 'filepond-config');
 
             if (!class_exists('CreateFilepondsTable')) {
                 $this->publishes([
                     __DIR__.'/../database/migrations/create_fileponds_table.php.stub' => database_path('migrations/'.date('Y_m_d', time()).'_000000_create_fileponds_table.php'),
-                ], 'migrations');
+                ], 'filepond-migrations');
             }
 
             $this->commands([

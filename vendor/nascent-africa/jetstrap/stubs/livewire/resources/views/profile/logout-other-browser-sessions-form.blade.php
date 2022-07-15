@@ -35,7 +35,7 @@
 
                         <div class="ms-2">
                             <div>
-                                {{ $session->agent->platform() }} - {{ $session->agent->browser() }}
+                                {{ $session->agent->platform() ? $session->agent->platform() : 'Unknown' }} - {{ $session->agent->browser() ? $session->agent->browser() : 'Unknown' }}
                             </div>
 
                             <div>

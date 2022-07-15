@@ -45,6 +45,28 @@ class Filepond extends AbstractFilepond
     }
 
     /**
+     * Get the filepond file as Data URL string
+     * More at - https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+     *
+     * @return array|string
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    public function getDataURL()
+    {
+        if (!$this->getFieldValue()) {
+            return null;
+        }
+
+        if ($this->getIsMultipleUpload()) {
+            return $this->getFieldModel()->map(function ($filepond) {
+                return $this->createDataUrl($filepond);
+            })->toArray();
+        }
+
+        return $this->createDataUrl($this->getFieldModel());
+    }
+
+    /**
      * Get the filepond database model for the FilePond field
      *
      * @return mixed
@@ -59,7 +81,9 @@ class Filepond extends AbstractFilepond
      *
      * @param  string  $path
      * @param  string  $disk
+     * @param  string  $visibility
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function copyTo(string $path, string $disk = '', string $visibility = '')
     {
@@ -86,7 +110,9 @@ class Filepond extends AbstractFilepond
      *
      * @param  string  $path
      * @param  string  $disk
+     * @param  string  $visibility
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function moveTo(string $path, string $disk = '', string $visibility = '')
     {
@@ -100,8 +126,8 @@ class Filepond extends AbstractFilepond
             foreach ($fileponds as $index => $filepond) {
                 $to = $path.'-'.($index + 1);
                 $response[] = $this->putFile($filepond, $to, $disk, $visibility);
-                $this->delete();
             }
+            $this->delete();
             return $response;
         }
 
@@ -112,7 +138,21 @@ class Filepond extends AbstractFilepond
     }
 
     /**
-     * Validate a file from temporary storage
+     * [Deprecated] Validate a file from temporary storage
+     *
+     * ```php
+     * // Deprecated
+     * Filepond::field($request->avatar)->validate(['avatar' => 'required|image|max:2000']);
+     *
+     * // New
+     * $this->validate($request, ['avatar' => Rule::filepond('required|image|max:2000')]);
+     *
+     * Or
+     *
+     * $request->validate(['avatar' => Rule::filepond('required|image|max:2000')]);
+     * ```
+     *
+     * @deprecated from v1.7.9 See Rule::filepond($rules) instead
      *
      * @param  array  $rules
      * @param  array  $messages
@@ -171,7 +211,10 @@ class Filepond extends AbstractFilepond
      *
      * @param  FilepondModel  $filepond
      * @param  string  $path
+     * @param  string  $disk
+     * @param  string  $visibility
      * @return array
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function putFile(FilepondModel $filepond, string $path, string $disk, string $visibility)
     {

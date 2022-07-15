@@ -119,7 +119,6 @@ class Connection
      * The parameters used during creation of the Connection instance.
      *
      * @var array<string,mixed>
-     * @phpstan-var array<string,mixed>
      * @psalm-var Params
      */
     private $params;
@@ -183,14 +182,6 @@ class Connection
         $this->_driver = $driver;
         $this->params  = $params;
 
-        if (isset($params['platform'])) {
-            if (! $params['platform'] instanceof Platforms\AbstractPlatform) {
-                throw Exception::invalidPlatformType($params['platform']);
-            }
-
-            $this->platform = $params['platform'];
-        }
-
         // Create default config and event manager if none given
         if ($config === null) {
             $config = new Configuration();
@@ -202,6 +193,15 @@ class Connection
 
         $this->_config       = $config;
         $this->_eventManager = $eventManager;
+
+        if (isset($params['platform'])) {
+            if (! $params['platform'] instanceof Platforms\AbstractPlatform) {
+                throw Exception::invalidPlatformType($params['platform']);
+            }
+
+            $this->platform = $params['platform'];
+            $this->platform->setEventManager($this->_eventManager);
+        }
 
         $this->_expr = $this->createExpressionBuilder();
 
@@ -215,7 +215,6 @@ class Connection
      *
      * @return array<string,mixed>
      * @psalm-return Params
-     * @phpstan-return array<string,mixed>
      */
     public function getParams()
     {
@@ -540,7 +539,7 @@ class Connection
      * @param list<mixed>|array<string, mixed>                                     $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      *
-     * @return list< mixed>|false False is returned if no rows are found.
+     * @return list<mixed>|false False is returned if no rows are found.
      *
      * @throws Exception
      */
@@ -625,7 +624,7 @@ class Connection
      * @param array<string, mixed>                                                 $criteria Deletion criteria
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types    Parameter types
      *
-     * @return int The number of affected rows.
+     * @return int|string The number of affected rows.
      *
      * @throws Exception
      */
@@ -662,7 +661,7 @@ class Connection
      *
      * @param int $level The level to set.
      *
-     * @return int
+     * @return int|string
      *
      * @throws Exception
      */
@@ -699,7 +698,7 @@ class Connection
      * @param array<string, mixed>                                                 $criteria Update criteria
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types    Parameter types
      *
-     * @return int The number of affected rows.
+     * @return int|string The number of affected rows.
      *
      * @throws Exception
      */
@@ -734,7 +733,7 @@ class Connection
      * @param array<string, mixed>                                                 $data  Column-value pairs
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types Parameter types
      *
-     * @return int The number of affected rows.
+     * @return int|string The number of affected rows.
      *
      * @throws Exception
      */
@@ -1127,7 +1126,7 @@ class Connection
      * @param list<mixed>|array<string, mixed>                                     $params Statement parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      *
-     * @return int The number of affected rows.
+     * @return int|string The number of affected rows.
      *
      * @throws Exception
      */

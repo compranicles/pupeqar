@@ -82,7 +82,7 @@
             } );
             // auto hide alert
             window.setTimeout(function() {
-                $(".temp-alert").fadeTo(500, 0).slideUp(500, function(){
+                $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                     $(this).remove();
                 });
             }, 4000);

@@ -4,12 +4,12 @@
         <div class="row">
             <div class="col-md-12">
                 @if ($message = Session::get('success'))
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-index">
                         {{ $message }}
                     </div>
                 @endif
                 @if ($message = Session::get('error'))
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger alert-index">
                         {{ $message }}
                     </div>
                 @endif
@@ -100,7 +100,7 @@
             } );
             // auto hide alert
             window.setTimeout(function() {
-                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
                     $(this).remove();
                 });
             }, 4000);
