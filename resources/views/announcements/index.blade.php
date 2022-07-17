@@ -53,8 +53,8 @@
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('announcements.show', $announcement->id) }}"  class="btn btn-success btn-sm">View</a>
-                                                    <a href="{{ route('announcements.edit', $announcement->id) }}"  class="btn btn-primary btn-sm">Edit</a>
+                                                    <a href="{{ route('announcements.show', $announcement->id) }}"  class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('announcements.edit', $announcement->id) }}"  class="btn btn-warning btn-sm">Edit</a>
                                                     <input type="submit" class="btn btn-danger btn-sm" value="Delete">
                                                 </div>
                                             </form>

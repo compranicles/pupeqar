@@ -1,23 +1,19 @@
-<div class="col-md-3 mb-4">
-    <div class="d-flex rounded align-items-center shadow-sm px-3 py-3" style="background-color: #da9101;">
-        <!-- <div>
-            <i class="bi bi-file-earmark-bar-graph home-icons" style="color: #da9101;"></i>
-        </div> -->
-        <div class="db-text d-flex align-items-center">
-            <p class="db-stat">{{ $countAccomplishmentsSubmitted }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('reports.consolidate.myaccomplishments') }}">Accomplishments You Submitted</a>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-3 mb-4">
-    <div class="d-flex rounded align-items-center shadow-sm px-3 py-3" style="background-color: #da9101;">
-        <!-- <div>
-            <i class="bi bi-file-earmark-arrow-down home-icons" style="color: #da9101;"></i>
-        </div> -->
-        <div class="db-text d-flex align-items-center">
-            <p class="db-stat">{{ $countAccomplishmentsReturned }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('reports.consolidate.myaccomplishments') }}">Accomplishments Returned</a>
+<div class="col mb-2">
+    <div class="db-card">
+        <h6 class="card-header font-weight-bold text-center">My Accomplishments</h6>
+        <div class="card-body d-flex justify-content-center">
+            <div class="data-card shadow-sm" style="background-color: #d4784a;">
+                <div class="db-text">
+                    <p class="db-stat">{{ $countAccomplishmentsSubmitted }}</p>
+                    <a class="db-text" style="word-wrap: break-word;" href="{{ route('reports.consolidate.myaccomplishments') }}">SUBMISSIONS</a>
+                </div>
+            </div>
+            <div class="data-card shadow-sm" style="background-color: #d4784a; border-left: 3px solid white;">
+                <div class="db-text">
+                    <p class="db-stat">{{ $countAccomplishmentsReturned }}</p>
+                    <a class="db-text" style="word-wrap: break-word;" href="{{ route('reports.consolidate.myaccomplishments') }}">RETURNED</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

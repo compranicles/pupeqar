@@ -1,20 +1,27 @@
-<div class="col-md-3 mb-4 ">
-    <div class="d-block rounded align-items-center shadow-sm px-3 py-3" style="background-color: #0055a9;">
-        <!-- <div>
-            <i class="bi bi-file-bar-graph home-icons" style="color: #0055a9;"></i>
-        </div> -->
-        <div class="db-text d-flex align-items-center">
-            <p class="db-text db-stat">{{ $countToReview }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('ipo.index') }}">Accomplishments to Review (IPO)</a>
-        </div>
+
+<div class="data-card shadow-sm" style="background-color: #718c54; border-left: 3px solid white;">
+    <div class="db-text">
+        <p class="db-stat">{{ $countToReview }}</p>
+        <a class="db-text" style="word-wrap: break-word;" href="{{ route('ipo.index') }}">TO REVIEW</a>
     </div>
 </div>
-
-<div class="col-md-5 mb-4 ">
-    <div class="d-block rounded align-items-center shadow-sm px-3 py-3" style="background-color: #0055a9;">
-        <div class="db-text d-flex align-items-center">
-            <p class="db-stat">{{ $countReceived }}/{{ $countExpectedTotal }}</p>
-            <a class="db-text" style="word-wrap: break-word;" href="{{ route('ipo.index') }}">Received Over Expected Total of Accomplishments (IPO)</a>
+<div class="shadow-sm" style="background-color: #718c54; border-left: 3px solid white; 
+  width:300px;
+  max-width:300px; 
+  display: inline-block;
+  padding: 8px;">
+    <div class="db-text d-flex align-items-center justify-content-center">
+        <div>
+            <p class="db-stat">{{ $countReceived }}</p>
+            <a class="db-text" style="word-wrap: break-word;" href="{{ route('ipo.index') }}">RECEIVED</a>
         </div>
+        <div class="ml-3 mr-3">of</div>
+        <div>
+            <p class="db-stat">{{ $countExpectedTotal }}</p>
+            <a class="db-text" style="word-wrap: break-word;" href="{{ route('ipo.index') }}">EXPECTED</a>
+        </div>
+    </div>
+    <div class="db-text">
+        TOTAL NO. OF QAR
     </div>
 </div>
