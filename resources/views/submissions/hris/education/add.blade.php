@@ -19,13 +19,19 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.educ.save', $educID) }}" method="post">
+                        <form action="{{ route('submissions.educ.store', $id) }}" method="post">
                             @csrf
-                            @if ($collegeOfDepartment == '')
+                            @if (!isset($collegeOfDepartment))
                                 @include('form', ['formFields' => $educFields, 'value' => $values])
                             @else
                                 @include('form', ['formFields' => $educFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             @endif
+                            <div class="form-group">
+                                <label class="font-weight-bold" >Document</label>
+                                <br>
+                                <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                            </div>
+                            @if(!isset($forview))
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -36,6 +42,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endif
                         </form>
                     </div>
                 </div>
@@ -44,7 +51,7 @@
     </div>
     @push('scripts')
     <script src="{{ asset('js/spinner.js') }}"></script>
-    <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
         var report_category_id = 24;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -60,6 +67,11 @@
         $(function(){
             $("input[name='document[]']").attr('required', true);
         });
+    </script> --}}
+    @if(isset($forview))
+    <script>
+        $('#department_id').attr('disabled', 'disabled')
     </script>
+    @endif
     @endpush
 </x-app-layout>

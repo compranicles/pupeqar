@@ -448,8 +448,13 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     /* HRIS SUBMISSIONS */
     // Ongoing Studies
     Route::get('/submissions/educational-background', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'index'])->name('submissions.educ.index');
-    Route::get('/submissions/educational-background/{educID}/add/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'add'])->name('submissions.educ.add');
-    Route::post('/submissions/educational-background/{educID}/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'save'])->name('submissions.educ.save');
+    Route::get('/submissions/educational-background/{id}/add/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'add'])->name('submissions.educ.add');
+    Route::get('/submissions/educational-background/{id}/show/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'show'])->name('submissions.educ.show');
+    Route::get('/submissions/educational-background/{id}/edit/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'edit'])->name('submissions.educ.edit');
+    Route::get('/submissions/educational-background/{id}/delete/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'delete'])->name('submissions.educ.destroy');
+    Route::get('/submissions/educational-background/{id}/check/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'check'])->name('submissions.educ.check');
+    Route::post('/submissions/educational-background/{id}/save/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'store'])->name('submissions.educ.store');
+    Route::post('/submissions/educational-background/{id}/update/', [\App\Http\Controllers\HRISSubmissions\EducationController::class, 'update'])->name('submissions.educ.update');
     // Webinars and Seminars
     Route::get('/submissions/development/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'index'])->name('submissions.development.index');
     Route::get('/submissions/development/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'add'])->name('submissions.development.add');
@@ -459,17 +464,27 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('/submissions/development/{id}/check/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'check'])->name('submissions.development.check');
     Route::post('/submissions/development/seminar/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'storeSeminar'])->name('submissions.development.seminar.store');
     Route::post('/submissions/development/seminar/{id}/update/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'updateSeminar'])->name('submissions.development.seminar.update');
-    Route::get('/submissions/development/training/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'addTraining'])->name('submissions.development.training.add');
+    // Route::get('/submissions/development/training/{id}/add/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'addTraining'])->name('submissions.development.training.add');
     Route::post('/submissions/development/training/{id}/save/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'storeTraining'])->name('submissions.development.training.store');
     Route::post('/submissions/development/training/{id}/update/', [\App\Http\Controllers\HRISSubmissions\SeminarAndTrainingController::class, 'updateTraining'])->name('submissions.development.training.update');
     //Officership/Memberhips
     Route::get('/submissions/officership', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'index'])->name('submissions.officership.index');
     Route::get('/submissions/officership/{id}/add', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'add'])->name('submissions.officership.add');
-    Route::post('/submissions/officership/{id}/save', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'save'])->name('submissions.officership.save');
+    Route::get('/submissions/officership/{id}/show', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'show'])->name('submissions.officership.show');
+    Route::get('/submissions/officership/{id}/edit', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'edit'])->name('submissions.officership.edit');
+    Route::get('/submissions/officership/{id}/delete', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'delete'])->name('submissions.officership.destroy');
+    Route::get('/submissions/officership/{id}/check', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'check'])->name('submissions.officership.check');
+    Route::post('/submissions/officership/{id}/save', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'store'])->name('submissions.officership.store');
+    Route::post('/submissions/officership/{id}/update', [\App\Http\Controllers\HRISSubmissions\OfficershipController::class, 'update'])->name('submissions.officership.update');
     //Outstanding Awards
     Route::get('/submissions/outstanding-awards', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'index'])->name('submissions.award.index');
     Route::get('/submissions/outstanding-awards/{id}/add', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'add'])->name('submissions.award.add');
-    Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'save'])->name('submissions.award.save');
+    Route::get('/submissions/outstanding-awards/{id}/show', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'show'])->name('submissions.award.show');
+    Route::get('/submissions/outstanding-awards/{id}/edit', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'edit'])->name('submissions.award.edit');
+    Route::get('/submissions/outstanding-awards/{id}/delete', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'delete'])->name('submissions.award.destroy');
+    Route::get('/submissions/outstanding-awards/{id}/check', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'check'])->name('submissions.award.check');
+    Route::post('/submissions/outstanding-awards/{id}/save', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'store'])->name('submissions.award.store');
+    Route::post('/submissions/outstanding-awards/{id}/update', [\App\Http\Controllers\HRISSubmissions\AwardController::class, 'update'])->name('submissions.award.update');
 
 
 });

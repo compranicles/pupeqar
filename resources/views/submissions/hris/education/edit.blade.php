@@ -1,5 +1,5 @@
 <x-app-layout>
-@section('title', 'Outstanding Awards/Achievements |')
+    @section('title', 'Ongoing Advanced/Professional Studies |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -9,7 +9,7 @@
                     </div>
                 @endif
                 <p>
-                    <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Outstanding Awards/Achievements</a>
+                    <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Ongoing Advanced/Professional Studies</a>
                 </p>
                 {{-- Denied Details --}}
                 @if ($deniedDetails = Session::get('denied'))
@@ -19,19 +19,18 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.award.store', $id) }}" method="post">
+                        <form action="{{ route('submissions.educ.update', $id) }}" method="post">
                             @csrf
                             @if (!isset($collegeOfDepartment))
-                                @include('form', ['formFields' => $awardFields, 'value' => $values])
+                                @include('form', ['formFields' => $educFields, 'value' => $values])
                             @else
-                                @include('form', ['formFields' => $awardFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                @include('form', ['formFields' => $educFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             @endif
                             <div class="form-group">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
                             </div>
-                            @if(!isset($forview))
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
@@ -42,7 +41,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @endif
                         </form>
                     </div>
                 </div>
@@ -50,12 +48,11 @@
         </div>
     </div>
     @push('scripts')
-    <script src="{{ asset('js/spinner.js') }}"></script>
-    <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    {{-- <script>
-        var report_category_id = 27;
+    {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
+    <script>
+        var report_category_id = 24;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        var api = '{{ url("/document-upload/description/27") }}';
+        var api = '{{ url("/document-upload/description/24") }}';
 		$.get(api, function (data){
             if (data != '') {
                 data.forEach(function (item){
@@ -64,15 +61,9 @@
             }
         });
 
-
         $(function(){
             $("input[name='document[]']").attr('required', true);
         });
     </script> --}}
-    @if(isset($forview))
-    <script>
-        $('#department_id').attr('disabled', 'disabled')
-    </script>
-    @endif
     @endpush
 </x-app-layout>

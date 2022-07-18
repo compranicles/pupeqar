@@ -110,6 +110,12 @@
                                                     {{ $row->report_details->activity_title }}
                                                 @elseif (isset($row->report_details->accomplishment_description))
                                                     {{ $row->report_details->accomplishment_description }}
+                                                @elseif (isset($row->report_details->award))
+                                                    {{ $row->report_details->award }}
+                                                @elseif (isset($row->report_details->organization))
+                                                    {{ $row->report_details->organization }}
+                                                @elseif (isset($row->report_details->degree))
+                                                    {{ $row->report_details->degree }}
                                                 @endif
                                             </td>
                                             {{-- <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id] ?? '-' }}</td> --}}

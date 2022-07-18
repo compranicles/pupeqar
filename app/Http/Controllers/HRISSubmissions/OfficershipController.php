@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Http\Controllers\{
-    Controller,
-    Maintenances\LockController,
-};
+use Image;
+use App\Models\HRIS;
+use App\Models\User;
+use App\Models\Report;
+use App\Models\Employee;
+use App\Models\HRISDocument;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{
-    DB,
-    Storage,
-};
-use App\Models\{
-    Employee,
-    HRISDocument,
-    Report,
-    TemporaryFile,
-    User,
-    FormBuilder\DropdownOption,
-    Maintenance\College,
-    Maintenance\Currency,
-    Maintenance\Department,
-    Maintenance\HRISField,
-    Maintenance\Quarter,
-};
+use Illuminate\Support\Facades\DB;
+use App\Models\Maintenance\College;
+use App\Models\Maintenance\Quarter;
+use App\Http\Controllers\Controller;
+use App\Models\Maintenance\HRISField;
+use App\Models\Maintenance\Department;
+use App\Http\Controllers\Maintenances\LockController;
 
 class OfficershipController extends Controller
 {
@@ -36,19 +28,28 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
 
         $officershipFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCode N'$user->emp_code'");
-        $officeReports = Report::where('report_category_id', 28)->where('user_id', $user->id)->select('report_reference_id', 'report_quarter', 'report_year')->get();
+        $savedReports = HRIS::where('hris_type', '3')->where('user_id', $user->id)->pluck('hris_id')->all();
 
-        return view('submissions.hris.officership.index', compact('officershipFinal', 'officeReports', 'currentQuarterYear'));
+        $submissionStatus = [];
+        foreach ($officershipFinal as $officership) {
+            $id = HRIS::where('hris_id', $officership->EmployeeOfficershipMembershipID)->where('hris_type', 3)->where('user_id', $user->id)->pluck('id')->first();
+            if($id != ''){
+                if (LockController::isLocked($id, 28))
+                    $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 1;
+                else
+                    $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 0;
+                if ($officership->Attachment == null)
+                    $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 2;
+            }
+        }
+        // dd($officershipFinal);
+        return view('submissions.hris.officership.index', compact('officershipFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
     }
 
     public function add(Request $request, $id){
         $user = User::find(auth()->id());
 
         $currentQuarterYear = Quarter::find(1);
-
-        if(LockController::isLocked($id, 28)){
-            return redirect()->back()->with('error', 'Already have submitted a report on this accomplishment');
-        }
 
         $db_ext = DB::connection('mysql_external');
 
@@ -64,9 +65,11 @@ class OfficershipController extends Controller
             'classification' => $officeData[0]->Classification,
             'position' => $officeData[0]->Position,
             'level' => $officeData[0]->Level,
-            'orgnization_address' => $officeData[0]->Address,
+            'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'document' => $officeData[0]->Attachment,
+            'description' => $officeData[0]->Description,
         ];
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -104,16 +107,262 @@ class OfficershipController extends Controller
                 'classification' => $officeData[0]->Classification,
                 'position' => $officeData[0]->Position,
                 'level' => $officeData[0]->Level,
-                'orgnization_address' => $officeData[0]->Address,
+                'organization_address' => $officeData[0]->Address,
                 'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
                 'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
-                'description' => $description
+                'document' => $officeData[0]->Attachment,
+                'description' => $officeData[0]->Description,
             ];
         }
 
 
         return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
     }
+
+    public function store(Request $request, $id){
+        $currentQuarterYear = Quarter::find(1);
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::create([
+            'hris_id' => $id,
+            'hris_type' => '3',
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+            'user_id' => auth()->id(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        \LogActivity::addToLog('Had saved a Officership/Membership.');
+
+        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+    }
+
+    public function show($id){
+        $user = User::find(auth()->id());
+
+        $currentQuarterYear = Quarter::find(1);
+
+        $db_ext = DB::connection('mysql_external');
+
+        $officeData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code',$id");
+
+        $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('department_id')->first();
+
+        $officeFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 3)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $values = [
+            'organization' =>  $officeData[0]->Organization,
+            'classification' => $officeData[0]->Classification,
+            'position' => $officeData[0]->Position,
+            'level' => $officeData[0]->Level,
+            'organization_address' => $officeData[0]->Address,
+            'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'document' => $officeData[0]->Attachment,
+            'description' => $officeData[0]->Description,
+            'department_id' => $department_id,
+        ];
+        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        $forview = '';
+
+        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges','departments', 'forview'));
+    }
+
+    public function edit($id){
+        $currentQuarterYear = Quarter::find(1);
+
+        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('id')->first();
+
+        if(LockController::isLocked($officershipID, 28)){
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
+        }
+
+        $user = User::find(auth()->id());
+
+        $currentQuarterYear = Quarter::find(1);
+
+        $db_ext = DB::connection('mysql_external');
+
+        $officeData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code',$id");
+
+        $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('department_id')->first();
+
+        $officeFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 3)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $values = [
+            'organization' =>  $officeData[0]->Organization,
+            'classification' => $officeData[0]->Classification,
+            'position' => $officeData[0]->Position,
+            'level' => $officeData[0]->Level,
+            'organization_address' => $officeData[0]->Address,
+            'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'document' => $officeData[0]->Attachment,
+            'description' => $officeData[0]->Description,
+            'department_id' => $department_id,
+        ];
+
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        return view('submissions.hris.officership.edit', compact('id', 'officeData', 'officeFields', 'values', 'colleges','departments'));
+    }
+
+    public function update(Request $request, $id){
+        $currentQuarterYear = Quarter::find(1);
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '3')->update([
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+        ]);
+
+        \LogActivity::addToLog('Had updated a Officership/Membership.');
+
+        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been updated.');
+    }
+
+    public function delete($id){
+        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('id')->first();
+
+        if(LockController::isLocked($officershipID, 28)){
+            return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
+        }
+
+        HRIS::where('id', $officershipID)->delete();
+
+        \LogActivity::addToLog('Had deleted a Officership/Membership.');
+
+        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been deleted.');
+    }
+
+    public function check($id){
+        $officership = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->first();
+
+        if(LockController::isLocked($officership->id, 28))
+            return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
+
+        if($this->submit($officership->id))
+            return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
+
+        return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment.');
+    }
+
+    public function submit($officership_id){
+        $user = User::find(auth()->id());
+        $officership = HRIS::where('id', $officership_id)->first();
+
+        $user = User::find(auth()->id());
+
+        $currentQuarterYear = Quarter::find(1);
+
+        $db_ext = DB::connection('mysql_external');
+
+        $officeData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code',$officership->hris_id");
+
+        $sector_id = College::where('id', $officership->college_id)->pluck('sector_id')->first();
+        $department_name = Department::where('id', $officership->department_id)->pluck('name')->first();
+        $college_name = College::where('id', $officership->college_id)->pluck('name')->first();
+
+        $filenames = [];
+        $img = Image::make($officeData[0]->Attachment);
+        $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
+        $newPath = storage_path().'/app/documents/'.$fileName;
+        $img->save($newPath);
+
+        HRISDocument::create([
+            'hris_form_id' => 3,
+            'reference_id' => $officership_id,
+            'filename' => $fileName,
+        ]);
+        array_push($filenames, $fileName);
+
+        $values = [
+            'organization' =>  $officeData[0]->Organization,
+            'classification' => $officeData[0]->Classification,
+            'position' => $officeData[0]->Position,
+            'level' => $officeData[0]->Level,
+            'organization_address' => $officeData[0]->Address,
+            'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            // 'document' => $officeData[0]->Attachment,
+            'description' => $officeData[0]->Description,
+            'department_id' => $department_name,
+            'college_id' => $college_name
+        ];
+
+        $currentQuarterYear = Quarter::find(1);
+
+        Report::where('report_reference_id', $officership_id)
+            ->where('report_category_id', 28)
+            ->where('user_id', auth()->id())
+            ->where('report_quarter', $currentQuarterYear->current_quarter)
+            ->where('report_year', $currentQuarterYear->current_year)
+            ->delete();
+
+        Report::create([
+            'user_id' =>  auth()->id(),
+            'sector_id' => $sector_id,
+            'college_id' => $officership->college_id,
+            'department_id' => $officership->department_id,
+            'report_category_id' => 28,
+            'report_code' => null,
+            'report_reference_id' => $officership_id,
+            'report_details' => json_encode($values),
+            'report_documents' => json_encode($filenames),
+            'report_date' => date("Y-m-d", time()),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function save(Request $request, $id){
         if($request->document[0] == null){
