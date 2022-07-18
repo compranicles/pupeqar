@@ -26,7 +26,7 @@
                             @if (in_array(5, $roles))
                             <div class="col mb-2">
                                 <div class="db-card">
-                                    <h6 class="card-header font-weight-bold text-center">Chair/Chief</h6>
+                                    <h5 class="card-header font-weight-bold text-center">Chair/Chief</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[5] as $value)
                                             @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'departmentID' => $value->department_id, 'departmentCode' => $value->code])
@@ -38,7 +38,7 @@
                             @if (in_array(10, $roles))
                             <div class="col mb-2">
                                 <div class="db-card">
-                                    <h6 class="card-header font-weight-bold text-center">Researcher</h6>
+                                    <h5 class="card-header font-weight-bold text-center">Researcher</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[10] as $value)
                                             @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->college_id], 'collegeCode' => $value->code ])
@@ -50,7 +50,7 @@
                             @if (in_array(11, $roles))
                             <div class="col mb-2">
                                 <div class="db-card">
-                                    <h6 class="card-header font-weight-bold text-center">Extensionist</h6>
+                                    <h5 class="card-header font-weight-bold text-center">Extensionist</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[11] as $value)
                                             @include('dashboard.extensionist', ['countToReview' => $countToReview[11][$value->college_id], 'collegeCode' => $value->code ])
@@ -62,7 +62,7 @@
                             @if (in_array(6, $roles))
                             <div class="col mb-2">
                                 <div class="db-card">
-                                    <h6 class="card-header font-weight-bold text-center">Dean/Director</h6>
+                                    <h5 class="card-header font-weight-bold text-center">Dean/Director</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($college[6] as $value)
                                             @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'collegeID' => $value->college_id, 'collegeCode' => $value->code])
@@ -75,7 +75,7 @@
                             @if (in_array(7, $roles))
                             <div class="col mb-2">
                                 <div class="db-card">
-                                    <h6 class="card-header font-weight-bold text-center">Sector Head</h6>
+                                    <h5 class="card-header font-weight-bold text-center">Sector Head</h5>
                                     
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($sector[7] as $value)
@@ -88,7 +88,7 @@
                             @if (in_array(8, $roles))
                                 <div class="col mb-2">
                                     <div class="db-card">
-                                        <h6 class="card-header font-weight-bold text-center">IPO</h6>
+                                        <h5 class="card-header font-weight-bold text-center">IPO</h5>
                                         <div class="card-body d-flex justify-content-center">@include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 
                                             'countExpectedTotal' => $countExpectedTotal[8], 'countReceived' => $countReceived[8]])
                                         </div>
