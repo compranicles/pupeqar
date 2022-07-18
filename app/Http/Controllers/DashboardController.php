@@ -52,6 +52,8 @@ class DashboardController extends Controller
         $countAccomplishmentsSubmitted = Report::where('user_id', auth()->id())
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
+                    ->whereNotNull('college_id')
+                    ->whereNotNull('department_id')
                     ->count();
         $countAccomplishmentsReturned = Report::where('user_id', auth()->id())
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
