@@ -78,16 +78,16 @@ class InviteController extends Controller
             Notification::send($user, new ExtensionInviteNotification($notificationData));
             $count++;
         }
-        \LogActivity::addToLog('Had added '.$count.' co-extensionist/s in an extension program/project/activity.');
+        \LogActivity::addToLog('Had added '.$count.' extension partners in an extension program/project/activity.');
 
-        return redirect()->route('extension.invite.index', $id)->with('success', count($request->input('employees')).' people invited as co-extensionist/s.');
+        return redirect()->route('extension.invite.index', $id)->with('success', count($request->input('employees')).' people invited as extension partner/s.');
     }
 
     public function confirm($id, Request $request){
 
         $user = User::find(auth()->id());
 
-        \LogActivity::addToLog('Had confirmed as a co-extensionist of an extension program/project/activity.');
+        \LogActivity::addToLog('Had confirmed as an extension partner in an extension program/project/activity.');
 
         $user->notifications->where('id', $request->get('id'))->markAsRead();
         
@@ -106,7 +106,7 @@ class InviteController extends Controller
             ->where('id', $request->get('id'))
             ->delete();
         
-        \LogActivity::addToLog('Had denied as a co-extensionist of an extension program/project/activity.');
+        \LogActivity::addToLog('Had denied as an extension partner in an extension program/project/activity.');
 
         return redirect()->route('extension-service.index')->with('success', 'Invitation cancelled.');
     }
@@ -133,6 +133,6 @@ class InviteController extends Controller
         \LogActivity::addToLog('Extensionists removed.');
 
         
-        return redirect()->route('extension.invite.index', $id)->with('success', 'Sending confirmation for co-extensionist has been cancelled.');
+        return redirect()->route('extension.invite.index', $id)->with('success', 'Sending confirmation for extension partner has been cancelled.');
     }
 }

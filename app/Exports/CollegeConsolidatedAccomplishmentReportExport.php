@@ -135,7 +135,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.college_id', $college_id)
                             ->where(function($query) {
-                                $query->orwhere('reports.researcher_approval', 1)
+                                $query->where('reports.researcher_approval', 1)
                                     ->orWhere('reports.extensionist_approval', 1)
                                     ->orWhere('reports.dean_approval', 1);
                             })

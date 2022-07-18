@@ -2,6 +2,34 @@
 
 All notable changes to `laravel-filepond` will be documented in this file.
 
+## 1.8.10 - 2022-06-01
+
+- Multiple file uploads sometime won't move to location fixed.
+- New test cases added for `moveTo()` method.
+
+## 1.7.10 - 2022-05-31
+
+- `validate()` method deprication notice added.
+- Test cases updated with `Rule::filepond()`.
+
+## 1.7.9 - 2022-05-07
+
+- `Rule::filepond($rules)` documentation added.
+- Code cleanup and improvement.
+
+## 1.7.8 - 2022-04-30
+
+- Added custom `Rule::filepond()` to validate uploaded files. ✨
+- Readme updated with new validation example.
+
+## 1.6.8 - 2022-02-22
+
+- Added option to `getDataURL()` from file. Know more about the format [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs).
+
+## 1.5.8 - 2022-02-15
+
+- Added Laravel 9 support.
+
 ## 1.4.8 - 2021-12-31
 
 - Added support for chunk upload with resume capability. ✨

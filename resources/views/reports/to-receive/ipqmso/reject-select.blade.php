@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ url()->previous() }}" class="btn btn-secondary">Back</a>
+                                <a class="back_link" href="{{ route('ipo.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                             </div>
                         </div>
                         <form action="{{ route('ipqmso.reject-selected') }}" method="post">
@@ -86,10 +86,18 @@
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
            $('.button-view').on('click', function(){
-                var catID = $(this).data('id');
-                var link = $(this).data('url');
+            var catID = $(this).data('id');
+                var docLink = $(this).data('url');
                 var countColumns = 0;
 
+                //Accomplishment Name/Report Category
+                var labellink = "{{ url('reports/report-category/:id') }}";
+				var catlink = labellink.replace(':id', catID);
+                $.get(catlink, function (data){
+                    document.getElementById('viewReportLabel').innerHTML = data;
+                });
+
+                //Accomplishment details
                 var url = "{{ url('reports/data/:id') }}";
 				var newlink = url.replace(':id', catID);
 				$.get(newlink, function (data){
@@ -100,12 +108,11 @@
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
-                var urldoc = "{{ url('reports/docs/:id') }}";
-				var newlinkdoc = urldoc.replace(':id', catID);
-				$.get(newlinkdoc, function (data) {
+                var urlGetDoc = "{{ url('reports/docs/:id') }}".replace(':id', catID);
+				$.get(urlGetDoc, function (data) {
                     data.forEach(function (item){
-                        var newlink = link.replace(':filename', item)
-                        $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
+                        var newDocLink = docLink.replace(':filename', item)
+                        $('#data_documents').append('<a href="'+newDocLink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
             });

@@ -74,6 +74,11 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                             ->where('reports.college_id', $this->college)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
+                            ->where(function($query) {
+                                $query->where('reports.researcher_approval', 1)
+                                    ->orWhere('reports.extensionist_approval', 1)
+                                    ->orWhere('reports.dean_approval', 1);
+                            })
                             ->select('reports.*')
                             ->get()->toArray();
                 }
@@ -93,7 +98,7 @@ class CollegeLevelConsolidatedExport implements FromView, WithEvents
                 $event->sheet->getStyle('A1:Z500')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
-                $event->sheet->getDefaultColumnDimension()->setWidth(35);
+                $event->sheet->getDefaultColumnDimension()->setWidth(37);
                 $event->sheet->mergeCells('A1:G1');
                 $event->sheet->freezePane('B1');
 

@@ -4412,6 +4412,7 @@ input[type=button].btn-block {
   margin-bottom: 0;
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  color: var(--gray-dark);
 }
 .card-header:first-child {
   border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
@@ -12987,7 +12988,7 @@ body {
 /* ------Mega Menu-------- */
 .menu-sub {
   position: absolute;
-  background: white;
+  /* background: white; */
   width: 100%;
   display: none;
   padding: 2em;
@@ -12996,6 +12997,12 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
+  background: linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)), url(/storage/PUP.png) no-repeat;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .menu-sub li {
@@ -13167,32 +13174,6 @@ table tr .padding_left_show {
 }
 
 
-/* .db-card-group .card:hover {
-  transform: scale(1.05);
-}
-
-.card-img-overlay {
-
-  min-width: 0;
-  word-wrap: break-word;
-  opacity: 0.9;
-  background-color: darkgoldenrod !important;
-}
-
-.db-card-links {
-  color: white;
-}
-
-.db-card-links:hover {
-  text-decoration: underline;
-  color: white;
-
-}
-
-.db-card-group .card{
-  margin-bottom: 8px;
-} */
-
 .card-img-overlay.db-overlay{ 
   border-radius: 0 0 0 0;
     min-width: 0;
@@ -13200,10 +13181,6 @@ table tr .padding_left_show {
   /* opacity: 1; */
   /* background-color: rgba(0, 0, 0, 0.02); */
     background-color: white;
-}
-
-.db-card {
-  margin-bottom: 20px;
 }
 
 .card-title a {
@@ -13415,28 +13392,38 @@ table tr .padding_left_show {
   /* text-decoration: none; */
 }
 
-.home-titles {
-  color:#6f080b;
+.db-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 5px;
 }
 
-.db-card {
-  height: 130px;
-  vertical-align: middle;
+.data-card {
+  width:120px;
+  max-width:120px; 
+  display: inline-block;
+  padding: 8px;
 }
 
 .db-text {
-  color: whitesmoke;
-  /* text-align: center; */
+  color: white;
+  text-align: center;
 }
 
 .db-text:hover {
-  color: whitesmoke;
-  /* text-align: center; */
+  color: white;
+  text-align: center;
   text-decoration: none;
 }
 
 .db-stat {
-  font-size: 2em; 
+  font-size: 2.25em; 
   margin: 0 15px 0 15px; 
   
 }

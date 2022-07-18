@@ -11,8 +11,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="{{ route('researcher.index') }}" class="btn btn-secondary">BACK</a>
-                                <hr>
+                                <a class="back_link" href="{{ route('researcher.index') }}"><i class="bi bi-chevron-double-left"></i>Back</a>
                             </div>
                         </div>
                         <form action="{{ route('researcher.reject-selected') }}" method="post">
@@ -57,7 +56,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100 text-center" id="viewReportLabel">View Accomplishment</h5>
+                <h5 class="modal-title w-100 text-center" id="viewReportLabel"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -76,7 +75,7 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-12"><hr></div>
+                    <div class="col-12"></div>
                     <div class="col-md-6 text-center" id="review_btn_accept">
                     </div>
                     <div class="col-md-6 text-center" id="review_btn_reject">
@@ -84,7 +83,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
             </div>
         </div>
@@ -95,12 +94,20 @@
         <script>
             $('.button-view').on('click', function(){
                 var catID = $(this).data('id');
-                var link = $(this).data('url');
+                var docLink = $(this).data('url');
                 var countColumns = 0;
 
+                //Accomplishment Name/Report Category
                 var labellink = "{{ url('reports/report-category/:id') }}";
-				var link = labellink.replace(':id', catID);
-                $.get(link, function (data){
+				var catlink = labellink.replace(':id', catID);
+                $.get(catlink, function (data){
+                    document.getElementById('viewReportLabel').innerHTML = data;
+                });
+
+                //Accomplishment details
+                var url = "{{ url('reports/data/:id') }}";
+				var newlink = url.replace(':id', catID);
+				$.get(newlink, function (data){
                     Object.keys(data).forEach(function(k){
                         countColumns = countColumns + 1;
                         $('#columns_value_table').append('<tr id="row-'+countColumns+'" class="d-flex report-content"></tr>')
@@ -108,12 +115,11 @@
                         $('#row-'+countColumns).append('<td class="report-content text-left">'+data[k]+'</td>');
                     });
                 });
-                var url = "{{ url('reports/data/:id') }}";
-				var newlink = url.replace(':id', catID);
-				$.get(newlink, function (data){
+                var urlGetDoc = "{{ url('reports/docs/:id') }}".replace(':id', catID);
+				$.get(urlGetDoc, function (data) {
                     data.forEach(function (item){
-                        var newlink = link.replace(':filename', item)
-                        $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
+                        var newDocLink = docLink.replace(':filename', item)
+                        $('#data_documents').append('<a href="'+newDocLink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
             });

@@ -157,7 +157,7 @@
                         $('#notification-'+countColumns)
                             .append('<td class="notification-content">'+
                                 '<div id="noti-all-info-'+countColumns+'" data-url="'+item.data.url+'" data-id="'+item.id+'" class="notif-row  noti-message text-dark ml-2">'+
-                                item.data.sender+' confirmed as a co-extensionist of the extension program/project/activity.'+
+                                item.data.sender+' confirmed as your extension partner in an extension program/project/activity.'+
                                 '</div>'+
                                 '<div class="text-muted ml-2"><small>'+item.data.date+'</small></div></td>'
                             );

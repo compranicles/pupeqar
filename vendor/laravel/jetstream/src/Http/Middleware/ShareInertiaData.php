@@ -28,6 +28,7 @@ class ShareInertiaData
                     'canManageTwoFactorAuthentication' => Features::canManageTwoFactorAuthentication(),
                     'canUpdatePassword' => Features::enabled(Features::updatePasswords()),
                     'canUpdateProfileInformation' => Features::canUpdateProfileInformation(),
+                    'hasEmailVerification' => Features::enabled(Features::emailVerification()),
                     'flash' => $request->session()->get('flash', []),
                     'hasAccountDeletionFeatures' => Jetstream::hasAccountDeletionFeatures(),
                     'hasApiFeatures' => Jetstream::hasApiFeatures(),
@@ -46,7 +47,7 @@ class ShareInertiaData
                 }
 
                 return array_merge($request->user()->toArray(), array_filter([
-                    'all_teams' => Jetstream::hasTeamFeatures() ? $request->user()->allTeams() : null,
+                    'all_teams' => Jetstream::hasTeamFeatures() ? $request->user()->allTeams()->values() : null,
                 ]), [
                     'two_factor_enabled' => ! is_null($request->user()->two_factor_secret),
                 ]);

@@ -346,8 +346,8 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     }
                 }
                 $count = $count + 2;
-                    $event->sheet->setCellValue('E'.$count, 'Prepared By:');
-                    $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
+                    $event->sheet->setCellValue('A'.$count, 'Prepared By:');
+                    $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
                             'name' => 'Arial',
                             'bold' => true, 
