@@ -25,7 +25,7 @@ class DepartmentSeeder extends Seeder
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
-                if($row->Level == "1" && $row->RootID == '226'){
+                if($row->Lvl == "1" && $row->RootID == '226'){
                     if(in_array($row->DepartmentID, $collegeHRISCodes)){
                         Department::insert([
                             'name' => $row->Department,
@@ -35,7 +35,7 @@ class DepartmentSeeder extends Seeder
                         ]);
                     }
                 }
-                elseif($row->Level == '2'){
+                elseif($row->Lvl == '2'){
                     if(in_array($row->RootID, $collegeHRISCodes)){
                         Department::insert([
                             'name' => $row->Department,

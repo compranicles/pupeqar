@@ -76,12 +76,21 @@ class ReferenceController extends Controller
             return view('inactive');
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
+        $dropdown_options = [];
+        foreach($referenceFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('academic-development.references.create', compact('referenceFields', 'colleges', 'departments'));
+        return view('academic-development.references.create', compact('referenceFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -199,6 +208,15 @@ class ReferenceController extends Controller
 
         $referenceFields = DB::select("CALL get_academic_development_fields_by_form_id(1)");
 
+        $dropdown_options = [];
+        foreach($referenceFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $referenceDocuments = ReferenceDocument::where('reference_id', $rtmmi->id)->get()->toArray();
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
@@ -220,7 +238,7 @@ class ReferenceController extends Controller
         $value = collect($rtmmi);
         $value = $value->toArray();
 
-        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment', 'departments'));
+        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment', 'departments', 'dropdown_options'));
     }
 
     /**

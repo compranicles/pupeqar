@@ -98,6 +98,15 @@ class PresentationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('4')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = $research->first()->except('description');
         // $research = except($research['description']);
             // dd($research);
@@ -117,7 +126,7 @@ class PresentationController extends Controller
         }
 
 
-        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value'));
+        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
     }
 
     /**
@@ -227,6 +236,15 @@ class PresentationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('4')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = array_merge($research->toArray(), $presentation->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 4)->get()->toArray();
 
@@ -246,7 +264,7 @@ class PresentationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
     }
 
     /**

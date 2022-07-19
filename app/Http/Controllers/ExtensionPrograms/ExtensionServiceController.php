@@ -99,12 +99,21 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
+        $dropdown_options = [];
+        foreach($extensionServiceFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments'));
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -286,6 +295,15 @@ class ExtensionServiceController extends Controller
             return view('inactive');
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
+        $dropdown_options = [];
+        foreach($extensionServiceFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -307,10 +325,10 @@ class ExtensionServiceController extends Controller
 
         if (ExtensionInvite::where('user_id', auth()->id())->where('ext_code', $extension_service->ext_code)->pluck('is_owner')->first() == '1'){
             $is_owner = 1;
-            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments'));
+            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options'));
         }
         $is_owner = 0;
-        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments'));
+        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options'));
     }
 
     /**

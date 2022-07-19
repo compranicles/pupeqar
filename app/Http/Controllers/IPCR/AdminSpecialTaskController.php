@@ -14,6 +14,7 @@ use App\Models\FormBuilder\IPCRField;
 use App\Models\Maintenance\Department;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AdminSpecialTaskDocument;
+use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
@@ -77,12 +78,21 @@ class AdminSpecialTaskController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($specialTaskFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
          // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
          $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments'));
+        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -194,6 +204,15 @@ class AdminSpecialTaskController extends Controller
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($specialTaskFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $values = $admin_special_task->toArray();
 
         $documents = AdminSpecialTaskDocument::where('special_task_id', $admin_special_task->id)->get()->toArray();
@@ -203,7 +222,7 @@ class AdminSpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'departments'));
+        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**

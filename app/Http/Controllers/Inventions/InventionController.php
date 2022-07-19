@@ -85,12 +85,21 @@ class InventionController extends Controller
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
+        $dropdown_options = [];
+        foreach($inventionFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('inventions.create', compact('inventionFields', 'colleges', 'departments'));
+        return view('inventions.create', compact('inventionFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -215,6 +224,15 @@ class InventionController extends Controller
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
+        $dropdown_options = [];
+        foreach($inventionFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $inventionDocuments = InventionDocument::where('invention_id', $invention_innovation_creative->id)->get()->toArray();
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -238,7 +256,7 @@ class InventionController extends Controller
         $value = $value->toArray();
         // dd($value);
 
-        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification', 'departments'));
+        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification', 'departments', 'dropdown_options'));
     }
 
     /**

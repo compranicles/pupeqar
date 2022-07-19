@@ -12,15 +12,16 @@ use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder\IPCRForm;
+use App\Services\DateContentService;
 use App\Models\FormBuilder\IPCRField;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\Storage;
 use App\Models\AttendanceFunctionDocument;
+use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
-use App\Services\DateContentService;
 
 class AttendanceFunctionController extends Controller
 {
@@ -95,6 +96,15 @@ class AttendanceFunctionController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($fields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
          // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
          $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
@@ -110,7 +120,7 @@ class AttendanceFunctionController extends Controller
 
         $classtype = $request->get('type');
 
-        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments'));
+        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -223,6 +233,15 @@ class AttendanceFunctionController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($fields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
          // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
          $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
@@ -243,7 +262,7 @@ class AttendanceFunctionController extends Controller
 
         $documents = AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->get()->toArray();
 
-        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function', 'departments'));
+        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function', 'departments', 'dropdown_options'));
     }
 
     /**

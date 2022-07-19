@@ -12,7 +12,7 @@
                         <form action="{{ route('research.code.save', $research->id) }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
-                            </div> 
+                            </div>
                             <hr>
                             @csrf
                             @if($notificationID != null)
@@ -28,7 +28,7 @@
                                 </div>
                             </div>
                         </form>
-                        
+
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <h5 id="textHome" style="color:maroon">Supporting Documents</h5>
@@ -51,7 +51,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -75,7 +75,7 @@
                                                         <a href="{{ route('document.display', $document['filename']) }}" data-lightbox="gallery" data-title="{{ $document['filename'] }}" target="_blank">
                                                             <img src="{{ route('document.display', $document['filename']) }}" class="card-img-top img-resize"/>
                                                         </a>
-                                                        
+
                                                     </div>
                                                 </div>
                                             @endif
@@ -111,31 +111,31 @@
             });
         </script>
         <script>
-            $('#classification').on('change', function () {
-                $('#classification').attr('disabled', true); 
-            });
-            $('#category').on('change', function () {
-                $('#category').attr('disabled', true); 
-            });
-            $('#agenda').on('change', function () {
-                $('#agenda').attr('disabled', true); 
-            });
-            $('#nature_of_involvement').on('change', function (){
+            // $('#classification').on('change', function () {
+                $('#classification').attr('disabled', true);
+            // });
+            // $('#category').on('change', function () {
+                $('#category').attr('disabled', true);
+            // });
+            // $('#agenda').on('change', function () {
+                $('#agenda').attr('disabled', true);
+            // });
+            // $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
-            });
-            $('#research_type').on('change', function () {
-                $('#research_type').attr('disabled', true); 
-            });
-            $('#funding_type').on('change', function () {
-                $('#funding_type').attr('disabled', true); 
-            });
-            $('#currency_select').on('change', function () {
-                $('#currency_select').attr('disabled', true); 
-            });
+            // });
+            // $('#research_type').on('change', function () {
+                $('#research_type').attr('disabled', true);
+            // });
+            // $('#funding_type').on('change', function () {
+                $('#funding_type').attr('disabled', true);
+            // });
+            // $('#currency_select').on('change', function () {
+                $('#currency_select').attr('disabled', true);
+            // });
             $('.document').remove();
-           
-            $('#title').attr('disabled', true); 
+
+            $('#title').attr('disabled', true);
             $('#keywords').attr('disabled', true);
             // $('#researchers').attr('readonly', true);
             $('#currency_select_funding_amount').attr('disabled', true);

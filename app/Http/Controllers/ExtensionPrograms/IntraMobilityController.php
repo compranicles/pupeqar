@@ -17,6 +17,7 @@ use App\Models\IntraMobilityDocument;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Http\Controllers\Maintenances\LockController;
@@ -85,6 +86,15 @@ class IntraMobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('8')");
 
+        $dropdown_options = [];
+        foreach($mobilityFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $colaccomp = 0;
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
@@ -113,7 +123,7 @@ class IntraMobilityController extends Controller
             $departments = Department::whereIn('college_id', $colleges)->get();
             $colaccomp = 0;
         }
-        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp'));
+        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options'));
     }
 
     /**
@@ -233,6 +243,15 @@ class IntraMobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('8')");
 
+        $dropdown_options = [];
+        foreach($mobilityFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
                 ->where('colleges.id', $intraMobility->college_id)
                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
@@ -261,7 +280,7 @@ class IntraMobilityController extends Controller
 
         $documents = IntraMobilityDocument::where('intra_mobility_id', $intraMobility->id)->get()->toArray();
 
-        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp'));
+        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options'));
     }
 
     /**

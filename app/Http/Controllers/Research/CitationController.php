@@ -24,6 +24,7 @@ use App\Models\{
     ResearchUtilization,
     TemporaryFile,
     FormBuilder\ResearchField,
+    FormBuilder\DropdownOption,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
 };
@@ -81,9 +82,19 @@ class CitationController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
+
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $research = collect($research);
         $research = $research->except(['description']);
-        return view('research.citation.create', compact('researchFields', 'research'));
+        return view('research.citation.create', compact('researchFields', 'research', 'dropdown_options'));
     }
 
     /**
@@ -200,6 +211,15 @@ class CitationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('5')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $researchDocuments = ResearchDocument::where('research_citation_id', $citation->id)->get()->toArray();
 
         $research= Research::where('research_code', $research->research_code)->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -210,7 +230,7 @@ class CitationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'dropdown_options'));
 
     }
 

@@ -18,6 +18,7 @@ use App\Models\{
     StudentAwardDocument,
     TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
 };
@@ -75,6 +76,15 @@ class StudentAwardController extends Controller
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
+        $dropdown_options = [];
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -82,7 +92,7 @@ class StudentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-awards.create', compact('studentFields', 'colleges'));
+        return view('academic-development.student-awards.create', compact('studentFields', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -190,6 +200,15 @@ class StudentAwardController extends Controller
 
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(3)");
 
+        $dropdown_options = [];
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
 
         $values = $student_award->toArray();
@@ -201,7 +220,7 @@ class StudentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                 ->select('colleges.*')->get();
 
-        return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values', 'colleges'));
+        return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**

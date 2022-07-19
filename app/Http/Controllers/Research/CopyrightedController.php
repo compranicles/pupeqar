@@ -23,6 +23,7 @@ use App\Models\{
     ResearchPublication,
     ResearchUtilization,
     TemporaryFile,
+    FormBuilder\DropdownOption,
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
@@ -91,13 +92,23 @@ class CopyrightedController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
+
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        return view('research.copyrighted.create', compact('researchFields', 'research', 'value'));
+        return view('research.copyrighted.create', compact('researchFields', 'research', 'value', 'dropdown_options'));
     }
 
     /**
@@ -197,10 +208,19 @@ class CopyrightedController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 7)->get()->toArray();
 
         $value = array_merge($research->toArray(), $copyrighted->toArray());
-        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments'));
+        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'dropdown_options'));
     }
 
     /**

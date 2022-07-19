@@ -20,6 +20,11 @@
                 @endswitch>
 
             <option value="" selected disabled>Choose...</option>
+            @isset($dropdown_options[$fieldInfo->name])
+                @foreach($dropdown_options[$fieldInfo->name] as $option)
+                    <option value="{{ $option->id }}" {{ (old($fieldInfo->name, $value )== $option->id) ? 'selected' : '' }}>{{ $option->name }}</option>
+                @endforeach
+            @endisset
 
         </select>
 
@@ -35,7 +40,7 @@
             <p>Please select your designation. <br>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
         </span>
         @endif
-        
+
         @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>
@@ -47,6 +52,7 @@
 
 @push('scripts')
     <script>
+        @if(!isset($dropdown_options[$fieldInfo->name]))
         setTimeout(function (){
 
             $.ajax('{{ route('dropdowns.options', $fieldInfo->dropdown_id) }}',   // request url
@@ -65,5 +71,7 @@
                 }
             });
         }, Math.floor(Math.random() * (2500 - 1) + 1));
+        @endif
+
     </script>
 @endpush

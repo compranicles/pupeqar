@@ -204,11 +204,11 @@
             });
         </script>
         <script>
+            $('#status option[value=28]').attr('disabled','disabled');
+            $('#status option[value=29]').attr('disabled','disabled');
+            $('#status option[value=30]').attr('disabled','disabled');
+            $('#status option[value=31]').attr('disabled','disabled');
             $('#status').on('change', function(){
-                $('#status option[value=28]').attr('disabled','disabled');
-                $('#status option[value=29]').attr('disabled','disabled');
-                $('#status option[value=30]').attr('disabled','disabled');
-                $('#status option[value=31]').attr('disabled','disabled');
                 if ($(this).val() == 26) {
                     $('#start_date').val("");
                     $('#start_date').attr('disabled', true);
@@ -234,10 +234,10 @@
             });
         </script>
         <script>
-            $('#nature_of_involvement').on('change', function (){
+            // $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
-            });
+            // });
         </script>
         <script>
              var report_category_id = 1;

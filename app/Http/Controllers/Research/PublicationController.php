@@ -96,6 +96,15 @@ class PublicationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
@@ -111,7 +120,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value'));
+        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
     }
 
     /**
@@ -220,6 +229,15 @@ class PublicationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = array_merge($research->toArray(), $publication->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 3)->get()->toArray();
 
@@ -238,7 +256,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
     }
 
     /**

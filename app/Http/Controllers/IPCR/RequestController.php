@@ -85,6 +85,15 @@ class RequestController extends Controller
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($requestFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -92,7 +101,7 @@ class RequestController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('ipcr.request.create', compact('requestFields', 'colleges'));
+        return view('ipcr.request.create', compact('requestFields', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -197,6 +206,15 @@ class RequestController extends Controller
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($requestFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $values = $request->toArray();
 
         $documents = RequestDocument::where('request_id', $request->id)->get()->toArray();
@@ -208,7 +226,7 @@ class RequestController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges'));
+        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**

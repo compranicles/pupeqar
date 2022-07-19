@@ -86,11 +86,20 @@ class SyllabusController extends Controller
 
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
+        $dropdown_options = [];
+        foreach($syllabusFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
-        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments'));
+        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments' , 'dropdown_options'));
     }
 
     /**
@@ -196,6 +205,15 @@ class SyllabusController extends Controller
 
         $syllabusFields = DB::select("CALL get_academic_development_fields_by_form_id(2)");
 
+        $dropdown_options = [];
+        foreach($syllabusFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -213,7 +231,7 @@ class SyllabusController extends Controller
         $value = collect($syllabu);
         $value = $value->toArray();
 
-        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment', 'departments'));
+        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options'));
     }
 
     /**
