@@ -305,7 +305,7 @@ class ResearchController extends Controller
         }
 
         $value = $research;
-        $value->toArray();
+        $value = $value->toArray();
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
