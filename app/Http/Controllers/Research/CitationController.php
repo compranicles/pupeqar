@@ -27,6 +27,8 @@ use App\Models\{
     FormBuilder\DropdownOption,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\Department,
+    Maintenance\College,
 };
 
 class CitationController extends Controller
@@ -181,6 +183,33 @@ class CitationController extends Controller
 
 
         $values = ResearchCitation::find($citation->id);
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         $values = array_merge($research->toArray(), $values->toArray());
         return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments'));

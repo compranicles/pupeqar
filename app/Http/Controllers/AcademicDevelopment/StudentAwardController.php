@@ -21,6 +21,7 @@ use App\Models\{
     FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 use App\Services\DateContentService;
 
@@ -173,6 +174,33 @@ class StudentAwardController extends Controller
         $documents = StudentAwardDocument::where('student_award_id', $student_award->id)->get()->toArray();
 
         $values = $student_award->toArray();
+
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         return view('academic-development.student-awards.show', compact('student_award', 'documents', 'values', 'studentFields'));
     }

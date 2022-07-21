@@ -180,6 +180,33 @@ class RequestController extends Controller
 
         $values = $request->toArray();
 
+        foreach($fields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
     return view('ipcr.request.show', compact('request', 'requestFields', 'documents', 'values'));
     }
 

@@ -270,6 +270,33 @@ class ExtensionServiceController extends Controller
 
         $extensionRole = ExtensionInvite::where('user_id', auth()->id())->where('extension_service_id', $extension_service->id )->pluck('is_owner')->first();
 
+        foreach($extensionServiceFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         // dd($extensionServiceFields);
         return view('extension-programs.extension-services.show', compact('extension_service', 'extensionServiceDocuments', 'values', 'extensionServiceFields', 'extensionRole'));
     }

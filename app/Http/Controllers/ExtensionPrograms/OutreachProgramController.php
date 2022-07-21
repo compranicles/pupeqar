@@ -23,6 +23,7 @@ use App\Models\{
     FormBuilder\ExtensionProgramForm,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 
 class OutreachProgramController extends Controller
@@ -168,6 +169,33 @@ class OutreachProgramController extends Controller
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
 
         $values = $outreach_program->toArray();
+
+        foreach($outreachFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         $documents = OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->get()->toArray();
 
