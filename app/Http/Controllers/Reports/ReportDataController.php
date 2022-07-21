@@ -163,14 +163,18 @@ class ReportDataController extends Controller
 
                     }
                 }
+
                 if($column->column == 'college_id'){
                     $data = DB::table('research')->where($column->table.'.id', $research_id)
                         ->join('colleges', 'colleges.id', $column->table.'.college_id')
+                        ->where($column->table.'.user_id', auth()->id())
                         ->pluck('colleges.name')->first();
+
                 }
                 if($column->column == 'department_id'){
                     $data = DB::table('research')->where($column->table.'.id', $research_id)
                         ->join('departments', 'departments.id', $column->table.'.department_id')
+                        ->where($column->table.'.user_id', auth()->id())
                         ->pluck('departments.name')->first();
                 }
                 if($column->column == 'funding_amount'){
