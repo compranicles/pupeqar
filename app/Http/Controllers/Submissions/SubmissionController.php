@@ -2589,17 +2589,17 @@ class SubmissionController extends Controller
         if($report_category_id >= 1 && $report_category_id <= 7){
             $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
             if($report_category_id == 2)
-                ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
             if($report_category_id == 3)
-                ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
             if($report_category_id == 4)
-                ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
             if($report_category_id == 5)
-                ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
             if($report_category_id == 6)
-                ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
             if($report_category_id == 7)
-                ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
+                $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
         }
         if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
@@ -2618,7 +2618,7 @@ class SubmissionController extends Controller
         $failedToSubmit = 0;
         $successToSubmit = 0;
         $report_values_array = [$research_code, $report_category_id, $accomplishment_id, $research_id]; // 0 => research_code , 1 => report_category, 2 => id, 3 => research_id
-        // dd($report_values_array);
+
         switch($report_values_array[1]){
             case 1: case 2: case 3: case 4: case 5: case 6: case 7:
                 if ($report_values_array[1] == 1) {
@@ -2626,7 +2626,7 @@ class SubmissionController extends Controller
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 else {
-                    $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
+                    $collegeAndDepartment = Research::select('college_id', 'department_id')->where('id', $report_values_array[3])->first();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
