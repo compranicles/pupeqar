@@ -21,6 +21,7 @@ use App\Models\{
     FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 use App\Services\DateContentService;
 
@@ -179,6 +180,33 @@ class StudentTrainingController extends Controller
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
 
         $values = $student_training->toArray();
+
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         return view('academic-development.student-training.show', compact('studentFields', 'student_training', 'documents', 'values'));
 

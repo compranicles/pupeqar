@@ -318,6 +318,33 @@ class ResearchController extends Controller
             if (empty($reportdata->getDocuments(1, $research->id)))
                 $submissionStatus[1][$research->id] = 2;
 
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $value[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $department;
+                }
+            }
+        }
+
         return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments',
              'colleges', 'collegeOfDepartment', 'exists',
              'submissionStatus'));

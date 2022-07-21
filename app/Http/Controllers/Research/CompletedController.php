@@ -24,6 +24,8 @@ use App\Models\{
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\College,
+    Maintenance\Department,
 };
 
 class CompletedController extends Controller
@@ -75,6 +77,33 @@ class CompletedController extends Controller
                 $submissionStatus[2][$value['id']] = 0;
             if (empty($reportdata->getDocuments(2, $value['id'])))
                 $submissionStatus[2][$value['id']] = 2;
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $value[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $department;
+                }
+            }
+        }
 
         return view('research.completed.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));

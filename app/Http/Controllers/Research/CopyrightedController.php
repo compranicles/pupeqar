@@ -27,6 +27,8 @@ use App\Models\{
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\College,
+    Maintenance\Department,
 };
 
 class CopyrightedController extends Controller
@@ -72,6 +74,33 @@ class CopyrightedController extends Controller
                 $submissionStatus[7][$research->id] = 0;
             if (empty($reportdata->getDocuments(7, $research->id)))
                 $submissionStatus[7][$research->id] = 2;
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
             'researchDocuments', 'submissionStatus'));
