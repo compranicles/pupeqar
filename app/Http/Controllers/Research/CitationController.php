@@ -184,6 +184,8 @@ class CitationController extends Controller
 
         $values = ResearchCitation::find($citation->id);
 
+        $values = array_merge($research->toArray(), $values->toArray());
+
         foreach($researchFields as $field){
             if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
@@ -210,8 +212,7 @@ class CitationController extends Controller
                 }
             }
         }
-
-        $values = array_merge($research->toArray(), $values->toArray());
+        
         return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }
 
