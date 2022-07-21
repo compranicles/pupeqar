@@ -3573,7 +3573,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Brief Description of Accomplishment',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'accomplishment_description',
             'is_active' => 1,
             'order' => 1,
@@ -3581,7 +3581,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Inclusive Date',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'from',
             'is_active' => 1,
             'order' => 1,
@@ -3589,7 +3589,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => '-',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'to',
             'is_active' => 1,
             'order' => 1,
@@ -3597,7 +3597,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Place',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'place',
             'is_active' => 1,
             'order' => 1,
@@ -3605,7 +3605,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Level',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'level',
             'is_active' => 1,
             'order' => 1,
@@ -3613,7 +3613,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'College/Branch/Campus/Office',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'college_id',
             'is_active' => 1,
             'order' => 1,
@@ -3621,7 +3621,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Department',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'department_id',
             'is_active' => 1,
             'order' => 1,
@@ -3629,7 +3629,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 39,
             'name' => 'Description of Supporting Documents',
-            'table' => 'other_accomplishments',
+            'table' => 'other_dept_accomplishments',
             'column' => 'description',
             'is_active' => 1,
             'order' => 1,

@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        
+
         Schema::disableForeignKeyConstraints();
         $this->call([
             // authentication
@@ -83,11 +83,11 @@ class DatabaseSeeder extends Seeder
             AcademicDevelopmentFormSeeder::class,
             IPCRFormSeeder::class,
             HRISFormSeeder::class,
-            
-            
+
+
             //FIELD Seeder
             FieldSeeder::class,
-            
+
             //Reports/submissions
             ReportTypeSeeder::class,
             ReportCategorySeeder::class,
@@ -95,7 +95,7 @@ class DatabaseSeeder extends Seeder
 
             //Document Description
             DocumentDescriptionSeeder::class,
-            
+
             //Generate
             GenerateTypeSeeder::class,
             GenerateTableSeeder::class,
@@ -106,7 +106,7 @@ class DatabaseSeeder extends Seeder
             GenerateColumn4Seeder::class,
         ]);
         // \App\Models\Report::truncate();
-      
+
         // \App\Models\Research::truncate();
         // \App\Models\Research::factory()->count(20)->create();
 

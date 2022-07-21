@@ -13,7 +13,7 @@ class ExtensionProgramFieldSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
+    {
         ExtensionProgramField::truncate();
 
         $this->call([
@@ -27,6 +27,7 @@ class ExtensionProgramFieldSeeder extends Seeder
             IntraMobilityFormSeeder::class,
             CommunityEngagementFormSeeder::class,
             OtherAccomplishmentFormSeeder::class,
+            OtherDeptAccomplishmentFormSeeder::class,
         ]);
     }
 }

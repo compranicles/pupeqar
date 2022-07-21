@@ -77,9 +77,9 @@ class OtherDeptAccomplishmentController extends Controller
     {
         $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $dropdown_options = [];
         foreach($otherAccomplishmentFields as $field){
@@ -121,7 +121,7 @@ class OtherDeptAccomplishmentController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -168,9 +168,9 @@ class OtherDeptAccomplishmentController extends Controller
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $documents = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
@@ -196,9 +196,9 @@ class OtherDeptAccomplishmentController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $dropdown_options = [];
         foreach($otherAccomplishmentFields as $field){
@@ -247,7 +247,7 @@ class OtherDeptAccomplishmentController extends Controller
         ]);
 
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -298,7 +298,7 @@ class OtherDeptAccomplishmentController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->delete();
         $otherDeptAccomplishment->delete();
@@ -310,7 +310,7 @@ class OtherDeptAccomplishmentController extends Controller
     public function removeDoc($filename){
         $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('filename', $filename)->delete();
 
