@@ -11,7 +11,7 @@
               <div>
                 <h3 class="font-weight-bold mr-2">Extension Program/Project/Activity</h3>
                 <div class="d-flex align-items-center mb-2">
-                    <a class="mr-auto back_link ml-2" href="{{ route('student-award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Program/Project/Activity</a>
+                    <a class="mr-auto back_link ml-2" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Program/Project/Activity</a>
                     @if ($extensionRole == '1')
                       <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="btn btn-primary btn-sm mr-3 ml-3">
                         Add Co-Extensionists

@@ -13,6 +13,7 @@ use App\Models\{
     ExpertServiceAcademicDocument,
     ExpertServiceConferenceDocument,
     ExpertServiceConsultantDocument,
+    ExtensionService,
     ExtensionServiceDocument,
     IntraMobilityDocument,
     InventionDocument,
@@ -340,7 +341,7 @@ class ReportDataController extends Controller
             $report_docs = ExpertServiceAcademicDocument::where('expert_service_academic_id', $id)->pluck('filename')->all();
         }
         elseif($report_category_id == 12){
-            $ext_code = ExtensionServiceDocument::where('extension_service_id', $id)->pluck('ext_code')->first();
+            $ext_code = ExtensionService::where('id', $id)->pluck('ext_code')->first();
             $report_docs = ExtensionServiceDocument::where('ext_code', $ext_code)->pluck('filename')->all();
         }
         elseif($report_category_id == 13){

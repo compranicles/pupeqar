@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 class OtherDeptAccomplishmentFormSeeder extends Seeder
 {
@@ -126,7 +127,7 @@ class OtherDeptAccomplishmentFormSeeder extends Seeder
             'name' => 'document',
             'placeholder' => null,
             'size' => 'col-md-12',
-            'field_type_id' => 11,
+            'field_type_id' => 10,
             'dropdown_id' => null, 
             'required' => 0,
             'visibility' => 1,

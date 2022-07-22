@@ -43,7 +43,7 @@
                                     <div class="col-md-6">
                                         <h6 style="color:maroon"><i class="far fa-file-alt mr-2"></i>Documents</h6>
                                         <div class="row">
-                                            @if (count($extensionServiceDocuments) > 0)
+                                            @if (!empty($extensionServiceDocuments))
                                                 @foreach ($extensionServiceDocuments as $document)
                                                     @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                         <div class="col-md-12 mb-3 documents-display" id="doc-{{ $document['id'] }}">
@@ -79,7 +79,7 @@
                                     <div class="col-md-6">
                                         <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
                                         <div class="row">
-                                            @if(count($extensionServiceDocuments) > 0)
+                                            @if(!empty($extensionServiceDocuments))
                                                 @foreach ($extensionServiceDocuments as $document)
                                                     @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                         <div class="col-md-6 mb-3 documents-display" id="doc-{{ $document['id'] }}">

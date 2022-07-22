@@ -14,7 +14,7 @@ class DropTypeToMobilitiesTable extends Migration
     public function up()
     {
         Schema::table('mobilities', function (Blueprint $table) {
-            $table->dropColumn('type');
+            // $table->dropColumn('type');
             
         });
     }

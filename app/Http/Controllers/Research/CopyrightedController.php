@@ -45,10 +45,7 @@ class CopyrightedController extends Controller
     {
         $this->authorize('viewAny', ResearchCopyright::class);
 
-        if ($research->nature_of_involvement == 12 || $research->nature_of_involvement == 13) {
-            return redirect()->route('research.show', $research->id)->with('cannot_access', 'Not yet added by the lead researcher.');
-        }
-
+        
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();
@@ -58,6 +55,9 @@ class CopyrightedController extends Controller
 
 
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
+        if (($research->nature_of_involvement == 12 || $research->nature_of_involvement == 13) && $values == null) {
+            return redirect()->route('research.show', $research->id)->with('cannot_access', 'Not yet added by the lead researcher.');
+        }
         if($values == null){
             return redirect()->route('research.copyrighted.create', $research->id);
         }
@@ -65,12 +65,12 @@ class CopyrightedController extends Controller
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 7))
-                $submissionStatus[7][$research->id] = 1;
+            if (LockController::isLocked($values['id'], 7))
+                $submissionStatus[7][$values['id']] = 1;
             else
-                $submissionStatus[7][$research->id] = 0;
-            if (empty($reportdata->getDocuments(7, $research->id)))
-                $submissionStatus[7][$research->id] = 2;
+                $submissionStatus[7][$values['id']] = 0;
+            if (empty($reportdata->getDocuments(7, $values['id'])))
+                $submissionStatus[7][$values['id']] = 2;
 
         return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
             'researchDocuments', 'submissionStatus'));

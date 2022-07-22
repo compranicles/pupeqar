@@ -220,14 +220,16 @@ class IntraMobilityController extends Controller
         if (auth()->id() !== $intraMobility->user_id)
             abort(403);
 
-        if($intraMobility->classification_of_person == '298')
+        if($intraMobility->classification_of_person == '298') {
             if(LockController::isLocked($intraMobility->id, 36)){
                 return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
             }
-        else
+        }
+        else {
             if(LockController::isLocked($intraMobility->id, 34)){
                 return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
             }
+        }
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');

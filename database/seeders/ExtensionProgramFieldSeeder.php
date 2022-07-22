@@ -27,6 +27,7 @@ class ExtensionProgramFieldSeeder extends Seeder
             IntraMobilityFormSeeder::class,
             CommunityEngagementFormSeeder::class,
             OtherAccomplishmentFormSeeder::class,
+            OtherDeptAccomplishmentFormSeeder::class,
         ]);
     }
 }

@@ -46,15 +46,14 @@
             var count = 0;
             var countALL = 0;
             setTimeout(function (){
-            $('.notification-content').remove();
-            var api = '{{ url("/get-notifications") }}';
-
-            $.get(api, function (data){
-                var countColumns = 0;
-
-                var countUnread = 0;
-                data.forEach(function(item){
-
+                var api = '{{ url("/get-notifications") }}';
+                
+                $.get(api, function (data){
+                    var countColumns = 0;
+                    
+                    var countUnread = 0;
+                    $('.notification-content').remove();
+                    data.forEach(function(item){
 
                     countColumns ++;
                     $('#notification_nav_table').append('<tr role="button" id="notification-'+countColumns+'" class="d-flex notification-content"></tr>');

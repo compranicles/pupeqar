@@ -76,9 +76,9 @@ class OtherDeptAccomplishmentController extends Controller
     {
         $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
@@ -111,7 +111,7 @@ class OtherDeptAccomplishmentController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -158,9 +158,9 @@ class OtherDeptAccomplishmentController extends Controller
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $documents = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
@@ -186,9 +186,9 @@ class OtherDeptAccomplishmentController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+        $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('11')");
 
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
                 ->where('colleges.id', $otherDeptAccomplishment->college_id)
@@ -228,7 +228,7 @@ class OtherDeptAccomplishmentController extends Controller
         ]);
 
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -279,7 +279,7 @@ class OtherDeptAccomplishmentController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->delete();
         $otherDeptAccomplishment->delete();
@@ -291,7 +291,7 @@ class OtherDeptAccomplishmentController extends Controller
     public function removeDoc($filename){
         $this->authorize('manage', OtherDeptAccomplishment::class);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('filename', $filename)->delete();
 

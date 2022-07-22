@@ -220,14 +220,16 @@ class MobilityController extends Controller
         if (auth()->id() !== $mobility->user_id)
             abort(403);
 
-        if($mobility->classification_of_person == '298')
+        if($mobility->classification_of_person == '298') {
             if(LockController::isLocked($mobility->id, 35)){
                 return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
             }
-        else
+        }
+        else {
             if(LockController::isLocked($mobility->id, 14)){
                 return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
             }
+        }
 
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)

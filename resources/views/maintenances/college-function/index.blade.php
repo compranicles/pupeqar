@@ -1,13 +1,8 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('College Functions Manager') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
+                <h3 class="font-weight-bold mr-2">College Functions</h3>
                 <p>
                     <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to Attendance in University and College Functions</a>
                 </p>

@@ -39,7 +39,6 @@
                                         <th>College/Branch/Campus/Office</th>
                                         <th>Quarter</th>
                                         <th>Year</th>
-                                        <th>Date Added</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -49,21 +48,24 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >{{ $row->accomplishment_description }}</td>
-                                        <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >{{ $row->from }}</td>
-                                        <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >{{ $row->to }}</td>
+                                        <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
+                                        <?php
+                                            $from = strtotime( $row->from );
+                                            $from = date( 'F d, Y', $from );
+                                            ?>
+                                            {{ $from }}</td>
+                                        <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
+                                        <?php
+                                            $to = strtotime( $row->to );
+                                            $to = date( 'F d, Y', $to );
+                                            ?>
+                                            {{ $to }}</td>
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >{{ $row->college_name }}</td>
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
                                             {{ $row->report_year }}
-                                        </td>
-                                        <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
-                                            <?php
-                                            $created_at = strtotime( $row->created_at );
-                                            $created_at = date( 'M d, Y h:i A', $created_at );
-                                            ?>
-                                            {{ $created_at }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('admin-special-tasks.show', $row->id) }}' " >
                                         <?php
