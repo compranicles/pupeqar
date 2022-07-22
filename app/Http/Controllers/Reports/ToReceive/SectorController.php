@@ -37,16 +37,6 @@ class SectorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as dept_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            ->join('colleges', 'reports.college_id', 'colleges.id')
-            ->join('departments', 'reports.department_id', 'departments.id')
-            ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-            ->join('users', 'reports.user_id', 'users.id')
-            ->where('chairperson_approval', 1)->where('dean_approval', 1)
-            ->where('sector_approval', null)
-            ->orderBy('reports.updated_at', 'DESC')
-            ->get();
-
         //role and department/ college id
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
         $departments_nav = [];
@@ -78,14 +68,39 @@ class SectorController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
+        $reportsToReview = collect();
+
+        foreach ($sectors as $row){
+            $tempReports = Report::select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+                ->join('colleges', 'reports.college_id', 'colleges.id')
+                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                ->join('users', 'reports.user_id', 'users.id')
+                ->orderBy('reports.updated_at', 'DESC')
+                ->where('reports.sector_id', $row->sector_id)->where('dean_approval', 1)->where('sector_approval', null)->get();
+            $reportsToReview = $reportsToReview->concat($tempReports);
+        }
+
+        $college_names = [];
+        $department_names = [];
         foreach($reportsToReview as $row){
+            $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
+            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
             $row->report_details = json_decode($row->report_details, false);
+
+            if($temp_college_name == null)
+                $college_names[$row->id] = '-';
+            else
+                $college_names[$row->id] = $temp_college_name;
+            if($temp_department_name == null)
+                $department_names[$row->id] = '-';
+            else
+                $department_names[$row->id] = $temp_department_name;
         }
 
         $colleges = College::select('colleges.id', 'colleges.name')
                             ->orderBy('colleges.name')
                             ->get();
-        return view('reports.to-receive.sector.index', compact('reportsToReview', 'roles', 'departments_nav', 'colleges_nav', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'));
+        return view('reports.to-receive.sector.index', compact('reportsToReview', 'roles', 'departments_nav', 'colleges_nav', 'colleges', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

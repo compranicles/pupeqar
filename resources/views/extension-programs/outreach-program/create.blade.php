@@ -1,4 +1,6 @@
 <x-app-layout>
+@section('title', 'Community Relation & Outreach Program |')
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">

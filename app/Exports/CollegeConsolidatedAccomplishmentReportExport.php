@@ -77,7 +77,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $source_type = "college";
                 $college_id = $id;
                 $data = College::where('id', $college_id)->first();
-                $table_format = GenerateTable::whereIn('type_id', [2, 4])->get();
+                $table_format = GenerateTable::where('type_id', 2)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")
@@ -115,7 +115,7 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                 $source_type = "college";
                 $college_id = $id;
                 $data = College::where('id', $college_id)->first();
-                $table_format = GenerateTable::whereIn('type_id', [1, 4])->get();
+                $table_format = GenerateTable::where('type_id', 1)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")

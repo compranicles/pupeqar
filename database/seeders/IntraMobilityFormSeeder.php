@@ -108,7 +108,7 @@ class IntraMobilityFormSeeder extends Seeder
         ]);
         ExtensionProgramField::insert([
             'extension_program_form_id' => 8,
-            'label' => 'Description of Inter-Country Mobility',
+            'label' => 'Description of Intra-Country Mobility',
             'name' => 'mobility_description',
             'placeholder' => null,
             'size' => 'col-md-8',

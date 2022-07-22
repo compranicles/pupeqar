@@ -73,37 +73,6 @@
             };
         },
     });
-    $("#name_of_adoptor").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
- 
-    $("#journal_publisher").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
-    $("#editor").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
 
 </script>
 <!-- For people names separated by ('/') -->

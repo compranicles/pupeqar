@@ -32,12 +32,12 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
 
         if($this->type == "academic") {
             //get the table names
-            $table_format = GenerateTable::whereIn('type_id', [2, 4])->get();
-            $employee_type = 1; //Faculty
+            $table_format = GenerateTable::where('type_id', 2)->get();
+            $employee_type = 1;
         }
         elseif ($this->type == 'admin') {
-            $table_format = GenerateTable::whereIn('type_id', [1, 4])->get();
-            $employee_type = 3; //Admin
+            $table_format = GenerateTable::where('type_id', 1)->get();
+            $employee_type = 3;
         }
 
         //get the table columns/headers

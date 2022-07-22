@@ -81,6 +81,8 @@ class ExtensionServiceController extends Controller
                 $submissionStatus[12][$extension->id] = 2;
         }
 
+        // dd($reportdata->getDocuments(12, $extension->id));
+
         return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites', 'submissionStatus'));
     }
 
@@ -507,7 +509,16 @@ class ExtensionServiceController extends Controller
 
         $is_owner = 0;
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments'));
+
+        $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get();
+        if ($extension_service->department_id != null) {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$extension_service->department_id.")");
+        }
+        else {
+            $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
+        }
+
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments'));
     }
 
 

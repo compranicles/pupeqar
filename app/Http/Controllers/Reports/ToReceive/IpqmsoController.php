@@ -15,6 +15,7 @@ use App\Models\{
     SectorHead,
     User,
     Authentication\UserRole,
+    Maintenance\College,
     Maintenance\Department,
     Maintenance\ReportCategory,
 };
@@ -36,12 +37,10 @@ class IpqmsoController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
-            ->join('departments', 'reports.department_id', 'departments.id')
+        $reportsToReview = Report::select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
             ->join('colleges', 'reports.college_id', 'colleges.id')
             ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
             ->join('users', 'reports.user_id', 'users.id')
-            ->where('chairperson_approval', 1)->where('dean_approval', 1)
             ->where('sector_approval', 1)->where('ipqmso_approval', null)
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
@@ -77,11 +76,24 @@ class IpqmsoController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
 
+        $college_names = [];
+        $department_names = [];
         foreach($reportsToReview as $row){
+            $temp_college_name = College::select('name')->where('id', $row->college_id)->first();
+            $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
             $row->report_details = json_decode($row->report_details, false);
+
+            if($temp_college_name == null)
+                $college_names[$row->id] = '-';
+            else
+                $college_names[$row->id] = $temp_college_name;
+            if($temp_department_name == null)
+                $department_names[$row->id] = '-';
+            else
+                $department_names[$row->id] = $temp_department_name;
         }
 
-        return view('reports.to-receive.ipqmso.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'));
+        return view('reports.to-receive.ipqmso.index', compact('reportsToReview', 'roles', 'departments', 'colleges', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension'));
     }
 
     /**

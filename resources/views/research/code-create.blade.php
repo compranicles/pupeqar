@@ -111,33 +111,19 @@
             });
         </script>
         <script>
-            // $('#classification').on('change', function () {
-                $('#classification').attr('disabled', true);
-            // });
-            // $('#category').on('change', function () {
-                $('#category').attr('disabled', true);
-            // });
-            // $('#agenda').on('change', function () {
-                $('#agenda').attr('disabled', true);
-            // });
-            // $('#nature_of_involvement').on('change', function (){
+            $('#nature_of_involvement').on('change', function (){
                 $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
-            // });
-            // $('#research_type').on('change', function () {
-                $('#research_type').attr('disabled', true);
-            // });
-            // $('#funding_type').on('change', function () {
-                $('#funding_type').attr('disabled', true);
-            // });
-            // $('#currency_select').on('change', function () {
-                $('#currency_select').attr('disabled', true);
-            // });
+            });
             $('.document').remove();
-
-            $('#title').attr('disabled', true);
+           
+            $('#classification').attr('disabled', true); 
+            $('#agenda').attr('disabled', true); 
+            $('#research_type').attr('disabled', true); 
+            $('#funding_type').attr('disabled', true); 
+            $('#category').attr('disabled', true); 
+            $('#title').attr('disabled', true); 
             $('#keywords').attr('disabled', true);
-            // $('#researchers').attr('readonly', true);
             $('#currency_select_funding_amount').attr('disabled', true);
             $('#funding_amount').attr('disabled', true);
             $('#funding_agency').attr('disabled', true);

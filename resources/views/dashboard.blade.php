@@ -226,11 +226,11 @@
         });
 
         function getLog(){
-            $('.activity-log-content').remove();
+            
 
             $.get('{{ url("/get-dashboard-list") }}', function (data){
                 var countColumns = 0;
-
+                $('.activity-log-content').remove();
                 if (data.length == 0) {
                     $('#no-data-message-admin').text('No recent logs to show.');
                 } else
@@ -247,11 +247,9 @@
             });
         }
         function getLogInd(){
-            $('.activity-log-indi-content').remove();
-
             $.get('{{ url("/get-dashboard-list-indi") }}', function (data){
                 var countColumns = 0;
-
+                $('.activity-log-indi-content').remove();
                 if (data.length == 0) {
                     $('#no-data-message-indi').text('No recent activities to show.');
                 } else

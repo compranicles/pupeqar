@@ -2900,6 +2900,7 @@ class SubmissionController extends Controller
                 $reportValues = collect($report_controller->getTableDataPerColumnCategory($report_values_array[1], $report_values_array[2]));
                 $report_documents = $report_controller->getDocuments($report_values_array[1], $report_values_array[2]);
                 $report_details = array_combine($reportColumns->pluck('column')->toArray(), $reportValues->toArray());
+                // dd($report_details);
                 if(in_array(5, $roles) && $collegeAndDepartment->department_id != 0){
 
                     Report::where('report_reference_id', $report_values_array[2])
@@ -2927,11 +2928,7 @@ class SubmissionController extends Controller
 
                     $successToSubmit++;
                     return 1;
-                } else {
-                    return 0;
-                }
-
-                if(in_array(6, $roles) && $collegeAndDepartment->department_id == 0){
+                }else if(in_array(6, $roles) && $collegeAndDepartment->department_id == 0){
 
                     Report::where('report_reference_id', $report_values_array[2])
                         ->where('report_code', $report_values_array[0])

@@ -8,7 +8,7 @@
                     <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Programs/Projects/Activities</a>
                 </div>
                 <div class="alert alert-info" role="alert">
-                    Add your extension partner/s in this extension to share them this info, after you save this extension. Your documents will <strong>not</strong> be shared.
+                    Add your extension partner/s in this extension to share them this info, after you save this extension.
                 </div>
                 <div class="card">
                     <div class="card-body">

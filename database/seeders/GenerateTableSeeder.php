@@ -129,7 +129,7 @@ class GenerateTableSeeder extends Seeder
             'name' => 'IV. REQUESTS AND QUERIES ACTED UPON',
             'is_table' => 1,
             'type_id' => 1,
-            'is_individual' => 0,
+            'is_individual' => 1,
             'report_category_id' => 17,
             'footers' => json_encode([
                 '* Simple, Complex, Highly Technical'

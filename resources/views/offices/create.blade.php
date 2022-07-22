@@ -1,14 +1,8 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add College/Branch/Campus/Office') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h3>Add College/Branch/Campus/Office You are Reporting With</h3>
+                <h3>Add College/Branch/ Campus/Office You are Reporting With</h3>
                 <p>
                     <a class="back_link" href="{{ session('url') ? url(session('url')) : route('account') }}"><i class="bi bi-chevron-double-left"></i>Back to my account.</a>
                 </p>

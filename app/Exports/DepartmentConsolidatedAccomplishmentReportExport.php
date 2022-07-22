@@ -59,7 +59,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 $source_type = "department";
                 $department_id = $id;
                 $data = Department::where('id', $department_id)->first();
-                $table_format = GenerateTable::whereIn('type_id', [2, 3])->get();
+                $table_format = GenerateTable::where('type_id', 2)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")
@@ -94,7 +94,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 $source_type = "department";
                 $department_id = $id;
                 $data = Department::where('id', $department_id)->first();
-                $table_format = GenerateTable::whereIn('type_id', [1, 3])->get();
+                $table_format = GenerateTable::where('type_id', 1)->get();
                 $table_columns = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0")

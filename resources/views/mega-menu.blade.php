@@ -18,7 +18,7 @@
                 @endcan
                 {{-- For College and Departments --}}
                 @can('viewAny', \App\Models\CollegeDepartmentAward::class)
-                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">&#8226; Awards and Recognition Received by the College/Department</a></li>
+                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">Awards and Recognition Received by the College/Department</a></li>
                 @endcan
                 @can('viewAny', \App\Models\ViableProject::class)
                 <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }}" href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
@@ -95,7 +95,7 @@
                 @endcan
                 @can('manage', \App\Models\AdminSpecialTask::class)
                 @admin
-                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">&#8226; Admin Special Tasks</a></li>
+                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}"> Admin Special Tasks</a></li>
                 @endadmin
                 @endcan
                 @admin
