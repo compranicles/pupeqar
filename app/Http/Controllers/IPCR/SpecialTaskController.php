@@ -105,12 +105,21 @@ class SpecialTaskController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($specialTaskFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
          // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
          $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments'));
+        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -208,6 +217,33 @@ class SpecialTaskController extends Controller
 
         $values = $special_task->toArray();
 
+        foreach($specialTaskFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('ipcr.special-tasks.show', compact('special_task', 'specialTaskFields', 'documents', 'values', 'roles'));
     }
 
@@ -235,6 +271,15 @@ class SpecialTaskController extends Controller
                         ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
                         ->orderBy('i_p_c_r_fields.order')->get();
 
+        $dropdown_options = [];
+        foreach($specialTaskFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $values = $special_task->toArray();
 
         $documents = SpecialTaskDocument::where('special_task_id', $special_task->id)->get()->toArray();
@@ -244,7 +289,7 @@ class SpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments'));
+        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -271,7 +316,7 @@ class SpecialTaskController extends Controller
 
         $target_date = (new DateContentService())->checkDateContent($request, "target_date");
         $actual_date = (new DateContentService())->checkDateContent($request, "actual_date");
-        
+
         $request->merge([
             'target_date' => $target_date,
             'actual_date' => $actual_date,

@@ -79,12 +79,21 @@ class PartnershipController extends Controller
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
+        $dropdown_options = [];
+        foreach($partnershipFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges' , 'departments'));
+        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges' , 'departments', 'dropdown_options'));
     }
 
     /**
@@ -166,6 +175,33 @@ class PartnershipController extends Controller
 
         $values = $partnership->toArray();
 
+        foreach($partnershipFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('extension-programs.partnership.show', compact('partnership', 'partnershipFields', 'documents', 'values'));
     }
 
@@ -190,6 +226,15 @@ class PartnershipController extends Controller
             return view('inactive');
         $partnershipFields = DB::select("CALL get_extension_program_fields_by_form_id('5')");
 
+        $dropdown_options = [];
+        foreach($partnershipFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
                 ->where('colleges.id', $partnership->college_id)
                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
@@ -204,7 +249,7 @@ class PartnershipController extends Controller
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
 
-        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments'));
+        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options'));
     }
 
     /**

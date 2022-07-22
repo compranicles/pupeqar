@@ -78,12 +78,21 @@ class ConsultantController extends Controller
             return view('inactive');
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
+        $dropdown_options = [];
+        foreach($expertServiceConsultantFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges', 'departments'));
+        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -172,6 +181,33 @@ class ConsultantController extends Controller
 
         $values = $expert_service_as_consultant->toArray();
 
+        foreach($expertServiceConsultantFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('extension-programs.expert-services.consultant.show', compact('expertServiceConsultantFields','expert_service_as_consultant', 'documents', 'values'));
     }
 
@@ -197,6 +233,15 @@ class ConsultantController extends Controller
         // dd($expert_service_as_consultant);
         $expertServiceConsultantFields = DB::select("CALL get_extension_program_fields_by_form_id('1')");
 
+        $dropdown_options = [];
+        foreach($expertServiceConsultantFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $expertServiceConsultantDocuments = ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->get()->toArray();
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -209,7 +254,7 @@ class ConsultantController extends Controller
         $value = collect($expert_service_as_consultant);
         $value = $value->toArray();
 
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value', 'departments'));
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value', 'departments', 'dropdown_options'));
     }
 
     /**

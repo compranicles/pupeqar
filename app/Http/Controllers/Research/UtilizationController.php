@@ -25,6 +25,8 @@ use App\Models\{
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\Department,
+    Maintenance\College,
 };
 
 class UtilizationController extends Controller
@@ -170,6 +172,33 @@ class UtilizationController extends Controller
         $values = ResearchUtilization::find($utilization->id);
 
         $values = array_merge($research->toArray(), $values->toArray());
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
     }

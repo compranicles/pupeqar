@@ -13,7 +13,7 @@ class ExtensionProgramFieldSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
+    {
         ExtensionProgramField::truncate();
 
         $this->call([

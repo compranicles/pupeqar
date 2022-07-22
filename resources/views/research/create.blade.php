@@ -12,7 +12,7 @@
                         <form action="{{ route('research.store') }}" method="post" id="create_research" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
-                            </div> 
+                            </div>
                             <hr>
                             @csrf
                             @include('form', ['formFields' => $researchFields, 'colleges' => $colleges])
@@ -54,11 +54,11 @@
             });
         </script>
         <script>
-            $('#nature_of_involvement').on('change', function (){
+            // $('#nature_of_involvement').on('load', function (){
                 $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
                 $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
                 $('#nature_of_involvement').removeClass('form-validation');
-            });
+            // });
         </script>
         <script>
             $('#funding_type').on('change', function (){
@@ -82,12 +82,13 @@
             });
         </script>
         <script>
+            $('#status option[value=28]').attr('disabled','disabled');
+            $('#status option[value=29]').attr('disabled','disabled');
+            $('#status option[value=30]').attr('disabled','disabled');
+            $('#status option[value=31]').attr('disabled','disabled');
+            $('#status option[value=32]').attr('disabled','disabled'); //Deferred
             $('#status').on('change', function(){
-                $('#status option[value=28]').attr('disabled','disabled');
-                $('#status option[value=29]').attr('disabled','disabled');
-                $('#status option[value=30]').attr('disabled','disabled');
-                $('#status option[value=31]').attr('disabled','disabled');
-                $('#status option[value=32]').attr('disabled','disabled'); //Deferred
+
                 if ($(this).val() == 26) { //New Commitment
                     $('#start_date').val("");
                     $('#start_date').attr('disabled', true);

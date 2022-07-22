@@ -17,6 +17,7 @@ use App\Services\DateContentService;
 use App\Models\Maintenance\Department;
 use App\Models\Authentication\UserRole;
 use Illuminate\Support\Facades\Storage;
+use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Http\Controllers\Maintenances\LockController;
@@ -84,6 +85,15 @@ class MobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
+        $dropdown_options = [];
+        foreach($mobilityFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $colaccomp = 0;
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
@@ -113,7 +123,7 @@ class MobilityController extends Controller
             $colaccomp = 0;
         }
 
-        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp'));
+        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options'));
     }
 
     /**
@@ -204,6 +214,33 @@ class MobilityController extends Controller
 
         $values = $mobility->toArray();
 
+        foreach($mobilityFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('extension-programs.mobility.show', compact('mobility', 'mobilityFields', 'documents', 'values'));
     }
 
@@ -236,6 +273,15 @@ class MobilityController extends Controller
             return view('inactive');
         $mobilityFields = DB::select("CALL get_extension_program_fields_by_form_id('6')");
 
+        $dropdown_options = [];
+        foreach($mobilityFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
                 ->where('colleges.id', $mobility->college_id)
                 ->select('colleges.name AS college_name', 'departments.name AS department_name')
@@ -264,7 +310,7 @@ class MobilityController extends Controller
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
 
-        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp'));
+        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options'));
     }
 
     /**

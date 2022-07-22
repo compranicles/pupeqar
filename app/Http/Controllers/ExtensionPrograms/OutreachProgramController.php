@@ -19,9 +19,11 @@ use App\Models\{
     OutreachProgram,
     OutreachProgramDocument,
     TemporaryFile,
+    FormBuilder\DropdownOption,
     FormBuilder\ExtensionProgramForm,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 
 class OutreachProgramController extends Controller
@@ -52,12 +54,12 @@ class OutreachProgramController extends Controller
         foreach ($outreach_programs as $outreach_program) {
             if (LockController::isLocked($outreach_program->id, 22))
                 $submissionStatus[22][$outreach_program->id] = 1;
-            else 
+            else
                 $submissionStatus[22][$outreach_program->id] = 0;
             if (empty($reportdata->getDocuments(22, $outreach_program->id)))
                 $submissionStatus[22][$outreach_program->id] = 2;
         }
-        
+
         return view('extension-programs.outreach-program.index', compact('outreach_programs', 'currentQuarterYear',
             'submissionStatus'));
     }
@@ -75,6 +77,15 @@ class OutreachProgramController extends Controller
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
 
+        $dropdown_options = [];
+        foreach($outreachFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -82,7 +93,7 @@ class OutreachProgramController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.outreach-program.create', compact('outreachFields', 'colleges'));
+        return view('extension-programs.outreach-program.create', compact('outreachFields', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -111,9 +122,9 @@ class OutreachProgramController extends Controller
 
         $outreach = OutreachProgram::create($input);
         $outreach->update(['user_id' => auth()->id()]);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -159,6 +170,33 @@ class OutreachProgramController extends Controller
 
         $values = $outreach_program->toArray();
 
+        foreach($outreachFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         $documents = OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->get()->toArray();
 
         return view('extension-programs.outreach-program.show', compact('outreach_program', 'outreachFields', 'documents', 'values'));
@@ -176,7 +214,7 @@ class OutreachProgramController extends Controller
 
         if (auth()->id() !== $outreach_program->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -184,6 +222,15 @@ class OutreachProgramController extends Controller
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         $outreachFields = DB::select("CALL get_extension_program_fields_by_form_id('7')");
+
+        $dropdown_options = [];
+        foreach($outreachFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
 
         $values = $outreach_program->toArray();
 
@@ -196,7 +243,7 @@ class OutreachProgramController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values', 'colleges'));
+        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -214,7 +261,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
 
         $date = date("Y-m-d", strtotime($request->input('date')));
-        
+
         $request->merge([
             'date' => $date,
         ]);
@@ -224,9 +271,9 @@ class OutreachProgramController extends Controller
         $outreach_program->update(['description' => '-clear']);
 
         $outreach_program->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -267,7 +314,7 @@ class OutreachProgramController extends Controller
         if(LockController::isLocked($outreach_program->id, 22)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
-        
+
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();

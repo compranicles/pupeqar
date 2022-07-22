@@ -77,12 +77,21 @@ class AcademicController extends Controller
             return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
+        $dropdown_options = [];
+        foreach($expertServiceAcademicFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges', 'departments'));
+        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -170,6 +179,32 @@ class AcademicController extends Controller
 
         $values = $expert_service_in_academic->toArray();
 
+        foreach($expertServiceAcademicFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
 
         return view('extension-programs.expert-services.academic.show', compact('expertServiceAcademicFields', 'expert_service_in_academic', 'documents', 'values'));
     }
@@ -195,6 +230,15 @@ class AcademicController extends Controller
             return view('inactive');
         $expertServiceAcademicFields = DB::select("CALL get_extension_program_fields_by_form_id(3)");
 
+        $dropdown_options = [];
+        foreach($expertServiceAcademicFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -215,7 +259,7 @@ class AcademicController extends Controller
         $value = $value->toArray();
 
         return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments',
-            'colleges', 'collegeOfDepartment', 'departments'));
+            'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options'));
     }
 
     /**

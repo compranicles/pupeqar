@@ -18,8 +18,10 @@ use App\Models\{
     ViableProject,
     ViableProjectDocument,
     FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 use App\Services\DateContentService;
 
@@ -47,13 +49,13 @@ class ViableProjectController extends Controller
                             ->orderBy('viable_projects.updated_at', 'desc')
                             ->select('viable_projects.*', 'colleges.name as college_name')
                             ->get();
-                            
+
         $submissionStatus = [];
         $reportdata = new ReportDataController;
         foreach ($viable_projects as $viable_project) {
             if (LockController::isLocked($viable_project->id, 20))
                 $submissionStatus[20][$viable_project->id] = 1;
-            else 
+            else
                 $submissionStatus[20][$viable_project->id] = 0;
             if (empty($reportdata->getDocuments(20, $viable_project->id)))
                 $submissionStatus[20][$viable_project->id] = 2;
@@ -76,6 +78,15 @@ class ViableProjectController extends Controller
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
+        $dropdown_options = [];
+        foreach($projectFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -83,7 +94,7 @@ class ViableProjectController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.viable-project.create', compact('projectFields', 'colleges'));
+        return view('academic-development.viable-project.create', compact('projectFields', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -126,13 +137,13 @@ class ViableProjectController extends Controller
 
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
-        
+
         $return_rate = ($request->input('rate_of_return') / 100 );
-        
+
         $viable_project->update(['rate_of_return' => $return_rate]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -182,6 +193,33 @@ class ViableProjectController extends Controller
 
         $values = $viable_project->toArray();
 
+        foreach($projectFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('academic-development.viable-project.show', compact('projectFields', 'viable_project', 'documents', 'values'));
     }
 
@@ -206,6 +244,15 @@ class ViableProjectController extends Controller
             return view('inactive');
         $projectFields = DB::select("CALL get_academic_development_fields_by_form_id(5)");
 
+        $dropdown_options = [];
+        foreach($projectFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
         $viable_project->rate_of_return = $viable_project->rate_of_return * 100;
@@ -218,7 +265,7 @@ class ViableProjectController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values', 'colleges'));
+        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -250,7 +297,7 @@ class ViableProjectController extends Controller
             'cost' => $value2,
             'start_date' => $start_date,
         ]);
-        
+
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
@@ -258,9 +305,9 @@ class ViableProjectController extends Controller
         $viable_project->update(['description' => '-clear']);
 
         $viable_project->update($input);
-        
+
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();

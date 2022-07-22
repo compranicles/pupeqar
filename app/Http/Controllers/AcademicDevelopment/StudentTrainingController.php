@@ -18,8 +18,10 @@ use App\Models\{
     StudentTrainingDocument,
     TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department,
 };
 use App\Services\DateContentService;
 
@@ -75,6 +77,15 @@ class StudentTrainingController extends Controller
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
+        $dropdown_options = [];
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -82,7 +93,7 @@ class StudentTrainingController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-training.create', compact('studentFields', 'colleges'));
+        return view('academic-development.student-training.create', compact('studentFields', 'colleges', 'dropdown_options'));
     }
 
     /**
@@ -170,6 +181,33 @@ class StudentTrainingController extends Controller
 
         $values = $student_training->toArray();
 
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('academic-development.student-training.show', compact('studentFields', 'student_training', 'documents', 'values'));
 
     }
@@ -196,6 +234,15 @@ class StudentTrainingController extends Controller
             return view('inactive');
         $studentFields = DB::select("CALL get_academic_development_fields_by_form_id(4)");
 
+        $dropdown_options = [];
+        foreach($studentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $documents = StudentTrainingDocument::where('student_training_id', $student_training->id)->get()->toArray();
 
         $values = $student_training->toArray();
@@ -207,7 +254,7 @@ class StudentTrainingController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values', 'colleges'));
+        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**

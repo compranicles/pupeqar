@@ -27,6 +27,8 @@ use App\Models\{
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\College,
+    Maintenance\Department,
 };
 
 class PresentationController extends Controller
@@ -78,6 +80,34 @@ class PresentationController extends Controller
             if (empty($reportdata->getDocuments(4, $values['id'])))
                 $submissionStatus[4][$values['id']] = 2;
 
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $value[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $department;
+                }
+            }
+        }
+
         return view('research.presentation.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
@@ -98,6 +128,15 @@ class PresentationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('4')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = $research->first()->except('description');
         // $research = except($research['description']);
             // dd($research);
@@ -117,7 +156,7 @@ class PresentationController extends Controller
         }
 
 
-        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value'));
+        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
     }
 
     /**
@@ -227,6 +266,15 @@ class PresentationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('4')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = array_merge($research->toArray(), $presentation->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 4)->get()->toArray();
 
@@ -246,7 +294,7 @@ class PresentationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
     }
 
     /**

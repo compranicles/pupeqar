@@ -24,6 +24,8 @@ use App\Models\{
     FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
+    Maintenance\College,
+    Maintenance\Department,
 };
 
 class CompletedController extends Controller
@@ -49,7 +51,7 @@ class CompletedController extends Controller
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-    
+
         $values = ResearchComplete::where('research_code', $research->research_code)->first();
 
         if($values == null){
@@ -64,19 +66,46 @@ class CompletedController extends Controller
         $value = collect($research);
         $value = $value->except(['description']);
         $value = $value->toArray();
-        
+
         $value = array_merge($value, $values);
 
         $submissionStatus = [];
         $reportdata = new ReportDataController;
             if (LockController::isLocked($value['id'], 2))
                 $submissionStatus[2][$value['id']] = 1;
-            else 
+            else
                 $submissionStatus[2][$value['id']] = 0;
             if (empty($reportdata->getDocuments(2, $value['id'])))
                 $submissionStatus[2][$value['id']] = 2;
-                
-        return view('research.completed.index', compact('research', 'researchFields', 
+
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $value[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $department;
+                }
+            }
+        }
+
+        return view('research.completed.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
 
@@ -100,6 +129,15 @@ class CompletedController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
@@ -108,7 +146,7 @@ class CompletedController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 28)->first();
 
-        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value'));
+        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value', 'dropdown_options'));
     }
 
     /**
@@ -127,7 +165,7 @@ class CompletedController extends Controller
 
         $completion_date = date("Y-m-d", strtotime($request->input('completion_date')));
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'completion_date' => $completion_date,
         ]);
@@ -152,7 +190,7 @@ class CompletedController extends Controller
         ]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -200,12 +238,12 @@ class CompletedController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Research $research, ResearchComplete $completed)
-    {   
+    {
         $this->authorize('update', ResearchComplete::class);
 
         if (auth()->id() !== $research->user_id)
             abort(403);
-            
+
         if(LockController::isLocked($research->id, 1)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
@@ -219,18 +257,27 @@ class CompletedController extends Controller
             return view('inactive');
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('2')");
-        
+
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 2)->get()->toArray();
-        
+
         $value = $research->toArray();
         $value = collect($research);
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
         $value = array_merge($value, $completed->toArray());
-        
+
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
 
-        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
     }
 
     /**
@@ -257,7 +304,7 @@ class CompletedController extends Controller
         $request->validate([
             'completion_date' => 'after_or_equal:start_date|required_if:status, 28',
         ]);
-        
+
         $input = $request->except(['_token', '_method', 'research_code', 'description', 'document']);
 
         Research::where('research_code', $research->research_code)->update($input);
@@ -270,7 +317,7 @@ class CompletedController extends Controller
         ]);
 
         if($request->has('document')){
-            
+
             $documents = $request->input('document');
             foreach($documents as $document){
                 $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -297,7 +344,7 @@ class CompletedController extends Controller
         \LogActivity::addToLog('Had updated the completion details of research "'.$research->title.'".');
 
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
-        
+
 
     }
 

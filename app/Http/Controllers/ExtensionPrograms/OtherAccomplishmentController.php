@@ -18,6 +18,7 @@ use App\Models\{
     OtherAccomplishment,
     OtherAccomplishmentDocument,
     TemporaryFile,
+    FormBuilder\DropdownOption,
     FormBuilder\ExtensionProgramForm,
     Maintenance\College,
     Maintenance\Department,
@@ -80,9 +81,18 @@ class OtherAccomplishmentController extends Controller
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
 
+        $dropdown_options = [];
+        foreach($otherAccomplishmentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
         $departments = Department::whereIn('college_id', $colleges)->get();
-        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments'));
+        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments', 'dropdown_options'));
     }
 
     /**
@@ -98,7 +108,7 @@ class OtherAccomplishmentController extends Controller
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
         $currentQuarterYear = Quarter::find(1);
-        
+
         $request->merge([
             'from' => $from,
             'to' => $to,
@@ -163,6 +173,33 @@ class OtherAccomplishmentController extends Controller
 
         $values = $otherAccomplishment->toArray();
 
+        foreach($otherAccomplishmentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('extension-programs.other-accomplishments.show', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values'));
     }
 
@@ -175,7 +212,7 @@ class OtherAccomplishmentController extends Controller
     public function edit(OtherAccomplishment $otherAccomplishment)
     {
         $this->authorize('manage', OtherAccomplishment::class);
-        
+
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
 
@@ -186,6 +223,15 @@ class OtherAccomplishmentController extends Controller
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
         $otherAccomplishmentFields = DB::select("CALL get_extension_program_fields_by_form_id('10')");
+
+        $dropdown_options = [];
+        foreach($otherAccomplishmentFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
 
         $collegeAndDepartment = Department::join('colleges', 'colleges.id', 'departments.college_id')
                 ->where('colleges.id', $otherAccomplishment->college_id)
@@ -200,7 +246,7 @@ class OtherAccomplishmentController extends Controller
 
         $documents = OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->get()->toArray();
 
-        return view('extension-programs.other-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments'));
+        return view('extension-programs.other-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options'));
     }
 
     /**

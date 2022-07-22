@@ -27,6 +27,8 @@ use App\Models\{
     FormBuilder\ResearchForm,
     FormBuilder\DropdownOption,
     Maintenance\Quarter,
+    Maintenance\Department,
+    Maintenance\College,
 };
 
 class PublicationController extends Controller
@@ -76,6 +78,33 @@ class PublicationController extends Controller
             if (empty($reportdata->getDocuments(3, $values['id'])))
                 $submissionStatus[3][$values['id']] = 2;
 
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $value[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($value[$field->name] == '0'){
+                    $value[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
+                    $value[$field->name] = $department;
+                }
+            }
+        }
+
         return view('research.publication.index', compact('research', 'researchFields',
             'value', 'researchDocuments', 'submissionStatus'));
     }
@@ -96,6 +125,15 @@ class PublicationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $value = $research;
         $value->toArray();
         $value = collect($research);
@@ -111,7 +149,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value'));
+        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
     }
 
     /**
@@ -220,6 +258,15 @@ class PublicationController extends Controller
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
+        $dropdown_options = [];
+        foreach($researchFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $research = array_merge($research->toArray(), $publication->toArray());
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 3)->get()->toArray();
 
@@ -238,7 +285,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus'));
+        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
     }
 
     /**

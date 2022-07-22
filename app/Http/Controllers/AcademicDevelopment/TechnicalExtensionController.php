@@ -18,8 +18,10 @@ use App\Models\{
     TechnicalExtensionDocument,
     TemporaryFile,
     FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
+    Maintenance\Department
 };
 
 class TechnicalExtensionController extends Controller
@@ -73,6 +75,15 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
 
+        $dropdown_options = [];
+        foreach($extensionFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
         $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
         $colleges = array_merge($deans, $chairpersons);
@@ -80,7 +91,7 @@ class TechnicalExtensionController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.technical-extension.create', compact('extensionFields', 'colleges'));
+        return view('academic-development.technical-extension.create', compact('extensionFields', 'colleges', 'dropdown_option'));
     }
 
     /**
@@ -161,6 +172,33 @@ class TechnicalExtensionController extends Controller
 
         $values = $technical_extension->toArray();
 
+        foreach($extensionFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+                if($dropdownOptions == null)
+                    $dropdownOptions = "-";
+                $values[$field->name] = $dropdownOptions;
+            }
+            elseif($field->field_type_name == "college"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $college;
+                }
+            }
+            elseif($field->field_type_name == "department"){
+                if($values[$field->name] == '0'){
+                    $values[$field->name] = 'N/A';
+                }
+                else{
+                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
+                    $values[$field->name] = $department;
+                }
+            }
+        }
+
         return view('academic-development.technical-extension.show', compact('extensionFields', 'technical_extension', 'documents', 'values'));
     }
 
@@ -185,6 +223,15 @@ class TechnicalExtensionController extends Controller
             return view('inactive');
         $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
 
+        $dropdown_options = [];
+        foreach($extensionFields as $field){
+            if($field->field_type_name == "dropdown"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         $documents = TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->get()->toArray();
 
         $values = $technical_extension->toArray();
@@ -196,7 +243,7 @@ class TechnicalExtensionController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values', 'colleges'));
+        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values', 'colleges', 'dropdown_options'));
     }
 
     /**
