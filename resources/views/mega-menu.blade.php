@@ -95,7 +95,7 @@
                 @endcan
                 @can('manage', \App\Models\AdminSpecialTask::class)
                 @admin
-                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}"> Admin Special Tasks</a></li>
+                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
                 @endadmin
                 @endcan
                 @admin
