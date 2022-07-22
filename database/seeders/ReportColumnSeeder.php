@@ -1524,7 +1524,7 @@ class ReportColumnSeeder extends Seeder
         ReportColumn::insert([
             'report_category_id' => 10,
             'name' => 'Venue',
-            'table' => 'expert_service_consultants',
+            'table' => 'expert_service_conferences',
             'column' => 'venue',
             'is_active' => 1,
             'order' => 1,
@@ -2719,6 +2719,22 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 23,
+            'name' => 'College/Branch/Campus/Office',
+            'table' => 'technical_extensions',
+            'column' => 'college_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
+            'name' => 'Department',
+            'table' => 'technical_extensions',
+            'column' => 'department_id',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 23,
             'name' => 'Description of Supporting Documents Submitted',
             'table' => 'technical_extensions',
             'column' => 'description',
@@ -3270,7 +3286,7 @@ class ReportColumnSeeder extends Seeder
             'report_category_id' => 35,
             'name' => 'Collaborating Country and Institution/ Organization/ Agency',
             'table' => 'mobilities',
-            'column' => 'host_address',
+            'column' => 'collaborating_country',
             'is_active' => 1,
             'order' => 1,
         ]);

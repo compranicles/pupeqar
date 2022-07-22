@@ -1174,7 +1174,7 @@ class GenerateColumnSeeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Source of Fund**',
             'table_id' => 28,
-            'report_column' => 'funding_agency',
+            'report_column' => 'type_of_funding',
             'is_active' => 1,
             'order' => 1,
         ]);

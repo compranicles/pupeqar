@@ -1442,7 +1442,7 @@ class GenerateColumn2Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Classification of Mobility **',
             'table_id' => 63,
-            'report_column' => 'type',
+            'report_column' => 'classification_of_mobility',
             'is_active' => 1,
             'order' => 4,
         ]);
@@ -1521,7 +1521,7 @@ class GenerateColumn2Seeder extends Seeder
         GenerateColumn::insert([
             'name' => 'Classification of Mobility **',
             'table_id' => 64,
-            'report_column' => 'type',
+            'report_column' => 'classification_of_mobility',
             'is_active' => 1,
             'order' => 4,
         ]);

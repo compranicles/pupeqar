@@ -13,14 +13,14 @@
                     in_array(7, $roles) || in_array(8, $roles))
                 <h6 style="font-weight: bold; color: #eeb510">REVIEW ACCOMPLISHMENTS</h6>
                 @endif
+                @if (in_array(5, $roles))
+                <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">Department Level</a><br>
+                @endif
                 @if (in_array(10, $roles))
                 <a href="{{ route('researcher.index') }}" class="submission-menu {{ request()->routeIs('researcher.index') ? 'active' : ''}}">Research & Invention</a><br>
                 @endif
                 @if (in_array(11, $roles))
                 <a href="{{ route('extensionist.index') }}" class="submission-menu {{ request()->routeIs('extensionist.index') ? 'active' : ''}}">Extensions</a><br>
-                @endif
-                @if (in_array(5, $roles))
-                <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">Department Level</a><br>
                 @endif
                 @if (in_array(6, $roles))
                 <a href="{{ route('director.index') }}" class="submission-menu {{ request()->routeIs('director.index') ? 'active' : ''}}">College Level</a><br>
