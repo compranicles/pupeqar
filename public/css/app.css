@@ -13602,7 +13602,21 @@ z-index: 9999;
 
 .page-spinner {
   position: fixed;
-  z-index: 1031;
+  /* z-index: 1031; */
   top: 40%;
-  left: 50%;
+  left: 45%;
+}
+
+.db-col {
+  flex-grow: 1;
+  max-width: 100%;
+  display: flex;
+}
+
+@media screen and (max-width: 641px) { 
+  .db-col {
+    flex-grow: 1;
+    max-width: 100%;
+    display: inline;
+  }
 }

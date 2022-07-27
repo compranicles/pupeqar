@@ -1,4 +1,4 @@
-<div class="col mb-2">
+<div class="db-col mb-2">
     <div class="db-card">
         <h5 class="card-header font-weight-bold text-center">My Accomplishments</h5>
         <div class="card-body d-flex justify-content-center">
