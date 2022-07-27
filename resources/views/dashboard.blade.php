@@ -19,12 +19,12 @@
                         <small class="ml-2">Deadline: <strong>{{ $deadline }}</strong></small>
                     </h5>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row px-4">
                             @if (in_array(1, $roles) || in_array(3, $roles))
                                 @include('dashboard.faculty-admin')
                             @endif
                             @if (in_array(5, $roles))
-                            <div class="col mb-2">
+                            <div class="db-col mb-2">
                                 <div class="db-card">
                                     <h5 class="card-header font-weight-bold text-center">Chair/Chief</h5>
                                     <div class="card-body d-flex justify-content-center">
@@ -36,7 +36,7 @@
                             </div>
                             @endif
                             @if (in_array(10, $roles))
-                            <div class="col mb-2">
+                            <div class="db-col mb-2">
                                 <div class="db-card">
                                     <h5 class="card-header font-weight-bold text-center">Researcher</h5>
                                     <div class="card-body d-flex justify-content-center">
@@ -48,7 +48,7 @@
                             </div>
                             @endif
                             @if (in_array(11, $roles))
-                            <div class="col mb-2">
+                            <div class="db-col mb-2">
                                 <div class="db-card">
                                     <h5 class="card-header font-weight-bold text-center">Extensionist</h5>
                                     <div class="card-body d-flex justify-content-center">
@@ -60,7 +60,7 @@
                             </div>
                             @endif
                             @if (in_array(6, $roles))
-                            <div class="col mb-2">
+                            <div class="db-col mb-2">
                                 <div class="db-card">
                                     <h5 class="card-header font-weight-bold text-center">Dean/Director</h5>
                                     <div class="card-body d-flex justify-content-center">
@@ -73,7 +73,7 @@
                             @endif
                             
                             @if (in_array(7, $roles))
-                            <div class="col mb-2">
+                            <div class="db-col mb-2">
                                 <div class="db-card">
                                     <h5 class="card-header font-weight-bold text-center">Sector Head</h5>
                                     
@@ -86,7 +86,7 @@
                             </div>
                             @endif
                             @if (in_array(8, $roles))
-                                <div class="col mb-2">
+                                <div class="db-col mb-2">
                                     <div class="db-card">
                                         <h5 class="card-header font-weight-bold text-center">IPO</h5>
                                         <div class="card-body d-flex justify-content-center">@include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 
