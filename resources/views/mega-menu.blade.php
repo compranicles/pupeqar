@@ -91,7 +91,7 @@
             <ul>
                 <h6 class="menu-category">TASKS & FUNCTIONS</h6>
                 @can('manage', \App\Models\SpecialTask::class)
-                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Academic Special Tasks</a></li>
+                <li><a class="{{ request()->routeIs('special-tasks.*')  ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=faculty' }}">Academic Special Tasks</a></li>
                 @endcan
                 @can('manage', \App\Models\AdminSpecialTask::class)
                 @admin
@@ -99,7 +99,7 @@
                 @endadmin
                 @endcan
                 @admin
-                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : '' }}" href="{{ route('special-tasks.index') }}">Accomplishments Based on OPCR</a></li>
+                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=admin' }}">Accomplishments Based on OPCR</a></li>
                 @endadmin
                 @can('manage', \App\Models\AttendanceFunction::class)
                 <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">Attendance in College & University Functions</a></li>

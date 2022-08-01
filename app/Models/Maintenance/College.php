@@ -11,15 +11,15 @@ class College extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'id',
         'name',
         'code',
         'sector_id',
-        'hris_code'
     ];
 
     public function department() {
         return $this->hasOne(\App\Models\Maintenance\Department::class);
     }
 
-    
+
 }

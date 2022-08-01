@@ -16,17 +16,15 @@ class SectorSeeder extends Seeder
     public function run()
     {
         Sector::truncate();
-        
+
         $db_ext = DB::connection('mysql_external');
         $sectors = $db_ext->select(" EXEC GetDepartment 'Y'");
 
         foreach ($sectors as $sector){
-            Sector::insert([
+            Sector::create([
+                'id'=> $sector->DepartmentID,
                 'name' => $sector->Department,
                 'code' => $sector->DepartmentCode,
-                'hris_code' =>$sector->DepartmentID,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
             ]);
         }
     }

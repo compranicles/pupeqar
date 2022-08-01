@@ -1,13 +1,16 @@
 @php
     $nameOfPage = '';
     $nameOfPages = '';
-    if(in_array(1, $roles)){
+    $v = '';
+    if($version == 'faculty'){
         $nameOfPage = 'Special Task';
         $nameOfPages = 'Special Tasks';
+        $v = 'faculty';
     }
-    elseif (in_array(3, $roles)) {
+    elseif ($version == 'admin') {
         $nameOfPage = 'Accomplishment Based on OPCR';
         $nameOfPages = 'Accomplishments Based on OPCR';
+        $v = 'admin';
     }
 @endphp
 <x-app-layout>
@@ -24,8 +27,8 @@
                     <h3 class="font-weight-bold mr-2">{{ $nameOfPage }}</h3>
                 </div>
                 <div class="d-flex align-items-center mb-2">
-                    <a class="mr-auto back_link ml-2" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
-                    <a href="{{ route('special-tasks.edit', $special_task->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <a class="mr-auto back_link ml-2" href="{{ route('special-tasks.index').'?v='.$v }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
+                    <a href="{{ route('special-tasks.edit', $special_task->id).'?v='.$v }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                     <button type="button" value="{{ $special_task->id }}"  data-bs-request="{{ $special_task->final_output }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $specialTaskFields, 'value' => $values])
@@ -113,7 +116,7 @@
           var url = '{{ route("special-tasks.destroy", ":id") }}';
           url = url.replace(':id', id);
           document.getElementById('delete_item').action = url;
-          
+
         });
     </script>
     @endpush

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectorsTable extends Migration
+class AddColumnToSpecialTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateSectorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sectors', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
-            $table->string('name', '200');
-            $table->string('code', 255);
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::table('special_tasks', function (Blueprint $table) {
+            $table->string('admin_or_faculty')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateSectorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sectors');
+        Schema::table('special_tasks', function (Blueprint $table) {
+            //
+        });
     }
 }

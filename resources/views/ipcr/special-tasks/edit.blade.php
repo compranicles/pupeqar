@@ -1,13 +1,16 @@
 @php
     $nameOfPage = '';
     $nameOfPages = '';
-    if(in_array(1, $roles)){
+    $v = '';
+    if($version == 'faculty'){
         $nameOfPage = 'Special Task';
         $nameOfPages = 'Special Tasks';
+        $v = 'faculty';
     }
-    elseif (in_array(3, $roles)) {
+    elseif ($version == 'admin') {
         $nameOfPage = 'Accomplishment Based on OPCR';
         $nameOfPages = 'Accomplishments Based on OPCR';
+        $v = 'admin';
     }
 @endphp
 <x-app-layout>
@@ -17,7 +20,7 @@
             <div class="col-md-12">
                 <h3 class="font-weight-bold mr-2">Edit {{ $nameOfPage }}</h3>
                 <div class="mb-3">
-                    <a class="back_link" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
+                    <a class="back_link" href="{{ route('special-tasks.index').'?v='.$v }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
                 </div>
                 {{-- Denied Details --}}
                 @if ($deniedDetails = Session::get('denied'))
@@ -27,7 +30,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('special-tasks.update', $special_task->id) }}" method="post">
+                        <form action="{{ route('special-tasks.update', $special_task->id).'?v='.$v }}" method="post">
                             @csrf
                             @method('put')
                             @include('form', ['formFields' => $specialTaskFields, 'value' => $values])

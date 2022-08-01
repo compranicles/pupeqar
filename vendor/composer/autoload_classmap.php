@@ -33,6 +33,7 @@ return array(
     'App\\Http\\Controllers\\AcademicDevelopment\\TechnicalExtensionController' => $baseDir . '/app/Http/Controllers/AcademicDevelopment/TechnicalExtensionController.php',
     'App\\Http\\Controllers\\AcademicDevelopment\\ViableProjectController' => $baseDir . '/app/Http/Controllers/AcademicDevelopment/ViableProjectController.php',
     'App\\Http\\Controllers\\ActivityLogController' => $baseDir . '/app/Http/Controllers/ActivityLogController.php',
+    'App\\Http\\Controllers\\AnalyticsController' => $baseDir . '/app/Http/Controllers/AnalyticsController.php',
     'App\\Http\\Controllers\\AnnouncementController' => $baseDir . '/app/Http/Controllers/AnnouncementController.php',
     'App\\Http\\Controllers\\Authentication\\PermissionController' => $baseDir . '/app/Http/Controllers/Authentication/PermissionController.php',
     'App\\Http\\Controllers\\Authentication\\RoleController' => $baseDir . '/app/Http/Controllers/Authentication/RoleController.php',
