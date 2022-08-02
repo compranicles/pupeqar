@@ -18,6 +18,14 @@ Route::get('/', function () {
     return view('hris-regi.check');
 })->name('home')->middleware('guest');
 
+//For maintenance mode
+// Route::get('/', function() {
+//     return view('maintenance');
+// })->name('home')->middleware('guest');
+// Route::any('{query}',
+//   function() { return redirect('/'); })
+//   ->where('query', '.*');
+
 /* DASHBOARD AND HOMEPAGE DISPLAY */
 Route::group(['middleware' => ['auth:sanctum', 'verified', 'account']], function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
