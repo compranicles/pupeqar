@@ -15,6 +15,7 @@ class Report extends Model
         'sector_id',
         'college_id',
         'department_id',
+        'format',
         'report_category_id',
         'report_code',
         'report_reference_id',
