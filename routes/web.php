@@ -205,8 +205,8 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
     Route::get('fetch_image/{id}/{hris}', [\App\Http\Controllers\StorageFileController::class, 'fetch_image']);
 
-
-
+    /* ANALYTICS */
+    Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics');
 
     /* RESEARCH ACCOMPLISHMENTS */
     Route::resource('research', \App\Http\Controllers\Research\ResearchController::class);

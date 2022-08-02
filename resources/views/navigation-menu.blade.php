@@ -33,8 +33,8 @@
                         request()->routeIs('special-tasks.*') || request()->routeIs('admin-special-tasks.*') || request()->routeIs('attendance-function.*') ||
                         request()->routeIs('other-accomplishment.*') || request()->routeIs('other-dept-accomplishment.*') ||
                         request()->routeIs('intra-mobility.*') || request()->routeIs('community-engagement.*')
-                        
-                        
+
+
                         )
                         active @endif
                         " role="button">Accomplishments</a>
@@ -86,6 +86,14 @@
                     </a>
                 </li>
                 @endcan
+
+                @IsReporting
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics') ">
+                        {{ __('Analytics') }}
+                    </x-jet-nav-link>
+                </li>
+                @endIsReporting
             </ul>
 
             <!-- Right Side Of Navbar -->

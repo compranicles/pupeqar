@@ -11,9 +11,8 @@ class Sector extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'id',
         'name',
         'code',
-        'hris_code',
-        'created_at'
     ];
 }

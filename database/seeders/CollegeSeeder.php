@@ -21,17 +21,17 @@ class CollegeSeeder extends Seeder
         $db_ext = DB::connection('mysql_external');
         $allDepartments = $db_ext->select(" EXEC GetDepartment");
         $sectors = Sector::all();
-        $sectorHRISCodes = Sector::pluck('hris_code')->all();
+        $sectorHRISCodes = Sector::pluck('id')->all();
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
                 if($row->Level == "1"){
                     if(in_array($row->RootID, $sectorHRISCodes)){
-                        $sectorId = Sector::where('hris_code', $row->RootID)->pluck('id')->first();
-                        College::insert([
+                        $sectorId = Sector::where('id', $row->RootID)->pluck('id')->first();
+                        College::create([
+                            'id' => $row->DepartmentID,
                             'name' => $row->Department,
                             'code' => $row->DepartmentCode,
-                            'hris_code' => $row->DepartmentID,
                             'sector_id' => $sectorId
                         ]);
                     }

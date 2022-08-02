@@ -1,10 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="h4 font-weight-bold">
-            @if (in_array(1, $roles))
+            <?php $v = '' ?>
+            @if ($version == 'faculty')
                 Special Tasks
-            @elseif (in_array(3, $roles))
+                <?php $v = 'faculty' ?>
+            @elseif ($version == 'admin')
                 Accomplishments Based on OPCR
+                <?php $v = 'admin' ?>
             @endif
         </h2>
     </x-slot>
@@ -12,9 +15,9 @@
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">
-                @if (in_array(1, $roles))
+                @if ($version == 'faculty')
                     Special Tasks
-                @elseif (in_array(3, $roles))
+                @elseif ($version == 'admin')
                     Accomplishments Based on OPCR
                 @endif
                 </h2>
@@ -36,7 +39,7 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a href="{{ route('special-tasks.create') }}" class="btn btn-success" id="add_link">
+                                <a href="{{ route('special-tasks.create').'?v='.$v }}" class="btn btn-success" id="add_link">
                                     <i class="bi bi-plus"></i> Add
                                 </a>
                             </div>
@@ -60,17 +63,17 @@
                                 <tbody>
                                     @foreach ($specialTasks as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->commitment_measure_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->final_output }}</td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >{{ $row->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->commitment_measure_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->final_output }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >
                                             {{ $row->report_year }}
                                         </td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id) }}' " >
+                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );
                                             $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -79,8 +82,8 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('special-tasks.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
-                                                <a href="{{ route('special-tasks.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                <a href="{{ route('special-tasks.show', $row->id).'?v='.$v }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                <a href="{{ route('special-tasks.edit', $row->id).'?v='.$v }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
                                                 <button type="button"  value="{{ $row->id }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->accomplishment_description }}">Delete</button>
                                                 @if ($row->commitment_measure_name == "Quality")
                                                     @if (isset($submissionStatus[30]))
@@ -89,7 +92,7 @@
                                                         @elseif ($submissionStatus[30][$row->id] == 1)
                                                             <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                         @elseif ($submissionStatus[30][$row->id] == 2)
-                                                            <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                            <a href="{{ route('special-tasks.edit', $row->id).'?v='.$v }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                         @endif
                                                     @endif
                                                 @elseif ($row->commitment_measure_name == "Efficiency")
@@ -99,7 +102,7 @@
                                                         @elseif ($submissionStatus[31][$row->id] == 1)
                                                             <a href="{{ url('submissions/check/31/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                         @elseif ($submissionStatus[31][$row->id] == 2)
-                                                            <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                            <a href="{{ route('special-tasks.edit', $row->id).'?v='.$v }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                         @endif
                                                     @endif
                                                 @elseif ($row->commitment_measure_name == "Timeliness")
@@ -109,7 +112,7 @@
                                                         @elseif ($submissionStatus[32][$row->id] == 1)
                                                             <a href="{{ url('submissions/check/32/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                         @elseif ($submissionStatus[32][$row->id] == 2)
-                                                            <a href="{{ route('special-tasks.edit', $row->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                            <a href="{{ route('special-tasks.edit', $row->id).'?v='.$v }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                         @endif
                                                     @endif
                                                 @endif

@@ -14,11 +14,10 @@ class CreateCollegesTable extends Migration
     public function up()
     {
         Schema::create('colleges', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->unsigned();
             $table->string('name', '200');
-            $table->foreignId('sector_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->string('code', 255);
-            $table->integer('hris_code');
+            $table->foreignId('sector_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

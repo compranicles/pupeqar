@@ -710,6 +710,7 @@ class ComposerStaticInitc45c111a1792a92384b6c01e13b94e12
         'App\\Http\\Controllers\\AcademicDevelopment\\TechnicalExtensionController' => __DIR__ . '/../..' . '/app/Http/Controllers/AcademicDevelopment/TechnicalExtensionController.php',
         'App\\Http\\Controllers\\AcademicDevelopment\\ViableProjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/AcademicDevelopment/ViableProjectController.php',
         'App\\Http\\Controllers\\ActivityLogController' => __DIR__ . '/../..' . '/app/Http/Controllers/ActivityLogController.php',
+        'App\\Http\\Controllers\\AnalyticsController' => __DIR__ . '/../..' . '/app/Http/Controllers/AnalyticsController.php',
         'App\\Http\\Controllers\\AnnouncementController' => __DIR__ . '/../..' . '/app/Http/Controllers/AnnouncementController.php',
         'App\\Http\\Controllers\\Authentication\\PermissionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Authentication/PermissionController.php',
         'App\\Http\\Controllers\\Authentication\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Authentication/RoleController.php',

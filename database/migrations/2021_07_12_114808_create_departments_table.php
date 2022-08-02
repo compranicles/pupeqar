@@ -14,11 +14,10 @@ class CreateDepartmentsTable extends Migration
     public function up()
     {
         Schema::create('departments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('id')->unsigned();
             $table->string('name', 300);
             $table->string('code', 255);
-            $table->integer('hris_code');
+            $table->foreignId('college_id')->nullable()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

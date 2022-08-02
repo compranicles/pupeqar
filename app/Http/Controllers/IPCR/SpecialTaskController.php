@@ -33,9 +33,12 @@ class SpecialTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -48,6 +51,7 @@ class SpecialTaskController extends Controller
                 ->join('colleges', 'colleges.id', 'special_tasks.college_id')
                 ->select('special_tasks.*', 'dropdown_options.name as commitment_measure_name', 'colleges.name as college_name')
                 ->orderBy('special_tasks.updated_at', 'desc')
+                ->where('admin_or_faculty', $version)
                 ->get();
 
         $tasks_in_colleges = SpecialTask::whereNull('special_tasks.deleted_at')->join('colleges', 'special_tasks.college_id', 'colleges.id')
@@ -84,7 +88,7 @@ class SpecialTaskController extends Controller
             }
 
         return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories',
-            'specialTasks', 'tasks_in_colleges', 'submissionStatus'));
+            'specialTasks', 'tasks_in_colleges', 'submissionStatus', 'version'));
     }
 
     /**
@@ -92,8 +96,13 @@ class SpecialTaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
+
 
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -119,7 +128,7 @@ class SpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments', 'dropdown_options'));
+        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments', 'dropdown_options', 'version'));
     }
 
     /**
@@ -130,7 +139,10 @@ class SpecialTaskController extends Controller
      */
     public function store(Request $request)
     {
-
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
 
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -154,10 +166,11 @@ class SpecialTaskController extends Controller
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'admin_or_faculty' => $version,
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'v']);
 
         $taskdata = SpecialTask::create($input);
         $taskdata->update(['user_id' => auth()->id()]);
@@ -186,8 +199,8 @@ class SpecialTaskController extends Controller
         }
 
         \LogActivity::addToLog('Had added a '.$namePage.'.');
-
-        return redirect()->route('special-tasks.index')->with('success', 'Your accomplishment in '.$namePage.' has been saved.');
+        $version;
+        return redirect()->route('special-tasks.index', 'v='.$version)->with('success', 'Your accomplishment in '.$namePage.' has been saved.');
     }
 
     /**
@@ -196,9 +209,12 @@ class SpecialTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(SpecialTask $special_task)
+    public function show(SpecialTask $special_task, Request $request)
     {
-
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
 
         if (auth()->id() !== $special_task->user_id)
             abort(403);
@@ -244,7 +260,7 @@ class SpecialTaskController extends Controller
             }
         }
 
-        return view('ipcr.special-tasks.show', compact('special_task', 'specialTaskFields', 'documents', 'values', 'roles'));
+        return view('ipcr.special-tasks.show', compact('special_task', 'specialTaskFields', 'documents', 'values', 'roles', 'version'));
     }
 
     /**
@@ -253,8 +269,13 @@ class SpecialTaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(SpecialTask $special_task)
+    public function edit(SpecialTask $special_task, Request $request)
     {
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
+
         if (auth()->id() !== $special_task->user_id)
             abort(403);
 
@@ -289,7 +310,7 @@ class SpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments', 'dropdown_options'));
+        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments', 'dropdown_options', 'version'));
     }
 
     /**
@@ -301,7 +322,10 @@ class SpecialTaskController extends Controller
      */
     public function update(Request $request, SpecialTask $special_task)
     {
-
+        $version = '';
+        if($request->has('v')){
+            $version = $request->get('v');
+        }
 
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -324,7 +348,7 @@ class SpecialTaskController extends Controller
         ]);
 
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'v']);
 
         $special_task->update(['description' => '-clear']);
 
@@ -354,7 +378,7 @@ class SpecialTaskController extends Controller
 
         \LogActivity::addToLog('Had updated a '.$namePage.'.');
 
-        return redirect()->route('special-tasks.index')->with('success', 'Your accomplishment in '.$namePage.' has been updated.');
+        return redirect()->route('special-tasks.index', 'v='.$version)->with('success', 'Your accomplishment in '.$namePage.' has been updated.');
     }
 
     /**

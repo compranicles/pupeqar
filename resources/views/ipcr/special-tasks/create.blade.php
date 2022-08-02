@@ -1,13 +1,16 @@
 @php
     $nameOfPage = '';
     $nameOfPages = '';
-    if(in_array(1, $roles)){
+    $v = '';
+    if($version == 'faculty'){
         $nameOfPage = 'Special Task';
         $nameOfPages = 'Special Tasks';
+        $v = 'faculty';
     }
-    elseif (in_array(3, $roles)) {
+    elseif ($version == 'admin') {
         $nameOfPage = 'Accomplishment Based on OPCR';
         $nameOfPages = 'Accomplishments Based on OPCR';
+        $v = 'admin';
     }
 @endphp
 <x-app-layout>
@@ -17,14 +20,14 @@
             <div class="col-md-12">
                 <h3 class="font-weight-bold mr-2">Add {{ $nameOfPage }}</h3>
                 <div class="mb-3">
-                    <a class="back_link" href="{{ route('special-tasks.index') }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
+                    <a class="back_link" href="{{ route('special-tasks.index').'?v='.$v }}"><i class="bi bi-chevron-double-left"></i>{{ __('Back to All '.$nameOfPages) }}</a>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('special-tasks.store') }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('special-tasks.store').'?v='.$v }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
-                            </div> 
+                            </div>
                             <hr>
                             @csrf
                             @include('form', ['formFields' => $specialTaskFields])
