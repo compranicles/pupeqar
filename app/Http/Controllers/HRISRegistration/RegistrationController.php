@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISRegistration;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Str;
@@ -35,6 +36,8 @@ class RegistrationController extends Controller
 
             if (!empty($userLocal)){
                 Auth::login($userLocal);
+                $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
+                session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
                     return redirect()->route('home');
                 }
@@ -46,6 +49,8 @@ class RegistrationController extends Controller
             if($this->save($user)){
                 $userLocal = User::where('email', $request->email)->first();
                 Auth::login($userLocal);
+                $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
+                session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
                     return redirect()->route('home');
                 }
@@ -107,6 +112,8 @@ class RegistrationController extends Controller
             if($this->save($user)){
                 $userLocal = User::where('user_account_id', $request->email)->first();
                 Auth::login($userLocal);
+                $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
+                session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
                     return redirect()->route('home');
                 }
@@ -115,11 +122,27 @@ class RegistrationController extends Controller
         }
         else{
             Auth::login($userLocal);
+            $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
+            session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
             if(Employee::where('user_id', $userLocal->id)->exists()){
                 return redirect()->route('home');
             }
             return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
         }
         dd($userLocal);
+    }
+
+    public function switch_type(){
+        $pastvalue = session()->get('user_type');
+        $newvalue = '';
+        if($pastvalue == 'Faculty Employee'){
+            session()->put('user_type', 'Admin Employee');
+            $newvalue = 'Admin Employee';
+        }
+        else{
+            session()->put('user_type', 'Faculty Employee');
+            $newvalue = 'Faculty Employee';
+        }
+        return redirect()->back()->with('success_switch', 'Successfully switched as '.$newvalue.'!');
     }
 }

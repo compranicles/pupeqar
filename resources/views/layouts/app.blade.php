@@ -73,6 +73,11 @@
 
         <!-- Page Content -->
         <main class="container my-5">
+            @if ($message = Session::get('success_switch'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+            @endif
             {{ $slot }}
         </main>
 
@@ -82,7 +87,7 @@
 
 
         @stack('scripts')
-        
+
         <!-- Messenger Chat Plugin Code -->
         <div id="fb-root"></div>
 

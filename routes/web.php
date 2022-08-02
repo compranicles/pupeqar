@@ -195,6 +195,8 @@ Route::group(['middleware' => 'auth'], function() {
 /* AUTH CHECKER */
 Route::group(['middleware' => ['auth', 'account']], function() {
 
+    Route::get('/switch_type', [\App\Http\Controllers\HRISRegistration\RegistrationController::class, 'switch_type'])->name('switch_type');
+
     /* UPLOAD AND REMOVE DOCUMENTS/IMAGES */
     Route::post('upload', [\App\Http\Controllers\UploadController::class, 'store']);
     Route::delete('remove', [\App\Http\Controllers\UploadController::class, 'destroy']);
