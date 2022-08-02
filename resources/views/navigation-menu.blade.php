@@ -114,7 +114,7 @@
 
                     @BothFacultyAdmin
                     <li>
-                        <a href="{{ route('switch_type') }}" id="switch-role" class="btn btn-warning">
+                        <a href="{{ route('switch_type') }}" id="switch-role" class="btn">
                             <strong>
                             @if(session()->get('user_type') == 'Faculty Employee')
                                 Switch to Admin
