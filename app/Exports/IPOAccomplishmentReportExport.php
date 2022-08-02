@@ -29,15 +29,16 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
         $table_format = [];
         $table_columns = [];
         $table_contents = [];
+        $employee_type = [];
 
         if($this->type == "academic") {
             //get the table names
             $table_format = GenerateTable::where('type_id', 2)->get();
-            $employee_type = 1;
+            $employee_type = ['f', 'x'];
         }
         elseif ($this->type == 'admin') {
             $table_format = GenerateTable::where('type_id', 1)->get();
-            $employee_type = 3;
+            $employee_type = ['a', 'x'];
         }
 
         //get the table columns/headers
@@ -56,9 +57,9 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                 if ($format->type_id != 4) {
                     $table_contents[$format->id] =
                     Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                        ->where('user_roles.role_id', $employee_type)
+                        ->whereIn('reports.format', $employee_type)
                         ->whereNull('user_roles.deleted_at')
-                        ->select('reports.*', 
+                        ->select('reports.*',
                         DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                             'sectors.name as sector_name',
                             'departments.name as department_name',
@@ -79,7 +80,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                         ->get()->toArray();
                 } else {
                     $table_contents[$format->id] =
-                    Report::select('reports.*', 
+                    Report::select('reports.*',
                         DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                             'sectors.name as sector_name',
                             'departments.name as department_name',
@@ -123,7 +124,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setName('Arial');
                 $event->sheet->getDelegate()->getParent()->getDefaultStyle()->getFont()->setSize(12);
                 $event->sheet->getDefaultColumnDimension()->setWidth(33);
-                
+
                 $count = 1;
                 $table_format = $this->table_format;
                 $table_columns = $this->table_columns;
@@ -131,7 +132,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                 foreach ($table_format as $format) {
 
                     if ($format->is_table == '1') {
-                        //columns 
+                        //columns
                         $columnTWO = Coordinate::stringFromColumnIndex(3);
                         $length = count($table_columns[$format->id]);
                         if ($length == null){
@@ -149,7 +150,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB('FFC00000');
                             $event->sheet->getRowDimension($count)->setRowHeight(30);
                             $count++;
-                            
+
                             $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
@@ -164,7 +165,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                         $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -179,7 +180,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -264,7 +265,7 @@ class IPOAccomplishmentReportExport implements FromView, WithEvents
                         }
                         else
                             $count++;
-                        
+
                         $count += 1;
                     }
                 }
