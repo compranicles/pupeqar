@@ -13620,3 +13620,14 @@ z-index: 9999;
     display: inline;
   }
 }
+
+/***********SWITCH ROLE BUTTON************/
+#switch-role {
+  border-radius: 10px;
+  margin: 0 5px 0 5px;
+}
+
+#switch-role:hover {
+  background-color: white;
+}
+/****************************************/

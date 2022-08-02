@@ -112,6 +112,13 @@
                         </div>
                     </li>
 
+                    @BothFacultyAdmin
+                    <li>
+                        <button id="switch-role" class="btn btn-warning"><strong>Switch to Admin</strong></button> 
+                        <!-- NOTE: Replace the <Admin> -->
+                    </li>
+                    @endBothFacultyAdmin
+
                     <x-jet-dropdown id="settingsDropdown">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
