@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Models\{
+    Associate,
     Chairperson,
     Dean,
     DenyReason,
@@ -66,6 +67,14 @@ class ChairpersonController extends Controller
             $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
                                         ->select('faculty_extensionists.college_id', 'colleges.code')
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
+        }
+        if(in_array(12, $roles)){
+            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                            ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+        }
+        if(in_array(13, $roles)){
+            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
         $reportsToReview = collect();
@@ -285,7 +294,7 @@ class ChairpersonController extends Controller
 
         Notification::send($returnData, new ReturnNotification($notificationData));
 
-        \LogActivity::addToLog('Chairperson returned an accomplishment.');
+        \LogActivity::addToLog('Chair/Chief returned an accomplishment.');
 
         return redirect()->route('chairperson.index')->with('success', 'Report has been returned to the owner.');
     }
@@ -418,7 +427,7 @@ class ChairpersonController extends Controller
             $count++;
         }
 
-        \LogActivity::addToLog('Chairperson returned '.$count.' accomplishments.');
+        \LogActivity::addToLog('Chair/Chief returned '.$count.' accomplishments.');
 
         return redirect()->route('chairperson.index')->with('success', 'Report/s returned to the owner/s.');
 

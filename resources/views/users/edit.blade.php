@@ -1,15 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Edit User') }}
-        </h2>
-    </x-slot>
     <div class="container">
       <div class="row justify-content-center">
-
-
         <div class="col-md-9 offset-md-2">
           <div class="d-flex align-content-center">
+            <h3 class="font-weight-bold">Edit User Access</h3>
             <p class="mt-2 ml-3">
               <a class="back_link" href="{{ route('admin.users.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Users</a>
             </p>
@@ -125,6 +119,24 @@
                         <span class="text-danger" id="researcher_error">This is required</span>
                         <x-jet-input-error for="research"></x-jet-input-error>
                       </div>
+
+                      <div class="form-group associate-input" style="@if($associateDeanDirector == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Associate/Assistant Dean/Director of:') }}" />
+                        <select name="collegeAssociate[]" id="collegeAssociate" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <span class="text-danger" id="associate_error">This is required</span>
+                        <x-jet-input-error for="collegeAssociate"></x-jet-input-error>
+                      </div>
+
+                      <div class="form-group assistant-input" style="@if($assistantVP == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Assistant to VP of:') }}" />
+                        <select name="sectorAssistant[]" id="sectorAssistant" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                        </select>
+                        <span class="text-danger" id="assistant_error">This is required</span>
+                        <x-jet-input-error for="sectorAssistant"></x-jet-input-error>
+                      </div>
                       <div class="form-group d-flex justify-content-end align-items-baseline">
                         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary mr-3" tabindex="-1" role="button" aria-disabled="true">Cancel</a>
                         <button type="submit" class="btn btn-success">Save</button>
@@ -147,6 +159,8 @@
             $('#sector_error').hide();
             $('#extensionist_error').hide();
             $('#researcher_error').hide();
+            $('#associate_error').hide();
+            $('#assistant_error').hide();
         });
           $("#department").selectize({
               maxItems: null,
@@ -189,6 +203,22 @@
               options: @json($colleges),
               items: @json($researcher),
           });
+          $("#collegeAssociate").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
+              sortField: "text",
+              options: @json($colleges),
+              items: @json($associateDeanDirector),
+          });
+          $("#sectorAssistant").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
+              sortField: "text",
+              options: @json($sectors),
+              items: @json($assistantVP),
+          });
 
           $('.role-checkbox').on('change', function() {
               var id = $(this).data('id');
@@ -206,6 +236,12 @@
               }
               if(id == 11){
                 changeExtensionDisp(id);
+              }
+              if(id == 12){
+                changeCollegeAssociateDisp(id);
+              }
+              if(id == 13){
+                changeSectorAssistantDisp(id);
               }
           });
 
@@ -286,6 +322,38 @@
               }
           }
 
+          function changeCollegeAssociateDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.associate-input').show();
+                 $('#collegeAssociate').removeAttr('disabled');
+                 $('#collegeAssociate').attr('required', true);
+                $('#associate_error').show();
+
+              }
+              else{
+                $('.associate-input').hide();
+                $('#collegeAssociate').removeAttr('required');
+                $('#collegeAssociate').attr('disabled', true);
+                $('#associate_error').hide();
+              }
+          }
+
+          function changeSectorAssistantDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.assistant-input').show();
+                 $('#sectorAssistant').removeAttr('disabled');
+                 $('#sectorAssistant').attr('required', true);
+                $('#assistant_error').show();
+
+              }
+              else{
+                $('.assistant-input').hide();
+                $('#sectorAssistant').removeAttr('required');
+                $('#sectorAssistant').attr('disabled', true);
+                $('#assistant_error').hide();
+              }
+          }
+
           $(function (){
               if($('#role-5').is(':checked')){
                   changeDeptDisp(5);
@@ -301,6 +369,12 @@
               }
               if($('#role-10').is(':checked')){
                   changeResearchDisp(10);
+              }
+              if($('#role-12').is(':checked')){
+                changeCollegeAssociateDisp(12);
+              }
+              if($('#role-13').is(':checked')){
+                changeSectorAssistantDisp(13);
               }
           });
       </script>

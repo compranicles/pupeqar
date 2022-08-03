@@ -30,7 +30,7 @@
                                         <th></th>
                                         <th>Name</th>
                                         <th>Roles</th>
-                                        <th>Reporting With</th>
+                                        <th>Reporting as Faculty/Admin To</th>
                                         <th>Date Joined</th>
                                         <th>Actions</th>
                                     </tr>
@@ -62,15 +62,20 @@
                                                     -
                                                 @endforelse
                                             </td>
-                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >{{ $user->created_at }}</td>
+                                            <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >
+                                                <?php
+                                                    $created_at = strtotime( $user->created_at );
+                                                    $created_at = date( 'M d, Y h:i A', $created_at );
+                                                ?>
+                                                {{ $created_at }}
+                                            </td>
                                             <td>
                                                 <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <div class="btn-group" role="group">
-                                                        
-                                                        <a href="{{ route('admin.users.edit', $user->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                                        <i class="bi bi-trash trash"></i> <input type="submit" class="action-delete" value="Delete">
+                                                    <div class="btn-group" role="group" aria-label="button-group">
+                                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit Access</a>
+                                                        <input type="submit" class="btn btn-sm btn-danger" value="Delete">
                                                     </div>
                                                 </form>
                                             </td>

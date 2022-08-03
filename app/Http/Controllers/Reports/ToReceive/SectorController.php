@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Models\{
+    Associate,
     Chairperson,
     Dean,
     DenyReason,
@@ -66,6 +67,14 @@ class SectorController extends Controller
             $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
                                         ->select('faculty_extensionists.college_id', 'colleges.code')
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
+        }
+        if(in_array(12, $roles)){
+            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                            ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+        }
+        if(in_array(13, $roles)){
+            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
         $reportsToReview = collect();
@@ -175,18 +184,28 @@ class SectorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        Report::where('id', $report_id)->update(['sector_approval' => 1]);
-
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        
         $report = Report::find($report_id);
-
-
+        
         $receiverData = User::find($report->user_id);
-        $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
-                            ->join('users', 'users.id', 'sector_heads.user_id')
-                            ->where('sector_heads.sector_id', $report->sector_id)
+        
+        if (in_array(13, $roles)) {
+            Report::where('id', $report_id)->update(['sector_approval' => 1]); //associate
+            $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
+                            ->join('users', 'users.id', 'associates.user_id')
+                            ->where('associates.sector_id', $report->sector_id)
                             ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                             ->first();
-
+        }
+        if (in_array(7, $roles)) {
+            Report::where('id', $report_id)->update(['sector_approval' => 2]); //sector_head
+            $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
+                                ->join('users', 'users.id', 'sector_heads.user_id')
+                                ->where('sector_heads.sector_id', $report->sector_id)
+                                ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -273,6 +292,8 @@ class SectorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
@@ -287,11 +308,20 @@ class SectorController extends Controller
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
-        $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
-                        ->join('users', 'users.id', 'sector_heads.user_id')
-                        ->where('sector_heads.sector_id', $report->sector_id)
-                        ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                        ->first();
+        if (in_array(13, $roles)) {
+            $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
+                            ->join('users', 'users.id', 'associates.user_id')
+                            ->where('associates.sector_id', $report->sector_id)
+                            ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                            ->first();
+        }
+        if (in_array(7, $roles)) {
+            $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
+                                ->join('users', 'users.id', 'sector_heads.user_id')
+                                ->where('sector_heads.sector_id', $report->sector_id)
+                                ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -397,21 +427,32 @@ class SectorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
         foreach($reportIds as $report_id){
-            Report::where('id', $report_id)->update(['sector_approval' => 1]);
 
             $report = Report::find($report_id);
 
-
             $receiverData = User::find($report->user_id);
-            $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
-                                ->join('users', 'users.id', 'sector_heads.user_id')
-                                ->where('sector_heads.sector_id', $report->sector_id)
+            if (in_array(13, $roles)) {
+                Report::where('id', $report_id)->update(['sector_approval' => 1]); //associate
+                $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
+                                ->join('users', 'users.id', 'associates.user_id')
+                                ->where('associates.sector_id', $report->sector_id)
                                 ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
                                 ->first();
+            }
+            if (in_array(7, $roles)) {
+                Report::where('id', $report_id)->update(['sector_approval' => 2]); //sector_head
+                $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
+                                    ->join('users', 'users.id', 'sector_heads.user_id')
+                                    ->where('sector_heads.sector_id', $report->sector_id)
+                                    ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -501,6 +542,8 @@ class SectorController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
         $reportIds = $request->input('report_id');
 
         $count = 0;
@@ -519,11 +562,20 @@ class SectorController extends Controller
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
-            $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
-                            ->join('users', 'users.id', 'sector_heads.user_id')
-                            ->where('sector_heads.sector_id', $report->sector_id)
-                            ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                            ->first();
+            if (in_array(13, $roles)) {
+                $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
+                                ->join('users', 'users.id', 'associates.user_id')
+                                ->where('associates.sector_id', $report->sector_id)
+                                ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+            }
+            if (in_array(7, $roles)) {
+                $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
+                                    ->join('users', 'users.id', 'sector_heads.user_id')
+                                    ->where('sector_heads.sector_id', $report->sector_id)
+                                    ->select('sectors.code as sector_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 

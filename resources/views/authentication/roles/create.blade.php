@@ -6,7 +6,6 @@
     </x-slot>
     <div class="container">
       <div class="row justify-content-center">
-
           <div class="col-md-9 offset-md-2">
             @if ($message = Session::get('add_role_success'))
               <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

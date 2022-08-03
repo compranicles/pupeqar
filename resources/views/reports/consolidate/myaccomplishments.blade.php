@@ -58,7 +58,7 @@
                                         <tr class="text-center">
                                             <th>Researcher</th>
                                             <th>Extensionist</th>
-                                            <th>Chairperson</th>
+                                            <th>Chair/Chief</th>
                                             <th>Dean/<br>Director</th>
                                             <th>Sector Head</th>
                                             <th>IPO</th>
@@ -127,7 +127,7 @@
                                                     @elseif ($row->researcher_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->researcher_approval === 1)
-                                                        <span class="text-success font-weight-bold">Received</span>
+                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
                                                 @else
                                                     N/A
@@ -140,7 +140,7 @@
                                                     @elseif ($row->extensionist_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->extensionist_approval === 1)
-                                                        <span class="text-success font-weight-bold">Received</span>
+                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
                                                 @else
                                                     N/A
@@ -183,7 +183,7 @@
                                                     @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                        <span class="text-success font-weight-bold">Received</span>
+                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
                                                 @endif
                                             </td>
@@ -198,7 +198,9 @@
                                                     @elseif ($row->dean_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->dean_approval === 1)
-                                                        <span class="text-success font-weight-bold">Received</span>
+                                                        <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
+                                                    @elseif ($row->dean_approval === 2)
+                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
                                                 @endif
                                             </td>
@@ -213,7 +215,9 @@
                                                     @elseif ($row->sector_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->sector_approval === 1)
-                                                        <span class="text-success font-weight-bold">Received</span>
+                                                        <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
+                                                    @elseif ($row->sector_approval === 2)
+                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
                                                 @endif
                                             </td>
@@ -335,17 +339,17 @@
         <div class="modal-dialog modal-md">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewDenyLabel">Reason for Returned Accomplishment</h5>
+                <h5 class="modal-title" id="viewDenyLabel">Returned Accomplishment</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
                         <table class="table table-sm table-borderless" style="width: 100%" id="view_deny_details_table">
                             <tr id="deny-detail-1">
-                                <td class="font-weight-bold" style="width:50%">Returned By:</td>
+                                <td class="font-weight-bold">Returned By:</td>
                             </tr>
                             <tr id="deny-detail-2">
                                 <td class="font-weight-bold">Date:</td>
@@ -409,11 +413,11 @@
                     var position = data.position_name;
                     var countColumns = 1;
                     var position_name = position.charAt(0).toUpperCase()+position.slice(1);
-                    $('#deny-detail-'+countColumns).append('<td class="report-content">'+position_name+'</td>');
+                    $('#deny-detail-'+countColumns).append('<td class="report-content text-left">'+position_name+'</td>');
                     countColumns = countColumns + 1;
-                    $('#deny-detail-'+countColumns).append('<td class="report-content">'+data.time+'</td>');
+                    $('#deny-detail-'+countColumns).append('<td class="report-content text-left">'+data.time+'</td>');
                     countColumns = countColumns + 1;
-                    $('#deny-detail-'+countColumns).append('<td class="report-content">'+data.reason+'</td>');
+                    $('#deny-detail-'+countColumns).append('<td class="report-content text-left">'+data.reason+'</td>');
                 });
             });
 
