@@ -28,7 +28,7 @@
   --danger: #e3342f;
   --light: #f8f9fa;
   --dark: #343a40;
-  
+
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;
@@ -12834,7 +12834,7 @@ a[data-theme=dark] .badge-dark:focus, a[data-theme=dark] .badge-dark.focus {
 /* ----------------- RESEARCH FORM ACTIVATION ------------------ */
 
 .table-condensed{
-  font-size: 0.625rem !important; 
+  font-size: 0.625rem !important;
 }
 
 .header-padding {
@@ -12853,7 +12853,7 @@ body {
 @media screen and (max-width: 641px) {
   body {
     background: linear-gradient(0deg, rgba(255, 255, 255, .80), rgba(255, 255, 255, .80)), url(/storage/cover2.png) no-repeat;
-  
+
     /* Center and scale the image nicely */
     background-position: right;
     background-size: cover;
@@ -12874,7 +12874,7 @@ body {
 
 .login-card {
   background: inherit;
-  background-color: rgba(255, 255, 255, .80);  
+  background-color: rgba(255, 255, 255, .80);
   /* backdrop-filter: blur(10px); */
   top: 0;
   left: 80%;
@@ -12883,11 +12883,11 @@ body {
   margin: auto;
 }
 
-@media screen and (max-width: 641px) { 
+@media screen and (max-width: 641px) {
   .login-card {
     position: absolute;
     background: inherit;
-    background-color: rgba(255, 255, 255, .80);  
+    background-color: rgba(255, 255, 255, .80);
     top: 0;
     left: 0;
     bottom: 0;
@@ -13057,7 +13057,7 @@ body {
     box-shadow: none;
     border-radius: 0.25rem;
   }
-  
+
   .menu-category {
     margin: 2em 0 .5em;
     padding-top: 1em;
@@ -13071,7 +13071,7 @@ body {
 .nav-link #accomplishment {
   color: rgba(0, 0, 0, 0.5);
   text-decoration: none;
-  
+
 }
 
 .nav-link #accomplishment:hover {
@@ -13174,7 +13174,7 @@ table tr .padding_left_show {
 }
 
 
-.card-img-overlay.db-overlay{ 
+.card-img-overlay.db-overlay{
   border-radius: 0 0 0 0;
     min-width: 0;
     word-wrap: break-word;
@@ -13229,11 +13229,11 @@ table tr .padding_left_show {
 }
 
 .jumptarget::before {
-    display: block; 
-    content: " "; 
-    margin-top: -35px; 
-    height: 75px; 
-    visibility: hidden; 
+    display: block;
+    content: " ";
+    margin-top: -35px;
+    height: 75px;
+    visibility: hidden;
 }
 
 .nav-sub-menu {
@@ -13287,26 +13287,26 @@ table tr .padding_left_show {
     margin-top: -20px;
     margin-bottom: -20px;
   }
-  
+
   .submission-menu.active {
     color: #212529;
     background-color: whitesmoke;
     padding: 20px;
     font-weight: bolder;
   }
-  
+
   .submission-menu.active:hover {
     color: #212529;
     background-color: whitesmoke;
     padding: 20px;
     font-weight: bolder;
   }
-  
+
   .submission-menu:hover {
     color: white;
     text-decoration: none;
   }
-  
+
 }
 
 @media only screen and (max-width: 600px) {
@@ -13323,16 +13323,16 @@ table tr .padding_left_show {
     padding: 10px;
     font-weight: bolder;
   }
-  
+
   .submission-menu.active:hover {
     padding: 10px;
     font-weight: bolder;
   }
-  
+
   .submission-menu:hover {
     color: white;
     text-decoration: none;
-  }  
+  }
 }
 
 /**********************SUBMISSION MODULE*****************************/
@@ -13353,7 +13353,7 @@ table tr .padding_left_show {
   border: none;
   outline: none;
   cursor: pointer;
-  font-size: 3rem; 
+  font-size: 3rem;
   color: #212529;
 }
 
@@ -13381,7 +13381,7 @@ table tr .padding_left_show {
   font-size: 2em;
 }
 .div-bottom-separator {
-  border: none; 
+  border: none;
   border-bottom: 1px solid gainsboro;
   margin-top: 5px;
   margin-bottom: 20px;
@@ -13406,7 +13406,7 @@ table tr .padding_left_show {
 
 .data-card {
   width:120px;
-  max-width:120px; 
+  max-width:120px;
   display: inline-block;
   padding: 8px;
 }
@@ -13423,9 +13423,9 @@ table tr .padding_left_show {
 }
 
 .db-stat {
-  font-size: 2.25em; 
-  margin: 0 15px 0 15px; 
-  
+  font-size: 2.25em;
+  margin: 0 15px 0 15px;
+
 }
 
 a.home-card-links  {
@@ -13434,7 +13434,7 @@ a.home-card-links  {
 }
 
 /**********************SUBMISSION MODULE-MY ACCOMPLISHMENTS*****************************/
-#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table, 
+#my_accomplishments_table, #department_accomplishments_table, #college_accomplishments_table,
 #college_accomplishments_in_sector_table {
   font-size: 12.5px;
 }
@@ -13443,7 +13443,7 @@ a.home-card-links  {
 .nav-link #notificationDropdown {
   color: rgba(0, 0, 0, 0.5);
   text-decoration: none;
-  
+
 }
 
 .nav-link #notificationDropdown:hover {
@@ -13481,7 +13481,7 @@ a.home-card-links  {
     border-radius: 0.25rem;
     background-color: #fff;
   }
-  
+
 }
 
 .notifDiv table tbody tr td {
@@ -13529,18 +13529,18 @@ a.home-card-links  {
 
 /* Track */
 .notif-scrollable::-webkit-scrollbar-track {
-  background: #fff; 
+  background: #fff;
 }
- 
+
 /* Handle */
 .notif-scrollable::-webkit-scrollbar-thumb {
-  background: #EDE9E8; 
+  background: #EDE9E8;
   border-radius: 0.40em;
 }
 
 /* Handle on hover */
 .notif-scrollable::-webkit-scrollbar-thumb:hover {
-  background: #999; 
+  background: #999;
 }
 
 .notif-badge {
@@ -13613,10 +13613,24 @@ z-index: 9999;
   display: flex;
 }
 
-@media screen and (max-width: 641px) { 
+@media screen and (max-width: 641px) {
   .db-col {
     flex-grow: 1;
     max-width: 100%;
     display: inline;
   }
 }
+
+/***********SWITCH ROLE BUTTON************/
+#switch-role {
+  border-radius: 10px;
+  margin: 0 5px 0 5px;
+  background-color: maroon;
+  color: white;
+}
+
+#switch-role:hover {
+  background-color: gold;
+  color: black;
+}
+/****************************************/

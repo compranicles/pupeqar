@@ -112,6 +112,23 @@
                         </div>
                     </li>
 
+                    @BothFacultyAdmin
+                    <li>
+                        <a href="{{ route('switch_type') }}" id="switch-role" class="btn">
+                            <strong>
+                            @if(session()->get('user_type') == 'Faculty Employee')
+                                Switch to Admin
+                            @elseif(session()->get('user_type') == 'Admin Employee')
+                                Switch to Faculty
+                            @else
+                                {{ session()->get('user_type') }}
+                            @endif
+                            </strong>
+                        </a>
+                        <!-- NOTE: Replace the <Admin> -->
+                    </li>
+                    @endBothFacultyAdmin
+
                     <x-jet-dropdown id="settingsDropdown">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())

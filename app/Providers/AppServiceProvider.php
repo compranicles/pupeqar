@@ -203,16 +203,13 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Blade::if('incompleteAccount', function () {
-            $employee = Employee::where('user_id', auth()->id())->first();
-            $roles = (new UserRoleService())->getRolesOfUser(auth()->id());
-            if ($employee == null && (in_array(1, $roles) || in_array(3, $roles))) {
-                request()->session()->flash('flash.banner', "Complete your account information. Click here.");
+        Blade::if('BothFacultyAdmin', function () {          
+            $userRoles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
+            if(in_array(1, $userRoles) && in_array(3, $userRoles))
                 return 1;
-            }
-            else {
+            else
                 return 0;
-            }
         });
     }
 }

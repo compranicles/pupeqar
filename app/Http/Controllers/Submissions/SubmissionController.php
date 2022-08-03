@@ -2689,6 +2689,13 @@ class SubmissionController extends Controller
         $report_controller = new ReportDataController;
         $user_id = auth()->id();
         $currentQuarterYear = Quarter::find(1);
+        $getUserTypeFromSession = session()->get('user_type');
+        $format_type = '';
+        if($getUserTypeFromSession == 'Faculty Employee')
+            $format_type = 'f';
+        elseif($getUserTypeFromSession == 'Admin Employee')
+            $format_type = 'a';
+
 
         $report_details;
         $reportColumns;
@@ -2734,6 +2741,7 @@ class SubmissionController extends Controller
                     'sector_id' => $sector_id,
                     'college_id' => $collegeAndDepartment->college_id,
                     'department_id' => $collegeAndDepartment->department_id,
+                    'format' => $format_type,
                     'report_category_id' => $report_values_array[1],
                     'report_code' => $report_values_array[0] ?? null,
                     'report_reference_id' => $report_values_array[2] ?? null,
@@ -2832,6 +2840,7 @@ class SubmissionController extends Controller
                     'sector_id' => $sector_id,
                     'college_id' => $collegeAndDepartment->college_id,
                     'department_id' => $collegeAndDepartment->department_id,
+                    'format' => $format_type,
                     'report_category_id' => $report_values_array[1],
                     'report_code' => $report_values_array[0] ?? null,
                     'report_reference_id' => $report_values_array[2] ?? null,
@@ -2915,6 +2924,7 @@ class SubmissionController extends Controller
                         'sector_id' => $sector_id,
                         'college_id' => $collegeAndDepartment->college_id ?? null,
                         'department_id' => $collegeAndDepartment->department_id ?? null,
+                        'format' => 'x',
                         'report_category_id' => $report_values_array[1],
                         'report_code' => $report_values_array[0] ?? null,
                         'report_reference_id' => $report_values_array[2] ?? null,
@@ -2942,6 +2952,7 @@ class SubmissionController extends Controller
                         'sector_id' => $sector_id ?? null,
                         'college_id' => $collegeAndDepartment->college_id ?? null,
                         'department_id' => $collegeAndDepartment->department_id ?? null,
+                        'format' => 'x',
                         'report_category_id' => $report_values_array[1],
                         'report_code' => $report_values_array[0] ?? null,
                         'report_reference_id' => $report_values_array[2] ?? null,

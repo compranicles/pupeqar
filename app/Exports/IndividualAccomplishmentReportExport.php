@@ -25,7 +25,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class IndividualAccomplishmentReportExport implements FromView, WithEvents
 {
-    function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate, 
+    function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate,
     $cbco, $id, $get_college, $get_sector, $director, $sector_head) {
         $this->source_type = $source_type;
         $this->report_format = $reportFormat;
@@ -38,7 +38,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
         $this->get_sector = $get_sector;
         $this->director = $director;
         $this->sector_head = $sector_head;
-        
+
         $user = User::where('id', auth()->id())->first();
         $this->signature = $user->signature;
         $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
@@ -72,7 +72,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
         $user = $this->user;
         $director = $this->director;
         $sector_head = $this->sector_head;
-        
+
         if($reportFormat == "academic"){
             if($source_generate == "my"){
                 $source_type = "individual";
@@ -86,14 +86,15 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     else
                         $table_columns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
                 }
-                
+
                 $table_contents = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                            ->where('user_roles.role_id', 1)
+                            // ->where('user_roles.role_id', 1)
+                            ->whereIn('reports.format', ['f', 'x'])
                             ->whereNull('user_roles.deleted_at')
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
@@ -119,14 +120,15 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     else
                         $table_columns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
                 }
-                
+
                 $table_contents = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                            ->where('user_roles.role_id', 3)
+                            // ->where('user_roles.role_id', 1)
+                            ->whereIn('reports.format', ['a', 'x'])
                             ->whereNull('user_roles.deleted_at')
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
@@ -139,14 +141,14 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         }
                     }
                 }
-                
+
         $this->table_format = $table_format;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;
 
         return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'id', 'user', 'director', 'sector_head'));
     }
-    
+
     public function registerEvents(): array {
         return [
             AfterSheet::class => function(Aftersheet $event) {
@@ -159,7 +161,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->mergeCells('A1:G1');
                 if ($this->source_type == "individual") {
                     if ($this->report_format == "academic")
-                    {   
+                    {
                         $event->sheet->setCellValue('A1', 'FACULTY INDIVIDUAL ACCOMPLISHMENT REPORT');
                         $event->sheet->getStyle('A1')->applyFromArray([
                             'font' => [
@@ -197,7 +199,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     elseif ($this->report_format == "admin")
                         $event->sheet->setCellValue('B2', 'OFFICE:');
                 }
-                        
+
                 $event->sheet->getStyle('B2')->applyFromArray([
                     'font' => [
                         'size' => 16,
@@ -274,7 +276,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $table_contents = $this->table_contents;
                 foreach($table_format as $format) {
                     if($format->is_table == '0'){
-                        
+
                         //title
                         $event->sheet->mergeCells('A'.$count.':K'.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
@@ -303,7 +305,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         // title
                         $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
-                        
+
                         if ($format->is_individual == '0') {
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FF002060");
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('ffffffff');
@@ -329,7 +331,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                         $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -393,7 +395,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                                 $count++;
                             }
                         }
-                        
+
                         $count += 2;
                     }
                 }
@@ -404,7 +406,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
-                        'bold' => true, 
+                        'bold' => true,
                         'size' => 14
                     ],
                 ]);
@@ -428,7 +430,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
-                        'bold' => true, 
+                        'bold' => true,
                         'size' => 14
                     ],
                 ]);
@@ -452,7 +454,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 $event->sheet->getStyle('A'.$count.':E'.$count)->applyFromArray([
                     'font' => [
                         'name' => 'Arial',
-                        'bold' => true, 
+                        'bold' => true,
                         'size' => 14
                     ],
                 ]);

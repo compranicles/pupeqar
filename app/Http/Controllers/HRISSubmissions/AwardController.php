@@ -308,6 +308,13 @@ class AwardController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
+        $getUserTypeFromSession = session()->get('user_type');
+        $format_type = '';
+        if($getUserTypeFromSession == 'Faculty Employee')
+            $format_type = 'f';
+        elseif($getUserTypeFromSession == 'Admin Employee')
+            $format_type = 'a';
+
         Report::where('report_reference_id', $award_id)
             ->where('report_category_id', 27)
             ->where('user_id', auth()->id())
@@ -320,6 +327,7 @@ class AwardController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $award->college_id,
             'department_id' => $award->department_id,
+            'format' => $format_type,
             'report_category_id' => 27,
             'report_code' => null,
             'report_reference_id' => $award_id,

@@ -305,6 +305,13 @@ class OfficershipController extends Controller
         ];
 
         $currentQuarterYear = Quarter::find(1);
+        $getUserTypeFromSession = session()->get('user_type');
+        $format_type = '';
+        if($getUserTypeFromSession == 'Faculty Employee')
+            $format_type = 'f';
+        elseif($getUserTypeFromSession == 'Admin Employee')
+            $format_type = 'a';
+        
 
         Report::where('report_reference_id', $officership_id)
             ->where('report_category_id', 28)
@@ -318,6 +325,7 @@ class OfficershipController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $officership->college_id,
             'department_id' => $officership->department_id,
+            'format' => $format_type,
             'report_category_id' => 28,
             'report_code' => null,
             'report_reference_id' => $officership_id,

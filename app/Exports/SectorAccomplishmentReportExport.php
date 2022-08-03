@@ -31,15 +31,16 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
         $table_format = [];
         $table_columns = [];
         $table_contents = [];
+        $employee_type = [];
 
         if($this->type == "academic") {
             //get the table names
             $table_format = GenerateTable::whereIn('type_id', [2,4])->get();
-            $employee_type = 1;
+            $employee_type = ['f', 'x'];
         }
         elseif ($this->type == 'admin') {
             $table_format = GenerateTable::whereIn('type_id', [1,4])->get();
-            $employee_type = 3;
+            $employee_type = ['a', 'x'];
         }
 
         //get the table columns/headers
@@ -59,9 +60,9 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                     if ($format->type_id != 4) {
                         $table_contents[$format->id] =
                             Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                                ->where('user_roles.role_id', $employee_type)
+                                ->whereIn('reports.format', $employee_type)
                                 ->whereNull('user_roles.deleted_at')
-                                ->select('reports.*', 
+                                ->select('reports.*',
                                 DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                     'sectors.name as sector_name',
                                     'departments.name as department_name',
@@ -83,7 +84,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                     } else {
                         $table_contents[$format->id] =
                             Report::
-                                select('reports.*', 
+                                select('reports.*',
                                 DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                     'sectors.name as sector_name',
                                     'departments.name as department_name',
@@ -106,9 +107,9 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                 elseif($this->asked = 'sector') {
                     $table_contents[$format->id] =
                         Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                        ->where('user_roles.role_id', $employee_type)
+                        ->whereIn('reports.format', $employee_type)
                         ->whereNull('user_roles.deleted_at')
-                        ->select('reports.*', 
+                        ->select('reports.*',
                             DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                 'sectors.name as sector_name',
                                 'departments.name as department_name',
@@ -164,8 +165,8 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                 foreach ($table_format as $format) {
 
                     if ($format->is_table == '1') {
-                        
-                        //columns 
+
+                        //columns
                         $columnTWO = Coordinate::stringFromColumnIndex(2);
                         $length = count($table_columns[$format->id]);
                         if ($length == null){
@@ -175,7 +176,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                             $length = $length+6;
                         }
                         $letter = Coordinate::stringFromColumnIndex($length);
-                        
+
                         if($format->name != ''){
                             $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
@@ -183,7 +184,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB('FFC00000');
                             $event->sheet->getRowDimension($count)->setRowHeight(30);
                             $count++;
-                            
+
                             $event->sheet->mergeCells('A'.$count.':'.$letter.$count);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
@@ -198,7 +199,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                         $event->sheet->getStyle('A'.$count.':'.$columnTWO.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -207,14 +208,14 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                 ],
                             ],
                         ]);
-                        
+
                         $columnTHREE = Coordinate::stringFromColumnIndex(3);
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                         $event->sheet->getStyle( $columnTHREE.$count.':'.$letter.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -299,7 +300,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                         }
                         else
                             $count++;
-                        
+
                         $count += 1;
                     }
                 }

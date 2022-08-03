@@ -342,6 +342,13 @@ class EducationController extends Controller
         ];
 
         $currentQuarterYear = Quarter::find(1);
+        $getUserTypeFromSession = session()->get('user_type');
+        $format_type = '';
+        if($getUserTypeFromSession == 'Faculty Employee')
+            $format_type = 'f';
+        elseif($getUserTypeFromSession == 'Admin Employee')
+            $format_type = 'a';
+
 
         Report::where('report_reference_id', $education_id)
             ->where('report_category_id', 24)
@@ -355,6 +362,7 @@ class EducationController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $education->college_id,
             'department_id' => $education->department_id,
+            'format' => $format_type,
             'report_category_id' => 24,
             'report_code' => null,
             'report_reference_id' => $education_id,

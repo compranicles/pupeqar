@@ -53,7 +53,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
         $table_contents;
         $data;
         $source_type;
-        
+
         if($reportFormat == "academic"){
             if($source_generate == "department"){
                 $source_type = "department";
@@ -74,7 +74,8 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                            ->where('user_roles.role_id', 1)
+                            // ->where('user_roles.role_id', 1)
+                            ->whereIn('reports.format', ['f', 'x'])
                             ->whereNull('user_roles.deleted_at')
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.department_id', $department_id)
@@ -102,14 +103,15 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     else
                         $table_columns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
                 }
-                
+
                 $table_contents = [];
                 foreach ($table_format as $format){
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
                         $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                        ->where('user_roles.role_id', 3)
+                        // ->where('user_roles.role_id', 1)
+                        ->whereIn('reports.format', ['a', 'x'])
                         ->whereNull('user_roles.deleted_at')
                         ->where('reports.report_category_id', $format->report_category_id)
                         ->where('reports.department_id', $department_id)
@@ -122,7 +124,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         ->get()->toArray();
                 }
             }
-            
+
         }
 
         $this->table_format = $table_format;
@@ -231,7 +233,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                 $table_contents = $this->table_contents;
                 foreach($table_format as $format) {
                     if($format->is_table == '0'){
-                        
+
                         //title
                         $event->sheet->mergeCells('A'.$count.':K'.$count);
                         $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
@@ -268,7 +270,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                             $event->sheet->getStyle('A'.$count)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB("FFFFC000");
                             $event->sheet->getStyle('A'.$count)->getFont()->getColor()->setARGB('FFC00000');
                         }
-                        
+
                         $event->sheet->getRowDimension($count)->setRowHeight(30);
                         $event->sheet->getStyle('A'.$count)->applyFromArray([
                             'font' => [
@@ -283,7 +285,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         $event->sheet->getStyle('A'.$count.':'.$letter.$count)->applyFromArray([
                             'font' => [
                                 'name' => 'Arial',
-                                'bold' => true, 
+                                'bold' => true,
                                 'size' => 14
                             ],
                             'borders' => [
@@ -341,7 +343,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                                 $count++;
                             }
                         }
-                        
+
                         $count += 2;
                     }
                 }
@@ -350,7 +352,7 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
                             'name' => 'Arial',
-                            'bold' => true, 
+                            'bold' => true,
                             'size' => 14
                         ],
                     ]);
@@ -362,29 +364,29 @@ class DepartmentConsolidatedAccomplishmentReportExport implements FromView, With
                         $sheet = $event->sheet->getDelegate();
                         echo $this->addImage($path, $coordinates, $sheet);
                     }
-                    
+
                     /*  */
                     $event->sheet->setCellValue('A'.$count, $this->arranged_name);
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
                             'name' => 'Arial',
-                            'bold' => true, 
+                            'bold' => true,
                             'size' => 14
                         ],
                     ]);
                     $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-    
-                    
+
+
                     $count = $count + 1;
                     $event->sheet->setCellValue('A'.$count, 'Chairperson, '.$this->departmentName);
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
                             'name' => 'Arial',
-                            'bold' => true, 
+                            'bold' => true,
                             'size' => 14
                         ],
                     ]);
-     
+
                 $event->sheet->getStyle('A'.$count)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('A'.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
