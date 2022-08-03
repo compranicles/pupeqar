@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\{
     URL,
 };
 use App\Models\{
+    Associate,
     Chairperson,
     Dean,
     Employee,
@@ -184,7 +185,7 @@ class UserController extends Controller
         //                                 ->where('user_roles.user_id', '=', $user->id)
         //                                 ->select('role_permissions.role_id')
         //                                 ->get();
-        $roles = Role::get();
+        $roles = Role::orderBy('name')->get();
         $yourroles = $user->userrole()->pluck('role_id')->all();
         $permissions = Permission::get();
 
@@ -198,8 +199,11 @@ class UserController extends Controller
         $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
         $researcher = FacultyResearcher::join('colleges', 'colleges.id', 'faculty_researchers.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $extensionist = FacultyExtensionist::join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
-
-        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments', 'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist'));
+        $associateDeanDirector = Associate::join('colleges', 'colleges.id', 'associates.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
+        $assistantVP = Associate::join('sectors', 'sectors.id', 'associates.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
+        return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments',
+         'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist', 
+         'associateDeanDirector', 'assistantVP'));
     }
 
     /**
@@ -255,6 +259,7 @@ class UserController extends Controller
                 }
             }
         }
+
 
         if(!in_array(5, $checkedroles)){
             Chairperson::where('user_id', $user->id)->delete();
@@ -316,10 +321,28 @@ class UserController extends Controller
                 ]);
             }
         }
-        
-        
-        
 
+        if(!in_array(12, $checkedroles) || !in_array(13, $checkedroles)){
+            Associate::where('user_id', $user->id)->delete();
+        }
+        if (in_array(12, $checkedroles)){
+            Associate::where('user_id', $user->id)->delete();
+            foreach($request->input('collegeAssociate') as $college){
+                $i = Associate::updateOrCreate([ 
+                    'user_id' => $user->id, 
+                    'college_id' => $college, 
+                ]);
+            }
+        }
+        if (in_array(13, $checkedroles)) {
+            Associate::where('user_id', $user->id)->delete();
+            foreach($request->input('sectorAssistant') as $sector){
+                Associate::updateOrCreate([ 
+                    'user_id' => $user->id, 
+                    'sector_id' => $sector, 
+                ]);
+            }
+        }
 
         return redirect()->route('admin.users.index')->with('edit_user_success','User record updated successfully.');
     }

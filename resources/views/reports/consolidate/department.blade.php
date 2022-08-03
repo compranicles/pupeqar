@@ -64,7 +64,7 @@
                                 <tr class="text-center">
                                     <th>Researcher</th>
                                     <th>Extensionist</th>
-                                    <th>Chairperson</th>
+                                    <th>Chair/Chief</th>
                                     <th>Dean/<br>Director</th>
                                     <th>Sector Head</th>
                                     <th>IPO</th>
@@ -134,7 +134,7 @@
                                             @elseif ($row->researcher_approval == 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
                                             @elseif ($row->researcher_approval == 1)
-                                                <span class="text-success font-weight-bold">Received</span>
+                                                <span class="text-success font-weight-bold">Reviewed</span>
                                             @endif
                                         @else
                                             N/A
@@ -147,7 +147,7 @@
                                             @elseif ($row->extensionist_approval == 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
                                             @elseif ($row->extensionist_approval == 1)
-                                                <span class="text-success font-weight-bold">Received</span>
+                                                <span class="text-success font-weight-bold">Reviewed</span>
                                             @endif
                                         @else
                                             N/A
@@ -190,7 +190,7 @@
                                             @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
                                                 <span class="text-danger font-weight-bold">Returned</span>
                                             @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                <span class="text-success font-weight-bold">Received</span>
+                                                <span class="text-success font-weight-bold">Reviewed</span>
                                             @endif
                                         @endif
                                     </td>
@@ -205,7 +205,9 @@
                                             @elseif ($row->dean_approval === 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
                                             @elseif ($row->dean_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
+                                                <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
+                                            @elseif ($row->dean_approval === 2)
+                                                <span class="text-success font-weight-bold">Reviewed</span>
                                             @endif
                                         @endif
                                     </td>
@@ -220,7 +222,9 @@
                                             @elseif ($row->sector_approval === 0)
                                                 <span class="text-danger font-weight-bold">Returned</span>
                                             @elseif ($row->sector_approval === 1)
-                                                <span class="text-success font-weight-bold">Received</span>
+                                                <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
+                                            @elseif ($row->sector_approval === 2)
+                                                <span class="text-success font-weight-bold">Reviewed</span>
                                             @endif
                                         @endif
                                     </td>

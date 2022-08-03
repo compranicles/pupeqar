@@ -98,6 +98,24 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '8', 'permission_id' => 48]);
         RolePermission::insert(['role_id' => '8', 'permission_id' => 49]);
 
+        /***** Associate/Assistant Dean/Director *****/
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 29]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 31]);
+        for ($d = 34; $d <= 39; $d++) {
+            RolePermission::insert(['role_id' => '12', 'permission_id' => $d]);
+        }
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 41]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 44]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 45]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 63]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 64]);
+        RolePermission::insert(['role_id' => '12', 'permission_id' => 66]);
+
+        /***** Assistant to VP *****/
+        RolePermission::insert(['role_id' => '13', 'permission_id' => 41]);
+        RolePermission::insert(['role_id' => '13', 'permission_id' => 46]);
+        RolePermission::insert(['role_id' => '13', 'permission_id' => 47]);
+
         Schema::disableForeignKeyConstraints();
 
     }

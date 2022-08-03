@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use App\Models\{
+    Associate,
     Chairperson,
     Dean,
     DenyReason,
@@ -65,6 +66,14 @@ class DeanController extends Controller
             $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
                                         ->select('faculty_extensionists.college_id', 'colleges.code')
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
+        }
+        if(in_array(12, $roles)){
+            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                            ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+        }
+        if(in_array(13, $roles)){
+            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
         $reportsToReview = collect();
@@ -180,17 +189,29 @@ class DeanController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        Report::where('id', $report_id)->update(['dean_approval' => 1]);
-
+        
         $report = Report::find($report_id);
 
-
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+        
         $receiverData = User::find($report->user_id);
-        $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
-                            ->join('users', 'users.id', 'deans.user_id')
-                            ->where('deans.college_id', $report->college_id)
-                            ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                            ->first();
+        
+        if (in_array(12, $roles)) {
+            Report::where('id', $report_id)->update(['dean_approval' => 1]); //associates
+            $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
+                                ->join('users', 'users.id', 'associates.user_id')
+                                ->where('associates.college_id', $report->college_id)
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
+        if (in_array(6, $roles)) {
+            Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
+            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                ->join('users', 'users.id', 'deans.user_id')
+                                ->where('deans.college_id', $report->college_id)
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -203,7 +224,7 @@ class DeanController extends Controller
             $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -220,7 +241,7 @@ class DeanController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $receiverData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -254,12 +275,25 @@ class DeanController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        DenyReason::create([
-            'report_id' => $report_id,
-            'user_id' => auth()->id(),
-            'position_name' => 'dean',
-            'reason' => $request->input('reason'),
-        ]);
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
+        if (in_array(12, $roles)) {
+            DenyReason::create([
+                'report_id' => $report_id,
+                'user_id' => auth()->id(),
+                'position_name' => 'Associate/Assistant Dean/Director',
+                'reason' => $request->input('reason'),
+            ]);
+        }
+
+        if (in_array(6, $roles)) {
+            DenyReason::create([
+                'report_id' => $report_id,
+                'user_id' => auth()->id(),
+                'position_name' => 'Dean/Director',
+                'reason' => $request->input('reason'),
+            ]);
+        }
 
         Report::where('id', $report_id)->update([
             'dean_approval' => 0
@@ -268,11 +302,21 @@ class DeanController extends Controller
         $report = Report::find($report_id);
 
         $returnData = User::find($report->user_id);
-        $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
-                            ->join('users', 'users.id', 'deans.user_id')
-                            ->where('deans.college_id', $report->college_id)
-                            ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                            ->first();
+
+        if (in_array(12, $roles)) {
+            $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
+                                ->join('users', 'users.id', 'associates.user_id')
+                                ->where('associates.college_id', $report->college_id)
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
+        if (in_array(6, $roles)) {
+            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                ->join('users', 'users.id', 'deans.user_id')
+                                ->where('deans.college_id', $report->college_id)
+                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                ->first();
+        }
 
         $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -286,7 +330,7 @@ class DeanController extends Controller
             $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -305,7 +349,7 @@ class DeanController extends Controller
             $acc_type = 'individual';
 
             $notificationData = [
-                'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                 'receiver' => $returnData->first_name,
                 'url' => $url,
                 'category_name' => $report_category_name,
@@ -321,7 +365,12 @@ class DeanController extends Controller
 
         Notification::send($returnData, new ReturnNotification($notificationData));
 
-        \LogActivity::addToLog('Dean returned an accomplishment.');
+        if (in_array(12, $roles)) {
+            \LogActivity::addToLog('Associate/Assistant Dean/Director returned an accomplishment.');
+        }
+        if (in_array(6, $roles)) {
+            \LogActivity::addToLog('Dean/Director returned an accomplishment.');
+        }
 
         return redirect()->route('director.index')->with('success', 'Report has been returned to the owner.');
     }
@@ -354,19 +403,30 @@ class DeanController extends Controller
 
         $reportIds = $request->input('report_id');
 
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
         $count = 0;
         foreach($reportIds as $report_id){
-            Report::where('id', $report_id)->update(['dean_approval' => 1]);
-
+            
             $report = Report::find($report_id);
-
-
+            
             $receiverData = User::find($report->user_id);
-            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
-                                ->join('users', 'users.id', 'deans.user_id')
-                                ->where('deans.college_id', $report->college_id)
-                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                                ->first();
+            if (in_array(12, $roles)) {
+                Report::where('id', $report_id)->update(['dean_approval' => 1]); //associates
+                $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
+                                    ->join('users', 'users.id', 'associates.user_id')
+                                    ->where('associates.college_id', $report->college_id)
+                                    ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
+            if (in_array(6, $roles)) {
+                Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
+                $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                    ->join('users', 'users.id', 'deans.user_id')
+                                    ->where('deans.college_id', $report->college_id)
+                                    ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -379,7 +439,7 @@ class DeanController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                    'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -397,7 +457,7 @@ class DeanController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                    'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $receiverData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -436,26 +496,48 @@ class DeanController extends Controller
 
         $reportIds = $request->input('report_id');
 
+        $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
+
         $count = 0;
         foreach($reportIds as $report_id){
             if($request->input('reason_'.$report_id) == null)
                 continue;
             Report::where('id', $report_id)->update(['dean_approval' => 0]);
-            DenyReason::create([
-                'report_id' => $report_id,
-                'user_id' => auth()->id(),
-                'position_name' => 'dean',
-                'reason' => $request->input('reason_'.$report_id),
-            ]);
-
+            if (in_array(12, $roles)) {
+                DenyReason::create([
+                    'report_id' => $report_id,
+                    'user_id' => auth()->id(),
+                    'position_name' => 'Associate/Assistant Dean/Director',
+                    'reason' => $request->input('reason'),
+                ]);
+            }
+    
+            if (in_array(6, $roles)) {
+                DenyReason::create([
+                    'report_id' => $report_id,
+                    'user_id' => auth()->id(),
+                    'position_name' => 'Dean/Director',
+                    'reason' => $request->input('reason'),
+                ]);
+            }
+    
             $report = Report::find($report_id);
 
             $returnData = User::find($report->user_id);
-            $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
-                                ->join('users', 'users.id', 'deans.user_id')
-                                ->where('deans.college_id', $report->college_id)
-                                ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
-                                ->first();
+            if (in_array(12, $roles)) {
+                $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
+                                    ->join('users', 'users.id', 'associates.user_id')
+                                    ->where('associates.college_id', $report->college_id)
+                                    ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
+            if (in_array(6, $roles)) {
+                $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
+                                    ->join('users', 'users.id', 'deans.user_id')
+                                    ->where('deans.college_id', $report->college_id)
+                                    ->select('colleges.code as college_code', 'users.first_name', 'users.middle_name', 'users.last_name', 'users.suffix')
+                                    ->first();
+            }
 
             $report_category_name = ReportCategory::where('id', $report->report_category_id)->pluck('name')->first();
 
@@ -469,7 +551,7 @@ class DeanController extends Controller
                 $department_name = Department::where('id', $report->department_id)->pluck('name')->first();
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                    'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -488,7 +570,7 @@ class DeanController extends Controller
                 $acc_type = 'individual';
 
                 $notificationData = [
-                    'sender' => $senderName->first_name.' '.$senderName->middle_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
+                    'sender' => $senderName->first_name.' '.$senderName->last_name.' '.$senderName->suffix.' ('.$senderName->college_code.')',
                     'receiver' => $returnData->first_name,
                     'url' => $url,
                     'category_name' => $report_category_name,
@@ -506,8 +588,12 @@ class DeanController extends Controller
             $count++;
         }
 
-        \LogActivity::addToLog('Dean returned '.$count.' accomplishments.');
-
+        if (in_array(12, $roles)) {
+            \LogActivity::addToLog('Associate/Assistant Dean/Director returned '.$count.' accomplishments.');
+        }
+        if (in_array(6, $roles)) {
+            \LogActivity::addToLog('Dean/Director returned '.$count.' accomplishments.');
+        }
         return redirect()->route('director.index')->with('success', 'Report/s returned to the owner/s.');
     }
 }
