@@ -13608,7 +13608,7 @@ z-index: 9999;
 }
 
 .db-col {
-  flex-grow: 1;
+  flex-grow: 0.10;
   max-width: 100%;
   display: flex;
 }

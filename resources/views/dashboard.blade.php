@@ -1,5 +1,4 @@
 <x-app-layout>
-    <div class="container">
         <div class="row">
             <div class="d-flex col-md-12">
                 <h5> {{ $user['first_name'].' '.($user['middle_name'] == '' ? '' : $user['middle_name']).' '.$user['last_name'] }}</h5> <p class="ml-3">{{$userRoleNames}}</p>
@@ -26,7 +25,7 @@
                             @if (in_array(5, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
-                                    <h5 class="card-header font-weight-bold text-center">Chair/Chief</h5>
+                                    <h5 class="card-header text-center">Chair/Chief</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[5] as $value)
                                             @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'departmentID' => $value->department_id, 'departmentCode' => $value->code])
@@ -38,7 +37,7 @@
                             @if (in_array(10, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
-                                    <h5 class="card-header font-weight-bold text-center">Researcher</h5>
+                                    <h5 class="card-header text-center">Researcher</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[10] as $value)
                                             @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->college_id], 'collegeCode' => $value->code ])
@@ -50,7 +49,7 @@
                             @if (in_array(11, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
-                                    <h5 class="card-header font-weight-bold text-center">Extensionist</h5>
+                                    <h5 class="card-header text-center">Extensionist</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[11] as $value)
                                             @include('dashboard.extensionist', ['countToReview' => $countToReview[11][$value->college_id], 'collegeCode' => $value->code ])
@@ -62,7 +61,7 @@
                             @if (in_array(6, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
-                                    <h5 class="card-header font-weight-bold text-center">Dean/Director</h5>
+                                    <h5 class="card-header text-center">Dean/Director</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($college[6] as $value)
                                             @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'collegeID' => $value->college_id, 'collegeCode' => $value->code])
@@ -75,7 +74,7 @@
                             @if (in_array(7, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
-                                    <h5 class="card-header font-weight-bold text-center">Sector Head</h5>
+                                    <h5 class="card-header text-center">Sector Head</h5>
                                     
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($sector[7] as $value)
@@ -88,7 +87,7 @@
                             @if (in_array(8, $roles))
                                 <div class="db-col mb-2">
                                     <div class="db-card">
-                                        <h5 class="card-header font-weight-bold text-center">IPO</h5>
+                                        <h5 class="card-header text-center">IPO</h5>
                                         <div class="card-body d-flex justify-content-center">@include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 
                                             'countExpectedTotal' => $countExpectedTotal[8], 'countReceived' => $countReceived[8]])
                                         </div>
@@ -100,40 +99,6 @@
                             @endif
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="row">
-                    @if (in_array(8, $roles) || in_array(9, $roles))
-                    <div class="col-md-12 mb-4">
-                        <div class="card">
-                        <h5 class="card-header"><i class="bi bi-person-lines-fill mr-2" style="color: #820001;"></i> Activity Log <small class="ml-2"><a href="{{ route('logs.all') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>
-                            <div class="card-body">
-                                <table class="table table-sm table-borderless fixed_header" id="log_activity_table" style="height: 15rem;">
-                                    <tbody>
-                                    </tbody>
-                                    <p class="align-middle text-center" id="no-data-message-admin"></p>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    @else
-                    <div class="col-md-12 mb-4">
-                        <div class="card">
-                        <h5 class="card-header"><i class="bi bi-person-lines-fill mr-2" style="color: #820001;"></i> Recent Activity <small class="ml-2"><a href="{{ route('logs.user') }}" class="home-card-links" style="color: #5b0616;">View all.</a></small></h5>
-                            <div class="card-body">
-                                <table class="table table-sm table-borderless fixed_header" id="log_activity_individual_table" style="height: 15rem;">
-                                    <tbody>
-                                    </tbody>
-                                    <p class="align-middle text-center" id="no-data-message-indi"></p>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
                 </div>
             </div>
             <div class="col-md-4">
@@ -197,7 +162,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     @push('scripts')
     <script>
@@ -215,56 +179,6 @@
           modalSubTitle.textContent = "Date Announced: " + date
           modalBody.textContent = message
         });
-    </script>
-    <script>
-        $(function(){
-            getLog();
-            getLogInd();
-
-            setInterval(getLog, 60000);
-            setInterval(getLogInd, 60000);
-        });
-
-        function getLog(){
-            
-
-            $.get('{{ url("/get-dashboard-list") }}', function (data){
-                var countColumns = 0;
-                $('.activity-log-content').remove();
-                if (data.length == 0) {
-                    $('#no-data-message-admin').text('No recent logs to show.');
-                } else
-                    $("#no-data-message-admin").css("display", "none");
-                data.forEach(function(item){
-                    $('#log_activity_table').append('<tr id="activity-log-'+countColumns+'" class="activity-log-content"></tr>');
-                    $('#activity-log-'+countColumns)
-                        .append('<td class="activity-log-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #373E45;"></i>'+
-                                item.subject
-                            +'<div class="text-muted ml-4"><small>'+item.name+' &#183; '+item.created_at+'</small></div></td>'
-                        );
-                    countColumns++;
-                });
-            });
-        }
-        function getLogInd(){
-            $.get('{{ url("/get-dashboard-list-indi") }}', function (data){
-                var countColumns = 0;
-                $('.activity-log-indi-content').remove();
-                if (data.length == 0) {
-                    $('#no-data-message-indi').text('No recent activities to show.');
-                } else
-                    $("#no-data-message-indi").css("display", "none");
-                data.forEach(function(item){
-                    $('#log_activity_individual_table').append('<tr id="activity-log-indi-'+countColumns+'" class=" activity-log-indi-content"></tr>');
-                    $('#activity-log-indi-'+countColumns)
-                        .append('<td class="activity-log-indi-content text-small border-bottom"><i class="bi bi-square-fill mr-2" style="color: #373E45;"></i>'+
-                                item.subject
-                            +'<div class="text-muted ml-4"><small>'+item.created_at+'</small></div></td>'
-                        );
-                    countColumns++;
-                });
-            });
-        }
     </script>
     @endpush
 </x-app-layout>

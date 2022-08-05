@@ -94,6 +94,14 @@
                     </x-jet-nav-link>
                 </li>
                 @endIsReporting
+
+                @SuperAdmin
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('logs.all') }}" :active="request()->routeIs('logs.all') ">
+                        {{ __('Activity Log') }}
+                    </x-jet-nav-link>
+                </li>
+                @endSuperAdmin
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -151,6 +159,10 @@
 
                             <x-jet-dropdown-link href="{{ route('profile.personal') }}">
                                 {{ __('Profile') }}
+                            </x-jet-dropdown-link>
+
+                            <x-jet-dropdown-link href="{{ route('logs.user') }}">
+                                {{ __('Activity Log') }}
                             </x-jet-dropdown-link>
 
                             {{-- <x-jet-dropdown-link href="{{ route('manage.account') }}">

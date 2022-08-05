@@ -3,8 +3,8 @@
       <div class="row justify-content-center">
         <div class="col-md-9 offset-md-2">
           <div class="d-flex align-content-center">
-            <h3 class="font-weight-bold">Edit User Access</h3>
-            <p class="mt-2 ml-3">
+            <h3 class="font-weight-bold ml-3">Edit User Access</h3>
+            <p class="mt-1 ml-3">
               <a class="back_link" href="{{ route('admin.users.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Users</a>
             </p>
           </div>
