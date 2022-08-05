@@ -22,9 +22,21 @@
             <option value="" selected disabled>Choose...</option>
             @isset($dropdown_options[$fieldInfo->name])
                 @foreach($dropdown_options[$fieldInfo->name] as $option)
-                    <option value="{{ $option->id }}" {{ (old($fieldInfo->name, $value )== $option->id) ? 'selected' : '' }}>{{ $option->name }}</option>
+                    <option value="{{ $option->id }}" {{ (old($fieldInfo->name, $value ) == $option->id) ? 'selected' : '' }}>{{ $option->name }}</option>
                 @endforeach
             @endisset
+            @if (isset($fieldInfo->h_r_i_s_form_id))
+            @if ($fieldInfo->h_r_i_s_form_id == 4 && $fieldInfo->name == 'fund_source')
+                <span class="ml-3" role="alert">
+                    <option value="0" {{ (old($fieldInfo->name, $value ) == 0) ? 'selected' : '' }}>Not a Paid Seminar/Training</option>
+                </span>
+            @endif
+            @if ($fieldInfo->h_r_i_s_form_id == 1 && $fieldInfo->name != 'level')
+                <span class="ml-3" role="alert">
+                    <option value="0" {{ (old($fieldInfo->name, $value ) == 0) ? 'selected' : '' }}>Not Applicable</option>
+                </span>
+            @endif
+        @endif
 
         </select>
 

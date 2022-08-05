@@ -26,6 +26,12 @@
                                 <hr>
                             </div>
                             <div class="col-md-12">
+                                <div class="mb-3 ml-1">
+                                    <div class="d-inline mr-2">
+                                        <a href="{{ route('submissions.officership.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add</a>
+                                    </div>
+                                </div>
+                                <hr>
                                 @include('instructions')
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="officership_table">
@@ -66,6 +72,7 @@
                                                                 @endif
                                                             @else
                                                                 <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Add</a>
+                                                                <button type="button" value="{{ $officership->EmployeeOfficershipMembershipID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-officership="{{ $officership->Organization }}">Delete</button>
                                                             @endif
                                                         </div>
                                                     </td>

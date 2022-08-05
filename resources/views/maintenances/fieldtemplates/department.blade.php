@@ -51,18 +51,21 @@
             });
         });
 
-        var departmentID = $('#department_id').val();
-        if (departmentID == '') {
-            document.getElementById("college_id").value = "";
-        }
-        else {
-            var url = "{{ url('maintenances/colleges/name/department/:id') }}";
-            var api = url.replace(':id', departmentID);
-            $.get(api, function (data){
-                if (data != '') {
-                    $('#college_id').val(data)
-                }
-            });
-        }
+        $(function () {
+            var departmentID = $('#department_id').val();
+            if (departmentID == '') {
+                document.getElementById("college_id").value = "";
+            }
+            else {
+                var url = "{{ url('maintenances/colleges/name/department/:id') }}";
+                var api = url.replace(':id', departmentID);
+                $.get(api, function (data){
+                    if (data != '') {
+                        $('#college_id').val(data)
+                    }
+                });
+            }
+        });
+
     </script>
 @endpush

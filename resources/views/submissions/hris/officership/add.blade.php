@@ -5,6 +5,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if(!isset($forview))
+                <h2 class="font-weight-bold mb-2">Add Officership/Membership</h2>
+                @else
+                <h2 class="font-weight-bold mb-2">View Officership/Membership</h2>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 @if ($message = Session::get('error'))
                     <div class="alert alert-danger">
                         {{ $message }}
@@ -20,14 +29,18 @@
                  @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.officership.store', $id) }}" method="post">
+                        <form action="{{ route('submissions.officership.store', $id) }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            @if (!isset($collegeOfDepartment))
-                                @include('form', ['formFields' => $officeFields, 'value' => $values])
+                            @if(!isset($forview))
+                                @if (!isset($collegeOfDepartment))
+                                    @include('form', ['formFields' => $officeFields, 'value' => $values])
+                                @else
+                                    @include('form', ['formFields' => $officeFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                @endif
                             @else
-                                @include('form', ['formFields' => $officeFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                @include('show', ['formFields' => $officeFields, 'value' => $values])
                             @endif
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
                                 <img src="{{ url('fetch_image/'.$id.'/3') }}" alt="">
@@ -52,7 +65,23 @@
     </div>
     @push('scripts')
     <script src="{{ asset('js/spinner.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/spinner.js') }}"></script>
+        <script>
+            $('#from').on('change', function () {
+                $('#to').datepicker('setStartDate', $('#from').val());
+            });
+        </script>
+        <script>
+            var uploadField = document.getElementById("document");
 
+            uploadField.onchange = function() {
+                if(this.files[0].size > 102400){
+                alert("File is too big!");
+                this.value = "";
+                };
+            };
+        </script>
     {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
         var report_category_id = 28;
