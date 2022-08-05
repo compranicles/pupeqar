@@ -4,12 +4,14 @@
         <div class="col-md-3">
             <ul>
                 <h6 class="menu-category">ACADEMIC PROGRAM DEVELOPMENT</h6>
-                @can('viewAny', \App\Models\Syllabus::class)
-                <li><a class="{{ request()->routeIs('syllabus.*') ? 'active' : '' }}" href="{{ route('syllabus.index') }}">Course Syllabus</a></li>
-                @endcan
-                @can('viewAny', \App\Models\Reference::class)
-                <li><a class="{{ request()->routeIs('rtmmi.*') ? 'active' : '' }}" href="{{ route('rtmmi.index') }}">Reference/Textbook/Module/<br> Monographs/Instructional Materials</a></li>
-                @endcan
+                @if (session()->get('user_type') == "Faculty Employee")
+                    @can('viewAny', \App\Models\Syllabus::class)
+                    <li><a class="{{ request()->routeIs('syllabus.*') ? 'active' : '' }}" href="{{ route('syllabus.index') }}">Course Syllabus</a></li>
+                    @endcan
+                    @can('viewAny', \App\Models\Reference::class)
+                    <li><a class="{{ request()->routeIs('rtmmi.*') ? 'active' : '' }}" href="{{ route('rtmmi.index') }}">Reference/Textbook/Module/<br> Monographs/Instructional Materials</a></li>
+                    @endcan
+                @endif
                 @can('viewAny', \App\Models\StudentAward::class)
                 <li><a class="{{ request()->routeIs('student-award.*') ? 'active' : '' }}" href="{{ route('student-award.index') }}">Student Awards and Recognition</a></li>
                 @endcan
@@ -90,17 +92,18 @@
             @endcan
             <ul>
                 <h6 class="menu-category">TASKS & FUNCTIONS</h6>
-                @can('manage', \App\Models\SpecialTask::class)
-                <li><a class="{{ request()->routeIs('special-tasks.*')  ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=faculty' }}">Academic Special Tasks</a></li>
-                @endcan
-                @can('manage', \App\Models\AdminSpecialTask::class)
-                @admin
-                <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
-                @endadmin
-                @endcan
-                @admin
-                <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=admin' }}">Accomplishments Based on OPCR</a></li>
-                @endadmin
+                @if (session()->get('user_type') == "Faculty Employee")
+
+                    @can('manage', \App\Models\SpecialTask::class)
+                    <li><a class="{{ request()->routeIs('special-tasks.*')  ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=faculty' }}">Academic Special Tasks</a></li>
+                    @endcan
+                @endif
+                @if (session()->get('user_type') == "Admin Employee")
+                    @can('manage', \App\Models\AdminSpecialTask::class)
+                    <li><a class="{{ request()->routeIs('admin-special-tasks.*') ? 'active' : '' }}" href="{{ route('admin-special-tasks.index') }}">Admin Special Tasks</a></li>
+                    @endcan
+                    <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=admin' }}">Accomplishments Based on OPCR</a></li>
+                @endif
                 @can('manage', \App\Models\AttendanceFunction::class)
                 <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">Attendance in College & University Functions</a></li>
                 @endcan
