@@ -27,6 +27,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::if('SuperAdmin', function () {            
+            $isSuperAdmin = UserRole::where('user_roles.user_id', auth()->id())
+            ->where('user_roles.role_id', 9)
+            ->first();
+            
+            if ($isSuperAdmin != null)
+                return 1;
+            else
+                return 0;
+        });
+
         //IsReporting identifies if the user is faculty, admin, chairperson, or dean (because they have accomplishment reports to submit to diff. dept and colleges)
         Blade::if('IsReporting', function () {            
             $is_reporting = UserRole::where('user_roles.user_id', auth()->id())

@@ -1,6 +1,6 @@
 <div class="db-col mb-2">
     <div class="db-card">
-        <h5 class="card-header font-weight-bold text-center">My Accomplishments</h5>
+        <h5 class="card-header text-center">My Accomplishments</h5>
         <div class="card-body d-flex justify-content-center">
             <div class="data-card shadow-sm" style="background-color: #d4784a;">
                 <div class="db-text">

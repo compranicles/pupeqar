@@ -170,7 +170,7 @@ class DashboardController extends Controller
             $countToReview[5] = $tempvalues;
 
         } 
-        if (in_array(6, $roles)) {
+        if (in_array(6, $roles) || in_array(12, $roles)) {
             $department[6] = '';
             $sector[6] = '';
             $countRegisteredUsers[6] = '';
@@ -193,7 +193,7 @@ class DashboardController extends Controller
             }
             $countToReview[6] = $tempvalues;
         } 
-        if (in_array(7, $roles)) {
+        if (in_array(7, $roles) || in_array(13, $roles)) {
             $department[7] = '';
             $countRegisteredUsers[7] = '';
             $countExpectedTotal[7] = '';
@@ -203,7 +203,7 @@ class DashboardController extends Controller
             
             foreach ($sector[7] as $value){
                 $tempcount = Report::whereNull('sector_approval')
-                    ->where('dean_approval', 1)
+                    ->whereIn('dean_approval', [1,2])
                     ->where('sector_id', $value->sector_id)
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
@@ -227,7 +227,7 @@ class DashboardController extends Controller
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->count();
             $countToReview[8] = Report::whereNull('ipqmso_approval')
-                ->where('sector_approval', 1)
+                ->whereIn('sector_approval', [1,2])
                 ->where('report_quarter', $currentQuarterYear->current_quarter)
                 ->where('report_year', $currentQuarterYear->current_year)
                 ->count();

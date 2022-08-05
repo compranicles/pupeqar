@@ -162,8 +162,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                            <h5 class="text-center">Complete Your Account Details</h5>
-                            <p id="itemToDelete2" class="text-center font-weight-bold">Add College/Branch/Campus/College where to commit the accomplishments</p>
+                            <h4 class="text-center">Setup your account</h4>
                     </div>
                     <div class="modal-footer">
                         <a href="{{ route('offices.create') }}" type="button" class="btn btn-primary mb-2">OK</a>
