@@ -45,7 +45,7 @@ class AnalyticsController extends Controller
             $quarters[$i] = 'Q'.$quarter.'-'.$year;
 
             $seminars_per_quarter = Report::where('user_id', auth()->id())->
-                where('report_category_id', '25')->where('report_quarter', $month)->
+                where('report_category_id', '25')->where('report_quarter', $quarter)->
                 where('report_year', $year)->get();
             foreach($seminars_per_quarter as $seminar){
                 $seminar_details = json_decode($seminar->report_details);
@@ -104,7 +104,7 @@ class AnalyticsController extends Controller
             $quarters[$i] = 'Q'.$quarter.'-'.$year;
 
             $trainings_per_quarter = Report::where('user_id', auth()->id())->
-                where('report_category_id', '26')->where('report_quarter', $month)->
+                where('report_category_id', '26')->where('report_quarter', $quarter)->
                 where('report_year', $year)->get();
             foreach($trainings_per_quarter as $training){
                 $training_details = json_decode($training->report_details);
