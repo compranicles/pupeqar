@@ -38,7 +38,9 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
+                                </div>
                             </div>
                             @if(!isset($forview))
                             <div class="row">

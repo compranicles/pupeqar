@@ -57,7 +57,6 @@
         </div>
         @push('scripts')
         <script src="{{ asset('js/spinner.js') }}"></script>
-
         <script>
             var uploadField = document.getElementById("document");
 
@@ -68,23 +67,40 @@
                 };
             };
         </script>
-        {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
         <script>
-            // var report_category_id = 26;
-            // $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            // var api = '{{ url("/document-upload/description/26") }}';
-            // $.get(api, function (data){
-            //     if (data != '') {
-            //         data.forEach(function (item){
-            //             $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-            //         });
-            //     }
-            // });
+            $('input[name="is_graduated"]').on('change', function () {
+                if ($(this).val() == 'Yes') {
+                    $('#status').val(0);
+                    $('#is_enrolled2').attr("checked", "checked");
+                    $('#to').val('');
+                }
+                else {
+                    $('#status').val('');
+                    $('#is_enrolled1').attr("checked", "checked");
+                    $('#to').val('Present');
+                }
+            });
 
-
-            // $(function(){
-            //     $("input[name='document[]']").attr('required', true);
-            // });
+            $('#to').on('blur', function () {
+                if ($('#is_enrolled2').prop('checked')) {
+                    if($('#to').val() < $('#from').val()) {
+                        document.getElementById('to').value = "";
+                        alert("For the inclusive end year, please select " + $('#from').val() + " onwards.");
+                    }
+                }
+            });
+        </script>
+        <script>
+            $('#level').on('change', function () {
+                if ($(this).val() == 1 || $(this).val() == 2 || $(this).val() == 8 ||
+                $(this).val() == 9 || $(this).val() == 4) {
+                    $('#program_level').val(0);
+                    $('#education_discipline').val(0);
+                } else {
+                    $('#program_level').val('');
+                    $('#education_discipline').val('');
+                }
+            });
         </script>
         @if(isset($forview))
         <script>

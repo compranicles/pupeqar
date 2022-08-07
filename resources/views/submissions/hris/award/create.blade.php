@@ -14,7 +14,7 @@
                         </div>
                     @endif
                     <p>
-                        <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
+                        <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Outstanding Awards and Achievements</a>
                     </p>
                      {{-- Denied Details --}}
                      @if ($deniedDetails = Session::get('denied'))
