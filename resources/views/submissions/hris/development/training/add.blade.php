@@ -29,6 +29,10 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.development.training.store', $id) }}" method="post" enctype="multipart/form-data">
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                            </div>
+                            <hr>
                             @csrf
                             @if(!isset($forview))
                                 @if (!isset($collegeOfDepartment))
@@ -43,7 +47,9 @@
                             <div class="form-group">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                                </div>
                             </div>
                             @if(!isset($forview))
                             <div class="row">

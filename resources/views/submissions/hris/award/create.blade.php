@@ -14,7 +14,7 @@
                         </div>
                     @endif
                     <p>
-                        <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
+                        <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Outstanding Awards and Achievements</a>
                     </p>
                      {{-- Denied Details --}}
                      @if ($deniedDetails = Session::get('denied'))
@@ -25,6 +25,10 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="{{ route('submissions.award.save') }}" method="post" enctype="multipart/form-data">
+                                <div class="mt-2 mb-3">
+                                    <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                </div>
+                                <hr>
                                 @csrf
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $fields])

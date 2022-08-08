@@ -3,7 +3,13 @@
 <div class="{{ $fieldInfo->size }} mb-3">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-
+        @if (isset($fieldInfo->h_r_i_s_form_id))
+            @if ($fieldInfo->h_r_i_s_form_id == 1 && $fieldInfo->name == 'from')
+            <span id="" role="alert" class="ml-3">
+                Inclusive dates of attendance (ex. 1995-1999).
+            </span>
+            @endif
+        @endif
         <input type="number" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)

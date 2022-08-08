@@ -13633,4 +13633,12 @@ z-index: 9999;
   background-color: gold;
   color: black;
 }
-/****************************************/
+/***************Image Container (HRIS accomplishments view of documents)*************************/
+.img-container {
+  width: 50%;
+  height: 50%;
+}
+
+.img-container img {
+  width: 100%;
+}

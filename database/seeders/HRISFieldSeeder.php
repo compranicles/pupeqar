@@ -448,7 +448,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Total No. Of Hours',
+            'label' => 'Total No. of Hours',
             'name' => 'total_hours',
             'placeholder' => null,
             'size' => 'col-md-4',
@@ -646,7 +646,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
-            'label' => 'Total No. Of Hours',
+            'label' => 'Total No. of Hours',
             'name' => 'total_hours',
             'placeholder' => null,
             'size' => 'col-md-4',
@@ -913,7 +913,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 3,
-            'label' => 'Organization Address',
+            'label' => "Organization's Address",
             'name' => 'organization_address',
             'placeholder' => null,
             'size' => 'col-md-12',
