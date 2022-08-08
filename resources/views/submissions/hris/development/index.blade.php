@@ -26,6 +26,12 @@
                                 <hr>
                             </div>
                             <div class="col-md-12">
+                                <div class="mb-3 ml-1">
+                                    <div class="d-inline mr-2">
+                                        <a href="{{ route('submissions.development.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add</a>
+                                    </div>
+                                </div>
+                                <hr>
                                 @include('instructions')
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="development_table">
@@ -50,7 +56,7 @@
                                                             @if(in_array($development->EmployeeTrainingProgramID, $savedSeminars)||in_array($development->EmployeeTrainingProgramID, $savedTrainings))
                                                                 <a href="{{ route('submissions.development.show', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                                 <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
-                                                                <!-- <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button> -->
+                                                                <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button>
                                                                 @if(isset($submissionStatus[25]))
                                                                     @if(isset($submissionStatus[25][$development->EmployeeTrainingProgramID]))
                                                                         @if ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 0 )
@@ -75,6 +81,7 @@
                                                                 @endif
                                                             @else
                                                                 <a href="{{ route('submissions.development.add', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Add</a>
+                                                                <button type="button" value="{{ $development->EmployeeTrainingProgramID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-development="{{ $development->TrainingProgram }}">Delete</button>
                                                             @endif
                                                         </div>
                                                     </td>

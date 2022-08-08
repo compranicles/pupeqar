@@ -19,7 +19,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.educ.update', $id) }}" method="post">
+                        <form action="{{ route('submissions.educ.update', $id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @if (!isset($collegeOfDepartment))
                                 @include('form', ['formFields' => $educFields, 'value' => $values])

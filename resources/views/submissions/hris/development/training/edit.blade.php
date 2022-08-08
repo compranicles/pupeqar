@@ -24,7 +24,7 @@
                      @endif
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('submissions.development.training.update', $id) }}" method="post">
+                            <form action="{{ route('submissions.development.training.update', $id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $trainingFields, 'value' => $values])
@@ -57,6 +57,23 @@
         </div>
         @push('scripts')
         <script src="{{ asset('js/spinner.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/spinner.js') }}"></script>
+        <script>
+            $('#from').on('change', function () {
+                $('#to').datepicker('setStartDate', $('#from').val());
+            });
+        </script>
+        <script>
+            var uploadField = document.getElementById("document");
+
+            uploadField.onchange = function() {
+                if(this.files[0].size > 102400){
+                alert("File is too big!");
+                this.value = "";
+                };
+            };
+        </script>
         {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
         <script>
             // var report_category_id = 26;

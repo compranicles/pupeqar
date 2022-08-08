@@ -26,6 +26,12 @@
                                 <hr>
                             </div>
                             <div class="col-md-12">
+                                <div class="mb-3 ml-1">
+                                    <div class="d-inline mr-2">
+                                        <a href="{{ route('submissions.award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add</a>
+                                    </div>
+                                </div>
+                                <hr>
                                 @include('instructions')
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="award_table">

@@ -76,6 +76,9 @@
             @case("document_description")
                 @include('maintenances.fieldtemplates.document_description', ['fieldInfo' => $field, 'value' => $value[$field->name] ?? ''])
                 @break
+            @case("file-upload")
+                @include('maintenances.fieldtemplates.file-upload', ['fieldInfo' => $field])
+                @break
         @endswitch
     @endforeach
 </div>

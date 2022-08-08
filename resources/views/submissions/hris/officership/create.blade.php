@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Seminars |')
+    @section('title', 'Officership/Membership |')
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="font-weight-bold mb-2">Edit Seminar/Webinar, Fora, Conference</h2>
+                    <h2 class="font-weight-bold mb-2">Add Officership/Membership</h2>
                 </div>
             </div>
             <div class="row">
@@ -14,28 +14,29 @@
                         </div>
                     @endif
                     <p>
-                        <a class="back_link" href="{{ route('submissions.development.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
+                        <a class="back_link" href="{{ route('submissions.officership.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
                     </p>
-                    {{-- Denied Details --}}
-                    @if ($deniedDetails = Session::get('denied'))
-                    <div class="alert alert-info" role="alert">
-                        <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-                    </div>
-                    @endif
+                     {{-- Denied Details --}}
+                     @if ($deniedDetails = Session::get('denied'))
+                     <div class="alert alert-info" role="alert">
+                         <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                     </div>
+                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('submissions.development.seminar.update', $id) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('submissions.officership.save') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @if (!isset($collegeOfDepartment))
-                                    @include('form', ['formFields' => $seminarFields, 'value' => $values])
+                                    @include('form', ['formFields' => $fields])
                                 @else
-                                    @include('form', ['formFields' => $seminarFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                    @include('form', ['formFields' => $fields, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+
                                 @endif
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="font-weight-bold" >Document</label>
                                     <br>
-                                    <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
-                                </div>
+                                    <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                                </div> --}}
                                 @if(!isset($forview))
                                 <div class="row">
                                     <div class="col-md-12">
@@ -55,7 +56,6 @@
             </div>
         </div>
         @push('scripts')
-        <script src="{{ asset('js/spinner.js') }}"></script>
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
@@ -73,24 +73,24 @@
                 };
             };
         </script>
-        {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
         <script>
-            var report_category_id = 25;
-            $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            var api = '{{ url("/document-upload/description/25") }}';
-            $.get(api, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
+            // var report_category_id = 26;
+            // $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
+            // var api = '{{ url("/document-upload/description/26") }}';
+            // $.get(api, function (data){
+            //     if (data != '') {
+            //         data.forEach(function (item){
+            //             $("#description")[0].selectize.addOption({value:item.name, text:item.name});
+            //         });
+            //     }
+            // });
 
 
-            $(function(){
-                $("input[name='document[]']").attr('required', true);
-            });
-        </script> --}}
+            // $(function(){
+            //     $("input[name='document[]']").attr('required', true);
+            // });
+        </script>
         @if(isset($forview))
         <script>
             $('#department_id').attr('disabled', 'disabled')

@@ -41,14 +41,10 @@ class EducationController extends Controller
             $educationList = array_merge($educationList, $educationTemp);
         }
 
-        foreach($educationList as $education)
-            if($education->IsCurrentlyEnrolled == 'Y'){
-                // $education = collect($education);
-                $education = [$education];
-                $educationFinal = array_merge($educationFinal, $education);
-            }
-
-        // dd($educationFinal);
+        foreach($educationList as $education){
+            $education = [$education];
+            $educationFinal = array_merge($educationFinal, $education);
+        }
 
         $savedReports = HRIS::where('hris_type', '1')->where('user_id', $user->id)->pluck('hris_id')->all();
 
@@ -69,6 +65,186 @@ class EducationController extends Controller
         return view('submissions.hris.education.index', compact('educationFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
     }
 
+    public function create(){
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        $values = [];
+        $dropdown_options = [];
+
+        //education level
+        $hriseducationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationLevel");
+        $educationLevel = [];
+        foreach($hriseducationLevel as $row){
+            $educationLevel[] = (object)[
+                'id' => $row->EducationLevelID,
+                'name' => $row->EducationLevel,
+            ];
+        }
+        $dropdown_options['level'] = $educationLevel;
+        //education discipline
+        $hriseducationDiscipline = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationDiscipline");
+        $educationDiscipline = [];
+        foreach($hriseducationDiscipline as $row){
+            $educationDiscipline[] = (object)[
+                'id' => $row->EducationDisciplineID,
+                'name' => $row->EducationDiscipline,
+            ];
+        }
+        $dropdown_options['education_discipline'] = $educationDiscipline;
+        //accreditation level
+        $hrisaccreditationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetAccreditationLevels");
+        $accreditationLevel = [];
+        foreach($hrisaccreditationLevel as $row){
+            $accreditationLevel[] = (object)[
+                'id' => $row->AccreditationLevelID,
+                'name' => $row->AccreditationLevel,
+            ];
+        }
+        $dropdown_options['program_level'] = $accreditationLevel;
+        //enrollment status
+        $hrisenrollmentStatus = $db_ext->select("SET NOCOUNT ON; EXEC GetEnrollmentStatus");
+        $enrollmentStatus = [];
+        foreach($hrisenrollmentStatus as $row){
+            $enrollmentStatus[] = (object)[
+                'id' => $row->EnrollmentStatusID,
+                'name' => $row->EnrollmentStatus,
+            ];
+        }
+        $dropdown_options['status'] = $enrollmentStatus;
+        //type of support
+        $hristypeOfSupport = $db_ext->select("SET NOCOUNT ON; EXEC GetTypeOfSupport");
+        $typeOfSupport = [];
+        foreach($hristypeOfSupport as $row){
+            $typeOfSupport[] = (object)[
+                'id' => $row->TypeOfSupportID,
+                'name' => $row->TypeOfSupport,
+            ];
+        }
+        $dropdown_options['support_type'] = $typeOfSupport;
+
+
+        return view('submissions.hris.education.create', compact('values', 'fields', 'dropdown_options', 'departments'));
+    }
+
+    public function savetohris(Request $request){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
+        $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        //is_graduated
+        $is_graduated = 'Y';
+        if($request->is_graduated == 'No'){
+            $is_graduated = 'N';
+        }
+
+        //is_enrolled
+        $is_enrolled = 'Y';
+        if($request->is_enrolled == 'No'){
+            $is_enrolled = 'N';
+        }
+
+        //year graduated
+        if($request->to != 'present')
+            $year_graduated = $request->to;
+
+        $value = [
+            0,                                  //EmployeeEducationBackgroundID
+            $emp_code,                          //EmpCode
+            $request->level,                    //EducationLevelID
+            $request->degree,                   //Degree
+            $request->major,                    //Major
+            $request->minor,                    //Minor
+            $request->education_discipline,     //EducationDisciplineID
+            $request->school_name,              //SchoolName
+            $request->program_level,            //AccreditationLevelID
+            $is_graduated,                      //IsGraduated
+            $is_enrolled,                       //IsCurrentlyEnrolled
+            $request->status,                   //EnrollmentStatusID
+            $request->units_earned,             //UnitsEarned
+            $request->units_enrolled,           //UnitsEnrolled
+            $request->from,                     //IncYearFrom
+            $request->to,                       //IncYearTo
+            $year_graduated ?? null,            //YearGraduated
+            $request->honors,                   //HonorsReceived
+            $request->support_type,             //TypeOfSupportID
+            $request->sponsor_name,             //Scholarship
+            $request->amount,                   //Amount
+            '',                                 //Remarks
+            $request->description,              //AttachmentDescription
+            $imagedata ?? null,                 //Attachment
+            $user->email                        //TransAccount
+        ];
+
+        $id = $db_ext->select(
+            "
+                DECLARE @NewEmployeeEducationBackgroundID int;
+                EXEC SaveEmployeeEducationBackground
+                    @EmployeeEducationBackgroundID = ?,
+                    @EmpCode = ?,
+                    @EducationLevelID = ?,
+                    @Degree = ?,
+                    @Major = ?,
+                    @Minor = ?,
+                    @EducationDisciplineID = ?,
+                    @SchoolName = ?,
+                    @AccreditationLevelID = ?,
+                    @IsGraduated = ?,
+                    @IsCurrentlyEnrolled = ?,
+                    @EnrollmentStatusID = ?,
+                    @UnitsEarned = ?,
+                    @UnitsEnrolled = ?,
+                    @IncYearFrom = ?,
+                    @IncYearTo = ?,
+                    @YearGraduated = ?,
+                    @HonorsReceived = ?,
+                    @TypeOfSupportID = ?,
+                    @Scholarship = ?,
+                    @Amount = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
+
+                SELECT @NewEmployeeEducationBackgroundID as NewEmployeeEducationBackgroundID;
+
+            ", $value);
+
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::create([
+            'hris_id' => $id[0]->NewEmployeeEducationBackgroundID,
+            'hris_type' => '1',
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+            'user_id' => auth()->id(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        \LogActivity::addToLog('Had saved a Ongoing Studies Accomplishment.');
+
+        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+    }
+
     public function add(Request $request, $id){
 
         $user = User::find(auth()->id());
@@ -83,21 +259,83 @@ class EducationController extends Controller
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
+
         $values = [
+            'level' => $educationData[0]->EducationLevelID,
             'degree' =>  $educationData[0]->Degree,
+            'major' =>  $educationData[0]->Major,
+            'minor' =>  $educationData[0]->Minor,
+            'education_discipline' =>  $educationData[0]->EducationDisciplineID,
             'school_name' => $educationData[0]->SchoolName,
-            'program_level' => $educationData[0]->AccreditationLevel,
-            'support_type' => $educationData[0]->TypeOfSupport,
-            'sponsor_name' => $educationData[0]->Scholarship,
-            'amount' => $educationData[0]->Amount,
+            'program_level' => $educationData[0]->AccreditationLevelID,
+            'is_graduated' => ($educationData[0]->IsGraduated == 'Y') ? 'Yes' : 'No',
+            'is_enrolled' => ($educationData[0]->IsCurrentlyEnrolled == 'Y') ? 'Yes' : 'No',
+            'status' => $educationData[0]->EnrollmentStatusID,
+            'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' => $educationData[0]->UnitsEnrolled,
             'from' => $educationData[0]->IncYearFrom,
             'to' => $educationData[0]->IncYearTo,
-            'status' => $educationData[0]->EnrollmentStatus,
-            'units_earned' => $educationData[0]->UnitsEarned,
-            'units_enrolled' =>$educationData[0]->UnitsEnrolled,
+            'year_graduated' => $educationData[0]->YearGraduated,
+            'honors' => $educationData[0]->HonorsReceived,
+            'support_type' => $educationData[0]->TypeOfSupportID,
+            'sponsor_name' => $educationData[0]->Scholarship,
+            'amount' => $educationData[0]->Amount,
+            'remarks' => $educationData[0]->Remarks,
             'description' => $educationData[0]->Description,
-            'document' => $educationData[0]->Attachment
         ];
+
+        $dropdown_options = [];
+
+        //education level
+        $hriseducationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationLevel");
+        $educationLevel = [];
+        foreach($hriseducationLevel as $row){
+            $educationLevel[] = (object)[
+                'id' => $row->EducationLevelID,
+                'name' => $row->EducationLevel,
+            ];
+        }
+        $dropdown_options['level'] = $educationLevel;
+        //education discipline
+        $hriseducationDiscipline = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationDiscipline");
+        $educationDiscipline = [];
+        foreach($hriseducationDiscipline as $row){
+            $educationDiscipline[] = (object)[
+                'id' => $row->EducationDisciplineID,
+                'name' => $row->EducationDiscipline,
+            ];
+        }
+        $dropdown_options['education_discipline'] = $educationDiscipline;
+        //accreditation level
+        $hrisaccreditationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetAccreditationLevels");
+        $accreditationLevel = [];
+        foreach($hrisaccreditationLevel as $row){
+            $accreditationLevel[] = (object)[
+                'id' => $row->AccreditationLevelID,
+                'name' => $row->AccreditationLevel,
+            ];
+        }
+        $dropdown_options['program_level'] = $accreditationLevel;
+        //enrollment status
+        $hrisenrollmentStatus = $db_ext->select("SET NOCOUNT ON; EXEC GetEnrollmentStatus");
+        $enrollmentStatus = [];
+        foreach($hrisenrollmentStatus as $row){
+            $enrollmentStatus[] = (object)[
+                'id' => $row->EnrollmentStatusID,
+                'name' => $row->EnrollmentStatus,
+            ];
+        }
+        $dropdown_options['status'] = $enrollmentStatus;
+        //type of support
+        $hristypeOfSupport = $db_ext->select("SET NOCOUNT ON; EXEC GetTypeOfSupport");
+        $typeOfSupport = [];
+        foreach($hristypeOfSupport as $row){
+            $typeOfSupport[] = (object)[
+                'id' => $row->TypeOfSupportID,
+                'name' => $row->TypeOfSupport,
+            ];
+        }
+        $dropdown_options['support_type'] = $typeOfSupport;
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -146,12 +384,103 @@ class EducationController extends Controller
             ];
         }
 
-        return view('submissions.hris.education.add', compact('id', 'educationData', 'educFields', 'values', 'colleges' , 'collegeOfDepartment', 'hrisDocuments', 'departments'));
+        return view('submissions.hris.education.add', compact('id', 'educationData', 'educFields', 'values', 'colleges' , 'collegeOfDepartment', 'hrisDocuments', 'departments', 'dropdown_options'));
     }
 
     public function store(Request $request, $id){
         $currentQuarterYear = Quarter::find(1);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
+        $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        //is_graduated
+        $is_graduated = 'Y';
+        if($request->is_graduated == 'No'){
+            $is_graduated = 'N';
+        }
+
+        //is_enrolled
+        $is_enrolled = 'Y';
+        if($request->is_enrolled == 'No'){
+            $is_enrolled = 'N';
+        }
+
+        //year graduated
+        if($request->to != 'present')
+            $year_graduated = $request->to;
+
+        $value = [
+            $id,                                  //EmployeeEducationBackgroundID
+            $emp_code,                          //EmpCode
+            $request->level,                    //EducationLevelID
+            $request->degree,                   //Degree
+            $request->major,                    //Major
+            $request->minor,                    //Minor
+            $request->education_discipline,     //EducationDisciplineID
+            $request->school_name,              //SchoolName
+            $request->program_level,            //AccreditationLevelID
+            $is_graduated,                      //IsGraduated
+            $is_enrolled,                       //IsCurrentlyEnrolled
+            $request->status,                   //EnrollmentStatusID
+            $request->units_earned,             //UnitsEarned
+            $request->units_enrolled,           //UnitsEnrolled
+            $request->from,                     //IncYearFrom
+            $request->to,                       //IncYearTo
+            $year_graduated ?? null,            //YearGraduated
+            $request->honors,                   //HonorsReceived
+            $request->support_type,             //TypeOfSupportID
+            $request->sponsor_name,             //Scholarship
+            $request->amount,                   //Amount
+            '',                                 //Remarks
+            $request->description,              //AttachmentDescription
+            $imagedata ?? null,                 //Attachment
+            $user->email                        //TransAccount
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeEducationBackgroundID int;
+                EXEC SaveEmployeeEducationBackground
+                    @EmployeeEducationBackgroundID = ?,
+                    @EmpCode = ?,
+                    @EducationLevelID = ?,
+                    @Degree = ?,
+                    @Major = ?,
+                    @Minor = ?,
+                    @EducationDisciplineID = ?,
+                    @SchoolName = ?,
+                    @AccreditationLevelID = ?,
+                    @IsGraduated = ?,
+                    @IsCurrentlyEnrolled = ?,
+                    @EnrollmentStatusID = ?,
+                    @UnitsEarned = ?,
+                    @UnitsEnrolled = ?,
+                    @IncYearFrom = ?,
+                    @IncYearTo = ?,
+                    @YearGraduated = ?,
+                    @HonorsReceived = ?,
+                    @TypeOfSupportID = ?,
+                    @Scholarship = ?,
+                    @Amount = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
+
+                SELECT @NewEmployeeEducationBackgroundID as NewEmployeeEducationBackgroundID;
+
+            ", $value);
 
         HRIS::create([
             'hris_id' => $id,
@@ -183,20 +512,29 @@ class EducationController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
         $values = [
+            'level' => $educationData[0]->EducationLevel,
             'degree' =>  $educationData[0]->Degree,
+            'major' =>  $educationData[0]->Major,
+            'minor' =>  $educationData[0]->Minor,
+            'education_discipline' =>  $educationData[0]->EducationDiscipline,
             'school_name' => $educationData[0]->SchoolName,
             'program_level' => $educationData[0]->AccreditationLevel,
+            'is_graduated' => ($educationData[0]->IsGraduated == 'Y') ? 'Yes' : 'No',
+            'is_enrolled' => ($educationData[0]->IsCurrentlyEnrolled == 'Y') ? 'Yes' : 'No',
+            'status' => $educationData[0]->EnrollmentStatus,
+            'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' => $educationData[0]->UnitsEnrolled,
+            'from' => $educationData[0]->IncYearFrom,
+            'to' => $educationData[0]->IncYearTo,
+            'year_graduated' => $educationData[0]->YearGraduated,
+            'honors' => $educationData[0]->HonorsReceived,
             'support_type' => $educationData[0]->TypeOfSupport,
             'sponsor_name' => $educationData[0]->Scholarship,
             'amount' => $educationData[0]->Amount,
-            'from' => $educationData[0]->IncYearFrom,
-            'to' => $educationData[0]->IncYearTo,
-            'status' => $educationData[0]->EnrollmentStatus,
-            'units_earned' => $educationData[0]->UnitsEarned,
-            'units_enrolled' =>$educationData[0]->UnitsEnrolled,
             'description' => $educationData[0]->Description,
             'document' => $educationData[0]->Attachment,
-            'department_id' => $department_id
+            'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
+            'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -230,33 +568,188 @@ class EducationController extends Controller
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
+
         $values = [
+            'level' => $educationData[0]->EducationLevelID,
             'degree' =>  $educationData[0]->Degree,
+            'major' =>  $educationData[0]->Major,
+            'minor' =>  $educationData[0]->Minor,
+            'education_discipline' =>  $educationData[0]->EducationDisciplineID,
             'school_name' => $educationData[0]->SchoolName,
-            'program_level' => $educationData[0]->AccreditationLevel,
-            'support_type' => $educationData[0]->TypeOfSupport,
-            'sponsor_name' => $educationData[0]->Scholarship,
-            'amount' => $educationData[0]->Amount,
+            'program_level' => $educationData[0]->AccreditationLevelID,
+            'is_graduated' => ($educationData[0]->IsGraduated == 'Y') ? 'Yes' : 'No',
+            'is_enrolled' => ($educationData[0]->IsCurrentlyEnrolled == 'Y') ? 'Yes' : 'No',
+            'status' => $educationData[0]->EnrollmentStatusID,
+            'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' => $educationData[0]->UnitsEnrolled,
             'from' => $educationData[0]->IncYearFrom,
             'to' => $educationData[0]->IncYearTo,
-            'status' => $educationData[0]->EnrollmentStatus,
-            'units_earned' => $educationData[0]->UnitsEarned,
-            'units_enrolled' =>$educationData[0]->UnitsEnrolled,
+            'year_graduated' => $educationData[0]->YearGraduated,
+            'honors' => $educationData[0]->HonorsReceived,
+            'support_type' => $educationData[0]->TypeOfSupportID,
+            'sponsor_name' => $educationData[0]->Scholarship,
+            'amount' => $educationData[0]->Amount,
+            'remarks' => $educationData[0]->Remarks,
             'description' => $educationData[0]->Description,
-            'document' => $educationData[0]->Attachment,
-            'department_id' => $department_id
+            'department_id' => $department_id,
         ];
+
+        $dropdown_options = [];
+
+        //education level
+        $hriseducationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationLevel");
+        $educationLevel = [];
+        foreach($hriseducationLevel as $row){
+            $educationLevel[] = (object)[
+                'id' => $row->EducationLevelID,
+                'name' => $row->EducationLevel,
+            ];
+        }
+        $dropdown_options['level'] = $educationLevel;
+        //education discipline
+        $hriseducationDiscipline = $db_ext->select("SET NOCOUNT ON; EXEC GetEducationDiscipline");
+        $educationDiscipline = [];
+        foreach($hriseducationDiscipline as $row){
+            $educationDiscipline[] = (object)[
+                'id' => $row->EducationDisciplineID,
+                'name' => $row->EducationDiscipline,
+            ];
+        }
+        $dropdown_options['education_discipline'] = $educationDiscipline;
+        //accreditation level
+        $hrisaccreditationLevel = $db_ext->select("SET NOCOUNT ON; EXEC GetAccreditationLevels");
+        $accreditationLevel = [];
+        foreach($hrisaccreditationLevel as $row){
+            $accreditationLevel[] = (object)[
+                'id' => $row->AccreditationLevelID,
+                'name' => $row->AccreditationLevel,
+            ];
+        }
+        $dropdown_options['program_level'] = $accreditationLevel;
+        //enrollment status
+        $hrisenrollmentStatus = $db_ext->select("SET NOCOUNT ON; EXEC GetEnrollmentStatus");
+        $enrollmentStatus = [];
+        foreach($hrisenrollmentStatus as $row){
+            $enrollmentStatus[] = (object)[
+                'id' => $row->EnrollmentStatusID,
+                'name' => $row->EnrollmentStatus,
+            ];
+        }
+        $dropdown_options['status'] = $enrollmentStatus;
+        //type of support
+        $hristypeOfSupport = $db_ext->select("SET NOCOUNT ON; EXEC GetTypeOfSupport");
+        $typeOfSupport = [];
+        foreach($hristypeOfSupport as $row){
+            $typeOfSupport[] = (object)[
+                'id' => $row->TypeOfSupportID,
+                'name' => $row->TypeOfSupport,
+            ];
+        }
+        $dropdown_options['support_type'] = $typeOfSupport;
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('submissions.hris.education.edit', compact('id', 'educationData', 'educFields', 'values', 'colleges','departments'));
+        return view('submissions.hris.education.edit', compact('id', 'educationData', 'educFields', 'values', 'colleges','departments', 'dropdown_options'));
     }
 
     public function update(Request $request, $id){
+
+
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+
+        //is_graduated
+        $is_graduated = 'Y';
+        if($request->is_graduated == 'No'){
+            $is_graduated = 'N';
+        }
+
+        //is_enrolled
+        $is_enrolled = 'Y';
+        if($request->is_enrolled == 'No'){
+            $is_enrolled = 'N';
+        }
+
+        //year graduated
+        if($request->to != 'present')
+            $year_graduated = $request->to;
+
+        $value = [
+            $id,                                  //EmployeeEducationBackgroundID
+            $emp_code,                          //EmpCode
+            $request->level,                    //EducationLevelID
+            $request->degree,                   //Degree
+            $request->major,                    //Major
+            $request->minor,                    //Minor
+            $request->education_discipline,     //EducationDisciplineID
+            $request->school_name,              //SchoolName
+            $request->program_level,            //AccreditationLevelID
+            $is_graduated,                      //IsGraduated
+            $is_enrolled,                       //IsCurrentlyEnrolled
+            $request->status,                   //EnrollmentStatusID
+            $request->units_earned,             //UnitsEarned
+            $request->units_enrolled,           //UnitsEnrolled
+            $request->from,                     //IncYearFrom
+            $request->to,                       //IncYearTo
+            $year_graduated ?? null,            //YearGraduated
+            $request->honors,                   //HonorsReceived
+            $request->support_type,             //TypeOfSupportID
+            $request->sponsor_name,             //Scholarship
+            $request->amount,                   //Amount
+            '',                                 //Remarks
+            $request->description,              //AttachmentDescription
+            $imagedata ?? null,                 //Attachment
+            $user->email                        //TransAccount
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeEducationBackgroundID int;
+                EXEC SaveEmployeeEducationBackground
+                    @EmployeeEducationBackgroundID = ?,
+                    @EmpCode = ?,
+                    @EducationLevelID = ?,
+                    @Degree = ?,
+                    @Major = ?,
+                    @Minor = ?,
+                    @EducationDisciplineID = ?,
+                    @SchoolName = ?,
+                    @AccreditationLevelID = ?,
+                    @IsGraduated = ?,
+                    @IsCurrentlyEnrolled = ?,
+                    @EnrollmentStatusID = ?,
+                    @UnitsEarned = ?,
+                    @UnitsEnrolled = ?,
+                    @IncYearFrom = ?,
+                    @IncYearTo = ?,
+                    @YearGraduated = ?,
+                    @HonorsReceived = ?,
+                    @TypeOfSupportID = ?,
+                    @Scholarship = ?,
+                    @Amount = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
+
+                SELECT @NewEmployeeEducationBackgroundID as NewEmployeeEducationBackgroundID;
+
+            ", $value);
+
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '1')->update([
@@ -276,7 +769,20 @@ class EducationController extends Controller
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
 
-        HRIS::where('id', $educID)->delete();
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $db_ext->statement(
+            "
+                EXEC DeleteEmployeeEducationBackground
+                    @EmployeeEducationBackgroundID = ?,
+                    @EmpCode = ?;
+            ", array($id, $user->emp_code)
+        );
+
+        if(!is_null($educID)){
+            HRIS::where('id', $educID)->delete();
+        }
 
         \LogActivity::addToLog('Had deleted a Ongoing Studies.');
 
@@ -325,20 +831,28 @@ class EducationController extends Controller
         array_push($filenames, $fileName);
 
         $values = [
+            'level' => $educationData[0]->EducationLevel,
             'degree' =>  $educationData[0]->Degree,
+            'major' =>  $educationData[0]->Major,
+            'minor' =>  $educationData[0]->Minor,
+            'education_discipline' =>  $educationData[0]->EducationDiscipline,
             'school_name' => $educationData[0]->SchoolName,
             'program_level' => $educationData[0]->AccreditationLevel,
+            'is_graduated' => ($educationData[0]->IsGraduated == 'Y') ? 'Yes' : 'No',
+            'is_enrolled' => ($educationData[0]->IsCurrentlyEnrolled == 'Y') ? 'Yes' : 'No',
+            'status' => $educationData[0]->EnrollmentStatus,
+            'units_earned' => $educationData[0]->UnitsEarned,
+            'units_enrolled' => $educationData[0]->UnitsEnrolled,
+            'from' => $educationData[0]->IncYearFrom,
+            'to' => $educationData[0]->IncYearTo,
+            'year_graduated' => $educationData[0]->YearGraduated,
+            'honors' => $educationData[0]->HonorsReceived,
             'support_type' => $educationData[0]->TypeOfSupport,
             'sponsor_name' => $educationData[0]->Scholarship,
             'amount' => $educationData[0]->Amount,
-            'from' => $educationData[0]->IncYearFrom,
-            'to' => $educationData[0]->IncYearTo,
-            'status' => $educationData[0]->EnrollmentStatus,
-            'units_earned' => $educationData[0]->UnitsEarned,
-            'units_enrolled' =>$educationData[0]->UnitsEnrolled,
             'description' => $educationData[0]->Description,
             'department_id' => $department_name,
-            'college_id' => $college_name
+            'college_id' => $college_name,
         ];
 
         $currentQuarterYear = Quarter::find(1);

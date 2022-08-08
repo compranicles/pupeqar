@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HRISSubmissions;
 
 use Image;
+use Carbon\Carbon;
 use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
-use App\Models\FormBuilder\DropdownOption;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
+use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
 
 class OfficershipController extends Controller
@@ -47,6 +48,117 @@ class OfficershipController extends Controller
         return view('submissions.hris.officership.index', compact('officershipFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
     }
 
+    public function create(){
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 3)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        $values = [];
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetOfficershipMembershipClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->OfficershipMembershipClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+
+        return view('submissions.hris.officership.create', compact('values', 'fields', 'dropdown_options', 'departments'));
+    }
+
+    public function savetohris(Request $request){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
+        $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            0, //EmployeeOfficershipMembershipID
+            $emp_code, //EmpCode
+            $request->position, //Position
+            $request->organization, //Organization
+            $request->organization_address, //Address
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $id = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOfficershipMembershipID int;
+                EXEC SaveEmployeeOfficershipMembership
+                    @EmployeeOfficershipMembershipID = ?,
+                    @EmpCode = ?,
+                    @Position = ?,
+                    @Organization = ?,
+                    @Address = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
+
+                SELECT @NewEmployeeOfficershipMembershipID as NewEmployeeOfficershipMembershipID;
+
+            ", $value);
+
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::create([
+            'hris_id' => $id[0]->NewEmployeeOfficershipMembershipID,
+            'hris_type' => '3',
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+            'user_id' => auth()->id(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        \LogActivity::addToLog('Had saved a Officership/Membership.');
+
+        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+    }
+
     public function add(Request $request, $id){
         $user = User::find(auth()->id());
 
@@ -63,15 +175,40 @@ class OfficershipController extends Controller
 
         $values = [
             'organization' =>  $officeData[0]->Organization,
-            'classification' => $officeData[0]->Classification,
+            'classification' => $officeData[0]->OfficershipMembershipClassificationID,
             'position' => $officeData[0]->Position,
-            'level' => $officeData[0]->Level,
+            'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
         ];
+
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetOfficershipMembershipClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->OfficershipMembershipClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -117,11 +254,61 @@ class OfficershipController extends Controller
         }
 
 
-        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
+        return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments', 'dropdown_options'));
     }
 
     public function store(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            $id, //EmployeeOfficershipMembershipID
+            $emp_code, //EmpCode
+            $request->position, //Position
+            $request->organization, //Organization
+            $request->organization_address, //Address
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOfficershipMembershipID int;
+                EXEC SaveEmployeeOfficershipMembership
+                    @EmployeeOfficershipMembershipID = ?,
+                    @EmpCode = ?,
+                    @Position = ?,
+                    @Organization = ?,
+                    @Address = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
+
+                SELECT @NewEmployeeOfficershipMembershipID as NewEmployeeOfficershipMembershipID;
+
+            ", $value);
+
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::create([
@@ -165,7 +352,8 @@ class OfficershipController extends Controller
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
-            'department_id' => $department_id,
+            'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
+            'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -203,9 +391,9 @@ class OfficershipController extends Controller
 
         $values = [
             'organization' =>  $officeData[0]->Organization,
-            'classification' => $officeData[0]->Classification,
+            'classification' => $officeData[0]->OfficershipMembershipClassificationID,
             'position' => $officeData[0]->Position,
-            'level' => $officeData[0]->Level,
+            'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
@@ -214,15 +402,90 @@ class OfficershipController extends Controller
             'department_id' => $department_id,
         ];
 
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetOfficershipMembershipClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->OfficershipMembershipClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('submissions.hris.officership.edit', compact('id', 'officeData', 'officeFields', 'values', 'colleges','departments'));
+        return view('submissions.hris.officership.edit', compact('id', 'officeData', 'officeFields', 'values', 'colleges','departments', 'dropdown_options'));
     }
 
     public function update(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            $id, //EmployeeOfficershipMembershipID
+            $emp_code, //EmpCode
+            $request->position, //Position
+            $request->organization, //Organization
+            $request->organization_address, //Address
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOfficershipMembershipID int;
+                EXEC SaveEmployeeOfficershipMembership
+                    @EmployeeOfficershipMembershipID = ?,
+                    @EmpCode = ?,
+                    @Position = ?,
+                    @Organization = ?,
+                    @Address = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
+
+                SELECT @NewEmployeeOfficershipMembershipID as NewEmployeeOfficershipMembershipID;
+
+            ", $value);
+
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '3')->update([
@@ -242,7 +505,20 @@ class OfficershipController extends Controller
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
 
-        HRIS::where('id', $officershipID)->delete();
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $db_ext->statement(
+            "
+                EXEC DeleteEmployeeOfficershipMembership
+                    @EmployeeOfficershipmembershipID = ?,
+                    @EmpCode = ?;
+            ", array($id, $user->emp_code)
+        );
+
+        if(!is_null($officershipID)){
+            HRIS::where('id', $officershipID)->delete();
+        }
 
         \LogActivity::addToLog('Had deleted a Officership/Membership.');
 
@@ -311,7 +587,7 @@ class OfficershipController extends Controller
             $format_type = 'f';
         elseif($getUserTypeFromSession == 'Admin Employee')
             $format_type = 'a';
-        
+
 
         Report::where('report_reference_id', $officership_id)
             ->where('report_category_id', 28)

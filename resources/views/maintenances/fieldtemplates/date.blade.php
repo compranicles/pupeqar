@@ -4,8 +4,8 @@
 
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"
             placeholder="mm/dd/yyyy" pattern="[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}"
-            value="{{ (old($fieldInfo->name) == '') ?  ($value != null ? date("m/d/Y", strtotime($value)) : '') : date("m/d/Y", strtotime(old($fieldInfo->name))) }}" 
-            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker 
+            value="{{ (old($fieldInfo->name) == '') ?  ($value != null ? date("m/d/Y", strtotime($value)) : '') : date("m/d/Y", strtotime(old($fieldInfo->name))) }}"
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker
             form-control form-validation p-3" autocomplete="off"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
@@ -19,7 +19,7 @@
                         {{ 'hidden' }}
                         @break
                     @default
-                        
+
                 @endswitch>
 
                 @error($fieldInfo->name)
@@ -29,4 +29,4 @@
                 @enderror
 
     </div>
-</div>  
+</div>

@@ -3,6 +3,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if(!isset($forview))
+                <h2 class="font-weight-bold mb-2">Add Ongoing Advanced/Professional Study</h2>
+                @else
+                <h2 class="font-weight-bold mb-2">View Ongoing Advanced/Professional Study</h2>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 @if ($message = Session::get('error'))
                     <div class="alert alert-danger">
                         {{ $message }}
@@ -19,14 +28,18 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.educ.store', $id) }}" method="post">
+                        <form action="{{ route('submissions.educ.store', $id) }}" method="post" enctype="multipart/form-data">
                             @csrf
-                            @if (!isset($collegeOfDepartment))
-                                @include('form', ['formFields' => $educFields, 'value' => $values])
+                            @if(!isset($forview))
+                                @if (!isset($collegeOfDepartment))
+                                    @include('form', ['formFields' => $educFields, 'value' => $values])
+                                @else
+                                    @include('form', ['formFields' => $educFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                @endif
                             @else
-                                @include('form', ['formFields' => $educFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                @include('show', ['formFields' => $educFields, 'value' => $values])
                             @endif
-                            <div class="form-group">
+                            <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
                                 <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
