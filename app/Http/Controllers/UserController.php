@@ -200,7 +200,7 @@ class UserController extends Controller
         $researcher = FacultyResearcher::join('colleges', 'colleges.id', 'faculty_researchers.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $extensionist = FacultyExtensionist::join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $associateDeanDirector = Associate::join('colleges', 'colleges.id', 'associates.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
-        $assistantVP = Associate::join('sectors', 'sectors.id', 'associates.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
+        $assistantVP = Associate::where('user_id', $user->id)->pluck('sector_id')->all();
         return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments',
          'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist', 
          'associateDeanDirector', 'assistantVP'));

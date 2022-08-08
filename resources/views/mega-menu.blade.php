@@ -1,4 +1,30 @@
 <div class="menu-sub animate slideIn">
+    <div class="row justify-content-start">
+        <div class="col-md-12 d-flex">
+            @BothFacultyAdmin
+                @if(session()->get('user_type') == 'Faculty Employee')
+                    <h3 style="margin-left: 1.5em;"><strong>Faculty Accomplishment Reporting Module</strong></h3>
+                @elseif(session()->get('user_type') == 'Admin Employee')
+                    <h3 style="margin-left: 1.5em;"><strong>Admin Accomplishment Reporting Module</strong></h3>
+                @else
+                    
+                @endif
+                <a href="{{ route('switch_type') }}" id="switch-role" class="btn">
+                    <strong>
+                    @if(session()->get('user_type') == 'Faculty Employee')
+                        Switch to Admin Individual Reporting
+                    @elseif(session()->get('user_type') == 'Admin Employee')
+                        Switch to Faculty Individual Reporting
+                    @else
+                        {{ session()->get('user_type') }}
+                    @endif
+                    </strong>
+                </a>
+                <!-- NOTE: Replace the <Admin> -->
+            @endBothFacultyAdmin
+        </div>
+    </div>
+    <hr>
     <div class="row d-flex justify-content-start align-items-baseline">
         @notpureadmin
         <div class="col-md-3">
