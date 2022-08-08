@@ -31,13 +31,21 @@ class AccountController extends Controller
                             ->all();
         $roles = implode(', ', $roles);
         $employeeSectorsCbcoDepartment = Employee::where('employees.user_id', $user->id)
-                            ->leftJoin('sectors', 'employees.sector_id', 'sectors.id')
                             ->join('colleges', 'employees.college_id', 'colleges.id')
-                            ->select('employees.id', 'sectors.name as sectorName', 'colleges.name as collegeName')
+                            ->select('employees.id', 'colleges.name as collegeName')
                             ->get();
+        $employeeTypeOfUser = Employee::where('user_id', auth()->id())->groupBy('type')->oldest()->get();
 
-                            // dd($employeeSectorsCbcoDepartment);
+        $designations = [];
+        foreach($employeeTypeOfUser as $employee) {
+            $designations[$employee->type] = Employee::where('user_id', auth()->id())
+                ->where('employees.type', $employee->type)
+                ->join('colleges', 'colleges.id', 'employees.college_id')
+                ->pluck('colleges.name')
+                ->all();
+        }
 
-        return view('account', compact('accountDetail', 'employeeDetail', 'roles', 'employeeSectorsCbcoDepartment', 'user'));
+        return view('account', compact('accountDetail', 'employeeDetail', 'roles', 'employeeSectorsCbcoDepartment', 'user',
+            'employeeTypeOfUser', 'designations'));
     }
 }

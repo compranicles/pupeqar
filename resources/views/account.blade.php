@@ -69,6 +69,41 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Role/Designee</th>
+                                            <th>Designation</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($employeeTypeOfUser as $employee)
+                                        <tr>
+                                            <td>{{ $employee->type == 'A' ? 'Administrative' : 'Faculty' }}</td>
+                                            <td>
+                                                @forelse ($designations[$employee->type] as $college)
+                                                    @if ($loop->last)
+                                                        {{ $college }}
+                                                    @else
+                                                        {{ $college }},
+                                                    @endif
+                                                @empty
+                                                    -
+                                                @endforelse
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('offices.create') }}" type="button" class="btn btn-warning mr-2">Edit Designation</a>
+                                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-designation="{{ $employee->type }}">Delete</button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                         <hr>
                         <form action="{{ route('account.signature.save') }}" method="post">
                             @csrf
@@ -105,52 +140,6 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <h2 class="h4 font-weight-bold">
-                    College/Branch/Campus/Office You are Reporting With
-                </h2>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <div class="d-inline mr-2">
-                                <a href="{{ route('offices.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add</a>
-                            </div>
-                        </div>
-                        <hr>
-                        @forelse($employeeSectorsCbcoDepartment as $row)
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group input-group-sm">
-                                    <label for="">Sector</label>
-                                    <input type="text" readonly class="form-control" value="{{ $row->sectorName }}">
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group input-group-sm">
-                                    <label for="">College</label>
-                                    <input type="text" readonly class="form-control" value="{{ $row->collegeName }}">
-                                </div>
-                            </div>
-                            <div class="col-md-2" style="padding-top: 35px;" role="group">
-                                <div class="form-group input-group-sm">
-                                    <button type="button" value="{{ $row->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-sector="{{ $row->sectorName }}" data-bs-cbco="{{ $row->collegeName }}" data-bs-dept="{{ $row->departmentName }}"><i class="bi bi-trash" style="font-size: 1.25em;"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        @empty
-                            <div class="col-md-12">
-                                <div class="alert alert-success text-center p-5" role="alert">
-                                    <h5>
-                                        Add College/Branch/Campus/Office Where You Are Reporting.
-                                    </h5>
-                                </div>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     @if (Session::has('incomplete_account'))
@@ -158,12 +147,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="accountModalLabel">Account Details Incomplete</h5>
+                        <h5 class="modal-title w-100 text-center" id="accountModalLabel">Welcome to PUP eQAR!</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                            <h5 class="text-center">Complete Your Account Details</h5>
-                            <p id="itemToDelete2" class="text-center font-weight-bold">Add College/Branch/Campus/College where to commit the accomplishments</p>
+                            <h5 class="text-center">Set up your account.</h5>
+                            <p id="itemToDelete2" class="text-center font-weight-bold">PUP eQAR needs to know your college, branch, campus, <br> or office of designation.</p>
                     </div>
                     <div class="modal-footer">
                         <a href="{{ route('offices.create') }}" type="button" class="btn btn-primary mb-2">OK</a>
@@ -176,13 +165,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Remove Designation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        <h5 class="text-center">Are you sure you want to remove this in your account?</h5>
-                        <p id="itemToDelete1" class="text-center font-weight-bold"></p>
-                        <p id="itemToDelete2" class="text-center font-weight-bold"></p>
+                        <h5 class="text-center">Are you sure you want to remove your designation?</h5>
+                        <h5 id="designation" class="text-center font-weight-bold"></h5>
                         <form action="" id="delete_item" method="POST">
                             @csrf
                             @method('delete')
@@ -223,16 +211,16 @@
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget
-          var id = button.getAttribute('value')
-          var sector = button.getAttribute('data-bs-sector')
-          var cbco = button.getAttribute('data-bs-cbco')
-          var itemToDelete1 = deleteModal.querySelector('#itemToDelete1')
-          var itemToDelete2 = deleteModal.querySelector('#itemToDelete2')
-          itemToDelete1.textContent = "Sector: " + sector
-          itemToDelete2.textContent = "College/Branch/Campus/Office: " + cbco
+          var designee_type = button.getAttribute('data-bs-designation')
+          var designation = deleteModal.querySelector('#designation')
+          if (designee_type == 'A') {
+              designation.textContent = 'Admin Designee'
+          } else {
+              designation.textContent = 'Faculty Designee'
+          }
 
-          var url = '{{ route("offices.destroy", ":id") }}';
-          url = url.replace(':id', id);
+          var url = '{{ route("offices.destroy", ":designee_type") }}';
+          url = url.replace(':designee_type', designee_type);
           document.getElementById('delete_item').action = url;
         });
     </script>

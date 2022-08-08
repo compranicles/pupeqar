@@ -143,6 +143,6 @@ class RegistrationController extends Controller
             session()->put('user_type', 'Faculty Employee');
             $newvalue = 'Faculty Employee';
         }
-        return redirect()->back()->with('success_switch', 'Successfully switched to '.$newvalue.'!');
+        return redirect()->back()->with('success_switch', 'Successfully switched the individual reporting as '.$newvalue.'!');
     }
 }

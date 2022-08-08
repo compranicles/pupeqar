@@ -72,13 +72,15 @@
         @endif
 
         <!-- Page Content -->
-        <main class="container my-5">
-            @if ($message = Session::get('success_switch'))
-                <div class="alert alert-success alert-index">
-                    <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>
-            @endif
-            {{ $slot }}
+        <main class="container my-4">
+            <div class="col-md-12">
+                @if ($message = Session::get('success_switch'))
+                    <div class="alert alert-success alert-index">
+                        <i class="bi bi-check-circle"></i> {{ $message }}
+                    </div>
+                @endif
+            </div>
+                {{ $slot }}
         </main>
 
         @stack('modals')

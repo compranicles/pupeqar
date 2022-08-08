@@ -12997,7 +12997,7 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.15);
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
-  background: linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.95)), url(/storage/PUP.png) no-repeat;
+  background: linear-gradient(rgba(255,255,255,.97), rgba(255,255,255,.97)), url(/storage/PUP.png) no-repeat;
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -13624,7 +13624,8 @@ z-index: 9999;
 /***********SWITCH ROLE BUTTON************/
 #switch-role {
   border-radius: 10px;
-  margin: 0 5px 0 5px;
+  margin-left: 8px;
+  padding: 5px;
   background-color: maroon;
   color: white;
 }
