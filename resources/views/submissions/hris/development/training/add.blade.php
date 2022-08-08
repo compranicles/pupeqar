@@ -28,18 +28,28 @@
                  @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('submissions.development.training.store', $id) }}" method="post">
+                        <form action="{{ route('submissions.development.training.store', $id) }}" method="post" enctype="multipart/form-data">
+                            <div class="mt-2 mb-3">
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                            </div>
+                            <hr>
                             @csrf
-                            @if (!isset($collegeOfDepartment))
-                                @include('form', ['formFields' => $trainingFields, 'value' => $values])
-                            @else
-                                @include('form', ['formFields' => $trainingFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                            @if(!isset($forview))
+                                @if (!isset($collegeOfDepartment))
+                                    @include('form', ['formFields' => $trainingFields, 'value' => $values])
+                                @else
+                                    @include('form', ['formFields' => $trainingFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
+                                @endif
+                            @else
+                                @include('show', ['formFields' => $trainingFields, 'value' => $values])
                             @endif
                             <div class="form-group">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
+                                </div>
                             </div>
                             @if(!isset($forview))
                             <div class="row">
@@ -61,6 +71,23 @@
     </div>
     @push('scripts')
     <script src="{{ asset('js/spinner.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('js/spinner.js') }}"></script>
+    <script>
+        $('#from').on('change', function () {
+            $('#to').datepicker('setStartDate', $('#from').val());
+        });
+    </script>
+    <script>
+        var uploadField = document.getElementById("document");
+
+        uploadField.onchange = function() {
+            if(this.files[0].size > 102400){
+            alert("File is too big!");
+            this.value = "";
+            };
+        };
+    </script>
     {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
     <script>
         // var report_category_id = 26;

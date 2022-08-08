@@ -19,7 +19,7 @@
                     @endif
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('submissions.award.update', $id) }}" method="post">
+                            <form action="{{ route('submissions.award.update', $id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $awardFields, 'value' => $values])
@@ -36,7 +36,7 @@
                                         <div class="mb-0">
                                             <div class="d-flex justify-content-end align-items-baseline">
                                                 <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                                <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                                <button type="submit" id="submit" class="btn btn-success">Save</button>
                                             </div>
                                         </div>
                                     </div>
@@ -48,7 +48,23 @@
             </div>
         </div>
         @push('scripts')
-        <script src="{{ asset('dist/selectize.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ asset('js/spinner.js') }}"></script>
+        <script>
+            $('#from').on('change', function () {
+                $('#to').datepicker('setStartDate', $('#from').val());
+            });
+        </script>
+        <script>
+            var uploadField = document.getElementById("document");
+
+            uploadField.onchange = function() {
+                if(this.files[0].size > 102400){
+                alert("File is too big!");
+                this.value = "";
+                };
+            };
+        </script>
         {{-- <script>
             var report_category_id = 27;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

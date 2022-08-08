@@ -3,6 +3,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Officerships & Memberships</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
                         {{ $message }}
@@ -22,11 +27,28 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-12">
-                                <h3>Officerships and/or Memberships</h3>
-                                <hr>
-                            </div>
-                            <div class="col-md-12">
-                                @include('instructions')
+                                <div class="mb-3 ml-1">
+                                    <div class="d-inline mr-2">
+                                        <a href="{{ route('submissions.officership.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Officership/Membership</a>
+                                    </div>
+                                </div>
+                                <hr> 
+                                <div class="alert alert-info" role="alert">
+                                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminders: </strong> <br>
+                                    <div class="ml-3">
+                                        &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
+                                        <?php
+                                                $deadline = strtotime( $currentQuarterYear->deadline );
+                                                $deadline = date( 'F d, Y', $deadline);
+                                                ?>
+                                                <strong>{{ $deadline }}</strong>. <br>
+                                        &#8226; All the added/updated records will be reflected in your <strong>Personnel Portal account</strong> and vice versa. <br>
+                                        &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
+                                            quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist. 
+                                            Please contact them immediately if you need to edit your submitted accomplishment for them to return it to you. <br>
+                                        &#8226; You may <a class="text-primary" style="text-decoration:underline" href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">add college/branch/campus/offices where you are reporting.</a>
+                                    </div>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="officership_table">
                                         <thead>
@@ -66,6 +88,7 @@
                                                                 @endif
                                                             @else
                                                                 <a href="{{ route('submissions.officership.add', $officership->EmployeeOfficershipMembershipID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Add</a>
+                                                                <button type="button" value="{{ $officership->EmployeeOfficershipMembershipID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-officership="{{ $officership->Organization }}">Delete</button>
                                                             @endif
                                                         </div>
                                                     </td>

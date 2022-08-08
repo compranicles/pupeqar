@@ -26,6 +26,7 @@ use App\Models\{
     Maintenance\HRISField,
     Maintenance\Quarter,
 };
+use Carbon\Carbon;
 use Image;
 
 class SeminarAndTrainingController extends Controller
@@ -71,6 +72,173 @@ class SeminarAndTrainingController extends Controller
         return view('submissions.hris.development.index', compact('developmentFinal', 'savedSeminars', 'savedTrainings', 'currentQuarterYear', 'submissionStatus'));
     }
 
+    public function create(){
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 4)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        $values = [];
+        $dropdown_options = [];
+
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetClassifications");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->ClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //type
+        $hristypes = $db_ext->select("SET NOCOUNT ON; EXEC GetType");
+        $types = [];
+        foreach($hristypes as $row){
+            $types[] = (object)[
+                'id' => $row->TypeID,
+                'name' => $row->Type,
+            ];
+        }
+        $types = collect($types);
+        $dropdown_options['type'] = $types;
+        //nature
+        $hrisnatures = $db_ext->select("SET NOCOUNT ON; EXEC GetNature");
+        $natures = [];
+        foreach($hrisnatures as $row){
+            $natures[] = (object)[
+                'id' => $row->NatureID,
+                'name' => $row->Nature,
+            ];
+        }
+        $natures = collect($natures);
+        $dropdown_options['nature'] = $natures;
+        //soure of fund
+        $hrisfunds = $db_ext->select("SET NOCOUNT ON; EXEC GetSourceOfFunds");
+        $funds = [];
+        foreach($hrisfunds as $row){
+            $funds[] = (object)[
+                'id' => $row->SourceOfFundID,
+                'name' => $row->SourceOfFund,
+            ];
+        }
+        $funds = collect($funds);
+        $dropdown_options['fund_source'] = $funds;
+
+        return view('submissions.hris.development.create', compact('fields', 'departments', 'values', 'dropdown_options'));
+    }
+
+    public function savetohris(Request $request){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
+        $currentQuarterYear = Quarter::find(1);
+
+        $is_paid = 'Y';
+        if($request->fund_source == '0' && $request->budget == 0){
+            $is_paid = 'N';
+        }
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = array(
+            0, //EmployeeTrainingProgramID
+            $emp_code, //EmpCode
+            $request->title, //TrainingProgram
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->total_hours, //NumberOfHours
+            $request->organizer, //Conductor
+            $request->level, //LevelID
+            $request->type, //TypeID
+            $request->classification, //ClassificationID
+            $request->nature, //NatureID
+            $is_paid, //IsPaid
+            $request->fund_source, //SourceOfFundID
+            $request->budget, //Budget
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email //TransAccount
+        );
+
+        $id = $db_ext->select(
+            "
+                DECLARE @NewEmployeeTrainingProgramID int;
+
+                EXEC SaveEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?,
+                    @TrainingProgram = ?,
+                    @Venue = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @NumberOfHours = ?,
+                    @Conductor = ?,
+                    @LevelID = ?,
+                    @TypeID = ?,
+                    @ClassificationID = ?,
+                    @NatureID = ?,
+                    @IsPaid = ?,
+                    @SourceOfFundID = ?,
+                    @Budget = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
+
+                SELECT @NewEmployeeTrainingProgramID as NewEmployeeTrainingProgramID;
+
+            ", $value
+        );
+
+        $hris_type = 4;
+        if($request->classification >= 5) //>= 5 is for training
+            $hris_type = 5;
+
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::create([
+            'hris_id' => $id[0]->NewEmployeeTrainingProgramID,
+            'hris_type' => $hris_type,
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+            'user_id' => auth()->id(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        \LogActivity::addToLog('Had saved a Seminar/Webinar.');
+
+        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+    }
+
     public function add($id){
         $user = User::find(auth()->id());
 
@@ -94,15 +262,73 @@ class SeminarAndTrainingController extends Controller
             }
         }
 
+        $dropdown_options = [];
+
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetClassifications");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->ClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //type
+        $hristypes = $db_ext->select("SET NOCOUNT ON; EXEC GetType");
+        $types = [];
+        foreach($hristypes as $row){
+            $types[] = (object)[
+                'id' => $row->TypeID,
+                'name' => $row->Type,
+            ];
+        }
+        $types = collect($types);
+        $dropdown_options['type'] = $types;
+        //nature
+        $hrisnatures = $db_ext->select("SET NOCOUNT ON; EXEC GetNature");
+        $natures = [];
+        foreach($hrisnatures as $row){
+            $natures[] = (object)[
+                'id' => $row->NatureID,
+                'name' => $row->Nature,
+            ];
+        }
+        $natures = collect($natures);
+        $dropdown_options['nature'] = $natures;
+        //soure of fund
+        $hrisfunds = $db_ext->select("SET NOCOUNT ON; EXEC GetSourceOfFunds");
+        $funds = [];
+        foreach($hrisfunds as $row){
+            $funds[] = (object)[
+                'id' => $row->SourceOfFundID,
+                'name' => $row->SourceOfFund,
+            ];
+        }
+        $funds = collect($funds);
+        $dropdown_options['fund_source'] = $funds;
 
         $values = [
             'title' => $seminar->TrainingProgram,
-            'classification' => $seminar->Classification,
-            'nature' => $seminar->Nature,
+            'classification' => $seminar->ClassificationID,
+            'nature' => $seminar->NatureID,
             'budget' => $seminar->Budget,
-            'fund_source' => $seminar->SourceOfFund,
+            'type' => $seminar->TypeID,
+            'fund_source' => $seminar->SourceOfFundID,
             'organizer' => $seminar->Conductor,
-            'level' => $seminar->Level,
+            'level' => $seminar->LevelID,
             'venue' => $seminar->Venue,
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
@@ -165,15 +391,84 @@ class SeminarAndTrainingController extends Controller
         if($seminar->ClassificationID >= 5){
             $training = $seminar;
             $trainingFields = $seminarFields;
-            return view('submissions.hris.development.training.add', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
+            return view('submissions.hris.development.training.add', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments', 'dropdown_options'));
         }
 
-        return view('submissions.hris.development.seminar.add', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
+        return view('submissions.hris.development.seminar.add', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments', 'dropdown_options'));
     }
 
     public function storeSeminar(Request $request, $id){
+
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        $is_paid = 'Y';
+        if($request->fund_source == '0' && $request->budget == 0){
+            $is_paid = 'N';
+        }
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = array(
+            $id, //EmployeeTrainingProgramID
+            $emp_code, //EmpCode
+            $request->title, //TrainingProgram
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->total_hours, //NumberOfHours
+            $request->organizer, //Conductor
+            $request->level, //LevelID
+            $request->type, //TypeID
+            $request->classification, //ClassificationID
+            $request->nature, //NatureID
+            $is_paid, //IsPaid
+            $request->fund_source, //SourceOfFundID
+            $request->budget, //Budget
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email //TransAccount
+        );
+
+        $newID = $db_ext->select(
+            "
+                DECLARE @NewEmployeeTrainingProgramID int;
+
+                EXEC SaveEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?,
+                    @TrainingProgram = ?,
+                    @Venue = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @NumberOfHours = ?,
+                    @Conductor = ?,
+                    @LevelID = ?,
+                    @TypeID = ?,
+                    @ClassificationID = ?,
+                    @NatureID = ?,
+                    @IsPaid = ?,
+                    @SourceOfFundID = ?,
+                    @Budget = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
+
+                SELECT @NewEmployeeTrainingProgramID as NewEmployeeTrainingProgramID;
+
+            ", $value
+        );
 
         HRIS::create([
             'hris_id' => $id,
@@ -191,8 +486,77 @@ class SeminarAndTrainingController extends Controller
     }
 
     public function storeTraining(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        $is_paid = 'Y';
+        if($request->fund_source == '0' && $request->budget == 0){
+            $is_paid = 'N';
+        }
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = array(
+            $id, //EmployeeTrainingProgramID
+            $emp_code, //EmpCode
+            $request->title, //TrainingProgram
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->total_hours, //NumberOfHours
+            $request->organizer, //Conductor
+            $request->level, //LevelID
+            $request->type, //TypeID
+            $request->classification, //ClassificationID
+            $request->nature, //NatureID
+            $is_paid, //IsPaid
+            $request->fund_source, //SourceOfFundID
+            $request->budget, //Budget
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email //TransAccount
+        );
+
+        $newID = $db_ext->select(
+            "
+                DECLARE @NewEmployeeTrainingProgramID int;
+
+                EXEC SaveEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?,
+                    @TrainingProgram = ?,
+                    @Venue = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @NumberOfHours = ?,
+                    @Conductor = ?,
+                    @LevelID = ?,
+                    @TypeID = ?,
+                    @ClassificationID = ?,
+                    @NatureID = ?,
+                    @IsPaid = ?,
+                    @SourceOfFundID = ?,
+                    @Budget = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
+
+                SELECT @NewEmployeeTrainingProgramID as NewEmployeeTrainingProgramID;
+
+            ", $value
+        );
+
 
         HRIS::create([
             'hris_id' => $id,
@@ -241,6 +605,7 @@ class SeminarAndTrainingController extends Controller
             'budget' => $seminar->Budget,
             'fund_source' => $seminar->SourceOfFund,
             'organizer' => $seminar->Conductor,
+            'type' => $seminar->Type,
             'level' => $seminar->Level,
             'venue' => $seminar->Venue,
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
@@ -249,7 +614,8 @@ class SeminarAndTrainingController extends Controller
             'document' => $seminar->Attachment,
             'description' => $seminar->Description ?? 'No Document Attached',
             'id' => $seminar->EmployeeTrainingProgramID,
-            'department_id' => $department_id,
+            'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
+            'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
 
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -296,6 +662,82 @@ class SeminarAndTrainingController extends Controller
             }
         }
 
+        $dropdown_options = [];
+
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetClassifications");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->ClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //type
+        $hristypes = $db_ext->select("SET NOCOUNT ON; EXEC GetType");
+        $types = [];
+        foreach($hristypes as $row){
+            $types[] = (object)[
+                'id' => $row->TypeID,
+                'name' => $row->Type,
+            ];
+        }
+        $types = collect($types);
+        $dropdown_options['type'] = $types;
+        //nature
+        $hrisnatures = $db_ext->select("SET NOCOUNT ON; EXEC GetNature");
+        $natures = [];
+        foreach($hrisnatures as $row){
+            $natures[] = (object)[
+                'id' => $row->NatureID,
+                'name' => $row->Nature,
+            ];
+        }
+        $natures = collect($natures);
+        $dropdown_options['nature'] = $natures;
+        //soure of fund
+        $hrisfunds = $db_ext->select("SET NOCOUNT ON; EXEC GetSourceOfFunds");
+        $funds = [];
+        foreach($hrisfunds as $row){
+            $funds[] = (object)[
+                'id' => $row->SourceOfFundID,
+                'name' => $row->SourceOfFund,
+            ];
+        }
+        $funds = collect($funds);
+        $dropdown_options['fund_source'] = $funds;
+
+        $values = [
+            'title' => $seminar->TrainingProgram,
+            'classification' => $seminar->ClassificationID,
+            'nature' => $seminar->NatureID,
+            'budget' => $seminar->Budget,
+            'type' => $seminar->TypeID,
+            'fund_source' => $seminar->SourceOfFundID,
+            'organizer' => $seminar->Conductor,
+            'level' => $seminar->LevelID,
+            'venue' => $seminar->Venue,
+            'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
+            'total_hours' => $seminar->NumberOfHours,
+            'document' => $seminar->Attachment,
+            'description' => $seminar->Description ?? 'No Document Attached',
+            'id' => $seminar->EmployeeTrainingProgramID,
+        ];
+
         $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('department_id')->first();
         if(is_null($department_id))
             $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->pluck('department_id')->first();
@@ -307,12 +749,13 @@ class SeminarAndTrainingController extends Controller
 
         $values = [
             'title' => $seminar->TrainingProgram,
-            'classification' => $seminar->Classification,
-            'nature' => $seminar->Nature,
+            'classification' => $seminar->ClassificationID,
+            'nature' => $seminar->NatureID,
             'budget' => $seminar->Budget,
-            'fund_source' => $seminar->SourceOfFund,
+            'type' => $seminar->TypeID,
+            'fund_source' => $seminar->SourceOfFundID,
             'organizer' => $seminar->Conductor,
-            'level' => $seminar->Level,
+            'level' => $seminar->LevelID,
             'venue' => $seminar->Venue,
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
@@ -330,15 +773,83 @@ class SeminarAndTrainingController extends Controller
         if($seminar->ClassificationID >= 5){
             $training = $seminar;
             $trainingFields = $seminarFields;
-            return view('submissions.hris.development.training.edit', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'departments'));
+            return view('submissions.hris.development.training.edit', compact('id', 'training', 'trainingFields', 'values', 'colleges', 'departments', 'dropdown_options'));
         }
 
-        return view('submissions.hris.development.seminar.edit', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'departments'));
+        return view('submissions.hris.development.seminar.edit', compact('id', 'seminar', 'seminarFields', 'values', 'colleges', 'departments', 'dropdown_options'));
     }
 
     public function updateSeminar(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        $is_paid = 'Y';
+        if($request->fund_source == '0' && $request->budget == 0){
+            $is_paid = 'N';
+        }
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = array(
+            $id, //EmployeeTrainingProgramID
+            $emp_code, //EmpCode
+            $request->title, //TrainingProgram
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->total_hours, //NumberOfHours
+            $request->organizer, //Conductor
+            $request->level, //LevelID
+            $request->type, //TypeID
+            $request->classification, //ClassificationID
+            $request->nature, //NatureID
+            $is_paid, //IsPaid
+            $request->fund_source, //SourceOfFundID
+            $request->budget, //Budget
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email //TransAccount
+        );
+
+        $newID = $db_ext->select(
+            "
+                DECLARE @NewEmployeeTrainingProgramID int;
+
+                EXEC SaveEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?,
+                    @TrainingProgram = ?,
+                    @Venue = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @NumberOfHours = ?,
+                    @Conductor = ?,
+                    @LevelID = ?,
+                    @TypeID = ?,
+                    @ClassificationID = ?,
+                    @NatureID = ?,
+                    @IsPaid = ?,
+                    @SourceOfFundID = ?,
+                    @Budget = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
+
+                SELECT @NewEmployeeTrainingProgramID as NewEmployeeTrainingProgramID;
+
+            ", $value
+        );
 
         if(HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->exists()){
             HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->delete();
@@ -365,8 +876,76 @@ class SeminarAndTrainingController extends Controller
     }
 
     public function updateTraining(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        $is_paid = 'Y';
+        if($request->fund_source == '0' && $request->budget == 0){
+            $is_paid = 'N';
+        }
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = array(
+            $id, //EmployeeTrainingProgramID
+            $emp_code, //EmpCode
+            $request->title, //TrainingProgram
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
+            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $request->total_hours, //NumberOfHours
+            $request->organizer, //Conductor
+            $request->level, //LevelID
+            $request->type, //TypeID
+            $request->classification, //ClassificationID
+            $request->nature, //NatureID
+            $is_paid, //IsPaid
+            $request->fund_source, //SourceOfFundID
+            $request->budget, //Budget
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email //TransAccount
+        );
+
+        $newID = $db_ext->select(
+            "
+                DECLARE @NewEmployeeTrainingProgramID int;
+
+                EXEC SaveEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?,
+                    @TrainingProgram = ?,
+                    @Venue = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
+                    @NumberOfHours = ?,
+                    @Conductor = ?,
+                    @LevelID = ?,
+                    @TypeID = ?,
+                    @ClassificationID = ?,
+                    @NatureID = ?,
+                    @IsPaid = ?,
+                    @SourceOfFundID = ?,
+                    @Budget = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
+
+                SELECT @NewEmployeeTrainingProgramID as NewEmployeeTrainingProgramID;
+
+            ", $value
+        );
 
         if(HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '4')->exists()){
             HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '4')->delete();
@@ -405,7 +984,21 @@ class SeminarAndTrainingController extends Controller
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
 
-        HRIS::where('id', $developmentID)->delete();
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $db_ext->statement(
+            "
+                EXEC DeleteEmployeeTrainingProgram
+                    @EmployeeTrainingProgramID = ?,
+                    @EmpCode = ?;
+            ", array($id, $user->emp_code)
+        );
+
+        if(!is_null($developmentID)){
+            HRIS::where('id', $developmentID)->delete();
+        }
+
 
         \LogActivity::addToLog('Had deleted a Seminar/Webinar or Training.');
 
@@ -477,6 +1070,7 @@ class SeminarAndTrainingController extends Controller
             'budget' => $seminar->Budget,
             'fund_source' => $seminar->SourceOfFund,
             'organizer' => $seminar->Conductor,
+            'type' => $seminar->Type,
             'level' => $seminar->Level,
             'venue' => $seminar->Venue,
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
@@ -560,6 +1154,7 @@ class SeminarAndTrainingController extends Controller
             'classification' => $training->Classification,
             'nature' => $training->Nature,
             'budget' => $training->Budget,
+            'type' => $training->Type,
             'fund_source' => $training->SourceOfFund,
             'organizer' => $training->Conductor,
             'level' => $training->Level,

@@ -3,7 +3,18 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-
+        @if (isset($fieldInfo->h_r_i_s_form_id))
+            @if ($fieldInfo->h_r_i_s_form_id == 3 && $fieldInfo->name == 'level')
+            <span id="" role="alert" class="ml-3">
+                Select level of the organization.
+            </span>
+            @endif
+            @if ($fieldInfo->h_r_i_s_form_id == 2 && $fieldInfo->name == 'level')
+            <span id="" role="alert" class="ml-3">
+                Select level of achievement/award.
+            </span>
+            @endif
+        @endif
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             @switch($fieldInfo->visibility)
                     @case(2)
@@ -22,9 +33,21 @@
             <option value="" selected disabled>Choose...</option>
             @isset($dropdown_options[$fieldInfo->name])
                 @foreach($dropdown_options[$fieldInfo->name] as $option)
-                    <option value="{{ $option->id }}" {{ (old($fieldInfo->name, $value )== $option->id) ? 'selected' : '' }}>{{ $option->name }}</option>
+                    <option value="{{ $option->id }}" {{ (old($fieldInfo->name, $value ) == $option->id) ? 'selected' : '' }}>{{ $option->name }}</option>
                 @endforeach
             @endisset
+            @if (isset($fieldInfo->h_r_i_s_form_id))
+            @if ($fieldInfo->h_r_i_s_form_id == 4 && $fieldInfo->name == 'fund_source')
+                <span class="ml-3" role="alert">
+                    <option value="0" {{ (old($fieldInfo->name, $value ) == 0) ? 'selected' : '' }}>Not a Paid Seminar/Training</option>
+                </span>
+            @endif
+            @if ($fieldInfo->h_r_i_s_form_id == 1 && $fieldInfo->name != 'level')
+                <span class="ml-3" role="alert">
+                    <option value="0" {{ (old($fieldInfo->name, $value ) == 0) ? 'selected' : '' }}>Not Applicable</option>
+                </span>
+            @endif
+        @endif
 
         </select>
 

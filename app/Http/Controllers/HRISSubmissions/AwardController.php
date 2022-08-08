@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use Image;
+use Carbon\Carbon;
 use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
@@ -17,7 +19,6 @@ use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
-use Image;
 
 class AwardController extends Controller
 {
@@ -47,6 +48,115 @@ class AwardController extends Controller
         return view('submissions.hris.award.index', compact('awardFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
     }
 
+    public function create(){
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
+                ->where('h_r_i_s_fields.h_r_i_s_form_id', 2)->where('h_r_i_s_fields.is_active', 1)
+                ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
+                ->orderBy('h_r_i_s_fields.order')->get();
+
+        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+
+        $departments = Department::whereIn('college_id', $colleges)->get();
+
+        $values = [];
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetAchievementClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->AchievementClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+
+        return view('submissions.hris.award.create', compact('values', 'fields', 'dropdown_options', 'departments'));
+    }
+
+    public function savetohris(Request $request){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
+        $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            0, //EmployeeOutstandingAchievementID
+            $emp_code, //EmpCode
+            $request->award, //Achievement
+            $request->awarded_by, //AwardedBy
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $id = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOutstandingAchievementID int;
+                EXEC SaveEmployeeOutstandingAchievement
+                    @EmployeeOutstandingAchievementID = ?,
+                    @EmpCode = ?,
+                    @Achievement = ?,
+                    @AwardedBy = ?,
+                    @Venue = ?,
+                    @Date = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
+
+                SELECT @NewEmployeeOutstandingAchievementID as NewEmployeeOutstandingAchievementID;
+
+            ", $value);
+
+        $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
+
+        HRIS::create([
+            'hris_id' => $id[0]->NewEmployeeOutstandingAchievementID,
+            'hris_type' => '2',
+            'college_id' => $college_id,
+            'department_id' => $request->input('department_id'),
+            'user_id' => auth()->id(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+
+        \LogActivity::addToLog('Had saved an Outstanding Achievement.');
+
+        return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+    }
+
     public function add(Request $request, $id){
         $user = User::find(auth()->id());
 
@@ -64,15 +174,40 @@ class AwardController extends Controller
 
         $values = [
             'award' =>  $awardData[0]->Achievement,
-            'classification' => $awardData[0]->Classification,
+            'classification' => $awardData[0]->AchievementClassificationID,
             'awarded_by' => $awardData[0]->AwardedBy,
-            'level' => $awardData[0]->Level,
+            'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
             'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
         ];
+
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetAchievementClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->AchievementClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -117,11 +252,59 @@ class AwardController extends Controller
             ];
          }
 
-        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments'));
+        return view('submissions.hris.award.add', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'collegeOfDepartment', 'hrisDocuments', 'departments', 'dropdown_options'));
     }
 
     public function store(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            $id, //EmployeeOutstandingAchievementID
+            $emp_code, //EmpCode
+            $request->award, //Achievement
+            $request->awarded_by, //AwardedBy
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOutstandingAchievementID int;
+                EXEC SaveEmployeeOutstandingAchievement
+                    @EmployeeOutstandingAchievementID = ?,
+                    @EmpCode = ?,
+                    @Achievement = ?,
+                    @AwardedBy = ?,
+                    @Venue = ?,
+                    @Date = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
+
+                SELECT @NewEmployeeOutstandingAchievementID as NewEmployeeOutstandingAchievementID;
+
+            ", $value);
+
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::create([
@@ -166,7 +349,8 @@ class AwardController extends Controller
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
-            'department_id' => $department_id
+            'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
+            'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -203,9 +387,9 @@ class AwardController extends Controller
 
         $values = [
             'award' =>  $awardData[0]->Achievement,
-            'classification' => $awardData[0]->Classification,
+            'classification' => $awardData[0]->AchievementClassificationID,
             'awarded_by' => $awardData[0]->AwardedBy,
-            'level' => $awardData[0]->Level,
+            'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
             'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
@@ -214,17 +398,90 @@ class AwardController extends Controller
             'department_id' => $department_id
         ];
 
+        $dropdown_options = [];
+
+        //level
+        $hrislevels = $db_ext->select("SET NOCOUNT ON; EXEC GetLevel");
+        $levels = [];
+        foreach($hrislevels as $row){
+            $levels[] = (object)[
+                'id' => $row->LevelID,
+                'name' => $row->Level,
+            ];
+        }
+        $levels = collect($levels);
+        $dropdown_options['level'] = $levels;
+        //classification
+        $hrisclassifications = $db_ext->select("SET NOCOUNT ON; EXEC GetAchievementClassification");
+        $classifications = [];
+        foreach($hrisclassifications as $row){
+            $classifications[] = (object)[
+                'id' => $row->AchievementClassificationID,
+                'name' => $row->Classification,
+            ];
+        }
+        $classifications = collect($classifications);
+        $dropdown_options['classification'] = $classifications;
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
         $forview = '';
-        return view('submissions.hris.award.edit', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'departments'));
+        return view('submissions.hris.award.edit', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'departments', 'dropdown_options'));
     }
 
     public function update(Request $request, $id){
+        $user = User::find(auth()->id());
+        $emp_code = $user->emp_code;
+
+        $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+
+        if($request->has('document')){
+            $datastring = file_get_contents($request->file('document'));
+            $imagedata = unpack("H*hex", $datastring);
+            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        }
+
+        $value = [
+            $id, //EmployeeOutstandingAchievementID
+            $emp_code, //EmpCode
+            $request->award, //Achievement
+            $request->awarded_by, //AwardedBy
+            $request->venue, //Venue
+            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            $request->level, //LevelID
+            $request->classification, //ClassificationID
+            '', //Remarks
+            $request->description, //AttachmentDescription
+            $imagedata ?? null, //Attachment
+            $user->email
+        ];
+
+        $newid = $db_ext->select(
+            "
+                DECLARE @NewEmployeeOutstandingAchievementID int;
+                EXEC SaveEmployeeOutstandingAchievement
+                    @EmployeeOutstandingAchievementID = ?,
+                    @EmpCode = ?,
+                    @Achievement = ?,
+                    @AwardedBy = ?,
+                    @Venue = ?,
+                    @Date = ?,
+                    @LevelID = ?,
+                    @ClassificationID = ?,
+                    @Remarks = ?,
+                    @AttachmentDescription = ?,
+                    @Attachment = ?,
+                    @TransAccount = ?,
+                    @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
+
+                SELECT @NewEmployeeOutstandingAchievementID as NewEmployeeOutstandingAchievementID;
+
+            ", $value);
+
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '2')->update([
@@ -244,7 +501,20 @@ class AwardController extends Controller
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
         }
 
-        HRIS::where('id', $awardID)->delete();
+        $user = User::find(auth()->id());
+        $db_ext = DB::connection('mysql_external');
+
+        $db_ext->statement(
+            "
+                EXEC DeleteEmployeeOutstandingAchievement
+                    @EmployeeOutstandingAchievementID = ?,
+                    @EmpCode = ?;
+            ", array($id, $user->emp_code)
+        );
+
+        if(!is_null($awardID)){
+            HRIS::where('id', $awardID)->delete();
+        }
 
         \LogActivity::addToLog('Had deleted a Outstanding Achievement.');
 

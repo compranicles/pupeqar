@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Trainings |')
+    @section('title', 'Ongoing Studies |')
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="font-weight-bold mb-2">Edit Training</h2>
+                    <h2 class="font-weight-bold mb-2">Add Ongoing Studies</h2>
                 </div>
             </div>
             <div class="row">
@@ -14,7 +14,7 @@
                         </div>
                     @endif
                     <p>
-                        <a class="back_link" href="{{ route('submissions.development.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
+                        <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
                     </p>
                      {{-- Denied Details --}}
                      @if ($deniedDetails = Session::get('denied'))
@@ -24,19 +24,23 @@
                      @endif
                     <div class="card">
                         <div class="card-body">
-                            <form action="{{ route('submissions.development.training.update', $id) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('submissions.educ.save') }}" method="post" enctype="multipart/form-data">
+                                <div class="mt-2 mb-3">
+                                    <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                </div>
+                                <hr> 
                                 @csrf
                                 @if (!isset($collegeOfDepartment))
-                                    @include('form', ['formFields' => $trainingFields, 'value' => $values])
+                                    @include('form', ['formFields' => $fields])
                                 @else
-                                    @include('form', ['formFields' => $trainingFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
+                                    @include('form', ['formFields' => $fields, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
                                 @endif
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label class="font-weight-bold" >Document</label>
                                     <br>
                                     <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
-                                </div>
+                                </div> --}}
                                 @if(!isset($forview))
                                 <div class="row">
                                     <div class="col-md-12">
@@ -57,13 +61,6 @@
         </div>
         @push('scripts')
         <script src="{{ asset('js/spinner.js') }}"></script>
-        <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
-        <script src="{{ asset('js/spinner.js') }}"></script>
-        <script>
-            $('#from').on('change', function () {
-                $('#to').datepicker('setStartDate', $('#from').val());
-            });
-        </script>
         <script>
             var uploadField = document.getElementById("document");
 
@@ -74,23 +71,40 @@
                 };
             };
         </script>
-        {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
         <script>
-            // var report_category_id = 26;
-            // $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            // var api = '{{ url("/document-upload/description/26") }}';
-            // $.get(api, function (data){
-            //     if (data != '') {
-            //         data.forEach(function (item){
-            //             $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-            //         });
-            //     }
-            // });
+            $('input[name="is_graduated"]').on('change', function () {
+                if ($(this).val() == 'Yes') {
+                    $('#status').val(0);
+                    $('#is_enrolled2').attr("checked", "checked");
+                    $('#to').val('');
+                }
+                else {
+                    $('#status').val('');
+                    $('#is_enrolled1').attr("checked", "checked");
+                    $('#to').val('Present');
+                }
+            });
 
-
-            // $(function(){
-            //     $("input[name='document[]']").attr('required', true);
-            // });
+            $('#to').on('blur', function () {
+                if ($('#is_enrolled2').prop('checked')) {
+                    if($('#to').val() < $('#from').val()) {
+                        document.getElementById('to').value = "";
+                        alert("For the inclusive end year, please select " + $('#from').val() + " onwards.");
+                    }
+                }
+            });
+        </script>
+        <script>
+            $('#level').on('change', function () {
+                if ($(this).val() == 1 || $(this).val() == 2 || $(this).val() == 8 ||
+                $(this).val() == 9 || $(this).val() == 4) {
+                    $('#program_level').val(0);
+                    $('#education_discipline').val(0);
+                } else {
+                    $('#program_level').val('');
+                    $('#education_discipline').val('');
+                }
+            });
         </script>
         @if(isset($forview))
         <script>

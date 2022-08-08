@@ -9,7 +9,7 @@
                 <strong>{{ $deadline }}</strong>. <br>
         &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
             quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist. <br>
-        &#8226; Please contact them immediately if you need to edit your submitted accomplishment for them to return it to you. <br>
+            Please contact them immediately if you need to edit your submitted accomplishment for them to return it to you. <br>
         &#8226; You may <a class="text-primary" style="text-decoration:underline" href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">add college/branch/campus/offices where you are reporting.</a>
     </div>
 </div>

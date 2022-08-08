@@ -22,7 +22,7 @@
                 @endforeach
             </select> --}}
 
-            <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly>
+            <input type="text" value="{{ old($fieldInfo->name) }}" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" readonly>
 
             <!-- <span id="" role="alert">
                 <p><i class="bi bi-plus-circle-fill text-success mr-1"></i><a class="text-dark" href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">Add College/Branch/Campus/Offices Where You Are Reporting.</a></p>
