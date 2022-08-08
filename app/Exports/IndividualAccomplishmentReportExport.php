@@ -92,10 +92,9 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                        $table_contents[$format->id] = Report::
                             // ->where('user_roles.role_id', 1)
-                            ->whereIn('reports.format', ['f', 'x'])
-                            ->whereNull('user_roles.deleted_at')
+                            whereIn('reports.format', ['f', 'x'])
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
@@ -126,10 +125,9 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     if($format->is_table == "0" || $format->report_category_id == null)
                         $table_contents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
+                        $table_contents[$format->id] = Report::
                             // ->where('user_roles.role_id', 1)
-                            ->whereIn('reports.format', ['a', 'x'])
-                            ->whereNull('user_roles.deleted_at')
+                            whereIn('reports.format', ['a', 'x'])
                             ->where('reports.report_category_id', $format->report_category_id)
                             ->where('reports.report_year', $year_generate)
                             ->where('reports.report_quarter', $quarter_generate)
@@ -142,6 +140,7 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     }
                 }
 
+                dd($table_contents);
         $this->table_format = $table_format;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;

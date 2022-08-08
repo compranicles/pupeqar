@@ -59,9 +59,8 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                 if($this->asked = 'ipo')
                     if ($format->type_id != 4) {
                         $table_contents[$format->id] =
-                            Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                                ->whereIn('reports.format', $employee_type)
-                                ->whereNull('user_roles.deleted_at')
+                            Report::
+                                whereIn('reports.format', $employee_type)
                                 ->select('reports.*',
                                 DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                     'sectors.name as sector_name',
@@ -106,9 +105,8 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                     }
                 elseif($this->asked = 'sector') {
                     $table_contents[$format->id] =
-                        Report::join('user_roles', 'user_roles.user_id', 'reports.user_id')
-                        ->whereIn('reports.format', $employee_type)
-                        ->whereNull('user_roles.deleted_at')
+                        Report::
+                        whereIn('reports.format', $employee_type)
                         ->select('reports.*',
                             DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                 'sectors.name as sector_name',
