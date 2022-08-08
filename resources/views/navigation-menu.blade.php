@@ -55,6 +55,14 @@
                     </x-jet-nav-link>
                 </li>
 
+                @IsReporting
+                <li class="navbar-nav mr-auto main-nav-item">
+                    <x-jet-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics') ">
+                        {{ __('Analytics') }}
+                    </x-jet-nav-link>
+                </li>
+                @endIsReporting
+
                 @can('viewAny', App\Models\User::class)
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
@@ -86,14 +94,6 @@
                     </a>
                 </li>
                 @endcan
-
-                @IsReporting
-                <li class="navbar-nav mr-auto main-nav-item">
-                    <x-jet-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics') ">
-                        {{ __('Analytics') }}
-                    </x-jet-nav-link>
-                </li>
-                @endIsReporting
 
                 @SuperAdmin
                 <li class="navbar-nav mr-auto main-nav-item">

@@ -40,7 +40,7 @@ class EmployeeController extends Controller
 
         $user = User::where('id', auth()->id())->first();
         $cbco = College::select('name', 'id')->get();
-        
+
         // dd($existingCol);
         $currentPos = $this->db_ext->select(" EXEC GetEmployeeCurrentPositionByEmpCode N'$user->emp_code' ");
         if(empty($currentPos)){
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
         //if admin
         if($currentPos[0]->EmployeeTypeID == '1')
         $role = "Admin";
-        
+
         if ($role == "Admin") {
             $existingCol = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
             //For with designation - existingCol2
@@ -85,7 +85,7 @@ class EmployeeController extends Controller
             \LogActivity::addToLog('Had added '.$officeName['name'].' as office to report with.');
         }
 
-        if ($request->input('yes')) {
+        if ($request->has('yes')) {
             UserRole::where('user_id', auth()->id())->delete();
             UserRole::create([
                 'user_id' => auth()->id(),
@@ -103,14 +103,16 @@ class EmployeeController extends Controller
                 ]);
             }
         }
-        foreach($request->input('designee_cbco') as $cbco) {
-            Employee::create([
-                'user_id' => auth()->id(),
-                'type' => $request->input('designee_type'),
-                'college_id' => $cbco,
-            ]);
-            $officeName = College::where('id', $cbco)->first();
-            \LogActivity::addToLog('Had added '.$officeName['name'].' as office to report with as a designee.');
+        if ($request->has('designee_cbco')){
+            foreach($request->input('designee_cbco') as $cbco) {
+                Employee::create([
+                    'user_id' => auth()->id(),
+                    'type' => $request->input('designee_type'),
+                    'college_id' => $cbco,
+                ]);
+                $officeName = College::where('id', $cbco)->first();
+                \LogActivity::addToLog('Had added '.$officeName['name'].' as office to report with as a designee.');
+            }
         }
 
         if (session('url'))
