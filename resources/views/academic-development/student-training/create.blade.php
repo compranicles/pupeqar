@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <form action="{{ route('student-training.store') }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
-                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the required information with the symbol (<strong style="color: red;">*</strong>)
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
                             </div>
                             <hr>
                             @csrf

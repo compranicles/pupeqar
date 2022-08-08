@@ -11,6 +11,18 @@
                         [Surname Suffix (if any), First Name M.I]
                     </span>
                 @endif
+                @if (isset($fieldInfo->h_r_i_s_form_id))
+                    @if ($fieldInfo->h_r_i_s_form_id == 3 && $fieldInfo->name == 'position')
+                    <span id="" role="alert" class="ml-3">
+                        Type your position in the organization.
+                    </span>
+                    @endif
+                    @if ($fieldInfo->h_r_i_s_form_id == 1 && $fieldInfo->name == 'honors')
+                    <span id="" role="alert" class="ml-3">
+                        Academic/Non-Academic honors received by the employee.
+                    </span>
+                    @endif
+                @endif
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
                 placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
