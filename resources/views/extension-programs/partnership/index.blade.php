@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Partnership, Linkages & Network |')
+    @section('title', 'Partnership, Linkages & Network |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Partnership, Linkages & Network</h2>
@@ -90,6 +91,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

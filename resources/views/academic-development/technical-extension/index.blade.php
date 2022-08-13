@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Technical Extension Programs/Project/Activity |')
+    @section('title', 'Technical Extension Programs/Project/Activity |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Technical Extension Programs/Projects/Activities</h2>
@@ -78,6 +79,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
 
     {{-- Delete Modal --}}

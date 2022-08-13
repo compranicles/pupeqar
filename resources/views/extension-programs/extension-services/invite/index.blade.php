@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add Co-Extensionists') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
         <div class="row">
             <p class="ml-3">

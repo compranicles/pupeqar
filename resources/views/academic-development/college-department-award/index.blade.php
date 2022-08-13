@@ -1,4 +1,5 @@
 <x-app-layout>
+    <div class="container">
         @section('title', 'Awards and Recognition Received |')
         <div class="row">
             <div class="col-md-12">
@@ -84,6 +85,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

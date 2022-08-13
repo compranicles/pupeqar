@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Admin Special Tasks | ')
+    @section('title', 'Admin Special Tasks | ')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Admin Special Tasks</h2>
@@ -97,6 +98,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

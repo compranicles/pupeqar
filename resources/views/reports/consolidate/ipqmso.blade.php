@@ -3,299 +3,301 @@
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors'))
     </x-slot>
 
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="font-weight-bold mb-2">Consolidated QAR - IPO Level</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Consolidated QAR - IPO Level</h2>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="yearFilter" class="mr-2">Year Reported: </label>
-                                <select id="yearFilter" class="custom-select">
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="quarterFilter" class="mr-2">Quarter Start: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter" class="custom-select" name="quarter">
-                                        <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
-                                        <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
-                                        <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
-                                        <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="yearFilter" class="mr-2">Year Reported: </label>
+                                    <select id="yearFilter" class="custom-select">
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group m-0">
-                                <label for="quarterFilter2" class="mr-2">Quarter End: </label>
-                                <div class="d-flex">
-                                    <select id="quarterFilter2" class="custom-select" name="quarter2">
-                                        <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
-                                        <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
-                                        <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
-                                        <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
-                                    </select>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="quarterFilter" class="mr-2">Quarter Start: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter" class="custom-select" name="quarter">
+                                            <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
+                                            <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
+                                            <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
+                                            <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group m-0">
+                                    <label for="quarterFilter2" class="mr-2">Quarter End: </label>
+                                    <div class="d-flex">
+                                        <select id="quarterFilter2" class="custom-select" name="quarter2">
+                                            <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
+                                            <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
+                                            <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
+                                            <option value="4" {{ $quarter == 4 ? 'selected' : ''  }} class="quarter">4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-top: 30px;">
+                                <div class="form-group">
+                                    <button id="filter" class="btn btn-primary">GENERATE</button>
+                                    <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateIPOLevel" data-toggle="modal">EXPORT</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" style="padding-top: 30px;">
-                            <div class="form-group">
-                                <button id="filter" class="btn btn-primary">GENERATE</button>
-                                <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateIPOLevel" data-toggle="modal">EXPORT</button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
-                                <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
-                                    <thead>
-                                        <tr>
-                                            <th rowspan="2"></th>
-                                            <th rowspan="2">Accomplishment Report</th>
-                                            <th rowspan="2">Title</th>
-                                            <th rowspan="2">Employee</th>
-                                            <th rowspan="2">College/Branch/ Campus/Office</th>
-                                            <th rowspan="2">Department/ Section</th>
-                                            <th class="text-center" colspan="6">Status</th>
-                                            <th rowspan="2"></th>
-                                        </tr>
-                                        <tr class="text-center">
-                                            <th>Researcher</th>
-                                            <th>Extensionist</th>
-                                            <th>Chair/Chief</th>
-                                            <th>Dean/<br>Director</th>
-                                            <th>Sector Head</th>
-                                            <th>IPO</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($ipqmso_accomps as $row)
-                                        <tr role="button">
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if (isset($row->report_details->title))
-                                                    {{ $row->report_details->title }}
-                                                @elseif (isset($row->report_details->publication_or_audio_visual))
-                                                    {{ $row->report_details->publication_or_audio_visual }}
-                                                @elseif (isset($row->report_details->title_of_extension_program))
-                                                    {{ $row->report_details->title_of_extension_program }}
-                                                @elseif (isset($row->report_details->title_of_extension_project))
-                                                    {{ $row->report_details->title_of_extension_project }}
-                                                @elseif (isset($row->report_details->title_of_extension_activity))
-                                                    {{ $row->report_details->title_of_extension_activity }}
-                                                @elseif (isset($row->report_details->title_of_partnership))
-                                                    {{ $row->report_details->title_of_partnership }}
-                                                @elseif (isset($row->report_details->mobility_description))
-                                                    {{ $row->report_details->mobility_description }}
-                                                @elseif (isset($row->report_details->course_title))
-                                                    {{ $row->report_details->course_title }}
-                                                @elseif (isset($row->report_details->description_of_request))
-                                                    {{ $row->report_details->description_of_request }}
-                                                @elseif (isset($row->report_details->name_of_award))
-                                                    {{ $row->report_details->name_of_award }}
-                                                @elseif (isset($row->report_details->name))
-                                                    {{ $row->report_details->name }}
-                                                @elseif (isset($row->report_details->title_of_the_program))
-                                                    {{ $row->report_details->title_of_the_program }}
-                                                @elseif (isset($row->report_details->output))
-                                                    {{ $row->report_details->output }}
-                                                @elseif (isset($row->report_details->final_output))
-                                                    {{ $row->report_details->final_output }}
-                                                @elseif (isset($row->report_details->activity_description))
-                                                    {{ $row->report_details->activity_description }}
-                                                @elseif (isset($row->report_details->active_linkages))
-                                                    {{ $row->report_details->active_linkages }}
-                                                @elseif (isset($row->report_details->program_title))
-                                                    {{ $row->report_details->program_title }}
-                                                @elseif (isset($row->report_details->project_title))
-                                                        {{ $row->report_details->project_title }}
-                                                @elseif (isset($row->report_details->activity_title))
-                                                    {{ $row->report_details->activity_title }}
-                                                @elseif (isset($row->report_details->accomplishment_description))
-                                                    {{ $row->report_details->accomplishment_description }}
-                                                @elseif (isset($row->report_details->award))
-                                                    {{ $row->report_details->award }}
-                                                @elseif (isset($row->report_details->organization))
-                                                    {{ $row->report_details->organization }}
-                                                @elseif (isset($row->report_details->degree))
-                                                    {{ $row->report_details->degree }}
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id] ?? '-' }}</td>
-                                            <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id] ?? '-' }}</td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                    @if ($row->researcher_approval === null)
-                                                        Receiving...
-                                                    @elseif ($row->researcher_approval == 0)
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->researcher_approval == 1)
-                                                        <span class="text-success font-weight-bold">Reviewed</span>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive" style="overflow-x: auto; padding-bottom: 8px;">
+                                    <table class="table table-hover table-sm table-bordered" id="college_accomplishments_table">
+                                        <thead>
+                                            <tr>
+                                                <th rowspan="2"></th>
+                                                <th rowspan="2">Accomplishment Report</th>
+                                                <th rowspan="2">Title</th>
+                                                <th rowspan="2">Employee</th>
+                                                <th rowspan="2">College/Branch/ Campus/Office</th>
+                                                <th rowspan="2">Department/ Section</th>
+                                                <th class="text-center" colspan="6">Status</th>
+                                                <th rowspan="2"></th>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th>Researcher</th>
+                                                <th>Extensionist</th>
+                                                <th>Chair/Chief</th>
+                                                <th>Dean/<br>Director</th>
+                                                <th>Sector Head</th>
+                                                <th>IPO</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($ipqmso_accomps as $row)
+                                            <tr role="button">
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
+                                                <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                                <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if (isset($row->report_details->title))
+                                                        {{ $row->report_details->title }}
+                                                    @elseif (isset($row->report_details->publication_or_audio_visual))
+                                                        {{ $row->report_details->publication_or_audio_visual }}
+                                                    @elseif (isset($row->report_details->title_of_extension_program))
+                                                        {{ $row->report_details->title_of_extension_program }}
+                                                    @elseif (isset($row->report_details->title_of_extension_project))
+                                                        {{ $row->report_details->title_of_extension_project }}
+                                                    @elseif (isset($row->report_details->title_of_extension_activity))
+                                                        {{ $row->report_details->title_of_extension_activity }}
+                                                    @elseif (isset($row->report_details->title_of_partnership))
+                                                        {{ $row->report_details->title_of_partnership }}
+                                                    @elseif (isset($row->report_details->mobility_description))
+                                                        {{ $row->report_details->mobility_description }}
+                                                    @elseif (isset($row->report_details->course_title))
+                                                        {{ $row->report_details->course_title }}
+                                                    @elseif (isset($row->report_details->description_of_request))
+                                                        {{ $row->report_details->description_of_request }}
+                                                    @elseif (isset($row->report_details->name_of_award))
+                                                        {{ $row->report_details->name_of_award }}
+                                                    @elseif (isset($row->report_details->name))
+                                                        {{ $row->report_details->name }}
+                                                    @elseif (isset($row->report_details->title_of_the_program))
+                                                        {{ $row->report_details->title_of_the_program }}
+                                                    @elseif (isset($row->report_details->output))
+                                                        {{ $row->report_details->output }}
+                                                    @elseif (isset($row->report_details->final_output))
+                                                        {{ $row->report_details->final_output }}
+                                                    @elseif (isset($row->report_details->activity_description))
+                                                        {{ $row->report_details->activity_description }}
+                                                    @elseif (isset($row->report_details->active_linkages))
+                                                        {{ $row->report_details->active_linkages }}
+                                                    @elseif (isset($row->report_details->program_title))
+                                                        {{ $row->report_details->program_title }}
+                                                    @elseif (isset($row->report_details->project_title))
+                                                            {{ $row->report_details->project_title }}
+                                                    @elseif (isset($row->report_details->activity_title))
+                                                        {{ $row->report_details->activity_title }}
+                                                    @elseif (isset($row->report_details->accomplishment_description))
+                                                        {{ $row->report_details->accomplishment_description }}
+                                                    @elseif (isset($row->report_details->award))
+                                                        {{ $row->report_details->award }}
+                                                    @elseif (isset($row->report_details->organization))
+                                                        {{ $row->report_details->organization }}
+                                                    @elseif (isset($row->report_details->degree))
+                                                        {{ $row->report_details->degree }}
                                                     @endif
-                                                @else
-                                                    N/A
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
-                                                    @if ($row->extensionist_approval === null)
-                                                        Receiving...
-                                                    @elseif ($row->extensionist_approval == 0)
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->extensionist_approval == 1)
-                                                        <span class="text-success font-weight-bold">Reviewed</span>
-                                                    @endif
-                                                @else
-                                                    N/A
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                    @if ($row->researcher_approval === null)
-                                                        -
-                                                    @elseif ($row->researcher_approval == 0)
-                                                        -
-                                                    @else
-                                                        @if ($row->chairperson_approval === null)
+                                                </td>
+                                                <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name === null) ? '' : ' '.$row->middle_name).(($row->suffix === null) ? '' : ' '.$row->suffix) }}</td>
+                                                <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id] ?? '-' }}</td>
+                                                <td class="report-view button-view" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id] ?? '-' }}</td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
+                                                        @if ($row->researcher_approval === null)
                                                             Receiving...
-                                                        @elseif ($row->chairperson_approval === 0)
+                                                        @elseif ($row->researcher_approval == 0)
                                                             <span class="text-danger font-weight-bold">Returned</span>
-                                                        @elseif ($row->chairperson_approval === 1)
-                                                            <span class="text-success font-weight-bold">Viewed</span>
+                                                        @elseif ($row->researcher_approval == 1)
+                                                            <span class="text-success font-weight-bold">Reviewed</span>
                                                         @endif
-                                                    @endif
-                                                @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
-                                                    @if ($row->extensionist_approval === null)
-                                                        -
-                                                    @elseif ($row->extensionist_approval == 0)
-                                                        -
                                                     @else
-                                                        @if ($row->chairperson_approval === null)
-                                                            Receiving...
-                                                        @elseif ($row->chairperson_approval === 0)
-                                                            <span class="text-danger font-weight-bold">Returned</span>
-                                                        @elseif ($row->chairperson_approval === 1)
-                                                            <span class="text-success font-weight-bold">Viewed</span>
-                                                        @endif
-                                                    @endif
-                                                @else
-                                                    @if ($row->chairperson_approval === null && $department_names[$row->id] != '-')
-                                                        Receiving...
-                                                    @elseif($department_names[$row->id] == '-')
                                                         N/A
-                                                    @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                        <span class="text-success font-weight-bold">Reviewed</span>
                                                     @endif
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if ($row->chairperson_approval === 0)
-                                                    -
-                                                @elseif ($row->chairperson_approval === null)
-                                                    -
-                                                @else
-                                                    @if ($row->dean_approval === null)
-                                                        Receiving...
-                                                    @elseif ($row->dean_approval === 0)
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->dean_approval === 1)
-                                                        <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
-                                                    @elseif ($row->dean_approval === 2)
-                                                        <span class="text-success font-weight-bold">Reviewed</span>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if ($row->dean_approval === 0)
-                                                    -
-                                                @elseif ($row->dean_approval === null)
-                                                    -
-                                                @else
-                                                    @if ($row->sector_approval === null)
-                                                        Receiving...
-                                                    @elseif ($row->sector_approval === 0)
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->sector_approval === 1)
-                                                        <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
-                                                    @elseif ($row->sector_approval === 2)
-                                                        <span class="text-success font-weight-bold">Reviewed</span>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                            <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                @if ($row->sector_approval === 0)
-                                                    -
-                                                @elseif ($row->sector_approval === null)
-                                                    -
-                                                @else
-                                                    @if ($row->ipqmso_approval === null)
-                                                        Receiving...
-                                                    @elseif ($row->ipqmso_approval === 0)
-                                                        <span class="text-danger font-weight-bold">Returned</span>
-                                                    @elseif ($row->ipqmso_approval === 1)
-                                                        <span class="text-success font-weight-bold">Received</span>
-                                                    @endif
-                                                @endif
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                    @if (
-                                                        $row->researcher_approval === 0 ||
-                                                        $row->chairperson_approval === 0 ||
-                                                        $row->dean_approval === 0 ||
-                                                        $row->sector_approval === 0 ||
-                                                        $row->ipqmso_approval === 0
-                                                    )
-                                                    <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                </td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                                        @if ($row->extensionist_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->extensionist_approval == 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->extensionist_approval == 1)
+                                                            <span class="text-success font-weight-bold">Reviewed</span>
+                                                        @endif
                                                     @else
-                                                        -
+                                                        N/A
                                                     @endif
-                                                @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
-                                                    @if (
-                                                        $row->extensionist_approval === 0 ||
-                                                        $row->chairperson_approval === 0 ||
-                                                        $row->dean_approval === 0 ||
-                                                        $row->sector_approval === 0 ||
-                                                        $row->ipqmso_approval === 0
-                                                    )
-                                                    <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                </td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
+                                                        @if ($row->researcher_approval === null)
+                                                            -
+                                                        @elseif ($row->researcher_approval == 0)
+                                                            -
+                                                        @else
+                                                            @if ($row->chairperson_approval === null)
+                                                                Receiving...
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @elseif ($row->chairperson_approval === 1)
+                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                            @endif
+                                                        @endif
+                                                    @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                                        @if ($row->extensionist_approval === null)
+                                                            -
+                                                        @elseif ($row->extensionist_approval == 0)
+                                                            -
+                                                        @else
+                                                            @if ($row->chairperson_approval === null)
+                                                                Receiving...
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @elseif ($row->chairperson_approval === 1)
+                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                            @endif
+                                                        @endif
                                                     @else
-                                                        -
+                                                        @if ($row->chairperson_approval === null && $department_names[$row->id] != '-')
+                                                            Receiving...
+                                                        @elseif($department_names[$row->id] == '-')
+                                                            N/A
+                                                        @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
+                                                            <span class="text-success font-weight-bold">Reviewed</span>
+                                                        @endif
                                                     @endif
-                                                @else
-                                                    @if (
-                                                        $row->chairperson_approval === 0 ||
-                                                        $row->dean_approval === 0 ||
-                                                        $row->sector_approval === 0 ||
-                                                        $row->ipqmso_approval === 0
-                                                    )
-                                                    <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                </td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if ($row->chairperson_approval === 0)
+                                                        -
+                                                    @elseif ($row->chairperson_approval === null)
+                                                        -
                                                     @else
-                                                        -
+                                                        @if ($row->dean_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->dean_approval === 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->dean_approval === 1)
+                                                            <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
+                                                        @elseif ($row->dean_approval === 2)
+                                                            <span class="text-success font-weight-bold">Reviewed</span>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                            </td>
-
-                                        </tr>
-                                        @empty
-
-                                        @endforelse
-                                    </tbody>
-                                </table>
+                                                </td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if ($row->dean_approval === 0)
+                                                        -
+                                                    @elseif ($row->dean_approval === null)
+                                                        -
+                                                    @else
+                                                        @if ($row->sector_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->sector_approval === 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->sector_approval === 1)
+                                                            <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
+                                                        @elseif ($row->sector_approval === 2)
+                                                            <span class="text-success font-weight-bold">Reviewed</span>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
+                                                    @if ($row->sector_approval === 0)
+                                                        -
+                                                    @elseif ($row->sector_approval === null)
+                                                        -
+                                                    @else
+                                                        @if ($row->ipqmso_approval === null)
+                                                            Receiving...
+                                                        @elseif ($row->ipqmso_approval === 0)
+                                                            <span class="text-danger font-weight-bold">Returned</span>
+                                                        @elseif ($row->ipqmso_approval === 1)
+                                                            <span class="text-success font-weight-bold">Received</span>
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
+                                                        @if (
+                                                            $row->researcher_approval === 0 ||
+                                                            $row->chairperson_approval === 0 ||
+                                                            $row->dean_approval === 0 ||
+                                                            $row->sector_approval === 0 ||
+                                                            $row->ipqmso_approval === 0
+                                                        )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
+                                                        @if (
+                                                            $row->extensionist_approval === 0 ||
+                                                            $row->chairperson_approval === 0 ||
+                                                            $row->dean_approval === 0 ||
+                                                            $row->sector_approval === 0 ||
+                                                            $row->ipqmso_approval === 0
+                                                        )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    @else
+                                                        @if (
+                                                            $row->chairperson_approval === 0 ||
+                                                            $row->dean_approval === 0 ||
+                                                            $row->sector_approval === 0 ||
+                                                            $row->ipqmso_approval === 0
+                                                        )
+                                                        <button class="button-deny action-remarks" data-toggle="modal" data-target="#viewDeny" data-id="{{ $row->id }}"><i class="bi bi-chat-square-text" style="font-size: 1.25em;"></i> Remarks</button>
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    @endif
+                                                </td>
+    
+                                            </tr>
+                                            @empty
+    
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

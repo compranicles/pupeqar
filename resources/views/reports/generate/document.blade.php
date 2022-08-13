@@ -1,11 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('View Documents') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">View Documents</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <table>

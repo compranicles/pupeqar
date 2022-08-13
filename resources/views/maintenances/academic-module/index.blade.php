@@ -1,10 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Academic Module Forms Manager') }}
-        </h2>
-    </x-slot>
-
+    @section('title', 'Academic Module Fields Manager |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -19,6 +14,11 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @endif
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="font-weight-bold mb-2">Academic Module Fields Manager</h2>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="row justify-content-center">

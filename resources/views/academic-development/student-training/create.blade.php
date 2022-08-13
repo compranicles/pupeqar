@@ -1,6 +1,5 @@
 <x-app-layout>
     @section('title', 'Student Attended Seminar & Training |')
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">

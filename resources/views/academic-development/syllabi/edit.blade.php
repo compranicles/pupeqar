@@ -4,15 +4,15 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="font-weight-bold">Edit Course Syllabus</h3>
-            <div class="mb-3">
-                <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
-            </div>
-            {{-- Denied Details --}}
-            @if ($deniedDetails = Session::get('denied'))
-            <div class="alert alert-info" role="alert">
-                <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-            </div>
-            @endif
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('syllabus.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Course Syllabi</a>
+                </div>
+                {{-- Denied Details --}}
+                @if ($deniedDetails = Session::get('denied'))
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('syllabus.update', $value['id']) }}" method="post" class="needs-validation" novalidate>

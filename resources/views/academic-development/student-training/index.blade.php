@@ -1,5 +1,6 @@
 <x-app-layout>
-@section('title', 'Student Attended Seminars & Trainings |')
+    @section('title', 'Student Attended Seminars & Trainings |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Student Attended Seminars & Trainings</h2>
@@ -90,6 +91,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

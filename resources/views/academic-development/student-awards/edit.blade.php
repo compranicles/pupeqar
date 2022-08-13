@@ -1,7 +1,5 @@
 <x-app-layout>
-@section('title', 'Student Award & Recognition |')
-
-
+    @section('title', 'Student Award & Recognition |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">

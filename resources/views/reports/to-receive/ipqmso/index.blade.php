@@ -3,7 +3,7 @@
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="card">

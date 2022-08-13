@@ -34,7 +34,7 @@
                                      Use Research Code
                                 </button> --}}
                                 <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
-                                    Research to Add (Shared by your Lead) @if (count($invites) != 0)
+                                    Research to Add (Tagged by your Lead) @if (count($invites) != 0)
                                                 <span class="badge badge-secondary">{{ count($invites) }}</span>
                                             @else
                                                 <span class="badge badge-secondary">0</span>
@@ -49,9 +49,9 @@
                                     <i class="bi bi-lightbulb-fill"></i> <strong>Instructions & Reminders: </strong> <br>
                                     <div class="ml-3">
                                         &#8226; Click on the row to View/Edit/Delete/Submit Research. <br>
-                                        &#8226; Only the <u>Lead Researcher</u> can register the research (except for independent researchers). You must add your co-researchers to share them the research you encode. <br>
-                                        &#8226; If you are a <u>Lead Researcher</u>, add your co-researchers first before submitting. <br>
-                                        <span class="ml-3"><i class="bi bi-arrow-right ml-1"></i></i> Click "Add Co-researchers" button after you encode and view the research.</span><br>
+                                        &#8226; Only the <u>Lead Researcher</u> can register the research (except for independent researchers). You must tag your co-researchers to share them the research you encode. <br>
+                                        &#8226; If you are a <u>Lead Researcher</u>, tag your co-researchers first before submitting. <br>
+                                        <span class="ml-3"><i class="bi bi-arrow-right ml-1"></i></i> Click "Tag Co-researchers" button after you encode and view the research.</span><br>
                                         &#8226; If you are a <u>Co-Researcher</u>, check your <u>notifications</u> or click the "Research to Add" button to <u>confirm and add</u> the research registered by your Lead Researcher. <br>
                                         &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
                                             <?php

@@ -1,6 +1,5 @@
 <x-app-layout>
-@section('title', 'Student Award & Recognition |')
-
+    @section('title', 'Student Award & Recognition |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">

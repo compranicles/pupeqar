@@ -22,7 +22,7 @@
                 @endif
                 @if ($research->nature_of_involvement == 11)
                 <div class="alert alert-info" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting.
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Tag your co-researchers first before submitting.
                 </div>
                 @endif
                 <div class="card">
@@ -49,7 +49,7 @@
                                         @endif 
 
                                         @if ($research->nature_of_involvement == 11)
-                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-3"><i class="bi bi-person-plus-fill mr-1"></i> Add Co-Researchers</a>
+                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-3"><i class="bi bi-person-plus-fill mr-1"></i> Tag Co-Researchers</a>
                                         @endif
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
                                     </div>
