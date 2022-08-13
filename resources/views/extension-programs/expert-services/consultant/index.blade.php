@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Expert Services Rendered as Consultant |')
+    @section('title', 'Expert Services Rendered as Consultant |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h3 class="font-weight-bold mb-2">Expert Service Rendered as Consultant</h3>
@@ -88,6 +89,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

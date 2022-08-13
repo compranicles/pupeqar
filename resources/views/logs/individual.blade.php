@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Activity Log') }}
-        </h2>
-    </x-slot>
-
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Activity Log</h2>

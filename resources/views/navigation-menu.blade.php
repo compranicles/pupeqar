@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: #212529; border-bottom: 1px solid gray;">
-    <div class="container">
+    <div class="container ml-5 mr-5">
         <!-- Logo -->
         <a class="navbar-brand mr-4" href="{{ route('dashboard') }}" style="color:white">
             <img src="{{ URL('storage/PUP.png') }}" width="36" class="mr-1">

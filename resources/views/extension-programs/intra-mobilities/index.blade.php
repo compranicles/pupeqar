@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Intra-Country Mobility |')
+    @section('title', 'Intra-Country Mobility |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Intra-Country Mobility</h2>
@@ -98,6 +99,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Request & Queries Acted Upon |')
+    @section('title', 'Request & Queries Acted Upon |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Request & Queries Acted Upon</h2>

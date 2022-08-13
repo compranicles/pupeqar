@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Viable Demo Project |')
+    @section('title', 'Viable Demo Project |')
+    <div class="container"> 
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Viable Demonstration Projects</h2>
@@ -86,6 +87,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

@@ -1,9 +1,11 @@
 <x-app-layout>
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="font-weight-bold mb-2">Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</h3>
+    @section('title', 'Expert Services Rendered in Conference, Workshops, and/or Training Course |')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="font-weight-bold mb-2">Expert Service Rendered in Conference, Workshops, and/or Training Course for Professional</h3>
+            </div>
         </div>
-    </div>
         <div class="row">
             <div class="col-lg-12">
                 @if ($message = Session::get('edit_esconference_success'))
@@ -87,6 +89,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

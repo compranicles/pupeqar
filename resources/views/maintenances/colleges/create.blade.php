@@ -1,16 +1,9 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Add College') }}
-        </h2>
-    </x-slot>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           @include('maintenances.navigation-bar')
         </div>
-
-
           <div class="col-md-7 float-none m-0 m-auto">
             <div class="d-flex align-content-center">
               <h2 class="mr-3">Colleges</h2>

@@ -1,5 +1,6 @@
 <x-app-layout>
-        @section('title', 'Expert Services Rendered in Rendered in Academic Works |')
+    @section('title', 'Expert Services Rendered in Rendered in Academic Works |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h3 class="font-weight-bold mb-2">Expert Services Rendered in Academic Journals/ Books/ Publication/ Newsletter/ Creative Works</h3>
@@ -88,6 +89,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

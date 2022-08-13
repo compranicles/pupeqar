@@ -2,107 +2,108 @@
     <x-slot name="header">
         @include('reports.navigation', compact('roles', 'departments', 'colleges', 'sectors', 'departmentsResearch','departmentsExtension'))
     </x-slot>
-
-    <div class="row">
-        <div class="col-md-12">
-            <h2 class="font-weight-bold mb-2">Quarterly Accomplishment Report - College Research & Invention</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Quarterly Accomplishment Report - College Research & Invention</h2>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            @if ($message = Session::get('success'))
-                            <div class="alert alert-success">
-                                {{ $message }}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success">
+                                    {{ $message }}
+                                </div>
+                                @endif
                             </div>
-                            @endif
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6" style="display: none;" id="actionButtons">
-                            <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
-                            <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
+                        <div class="row">
+                            <div class="col-md-6" style="display: none;" id="actionButtons">
+                                <button id="acceptButton" data-toggle="modal" data-target="#selectApprove" class="btn btn-primary mr-2"><i class="bi bi-check2"></i> Accept</button>
+                                <button id="denyButton" data-toggle="modal" data-target="#selectDeny" class="btn btn-secondary"><i class="bi bi-slash-circle"></i> Return</a>
+                            </div>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover" id="to_review_table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-center"><input type="checkbox" id="select-all"></th>
-                                            <th></th>
-                                            <th></th>
-                                            <th>Accomplishment Report</th>
-                                            <th>Title</th>
-                                            <th>Employee</th>
-                                            {{-- <th>College/Branch/Campus/Office</th> --}}
-                                            <th>Department/Section</th>
-                                            <th>Report Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($reportsToReview as $row)
-                                            <tr role="button">
-                                                <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}"><i class="bi bi-three-dots-vertical"></i></td>
-                                                <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">
-                                                    @if (isset($row->report_details->title))
-                                                        {{ $row->report_details->title }}
-                                                    @elseif (isset($row->report_details->publication_or_audio_visual))
-                                                        {{ $row->report_details->publication_or_audio_visual }}
-                                                    @elseif (isset($row->report_details->title_of_extension_program))
-                                                        {{ $row->report_details->title_of_extension_program }}
-                                                    @elseif (isset($row->report_details->title_of_extension_project))
-                                                        {{ $row->report_details->title_of_extension_project }}
-                                                    @elseif (isset($row->report_details->title_of_extension_activity))
-                                                        {{ $row->report_details->title_of_extension_activity }}
-                                                    @elseif (isset($row->report_details->title_of_partnership))
-                                                        {{ $row->report_details->title_of_partnership }}
-                                                    @elseif (isset($row->report_details->mobility_description))
-                                                        {{ $row->report_details->mobility_description }}
-                                                    @elseif (isset($row->report_details->course_title))
-                                                        {{ $row->report_details->course_title }}
-                                                    @elseif (isset($row->report_details->description_of_request))
-                                                        {{ $row->report_details->description_of_request }}
-                                                    @elseif (isset($row->report_details->name_of_award))
-                                                        {{ $row->report_details->name_of_award }}
-                                                    @elseif (isset($row->report_details->name))
-                                                        {{ $row->report_details->name }}
-                                                    @elseif (isset($row->report_details->title_of_the_program))
-                                                        {{ $row->report_details->title_of_the_program }}
-                                                    @elseif (isset($row->report_details->output))
-                                                        {{ $row->report_details->output }}
-                                                    @elseif (isset($row->report_details->final_output))
-                                                        {{ $row->report_details->final_output }}
-                                                    @elseif (isset($row->report_details->activity_description))
-                                                        {{ $row->report_details->activity_description }}
-                                                    @elseif (isset($row->report_details->active_linkages))
-                                                        {{ $row->report_details->active_linkages }}
-                                                    @elseif (isset($row->report_details->program_title))
-                                                        {{ $row->report_details->program_title }}
-                                                    @elseif (isset($row->report_details->project_title))
-                                                            {{ $row->report_details->project_title }}
-                                                    @elseif (isset($row->report_details->activity_title))
-                                                        {{ $row->report_details->activity_title }}
-                                                    @elseif (isset($row->report_details->accomplishment_description))
-                                                        {{ $row->report_details->accomplishment_description }}
-                                                    @endif
-                                                </td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
-                                                {{-- <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name ?? '-' }}</td> --}}
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
-                                                <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover" id="to_review_table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center"><input type="checkbox" id="select-all"></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Accomplishment Report</th>
+                                                <th>Title</th>
+                                                <th>Employee</th>
+                                                {{-- <th>College/Branch/Campus/Office</th> --}}
+                                                <th>Department/Section</th>
+                                                <th>Report Date</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($reportsToReview as $row)
+                                                <tr role="button">
+                                                    <td class="text-center"><input type="checkbox" class="select-box" data-id="{{ $row->id }}"></td>
+                                                    <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}"><i class="bi bi-three-dots-vertical"></i></td>
+                                                    <td class="button-view text-center" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $loop->iteration }}</td>
+                                                    <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->report_category }}</td>
+                                                    <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">
+                                                        @if (isset($row->report_details->title))
+                                                            {{ $row->report_details->title }}
+                                                        @elseif (isset($row->report_details->publication_or_audio_visual))
+                                                            {{ $row->report_details->publication_or_audio_visual }}
+                                                        @elseif (isset($row->report_details->title_of_extension_program))
+                                                            {{ $row->report_details->title_of_extension_program }}
+                                                        @elseif (isset($row->report_details->title_of_extension_project))
+                                                            {{ $row->report_details->title_of_extension_project }}
+                                                        @elseif (isset($row->report_details->title_of_extension_activity))
+                                                            {{ $row->report_details->title_of_extension_activity }}
+                                                        @elseif (isset($row->report_details->title_of_partnership))
+                                                            {{ $row->report_details->title_of_partnership }}
+                                                        @elseif (isset($row->report_details->mobility_description))
+                                                            {{ $row->report_details->mobility_description }}
+                                                        @elseif (isset($row->report_details->course_title))
+                                                            {{ $row->report_details->course_title }}
+                                                        @elseif (isset($row->report_details->description_of_request))
+                                                            {{ $row->report_details->description_of_request }}
+                                                        @elseif (isset($row->report_details->name_of_award))
+                                                            {{ $row->report_details->name_of_award }}
+                                                        @elseif (isset($row->report_details->name))
+                                                            {{ $row->report_details->name }}
+                                                        @elseif (isset($row->report_details->title_of_the_program))
+                                                            {{ $row->report_details->title_of_the_program }}
+                                                        @elseif (isset($row->report_details->output))
+                                                            {{ $row->report_details->output }}
+                                                        @elseif (isset($row->report_details->final_output))
+                                                            {{ $row->report_details->final_output }}
+                                                        @elseif (isset($row->report_details->activity_description))
+                                                            {{ $row->report_details->activity_description }}
+                                                        @elseif (isset($row->report_details->active_linkages))
+                                                            {{ $row->report_details->active_linkages }}
+                                                        @elseif (isset($row->report_details->program_title))
+                                                            {{ $row->report_details->program_title }}
+                                                        @elseif (isset($row->report_details->project_title))
+                                                                {{ $row->report_details->project_title }}
+                                                        @elseif (isset($row->report_details->activity_title))
+                                                            {{ $row->report_details->activity_title }}
+                                                        @elseif (isset($row->report_details->accomplishment_description))
+                                                            {{ $row->report_details->accomplishment_description }}
+                                                        @endif
+                                                    </td>
+                                                    <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
+                                                    {{-- <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $college_names[$row->id]->name ?? '-' }}</td> --}}
+                                                    <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $department_names[$row->id]->name ?? '-' }}</td>
+                                                    <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('researcher.accept', ':id') }}" data-deny="{{ route('researcher.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ date( "F j, Y, g:i a", strtotime($row->created_at)) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

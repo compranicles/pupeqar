@@ -1,10 +1,4 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('User Account') }}
-        </h2>
-    </x-slot> -->
-
     <div class="container">
         {{-- Success Message --}}
         @if ($message = Session::get('success'))

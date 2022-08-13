@@ -1,12 +1,12 @@
 <x-app-layout>
     @section('title', 'Other Department/College Accomplishments |')
+    <div class="contaiiner">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Other Department/College Accomplishments</h2>
             </div>
         </div>
         <div class="row">
-
             <div class="col-lg-12">
                 @if ($message = Session::get('other_dept_success'))
                 <div class="alert alert-success alert-index">
@@ -101,6 +101,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')

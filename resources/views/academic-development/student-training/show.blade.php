@@ -1,5 +1,5 @@
 <x-app-layout>
-@section('title', 'Student Attended Seminar & Training |')
+    @section('title', 'Student Attended Seminar & Training |')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-9">

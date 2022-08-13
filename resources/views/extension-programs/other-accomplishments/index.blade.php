@@ -1,12 +1,12 @@
 <x-app-layout>
-@section('title', 'Other Individual Accomplishments |')
+    @section('title', 'Other Individual Accomplishments |')
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <h2 class="font-weight-bold mb-2">Other Accomplishments Beyond the Mandatory Requirements</h2>
             </div>
         </div>
         <div class="row">
-
             <div class="col-lg-12">
                 @if ($message = Session::get('other_success'))
                 <div class="alert alert-success alert-index">
@@ -103,6 +103,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     {{-- Delete Modal --}}
     @include('delete')
