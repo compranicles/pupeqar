@@ -68,7 +68,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                     'colleges.name as college_name'
                                 )->where('reports.report_category_id', $format->report_category_id)
                                 ->where('reports.sector_id', $this->sector->id)
-                                ->where('reports.sector_approval', 1)
+                                ->whereIn('reports.sector_approval', [1,2])
                                 ->where('reports.report_year', $this->year)
                                 ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
                                 ->join('users', 'users.id', 'reports.user_id')
@@ -90,7 +90,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                     'colleges.name as college_name'
                                 )->where('reports.report_category_id', $format->report_category_id)
                                 ->where('reports.sector_id', $this->sector->id)
-                                ->where('reports.sector_approval', 1)
+                                ->whereIn('reports.sector_approval', [1,2])
                                 ->where('reports.report_year', $this->year)
                                 ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
                                 ->join('users', 'users.id', 'reports.user_id')
@@ -113,7 +113,7 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                 'departments.name as department_name',
                                 'colleges.name as college_name'
                             )->where('reports.report_category_id', $format->report_category_id)
-                            ->where('reports.sector_approval', 1)
+                            ->whereIn('reports.sector_approval', [1,2])
                             ->where('reports.sector_id', $this->sector->id)
                             ->where('reports.report_year', $this->year)
                             ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])

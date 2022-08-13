@@ -110,8 +110,11 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
-
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
+            
         $departments = Department::whereIn('college_id', $colleges)->get();
 
 
@@ -335,8 +338,10 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
@@ -488,9 +493,10 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
-
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
         $departments = Department::whereIn('college_id', $colleges)->get();
 
 
@@ -501,7 +507,10 @@ class ExtensionServiceController extends Controller
         $value = $value->except(['nature_of_involvement', 'college_id', 'department_id']);
         $value = $value->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

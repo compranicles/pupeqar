@@ -90,7 +90,10 @@ class OtherAccomplishmentController extends Controller
             }
         }
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
         $departments = Department::whereIn('college_id', $colleges)->get();
         return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments', 'dropdown_options'));
     }
@@ -240,7 +243,10 @@ class OtherAccomplishmentController extends Controller
 
         $values = $otherAccomplishment->toArray();
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee') 
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

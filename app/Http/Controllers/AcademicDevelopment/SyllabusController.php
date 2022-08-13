@@ -95,8 +95,10 @@ class SyllabusController extends Controller
             }
         }
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee')
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
         return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments' , 'dropdown_options'));
@@ -243,8 +245,10 @@ class SyllabusController extends Controller
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee') 
+            $colleges = Employee::where('type', 'F')->where('user_id', auth()->id())->pluck('college_id')->all();
+        else if(session()->get('user_type') == 'Admin Employee')
+            $colleges = Employee::where('type', 'A')->where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

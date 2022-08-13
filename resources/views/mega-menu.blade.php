@@ -24,9 +24,10 @@
             @endBothFacultyAdmin
         </div>
     </div>
+    @BothFacultyAdmin
     <hr>
+    @endBothFacultyAdmin
     <div class="row d-flex justify-content-start align-items-baseline">
-        @notpureadmin
         <div class="col-md-3">
             <ul>
                 <h6 class="menu-category">ACADEMIC PROGRAM DEVELOPMENT</h6>
@@ -53,7 +54,6 @@
                 @endcan
             </ul>
         </div>
-        @endnotpureadmin
         <div class="col-md-3">
             <ul>
                 <h6 class="menu-category">EXTENSION PROGRAMS & EXPERT SERVICES</h6>
