@@ -115,6 +115,8 @@
                                                         {{ $row->report_details->activity_title }}
                                                     @elseif (isset($row->report_details->accomplishment_description))
                                                         {{ $row->report_details->accomplishment_description }}
+                                                    @elseif (isset($row->report_details->organization))
+                                                        {{ $row->report_details->organization }}
                                                     @endif
                                                 </td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
@@ -378,7 +380,7 @@
                         select.append( '<option value="'+d+'">'+d+'</option>' )
                     } );
                 });
-                
+
                 this.api().columns(6).every( function () {
                     var column = this;
                     var select = $('#collegeFilter')

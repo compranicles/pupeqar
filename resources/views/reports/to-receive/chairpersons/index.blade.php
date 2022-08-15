@@ -101,6 +101,8 @@
                                                             {{ $row->report_details->activity_title }}
                                                         @elseif (isset($row->report_details->accomplishment_description))
                                                             {{ $row->report_details->accomplishment_description }}
+                                                        @elseif (isset($row->report_details->organization))
+                                                            {{ $row->report_details->organization }}
                                                         @endif
                                                     </td>
                                                     <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('chairperson.accept', ':id') }}" data-deny="{{ route('chairperson.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
@@ -366,9 +368,9 @@
             // var urlreturn = "{{ url('reports/reject-details/:id') }}";
 			// var newlinkreturndetails = urlreturn.replace(':id', catID);
             // $.get(newlinkreturndetails, function (data){
- 
+
             //         $('.return-details').append('<p>Reason for returning the accomplishment: "'+data['reason']+'"</a>');
-               
+
             // });
 
             $('#review_btn_accept').append('<a href="'+accept.replace(':id', catID)+'" class="btn btn-primary report-content"><i class="bi bi-check2"></i> Accept</a>');

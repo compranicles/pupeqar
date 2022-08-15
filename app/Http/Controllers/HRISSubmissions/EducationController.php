@@ -162,8 +162,9 @@ class EducationController extends Controller
         }
 
         //year graduated
-        if($request->to != 'present')
+        if(!ctype_alpha($request->to)){
             $year_graduated = $request->to;
+        }
 
         $value = [
             0,                                  //EmployeeEducationBackgroundID
@@ -416,8 +417,9 @@ class EducationController extends Controller
         }
 
         //year graduated
-        if($request->to != 'present')
+        if(!ctype_alpha($request->to)){
             $year_graduated = $request->to;
+        }
 
         $value = [
             $id,                                  //EmployeeEducationBackgroundID
@@ -684,8 +686,9 @@ class EducationController extends Controller
         }
 
         //year graduated
-        if($request->to != 'present')
+        if(!ctype_alpha($request->to)){
             $year_graduated = $request->to;
+        }
 
         $value = [
             $id,                                  //EmployeeEducationBackgroundID
