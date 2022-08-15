@@ -21,9 +21,7 @@
         <link href="{{ asset('lightbox2/dist/css/lightbox.css') }}" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> <!--added-->
         <link rel="stylesheet" href="{{ asset('dist/selectize.bootstrap4.css') }}">
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-
-        @livewireStyles
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
 
@@ -39,7 +37,7 @@
         <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
          <!-- JavaScript Bundle with Popper -->
          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
         <!-- Bootstrap Datepicker Resources -->
@@ -57,7 +55,7 @@
                 </div>
             </div>
         </div>
-        @livewire('navigation-menu')
+        @include('navigation-menu')
 
         <!-- Page Heading -->
         @if(request()->routeIs('reports.*', 'chairperson.index', 'researcher.index', 'extensionist.index', 'director.index', 'sector.index', 'ipo.index', 'profile.*'))
@@ -84,9 +82,6 @@
         </main>
 
         @stack('modals')
-
-        @livewireScripts
-
 
         @stack('scripts')
 
