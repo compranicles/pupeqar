@@ -103,7 +103,7 @@ class ExtensionServiceController extends Controller
 
         $dropdown_options = [];
         foreach($extensionServiceFields as $field){
-            if($field->field_type_name == "dropdown"){
+            if($field->dropdown_id != null){
                 $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
 

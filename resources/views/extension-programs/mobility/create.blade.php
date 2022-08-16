@@ -4,7 +4,6 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="font-weight-bold mr-2">Add Inter-Country Mobility</h3>
-                </div>
                 <div class="mb-3">
                     <a class="back_link" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
                 </div>
@@ -51,32 +50,6 @@
             });
         </script>
         <script>
-            $("#classification_of_mobility").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
-            $("#nature_of_engagement").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get("{{ url('document-upload/description/14') }}", function (data){
                 if (data != '') {
@@ -86,29 +59,6 @@
                 }
             });
         </script>
-        <script>
-            setTimeout(function (){
-                $('#classification_of_mobility').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/35') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#classification_of_mobility")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
-        </script>
-        <script>
-            setTimeout(function (){
-                $('#nature_of_engagement').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/34') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#nature_of_engagement")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
-        </script>
+        
     @endpush
 </x-app-layout>

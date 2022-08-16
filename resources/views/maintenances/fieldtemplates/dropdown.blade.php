@@ -1,19 +1,24 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
-        <label class="font-weight-bold" for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="font-weight-bold" for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span><br>
         @if (isset($fieldInfo->h_r_i_s_form_id))
             @if ($fieldInfo->h_r_i_s_form_id == 3 && $fieldInfo->name == 'level')
-            <span id="" role="alert" class="ml-3">
+            <span class="form-notes">
                 Select level of the organization.
             </span>
             @endif
             @if ($fieldInfo->h_r_i_s_form_id == 2 && $fieldInfo->name == 'level')
-            <span id="" role="alert" class="ml-3">
+            <span class="form-notes">
                 Select level of achievement/award.
             </span>
             @endif
+        @endif
+        @if ($fieldInfo->name == 'classification_of_person')
+        <span class="form-notes">
+            Please select your designation.
+        </span>
         @endif
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             @switch($fieldInfo->visibility)
@@ -53,14 +58,14 @@
 
         @if (isset($fieldInfo->research_form_id))
             @if ($fieldInfo->name == 'status' && $fieldInfo->research_form_id == 1)
-            <span>
+            <span class="form-notes">
                 <p>Please select <strong>new commitment</strong> or <strong>ongoing</strong> before proceeding for completion, etc.</p>
             </span>
             @endif
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
-        <span>
-            <p>Please select your designation. <br>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
+        <span class="form-notes">
+            <p>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
         </span>
         @endif
 

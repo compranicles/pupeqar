@@ -109,12 +109,15 @@ class ResearchController extends Controller
             }
         }
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // dd($dropdown_options);
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('research.create', compact('researchFields', 'colleges', 'departments', 'dropdown_options'));
+        $allEmployees = User::
+                            where('users.id', '!=', auth()->id())->
+                            get();
+        return view('research.create', compact('researchFields', 'colleges', 'departments', 'dropdown_options', 'allEmployees'));
     }
 
     /**
@@ -261,6 +264,38 @@ class ResearchController extends Controller
         }
 
         \LogActivity::addToLog('Had added a research entitled "'.$request->input('title').'".');
+
+        dd($request->input('researchers'));
+        foreach($request->input('researchers') as $row){
+            ResearchInvite::create([
+                'user_id' => $row,
+                'sender_id' => auth()->id(),
+                'research_id' => $research_id
+            ]);
+
+            $user = User::find($row);
+            $research_title = Research::where('id', $research_id)->pluck('title')->first();
+            $sender = User::join('research', 'research.user_id', 'users.id')
+                            ->where('research.user_id', auth()->id())
+                            ->where('research.id', $research_id)
+                            ->select('users.first_name', 'users.last_name', 'users.middle_name', 'users.suffix')->first();
+            $url_accept = route('research.invite.confirm', $research_id);
+            $url_deny = route('research.invite.cancel', $research_id);
+
+            $notificationData = [
+                'receiver' => $user->first_name,
+                'title' => $research_title,
+                'sender' => $sender->first_name.' '.$sender->middle_name.' '.$sender->last_name.' '.$sender->suffix,
+                'url_accept' => $url_accept,
+                'url_deny' => $url_deny,
+                'date' => date('F j, Y, g:i a'),
+                'type' => 'res-invite'
+            ];
+
+            Notification::send($user, new ResearchInviteNotification($notificationData));
+            $count++;
+        }
+        \LogActivity::addToLog('Had added '.$count.' co-researcher/s in the research "'.$research_title.'".');
 
 
         return redirect()->route('research.index')->with('success', 'Research has been registered.');

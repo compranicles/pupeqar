@@ -1,10 +1,10 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }} mb-3">
+<div class="{{ $fieldInfo->size }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
-        <div class="input-group mb-3">
+        <div class="input-group mb-2">
             <input type="decimal" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation" 
                     placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                     @switch($fieldInfo->visibility)

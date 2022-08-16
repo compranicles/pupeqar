@@ -1,15 +1,14 @@
 
-<div class="{{ $fieldInfo->size }} mb-3">
+<div class="{{ $fieldInfo->size }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-
-        <textarea name="{{ $fieldInfo->name }}" placeholder="Add/Edit/Choose that may apply..." id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch @if (isset($fieldInfo->h_r_i_s_form_id)) placeholder="Certificate of Registration / Diploma / TOR" @endif>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
-
+        <br>
         @if ($fieldInfo->name == 'description')
-            <span id="" role="alert">
-                <p>{{ $fieldInfo->placeholder }}</p>
+            <span class="form-notes">
+                {{ $fieldInfo->placeholder }}
             </span>
         @endif
+        <textarea name="{{ $fieldInfo->name }}" placeholder="Add/Edit/Choose that may apply..." id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch @if (isset($fieldInfo->h_r_i_s_form_id)) placeholder="Certificate of Registration / Diploma / TOR" @endif>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
         @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>

@@ -24,7 +24,9 @@
             @endBothFacultyAdmin
         </div>
     </div>
+    @BothFacultyAdmin
     <hr>
+    @endBothFacultyAdmin
     <div class="row d-flex justify-content-start align-items-baseline">
         @notpureadmin
         <div class="col-md-3">
