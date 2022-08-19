@@ -38,6 +38,16 @@ class CollegeSeeder extends Seeder
                 }
             }
         }
+        $sectors = $db_ext->select(" EXEC GetDepartment 'Y'");
+
+        foreach ($sectors as $sector){
+            College::create([
+                'id'=> $sector->DepartmentID,
+                'name' => $sector->Department,
+                'code' => $sector->DepartmentCode,
+                'sector_id' => $sector->DepartmentID
+            ]);
+        }
 
     }
 }

@@ -14,10 +14,10 @@
                         <h5 class="card-title">Hours in Attending Seminars</h5>
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link " id="pills-seminar-quarter-tab" data-toggle="pill" href="#pills-seminar-quarter" role="tab" aria-controls="pills-seminar-quarter" aria-selected="false">Q</a>
+                                <a class="nav-link " id="pills-seminar-quarter-tab" data-toggle="pill" href="#pills-seminar-quarter" role="tab" aria-controls="pills-seminar-quarter" aria-selected="false">Quarterly</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" id="pills-seminar-year-tab" data-toggle="pill" href="#pills-seminar-year" role="tab" aria-controls="pills-seminar-year" aria-selected="true">Y</a>
+                                <a class="nav-link active" id="pills-seminar-year-tab" data-toggle="pill" href="#pills-seminar-year" role="tab" aria-controls="pills-seminar-year" aria-selected="true">Annually</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
@@ -43,10 +43,10 @@
                         <h5 class="card-title">Hours in Attending Trainings</h5>
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link " id="pills-training-quarter-tab" data-toggle="pill" href="#pills-training-quarter" role="tab" aria-controls="pills-training-quarter" aria-selected="false">Q</a>
+                                <a class="nav-link " id="pills-training-quarter-tab" data-toggle="pill" href="#pills-training-quarter" role="tab" aria-controls="pills-training-quarter" aria-selected="false">Quarterly</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" id="pills-training-year-tab" data-toggle="pill" href="#pills-training-year" role="tab" aria-controls="pills-training-year" aria-selected="true">Y</a>
+                                <a class="nav-link active" id="pills-training-year-tab" data-toggle="pill" href="#pills-training-year" role="tab" aria-controls="pills-training-year" aria-selected="true">Annually</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="pills-tabContent">
