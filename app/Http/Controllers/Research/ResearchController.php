@@ -109,7 +109,7 @@ class ResearchController extends Controller
             }
         }
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        // dd($dropdown_options);
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
@@ -261,7 +261,6 @@ class ResearchController extends Controller
         }
 
         \LogActivity::addToLog('Had added a research entitled "'.$request->input('title').'".');
-
 
         return redirect()->route('research.index')->with('success', 'Research has been registered.');
     }

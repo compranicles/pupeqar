@@ -1975,6 +1975,8 @@ pre code {
   background-clip: padding-box;
   border: 0.01em solid gray;
   border-radius: 0.25rem;
+  margin-top: 5px;
+  margin-bottom: 5px;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -13648,4 +13650,25 @@ z-index: 9999;
 
 .img-container img {
   width: 100%;
+}
+
+label {
+  margin: 0 0 3px 0 !important;
+}
+
+span.form-notes {
+  font-size: 95%;
+}
+
+@media screen and (max-width: 641px) {
+  .footer {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 641px) {
+  .btn {
+      width: 100%;
+      margin-bottom: 5px;
+  }
 }

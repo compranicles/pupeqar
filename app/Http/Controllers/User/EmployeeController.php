@@ -86,7 +86,7 @@ class EmployeeController extends Controller
         }
 
         if ($request->has('yes')) {
-            UserRole::where('user_id', auth()->id())->delete();
+            UserRole::where('user_id', auth()->id())->whereIn('role_id', [1,3])->delete();
             UserRole::create([
                 'user_id' => auth()->id(),
                 'role_id' => $request->input('role')

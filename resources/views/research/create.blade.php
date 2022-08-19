@@ -41,9 +41,9 @@
             $(function () {
                 var middle = '';
                 if ("{{auth()->user()->middle_name}}" != '') {
-                    middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
+                    middle = "{{ ' '.substr(auth()->user()->middle_name,0,1).'.' }}";
                 }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
+                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name)) }}" + middle;
                 $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#researchers")[0].selectize.addItem(fullname);
             });
@@ -118,6 +118,14 @@
                     });
                 }
             }); }, 2000);
+        </script>
+        <script>
+            $("#researchers").selectize({
+                maxItems: null,
+                sortField: "text",
+                valueField: "text",
+                options: @json($allEmployees),
+            });
         </script>
     @endpush
 </x-app-layout>

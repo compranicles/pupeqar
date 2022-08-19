@@ -1,4 +1,4 @@
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label>
             <select name="{{ $fieldInfo->name }}" id="college_id" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}

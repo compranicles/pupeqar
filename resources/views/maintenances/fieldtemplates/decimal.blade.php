@@ -1,6 +1,6 @@
 {{-- fieldInfo --}}
 
-<div class="{{ $fieldInfo->size }} mb-3">
+<div class="{{ $fieldInfo->size }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if ($fieldInfo->name == 'amount_of_funding' || $fieldInfo->name == 'funding_amount' ||
@@ -11,9 +11,9 @@
                 (No commas)
             </span>
         @endif
-        <div class="input-group mb-3">
+        <div class="input-group mb-2">
             <div class="input-group-prepend">
-                <select class="custom-select" name="currency_{{ $fieldInfo->name }}" id="currency_select_{{ $fieldInfo->name }}">
+                <select style="margin-top: 5px;" class="custom-select" name="currency_{{ $fieldInfo->name }}" id="currency_select_{{ $fieldInfo->name }}">
                   <option disabled selected>Choose...</option>
                 </select>
             </div>
