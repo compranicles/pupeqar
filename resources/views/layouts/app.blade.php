@@ -71,12 +71,14 @@
 
         <!-- Page Content -->
         <main class="container my-5">
-            <div class="col-md-12">
-                @if ($message = Session::get('success_switch'))
-                    <div class="alert alert-success alert-index">
-                        <i class="bi bi-check-circle"></i> {{ $message }}
-                    </div>
-                @endif
+            <div class="row">
+                <div class="col-md-12">
+                    @if ($message = Session::get('success_switch'))
+                        <div class="alert alert-success alert-index">
+                            <i class="bi bi-check-circle"></i> {{ $message }}
+                        </div>
+                    @endif
+                </div>
             </div>
                 {{ $slot }}
         </main>

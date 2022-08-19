@@ -1,4 +1,4 @@
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
 
     <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}

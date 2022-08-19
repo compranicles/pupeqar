@@ -68,32 +68,7 @@
                 }
             });
         </script>
-        <script>
-            $("#classification").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
-            $("#classification_of_trainees_or_beneficiaries").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
+
         <script>
             var report_category_id = 12;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');

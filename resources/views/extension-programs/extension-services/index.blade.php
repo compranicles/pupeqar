@@ -20,7 +20,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
+                        <div class="form-group mb-3 ml-1">
                             <div class="d-inline mr-2">
                                 <a href="{{ route('extension-service.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Extension Program/Project/Activity</a>
                             </div>

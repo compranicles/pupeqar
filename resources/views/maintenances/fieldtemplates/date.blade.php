@@ -1,9 +1,9 @@
-<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-3">
+<div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label> <span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if (isset($fieldInfo->h_r_i_s_form_id))
             @if ($fieldInfo->h_r_i_s_form_id == 2 && $fieldInfo->name == 'from')
-            <span id="" role="alert" class="ml-3">
+            <span class="form-notes">
                 Inclusive date awarded/conferred.
             </span>
             @endif
