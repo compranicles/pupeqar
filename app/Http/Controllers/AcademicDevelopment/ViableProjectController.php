@@ -80,8 +80,8 @@ class ViableProjectController extends Controller
 
         $dropdown_options = [];
         foreach($projectFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
 
             }
@@ -194,8 +194,8 @@ class ViableProjectController extends Controller
         $values = $viable_project->toArray();
 
         foreach($projectFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->first();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->where('is_active', 1)->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";
                 $values[$field->name] = $dropdownOptions;
@@ -246,8 +246,8 @@ class ViableProjectController extends Controller
 
         $dropdown_options = [];
         foreach($projectFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
 
             }

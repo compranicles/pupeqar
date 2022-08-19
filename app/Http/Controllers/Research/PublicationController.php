@@ -79,8 +79,8 @@ class PublicationController extends Controller
                 $submissionStatus[3][$values['id']] = 2;
 
         foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->pluck('name')->first();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->where('is_active', 1)->pluck('name')->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";
                 $value[$field->name] = $dropdownOptions;
@@ -127,8 +127,8 @@ class PublicationController extends Controller
 
         $dropdown_options = [];
         foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
 
             }
@@ -260,8 +260,8 @@ class PublicationController extends Controller
 
         $dropdown_options = [];
         foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->get();
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
 
             }
