@@ -1,6 +1,11 @@
 <x-app-layout>
-    @section('title', 'Ongoing Advanced/Professional Studies |')
+    @section('title', 'Ongoing/Advanced Professional Studies |')
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Add Ongoing/Advanced Professional Study</h2>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 @if ($message = Session::get('error'))
@@ -9,7 +14,7 @@
                     </div>
                 @endif
                 <p>
-                    <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Ongoing Advanced/Professional Studies</a>
+                    <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Ongoing/Advanced Professional Studies</a>
                 </p>
                 {{-- Denied Details --}}
                 @if ($deniedDetails = Session::get('denied'))
@@ -29,14 +34,16 @@
                             <div class="form-group">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>

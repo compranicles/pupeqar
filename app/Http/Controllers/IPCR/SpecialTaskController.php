@@ -234,7 +234,7 @@ class SpecialTaskController extends Controller
         $values = $special_task->toArray();
 
         foreach($specialTaskFields as $field){
-            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+            if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $values[$field->name])->where('is_active', 1)->pluck('name')->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";
@@ -389,7 +389,10 @@ class SpecialTaskController extends Controller
      */
     public function destroy(SpecialTask $special_task)
     {
-
+        if(session()->get('user_type') == 'Faculty Employee')
+            $version = 'faculty';
+        else
+            $version = 'admin';
 
         if(LockController::isLocked($special_task->id, 30)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
@@ -408,7 +411,7 @@ class SpecialTaskController extends Controller
 
         \LogActivity::addToLog('Had deleted a '.$namePage.'.');
 
-        return redirect()->route('special-tasks.index')->with('success', 'Your accomplishment in '.$namePage.' has been deleted.');
+        return redirect()->route('special-tasks.index', 'v='.$version)->with('success', 'Your accomplishment in '.$namePage.' has been deleted.');
     }
 
     public function removeDoc($filename){

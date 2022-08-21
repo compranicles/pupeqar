@@ -30,12 +30,12 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.officership.store', $id) }}" method="post" enctype="multipart/form-data">
-                            <div class="mt-2 mb-3">
-                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
-                            </div>
-                            <hr>
                             @csrf
                             @if(!isset($forview))
+                                <div class="mt-2 mb-3">
+                                    <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                </div>
+                                <hr>
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $officeFields, 'value' => $values])
                                 @else
@@ -57,7 +57,7 @@
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>

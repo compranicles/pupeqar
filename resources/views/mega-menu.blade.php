@@ -12,9 +12,9 @@
                 <a href="{{ route('switch_type') }}" id="switch-role" class="btn">
                     <strong>
                     @if(session()->get('user_type') == 'Faculty Employee')
-                        Switch to Admin Individual Reporting
+                        Switch to Admin Reporting
                     @elseif(session()->get('user_type') == 'Admin Employee')
-                        Switch to Faculty Individual Reporting
+                        Switch to Faculty Reporting
                     @else
                         {{ session()->get('user_type') }}
                     @endif
@@ -41,17 +41,17 @@
                     @endcan
                 @endif
                 @can('viewAny', \App\Models\StudentAward::class)
-                <li><a class="{{ request()->routeIs('student-award.*') ? 'active' : '' }}" href="{{ route('student-award.index') }}">Student Awards and Recognition</a></li>
+                <li><a class="{{ request()->routeIs('student-award.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('student-award.index') }}">Student Awards and Recognition</a></li>
                 @endcan
                 @can('viewAny', \App\Models\StudentTraining::class)
-                <li><a class="{{ request()->routeIs('student-training.*') ? 'active' : '' }}" href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
+                <li><a class="{{ request()->routeIs('student-training.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('student-training.index') }}">Student Attended Seminars and Trainings</a></li>
                 @endcan
                 {{-- For College and Departments --}}
                 @can('viewAny', \App\Models\CollegeDepartmentAward::class)
-                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }}" href="{{ route('college-department-award.index') }}">Awards and Recognition Received by the College/Department</a></li>
+                <li><a class="{{ request()->routeIs('college-department-award.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('college-department-award.index') }}">Awards and Recognition Received by the College/Department</a></li>
                 @endcan
                 @can('viewAny', \App\Models\ViableProject::class)
-                <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }}" href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
+                <li><a class="{{ request()->routeIs('viable-project.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('viable-project.index') }}">Viable Demonstration Projects</a></li>
                 @endcan
             </ul>
         </div>
@@ -82,13 +82,13 @@
             <ul>
                 {{-- For College and Departments --}}
                 @can('manage', \App\Models\CommunityEngagement::class)
-                <li><a class="{{ request()->routeIs('community-engagement.*') ? 'active' : '' }}" href="{{ route('community-engagement.index') }}">Community Engagement Conducted by College/Department</a></li>
+                <li><a class="{{ request()->routeIs('community-engagement.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('community-engagement.index') }}">Community Engagement Conducted by College/Department</a></li>
                 @endcan
                 @can('viewAny', \App\Models\OutreachProgram::class)
-                <li><a class="{{ request()->routeIs('outreach-program.*') ? 'active' : '' }}" href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
+                <li><a class="{{ request()->routeIs('outreach-program.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('outreach-program.index') }}">Community Relation and Outreach Program</a></li>
                 @endcan
                 @can('viewAny', \App\Models\TechnicalExtension::class)
-                <li><a class="{{ request()->routeIs('technical-extension.*') ? 'active' : '' }}" href="{{ route('technical-extension.index') }}">Technical Extension Program/Project/Activity</a></li>
+                <li><a class="{{ request()->routeIs('technical-extension.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('technical-extension.index') }}">Technical Extension Program/Project/Activity</a></li>
                 @endcan
             </ul>
             @can('viewAny', \App\Models\Invention::class)
@@ -115,7 +115,7 @@
             @can('viewAny', \App\Models\Request::class)
             <ul>
                 <h6 class="menu-category">REQUESTS & QUERIES</h6>
-                <li><a class="{{ request()->routeIs('request.*') ? 'active' : '' }}" href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
+                <li><a class="{{ request()->routeIs('request.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('request.index') }}">Requests and Queries Acted Upon</a></li>
             </ul>
             @endcan
             <ul>
@@ -142,7 +142,7 @@
                 <li><a class="{{ request()->routeIs('other-accomplishment.*') ? 'active' : '' }}" href="{{ route('other-accomplishment.index') }}">Other Individual Accomplishments</a></li>
                 @endcan
                 @can('manage', \App\Models\OtherDeptAccomplishment::class)
-                <li><a class="{{ request()->routeIs('other-dept-accomplishment.*') ? 'active' : '' }}" href="{{ route('other-dept-accomplishment.index') }}">Other Department/College Accomplishments</a></li>
+                <li><a class="{{ request()->routeIs('other-dept-accomplishment.*') ? 'active' : '' }} wide-accomplishments" href="{{ route('other-dept-accomplishment.index') }}">Other Department/College Accomplishments</a></li>
                 @endcan
             </ul>
         </div>

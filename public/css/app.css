@@ -13021,6 +13021,10 @@ body {
   list-style-type: disc;
 }
 
+.menu-sub a.wide-accomplishments {
+  color: #1b4b72;
+}
+
 .menu-sub a {
   padding: 0;
   margin-bottom: .25em;
@@ -13644,8 +13648,8 @@ z-index: 9999;
 }
 /***************Image Container (HRIS accomplishments view of documents)*************************/
 .img-container {
-  width: 50%;
-  height: 50%;
+  width: 40%;
+  height: 40%;
 }
 
 .img-container img {

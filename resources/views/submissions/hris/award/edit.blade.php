@@ -3,6 +3,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
+                    <h2 class="font-weight-bold mb-2">Edit Outstanding Achievement</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     @if ($message = Session::get('error'))
                         <div class="alert alert-danger">
                             {{ $message }}
@@ -29,7 +34,9 @@
                                 <div class="form-group">
                                     <label class="font-weight-bold" >Document</label>
                                     <br>
-                                    <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">

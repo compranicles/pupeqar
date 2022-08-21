@@ -14,7 +14,7 @@
                 <div class="d-flex align-items-center mb-2">
                     <a class="mr-auto back_link ml-2" href="{{ route('mobility.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Inter-Country Mobility</a>
                     <a href="{{ route('mobility.edit', $mobility->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                    <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $mobility->host_name }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
+                    <button type="button" value="{{ $mobility->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal"  data-bs-mobility="{{ $mobility->mobility_description }}" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
                 </div>
                 @include('show', ['formFields' => $mobilityFields, 'value' => $values])
                 <div class="row mt-3">

@@ -148,19 +148,6 @@
                 $('#to').datepicker('setStartDate', $('#from').val());
             });
         </script>
-        {{-- <script>
-            $("#nature").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script> --}}
         <script>
             var report_category_id = 11;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
@@ -172,16 +159,5 @@
                 }
             });
         </script>
-        {{-- <script>
-            var dropdown_id = 20;
-            $('#nature').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-            $.get('/dropdowns/options/'+dropdown_id, function (data){
-                if (data != '') {
-                    data.forEach(function (item){
-                        $("#nature")[0].selectize.addOption({value:item.name, text:item.name});
-                    });
-                }
-            });
-        </script> --}}
     @endpush
 </x-app-layout>

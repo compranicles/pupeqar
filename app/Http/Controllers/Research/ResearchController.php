@@ -318,7 +318,7 @@ class ResearchController extends Controller
                 $submissionStatus[1][$research->id] = 2;
 
         foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+            if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $value[$field->name])->where('is_active', 1)->pluck('name')->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";

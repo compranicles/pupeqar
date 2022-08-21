@@ -197,7 +197,7 @@ class DeanController extends Controller
         $receiverData = User::find($report->user_id);
         
         if (in_array(12, $roles)) {
-            Report::where('id', $report_id)->update(['dean_approval' => 1]); //associates
+            Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
             $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
                                 ->join('users', 'users.id', 'associates.user_id')
                                 ->where('associates.college_id', $report->college_id)
@@ -205,7 +205,7 @@ class DeanController extends Controller
                                 ->first();
         }
         if (in_array(6, $roles)) {
-            Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
+            Report::where('id', $report_id)->update(['dean_approval' => 1]); //associates
             $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                                 ->join('users', 'users.id', 'deans.user_id')
                                 ->where('deans.college_id', $report->college_id)
@@ -412,7 +412,7 @@ class DeanController extends Controller
             
             $receiverData = User::find($report->user_id);
             if (in_array(12, $roles)) {
-                Report::where('id', $report_id)->update(['dean_approval' => 1]); //associates
+                Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
                 $senderName = Associate::join('colleges', 'colleges.id', 'associates.college_id')
                                     ->join('users', 'users.id', 'associates.user_id')
                                     ->where('associates.college_id', $report->college_id)
@@ -420,7 +420,7 @@ class DeanController extends Controller
                                     ->first();
             }
             if (in_array(6, $roles)) {
-                Report::where('id', $report_id)->update(['dean_approval' => 2]); //associates
+                Report::where('id', $report_id)->update(['dean_approval' => 1]); 
                 $senderName = Dean::join('colleges', 'colleges.id', 'deans.college_id')
                                     ->join('users', 'users.id', 'deans.user_id')
                                     ->where('deans.college_id', $report->college_id)

@@ -76,7 +76,7 @@ class CopyrightedController extends Controller
                 $submissionStatus[7][$values['id']] = 2;
 
         foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+            if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $values[$field->name])->where('is_active', 1)->pluck('name')->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";

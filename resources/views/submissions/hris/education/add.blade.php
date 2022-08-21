@@ -29,12 +29,12 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.educ.store', $id) }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @if(!isset($forview))
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
                             </div>
                             <hr>
-                            @csrf
-                            @if(!isset($forview))
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $educFields, 'value' => $values])
                                 @else
@@ -46,7 +46,9 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                                </div>
                             </div>
                             @if(!isset($forview))
                             <div class="row">
@@ -54,7 +56,7 @@
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>

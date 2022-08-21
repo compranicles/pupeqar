@@ -7,6 +7,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                <h3 class="font-weight-bold mb-3">Users</h3>
                 @include('authentication.navigation-bar')
             </div>
             <div class="col-md-12">
@@ -30,7 +31,7 @@
                                         <th></th>
                                         <th>Name</th>
                                         <th>Roles</th>
-                                        <th>Reporting as Faculty/Admin To</th>
+                                        <th>Faculty/Admin Designation</th>
                                         <th>Date Joined</th>
                                         <th>Actions</th>
                                     </tr>
@@ -75,7 +76,7 @@
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <div class="btn-group" role="group" aria-label="button-group">
                                                         <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit Access</a>
-                                                        <input type="submit" class="btn btn-sm btn-danger" value="Delete">
+                                                        <!-- <input type="submit" class="btn btn-sm btn-danger" value="Delete"> -->
                                                     </div>
                                                 </form>
                                             </td>

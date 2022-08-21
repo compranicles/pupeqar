@@ -191,7 +191,7 @@ class SectorController extends Controller
         $receiverData = User::find($report->user_id);
         
         if (in_array(13, $roles)) {
-            Report::where('id', $report_id)->update(['sector_approval' => 1]); //associate
+            Report::where('id', $report_id)->update(['sector_approval' => 2]); //associate
             $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
                             ->join('users', 'users.id', 'associates.user_id')
                             ->where('associates.sector_id', $report->sector_id)
@@ -199,7 +199,7 @@ class SectorController extends Controller
                             ->first();
         }
         if (in_array(7, $roles)) {
-            Report::where('id', $report_id)->update(['sector_approval' => 2]); //sector_head
+            Report::where('id', $report_id)->update(['sector_approval' => 1]); //sector_head
             $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                                 ->join('users', 'users.id', 'sector_heads.user_id')
                                 ->where('sector_heads.sector_id', $report->sector_id)
@@ -294,12 +294,23 @@ class SectorController extends Controller
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
-        DenyReason::create([
-            'report_id' => $report_id,
-            'user_id' => auth()->id(),
-            'position_name' => 'sector',
-            'reason' => $request->input('reason'),
-        ]);
+        if (in_array(13, $roles)) {
+            DenyReason::create([
+                'report_id' => $report_id,
+                'user_id' => auth()->id(),
+                'position_name' => 'Assistant to VP',
+                'reason' => $request->input('reason'),
+            ]);
+        }
+
+        if (in_array(7, $roles)) {
+            DenyReason::create([
+                'report_id' => $report_id,
+                'user_id' => auth()->id(),
+                'position_name' => 'Sector Head',
+                'reason' => $request->input('reason'),
+            ]);
+        }
 
         Report::where('id', $report_id)->update([
             'sector_approval' => 0
@@ -438,7 +449,7 @@ class SectorController extends Controller
 
             $receiverData = User::find($report->user_id);
             if (in_array(13, $roles)) {
-                Report::where('id', $report_id)->update(['sector_approval' => 1]); //associate
+                Report::where('id', $report_id)->update(['sector_approval' => 2]); //associate
                 $senderName = Associate::join('sectors', 'sectors.id', 'associates.sector_id')
                                 ->join('users', 'users.id', 'associates.user_id')
                                 ->where('associates.sector_id', $report->sector_id)
@@ -446,7 +457,7 @@ class SectorController extends Controller
                                 ->first();
             }
             if (in_array(7, $roles)) {
-                Report::where('id', $report_id)->update(['sector_approval' => 2]); //sector_head
+                Report::where('id', $report_id)->update(['sector_approval' => 1]); //sector_head
                 $senderName = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')
                                     ->join('users', 'users.id', 'sector_heads.user_id')
                                     ->where('sector_heads.sector_id', $report->sector_id)
@@ -551,13 +562,23 @@ class SectorController extends Controller
             if($request->input('reason_'.$report_id) == null)
                 continue;
             Report::where('id', $report_id)->update(['sector_approval' => 0]);
-            DenyReason::create([
-                'report_id' => $report_id,
-                'user_id' => auth()->id(),
-                'position_name' => 'sector',
-                'reason' => $request->input('reason_'.$report_id),
-            ]);
-
+            if (in_array(13, $roles)) {
+                DenyReason::create([
+                    'report_id' => $report_id,
+                    'user_id' => auth()->id(),
+                    'position_name' => 'Assistant to VP',
+                    'reason' => $request->input('reason'),
+                ]);
+            }
+    
+            if (in_array(7, $roles)) {
+                DenyReason::create([
+                    'report_id' => $report_id,
+                    'user_id' => auth()->id(),
+                    'position_name' => 'Sector Head',
+                    'reason' => $request->input('reason'),
+                ]);
+            }
 
             $report = Report::find($report_id);
 

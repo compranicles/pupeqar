@@ -119,13 +119,5 @@
                 }
             }); }, 2000);
         </script>
-        <script>
-            $("#researchers").selectize({
-                maxItems: null,
-                sortField: "text",
-                valueField: "text",
-                options: @json($allEmployees),
-            });
-        </script>
     @endpush
 </x-app-layout>

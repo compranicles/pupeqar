@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Ongoing Advanced/Professional Studies |')
+    @section('title', 'Ongoing/Advanced Professional Studies |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Ongoing Advanced/Professional Studies</h2>
+                <h2 class="font-weight-bold mb-2">Ongoing/Advanced Professional Studies</h2>
             </div>
         </div>
         <div class="row">
@@ -24,7 +24,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3 ml-1">
                                     <div class="d-inline mr-2">
-                                        <a href="{{ route('submissions.educ.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Ongoing Advanced/Professional Study</a>
+                                        <a href="{{ route('submissions.educ.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Ongoing/Advanced Professional Study</a>
                                     </div>
                                 </div>
                                 <hr>
