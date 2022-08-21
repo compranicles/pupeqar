@@ -1,13 +1,11 @@
 <x-app-layout>
-    <?php $v = '' ?>
+    <?php $v = ''; $nameOfPage = ''; ?>
     @if ($version == 'faculty')
-        $nameOfPage = 'Special Tasks';
-        <?php $v = 'faculty' ?>
+        <?php $nameOfPage = 'Special Tasks'; $v = 'faculty'; ?>
     @elseif ($version == 'admin')
-        $nameOfPage = 'Accomplishments Based on OPCR';
-        <?php $v = 'admin' ?>
+        <?php $nameOfPage = 'Accomplishments Based on OPCR'; $v = 'admin'; ?>
     @endif
-    @section('title', $nameOfPage ' |')
+    @section('title', $nameOfPage.' |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">

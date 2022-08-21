@@ -206,9 +206,9 @@
                                                 @elseif ($row->dean_approval === 0)
                                                     <span class="text-danger font-weight-bold">Returned</span>
                                                 @elseif ($row->dean_approval === 1)
-                                                    <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
-                                                @elseif ($row->dean_approval === 2)
                                                     <span class="text-success font-weight-bold">Reviewed</span>
+                                                @elseif ($row->dean_approval === 2)
+                                                    <span class="text-success font-weight-bold">Reviewed By Associate/Assistant</span>
                                                 @endif
                                             @endif
                                         </td>
@@ -223,9 +223,9 @@
                                                 @elseif ($row->sector_approval === 0)
                                                     <span class="text-danger font-weight-bold">Returned</span>
                                                 @elseif ($row->sector_approval === 1)
-                                                    <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
-                                                @elseif ($row->sector_approval === 2)
                                                     <span class="text-success font-weight-bold">Reviewed</span>
+                                                @elseif ($row->sector_approval === 2)
+                                                    <span class="text-success font-weight-bold">Reviewed by Assistant to VP</span>
                                                 @endif
                                             @endif
                                         </td>

@@ -31,7 +31,7 @@
                             <div class="col-md-12">
                                 <div class="d-flex mr-2">
                                     <p>
-                                        <a class="back_link" href="{{ route('research.citation.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Utilization</a>
+                                        <a class="back_link" href="{{ route('research.citation.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Citations</a>
                                     </p>
                                     @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
                                     <p class="ml-auto">
@@ -44,9 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <fieldset id="research">
-                            @include('show', ['formFields' => $researchFields, 'value' => $values,])
-                        </fieldset>
+                        @include('show', ['formFields' => $researchFields, 'value' => $values,])
                     </div>
                 </div>
             </div>
@@ -125,7 +123,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>

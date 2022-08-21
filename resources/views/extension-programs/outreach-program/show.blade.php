@@ -8,6 +8,7 @@
                     {{ $message }}
                 </div>
                 @endif
+                <h3 class="font-weight-bold mr-2">View Community Relation & Outreach Program</h3>
                 <div class="d-flex mr-2">
                     <p class="mr-auto">
                         <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>

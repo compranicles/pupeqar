@@ -29,11 +29,12 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.award.store', $id) }}" method="post" enctype="multipart/form-data">
-                            <div class="mt-2 mb-3">
-                            <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
-                            </div>
-                            <hr>@csrf
+                            @csrf
                             @if(!isset($forview))
+                                <div class="mt-2 mb-3">
+                                    <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                </div>
+                                <hr>
                                 @if (!isset($collegeOfDepartment))
                                     @include('form', ['formFields' => $awardFields, 'value' => $values])
                                 @else
@@ -45,7 +46,9 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                <div class="img-container">
+                                    <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                </div>
                             </div>
                             @if(!isset($forview))
                             <div class="row">

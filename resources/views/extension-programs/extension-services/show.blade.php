@@ -14,7 +14,7 @@
                     <a class="mr-auto back_link ml-2" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Program/Project/Activity</a>
                     @if ($extensionRole == '1')
                       <a href="{{ route('extension.invite.index', $extension_service->id) }}" class="btn btn-primary btn-sm mr-3 ml-3">
-                        Add Co-Extensionists
+                        Tag Extension Partner/s
                       </a>
                     @endif
                     <a href="{{ route('extension-service.edit', $extension_service->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
@@ -23,7 +23,7 @@
               </div>
               @if ($extensionRole == '1')
               <div class="alert alert-info" role="alert">
-                Add your co-extensionist/s in this extension to share them this info.
+                Tag your partner in this extension to share them this info.
               </div>
               @endif
               <div class="row">

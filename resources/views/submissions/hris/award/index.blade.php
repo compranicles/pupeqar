@@ -88,6 +88,7 @@
                                                                 @endif
                                                             @else
                                                                 <a href="{{ route('submissions.award.add', $award->EmployeeOutstandingAchievementID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Add</a>
+                                                                <button type="button" value="{{ $award->EmployeeOutstandingAchievementID }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-award="{{ $award->Achievement }}">Delete</button>
                                                             @endif
                                                         </div>
                                                     </td>

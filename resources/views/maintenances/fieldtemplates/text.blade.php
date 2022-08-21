@@ -70,9 +70,6 @@
 <script src="{{ asset('dist/selectize.min.js') }}"></script>
 <!-- For words separated by (',') -->
 <script>
-   
-</script>
-<script>
     $("#keywords").selectize({
         delimiter: ",",
         persist: false,

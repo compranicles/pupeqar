@@ -128,7 +128,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -191,32 +191,6 @@
             });
         </script>
         <script>
-            $("#classification").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
-            $("#classification_of_trainees_or_beneficiaries").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
             var report_category_id = 12;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             $.get("{{ url('document-upload/description/12') }}", function (data){
@@ -226,32 +200,6 @@
                     });
                 }
             });
-        </script>
-        <script>
-            setTimeout(function (){
-                var dropdown_id = 26;
-                $('#classification').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/26') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#classification")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
-        </script>
-        <script>
-            setTimeout(function (){
-                var dropdown_id = 29;
-                $('#classification_of_trainees_or_beneficiaries').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/29') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#classification_of_trainees_or_beneficiaries")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

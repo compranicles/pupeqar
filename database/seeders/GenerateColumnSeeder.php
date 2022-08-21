@@ -1093,7 +1093,7 @@ class GenerateColumnSeeder extends Seeder
 
          // Academic
         GenerateColumn::insert([
-            'name' => 'External Services Rendered in Academic Journals/ Books Publication/ Newsletter/ Creative Works*',
+            'name' => 'Expert Services Rendered in Academic Journals/ Books Publication/ Newsletter/ Creative Works*',
             'table_id' => 27,
             'report_column' => 'classification',
             'is_active' => 1,

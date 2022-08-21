@@ -38,6 +38,13 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
+            $(function () {
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                }
+            })
+        </script>
+        <script>
             $('#classification_of_person').on('change', function (){
                 if("{{ $colaccomp }}" == 0){
                     $('#classification_of_person option[value=298]').attr('disabled','disabled');
@@ -47,32 +54,7 @@
         <script>
             $('#start_date').on('change', function () {
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
-            });
-        </script>
-        <script>
-            $("#classification_of_mobility").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
-            });
-        </script>
-        <script>
-            $("#nature_of_engagement").selectize({
-                maxItems: 5,
-                delimiter: ",",
-                persist: true,
-                create: function (input) {
-                    return {
-                    value: input,
-                    text: input,
-                    };
-                },
+                $('#end_date').datepicker('setDate', $('#start_date').val());
             });
         </script>
         <script>
@@ -84,30 +66,6 @@
                     });
                 }
             });
-        </script>
-        <script>
-            setTimeout(function (){
-                $('#classification_of_mobility').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/35') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#classification_of_mobility")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
-        </script>
-        <script>
-            setTimeout(function (){
-                $('#nature_of_engagement').empty().append('<option selected="selected" disabled="disabled" value=""></option>');
-                $.get("{{ url('dropdowns/options/34') }}", function (data){
-                    if (data != '') {
-                        data.forEach(function (item){
-                            $("#nature_of_engagement")[0].selectize.addOption({value:item.name, text:item.name});
-                        });
-                    }
-                });
-            }, Math.floor(Math.random() * (2500 - 1) + 1));
         </script>
     @endpush
 </x-app-layout>

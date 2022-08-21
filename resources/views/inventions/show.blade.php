@@ -16,9 +16,7 @@
                   <a href="{{ route('invention-innovation-creative.edit', $invention_innovation_creative->id) }}" class="action_buttons_show mr-3 ml-3"><i class="bi bi-pencil-square"></i> Edit</a>
                   <button type="button" value="{{ $invention_innovation_creative->id }}" class="action-delete action_buttons_show" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
               </div>
-              <fieldset id="research">
               @include('show', ['formFields' => $inventionFields, 'value' => $values])
-              </fieldset>
                 <div class="row mt-3">
                   <div class="col-md-12">
                     <div class="card">

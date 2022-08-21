@@ -140,7 +140,6 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                     }
                 }
 
-                dd($table_contents);
         $this->table_format = $table_format;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;

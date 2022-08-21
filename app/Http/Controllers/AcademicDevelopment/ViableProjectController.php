@@ -130,17 +130,13 @@ class ViableProjectController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        $input = $request->except(['_token', '_method', 'document', 'rate_of_return']);
+        $input = $request->except(['_token', '_method', 'document']);
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
-
-        $return_rate = ($request->input('rate_of_return') / 100 );
-
-        $viable_project->update(['rate_of_return' => $return_rate]);
 
         if($request->has('document')){
 
@@ -194,7 +190,7 @@ class ViableProjectController extends Controller
         $values = $viable_project->toArray();
 
         foreach($projectFields as $field){
-            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+            if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $values[$field->name])->pluck('name')->where('is_active', 1)->first();
                 if($dropdownOptions == null)
                     $dropdownOptions = "-";
@@ -220,6 +216,7 @@ class ViableProjectController extends Controller
             }
         }
 
+        // dd($values);
         return view('academic-development.viable-project.show', compact('projectFields', 'viable_project', 'documents', 'values'));
     }
 
@@ -255,7 +252,6 @@ class ViableProjectController extends Controller
 
         $documents = ViableProjectDocument::where('viable_project_id', $viable_project->id)->get()->toArray();
 
-        $viable_project->rate_of_return = $viable_project->rate_of_return * 100;
         $values = $viable_project->toArray();
 
         $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();

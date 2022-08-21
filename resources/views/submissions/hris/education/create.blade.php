@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Ongoing Studies |')
+    @section('title', ' Ongoing/Advanced Professional Study |')
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="font-weight-bold mb-2">Add Ongoing Studies</h2>
+                    <h2 class="font-weight-bold mb-2">Add Ongoing/Advanced Professional Study</h2>
                 </div>
             </div>
             <div class="row">
@@ -14,7 +14,7 @@
                         </div>
                     @endif
                     <p>
-                        <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Trainings and Seminars</a>
+                        <a class="back_link" href="{{ route('submissions.educ.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Ongoing/Advanced Professional Studies</a>
                     </p>
                      {{-- Denied Details --}}
                      @if ($deniedDetails = Session::get('denied'))
@@ -36,11 +36,6 @@
                                     @include('form', ['formFields' => $fields, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
 
                                 @endif
-                                {{-- <div class="form-group">
-                                    <label class="font-weight-bold" >Document</label>
-                                    <br>
-                                    <img src="{{ url('fetch_image/'.$values['id'].'/5') }}" alt="">
-                                </div> --}}
                                 @if(!isset($forview))
                                 <div class="row">
                                     <div class="col-md-12">

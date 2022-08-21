@@ -106,7 +106,7 @@ class MyAccomplishmentController extends Controller
         }
 
         //Get distinct colleges from the colleges that had been reported with repeatedly
-        $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
+        $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->distinct()->get();
 
         return view(
             'reports.consolidate.myaccomplishments',

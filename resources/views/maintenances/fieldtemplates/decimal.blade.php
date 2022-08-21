@@ -8,7 +8,7 @@
             $fieldInfo->name == 'total_profit'
             )
             <span id="" role="alert">
-                (No commas)
+                (Type without commas)
             </span>
         @endif
         <div class="input-group mb-2">

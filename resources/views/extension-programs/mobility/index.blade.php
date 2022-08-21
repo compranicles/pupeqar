@@ -70,7 +70,7 @@
                                             <div class="btn-group" role="group" aria-label="button-group">
                                                 <a href="{{ route('mobility.show', $row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
                                                 <a href="{{ route('mobility.edit', $row->id) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
-                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-mobility="{{ $row->host_name }}">Delete</button>
+                                                <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-mobility="{{ $row->mobility_description }}">Delete</button>
                                                 @if($row->classification_of_person == '298')
                                                     @if ($submissionStatus[35][$row->id] == 0)
                                                         <a href="{{ url('submissions/check/35/'.$row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center ">Submit</a>

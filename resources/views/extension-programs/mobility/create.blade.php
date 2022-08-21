@@ -38,6 +38,13 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
+            $(function () {
+                if("{{ $colaccomp }}" == 0){
+                    $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                }
+            })
+        </script>
+        <script>
              $('#classification_of_person').on('change', function (){
                 if("{{ $colaccomp }}" == 0){
                     $('#classification_of_person option[value=298]').attr('disabled','disabled');
@@ -47,6 +54,7 @@
         <script>
             $('#start_date').on('change', function () {
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
+                $('#end_date').datepicker('setDate', $('#start_date').val());
             });
         </script>
         <script>

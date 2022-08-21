@@ -3,9 +3,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-            <p>
-              <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
-            </p>
+            <h3 class="font-weight-bold mr-2">Edit Community Relation & Outreach Program</h3>
+            <div class="mb-3">
+                <p>
+                  <a class="back_link" href="{{ route('outreach-program.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Community Relations and Outreach Program</a>
+                </p>
+            </div>
             {{-- Denied Details --}}
             @if ($deniedDetails = Session::get('denied'))
             <div class="alert alert-info" role="alert">
@@ -122,7 +125,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Delete Form</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
