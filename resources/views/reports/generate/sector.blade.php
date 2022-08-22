@@ -1,9 +1,9 @@
 <!-- Generate Report Modal -->
-<div class="modal fade" id="GenerateSectorLevel" tabindex="-1" aria-labelledby="GenerateSectorLevelLabel" aria-hidden="true">
+<div class="modal fade" id="generateSectorLevel" tabindex="-1" aria-labelledby="GenerateSectorLevelLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="GenerateSectorLevelLabel">Generate Report</h5>
+                <h5 class="modal-title" id="GenerateSectorLevelLabel">Export QAR</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -38,7 +38,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Generate</button>
+                <button type="submit" class="btn btn-primary">Export</button>
                 </form>
             </div>
         </div>

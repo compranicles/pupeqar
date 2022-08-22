@@ -26,7 +26,7 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::insert([
-            'name' => 'A. ONGOING ADVANCED/ PROFESSIONAL STUDY',
+            'name' => 'A. ONGOING/ADVANCED PROFESSIONAL STUDY',
             'is_table' => 1,
             'type_id' => 1,
             'is_individual' => 1,
@@ -129,7 +129,7 @@ class GenerateTableSeeder extends Seeder
             'name' => 'IV. REQUESTS AND QUERIES ACTED UPON',
             'is_table' => 1,
             'type_id' => 1,
-            'is_individual' => 1,
+            'is_individual' => 0,
             'report_category_id' => 17,
             'footers' => json_encode([
                 '* Simple, Complex, Highly Technical'
@@ -450,7 +450,7 @@ class GenerateTableSeeder extends Seeder
             'footers' => null
         ]);
         GenerateTable::insert([
-            'name' => 'A. ONGOING ADVANCED/ PROFESSIONAL STUDY',
+            'name' => 'A. ONGOING/ADVANCED PROFESSIONAL STUDY',
             'is_table' => 1,
             'type_id' => 2,
             'is_individual' => 1,

@@ -6,7 +6,6 @@
                 <div class="db-text">
                     <p class="db-stat">{{ $countRegisteredUsers }}</p>
                     <a class="db-text" style="word-wrap: break-word;" href="{{ route('admin.users.index') }}">USERS</a>
-
                 </div>
             </div>
         </div>

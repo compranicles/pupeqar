@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="GenerateIPOLevelLabel">Generate Report</h5>
+                <h5 class="modal-title" id="GenerateIPOLevelLabel">Export QAR</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -35,13 +35,13 @@
                             @endforeach
                         </select>
                     </div>
-                    <select hidden name="from_quarter_generate" id="from_quarter_generate" class="form-control">
+                    <select hidden name="from_quarter_generate2" id="from_quarter_generate2" class="form-control">
                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
                         <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
                         <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
                         <option value="4" {{$quarter== 4 ? 'selected' : ''}} class="quarter">4</option>
                     </select>
-                    <select hidden name="to_quarter_generate" id="to_quarter_generate" class="form-control">
+                    <select hidden name="to_quarter_generate2" id="to_quarter_generate2" class="form-control">
                         <option value="1" {{$quarter== 1 ? 'selected' : ''}} class="quarter">1</option>
                         <option value="2" {{$quarter== 2 ? 'selected' : ''}} class="quarter">2</option>
                         <option value="3" {{$quarter== 3 ? 'selected' : ''}} class="quarter">3</option>
@@ -53,7 +53,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Generate</button>
+                <button type="submit" class="btn btn-primary">Export</button>
                 </form>
             </div>
         </div>

@@ -66,7 +66,7 @@
                       </div>
 
                       <div class="form-group department-input" style="@if($chairperson == null) display: none; @endif">
-                        <x-jet-label value="{{ __('Chairperson - Department/Section') }}" />
+                        <x-jet-label value="{{ __('Chairperson/Chief - Department/Section') }}" />
                         <select name="department[]" id="department" class="form-control form-control-md">
                             <option value="" selected>Choose...</option>
                             {{-- @foreach ($departments as $department)

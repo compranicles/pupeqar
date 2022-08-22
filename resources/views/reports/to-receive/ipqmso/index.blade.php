@@ -6,16 +6,14 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Receive IPO-level QAR</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3 class="text-center">
-                                Quarterly Accomplishment Reports
-                            </h3>
-                            <hr>
-                        </div>
-                    </div>
+                    
                     <div class="row">
                         <div class="col-md-12">
                             @if ($message = Session::get('success'))
@@ -117,6 +115,8 @@
                                                         {{ $row->report_details->accomplishment_description }}
                                                     @elseif (isset($row->report_details->organization))
                                                         {{ $row->report_details->organization }}
+                                                    @elseif (isset($row->report_details->degree))
+                                                        {{ $row->report_details->degree }}
                                                     @endif
                                                 </td>
                                                 <td class="button-view" data-url="{{ route('document.download', ':filename') }}" data-accept="{{ route('ipqmso.accept', ':id') }}" data-deny="{{ route('ipqmso.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>

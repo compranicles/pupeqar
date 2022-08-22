@@ -2931,11 +2931,7 @@ input[type=button].btn-block {
 .fade {
   transition: opacity 0.15s linear;
 }
-@media (prefers-reduced-motion: reduce) {
-  .fade {
-    transition: none;
-  }
-}
+
 .fade:not(.show) {
   opacity: 0;
 }
@@ -5433,11 +5429,7 @@ a.close.disabled {
   transition: transform 0.3s ease-out;
   transform: translate(0, -50px);
 }
-@media (prefers-reduced-motion: reduce) {
-  .modal.fade .modal-dialog {
-    transition: none;
-  }
-}
+
 .modal.show .modal-dialog {
   transform: none;
 }
@@ -13022,7 +13014,7 @@ body {
 }
 
 .menu-sub a.wide-accomplishments {
-  color: #1b4b72;
+  color: #0f283e;
 }
 
 .menu-sub a {
@@ -13414,13 +13406,26 @@ table tr .padding_left_show {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 5px;
+  justify-content: center;
+  margin: 5px;
 }
 
 .data-card {
   width:120px;
   max-width:120px;
-  display: inline-block;
+  display: inline-flex;
   padding: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.data-card-wide {
+  width:160px;
+  max-width:160px;
+  display: inline-flex;
+  padding: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
 .db-text {

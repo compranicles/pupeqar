@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
         Role::insert(['name' => 'Faculty with designation', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
         Role::insert(['name' => 'Admin Employee']);
         Role::insert(['name' => 'Admin with teaching load', 'deleted_at' => date("Y-m-d H:i:s")]); //Inactive
-        Role::insert(['name' => 'Chairperson']);
+        Role::insert(['name' => 'Chairperson/Chief']);
         Role::insert(['name' => 'Director/Dean']);
         Role::insert(['name' => 'VP/Sector Head']); //7
         Role::insert(['name' => 'IPO Staff']);

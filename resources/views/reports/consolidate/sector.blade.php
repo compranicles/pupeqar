@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Consolidated QAR - {{ $sector->code }} Sector Level</h2>
+                <h2 class="font-weight-bold mb-2">Consolidated Sector-level QAR - {{ $sector->code }}</h2>
             </div>
         </div>
         <div class="card mb-3">
@@ -13,16 +13,16 @@
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="yearFilter" class="mr-2">Year Reported: </label>
-                            <select id="yearFilter" class="custom-select">
+                            <label for="yearFilterSector" class="mr-2">Year Reported: </label>
+                            <select id="yearFilterSector" class="custom-select">
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group m-0">
-                            <label for="quarterFilter" class="mr-2">Quarter Start: </label>
+                            <label for="quarterFilterSector" class="mr-2">Quarter Start: </label>
                             <div class="d-flex">
-                                <select id="quarterFilter" class="custom-select" name="quarter">
+                                <select id="quarterFilterSector" class="custom-select" name="quarter">
                                     <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
                                     <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
                                     <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
@@ -33,9 +33,9 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group m-0">
-                            <label for="quarterFilter2" class="mr-2">Quarter End: </label>
+                            <label for="quarterFilterSector2" class="mr-2">Quarter End: </label>
                             <div class="d-flex">
-                                <select id="quarterFilter2" class="custom-select" name="quarter2">
+                                <select id="quarterFilterSector2" class="custom-select" name="quarter2">
                                     <option value="1" {{ $quarter == 1 ? 'selected' : ''  }} class="quarter">1</option>
                                     <option value="2" {{ $quarter == 2 ? 'selected' : ''  }} class="quarter">2</option>
                                     <option value="3" {{ $quarter == 3 ? 'selected' : ''  }} class="quarter">3</option>
@@ -47,7 +47,7 @@
                     <div class="col-md-6" style="padding-top: 30px;">
                         <div class="form-group">
                             <button id="filter" class="btn btn-primary">GENERATE</button>
-                            <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateSectorLevel" data-toggle="modal">EXPORT</button>
+                            <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#generateSectorLevel" data-toggle="modal">EXPORT</button>
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                                             @endif
                                         </td>
                                         <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                            @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                            @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                 @if ($row->extensionist_approval === null)
                                                     Receiving...
                                                 @elseif ($row->extensionist_approval == 0)
@@ -174,7 +174,7 @@
                                                         <span class="text-success font-weight-bold">Viewed</span>
                                                     @endif
                                                 @endif
-                                            @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                            @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                 @if ($row->extensionist_approval === null)
                                                     -
                                                 @elseif ($row->extensionist_approval == 0)
@@ -302,6 +302,8 @@
         </div>
     </div>
 
+    @include('reports.generate.sector', ['sector' => $sector])
+    
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -369,9 +371,6 @@
             </div>
         </div>
     </div>
-
-    @include('reports.generate.sector', ['sector' => $sector])
-
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -448,27 +447,27 @@
             var min = 0;
             var diff = max-2022;
             min = max-diff;
-            select = document.getElementById('yearFilter');
+            select = document.getElementById('yearFilterSector');
 
             var year = {!! json_encode($year) !!};
             for (var i = max; i >= min; i--) {
                 select.append(new Option(i, i));
                 if (year == i) {
-                    document.getElementById("yearFilter").value = i;
+                    document.getElementById("yearFilterSector").value = i;
                 }
             }
         </script>
         <script>
             $('#filter').on('click', function () {
-                var year_reported = $('#yearFilter').val();
-                var quarter = $('#quarterFilter').val();
+                var year_reported = $('#yearFilterSector').val();
+                var quarter = $('#quarterFilterSector').val();
                 var link = "{{ url('reports/consolidate/sector/reportYearFilter/:sector/:year/:quarter') }}";
                 var newLink = link.replace(':sector', "{{$sectors[0]->sector_id}}").replace(':year', year_reported).replace(':quarter', quarter);
                 window.location.replace(newLink);
             });
         </script>
         <script>
-            $('#export').on('click', function() {
+            $('#exportSector').on('click', function() {
                 var selectedQuarter = $('#quarterFilter').val();
                 var selectedQuarter2 = $('#quarterFilter2').val();
                 var selectedYear = $('#yearFilter').val();

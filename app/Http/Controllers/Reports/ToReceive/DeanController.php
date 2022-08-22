@@ -508,7 +508,7 @@ class DeanController extends Controller
                     'report_id' => $report_id,
                     'user_id' => auth()->id(),
                     'position_name' => 'Associate/Assistant Dean/Director',
-                    'reason' => $request->input('reason'),
+                    'reason' => $request->input('reason_'.$report_id),
                 ]);
             }
     
@@ -517,7 +517,7 @@ class DeanController extends Controller
                     'report_id' => $report_id,
                     'user_id' => auth()->id(),
                     'position_name' => 'Dean/Director',
-                    'reason' => $request->input('reason'),
+                    'reason' => $request->input('reason_'.$report_id),
                 ]);
             }
     

@@ -36,13 +36,13 @@
                 </div>
                 <div class="col-md-4">
                     @if (in_array(10, $roles) || in_array(11, $roles) || in_array(5, $roles) || in_array(6, $roles) ||
-                        in_array(7, $roles) || in_array(8, $roles))
-                    <h6 style="font-weight: bold; color: #eeb510">CONSOLIDATE ACCOMPLISHMENTS</h6>
+                        in_array(7, $roles) || in_array(8, $roles) || in_array(12, $roles) || in_array(13, $roles))
+                    <h6 style="font-weight: bold; color: #eeb510">GENERATE CONSOLIDATED QAR</h6>
                     @endif
                     @if (in_array(5, $roles))
                     {{-- Departments' --}}
                         @forelse ( $departments as $row)
-                            <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id ||  request()->routeIs('reports.consolidate.department.$id') ? 'active' : '') : '' }}">  
+                            <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id &&  request()->routeIs('reports.consolidate.department') ? 'active' : '') : '' }}">  
                                 {{ $row->code }} Department
                             </a><br>
                         @empty

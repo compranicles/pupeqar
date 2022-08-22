@@ -42,7 +42,7 @@ class IpqmsoController extends Controller
             ->join('colleges', 'reports.college_id', 'colleges.id')
             ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
             ->join('users', 'reports.user_id', 'users.id')
-            ->where('sector_approval', 1)->where('ipqmso_approval', null)
+            ->whereIn('sector_approval', [1,2])->where('ipqmso_approval', null)
             ->orderBy('reports.updated_at', 'DESC')
             ->get();
 
@@ -274,7 +274,7 @@ class IpqmsoController extends Controller
         DenyReason::create([
             'report_id' => $report_id,
             'user_id' => auth()->id(),
-            'position_name' => 'ipqmso',
+            'position_name' => 'IPO',
             'reason' => $request->input('reason'),
         ]);
 
@@ -493,7 +493,7 @@ class IpqmsoController extends Controller
             DenyReason::create([
                 'report_id' => $report_id,
                 'user_id' => auth()->id(),
-                'position_name' => 'ipqmso',
+                'position_name' => 'IPO',
                 'reason' => $request->input('reason_'.$report_id),
             ]);
 

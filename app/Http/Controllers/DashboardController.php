@@ -14,6 +14,7 @@ use App\Models\Maintenance\{
 use App\Models\Authentication\UserRole;
 use App\Models\{
     Announcement,
+    Associate,
     Chairperson,
     Dean,
     Employee,
@@ -137,7 +138,7 @@ class DashboardController extends Controller
             foreach ($department[11] as $value){
                 $tempcount = Report::whereNull('extensionist_approval')
                     ->where('college_id', $value->college_id)
-                    ->whereBetween('report_category_id', [8, 15])
+                    ->whereIn('report_category_id', [9, 10, 11, 12, 13, 14, 22, 23, 34, 35, 36, 37])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
@@ -160,7 +161,7 @@ class DashboardController extends Controller
             foreach ($department[5] as $value){
                 $tempcount = Report::whereNull('chairperson_approval')
                     ->where('department_id', $value->department_id)
-                    ->whereBetween('report_category_id', [14, 32])
+                    ->whereIn('report_category_id', [15, 16, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 38])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
@@ -177,7 +178,13 @@ class DashboardController extends Controller
             $countExpectedTotal[6] = '';
             $countReceived[6] = '';
 
-            $college[6] = College::join('deans', 'colleges.id', 'deans.college_id')->where('deans.user_id', auth()->id())->where('deans.deleted_at', null)->get();
+            if (in_array(12, $roles)) {
+                $college[6] = College::join('associates', 'colleges.id', 'associates.college_id')->where('associates.user_id', auth()->id())->where('associates.deleted_at', null)->get();
+            }
+
+            if (in_array(6, $roles)) {
+                $college[6] = College::join('deans', 'colleges.id', 'deans.college_id')->where('deans.user_id', auth()->id())->where('deans.deleted_at', null)->get();
+            }
             
             $tempcount = 0;
             $tempvalues = [];
@@ -199,7 +206,13 @@ class DashboardController extends Controller
             $countExpectedTotal[7] = '';
             $countReceived[7] = '';
 
-            $sector[7] = SectorHead::leftjoin('sectors', 'sector_heads.sector_id', 'sectors.id')->where('sector_heads.user_id', auth()->id())->where('sector_heads.deleted_at', null)->get();
+            if (in_array(13, $roles)) {
+                $sector[7] = Associate::leftjoin('sectors', 'associates.sector_id', 'sectors.id')->where('associates.user_id', auth()->id())->where('associates.deleted_at', null)->get();
+            }
+
+            if (in_array(7, $roles)) {
+                $sector[7] = SectorHead::leftjoin('sectors', 'sector_heads.sector_id', 'sectors.id')->where('sector_heads.user_id', auth()->id())->where('sector_heads.deleted_at', null)->get();
+            }
             
             foreach ($sector[7] as $value){
                 $tempcount = Report::whereNull('sector_approval')

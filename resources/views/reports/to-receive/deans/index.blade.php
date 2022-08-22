@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Quarterly Accomplishment Report - College Level</h2>
+                <h2 class="font-weight-bold mb-2">Review College QAR</h2>
             </div>
         </div>
         <div class="row">
@@ -95,6 +95,10 @@
                                                             {{ $row->report_details->accomplishment_description }}
                                                         @elseif (isset($row->report_details->organization))
                                                             {{ $row->report_details->organization }}
+                                                        @elseif (isset($row->report_details->degree))
+                                                            {{ $row->report_details->degree }}
+                                                        @elseif (isset($row->report_details->award))
+                                                            {{ $row->report_details->award }}
                                                         @endif
                                                     </td>
                                                     <td class="button-view" data-url="{{ route('document.view', ':filename') }}" data-accept="{{ route('dean.accept', ':id') }}" data-deny="{{ route('dean.reject-create', ':id') }}" data-id="{{ $row->id }}" data-toggle="modal" data-target="#viewReport" data-report-category="{{ $row->report_category }}">{{ $row->last_name.', '.$row->first_name.(($row->middle_name == null) ? '' : ', '.' '.$row->middle_name).(($row->suffix == null) ? '' : ', '.$row->suffix) }}</td>
