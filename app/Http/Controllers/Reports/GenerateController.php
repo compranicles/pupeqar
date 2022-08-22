@@ -198,8 +198,8 @@ class GenerateController extends Controller
         elseif($source_generate == 'ipo'){
             $source = $request->source_generate;
             $type = $request->type_generate;
-            $q1 = $request->from_quarter_generate;
-            $q2 = $request->to_quarter_generate;
+            $q1 = $request->from_quarter_generate2;
+            $q2 = $request->to_quarter_generate2;
             $year = $request->year_generate2;
             $file_suffix = 'QARs-IPO-Level-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
 
@@ -217,16 +217,29 @@ class GenerateController extends Controller
             $q1 = $request->from_quarter_generate;
             $q2 = $request->to_quarter_generate;
             $year = $request->year_generate2;
-            $file_suffix = 'QARs-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
 
             $asked = 'no one';
 
-            if($request->routeIs('reports.consolidate.ipqmso')) {
-                $asked = 'ipo';
-            }
-            elseif($request->routeIs('reports.consolidate.sector')) {
+            $previous_url = url()->previous();
+            $url = explode('/', $previous_url);
+            if(in_array('sector', $url)){
                 $asked = 'sector';
             }
+            elseif(in_array('all', $url)){
+                $asked = 'ipo';
+                $q1 = $request->from_quarter_generate2;
+                $q2 = $request->to_quarter_generate2;
+            }
+            $file_suffix = 'QARs-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
+
+            // dd($request->_previous->url);
+
+            // if($request->routeIs('reports.consolidate.ipqmso')) {
+            //     $asked = 'ipo';
+            // }
+            // elseif($request->routeIs('reports.consolidate.sector')) {
+            //     $asked = 'sector';
+            // }
             return Excel::download(new SectorAccomplishmentReportExport(
                 $type,
                 $q1,

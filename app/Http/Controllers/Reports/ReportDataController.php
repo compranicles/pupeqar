@@ -155,7 +155,10 @@ class ReportDataController extends Controller
                             $column->column == 'page_no' ||
                             $column->column == 'year' ||
                             $column->column == 'rate_of_return' ||
-                            $column->column == 'has_businesses'
+                            $column->column == 'has_businesses' ||
+                            $column->column == 'no_of_students' ||
+                            $column->column == 'total_hours' ||
+                            $column->column == 'no_of_request'
                         )
                             $data = $data;
                         else{
@@ -241,7 +244,8 @@ class ReportDataController extends Controller
                             $column->column == 'rate_of_return' ||
                             $column->column == 'has_businesses' ||
                             $column->column == 'no_of_students' ||
-                            $column->column == 'total_hours'
+                            $column->column == 'total_hours' ||
+                            $column->column == 'no_of_request'
                         )
                             $data = $data;
                         else{
