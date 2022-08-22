@@ -36,11 +36,12 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
         if($this->type == "academic") {
             //get the table names
             $table_format = GenerateTable::whereIn('type_id', [2,4])->get();
-            $employee_type = ['f', 'x'];
+            $employee_type = "f";
         }
         elseif ($this->type == 'admin') {
             $table_format = GenerateTable::whereIn('type_id', [1,4])->get();
-            $employee_type = ['a', 'x'];
+            $employee_type = "a";
+
         }
 
         //get the table columns/headers
@@ -54,13 +55,14 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
         //get the accomplishment for each table
         foreach ($table_format as $format) {
             if ($format->is_table == "" || $format->report_category_id == null)
-                $table_contents[$format->id] = [];
+            $table_contents[$format->id] = [];
             else {
-                if($this->asked = 'ipo')
-                    if ($format->type_id != 4) {
+                // dd( $format->report_category_id);
+                if($this->asked = 'ipo') {
+                    if($format->type_id == 1) {
                         $table_contents[$format->id] =
                             Report::
-                                whereIn('reports.format', $employee_type)
+                                whereIn('reports.format', ['a', 'x'])
                                 ->select('reports.*',
                                 DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                     'sectors.name as sector_name',
@@ -68,7 +70,29 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                     'colleges.name as college_name'
                                 )->where('reports.report_category_id', $format->report_category_id)
                                 ->where('reports.sector_id', $this->sector->id)
-                                ->where('reports.sector_approval', 1)
+                                ->whereIn('reports.sector_approval', [1,2])
+                                ->where('reports.report_year', $this->year)
+                                ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
+                                ->join('users', 'users.id', 'reports.user_id')
+                                ->join('sectors', 'sectors.id', 'reports.sector_id')
+                                ->join('departments', 'departments.id', 'reports.department_id')
+                                ->join('colleges', 'colleges.id', 'reports.college_id')
+                                ->orderBy('reports.report_quarter', 'ASC')
+                                ->orderBy('college_name', 'ASC')
+                                ->orderBy('department_name', 'ASC')
+                                ->orderBy('faculty_name', 'ASC')
+                                ->get()->toArray();
+                    } elseif($format->type_id == 2) {
+                        $table_contents[$format->id] =
+                            Report::where('reports.format', 'f')
+                                ->select('reports.*',
+                                DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
+                                    'sectors.name as sector_name',
+                                    'departments.name as department_name',
+                                    'colleges.name as college_name'
+                                )->where('reports.report_category_id', $format->report_category_id)
+                                ->where('reports.sector_id', $this->sector->id)
+                                ->whereIn('reports.sector_approval', [1,2])
                                 ->where('reports.report_year', $this->year)
                                 ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
                                 ->join('users', 'users.id', 'reports.user_id')
@@ -82,15 +106,38 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                 ->get()->toArray();
                     } else {
                         $table_contents[$format->id] =
+                            Report::where('reports.format', 'x')
+                                ->select('reports.*',
+                                DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
+                                    'sectors.name as sector_name',
+                                    'colleges.name as college_name'
+                                )->where('reports.report_category_id', $format->report_category_id)
+                                ->where('reports.sector_id', $this->sector->id)
+                                ->whereIn('reports.sector_approval', [1,2])
+                                ->where('reports.report_year', $this->year)
+                                ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
+                                ->join('users', 'users.id', 'reports.user_id')
+                                ->join('sectors', 'sectors.id', 'reports.sector_id')
+                                ->join('colleges', 'colleges.id', 'reports.college_id')
+                                ->orderBy('reports.report_quarter', 'ASC')
+                                ->orderBy('college_name', 'ASC')
+                                ->orderBy('faculty_name', 'ASC')
+                                ->get()->toArray();
+                    }
+                }
+                elseif($this->asked = 'sector') {
+                    if($format->type_id == 1) {
+                        $table_contents[$format->id] =
                             Report::
-                                select('reports.*',
+                                where('reports.format', 'a')
+                                ->select('reports.*',
                                 DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
                                     'sectors.name as sector_name',
                                     'departments.name as department_name',
                                     'colleges.name as college_name'
                                 )->where('reports.report_category_id', $format->report_category_id)
                                 ->where('reports.sector_id', $this->sector->id)
-                                ->where('reports.sector_approval', 1)
+                                ->whereIn('reports.sector_approval', [1,2])
                                 ->where('reports.report_year', $this->year)
                                 ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
                                 ->join('users', 'users.id', 'reports.user_id')
@@ -102,34 +149,52 @@ class SectorAccomplishmentReportExport implements FromView, WithEvents
                                 ->orderBy('department_name', 'ASC')
                                 ->orderBy('faculty_name', 'ASC')
                                 ->get()->toArray();
+                    } elseif($format->type_id == 2) {
+                        $table_contents[$format->id] =
+                            Report::where('reports.format', 'f')
+                                ->select('reports.*',
+                                DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
+                                    'sectors.name as sector_name',
+                                    'departments.name as department_name',
+                                    'colleges.name as college_name'
+                                )->where('reports.report_category_id', $format->report_category_id)
+                                ->where('reports.sector_id', $this->sector->id)
+                                ->whereIn('reports.sector_approval', [1,2])
+                                ->where('reports.report_year', $this->year)
+                                ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
+                                ->join('users', 'users.id', 'reports.user_id')
+                                ->join('sectors', 'sectors.id', 'reports.sector_id')
+                                ->join('departments', 'departments.id', 'reports.department_id')
+                                ->join('colleges', 'colleges.id', 'reports.college_id')
+                                ->orderBy('reports.report_quarter', 'ASC')
+                                ->orderBy('college_name', 'ASC')
+                                ->orderBy('department_name', 'ASC')
+                                ->orderBy('faculty_name', 'ASC')
+                                ->get()->toArray();
+                    } else {
+                        $table_contents[$format->id] =
+                            Report::where('reports.format', 'x')
+                                ->select('reports.*',
+                                DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
+                                    'sectors.name as sector_name',
+                                    'colleges.name as college_name'
+                                )
+                                ->where('reports.sector_id', $this->sector->id)
+                                ->whereIn('reports.sector_approval', [1,2])
+                                ->where('reports.report_year', $this->year)
+                                ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
+                                ->join('users', 'users.id', 'reports.user_id')
+                                ->join('sectors', 'sectors.id', 'reports.sector_id')
+                                ->join('colleges', 'colleges.id', 'reports.college_id')
+                                ->orderBy('reports.report_quarter', 'ASC')
+                                ->orderBy('college_name', 'ASC')
+                                ->orderBy('faculty_name', 'ASC')
+                                ->get()->toArray();
                     }
-                elseif($this->asked = 'sector') {
-                    $table_contents[$format->id] =
-                        Report::
-                        whereIn('reports.format', $employee_type)
-                        ->select('reports.*',
-                            DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"),
-                                'sectors.name as sector_name',
-                                'departments.name as department_name',
-                                'colleges.name as college_name'
-                            )->where('reports.report_category_id', $format->report_category_id)
-                            ->where('reports.sector_approval', 1)
-                            ->where('reports.sector_id', $this->sector->id)
-                            ->where('reports.report_year', $this->year)
-                            ->whereBetween('reports.report_quarter', [$this->q1, $this->q2])
-                            ->join('users', 'users.id', 'reports.user_id')
-                            ->join('sectors', 'sectors.id', 'reports.sector_id')
-                            ->join('departments', 'departments.id', 'reports.department_id')
-                            ->join('colleges', 'colleges.id', 'reports.college_id')
-                            ->orderBy('reports.report_quarter', 'ASC')
-                            ->orderBy('college_name', 'ASC')
-                            ->orderBy('department_name', 'ASC')
-                            ->orderBy('faculty_name', 'ASC')
-                            ->get()->toArray();
                 }
             }
         }
-
+dd($table_contents);
         $this->table_format = $table_format;
         $this->table_columns = $table_columns;
         $this->table_contents = $table_contents;

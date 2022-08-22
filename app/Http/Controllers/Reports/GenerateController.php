@@ -221,11 +221,12 @@ class GenerateController extends Controller
 
             $asked = 'no one';
 
-            if($request->routeIs('reports.consolidate.ipqmso'))
+            if($request->routeIs('reports.consolidate.ipqmso')) {
                 $asked = 'ipo';
-            elseif($request->routeIs('reports.consolidate.sector'))
+            }
+            elseif($request->routeIs('reports.consolidate.sector')) {
                 $asked = 'sector';
-
+            }
             return Excel::download(new SectorAccomplishmentReportExport(
                 $type,
                 $q1,

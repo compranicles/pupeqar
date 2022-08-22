@@ -41,7 +41,7 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                         <tr>
                             <td>{{ $content['report_quarter'] }}</td>
                             <td>{{ $content['college_name'] }}</td>
-                            <td>{{ $content['department_name'] }}</td>
+                            <td>{{ $content['department_name'] ?? '-' }}</td>
                             <td>{{ $content['faculty_name'] }}</td>
                             @foreach ($table_columns[$format->id] as $column )
                                 @if (isset($data[$column['report_column']]))

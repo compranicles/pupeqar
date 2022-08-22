@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Consolidated QAR - IPO Level</h2>
+                <h2 class="font-weight-bold mb-2">Consolidated IPO-level QAR</h2>
             </div>
         </div>
         <div class="row">
@@ -150,7 +150,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                    @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                                    @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                         @if ($row->extensionist_approval === null)
                                                             Receiving...
                                                         @elseif ($row->extensionist_approval == 0)
@@ -177,7 +177,7 @@
                                                                 <span class="text-success font-weight-bold">Viewed</span>
                                                             @endif
                                                         @endif
-                                                    @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 38) || $row->report_category_id == 23)
+                                                    @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                         @if ($row->extensionist_approval === null)
                                                             -
                                                         @elseif ($row->extensionist_approval == 0)
@@ -595,9 +595,9 @@
                 var selectedQuarter = $('#quarterFilter').val();
                 var selectedQuarter2 = $('#quarterFilter2').val();
                 var selectedYear = $('#yearFilter').val();
-                $('#from_quarter_generate').val(selectedQuarter);
-                $('#to_quarter_generate').val(selectedQuarter2);
-                $('#year_generate').val(selectedYear);
+                $('#from_quarter_generate2').val(selectedQuarter);
+                $('#to_quarter_generate2').val(selectedQuarter2);
+                $('#year_generate2').val(selectedYear);
             })
         </script>
     @endpush

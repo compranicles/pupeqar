@@ -85,7 +85,7 @@ class SectorController extends Controller
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
                 ->orderBy('reports.updated_at', 'DESC')
-                ->where('reports.sector_id', $row->sector_id)->where('dean_approval', 1)->where('sector_approval', null)->get();
+                ->where('reports.sector_id', $row->sector_id)->whereIn('dean_approval', [1,2])->where('sector_approval', null)->get();
             $reportsToReview = $reportsToReview->concat($tempReports);
         }
 
@@ -567,7 +567,7 @@ class SectorController extends Controller
                     'report_id' => $report_id,
                     'user_id' => auth()->id(),
                     'position_name' => 'Assistant to VP',
-                    'reason' => $request->input('reason'),
+                    'reason' => $request->input('reason_'.$report_id),
                 ]);
             }
     
@@ -576,7 +576,7 @@ class SectorController extends Controller
                     'report_id' => $report_id,
                     'user_id' => auth()->id(),
                     'position_name' => 'Sector Head',
-                    'reason' => $request->input('reason'),
+                    'reason' => $request->input('reason_'.$report_id),
                 ]);
             }
 
