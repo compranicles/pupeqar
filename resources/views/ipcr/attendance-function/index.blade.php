@@ -28,13 +28,13 @@
                             </div>
                             <div class="d-inline mr-2">
                                 <button id="add_col" class="btn btn-success" data-toggle="modal" data-target="#collegeModal">
-                                    <i class="bi bi-plus"></i> Add Attended College Function
+                                    <i class="bi bi-plus"></i> Add Attended College/Department Function
                                 </button>
                             </div>
                             @if (in_array(6, $roles))
                                 <div class="d-inline mr-2">
                                     <a id="man_uni" href="{{ route('college-function-manager.index') }}" class="btn btn-warning text-dark">
-                                        <i class="bi bi-gear-fill"></i> Manage College Functions
+                                        <i class="bi bi-gear-fill"></i> Manage College/Department Functions
                                     </a>
                                 </div>
                             @endif

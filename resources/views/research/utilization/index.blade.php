@@ -132,13 +132,5 @@
             });
         });
     </script>
-    <script>
-        // auto hide alert
-        window.setTimeout(function() {
-            $(".alert-index").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove();
-            });
-        }, 4000);
-    </script>
 @endpush
 </x-app-layout>

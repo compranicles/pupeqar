@@ -144,6 +144,16 @@
         <script src="{{ asset('js/remove-document.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
+            var type = "{{ $classtype }}";
+            $(function() {
+                if (type == 'uni') {
+                    $('#classification option[value="294"]').attr("disabled","disabled");
+                    $('#classification option[value="295"]').attr("disabled","disabled");
+                } else if(type == 'college')
+                    $('#classification option[value="293"]').attr("disabled","disabled");
+            });
+        </script>
+        <script>
             $('#start_date').on('change', function () {
                 $('#end_date').datepicker('setStartDate', $('#start_date').val());
             });
