@@ -53,11 +53,19 @@
                                                 @endforelse
                                             </td>
                                             <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >
+                                                <strong>Faculty:</strong>    
                                                 @forelse ($collegesreportingwith[$user->id] as $college)
-                                                    @if ($loop->last)
-                                                        {{ $college->name }}
-                                                    @else
-                                                        {{ $college->name }},
+                                                    @if($college->type == 'F')
+                                                        {{ $college->name }}; 
+                                                    @endif
+                                                @empty
+                                                    -
+                                                @endforelse
+                                                <br>
+                                                <strong>Admin:</strong>
+                                                @forelse ($collegesreportingwith[$user->id] as $college)
+                                                    @if($college->type == 'A')
+                                                        {{ $college->name }}; 
                                                     @endif
                                                 @empty
                                                     -

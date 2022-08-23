@@ -27,7 +27,7 @@
                 @endif
                 @if ($research->nature_of_involvement == 11)
                 <div class="alert alert-info" role="alert-reminder">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Add your co-researchers first before submitting. Go to <strong>"Registration"</strong> and click <strong>"Add Co-researchers"</strong>.
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Tag your co-researchers first before submitting. Go to <strong>"Registration"</strong> and click <strong>"Tag Co-researchers"</strong>.
                 </div>
                 @endif
                 <div class="card">

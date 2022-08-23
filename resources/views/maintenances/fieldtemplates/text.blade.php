@@ -56,7 +56,7 @@
             
             @if ($fieldInfo->name == 'researchers')
                 <span class="form-notes">
-                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP.' : '' }}
+                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers withtin the PUP system, you may tag them after saving this record.' : '' }}
                 </span>
             @endif
             @error($fieldInfo->name)

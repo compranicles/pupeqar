@@ -57,7 +57,10 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+            if(session()->get('user_type') == 'Faculty Employee')
+                $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+            else
+                $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
@@ -210,8 +213,10 @@ class OfficershipController extends Controller
         $classifications = collect($classifications);
         $dropdown_options['classification'] = $classifications;
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
