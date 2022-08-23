@@ -805,7 +805,7 @@ class SeminarAndTrainingController extends Controller
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
-
+        
         $value = array(
             $id, //EmployeeTrainingProgramID
             $emp_code, //EmpCode

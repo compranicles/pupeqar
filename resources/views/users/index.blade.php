@@ -22,7 +22,7 @@
                             <div class="d-inline mr-2">
                                 <a href="{{ route('admin.users.create') }}" class="btn btn-success mb-2"><i class="bi bi-plus"></i> Add New User</a>
                             </div>
-                        </div>  
+                        </div>
                         <hr> --}}
                         <div class="table-responsive">
                             <table class="table" id="user_table">
@@ -44,19 +44,19 @@
                                             <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' ">
                                                 @forelse ($rolesperuser[$user->id] as $user_role)
                                                     @if ($loop->last)
-                                                        {{ $user_role->name }}
+                                                        {{ $user_role }}
                                                     @else
-                                                        {{ $user_role->name }},
+                                                        {{ $user_role }},
                                                     @endif
                                                 @empty
                                                     -
                                                 @endforelse
                                             </td>
                                             <td onclick="window.location.href = '{{ route('admin.users.show', $user->id) }}' " >
-                                                <strong>Faculty:</strong>    
+                                                <strong>Faculty:</strong>
                                                 @forelse ($collegesreportingwith[$user->id] as $college)
                                                     @if($college->type == 'F')
-                                                        {{ $college->name }}; 
+                                                        {{ $college->name }};
                                                     @endif
                                                 @empty
                                                     -
@@ -65,7 +65,7 @@
                                                 <strong>Admin:</strong>
                                                 @forelse ($collegesreportingwith[$user->id] as $college)
                                                     @if($college->type == 'A')
-                                                        {{ $college->name }}; 
+                                                        {{ $college->name }};
                                                     @endif
                                                 @empty
                                                     -
@@ -107,6 +107,6 @@
              });
          } );
      </script>
-     
+
      @endpush
 </x-app-layout>

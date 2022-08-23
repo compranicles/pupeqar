@@ -40,7 +40,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function index()
     {
         $this->authorize('viewAny', User::class);
@@ -50,18 +50,28 @@ class UserController extends Controller
         $rolesperuser = [];
 
         foreach($users as $user){
-            $rolesperuser[$user->id] = UserRole::where('user_roles.user_id',$user->id)
+            $roles = UserRole::where('user_roles.user_id',$user->id)
                     ->join('roles', 'roles.id', 'user_roles.role_id')
-                    ->select('roles.name')
+                    ->select('roles.*')
+                    ->orderBy('roles.id', 'ASC')
                     ->get();
+
+                $roleprev = 0;
+                $rolearray = [];
+                foreach($roles as $role){
+                    if($roleprev != $role->id){
+                        $roleprev = $role->id;
+                        $rolearray[] = $role->name;
+                    }
+                }
+            $rolesperuser[$user->id] = $rolearray;
 
             $collegesreportingwith[$user->id] = Employee::where('employees.user_id', $user->id)
                     ->join('colleges', 'colleges.id', 'employees.college_id')
                     ->select('colleges.name', 'employees.type')
-                    
                     ->get();
 
-                }
+        }
 
         return view('users.index', compact('users', 'rolesperuser', 'collegesreportingwith'));
     }
@@ -121,7 +131,7 @@ class UserController extends Controller
                 'role_id' => $role,
             ]);
         }
-        
+
         foreach($roles as $role){
             if ($role == 5) {
                 Chairperson::create([
@@ -206,7 +216,7 @@ class UserController extends Controller
         $associateDeanDirector = Associate::join('colleges', 'colleges.id', 'associates.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $assistantVP = Associate::where('user_id', $user->id)->pluck('sector_id')->all();
         return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments',
-         'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist', 
+         'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist',
          'associateDeanDirector', 'assistantVP', 'employeeColleges'));
     }
 
@@ -310,9 +320,9 @@ class UserController extends Controller
         else{
             Dean::where('user_id', $user->id)->delete();
             foreach($request->input('college') as $college){
-                Dean::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'college_id' => $college, 
+                Dean::updateOrCreate([
+                    'user_id' => $user->id,
+                    'college_id' => $college,
                 ]);
             }
         }
@@ -322,9 +332,9 @@ class UserController extends Controller
         else{
             SectorHead::where('user_id', $user->id)->delete();
             foreach($request->input('sector') as $sector){
-                SectorHead::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'sector_id' => $sector, 
+                SectorHead::updateOrCreate([
+                    'user_id' => $user->id,
+                    'sector_id' => $sector,
                 ]);
             }
         }
@@ -334,9 +344,9 @@ class UserController extends Controller
         else{
             FacultyResearcher::where('user_id', $user->id)->delete();
             foreach($request->input('research') as $researchDepartment){
-                FacultyResearcher::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'college_id' => $researchDepartment, 
+                FacultyResearcher::updateOrCreate([
+                    'user_id' => $user->id,
+                    'college_id' => $researchDepartment,
                 ]);
             }
         }
@@ -346,9 +356,9 @@ class UserController extends Controller
         else{
             FacultyExtensionist::where('user_id', $user->id)->delete();
             foreach($request->input('extension') as $extensionDepartment){
-                FacultyExtensionist::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'college_id' => $extensionDepartment, 
+                FacultyExtensionist::updateOrCreate([
+                    'user_id' => $user->id,
+                    'college_id' => $extensionDepartment,
                 ]);
             }
         }
@@ -359,18 +369,18 @@ class UserController extends Controller
         if (in_array(12, $checkedroles)){
             Associate::where('user_id', $user->id)->delete();
             foreach($request->input('collegeAssociate') as $college){
-                $i = Associate::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'college_id' => $college, 
+                $i = Associate::updateOrCreate([
+                    'user_id' => $user->id,
+                    'college_id' => $college,
                 ]);
             }
         }
         if (in_array(13, $checkedroles)) {
             Associate::where('user_id', $user->id)->delete();
             foreach($request->input('sectorAssistant') as $sector){
-                Associate::updateOrCreate([ 
-                    'user_id' => $user->id, 
-                    'sector_id' => $sector, 
+                Associate::updateOrCreate([
+                    'user_id' => $user->id,
+                    'sector_id' => $sector,
                 ]);
             }
         }
@@ -397,7 +407,7 @@ class UserController extends Controller
         $user = User::where('id', auth()->id())->first();
 
             if($request->has('document')){
-            
+
                 $documents = $request->input('document');
                 foreach($documents as $document){
                     $temporaryFile = TemporaryFile::where('folder', $document)->first();
@@ -411,7 +421,7 @@ class UserController extends Controller
                         Storage::move($temporaryPath, $newPath);
                         Storage::deleteDirectory("documents/tmp/".$document);
                         $temporaryFile->delete();
-    
+
                         User::where('id', $user->id)->update([
                             'signature' => $fileName,
                         ]);
@@ -421,5 +431,5 @@ class UserController extends Controller
         \LogActivity::addToLog('Had uploaded a digital signature.');
         return redirect()->route('account')->with('success', 'Personal signature has been added in your account.');
     }
-    
+
 }

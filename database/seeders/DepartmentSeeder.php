@@ -25,13 +25,21 @@ class DepartmentSeeder extends Seeder
 
         foreach ($allDepartments as $row) {
             if($row->IsActive == "Y"){
-                if($row->Level == "1" && $row->RootID == '226'){
+                if($row->Level == "1"){
                     if(in_array($row->DepartmentID, $collegeHRISCodes)){
                         Department::insert([
                             'id' => $row->DepartmentID,
                             'name' => $row->Department,
                             'code' => $row->DepartmentCode,
                             'college_id' => College::where('id', $row->DepartmentID)->pluck('id')->first()
+                        ]);
+                    }
+                    elseif(in_array($row->RootID, $collegeHRISCodes)){
+                        Department::insert([
+                            'id' => $row->DepartmentID,
+                            'name' => $row->Department,
+                            'code' => $row->DepartmentCode,
+                            'college_id' => College::where('id', $row->RootID)->pluck('id')->first()
                         ]);
                     }
                 }
