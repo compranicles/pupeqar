@@ -19,7 +19,7 @@
                                     <br>
                                 </div>
                                 <div class="col-md-12">
-                                    <p>Do you have a designation as <strong>{{ $role == "Admin" ? 'Faculty' : 'Admin' }}</strong>?</p>
+                                    <p>Are you <strong>{{ $role == "Admin" ? 'an Admin with Teaching Load' : 'a Faculty with Admin Designation' }}</strong>?</p>
                                     <div class="form-group input-group-md">
                                         <input type="checkbox" name="yes" id="yes" {{ $existingCol2 != null ? 'checked' : '' }}>
                                         <label for="yes">Yes</label>
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 designation-div">
-                                    <label for="designee_cbco">As <strong>{{ $role == "Admin" ? 'a Faculty Designee' : 'an Admin Designee' }}</strong>, please select your designated College/Branch/Campus/Office:</label>
+                                    <label for="designee_cbco">If yes, please select the College/Branch/Campus/Office you work as <strong>{{ $role == "Admin" ? 'Faculty' : 'Admin' }}</strong>:</label>
                                     <select name="designee_cbco[]" id="designee_cbco">
                                         <option value="">Choose...</option>
                                     </select>
