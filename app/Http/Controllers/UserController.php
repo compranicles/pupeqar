@@ -57,9 +57,11 @@ class UserController extends Controller
 
             $collegesreportingwith[$user->id] = Employee::where('employees.user_id', $user->id)
                     ->join('colleges', 'colleges.id', 'employees.college_id')
-                    ->select('colleges.name')
+                    ->select('colleges.name', 'employees.type')
+                    
                     ->get();
-        }
+
+                }
 
         return view('users.index', compact('users', 'rolesperuser', 'collegesreportingwith'));
     }
@@ -194,6 +196,8 @@ class UserController extends Controller
         $colleges = College::select('name as text', 'id as value')->get();
         $sectors = Sector::select('name as text', 'id as value')->get();
 
+        $employeeColleges['F'] = Employee::where('type', 'F')->where('user_id', $user->id)->join('colleges', 'colleges.id', 'employees.college_id')->pluck('colleges.id')->all();
+        $employeeColleges['A'] = Employee::where('type', 'A')->where('user_id', $user->id)->join('colleges', 'colleges.id', 'employees.college_id')->pluck('colleges.id')->all();
         $chairperson = Chairperson::join('departments', 'departments.id', 'chairpeople.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
         $dean = Dean::join('colleges', 'colleges.id', 'deans.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
@@ -203,7 +207,7 @@ class UserController extends Controller
         $assistantVP = Associate::where('user_id', $user->id)->pluck('sector_id')->all();
         return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments',
          'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist', 
-         'associateDeanDirector', 'assistantVP'));
+         'associateDeanDirector', 'assistantVP', 'employeeColleges'));
     }
 
     /**
@@ -260,6 +264,33 @@ class UserController extends Controller
             }
         }
 
+        if(!in_array(1, $checkedroles)){
+            Employee::where('user_id', $user->id)->where('type', 'F')->delete();
+        }
+        else{
+            Employee::where('user_id', $user->id)->where('type', 'F')->delete();
+            foreach($request->input('facultyCollege') as $college){
+                Employee::create([
+                    'user_id' => $user->id,
+                    'type' => 'F',
+                    'college_id' => $college
+                ]);
+            }
+        }
+
+        if(!in_array(3, $checkedroles)){
+            Employee::where('user_id', $user->id)->where('type', 'A')->delete();
+        }
+        else{
+            Employee::where('user_id', $user->id)->where('type', 'A')->delete();
+            foreach($request->input('adminOffice') as $office){
+                Employee::create([
+                    'user_id' => $user->id,
+                    'type' => 'A',
+                    'college_id' => $office
+                ]);
+            }
+        }
 
         if(!in_array(5, $checkedroles)){
             Chairperson::where('user_id', $user->id)->delete();

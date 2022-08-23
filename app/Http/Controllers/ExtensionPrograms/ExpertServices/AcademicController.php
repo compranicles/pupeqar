@@ -86,8 +86,10 @@ class AcademicController extends Controller
             }
         }
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
@@ -241,8 +243,10 @@ class AcademicController extends Controller
 
         $expertServiceAcademicDocuments = ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->get()->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

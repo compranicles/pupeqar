@@ -65,6 +65,32 @@
                         </div>
                       </div>
 
+                      <div class="form-group faculty-input" style="@if($employeeColleges['F'] == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Faculty - College/Branch/Campus') }}" />
+                        <select name="facultyCollege[]" id="facultyCollege" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                            {{-- @foreach ($employeeColleges['F'] as $facultyCollege)
+                                <option value="{{ $facultyCollege->id }}" {{ (old('facultyCollege', $facultyCollege) == $facultyCollege->id) ? 'selected' : '' }}>{{ $facultyCollege->name }}</option>
+                            @endforeach --}}
+
+                        </select>
+                        <span class="text-danger" id="faculty_error">This is required</span>
+                        <x-jet-input-error for="facultyCollege"></x-jet-input-error>
+                      </div>
+
+                      <div class="form-group admin-input" style="@if($employeeColleges['A'] == null) display: none; @endif">
+                        <x-jet-label value="{{ __('Admin - College/Branch/Campus/Office') }}" />
+                        <select name="adminOffice[]" id="adminOffice" class="form-control form-control-md">
+                            <option value="" selected>Choose...</option>
+                            {{-- @foreach ($employeeColleges['A'] as $adminOffice)
+                                <option value="{{ $adminOffice->id }}" {{ (old('adminOffice', $adminOffice) == $adminOffice->id) ? 'selected' : '' }}>{{ $adminOffice->name }}</option>
+                            @endforeach --}}
+
+                        </select>
+                        <span class="text-danger" id="admin_error">This is required</span>
+                        <x-jet-input-error for="adminOffice"></x-jet-input-error>
+                      </div>
+
                       <div class="form-group department-input" style="@if($chairperson == null) display: none; @endif">
                         <x-jet-label value="{{ __('Chairperson/Chief - Department/Section') }}" />
                         <select name="department[]" id="department" class="form-control form-control-md">
@@ -161,7 +187,25 @@
             $('#researcher_error').hide();
             $('#associate_error').hide();
             $('#assistant_error').hide();
+            $('#faculty_error').hide();
+            $('#admin_error').hide();
         });
+          $("#facultyCollege").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
+              sortField: "text",
+              options: @json($colleges),
+              items: @json($employeeColleges['F']),
+          });
+          $("#adminOffice").selectize({
+              maxItems: null,
+              valueField: 'value',
+              labelField: 'text',
+              sortField: "text",
+              options: @json($colleges),
+              items: @json($employeeColleges['A']),
+          });
           $("#department").selectize({
               maxItems: null,
               valueField: 'value',
@@ -222,6 +266,12 @@
 
           $('.role-checkbox').on('change', function() {
               var id = $(this).data('id');
+              if(id == 1){
+                changeFacultyCollegeDisp(id);
+              }
+              if(id == 3){
+                changeAdminOfficeDisp(id);
+              }
               if(id == 5){
                 changeDeptDisp(id);
               }
@@ -244,6 +294,38 @@
                 changeSectorAssistantDisp(id);
               }
           });
+
+          function changeFacultyCollegeDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.faculty-input').show();
+                 $('#facultyCollege').removeAttr('disabled');
+                 $('#facultyCollege').attr('required', true);
+                $('#faculty_error').show();
+
+              }
+              else{
+                $('.faculty-input').hide();
+                $('#facultyCollege').removeAttr('required');
+                $('#facultyCollege').attr('disabled', true);
+                $('#faculty_error').hide();
+              }
+          }
+
+          function changeAdminOfficeDisp(id){
+              if( $('#role-'+id).is(':checked')){
+                 $('.admin-input').show();
+                 $('#adminOffice').removeAttr('disabled');
+                 $('#adminOffice').attr('required', true);
+                $('#admin_error').show();
+
+              }
+              else{
+                $('.admin-input').hide();
+                $('#adminOffice').removeAttr('required');
+                $('#adminOffice').attr('disabled', true);
+                $('#admin_error').hide();
+              }
+          }
 
           function changeCollegeDisp(id){
               if( $('#role-'+id).is(':checked')){
@@ -355,6 +437,12 @@
           }
 
           $(function (){
+              if($('#role-1').is(':checked')){
+                  changeFacultyCollegeDisp(1);
+              }
+              if($('#role-3').is(':checked')){
+                  changeadminOfficeDisp(3);
+              }
               if($('#role-5').is(':checked')){
                   changeDeptDisp(5);
               }

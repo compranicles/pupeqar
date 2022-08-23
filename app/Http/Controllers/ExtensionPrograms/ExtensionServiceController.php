@@ -110,10 +110,12 @@ class ExtensionServiceController extends Controller
             }
         }
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
-
 
         return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options'));
     }
@@ -335,8 +337,10 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceDocuments = ExtensionServiceDocument::where('ext_code', $extension_service->ext_code)->get()->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
@@ -488,6 +492,17 @@ class ExtensionServiceController extends Controller
 
         $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
 
+        $extensionServiceFields = DB::select("CALL get_extension_program_fields_by_form_id(4)");
+
+        $dropdown_options = [];
+        foreach($extensionServiceFields as $field){
+            if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
+                $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
+                $dropdown_options[$field->name] = $dropdownOptions;
+
+            }
+        }
+
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
 
@@ -518,7 +533,7 @@ class ExtensionServiceController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments', 'dropdown_options'));
     }
 
 
