@@ -2588,95 +2588,100 @@ class SubmissionController extends Controller
         $research_code = '*';
         $research_id = '*';
         if($report_category_id >= 1 && $report_category_id <= 7){
-            if($report_category_id == 1){
-                $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                if($leadsResearch != $accomplishment_id)
-                    if(!(Report::where('report_reference_id', $leadsResearch)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 1)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
-            if($report_category_id == 2){
-                $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 2)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
-            if($report_category_id == 3){
-                $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 3)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
-            if($report_category_id == 4){
-                $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 4)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
-            if($report_category_id == 5){
-                $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 5)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
-            if($report_category_id == 6){
-                $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 6)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
-            }
+            $research_nature_of_involvement = Research::find($accomplishment_id)->nature_of_involvement;
+            if($research_nature_of_involvement == 12 || $research_nature_of_involvement == 13){
+                // dd($research_nature_of_involvement);
 
-            if($report_category_id == 7){
-                $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
-                $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
-                $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                if($leadsResearch != $ownResearch)
-                    if(!(Report::where('report_reference_id', $accomplishment_id)
-                    ->where('report_code', $research_code)
-                    ->where('report_category_id', 7)
-                    ->where('report_quarter', $currentQuarterYear->current_quarter)
-                    ->where('report_year', $currentQuarterYear->current_year)->exists()))
-                    return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                if($report_category_id == 1){
+                    $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    if($leadsResearch != $accomplishment_id)
+                        if(!(Report::where('report_reference_id', $leadsResearch)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 1)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+                if($report_category_id == 2){
+                    $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 2)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+                if($report_category_id == 3){
+                    $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 3)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+                if($report_category_id == 4){
+                    $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 4)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+                if($report_category_id == 5){
+                    $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 5)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+                if($report_category_id == 6){
+                    $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 6)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
+
+                if($report_category_id == 7){
+                    $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
+                    $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
+                    if($leadsResearch != $ownResearch)
+                        if(!(Report::where('report_reference_id', $accomplishment_id)
+                        ->where('report_code', $research_code)
+                        ->where('report_category_id', 7)
+                        ->where('report_quarter', $currentQuarterYear->current_quarter)
+                        ->where('report_year', $currentQuarterYear->current_year)->exists()))
+                        return redirect()->back()->with('cannot_access', 'Wait for your lead to submit their research.');
+                }
             }
         }
         if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
