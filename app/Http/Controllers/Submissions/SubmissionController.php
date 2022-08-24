@@ -2924,22 +2924,40 @@ class SubmissionController extends Controller
                         ->where('report_quarter', $currentQuarterYear->current_quarter)
                         ->where('report_year', $currentQuarterYear->current_year)
                         ->delete();
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id,
-                        'college_id' => $collegeAndDepartment->college_id ?? null,
-                        'department_id' => $collegeAndDepartment->department_id ?? null,
-                        'format' => 'x',
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents),
-                        'report_date' => date("Y-m-d", time()),
-                        'chairperson_approval' => 1,
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
+                    if ($report_values_array[1] <= 21 && $report_values_array[1] >= 17) {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id ?? null,
+                            'department_id' => $collegeAndDepartment->department_id ?? null,
+                            'format' => 'x',
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id ?? null,
+                            'department_id' => $collegeAndDepartment->department_id ?? null,
+                            'format' => 'x',
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
 
                     $successToSubmit++;
                     return 1;
@@ -2952,23 +2970,42 @@ class SubmissionController extends Controller
                         ->where('report_quarter', $currentQuarterYear->current_quarter)
                         ->where('report_year', $currentQuarterYear->current_year)
                         ->delete();
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id ?? null,
-                        'college_id' => $collegeAndDepartment->college_id ?? null,
-                        'department_id' => $collegeAndDepartment->department_id ?? null,
-                        'format' => 'x',
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents),
-                        'report_date' => date("Y-m-d", time()),
-                        'chairperson_approval' => 1,
-                        'dean_approval' => 1,
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
+
+                    if ($report_values_array[1] <= 21 && $report_values_array[1] >= 17) {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id ?? null,
+                            'college_id' => $collegeAndDepartment->college_id ?? null,
+                            'department_id' => $collegeAndDepartment->department_id ?? null,
+                            'format' => 'x',
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'dean_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id ?? null,
+                            'college_id' => $collegeAndDepartment->college_id ?? null,
+                            'department_id' => $collegeAndDepartment->department_id ?? null,
+                            'format' => 'x',
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
                     $successToSubmit++;
                     return 1;
                 } else {
