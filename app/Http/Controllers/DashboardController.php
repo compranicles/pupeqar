@@ -207,7 +207,7 @@ class DashboardController extends Controller
             $countReceived[7] = '';
 
             if (in_array(13, $roles)) {
-                $sector[7] = Associate::leftjoin('sectors', 'associates.sector_id', 'sectors.id')->where('associates.user_id', auth()->id())->where('associates.deleted_at', null)->get();
+                $sector[7] = Associate::join('sectors', 'associates.sector_id', 'sectors.id')->where('associates.user_id', auth()->id())->where('associates.deleted_at', null)->get();
             }
 
             if (in_array(7, $roles)) {

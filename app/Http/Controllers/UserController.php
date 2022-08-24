@@ -367,7 +367,7 @@ class UserController extends Controller
             Associate::where('user_id', $user->id)->delete();
         }
         if (in_array(12, $checkedroles)){
-            Associate::where('user_id', $user->id)->delete();
+            Associate::where('user_id', $user->id)->whereNull('sector_id')->delete();
             foreach($request->input('collegeAssociate') as $college){
                 $i = Associate::updateOrCreate([
                     'user_id' => $user->id,
@@ -376,7 +376,7 @@ class UserController extends Controller
             }
         }
         if (in_array(13, $checkedroles)) {
-            Associate::where('user_id', $user->id)->delete();
+            Associate::where('user_id', $user->id)->whereNull('college_id')->delete();
             foreach($request->input('sectorAssistant') as $sector){
                 Associate::updateOrCreate([
                     'user_id' => $user->id,

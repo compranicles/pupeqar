@@ -281,7 +281,7 @@ class SpecialTaskController extends Controller
         if (auth()->id() !== $special_task->user_id)
             abort(403);
 
-        if(LockController::isLocked($special_task->id, 30)){
+        if(LockController::isLocked($special_task->id, 30) || LockController::isLocked($special_task->id, 31) || LockController::isLocked($special_task->id, 32)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
@@ -398,7 +398,7 @@ class SpecialTaskController extends Controller
         else
             $version = 'admin';
 
-        if(LockController::isLocked($special_task->id, 30)){
+            if(LockController::isLocked($special_task->id, 30) || LockController::isLocked($special_task->id, 31) || LockController::isLocked($special_task->id, 32)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)

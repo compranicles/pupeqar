@@ -73,7 +73,7 @@ class SectorController extends Controller
                             ->join('colleges', 'colleges.id', 'associates.college_id')->get();
         }
         if(in_array(13, $roles)){
-            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+            $sectors = Associate::where('associates.user_id', auth()->id())->whereNull('associates.college_id')->select('associates.sector_id', 'sectors.code')
                         ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
