@@ -175,7 +175,7 @@ class EmployeeController extends Controller
      */
     public function destroy($designee_type)
     {
-        Employee::where('type', $designee_type)->delete();
+        Employee::where('user_id', auth()->id())->where('type', $designee_type)->delete();
         if ($designee_type == 'A') {
             UserRole::where('user_id', auth()->id())->where('role_id', 3)->delete();
             \LogActivity::addToLog('Had removed designation as Admin.');

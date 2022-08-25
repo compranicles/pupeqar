@@ -178,7 +178,7 @@ class UserController extends Controller
     {
         $this->authorize('view', User::class);
 
-        $roles = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')->where('user_roles.user_id',$user->id)->get();
+        $roles = UserRole::select('roles.name')->join('roles', 'roles.id', 'user_roles.role_id')->where('user_roles.user_id',$user->id)->whereNull('user_roles.deleted_at')->get();
         return view('users.show', compact('user', 'roles'));
     }
 
