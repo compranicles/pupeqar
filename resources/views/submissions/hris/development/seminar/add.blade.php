@@ -25,10 +25,12 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('submissions.development.seminar.store', $id) }}" method="post" enctype="multipart/form-data">
+                            @if(!isset($forview))
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
                             </div>
                             <hr>
+                            @endif
                             @csrf
                             @if(!isset($forview))
                                 @if (!isset($collegeOfDepartment))
@@ -77,7 +79,7 @@
         var uploadField = document.getElementById("document");
 
         uploadField.onchange = function() {
-            if(this.files[0].size > 102400){
+            if(this.files[0].size > 512000){
             alert("File is too big!");
             this.value = "";
             };

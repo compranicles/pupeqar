@@ -164,6 +164,7 @@ class SeminarAndTrainingController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -187,6 +188,7 @@ class SeminarAndTrainingController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email //TransAccount
         );
 
@@ -213,6 +215,7 @@ class SeminarAndTrainingController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -220,6 +223,8 @@ class SeminarAndTrainingController extends Controller
 
             ", $value
         );
+
+        // dd($id);
 
         $hris_type = 4;
         if($request->classification >= 5) //>= 5 is for training
@@ -339,6 +344,7 @@ class SeminarAndTrainingController extends Controller
             'document' => $seminar->Attachment,
             'description' => $seminar->Description ?? 'No Document Attached',
             'id' => $seminar->EmployeeTrainingProgramID,
+            'mimetype' => $seminar->MimeType,
         ];
 
         if(session()->get('user_type') == 'Faculty Employee')
@@ -418,6 +424,7 @@ class SeminarAndTrainingController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -441,6 +448,7 @@ class SeminarAndTrainingController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email //TransAccount
         );
 
@@ -467,6 +475,7 @@ class SeminarAndTrainingController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -505,6 +514,7 @@ class SeminarAndTrainingController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -528,6 +538,7 @@ class SeminarAndTrainingController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email //TransAccount
         );
 
@@ -554,6 +565,7 @@ class SeminarAndTrainingController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -619,6 +631,7 @@ class SeminarAndTrainingController extends Controller
             'document' => $seminar->Attachment,
             'description' => $seminar->Description ?? 'No Document Attached',
             'id' => $seminar->EmployeeTrainingProgramID,
+            'mimetype' => $seminar->MimeType,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
             'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
@@ -741,6 +754,7 @@ class SeminarAndTrainingController extends Controller
             'document' => $seminar->Attachment,
             'description' => $seminar->Description ?? 'No Document Attached',
             'id' => $seminar->EmployeeTrainingProgramID,
+            'mimetype' => $seminar->MimeType,
         ];
 
         $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('department_id')->first();
@@ -802,10 +816,11 @@ class SeminarAndTrainingController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
-        
+
         $value = array(
             $id, //EmployeeTrainingProgramID
             $emp_code, //EmpCode
@@ -825,8 +840,11 @@ class SeminarAndTrainingController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email //TransAccount
         );
+
+        // dd($value);
 
         $newID = $db_ext->select(
             "
@@ -851,6 +869,7 @@ class SeminarAndTrainingController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -858,6 +877,8 @@ class SeminarAndTrainingController extends Controller
 
             ", $value
         );
+
+        // dd($newID)
 
         if(HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->exists()){
             HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->delete();
@@ -898,6 +919,7 @@ class SeminarAndTrainingController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -921,6 +943,7 @@ class SeminarAndTrainingController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email //TransAccount
         );
 
@@ -947,6 +970,7 @@ class SeminarAndTrainingController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 

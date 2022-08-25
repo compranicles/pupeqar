@@ -70,7 +70,7 @@
             var uploadField = document.getElementById("document");
 
             uploadField.onchange = function() {
-                if(this.files[0].size > 102400){
+                if(this.files[0].size > 512000){
                 alert("File is too big!");
                 this.value = "";
                 };

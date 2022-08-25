@@ -85,6 +85,7 @@ class StorageFileController extends Controller
             $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCodeAndID N'$user->emp_code',$id");
         }
 
+
         if($data['0']->Attachment == null){
             $path = storage_path('app/public/no-document-attached.jpg');
             $file = File::get($path);
@@ -93,11 +94,26 @@ class StorageFileController extends Controller
 
             return response()->file($path, $headers);
         }
-        else{
-            $image_file = Image::make($data['0']->Attachment);
+        if($data['0']->MimeType == 'image/jpeg'){
+            $image = Image::make($data['0']->Attachment);
+            $response = Response::make($image->encode('jpeg'));
+            $response->header('Content-Type', 'image/jpeg');
+            return $response;
         }
-        $response = Response::make($image_file->encode('jpeg'));
-        $response->header('Content-Type', 'image/jpeg');
-        return $response;
+        elseif($data['0']->MimeType == 'image/png'){
+            $image = Image::make($data['0']->Attachment);
+            $response = Response::make($image->encode('png'));
+            $response->header('Content-Type', 'image/png');
+            return $response;
+        }
+        elseif($data['0']->MimeType == 'application/pdf'){
+            $path = storage_path('app/public/pdf.png');
+            $file = File::get($path);
+            $type = File::mimeType($path);
+            $headers = ['Content-Type: '.$type];
+
+            return response()->file($path, $headers);
+        }
+
     }
 }

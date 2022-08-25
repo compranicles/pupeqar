@@ -13,7 +13,7 @@
             name="{{ $fieldInfo->name }}"
             id="{{ $fieldInfo->name }}"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
-            accept="image/jpeg"
+            accept="image/jpeg, application/pdf, image/png"
         >
 
         @error($fieldInfo->name)
