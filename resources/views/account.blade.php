@@ -18,8 +18,8 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group input-group-sm">
-                                    <label for="">Employee Code</label>
-                                    <input type="text" readonly class="form-control" value="{{ $accountDetail[0]->EmpCode }}">
+                                    <label for="">Employee No.</label>
+                                    <input type="text" readonly class="form-control" value="{{ $accountDetail[0]->EmpNo }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -69,7 +69,7 @@
                                     <thead>
                                         <tr>
                                             <th>Role/Designee</th>
-                                            <th>Designation</th>
+                                            <th>Designation <a href="{{ route('offices.create') }}" type="button" class="btn btn-warning mr-2">Edit Designation</a></th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -89,7 +89,6 @@
                                                 @endforelse
                                             </td>
                                             <td>
-                                                <a href="{{ route('offices.create') }}" type="button" class="btn btn-warning mr-2">Edit Designation</a>
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-designation="{{ $employee->type }}">Delete</button>
                                             </td>
                                         </tr>
