@@ -34,9 +34,13 @@
                                 <div class="form-group">
                                     <label class="font-weight-bold" >Document</label>
                                     <br>
-                                    <div class="img-container">
-                                        <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
-                                    </div>
+                                    @if($values['mimetype'] == 'image/png' || $values['mimetype'] == 'image/jpeg' || $values['mimetype'] == 'image/pjpeg')
+                                        <div class="img-container">
+                                            <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
+                                        </div>
+                                    @elseif($values['mimetype'] == 'application/pdf')
+                                        <iframe  src="{{ url('fetch_image/'.$values['id'].'/4') }}" width="100%" height="500px"></iframe>
+                                    @endif
                                 </div>
                                 @if(!isset($forview))
                                 <div class="row">

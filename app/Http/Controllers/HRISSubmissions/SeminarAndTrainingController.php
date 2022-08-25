@@ -381,12 +381,13 @@ class SeminarAndTrainingController extends Controller
 
             $values = [
                 'title' => $seminar->TrainingProgram,
-                'classification' => $seminar->Classification,
-                'nature' => $seminar->Nature,
+                'classification' => $seminar->ClassificationID,
+                'nature' => $seminar->NatureID,
                 'budget' => $seminar->Budget,
-                'fund_source' => $seminar->SourceOfFund,
+                'type' => $seminar->TypeID,
+                'fund_source' => $seminar->SourceOfFundID,
                 'organizer' => $seminar->Conductor,
-                'level' => $seminar->Level,
+                'level' => $seminar->LevelID,
                 'venue' => $seminar->Venue,
                 'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
                 'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
@@ -394,10 +395,9 @@ class SeminarAndTrainingController extends Controller
                 'document' => $seminar->Attachment,
                 'description' => $seminar->Description ?? 'No Document Attached',
                 'id' => $seminar->EmployeeTrainingProgramID,
+                'mimetype' => $seminar->MimeType,
             ];
         }
-
-        // dd($seminar);
 
         if($seminar->ClassificationID >= 5){
             $training = $seminar;
@@ -620,7 +620,7 @@ class SeminarAndTrainingController extends Controller
             'classification' => $seminar->Classification,
             'nature' => $seminar->Nature,
             'budget' => $seminar->Budget,
-            'fund_source' => $seminar->SourceOfFund,
+            'fund_source' => $seminar->SourceOfFund ?? '-',
             'organizer' => $seminar->Conductor,
             'type' => $seminar->Type,
             'level' => $seminar->Level,
@@ -783,6 +783,7 @@ class SeminarAndTrainingController extends Controller
             'description' => $seminar->Description ?? 'No Document Attached',
             'id' => $seminar->EmployeeTrainingProgramID,
             'department_id' => $department_id,
+            'mimetype' => $seminar->MimeType,
         ];
 
         if(session()->get('user_type') == 'Faculty Employee')
@@ -1051,10 +1052,14 @@ class SeminarAndTrainingController extends Controller
         if($development->hris_type == '4'){
             if($this->submitSeminar($development->id))
                 return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
+            else
+                return redirect()->back()->with('error', 'Something went wrong.');
         }
         elseif($development->hris_type == '5'){
             if($this->submitTraining($development->id))
                 return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
+            else
+                return redirect()->back()->with('error', 'Something went wrong.');
         }
         return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment.');
     }
@@ -1082,23 +1087,35 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        if($seminar->MimeType == 'image/jpeg'){
-            $img = Image::make($seminar->Attachment);
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(in_array($seminar->MimeType, $imagejpeg)){
+            $file = Image::make($seminar->Attachment);
             $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
         }
         elseif($seminar->MimeType == 'image/png'){
-            $img = Image::make($seminar->Attachment);
+            $file = Image::make($seminar->Attachment);
             $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
         }
-        $newPath = storage_path().'/app/documents/'.$fileName;
-        $img->save($newPath);
-
-        HRISDocument::create([
-            'hris_form_id' => 4,
-            'reference_id' => $development_id,
-            'filename' => $fileName,
-        ]);
-        array_push($filenames, $fileName);
+        elseif($seminar->MimeType == 'application/pdf'){
+            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.pdf';
+            file_put_contents(storage_path().'/app/documents/'.$fileName, $seminar->Attachment);
+            $file = true;
+        }
+        if(isset($file)){
+            HRISDocument::create([
+                'hris_form_id' => 4,
+                'reference_id' => $development_id,
+                'filename' => $fileName,
+            ]);
+            array_push($filenames, $fileName);
+        }
+        else{
+            return false;
+        }
 
 
         $values = [
@@ -1175,23 +1192,35 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        if($seminar->MimeType == 'image/jpeg'){
-            $img = Image::make($seminar->Attachment);
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(in_array($training->MimeType, $imagejpeg)){
+            $file = Image::make($training->Attachment);
             $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
         }
-        elseif($seminar->MimeType == 'image/png'){
-            $img = Image::make($seminar->Attachment);
+        elseif($training->MimeType == 'image/png'){
+            $file = Image::make($training->Attachment);
             $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
         }
-        $newPath = storage_path().'/app/documents/'.$fileName;
-        $img->save($newPath);
-
-        HRISDocument::create([
-            'hris_form_id' => 5,
-            'reference_id' => $development_id,
-            'filename' => $fileName,
-        ]);
-        array_push($filenames, $fileName);
+        elseif($training->MimeType == 'application/pdf'){
+            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.pdf';
+            file_put_contents(storage_path().'/app/documents/'.$fileName, $training->Attachment);
+            $file = true;
+        }
+        if(isset($file)){
+            HRISDocument::create([
+                'hris_form_id' => 5,
+                'reference_id' => $development_id,
+                'filename' => $fileName,
+            ]);
+            array_push($filenames, $fileName);
+        }
+        else{
+            return false;
+        }
 
         $values = [
             'title' => $training->TrainingProgram,

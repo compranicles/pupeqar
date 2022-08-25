@@ -94,26 +94,35 @@ class StorageFileController extends Controller
 
             return response()->file($path, $headers);
         }
-        if($data['0']->MimeType == 'image/jpeg'){
+
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(isset($data['0']->MimeType)){
+            if(in_array($data['0']->MimeType, $imagejpeg)){
+                $image = $data['0']->Attachment;
+                $response = Response::make($image);
+                $response->header('Content-Type', 'image/jpeg');
+                return $response;
+            }
+            elseif($data['0']->MimeType == 'image/png'){
+                $image = Image::make($data['0']->Attachment);
+                $response = Response::make($image->encode('png'));
+                $response->header('Content-Type', 'image/png');
+                return $response;
+            }
+            elseif($data['0']->MimeType == 'application/pdf'){
+                $pdfstring = $data['0']->Attachment;
+                $response = Response::make($pdfstring);
+                $response->header('Content-Type', 'application/pdf');
+                return $response;
+            }
+        }
+        else{
             $image = Image::make($data['0']->Attachment);
             $response = Response::make($image->encode('jpeg'));
             $response->header('Content-Type', 'image/jpeg');
             return $response;
         }
-        elseif($data['0']->MimeType == 'image/png'){
-            $image = Image::make($data['0']->Attachment);
-            $response = Response::make($image->encode('png'));
-            $response->header('Content-Type', 'image/png');
-            return $response;
-        }
-        elseif($data['0']->MimeType == 'application/pdf'){
-            $path = storage_path('app/public/pdf.png');
-            $file = File::get($path);
-            $type = File::mimeType($path);
-            $headers = ['Content-Type: '.$type];
 
-            return response()->file($path, $headers);
-        }
 
     }
 }
