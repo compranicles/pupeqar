@@ -28,8 +28,8 @@
     <hr>
     @endBothFacultyAdmin
     <div class="row d-flex justify-content-start align-items-baseline">
-        @notpureadmin
         <div class="col-md-3">
+            @notpureadmin
             <ul>
                 <h6 class="menu-category">ACADEMIC PROGRAM DEVELOPMENT</h6>
                 @if (session()->get('user_type') == "Faculty Employee")
@@ -43,6 +43,7 @@
                     <li><a href="">NOT AVAILABLE FOR ADMIN REPORTING MODULE.</a></li>
                 @endif
             </ul>
+            @endnotpureadmin
             <ul>
                 <h6 class="menu-category">EXTENSION PROGRAMS & EXPERT SERVICES</h6>
                 @can('viewAny', \App\Models\ExpertServiceConsultant::class)
@@ -52,7 +53,6 @@
                 @endcan
             </ul>
         </div>
-        @endnotpureadmin
         <div class="col-md-3">
             <ul>
                 
