@@ -1082,8 +1082,14 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $img = Image::make($seminar->Attachment);
-        $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
+        if($seminar->MimeType == 'image/jpeg'){
+            $img = Image::make($seminar->Attachment);
+            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
+        }
+        elseif($seminar->MimeType == 'image/png'){
+            $img = Image::make($seminar->Attachment);
+            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
+        }
         $newPath = storage_path().'/app/documents/'.$fileName;
         $img->save($newPath);
 
