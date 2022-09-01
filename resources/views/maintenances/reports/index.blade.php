@@ -11,7 +11,9 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Report Modals</h2>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -31,7 +33,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Submission Type</th>
+                                                <th>Report Type</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -41,7 +43,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $reporttype->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('report-types.show', $reporttype->id) }}" class="btn btn-warning edit-row btn-sm">Manage</a>
+                                                    <a href="{{ route('report-types.show', $reporttype->id) }}" class="btn btn-primary edit-row btn-sm">View Report Categories</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach

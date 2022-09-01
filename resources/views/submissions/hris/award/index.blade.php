@@ -29,7 +29,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3 ml-1">
                                     <div class="d-inline mr-2">
-                                        <a href="{{ route('submissions.award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add Outstanding Award/Achievement</a>
+                                        <a href="{{ route('submissions.award.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add New Outstanding Award/Achievement</a>
                                     </div>
                                 </div>
                                 <hr>

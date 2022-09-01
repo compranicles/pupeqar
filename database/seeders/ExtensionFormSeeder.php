@@ -32,7 +32,7 @@ class ExtensionFormSeeder extends Seeder
             'is_active' => 1
         ]);
         ExtensionProgramForm::insert([
-            'label' => 'Extension Service',
+            'label' => 'Extension Program/Project/Activity',
             'table_name' => 'extension_services',
             'is_active' => 1
         ]);
@@ -61,6 +61,7 @@ class ExtensionFormSeeder extends Seeder
             'table_name' => 'community_engagements',
             'is_active' => 1
         ]);
+
         ExtensionProgramForm::insert([
             'label' => 'Other Accomplishment Beyond the Mandatory Requirements',
             'table_name' => 'other_accomplishments',
@@ -69,6 +70,11 @@ class ExtensionFormSeeder extends Seeder
         ExtensionProgramForm::insert([
             'label' => 'Other Accomplishment',
             'table_name' => 'other_dept_accomplishments',
+            'is_active' => 1
+        ]);
+        ExtensionProgramForm::insert([
+            'label' => 'Technical Extension Programs/ Projects/ Activities',
+            'table_name' => 'technical_extensions',
             'is_active' => 1
         ]);
     }

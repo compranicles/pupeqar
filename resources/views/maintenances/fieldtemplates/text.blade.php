@@ -56,7 +56,7 @@
             
             @if ($fieldInfo->name == 'researchers')
                 <span class="form-notes">
-                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Include the researchers outside PUP. To include the researchers withtin the PUP system, you may tag them after saving this record.' : '' }}
+                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Add your co-researchers from outside PUP by typing their names here, separated by forward slash ( / ).' : '' }}
                 </span>
             @endif
             @error($fieldInfo->name)
@@ -105,6 +105,7 @@
 </script>
 <!-- For people names separated by ('/') -->
 <script>
+
     $("#name_of_student").selectize({
         delimiter: "/",
         persist: false,
@@ -115,8 +116,8 @@
             };
         },
     });
-
-    $("#collaborator").selectize({
+    
+    $("#researchers").selectize({
         delimiter: "/",
         persist: false,
         create: function (input) {
@@ -149,16 +150,6 @@
         },
     });
 
-    $("#researchers").selectize({
-        delimiter: "/",
-        persist: false,
-        create: function (input) {
-            return {
-            value: input,
-            text: input,
-            };
-        },
-    });
     $("#article_author").selectize({
         delimiter: "/",
         persist: false,

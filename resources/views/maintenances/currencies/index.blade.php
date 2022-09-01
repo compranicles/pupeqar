@@ -9,7 +9,9 @@
         <div class="col-md-12">
           @include('maintenances.navigation-bar')
         </div>
-
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Currencies</h2>
+        </div>
         <div class="col-md-12">
           @if ($message = Session::get('edit_currency_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -52,9 +54,9 @@
                                         <td>{{ $currency->name }}</td>
                                         <td>{{ $currency->symbol }}</td>
                                         <td>
-                                          <div role="group">
-                                              <a href="{{ route('currencies.edit', $currency->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                              <button type="button" value="{{ $currency->id }}" class="action-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-currency="{{ $currency->name }}"><i class="bi bi-trash"></i> Delete</button>
+                                          <div class="btn-group" role="group" aria-label="button-group">
+                                              <a href="{{ route('currencies.edit', $currency->id) }}"  class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i> Edit</a>
+                                              <button type="button" value="{{ $currency->id }}" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-currency="{{ $currency->name }}"><i class="bi bi-trash"></i> Delete</button>
                                           </div>
                                         </td>
                                     </tr>

@@ -144,7 +144,19 @@ class ExtensionProgramFieldController extends Controller
         }
         elseif ($extension_program_form->id == 7) {
             $descriptions = DocumentDescription::where('report_category_id', 22)->get();
-        }
+        } 
+        elseif ($extension_program_form->id == 8) {
+            $descriptions = DocumentDescription::where('report_category_id', 34)->get();
+        } elseif ($extension_program_form->id == 9) {
+            $descriptions = DocumentDescription::where('report_category_id', 37)->get();
+        } elseif ($extension_program_form->id == 10) {
+            $descriptions = DocumentDescription::where('report_category_id', 38)->get();
+        } elseif ($extension_program_form->id == 11) {
+            $descriptions = DocumentDescription::where('report_category_id', 39)->get();
+        } elseif ($extension_program_form->id == 12) {
+            $descriptions = DocumentDescription::where('report_category_id', 23)->get();
+        } else
+            $descriptions = [];
         return view('maintenances.extension-programs.edit', compact('extension_program_form', 'extension_program_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 

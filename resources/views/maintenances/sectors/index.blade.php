@@ -9,7 +9,9 @@
         <div class="col-md-12">
           @include('maintenances.navigation-bar')
         </div>
-
+        <div class="col-md-12">
+            <h2 class="font-weight-bold mb-2">Sectors</h2>
+        </div>
         <div class="col-md-12">
           @if ($message = Session::get('sync_success'))
             <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">

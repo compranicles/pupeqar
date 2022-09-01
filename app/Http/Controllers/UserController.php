@@ -243,6 +243,8 @@ class UserController extends Controller
             $user->userrole()->delete();
             Chairperson::where('user_id', $user->id)->delete();
             Dean::where('user_id', $user->id)->delete();
+            Associate::where('user_id', $user->id)->delete();
+            SectorHead::where('user_id', $user->id)->delete();
         }
 
         else {

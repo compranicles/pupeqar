@@ -68,13 +68,13 @@
                                 <table class="table table-hover table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Role/Designee</th>
-                                            <th>Designation <a href="{{ route('offices.create') }}" type="button" class="btn btn-warning mr-2">Edit Designation</a></th>
+                                            <th>Reporting Role/Designee</th>
+                                            <th>Designation</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($employeeTypeOfUser as $employee)
+                                        @forelse($employeeTypeOfUser as $employee)
                                         <tr>
                                             <td>{{ $employee->type == 'A' ? 'Administrative' : 'Faculty' }}</td>
                                             <td>
@@ -92,7 +92,13 @@
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-designation="{{ $employee->type }}">Delete</button>
                                             </td>
                                         </tr>
-                                        @endforeach
+                                        @empty
+                                        <tr>
+                                            <td>
+                                                <a href="{{ route('offices.create') }}" type="button" class="btn btn-success mr-2">Add Designation</a>
+                                            </td>
+                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>

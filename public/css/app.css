@@ -3929,6 +3929,7 @@ input[type=button].btn-block {
 
 .nav-pills .nav-link {
   border-radius: 0.25rem;
+  color: #212529;
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
@@ -4573,13 +4574,16 @@ input[type=button].btn-block {
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+  padding: 0.50rem 1rem;
+  margin-bottom: 0;
   list-style: none;
-  background-color: #e9ecef;
+  background-color: transparent;
   border-radius: 0.25rem;
 }
 
+.breadcrumb-item a {
+  color: #820202 !important;
+}
 .breadcrumb-item + .breadcrumb-item {
   padding-left: 0.5rem;
 }

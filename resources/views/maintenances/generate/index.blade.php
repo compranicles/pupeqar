@@ -11,7 +11,9 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Report Templates</h2>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -30,7 +32,7 @@
                                     <table id="report_type_table" class="table table-hover table-sm text-center">
                                         <thead>
                                             <tr>
-                                                <th>Report Type</th>
+                                                <th>Report Format</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -39,7 +41,7 @@
                                             <tr>
                                                 <td>{{ $type->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('maintenance.generate.view', $type->id) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('maintenance.generate.view', $type->id) }}" class="btn btn-primary btn-sm">View Report Categories</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach

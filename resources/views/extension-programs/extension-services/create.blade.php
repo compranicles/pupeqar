@@ -8,16 +8,23 @@
                     <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Programs/Projects/Activities</a>
                 </div>
                 <div class="alert alert-info" role="alert">
-                    Tag your extension partner/s in this extension after you save this extension.
+                    You can still tag other extension partner/s in this extension after you save this extension.
                 </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('extension-service.store' ) }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
-                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required. Tag your extension partners to share them what you encoded.
                             </div>    
                             <hr>
                             @csrf
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="collaborators-tagging">Tag your extension partners/persons involved in the extension (Tagging PUP employees who use the eQAR system only).</label><br>
+                                <span class="form-notes">If none, leave it blank.</span>
+                                <select name="tagged_collaborators[]" id="tagged-collaborators" class="form-control custom-select">
+                                    <option value="" selected>Choose...</option>
+                                </select>
+                            </div>
                             @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'colleges' => $colleges])
                             @include('extension-programs.extension-services.no-of-beneficiaries', ['value' => ''])
                             @include('extension-programs.extension-services.form2', ['formFields' => $extensionServiceFields])
@@ -45,6 +52,7 @@
         <script>
             $(function() {
                 $('#status').val(105);
+                $('#tagged-collaborators')[0].selectize.removeOption("{{auth()->id()}}");
             });
         </script>
         <script>
@@ -79,6 +87,15 @@
                     });
                 }
             });
+        </script>
+         <script>
+            $("#tagged-collaborators").selectize({
+              maxItems: null,
+              valueField: 'id',
+              labelField: 'fullname',
+              sortField: "fullname",
+              options: @json($allUsers),
+          });
         </script>
     @endpush
 </x-app-layout>

@@ -12,6 +12,13 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
+                                    <strong>NOTE:</strong> Assign your designated college/branch/campus/office based on your reporting on IPCR/OPCR*. <br>
+                                    <!-- *Faculty Assistant is a faculty with admin work to an Office (Faculty with Admin Designation). -->
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <label for="">I am a/an <strong>{{ $role }}</strong> of:</label>
                                     <select name="cbco[]" id="cbco" required>
                                         <option value="">Choose...</option>

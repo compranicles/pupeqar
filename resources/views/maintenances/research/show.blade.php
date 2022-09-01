@@ -11,7 +11,15 @@
                 @include('maintenances.navigation-bar')
             </div>
         </div>
-
+        <div class="col-md-12 d-flex">
+            <h2 class="font-weight-bold mb-2">Research Forms > {{ $research_form->label }} Fields</h2>
+            <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('research-forms.index') }}">Research Forms</a></li>
+                <li class="breadcrumb-item active">Fields</li>
+            </ol>
+            </nav>
+        </div>
         @if ($message = Session::get('success'))
         <div class="alert alert-success alert-index">
             <i class="bi bi-check-circle"></i> {{ $message }}
@@ -57,7 +65,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('research-forms.research-fields.edit', [$research_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
-                                                        Update
+                                                        Edit
                                                     </a>
                                                 </td>
                                             </tr>

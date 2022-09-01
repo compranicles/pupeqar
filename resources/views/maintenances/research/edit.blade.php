@@ -11,7 +11,18 @@
                 @include('maintenances.navigation-bar')
             </div>
         </div>
-
+        <div class="row">
+        <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Research Forms > {{ $research_form->label }} Fields > {{ $research_field->label }}</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('research-forms.index') }}">Research Forms</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('research-forms.show', $research_form->id) }}">Fields</a></li>
+                    <li class="breadcrumb-item">{{ $research_field->label }}</li>
+                </ol>
+                </nav>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card mb-3">
@@ -22,12 +33,6 @@
                                 <hr>
                             </div>
                             {{-- ADD Fields --}}
-                            <div class="col-md-12">
-                                <a href="{{ route('research-forms.show', $research_form->id) }}" class="btn btn-secondary">
-                                    <i class="fas fa-long-arrow-alt-left"></i>
-                                </a>
-                                <hr>
-                            </div>
                             <div class="col-md-12">
                                 <form action="{{ route('research-forms.research-fields.update', [$research_form->id, $research_field->id]) }}" id="field_form" class="needs-validation" method="POST">
                                     @csrf
@@ -136,7 +141,8 @@
                                         <div class="col-md-12">
                                             {{-- Required --}}
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" value="required" {{ ($research_field->required === 1)? 'checked' : '' }} name="required" id="required">
+                                                <input id='notRequiredHidden' type='hidden' value='0' name='required'>
+                                                <input class="form-check-input" type="checkbox" value="1" {{ ($research_field->required === 1)? 'checked' : '' }} name="required" id="required">
                                                 <label class="form-check-label" for="required">
                                                     Required
                                                 </label>
@@ -184,6 +190,7 @@
                 </div>
             </div>
         </div>
+        @if ($research_field->label == "Description of Supporting Documents")
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -221,7 +228,7 @@
                                                 </td>
                                                 <td>
                                                     <div role="group">
-                                                        <a href="{{route('document-description.edit', $description->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                        <a href="{{route('document-description.edit', $description->id) }}"  class="btn btn-warning btn-sm mr-3">Edit</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -235,6 +242,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 
 

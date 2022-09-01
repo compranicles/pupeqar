@@ -146,10 +146,8 @@ class AcademicModuleFieldController extends Controller
         }
         elseif ($academic_module_form->id == 6) {
             $descriptions = DocumentDescription::where('report_category_id', 21)->get();
-        }
-        elseif ($academic_module_form->id == 7) {
-            $descriptions = DocumentDescription::where('report_category_id', 23)->get();
-        }
+        } else
+            $descriptions = [];
         return view('maintenances.academic-module.edit', compact('academic_module_form', 'academic_module_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 

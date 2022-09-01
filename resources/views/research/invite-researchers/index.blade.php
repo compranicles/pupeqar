@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <h4>Co-Researchers </h4>
+                                <h4>Tagged Co-Researchers </h4>
                             </div>
                             <div class="col-md-6 text-right">
                                 <div class="mb-0">

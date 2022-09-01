@@ -78,7 +78,7 @@
             <ul>
                 <h6 class="menu-category">PERSONAL DATA</h6>
                 <li><a href="{{ route('submissions.officership.index') }}" class="{{ request()->routeIs('submissions.officership.*') ? 'active' : '' }} ">Officerships/ Memberships</a></li>
-                <li><a href="{{ route('submissions.educ.index') }}" class="{{ request()->routeIs('submissions.educ.*') ? 'active' : '' }} ">Ongoing Studies</a></li>
+                <li><a href="{{ route('submissions.educ.index') }}" class="{{ request()->routeIs('submissions.educ.*') ? 'active' : '' }} ">Ongoing/Advanced Professional Studies</a></li>
                 <li><a href="{{ route('submissions.award.index') }}" class="{{ request()->routeIs('submissions.award.*') ? 'active' : '' }} ">Outstanding Awards</a></li>
                 <li><a href="{{ route('submissions.development.index') }}" class="{{ request()->routeIs('submissions.development.*') ? 'active' : '' }}">Seminars and Trainings</a></li>
             </ul>

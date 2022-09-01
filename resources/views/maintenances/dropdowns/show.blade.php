@@ -11,7 +11,12 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12">
+                <div class="d-inline-flex align-content-center">
+                    <h2 class="font-weight-bold">Dropdowns</h2>
+                    <a class="back_link mt-2 ml-3" href="{{ route('dropdowns.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Dropdowns</a>
+                </div>
+            </div>
             <div class="col-md-12">
                 <div class="card mb-3">
                     <div class="card-body">

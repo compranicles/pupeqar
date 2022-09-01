@@ -130,6 +130,8 @@ class IPCRFieldController extends Controller
         $dropdowns = Dropdown::all();
         if ($ipcr_form->id == 1) {
             $descriptions = DocumentDescription::where('report_category_id', 17)->get();
+        } else {
+            $descriptions = [];
         }
         return view('maintenances.ipcr.edit', compact('ipcr_form', 'ipcr_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }

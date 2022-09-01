@@ -9,16 +9,14 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-            
-            <div class="col-lg-6">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Announcements</h2>
+            </div>
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table">
-                                <tr>
-                                    <th>Announcement ID</th>
-                                    <td>{{ $announcement->id }}</td>
-                                </tr>
                                 <tr>
                                     <th>Date Created</th>
                                     <td>{{ $announcement->created_at }}</td>
