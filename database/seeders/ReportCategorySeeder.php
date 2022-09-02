@@ -197,7 +197,7 @@ class ReportCategorySeeder extends Seeder
         ]); //29
         ReportCategory::insert([
             'report_type_id' => 1,
-            'name' => 'Special Tasks(Faculty)/Accomplishments Based on OPCR(Admin) - Quality',
+            'name' => 'Special Tasks(Faculty)/Accomplishments Based on OPCR(Admin)',
             'is_active' => 1,
             'order' => 30,
         ]); //30

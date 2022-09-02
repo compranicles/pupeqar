@@ -29,7 +29,11 @@
                 ^
                 @forelse($dropdown_options[$fieldInfo->name] as $index => $option)
                     @if(count($dropdown_options[$fieldInfo->name])-1 == $index)
-                        {{ $option->name.'; If others, please specify.' }}
+                        @if ($fieldInfo->name == "commitment_measure")
+                            {{ $option->name.'; ' }}
+                        @else
+                            {{ $option->name.'; If others, please specify.' }}
+                        @endif
                     @else
                         {{ $option->name.'; ' }}
                     @endif

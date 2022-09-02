@@ -1265,7 +1265,14 @@ class GenerateColumn4Seeder extends Seeder
 
         //ADMIN Accomplshments Based on OPCR
         GenerateColumn::insert([
-            'name' => 'Final Output - Commitment Measurable by Quality',
+            'name' => 'Commitment Measurable by',
+            'table_id' => 8,
+            'report_column' => 'commitment_measure',
+            'is_active' => 1,
+            'order' => 1
+        ]);
+        GenerateColumn::insert([
+            'name' => 'Final Output',
             'table_id' => 8,
             'report_column' => 'final_output',
             'is_active' => 1,

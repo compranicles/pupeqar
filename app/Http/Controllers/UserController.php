@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\{
+    DB,
     Hash,
     Notification,
     Storage,
@@ -243,8 +244,6 @@ class UserController extends Controller
             $user->userrole()->delete();
             Chairperson::where('user_id', $user->id)->delete();
             Dean::where('user_id', $user->id)->delete();
-            Associate::where('user_id', $user->id)->delete();
-            SectorHead::where('user_id', $user->id)->delete();
         }
 
         else {
@@ -433,5 +432,4 @@ class UserController extends Controller
         \LogActivity::addToLog('Had uploaded a digital signature.');
         return redirect()->route('account')->with('success', 'Personal signature has been added in your account.');
     }
-
 }

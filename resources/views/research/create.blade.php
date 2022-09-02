@@ -11,10 +11,17 @@
                     <div class="card-body">
                         <form action="{{ route('research.store') }}" method="post" id="create_research" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
-                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
+                                <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required. Tag your co-researchers to share them what you encoded.
                             </div>
                             <hr>
                             @csrf
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="collaborators-tagging">Tag your co-researchers (Tagging PUP employees who use the eQAR system only).</label><br>
+                                <span class="form-notes">If you are independent researcher, leave it blank.</span>
+                                <select name="tagged_collaborators[]" id="tagged-collaborators" class="form-control custom-select">
+                                    <option value="" selected>Choose...</option>
+                                </select>
+                            </div>
                             @include('form', ['formFields' => $researchFields, 'colleges' => $colleges])
                             <div class="row">
                                 <div class="col-md-12">
@@ -41,17 +48,38 @@
             $(function () {
                 var middle = '';
                 if ("{{auth()->user()->middle_name}}" != '') {
-                    middle = "{{ ' '.substr(auth()->user()->middle_name,0,1).'.' }}";
+                    middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
                 }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name)) }}" + middle;
+                var fullname = "{{ auth()->user()->last_name.', '.auth()->user()->first_name.' ' }}" + middle;
                 $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#researchers")[0].selectize.addItem(fullname);
+                $('#tagged-collaborators')[0].selectize.removeOption("{{auth()->id()}}");
             });
         </script>
         <script>
             $('#start_date').on('change', function () {
                 $('#target_date').datepicker('setStartDate', $('#start_date').val());
             });
+        </script>
+         <script>
+            $("#tagged-collaborators").selectize({
+              maxItems: null,
+              valueField: 'id',
+              labelField: 'fullname',
+              sortField: "fullname",
+              options: @json($allUsers),
+            //   onChange: function(value) {
+            //     var selected = $("#tagged-collaborators option:selected").text();
+            //     const arraySelected = selected.replaceAll(".", "./");
+            //     if($("#tagged-collaborators option:selected").length > 1) {
+            //         $('#researchers').val(arraySelected);
+            //     } else {
+            //         $('#researchers').val(selected);
+            //     }
+            //   }
+          });
+
+        
         </script>
         <script>
             // $('#nature_of_involvement').on('load', function (){

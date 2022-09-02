@@ -2841,7 +2841,15 @@ class ReportColumnSeeder extends Seeder
             'order' => 1,
         ]);
 
-        //Special Tasks
+        //Special 
+        ReportColumn::insert([
+            'report_category_id' => 30,
+            'name' => 'Commitment Measurable by',
+            'table' => 'special_tasks',
+            'column' => 'commitment_measure',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
         ReportColumn::insert([
             'report_category_id' => 30,
             'name' => 'Final Output',

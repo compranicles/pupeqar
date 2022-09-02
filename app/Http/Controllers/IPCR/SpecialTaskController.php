@@ -47,9 +47,8 @@ class SpecialTaskController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
         $specialTasks = SpecialTask::where('user_id', auth()->id())
-                ->join('dropdown_options', 'dropdown_options.id', 'special_tasks.commitment_measure')
                 ->join('colleges', 'colleges.id', 'special_tasks.college_id')
-                ->select('special_tasks.*', 'dropdown_options.name as commitment_measure_name', 'colleges.name as college_name')
+                ->select('special_tasks.*', 'colleges.name as college_name')
                 ->orderBy('special_tasks.updated_at', 'desc')
                 ->where('admin_or_faculty', $version)
                 ->get();
@@ -63,28 +62,12 @@ class SpecialTaskController extends Controller
         $submissionStatus = [];
         $reportdata = new ReportDataController;
             foreach ($specialTasks as $task) {
-                if ($task->commitment_measure_name == "Quality") {
-                    if (LockController::isLocked($task->id, 30))
-                        $submissionStatus[30][$task->id] = 1;
-                    else
-                        $submissionStatus[30][$task->id] = 0;
-                    if (empty($reportdata->getDocuments(30, $task->id)))
-                        $submissionStatus[30][$task->id] = 2;
-                } elseif ($task->commitment_measure_name == "Efficiency") {
-                    if (LockController::isLocked($task->id, 31))
-                        $submissionStatus[31][$task->id] = 1;
-                    else
-                        $submissionStatus[31][$task->id] = 0;
-                    if (empty($reportdata->getDocuments(31, $task->id)))
-                        $submissionStatus[31][$task->id] = 2;
-                } elseif ($task->commitment_measure_name == "Timeliness") {
-                    if (LockController::isLocked($task->id, 32))
-                        $submissionStatus[32][$task->id] = 1;
-                    else
-                        $submissionStatus[32][$task->id] = 0;
-                    if (empty($reportdata->getDocuments(32, $task->id)))
-                        $submissionStatus[32][$task->id] = 2;
-                }
+                if (LockController::isLocked($task->id, 30))
+                    $submissionStatus[30][$task->id] = 1;
+                else
+                    $submissionStatus[30][$task->id] = 0;
+                if (empty($reportdata->getDocuments(30, $task->id)))
+                    $submissionStatus[30][$task->id] = 2;
             }
 
         return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories',
