@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Seminars & Trainings |')
+    @section('title', 'Trainings & Seminars |')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Seminars & Trainings</h2>
+                <h2 class="font-weight-bold mb-2">Trainings & Seminars</h2>
             </div>
         </div>
         <div class="row">
@@ -29,7 +29,7 @@
                             <div class="col-md-12">
                                 <div class="mb-3 ml-1">
                                     <div class="d-inline mr-2">
-                                        <a href="{{ route('submissions.development.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add New Seminar/Training</a>
+                                        <a href="{{ route('submissions.development.create') }}" class="btn btn-success"><i class="bi bi-plus"></i> Add New Training/Seminar</a>
                                     </div>
                                 </div>
                                 <hr>

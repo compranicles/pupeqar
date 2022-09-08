@@ -1,9 +1,9 @@
 <x-app-layout>
-    @section('title', 'Seminars and Trainings |')
+    @section('title', 'Trainings and Seminars |')
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="font-weight-bold mb-2">Add Seminar or Training</h2>
+                    <h2 class="font-weight-bold mb-2">Add Training or Seminar</h2>
                 </div>
             </div>
             <div class="row">
