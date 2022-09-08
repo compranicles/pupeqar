@@ -19,14 +19,14 @@
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="">I am a/an <strong>{{ $role }}</strong> of:</label>
+                                    <label for="">I am a/an <strong>{{ $role == "Faculty" ? 'Academic Personnel' : 'Non-Academic Personnel' }}</strong> of:</label>
                                     <select name="cbco[]" id="cbco" required>
                                         <option value="">Choose...</option>
                                     </select>
                                     <br>
                                 </div>
                                 <div class="col-md-12">
-                                    <p>Are you <strong>{{ $role == "Admin" ? 'an Admin with Teaching Load' : 'a Faculty with Admin Designation' }}</strong>?</p>
+                                    <p>Are you <strong>{{ $role == "Admin" ? 'an Non-Academic Personnel with Teaching Load' : 'an Academic Personnel with Admin Designation' }}</strong>?</p>
                                     <div class="form-group input-group-md">
                                         <input type="checkbox" name="yes" id="yes" {{ $existingCol2 != null ? 'checked' : '' }}>
                                         <label for="yes">Yes</label>
