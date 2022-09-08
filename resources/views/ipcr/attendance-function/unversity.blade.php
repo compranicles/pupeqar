@@ -1,5 +1,5 @@
 <div class="modal fade" id="universityModal" data-backdrop="static" tabindex="-1" aria-labelledby="universityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="universityModalLabel">University Functions</h5>
@@ -13,6 +13,7 @@
                         <thead>
                             <tr>
                                 <th>Brief Description of Activity</th>
+                                <th>Remarks</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -20,6 +21,7 @@
                             @foreach ($universityFunctions as $row)
                             <tr>
                                 <td>{{ $row->activity_description }}</td>
+                                <td><strong>{{ $row->remarks }}</strong></td>
                                 <td>
                                     <a href="{{ route('attendance-function.create').'?id='.$row->id.'&type=uni' }}" class="btn btn-sm btn-success ">Add</a>
                                 </td>

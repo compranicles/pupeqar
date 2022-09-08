@@ -1,8 +1,8 @@
 <div class="modal fade" id="collegeModal" data-backdrop="static" tabindex="-1" aria-labelledby="collegeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="collegeModalLabel">College/Department Functions</h5>
+                <h5 class="modal-title" id="collegeModalLabel">College/Office Functions</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -12,16 +12,18 @@
                     <table class="table table-bordered text-center" id="college_functions_table">
                         <thead>
                             <tr>
+                                <th>College/Office</th>
                                 <th>Brief Description of Activity</th>
-                                <th>College</th>
+                                <th>Remarks</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($collegeFunctions as $row)
                             <tr>
-                                <td>{{ $row->activity_description }}</td>
                                 <td>{{ $row->college_name }}</td>
+                                <td>{{ $row->activity_description }}</td>
+                                <td><strong>{{ $row->remarks }}</strong></td>
                                 <td>
                                     <a href="{{ route('attendance-function.create').'?id='.$row->id.'&type=college' }}" class="btn btn-sm btn-success ">Add</a>
                                 </td>

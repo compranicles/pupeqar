@@ -186,6 +186,15 @@
     border: 0px solid #fff
 }
 
+.selectize-control.multi .selectize-input.locked {
+    background: gainsboro;
+}
+.selectize-control.multi .selectize-input.locked .item {
+    background: gray;
+    color: #fff;
+    border: 0px solid rgba(0, 0, 0, 0)
+}
+
 .selectize-input>input {
     display: inline-block !important;
     padding: 0 !important;

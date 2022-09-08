@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h3 class="font-weight-bold mr-2">College Functions</h3>
+                <h3 class="font-weight-bold mr-2">Department/Section Functions</h3>
                 <p>
-                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to Attendance in University and College Functions</a>
+                    <a class="back_link" href="{{ route('attendance-function.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Attended Functions</a>
                 </p>
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success alert-index">
@@ -20,8 +20,8 @@
                     <div class="card-body">
                         <div class="mb-3 ml-1">
                             <div class="d-inline mr-2">
-                                <a id="add_func" href="{{ route('college-function-manager.create') }}" class="btn btn-success">
-                                    <i class="bi bi-plus"></i> Add College Function
+                                <a id="add_func" href="{{ route('department-function-manager.create') }}" class="btn btn-success">
+                                    <i class="bi bi-plus"></i> Add
                                 </a>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>College/Office</th>
+                                        <th>Department/Section</th>
                                         <th>Brief Description of Activity</th>
                                         <th>Remarks</th>
                                         <th>Date Modified</th>
@@ -39,13 +39,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($collegeFunctions as $row)
+                                    @foreach ($departmentFunctions as $row)
                                     <tr class="tr-hover" role="button">
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->activity_description }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->remarks }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >
+                                        <td onclick="window.location.href = '{{ route('department-function-manager.show', $row->id) }}' " >{{ $loop->iteration }}</td>
+                                        <td onclick="window.location.href = '{{ route('department-function-manager.show', $row->id) }}' " >{{ $row->department_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('department-function-manager.show', $row->id) }}' " >{{ $row->activity_description }}</td>
+                                        <td onclick="window.location.href = '{{ route('department-function-manager.show', $row->id) }}' " ><strong>{{ $row->remarks }}</strong></td>
+                                        <td onclick="window.location.href = '{{ route('department-function-manager.show', $row->id) }}' " >
                                             @php
                                                 $updated_at = strtotime( $row->updated_at );
                                                 $updated_at = date( 'M d, Y h:i A', $updated_at );
@@ -54,7 +54,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="button-group">
-                                                <a href="{{ route('college-function-manager.edit', $row->id) }}" role="button" class="btn btn-sm btn-warning">Edit</a>
+                                                <a href="{{ route('department-function-manager.edit', $row->id) }}" role="button" class="btn btn-sm btn-warning">Edit</a>
                                                 <button type="button" value="{{ $row->id }}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-request="{{ $row->activity_description }}">Delete</button>
                                             </div>
                                         </td>
@@ -95,7 +95,7 @@
         var itemToDelete = deleteModal.querySelector('#itemToDelete')
         itemToDelete.textContent = requestTitle
 
-        var url = '{{ route("college-function-manager.destroy", ":id") }}';
+        var url = '{{ route("department-function-manager.destroy", ":id") }}';
         url = url.replace(':id', id);
         document.getElementById('delete_item').action = url;
 

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
 use App\Models\CollegeFunction;
 use App\Models\AttendanceFunction;
+use App\Models\DepartmentEmployee;
+use App\Models\DepartmentFunction;
 use App\Models\UniversityFunction;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -41,12 +43,22 @@ class AttendanceFunctionController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $collegesID = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        $departmentsID = DepartmentEmployee::where('user_id', auth()->id())->pluck('department_id')->all();
+        $departments = Department::whereIn('college_id', $collegesID)->select('id', 'name')->get();
 
-        $universityFunctions = UniversityFunction::all();
-        $collegeFunctions = CollegeFunction::whereIn('college_functions.college_id', $colleges)
+        $universityFunctions = UniversityFunction::orderBy('updated_at', 'DESC')
+                            ->orderBy('activity_description', 'DESC')->get();
+        $collegeFunctions = CollegeFunction::whereIn('college_functions.college_id', $collegesID)
                             ->join('colleges', 'colleges.id', 'college_functions.college_id')
-                            ->select('college_functions.*', 'colleges.name as college_name')->get();
+                            ->select('college_functions.*', 'colleges.name as college_name')
+                            ->orderBy('college_functions.updated_at', 'DESC')
+                            ->orderBy('college_functions.activity_description', 'DESC')->get();
+        $departmentFunctions = DepartmentFunction::join('departments', 'departments.id', 'department_functions.department_id')
+                            ->whereIn('departments.id', $departmentsID)
+                            ->select('department_functions.*', 'departments.name as department_name')
+                            ->orderBy('department_functions.updated_at', 'DESC')
+                            ->orderBy('department_functions.activity_description', 'DESC')->get();
 
         $attendedFunctions = AttendanceFunction::
                         join('dropdown_options', 'attendance_functions.classification', 'dropdown_options.id')->
@@ -72,11 +84,10 @@ class AttendanceFunctionController extends Controller
                 $submissionStatus[33][$attendedFunction->id] = 1;
         }
 
-        return view('ipcr.attendance-function.index',
-                        compact('colleges',
-                                    'attendedFunctions', 'currentQuarterYear',
-                                    'roles', 'universityFunctions', 'collegeFunctions',
-                                    'submissionStatus'));
+        return view('ipcr.attendance-function.index', compact('collegesID',
+                                    'attendedFunctions', 'currentQuarterYear', 'roles', 
+                                    'universityFunctions', 'collegeFunctions', 'submissionStatus', 
+                                    'departmentFunctions', 'departmentsID', 'departments'));
     }
 
     /**
@@ -118,6 +129,10 @@ class AttendanceFunctionController extends Controller
         if($request->get('type') == 'college'){
             $values = CollegeFunction::where('id', $request->get('id'))->first()->toArray();
             $colleges = College::where('id', $values['college_id'])->get();
+        }
+        if($request->get('type') == 'department'){
+            $values = DepartmentFunction::where('id', $request->get('id'))->first()->toArray();
+            $departments = Department::where('id', $values['department_id'])->get();
         }
 
         $classtype = $request->get('type');
@@ -385,5 +400,16 @@ class AttendanceFunctionController extends Controller
         \LogActivity::addToLog('Attendance Function document deleted.');
 
         return true;
+    }
+
+    public function tagDepartment(Request $request) {
+        foreach ($request->input('selected_department') as $departments) {
+            DepartmentEmployee::updateOrCreate([
+                'user_id' => auth()->id(),
+                'department_id' => $departments,
+            ]);
+        }
+
+        return redirect()->route('attendance-function.index')->with('success', 'Department tagged successfully.');
     }
 }

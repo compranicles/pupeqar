@@ -149,8 +149,13 @@
                 if (type == 'uni') {
                     $('#classification option[value="294"]').attr("disabled","disabled");
                     $('#classification option[value="295"]').attr("disabled","disabled");
-                } else if(type == 'college')
+                } else if(type == 'college') {
                     $('#classification option[value="293"]').attr("disabled","disabled");
+                    $('#classification option[value="295"]').attr("disabled","disabled");
+                } else if(type == 'department') {
+                    $('#classification option[value="293"]').attr("disabled","disabled");
+                    $('#classification option[value="294"]').attr("disabled","disabled");
+                }
             });
         </script>
         <script>
@@ -163,9 +168,13 @@
                 if(type == 'uni'){
                     $('#classification option[value="294"]').attr("disabled","disabled");
                     $('#classification option[value="295"]').attr("disabled","disabled");
-                }
-                else if(type == 'college')
+                } else if(type == 'college') {
                     $('#classification option[value="293"]').attr("disabled","disabled");
+                    $('#classification option[value="295"]').attr("disabled","disabled");
+                } else if(type == 'department') {
+                    $('#classification option[value="293"]').attr("disabled","disabled");
+                    $('#classification option[value="294"]').attr("disabled","disabled");
+                }
             });
         </script>
         <script>

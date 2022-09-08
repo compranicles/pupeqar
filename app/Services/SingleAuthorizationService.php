@@ -25,4 +25,16 @@ class SingleAuthorizationService {
     public function authorizeManageQuarterAndYear() {
         return $this->authorizeAction("manage quarter and year");
     }
+
+    public function authorizeManageUniversityFunction() {
+        return $this->authorizeAction("manage university functions");
+    }
+
+    public function authorizeManageCollegeFunction() {
+        return $this->authorizeAction("manage college/office functions");
+    }
+
+    public function authorizeManageDepartmentFunction() {
+        return $this->authorizeAction("manage department/section functions");
+    }
 }

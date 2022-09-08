@@ -20,31 +20,45 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <div class="mb-3 ml-1">
-                            <div class="d-inline mr-2">
-                                <button id="add_uni" class="btn btn-success" data-toggle="modal" data-target="#universityModal">
-                                    <i class="bi bi-plus"></i> Add Attended University Function
-                                </button>
-                            </div>
-                            <div class="d-inline mr-2">
-                                <button id="add_col" class="btn btn-success" data-toggle="modal" data-target="#collegeModal">
-                                    <i class="bi bi-plus"></i> Add Attended College/Department Function
-                                </button>
-                            </div>
-                            @if (in_array(6, $roles))
-                                <div class="d-inline mr-2">
-                                    <a id="man_uni" href="{{ route('college-function-manager.index') }}" class="btn btn-warning text-dark">
-                                        <i class="bi bi-gear-fill"></i> Manage College/Department Functions
-                                    </a>
+                        <div class="row ml-1 mr-1">
+                            <div class="d-flex">
+                                <div class="mr-2">
+                                    <button id="add_dept" class="btn btn-success" data-toggle="modal" data-target="#departmentModal">
+                                        <i class="bi bi-plus"></i> Department/Section Functions
+                                    </button>
                                 </div>
-                            @endif
-                            @if (in_array(8, $roles))
-                                <div class="d-inline mr-2">
-                                    <a id="man_uni" href="{{ route('university-function-manager.index') }}" class="btn btn-warning text-dark">
-                                        <i class="bi bi-gear-fill"></i> Manage University Functions
-                                    </a>
+                                <div class="mr-2">
+                                    <button id="add_col" class="btn btn-success" data-toggle="modal" data-target="#collegeModal">
+                                        <i class="bi bi-plus"></i> College/Office Functions
+                                    </button>
                                 </div>
-                            @endif
+                                <div class="mr-2">
+                                    <button id="add_uni" class="btn btn-success" data-toggle="modal" data-target="#universityModal">
+                                        <i class="bi bi-plus"></i> University Functions
+                                    </button>
+                                </div>
+                                @if (in_array(5, $roles))
+                                    <div class="mr-2">
+                                        <a id="man_uni" href="{{ route('department-function-manager.index') }}" class="btn btn-warning text-dark">
+                                            <i class="bi bi-gear-fill"></i> Manage Department/Section Functions
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (in_array(6, $roles))
+                                    <div class="mr-2">
+                                        <a id="man_uni" href="{{ route('college-function-manager.index') }}" class="btn btn-warning text-dark">
+                                            <i class="bi bi-gear-fill"></i> Manage College/Office Functions
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (in_array(8, $roles))
+                                    <div class="mr-2">
+                                        <a id="man_uni" href="{{ route('university-function-manager.index') }}" class="btn btn-warning text-dark">
+                                            <i class="bi bi-gear-fill"></i> Manage University Functions
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <hr>
                         @include('instructions')
@@ -123,6 +137,7 @@
 
     @include('ipcr.attendance-function.unversity', compact('universityFunctions'))
     @include('ipcr.attendance-function.college', compact('collegeFunctions'))
+    @include('ipcr.attendance-function.department', compact('departmentFunctions'))
      {{-- Delete Modal --}}
      @include('delete')
 
@@ -138,9 +153,7 @@
                 });
             }, 4000);
 
-            // $(document).ready( function () {
-                $('#attendance_table').DataTable();
-            // } );
+            $('#attendance_table').DataTable();
 
             //Item to delete to display in delete modal
             var deleteModal = document.getElementById('deleteModal')

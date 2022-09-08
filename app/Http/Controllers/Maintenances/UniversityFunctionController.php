@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Maintenances;
 
 use Illuminate\Http\Request;
 use App\Models\UniversityFunction;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
+use App\Services\SingleAuthorizationService;
 
 class UniversityFunctionController extends Controller
 {
@@ -15,7 +17,10 @@ class UniversityFunctionController extends Controller
      */
     public function index()
     {
-
+        $authorize = (new SingleAuthorizationService())->authorizeManageUniversityFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $universityFunctions = UniversityFunction::all();
         return view('maintenances.university-function.index', compact('universityFunctions'));
     }
@@ -27,7 +32,8 @@ class UniversityFunctionController extends Controller
      */
     public function create()
     {
-        return view('maintenances.university-function.create');
+        $quarter = Quarter::first();
+        return view('maintenances.university-function.create', compact('quarter'));
     }
 
     /**
@@ -38,12 +44,18 @@ class UniversityFunctionController extends Controller
      */
     public function store(Request $request)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageUniversityFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
-            'activity_description' => 'required|string'
+            'activity_description' => 'required|string',
+            'remarks' => 'required|string'
         ]);
 
         UniversityFunction::create([
-            'activity_description' => $request->input('activity_description')
+            'activity_description' => $request->input('activity_description'),
+            'remarks' => $request->input('remarks'),
         ]);
 
         return redirect()->route('university-function-manager.index')->with('success', 'University Function added successfully');
@@ -80,12 +92,17 @@ class UniversityFunctionController extends Controller
      */
     public function update(Request $request, UniversityFunction $university_function_manager)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageUniversityFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'activity_description' => 'required|string'
         ]);
 
         $university_function_manager->update([
-            'activity_description' => $request->input('activity_description')
+            'activity_description' => $request->input('activity_description'),
+            'remarks' => $request->input('remarks'),
         ]);
 
         return redirect()->route('university-function-manager.index')->with('success', 'University Function updated successfully');
@@ -99,6 +116,11 @@ class UniversityFunctionController extends Controller
      */
     public function destroy(UniversityFunction $university_function_manager)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageUniversityFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
+        
         $university_function_manager->delete();
 
         return redirect()->route('university-function-manager.index')->with('success', 'University Function deleted successfully');

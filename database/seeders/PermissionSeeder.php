@@ -120,6 +120,10 @@ class PermissionSeeder extends Seeder
         Permission::insert(['name' => 'manage other individual accomplishments', 'group' => '2EXT']); 
         Permission::insert(['name' => 'manage other accomplishments of college/department', 'group' => '2EXT']); //66
 
+        Permission::insert(['name' => 'manage university functions', 'group' => '8MAINT']); //67
+        Permission::insert(['name' => 'manage college/office functions', 'group' => '8MAINT']); //68
+        Permission::insert(['name' => 'manage department/section functions', 'group' => '8MAINT']); //69
+
         Schema::enableForeignKeyConstraints();
     }
 }
