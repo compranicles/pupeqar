@@ -26,7 +26,7 @@
                                     <br>
                                 </div>
                                 <div class="col-md-12">
-                                    <p>Are you <strong>{{ $role == "Admin" ? 'an Non-Academic Personnel with Teaching Load' : 'an Academic Personnel with Admin Designation' }}</strong>?</p>
+                                    <p>Are you <strong>{{ $role == "Admin" ? 'a Non-Academic Personnel with Teaching Load' : 'an Academic Personnel with Admin Designation' }}</strong>?</p>
                                     <div class="form-group input-group-md">
                                         <input type="checkbox" name="yes" id="yes" {{ $existingCol2 != null ? 'checked' : '' }}>
                                         <label for="yes">Yes</label>

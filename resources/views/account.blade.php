@@ -89,6 +89,7 @@
                                                 @endforelse
                                             </td>
                                             <td>
+                                                <a href="{{ route('offices.create') }}" type="button" class="btn btn-warning mr-2">Edit</a>
                                                 <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-designation="{{ $employee->type }}">Delete</button>
                                             </td>
                                         </tr>
