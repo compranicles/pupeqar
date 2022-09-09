@@ -42,6 +42,7 @@
                                                 $deadline = date( 'F d, Y', $deadline);
                                                 ?>
                                                 <strong>{{ $deadline }}</strong>. <br>
+                                        &#8226; If your <strong>membership is still present</strong>, just click <strong>Submit</strong> button to be included in the current quarter QAR. <br>
                                         &#8226; All the added/updated records will be reflected in your <strong>Personnel Portal account</strong> and vice versa. <br>
                                         &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
                                             quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist. 

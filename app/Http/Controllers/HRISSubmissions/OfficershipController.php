@@ -106,6 +106,11 @@ class OfficershipController extends Controller
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
 
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
+
         $value = [
             0, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -113,7 +118,7 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -176,6 +181,15 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+            $current = 1;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+            $current = 0;
+        }
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->OfficershipMembershipClassificationID,
@@ -183,7 +197,8 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => $current,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
         ];
@@ -275,6 +290,11 @@ class OfficershipController extends Controller
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
 
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
+
         $value = [
             $id, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -282,7 +302,7 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -347,6 +367,13 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+        }
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->Classification,
@@ -354,7 +381,8 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->Level,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => 0,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
@@ -394,6 +422,15 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+            $current = 1;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+            $current = 0;
+        }
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->OfficershipMembershipClassificationID,
@@ -401,7 +438,8 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => $current,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_id,
@@ -452,6 +490,11 @@ class OfficershipController extends Controller
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
 
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
+            
         $value = [
             $id, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -459,7 +502,7 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -571,6 +614,11 @@ class OfficershipController extends Controller
         ]);
         array_push($filenames, $fileName);
 
+        if ($officeData[0]->IncDateTo == "present")
+            $to = $officeData[0]->IncDateTo;
+        else
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->Classification,
@@ -578,7 +626,7 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->Level,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'to' => $to,
             // 'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_name,
@@ -619,40 +667,6 @@ class OfficershipController extends Controller
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function save(Request $request, $id){
         if($request->document[0] == null){

@@ -59,11 +59,6 @@
         <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
-            $('#from').on('change', function () {
-                $('#to').datepicker('setStartDate', $('#from').val());
-            });
-        </script>
-        <script>
             var uploadField = document.getElementById("document");
 
             uploadField.onchange = function() {
@@ -90,5 +85,27 @@
                 $("input[name='document[]']").attr('required', true);
             });
         </script> --}}
+        <script>
+            if ("{{ $values['current_member'] }}" == 1) {
+                $('#current-member').prop('checked', true);
+            } else {
+                $('#current-member').prop('checked', false);
+            }
+        </script>
+        <script>
+            $('#current-member').on('change', function() {
+                if ($('#current-member').is(':checked')) {
+                    $('#to').removeAttr('pattern');
+                    $('#to').removeClass('datepicker');
+                    $('#to').datepicker('remove');
+                    $('#to').val('present');
+                } else {
+                    $('#to').attr('pattern', "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}");
+                    $('#to').addClass('datepicker');
+                    $('#to').datepicker('show');
+                    $('#to').val('');
+                }
+            });
+        </script>
         @endpush
     </x-app-layout>

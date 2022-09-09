@@ -1,9 +1,11 @@
 {{-- fieldInfo --}}
-
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
-
-        <label class="font-weight-bold form-label" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span>{{ ($fieldInfo->dropdown_id != null) ? "^" : '' }}</span><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span><br>
+        <label class="font-weight-bold form-label" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span>{{ ($fieldInfo->dropdown_id != null) ? "^" : '' }}</span><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        @if ($fieldInfo->name == 'researchers')
+            Add your <strong>co-researchers from outside PUP, if any.</strong> No need to include the co-researchers you already tagged above.
+        @endif
+        <br>
             @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
                 $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
                 $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author' || 
@@ -30,12 +32,12 @@
                 @forelse($dropdown_options[$fieldInfo->name] as $index => $option)
                     @if(count($dropdown_options[$fieldInfo->name])-1 == $index)
                         @if ($fieldInfo->name == "commitment_measure")
-                            {{ $option->name.'; ' }}
+                            {{ $option->name }}<strong>; </strong>
                         @else
-                            {{ $option->name.'; If others, please specify.' }}
+                            {{ $option->name }}<strong>;</strong> If others, please specify.
                         @endif
                     @else
-                        {{ $option->name.'; ' }}
+                        {{ $option->name }}<strong>; </strong>
                     @endif
                 @empty
 
@@ -60,7 +62,7 @@
             
             @if ($fieldInfo->name == 'researchers')
                 <span class="form-notes">
-                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Add your co-researchers from outside PUP by typing their names here, separated by forward slash ( / ).' : '' }}
+                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Type their names here, separated by forward slash ( / ).' : '' }}
                 </span>
             @endif
             @error($fieldInfo->name)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Maintenances;
 
+use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
@@ -30,6 +31,7 @@ class QuarterController extends Controller
             'current_year' => $request->current_year,
             'deadline' => $request->deadline
         ];
+
         if(empty($quarter))
             Quarter::create($data);
         else
@@ -38,6 +40,7 @@ class QuarterController extends Controller
         // Announcement::create([
         //     'subject' => "QAR Submission Deadline for Quarter ".$request->current_quarter." of Year ".$request->current_year."."
         // ]);
+
         return redirect()->route('maintenance.quarter.index')->with('success', 'Quarter and Year updated successfully');
     }
 }

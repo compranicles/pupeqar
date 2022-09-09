@@ -5,7 +5,7 @@
         <br>
         @if ($fieldInfo->name == 'description')
             <span class="form-notes">
-                {{ $fieldInfo->placeholder }}
+                Recommended file/s to upload: {{ $fieldInfo->placeholder }}
             </span>
         @endif
         <textarea name="{{ $fieldInfo->name }}" placeholder="Add/Edit/Choose that may apply..." id="{{ $fieldInfo->name }}"  class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" {{ ($fieldInfo->required == 1) ? 'required' : '' }} @switch($fieldInfo->visibility) @case(2) {{ 'readonly' }} @break @case(3) {{ 'disabled' }} @break @case(2) {{ 'hidden' }} @break @default @endswitch @if (isset($fieldInfo->h_r_i_s_form_id)) placeholder="Certificate of Registration / Diploma / TOR" @endif>{{ (old($fieldInfo->name) == '') ? $value : old($fieldInfo->name) }}</textarea>
