@@ -46,10 +46,5 @@ class AcademicDevelopmentFormSeeder extends Seeder
             'table_name' => 'college_department_awards',
             'is_active' => 1
         ]);
-        AcademicDevelopmentForm::insert([
-            'label' => 'Technical Extension Programs/ Projects/ Activities',
-            'table_name' => 'technical_extensions',
-            'is_active' => 1
-        ]);
     }
 }

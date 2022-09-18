@@ -21,13 +21,13 @@
 
                     @can('viewAny', App\Models\Maintenance\College::class)
                     <li class="nav-sub-menu ml-4 mr-4">
-                        <a class="text-dark {{ request()->routeIs('colleges.*') ? 'active' : '' }}" href="{{ route('colleges.index') }}">College/Branch/Campus/Office</a>
+                        <a class="text-dark {{ request()->routeIs('colleges.*') ? 'active' : '' }}" href="{{ route('colleges.index') }}">Colleges/Branches/Campuses/Offices</a>
                     </li>
                     @endcan
 
                     @can('viewAny', App\Models\Maintenance\Sector::class)
                     <li class="nav-sub-menu ml-4 mr-4">
-                        <a class="text-dark {{ request()->routeIs('departments.*') ? 'active' : '' }}" href="{{ route('departments.index') }}">Departments</a>
+                        <a class="text-dark {{ request()->routeIs('departments.*') ? 'active' : '' }}" href="{{ route('departments.index') }}">Departments/Sections</a>
                     </li>
                     @endcan
 
@@ -45,13 +45,13 @@
                     
                     @can('manage', App\Models\Maintenance\ReportType::class)
                     <li class="nav-sub-menu ml-4 mr-4">
-                        <a class="text-dark {{ request()->routeIs('report-types.*') || request()->routeIs('report-categories.*') ? 'active' : '' }}" href="{{ route('report-types.index') }}">Submissions</a>
+                        <a class="text-dark {{ request()->routeIs('report-types.*') || request()->routeIs('report-categories.*') ? 'active' : '' }}" href="{{ route('report-types.index') }}">Report Modals</a>
                     </li>
                     @endcan
 
                     @can('manage', App\Models\Maintenance\GenerateType::class)
                     <li class="nav-sub-menu ml-4 mr-4">
-                        <a class="text-dark {{ request()->routeIs('maintenance.generate.*') ? 'active' : '' }}" href="{{ route('maintenance.generate.type') }}">Reports</a>
+                        <a class="text-dark {{ request()->routeIs('maintenance.generate.*') ? 'active' : '' }}" href="{{ route('maintenance.generate.type') }}">Report Templates</a>
                     </li>
                     @endcan
 

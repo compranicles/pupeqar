@@ -13,6 +13,16 @@
         </div>
 
         <div class="row">
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">IPCR Forms > Fields > {{ $ipcr_field->label }}</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('ipcr-forms.index') }}">IPCR Forms</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('ipcr-forms.show', $ipcr_form->id) }}">Fields</a></li>
+                    <li class="breadcrumb-item active">{{ $ipcr_field->label }}</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card mb-3">
                     <div class="card-body">
@@ -22,12 +32,6 @@
                                 <hr>
                             </div>
                             {{-- ADD Fields --}}
-                            <div class="col-md-12">
-                                <a href="{{ route('ipcr-forms.show', $ipcr_form->id) }}" class="btn btn-secondary">
-                                    <i class="fas fa-long-arrow-alt-left"></i>
-                                </a>
-                                <hr>
-                            </div>
                             <div class="col-md-12">
                                 <form action="{{ route('ipcr-forms.ipcr-fields.update', [$ipcr_form->id, $ipcr_field->id]) }}" id="field_form" class="needs-validation" method="POST">
                                     @csrf
@@ -137,7 +141,8 @@
                                         <div class="col-md-12">
                                             {{-- Required --}}
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" value="required" {{ ($ipcr_field->required === 1)? 'checked' : '' }} name="required" id="required">
+                                                <input id='notRequiredHidden' type='hidden' value='0' name='required'>
+                                                <input class="form-check-input" type="checkbox" value="1" {{ ($ipcr_field->required === 1)? 'checked' : '' }} name="required" id="required">
                                                 <label class="form-check-label" for="required">
                                                     Required
                                                 </label>
@@ -185,6 +190,7 @@
                 </div>
             </div>
         </div>
+        @if ($ipcr_field->label == "Description of Supporting Documents" || $ipcr_field->label == "Proof of Compliance" || $ipcr_field->label == "Description of Supporting Documents Submitted")
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -222,7 +228,7 @@
                                                 </td>
                                                 <td>
                                                     <div role="group">
-                                                        <a href="{{route('document-description.edit', $description->id) }}"  class="action-edit mr-3"><i class="bi bi-pencil-square" style="font-size: 1.25em;"></i></a>
+                                                        <a href="{{route('document-description.edit', $description->id) }}"  class="btn btn-warning btn-sm mr-3">Edit</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -236,6 +242,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 
 

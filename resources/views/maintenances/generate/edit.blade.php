@@ -11,7 +11,16 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Report Modals > Categories > Content</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('maintenance.generate.type') }}">Report Modals</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('maintenance.generate.view', $table->type_id) }}">Categories</a></li>
+                    <li class="breadcrumb-item active">Content</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -24,12 +33,6 @@
                         @endif
 
                         {{-- Table for displaying --}}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <a href="{{ route('maintenance.generate.view', $table->type_id) }}" class="btn btn-secondary">Back</a>
-                                <hr>
-                            </div>
-                        </div>
                         @if ($table->is_table == "0")
                             <form action="{{ route('maintenance.generate.save', ['type_id' => $table->type_id, 'table_id' => $table->id]) }}" method="post">
                                 @csrf
@@ -123,7 +126,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('maintenance.generate.edit-column', ['type_id' => $table->type_id, 'table_id' => $table->id, 'column_id' => $row->id]) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('maintenance.generate.edit-column', ['type_id' => $table->type_id, 'table_id' => $table->id, 'column_id' => $row->id]) }}" class="btn btn-warning btn-sm">Edit</a>
                                                 </td>
                                             </tr>
                                             @empty

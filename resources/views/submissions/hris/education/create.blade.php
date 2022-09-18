@@ -60,7 +60,7 @@
             var uploadField = document.getElementById("document");
 
             uploadField.onchange = function() {
-                if(this.files[0].size > 102400){
+                if(this.files[0].size > 512000){
                 alert("File is too big!");
                 this.value = "";
                 };
@@ -71,12 +71,26 @@
                 if ($(this).val() == 'Yes') {
                     $('#status').val(0);
                     $('#is_enrolled2').attr("checked", "checked");
+                    $('#units_earned').removeAttr("required");
+                    $('#units_enrolled').removeAttr("required");
                     $('#to').val('');
                 }
                 else {
                     $('#status').val('');
-                    $('#is_enrolled1').attr("checked", "checked");
                     $('#to').val('Present');
+                }
+            });
+
+            $('input[name="is_enrolled"]').on('change', function () {
+                if ($(this).val() == 'Yes') {
+                    $('#to').val('Present');
+                    $('#units_enrolled').attr("required", "required");
+                    $('#units_earned').attr("required", "required");
+                }
+                else {
+                    $('#to').val('');
+                    $('#units_earned').removeAttr("required");
+                    $('#units_enrolled').removeAttr("required");
                 }
             });
 

@@ -17,10 +17,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 
 class OfficershipController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+    
     public function index(){
 
         $currentQuarterYear = Quarter::find(1);
@@ -102,9 +109,15 @@ class OfficershipController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
+
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
 
         $value = [
             0, //EmployeeOfficershipMembershipID
@@ -113,12 +126,13 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email
         ];
 
@@ -138,6 +152,7 @@ class OfficershipController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
 
@@ -145,6 +160,7 @@ class OfficershipController extends Controller
 
             ", $value);
 
+            // dd($id);
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
 
         HRIS::create([
@@ -176,6 +192,15 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+            $current = 1;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+            $current = 0;
+        }
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->OfficershipMembershipClassificationID,
@@ -183,9 +208,11 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => $current,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
+            'mimetype' => $officeData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -255,6 +282,7 @@ class OfficershipController extends Controller
                 'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
                 'document' => $officeData[0]->Attachment,
                 'description' => $officeData[0]->Description,
+                'mimetype' => $officeData[0]->MimeType,
             ];
         }
 
@@ -271,9 +299,15 @@ class OfficershipController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
+
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
 
         $value = [
             $id, //EmployeeOfficershipMembershipID
@@ -282,12 +316,13 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email
         ];
 
@@ -307,6 +342,7 @@ class OfficershipController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
 
@@ -347,6 +383,14 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+        }
+
+        // dd($officeData[0]->Attachment);
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->Classification,
@@ -354,11 +398,13 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->Level,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => 0,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
             'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
+            'mimetype' => $officeData[0]->MimeType,
         ];
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
         $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
@@ -366,6 +412,7 @@ class OfficershipController extends Controller
         $departments = Department::whereIn('college_id', $colleges)->get();
 
         $forview = '';
+        $this->storageFileController->fetch_image($id, '3');
 
         return view('submissions.hris.officership.add', compact('id', 'officeData', 'officeFields', 'values', 'colleges','departments', 'forview'));
     }
@@ -394,6 +441,15 @@ class OfficershipController extends Controller
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
 
+        if ($officeData[0]->IncDateTo == "present") {
+            $to = $officeData[0]->IncDateTo;
+            $current = 1;
+        }
+        else {
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+            $current = 0;
+        }
+
         $values = [
             'organization' =>  $officeData[0]->Organization,
             'classification' => $officeData[0]->OfficershipMembershipClassificationID,
@@ -401,10 +457,12 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->LevelID,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'current_member' => $current,
+            'to' => $to,
             'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_id,
+            'mimetype' => $officeData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -448,10 +506,16 @@ class OfficershipController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
 
+        if ($request->current_member == 1)
+            $to = "present";
+        else
+            $to = Carbon::parse($request->to)->format('Y-m-d');
+            
         $value = [
             $id, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -459,12 +523,13 @@ class OfficershipController extends Controller
             $request->organization, //Organization
             $request->organization_address, //Address
             Carbon::parse($request->from)->format('Y-m-d'), //IncDateFrom
-            Carbon::parse($request->to)->format('Y-m-d'), //IncDateTo
+            $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null,
             $user->email
         ];
 
@@ -484,6 +549,7 @@ class OfficershipController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOfficershipMembershipID = @NewEmployeeOfficershipMembershipID OUTPUT;
 
@@ -559,17 +625,46 @@ class OfficershipController extends Controller
         $college_name = College::where('id', $officership->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $img = Image::make($officeData[0]->Attachment);
-        $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
-        $newPath = storage_path().'/app/documents/'.$fileName;
-        $img->save($newPath);
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(in_array($officeData[0]->MimeType, $imagejpeg)){
+            $file = Image::make($officeData[0]->Attachment);
+            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($officeData[0]->MimeType == 'image/png' || $officeData['0']->MimeType == 'image/x-png'){
+            $file = Image::make($officeData[0]->Attachment);
+            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($officeData[0]->MimeType == 'application/pdf'){
+            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.pdf';
+            file_put_contents(storage_path().'/app/documents/'.$fileName, $officeData[0]->Attachment);
+            $file = true;
+        } else {
+            $file = Image::make($officeData[0]->Attachment);
+            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
 
-        HRISDocument::create([
-            'hris_form_id' => 3,
-            'reference_id' => $officership_id,
-            'filename' => $fileName,
-        ]);
-        array_push($filenames, $fileName);
+        if(isset($file)){
+            HRISDocument::create([
+                'hris_form_id' => 3,
+                'reference_id' => $officership_id,
+                'filename' => $fileName,
+            ]);
+            array_push($filenames, $fileName);
+        }
+        else{
+            return false;
+        }
+
+        if ($officeData[0]->IncDateTo == "present")
+            $to = $officeData[0]->IncDateTo;
+        else
+            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
 
         $values = [
             'organization' =>  $officeData[0]->Organization,
@@ -578,7 +673,7 @@ class OfficershipController extends Controller
             'level' => $officeData[0]->Level,
             'organization_address' => $officeData[0]->Address,
             'from' => date('m/d/Y', strtotime($officeData[0]->IncDateFrom)),
-            'to' => date('m/d/Y', strtotime($officeData[0]->IncDateTo)),
+            'to' => $to,
             // 'document' => $officeData[0]->Attachment,
             'description' => $officeData[0]->Description,
             'department_id' => $department_name,
@@ -619,40 +714,6 @@ class OfficershipController extends Controller
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function save(Request $request, $id){
         if($request->document[0] == null){

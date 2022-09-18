@@ -3929,6 +3929,7 @@ input[type=button].btn-block {
 
 .nav-pills .nav-link {
   border-radius: 0.25rem;
+  color: #212529;
 }
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
@@ -4573,13 +4574,16 @@ input[type=button].btn-block {
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
+  padding: 0.50rem 1rem;
+  margin-bottom: 0;
   list-style: none;
-  background-color: #e9ecef;
+  background-color: transparent;
   border-radius: 0.25rem;
 }
 
+.breadcrumb-item a {
+  color: #820202 !important;
+}
 .breadcrumb-item + .breadcrumb-item {
   padding-left: 0.5rem;
 }
@@ -12989,7 +12993,7 @@ body {
 .menu-sub {
   position: absolute;
   /* background: white; */
-  width: 100%;
+  /* width: 100%; */
   display: none;
   padding: 2em;
   left: 0;
@@ -12998,7 +13002,7 @@ body {
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
   background: linear-gradient(rgba(255,255,255,.97), rgba(255,255,255,.97)), url(/storage/PUP.png) no-repeat;
-
+  overflow-y: scroll;
   /* Center and scale the image nicely */
   background-position: center;
   background-size: cover;

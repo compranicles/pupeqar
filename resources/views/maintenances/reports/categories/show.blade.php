@@ -11,7 +11,16 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Report Modals > Categories > Indicators</h2>
+                <nav aria-label="breadcrumb" style="background-color: none;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('report-types.index') }}">Report Modals</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('report-types.show', $report_category->report_type_id) }}">Categories</a></li>
+                    <li class="breadcrumb-item active">Indicators/Columns</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -21,12 +30,6 @@
                             {{ $message }}
                         </div>
                         @endif
-                        <div class="row justify-content-center">
-                            <div class="col-md-12">
-                                <a href="{{ route('report-types.show', $report_category->report_type_id) }}" class="btn btn-secondary">Back</a>
-                                <hr>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -99,7 +102,7 @@
                                                 <div class="col-md-12">
                                                     <div class="mb-0">
                                                         <div class="d-flex justify-content-end align-items-baseline">
-                                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                                         </div>
                                                     </div>
                                                 </div>

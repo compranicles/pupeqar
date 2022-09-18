@@ -107,7 +107,8 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 1,
             'report_category_id' => 31,
-            'footers' => null
+            'footers' => null,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => '',
@@ -115,7 +116,8 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 1,
             'is_individual' => 1,
             'report_category_id' => 32,
-            'footers' => null
+            'footers' => null,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'III. ATTENDANCE IN UNIVERSITY AND OFFICE FUNCTIONS',
@@ -772,7 +774,8 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 2,
             'is_individual' => 1,
             'report_category_id' => 31,
-            'footers' => null
+            'footers' => null,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => '',
@@ -780,7 +783,8 @@ class GenerateTableSeeder extends Seeder
             'type_id' => 2,
             'is_individual' => 1,
             'report_category_id' => 32,
-            'footers' => null
+            'footers' => null,
+            'deleted_at' => NOW()
         ]);
         GenerateTable::insert([
             'name' => 'III. ATTENDANCE IN UNIVERSITY AND COLLEGE FUNCTIONS',

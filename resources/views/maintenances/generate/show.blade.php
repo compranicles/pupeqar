@@ -11,7 +11,15 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Report Modals > Categories</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('maintenance.generate.type') }}">Report Templates</a></li>
+                    <li class="breadcrumb-item active">Categories</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -41,7 +49,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('maintenance.generate.edit', ['type_id' => $type->id, 'table_id' => $row->id]) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('maintenance.generate.edit', ['type_id' => $type->id, 'table_id' => $row->id]) }}" class="btn btn-warning btn-sm">Manage Content</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach

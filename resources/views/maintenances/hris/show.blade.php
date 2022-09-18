@@ -18,6 +18,15 @@
         </div>
         @endif
         <div class="row">
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">HRIS Forms > Fields</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('hris-forms.index') }}">HRIS Forms</a></li>
+                    <li class="breadcrumb-item active">Fields</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -57,7 +66,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('hris-forms.hris-fields.edit', [$hris_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
-                                                        Update
+                                                        Edit
                                                     </a>
                                                 </td>
                                             </tr>

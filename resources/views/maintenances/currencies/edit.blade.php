@@ -12,8 +12,9 @@
     
     
             <div class="col-md-7 float-none m-0 m-auto">
+              <h2 class="font-weight-bold mb-2">Currencies</h2>
               <div class="d-flex align-content-center">
-                <p class="mt-2">
+                <p>
                   <a class="back_link" href="{{ route('currencies.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Currencies</a>
                 </p>
               </div>

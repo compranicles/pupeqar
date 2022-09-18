@@ -16,11 +16,11 @@ class SpecialTasksFormSeeder extends Seeder
     {
         IPCRField::insert([
             'i_p_c_r_form_id' => 3,
-            'label' => 'Commitment Measurable by:',
+            'label' => 'Commitment Measurable by',
             'name' => 'commitment_measure',
             'placeholder' => null,
             'size' => 'col-md-12',
-            'field_type_id' => 5,
+            'field_type_id' => 1,
             'dropdown_id' => 61, 
             'required' => 1,
             'visibility' => 1,

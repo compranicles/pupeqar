@@ -134,14 +134,14 @@ class InviteController extends Controller
             if ($researcherToRemove['middle_name'] != '') {
                 $middle = substr($researcherToRemove['middle_name'],0,1).'.';
             }
-            $researcherToRemove = ucwords(strtolower($researcherToRemove->last_name.', '.$researcherToRemove->first_name.' '.$middle));
+            $researcherToRemove = $researcherToRemove->last_name.', '.$researcherToRemove->first_name.' '.$middle;
             
-
             foreach($researchersExplode as $key => $researcher){
                 if ($researcher == $researcherToRemove) {
                         unset($researchersExplode[$key]); 
                 }
             }
+            // dd($researchersExplode);
 
             Research::where('research_code', $research->research_code)->update([
                 'researchers' => implode("/", $researchersExplode)

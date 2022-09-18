@@ -47,9 +47,16 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <div class="img-container">
-                                    <img src="{{ url('fetch_image/'.$id.'/3') }}" alt="">
-                                </div>
+                                @if ($values['mimetype'] == null && $values['document'] == null)
+                                    <h4 class="ml-3 mt-3">No Document</h4>
+                                @endif
+                                @if($values['mimetype'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_image/'.$id.'/3') }}" width="100%" height="500px"></iframe>
+                                @else   
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_image/'.$id.'/3') }}" alt="">
+                                    </div> 
+                                @endif
                             </div>
                             @if(!isset($forview))
                             <div class="row">
@@ -74,15 +81,10 @@
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
-            $('#from').on('change', function () {
-                $('#to').datepicker('setStartDate', $('#from').val());
-            });
-        </script>
-        <script>
             var uploadField = document.getElementById("document");
 
             uploadField.onchange = function() {
-                if(this.files[0].size > 102400){
+                if(this.files[0].size > 512000){
                 alert("File is too big!");
                 this.value = "";
                 };
@@ -110,5 +112,35 @@
         $('#department_id').attr('disabled', 'disabled')
     </script>
     @endif
+    <script>
+        if ("{{ $values['current_member'] }}" != '') {
+            if ("{{ $values['current_member'] }}" == 1) {
+                $('#current-member').prop('checked', true);
+                $('#to').removeAttr('pattern');
+                $('#to').removeClass('datepicker');
+                $('#to').datepicker('remove');
+                $('#to').val('present');
+            } else {
+                $('#current-member').prop('checked', false);
+                $('#to').attr('pattern', "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}");
+                $('#to').addClass('datepicker');
+            }
+        }
+    </script>
+    <script>
+        $('#current-member').on('change', function() {
+            if ($('#current-member').is(':checked')) {
+                $('#to').removeAttr('pattern');
+                $('#to').removeClass('datepicker');
+                $('#to').datepicker('remove');
+                $('#to').val('present');
+            } else {
+                $('#to').attr('pattern', "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}");
+                $('#to').addClass('datepicker');
+                $('#to').datepicker('show');
+                $('#to').val('');
+            }
+        });
+    </script>
     @endpush
 </x-app-layout>

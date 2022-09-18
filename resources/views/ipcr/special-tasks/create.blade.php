@@ -52,6 +52,15 @@
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/spinner.js') }}"></script>
     <script>
+        $("#commitment_measure").selectize({
+              maxItems: null,
+              valueField: 'name',
+              labelField: 'name',
+              sortField: "name",
+              options: @json($dropdown_options['commitment_measure']),
+        });
+    </script>
+    <script>
         var report_category_id = 29;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
 

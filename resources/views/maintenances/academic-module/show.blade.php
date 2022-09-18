@@ -6,18 +6,23 @@
                 @include('maintenances.navigation-bar')
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12">
-                <h2 class="font-weight-bold mb-2">Academic Module Fields Manager</h2>
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
             </div>
-        </div>
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-index">
-            <i class="bi bi-check-circle"></i> {{ $message }}
-        </div>
-        @endif
-        <div class="row">
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Academic Module Forms > Fields</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('academic-module-forms.index') }}">Academic Module Forms</a></li>
+                    <li class="breadcrumb-item active">Fields</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -57,7 +62,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('academic-module-forms.academic-module-fields.edit', [$academic_module_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
-                                                        Update
+                                                        Edit
                                                     </a>
                                                 </td>
                                             </tr>

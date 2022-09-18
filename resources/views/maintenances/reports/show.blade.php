@@ -11,7 +11,15 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Report Modals > Categories</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('report-types.index') }}">Report Modals</a></li>
+                    <li class="breadcrumb-item active">Categories</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -31,7 +39,7 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Submission Table</th>
+                                                <th>Report Categories</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -41,7 +49,7 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $reportcategory->name }}</td>
                                                 <td>
-                                                    <a href="{{ route('report-categories.show', $reportcategory->id) }}" class="btn btn-warning btn-sm">Manage</a>
+                                                    <a href="{{ route('report-categories.show', $reportcategory->id) }}" class="btn btn-warning btn-sm">Manage Indicators/Columns</a>
                                                 </td>    
                                             </tr>                                                
                                             @endforeach

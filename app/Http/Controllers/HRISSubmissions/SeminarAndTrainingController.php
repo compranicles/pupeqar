@@ -1094,7 +1094,7 @@ class SeminarAndTrainingController extends Controller
             $newPath = storage_path().'/app/documents/'.$fileName;
             $file->save($newPath);
         }
-        elseif($seminar->MimeType == 'image/png'){
+        elseif($seminar->MimeType == 'image/png' || $data['0']->MimeType == 'image/x-png'){
             $file = Image::make($seminar->Attachment);
             $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
             $newPath = storage_path().'/app/documents/'.$fileName;

@@ -11,7 +11,9 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Dropdowns</h2>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">

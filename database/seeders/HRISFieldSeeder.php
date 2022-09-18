@@ -357,11 +357,11 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Budget',
-            'name' => 'budget',
+            'label' => 'Source of Fund',
+            'name' => 'fund_source',
             'placeholder' => null,
             'size' => 'col-md-4',
-            'field_type_id' => 11,
+            'field_type_id' => 5,
             'dropdown_id' => null,
             'required' => 0,
             'visibility' => 1,
@@ -370,11 +370,11 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Source of Fund',
-            'name' => 'fund_source',
+            'label' => 'Budget',
+            'name' => 'budget',
             'placeholder' => null,
             'size' => 'col-md-4',
-            'field_type_id' => 5,
+            'field_type_id' => 11,
             'dropdown_id' => null,
             'required' => 0,
             'visibility' => 1,

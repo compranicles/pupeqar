@@ -32,6 +32,7 @@
                                     <tr>
                                         <th></th>
                                         <th>Brief Description of Activity</th>
+                                        <th>Remarks</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,6 +42,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->activity_description }}</td>
+                                        <td>{{ $row->remarks }}</td>
                                         <td>
                                         <?php
                                             $updated_at = strtotime( $row->updated_at );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use Image;
 use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
@@ -15,12 +16,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Currency;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Response;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
-use Image;
 
 class EducationController extends Controller
 {
+    protected $storageFileController;
+
+    public function __construct(StorageFileController $storageFileController){
+        $this->storageFileController = $storageFileController;
+    }
+
     public function index(){
 
         $currentQuarterYear = Quarter::find(1);
@@ -148,6 +156,7 @@ class EducationController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -182,18 +191,19 @@ class EducationController extends Controller
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
             $request->status,                   //EnrollmentStatusID
-            $request->units_earned,             //UnitsEarned
-            $request->units_enrolled,           //UnitsEnrolled
+            $request->units_earned ?? '',             //UnitsEarned
+            $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
             $request->to,                       //IncYearTo
-            $year_graduated ?? null,            //YearGraduated
-            $request->honors,                   //HonorsReceived
+            $year_graduated ?? 0,            //YearGraduated
+            $request->honors ?? '',                   //HonorsReceived
             $request->support_type,             //TypeOfSupportID
-            $request->sponsor_name,             //Scholarship
+            $request->sponsor_name ?? '',             //Scholarship
             $request->amount,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment
+            $mimetype ?? null, //MimeType
             $user->email                        //TransAccount
         ];
 
@@ -225,6 +235,7 @@ class EducationController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
 
@@ -285,7 +296,9 @@ class EducationController extends Controller
             'sponsor_name' => $educationData[0]->Scholarship,
             'amount' => $educationData[0]->Amount,
             'remarks' => $educationData[0]->Remarks,
+            'document' => $educationData[0]->Attachment,
             'description' => $educationData[0]->Description,
+            'mimetype' => $educationData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -386,7 +399,8 @@ class EducationController extends Controller
                 'units_earned' => $educationData[0]->UnitsEarned,
                 'units_enrolled' =>$educationData[0]->UnitsEnrolled,
                 'description' => $educationData[0]->Description,
-                'document' => $educationData[0]->Attachment
+                'document' => $educationData[0]->Attachment,
+                'mimetype' => $educationData[0]->MimeType,
             ];
         }
 
@@ -405,27 +419,27 @@ class EducationController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
 
         //is_graduated
-        $is_graduated = 'Y';
+        $is_graduated = 'Yes';
         if($request->is_graduated == 'No'){
-            $is_graduated = 'N';
+            $is_graduated = 'No';
         }
 
         //is_enrolled
-        $is_enrolled = 'Y';
+        $is_enrolled = 'Yes';
         if($request->is_enrolled == 'No'){
-            $is_enrolled = 'N';
+            $is_enrolled = 'No';
         }
 
         //year graduated
         if(!ctype_alpha($request->to)){
             $year_graduated = $request->to;
         }
-
         $value = [
             $id,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
@@ -433,24 +447,25 @@ class EducationController extends Controller
             $request->degree,                   //Degree
             $request->major,                    //Major
             $request->minor,                    //Minor
-            $request->education_discipline,     //EducationDisciplineID
+            $request->education_discipline ?? 0,     //EducationDisciplineID
             $request->school_name,              //SchoolName
-            $request->program_level,            //AccreditationLevelID
+            $request->program_level ?? 0,            //AccreditationLevelID
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
-            $request->status,                   //EnrollmentStatusID
-            $request->units_earned,             //UnitsEarned
-            $request->units_enrolled,           //UnitsEnrolled
+            $request->status ?? 0,                   //EnrollmentStatusID
+            $request->units_earned ?? '',             //UnitsEarned
+            $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
             $request->to,                       //IncYearTo
-            $year_graduated ?? null,            //YearGraduated
-            $request->honors,                   //HonorsReceived
-            $request->support_type,             //TypeOfSupportID
-            $request->sponsor_name,             //Scholarship
-            $request->amount,                   //Amount
+            $year_graduated ?? 0,            //YearGraduated
+            $request->honors ?? '',                   //HonorsReceived
+            $request->support_type ?? 0,             //TypeOfSupportID
+            $request->sponsor_name ?? '',             //Scholarship
+            $request->amount ?? null,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment
+            $mimetype ?? null,                 //Attachment
             $user->email                        //TransAccount
         ];
 
@@ -482,6 +497,7 @@ class EducationController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
 
@@ -518,6 +534,7 @@ class EducationController extends Controller
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
                 ->join('field_types', 'field_types.id', 'h_r_i_s_fields.field_type_id')
                 ->orderBy('h_r_i_s_fields.order')->get();
+
         $values = [
             'level' => $educationData[0]->EducationLevel,
             'degree' =>  $educationData[0]->Degree,
@@ -542,6 +559,7 @@ class EducationController extends Controller
             'document' => $educationData[0]->Attachment,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
             'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
+            'mimetype' => $educationData[0]->MimeType,
         ];
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -551,6 +569,7 @@ class EducationController extends Controller
 
         $forview = '';
 
+        $this->storageFileController->fetch_image($id, '1');
         return view('submissions.hris.education.add', compact('id', 'educationData', 'educFields', 'values', 'colleges','departments', 'forview'));
     }
 
@@ -599,6 +618,8 @@ class EducationController extends Controller
             'remarks' => $educationData[0]->Remarks,
             'description' => $educationData[0]->Description,
             'department_id' => $department_id,
+            'document' => $educationData[0]->Attachment,
+            'mimetype' => $educationData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -664,7 +685,6 @@ class EducationController extends Controller
 
     public function update(Request $request, $id){
 
-
         $user = User::find(auth()->id());
         $emp_code = $user->emp_code;
 
@@ -673,11 +693,10 @@ class EducationController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
-
-
         //is_graduated
         $is_graduated = 'Y';
         if($request->is_graduated == 'No'){
@@ -702,24 +721,25 @@ class EducationController extends Controller
             $request->degree,                   //Degree
             $request->major,                    //Major
             $request->minor,                    //Minor
-            $request->education_discipline,     //EducationDisciplineID
+            $request->education_discipline ?? 0,     //EducationDisciplineID
             $request->school_name,              //SchoolName
-            $request->program_level,            //AccreditationLevelID
+            $request->program_level ?? 0,            //AccreditationLevelID
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
-            $request->status,                   //EnrollmentStatusID
-            $request->units_earned,             //UnitsEarned
-            $request->units_enrolled,           //UnitsEnrolled
+            $request->status ?? 0,                   //EnrollmentStatusID
+            $request->units_earned ?? '',             //UnitsEarned
+            $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
             $request->to,                       //IncYearTo
-            $year_graduated ?? null,            //YearGraduated
-            $request->honors,                   //HonorsReceived
-            $request->support_type,             //TypeOfSupportID
-            $request->sponsor_name,             //Scholarship
-            $request->amount,                   //Amount
+            $year_graduated ?? 0,            //YearGraduated
+            $request->honors ?? '',                   //HonorsReceived
+            $request->support_type ?? 0,             //TypeOfSupportID
+            $request->sponsor_name ?? '',             //Scholarship
+            $request->amount ?? null,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment
+            $mimetype ?? null, //MimeType
             $user->email                        //TransAccount
         ];
 
@@ -751,6 +771,7 @@ class EducationController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeEducationBackgroundID = @NewEmployeeEducationBackgroundID OUTPUT;
 
@@ -826,10 +847,30 @@ class EducationController extends Controller
         $college_name = College::where('id', $education->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $img = Image::make($educationData[0]->Attachment);
-        $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
-        $newPath = storage_path().'/app/documents/'.$fileName;
-        $img->save($newPath);
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(in_array($educationData[0]->MimeType, $imagejpeg)){
+            $file = Image::make($educationData[0]->Attachment);
+            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.jpeg';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($educationData[0]->MimeType == 'image/png' || $educationData['0']->MimeType == 'image/x-png'){
+            $file = Image::make($educationData[0]->Attachment);
+            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($educationData[0]->MimeType == 'application/pdf'){
+            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.pdf';
+            file_put_contents(storage_path().'/app/documents/'.$fileName, $educationData[0]->Attachment);
+            $file = true;
+        } else {
+            $file = Image::make($educationData[0]->Attachment);
+            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+
 
         HRISDocument::create([
             'hris_form_id' => 1,
@@ -897,53 +938,6 @@ class EducationController extends Controller
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function save(Request $request, $educID){
 

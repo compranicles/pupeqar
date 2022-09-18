@@ -117,7 +117,9 @@ class ExtensionServiceController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options'));
+        $allUsers = User::select('id', DB::raw("CONCAT(last_name, ', ', first_name, ' ', SUBSTR(middle_name,1,1), '.') as fullname"))->get();
+
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options', 'allUsers'));
     }
 
     /**
@@ -207,7 +209,7 @@ class ExtensionServiceController extends Controller
             ]);
         }
 
-        $input = $request->except(['_token', '_method', 'document']);
+        $input = $request->except(['_token', '_method', 'document', 'tagged_collaborators']);
 
         $eService = ExtensionService::create($input);
         $eService->update(['user_id' => auth()->id()]);
@@ -220,7 +222,7 @@ class ExtensionServiceController extends Controller
             'ext_code' => $ext_code,
             'is_owner' => 1
         ]);
-
+        
         if($request->has('document')){
 
             $documents = $request->input('document');
@@ -245,8 +247,43 @@ class ExtensionServiceController extends Controller
             }
         }
 
+        $count = 0;
+        if ($request->input('tagged_collaborators') != null) {
+            foreach ($request->input('tagged_collaborators') as $collab) {
+                if ($collab != auth()->id() ) {
+                    ExtensionInvite::create([
+                        'user_id' => $collab,
+                        'sender_id' => auth()->id(),
+                        'extension_service_id' => $eService->id,
+                        'ext_code' => $eService->ext_code
+                    ]);
+    
+                    $user = User::find($collab);
+                    $extension_title = "Extension";
+                    $sender = User::join('extension_services', 'extension_services.user_id', 'users.id')
+                                    ->where('extension_services.user_id', auth()->id())
+                                    ->where('extension_services.id', $eService->id)
+                                    ->select('users.first_name', 'users.last_name', 'users.middle_name', 'users.suffix')->first();
+                    $url_accept = route('extension.invite.confirm', $eService->id);
+                    $url_deny = route('extension.invite.cancel', $eService->id);
+    
+                    $notificationData = [
+                        'receiver' => $user->first_name,
+                        'title' => $extension_title,
+                        'sender' => $sender->first_name.' '.$sender->middle_name.' '.$sender->last_name.' '.$sender->suffix,
+                        'url_accept' => $url_accept,
+                        'url_deny' => $url_deny,
+                        'date' => date('F j, Y, g:i a'),
+                        'type' => 'ext-invite'
+                    ];
+        
+                    Notification::send($user, new ExtensionInviteNotification($notificationData));
+                }
+                $count++;
+            }
+            \LogActivity::addToLog('Had added '.$count.' extension partners in an extension program/project/activity.');
+        }
         \LogActivity::addToLog('Had added an extension program/project/activity.');
-
 
         return redirect()->route('extension-service.index')->with('edit_eservice_success', 'Extension program/project/activity has been added.');
     }

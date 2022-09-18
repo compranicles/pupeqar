@@ -2,11 +2,16 @@
 
 <div class="{{ $fieldInfo->size }} mb-2">
     <div class="form-group">
-        <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
+        <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span><br>
         @if (isset($fieldInfo->h_r_i_s_form_id))
             @if ($fieldInfo->h_r_i_s_form_id == 1 && $fieldInfo->name == 'from')
             <span class="form-notes">
                 Inclusive dates of attendance (ex. 1995-1999).
+            </span>
+            @endif
+            @if ($fieldInfo->h_r_i_s_form_id == 1 && ($fieldInfo->name == 'units_earned' || $fieldInfo->name == 'units_enrolled'))
+            <span class="form-notes">
+                Required for <strong>Currently Enrolled</strong>.
             </span>
             @endif
         @endif

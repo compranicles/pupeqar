@@ -160,6 +160,9 @@ Route::group(['middleware' => 'auth'], function() {
     //Dean Director Maintenances
     Route::resource('college-function-manager', \App\Http\Controllers\Maintenances\CollegeFunctionController::class);
 
+    //Chairperson Maintenances
+    Route::resource('department-function-manager', \App\Http\Controllers\Maintenances\DepartmentFunctionController::class);
+
     /* ANNOUNCEMENTS */
     Route::get('announcements/view/{id}', [\App\Http\Controllers\AnnouncementController::class, 'showMessage']);
     Route::get('/announcements/hide/{announcement}', [\App\Http\Controllers\AnnouncementController::class, 'hide'])->name('announcements.hide');
@@ -345,6 +348,7 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::resource('special-tasks', \App\Http\Controllers\IPCR\SpecialTaskController::class);
     Route::resource('admin-special-tasks', \App\Http\Controllers\IPCR\AdminSpecialTaskController::class);
     Route::resource('attendance-function', \App\Http\Controllers\IPCR\AttendanceFunctionController::class);
+    Route::post('/attendance-function/tag-department', [\App\Http\Controllers\IPCR\AttendanceFunctionController::class, 'tagDepartment'])->name('attendance-function.tag-department');
 
     // Remove Documents
     Route::get('/request/remove-document/{filename}', [\App\Http\Controllers\IPCR\RequestController::class, 'removeDoc'])->name('request.removedoc');

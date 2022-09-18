@@ -49,6 +49,7 @@ class DocumentDescriptionController extends Controller
         else {
             $active = 0;
         }
+
         DocumentDescription::create([
             'name' => $request->input('name'),
             // 'purpose' => $request->input('purpose'),
@@ -70,7 +71,8 @@ class DocumentDescriptionController extends Controller
         elseif (($report_category_id == 9) || ($report_category_id == 10) ||
         ($report_category_id == 11) || ($report_category_id == 12) ||
         ($report_category_id == 13) || ($report_category_id == 14) ||
-        ($report_category_id == 22)) {
+        ($report_category_id == 22) || ($report_category_id == 37) ||
+        ($report_category_id == 38) || ($report_category_id == 39)) {
             return redirect()->route('extension-program-forms.index')->with('success', 'Document description in '.$report_category->name.' has been created.');
         }
         elseif (($report_category_id == 15) || ($report_category_id == 16) ||
@@ -79,7 +81,9 @@ class DocumentDescriptionController extends Controller
         ($report_category_id == 23)) {
             return redirect()->route('academic-module-forms.index')->with('success', 'Document description in '.$report_category->name.' has been created.');
         }
-        elseif ($report_category_id == 17) {
+        elseif ($report_category_id == 17 || $report_category_id == 29 ||
+        $report_category_id == 30 || $report_category_id == 31 ||
+        $report_category_id == 32 || $report_category_id == 33) {
             return redirect()->route('ipcr-forms.index')->with('success', 'Document description in '.$report_category->name.' has been created.');
         }
     }

@@ -12,14 +12,21 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label for="">I am a/an <strong>{{ $role }}</strong> of:</label>
+                                    <strong>NOTE:</strong> Assign your designated college/branch/campus/office based on your reporting on IPCR/OPCR*. <br>
+                                    <!-- *Faculty Assistant is a faculty with admin work to an Office (Faculty with Admin Designation). -->
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="">I am a/an <strong>{{ $role == "Faculty" ? 'Academic Personnel' : 'Non-Academic Personnel' }}</strong> of:</label>
                                     <select name="cbco[]" id="cbco" required>
                                         <option value="">Choose...</option>
                                     </select>
                                     <br>
                                 </div>
                                 <div class="col-md-12">
-                                    <p>Are you <strong>{{ $role == "Admin" ? 'an Admin with Teaching Load' : 'a Faculty with Admin Designation' }}</strong>?</p>
+                                    <p>Are you <strong>{{ $role == "Admin" ? 'a Non-Academic Personnel with Teaching Load' : 'an Academic Personnel with Admin Designation' }}</strong>?</p>
                                     <div class="form-group input-group-md">
                                         <input type="checkbox" name="yes" id="yes" {{ $existingCol2 != null ? 'checked' : '' }}>
                                         <label for="yes">Yes</label>

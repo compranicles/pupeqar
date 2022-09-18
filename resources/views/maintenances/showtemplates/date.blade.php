@@ -1,6 +1,12 @@
 <tr>
     <th>{{ $fieldInfo->label }}</th>
-    <?php $date = strtotime( $value );
-        $date = date( 'M d, Y', $date ); ?>  
+    <?php 
+        if ($value == "present")
+            $date = $value;
+        else {
+            $date = strtotime( $value );
+            $date = date( 'M d, Y', $date );
+        }
+        ?>  
     <td>{{ ($value == null) ? 'N/A' : $date }}</td>
 </tr>

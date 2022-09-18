@@ -129,8 +129,10 @@ class HRISFieldController extends Controller
         $dropdowns = Dropdown::all();
         if ($hris_form->id == 1) {
             $descriptions = DocumentDescription::where('report_category_id', 24)->get();
-        }
-        return view('maintenances.ipcr.edit', compact('hris_form', 'hris_field', 'fieldtypes', 'dropdowns', 'descriptions'));
+        } else
+            $descriptions = [];
+
+        return view('maintenances.hris.edit', compact('hris_form', 'hris_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
     /**
@@ -145,9 +147,8 @@ class HRISFieldController extends Controller
         $this->authorize('manage', HRISForm::class);
 
         $input = $request->except(['_token', '_method']);
-
         HRISField::where('h_r_i_s_form_id', $hris_form->id)->where('id', $hris_field->id)->update($input);
-        return redirect()->route('hris-forms.show', $ipcr_form->id)->with('success', 'HRIS field has been updated.');
+        return redirect()->route('hris-forms.show', $hris_form->id)->with('success', 'HRIS field has been updated.');
     }
 
     /**

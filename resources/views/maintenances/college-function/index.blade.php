@@ -31,8 +31,9 @@
                                 <thead>
                                     <tr>
                                         <th></th>
+                                        <th>College/Office</th>
                                         <th>Brief Description of Activity</th>
-                                        <th>College</th>
+                                        <th>Remarks</th>
                                         <th>Date Modified</th>
                                         <th>Actions</th>
                                     </tr>
@@ -41,8 +42,9 @@
                                     @foreach ($collegeFunctions as $row)
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $loop->iteration }}</td>
-                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->activity_description }}</td>
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->college_name }}</td>
+                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->activity_description }}</td>
+                                        <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >{{ $row->remarks }}</td>
                                         <td onclick="window.location.href = '{{ route('college-function-manager.show', $row->id) }}' " >
                                             @php
                                                 $updated_at = strtotime( $row->updated_at );

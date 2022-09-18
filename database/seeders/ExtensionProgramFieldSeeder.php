@@ -28,6 +28,7 @@ class ExtensionProgramFieldSeeder extends Seeder
             CommunityEngagementFormSeeder::class,
             OtherAccomplishmentFormSeeder::class,
             OtherDeptAccomplishmentFormSeeder::class,
+            TechnicalExtensionFormSeeder::class,
         ]);
     }
 }

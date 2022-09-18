@@ -46,9 +46,16 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <div class="img-container">
-                                    <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
-                                </div>
+                                @if ($values['mimetype'] == null && $values['document'] == null)
+                                    <h4 class="ml-3 mt-3">No Document</h4>
+                                @endif
+                                @if($values['mimetype'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_image/'.$id.'/2') }}" width="100%" height="500px"></iframe>
+                                @else   
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                    </div> 
+                                @endif
                             </div>
                             @if(!isset($forview))
                             <div class="row">
@@ -56,7 +63,7 @@
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>

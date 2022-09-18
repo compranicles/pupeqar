@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\FormBuilder\AcademicDevelopmentField;
+use App\Models\FormBuilder\ExtensionProgramField;
 
 class TechnicalExtensionFormSeeder extends Seeder
 {
@@ -14,8 +14,8 @@ class TechnicalExtensionFormSeeder extends Seeder
      */
     public function run()
     {
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Title of the Program',
             'name' => 'program_title',
             'placeholder' => null,
@@ -27,8 +27,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Title of the Project',
             'name' => 'project_title',
             'placeholder' => null,
@@ -40,8 +40,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Title of the Activity',
             'name' => 'activity_title',
             'placeholder' => null,
@@ -53,8 +53,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Name of the Adoptor',
             'name' => 'name_of_adoptor',
             'placeholder' => null,
@@ -66,8 +66,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Classification of Adoptor',
             'name' => 'classification_of_adoptor',
             'placeholder' => null,
@@ -79,8 +79,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Nature of Business Enterprise',
             'name' => 'nature_of_business_enterprise',
             'placeholder' => null,
@@ -92,8 +92,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Adoptors have established profitable businesses in the last three years',
             'name' => 'has_businesses',
             'placeholder' => null,
@@ -105,8 +105,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Extension project by the university or borrowed from other institutions',
             'name' => 'is_borrowed',
             'placeholder' => null,
@@ -118,8 +118,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Total Profit/ Income of the Adoptors',
             'name' => 'total_profit',
             'placeholder' => '0.00',
@@ -132,8 +132,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'is_active' => 1,
         ]);
 
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'College/Branch/Campus/Office to commit the accomplishment',
             'name' => 'college_id',
             'placeholder' => null,
@@ -145,8 +145,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Department to commit the accomplishment',
             'name' => 'department_id',
             'placeholder' => null,
@@ -158,8 +158,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Description of Supporting Documents',
             'name' => 'description',
             'placeholder' => null,
@@ -171,8 +171,8 @@ class TechnicalExtensionFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
-        AcademicDevelopmentField::insert([
-            'academic_development_form_id' => 7,
+        ExtensionProgramField::insert([
+            'extension_program_form_id' => 12,
             'label' => 'Document Upload',
             'name' => 'document',
             'placeholder' => null,

@@ -10,8 +10,10 @@
             <div class="col-md-12">
                 @include('maintenances.navigation-bar')
             </div>
-
-            <div class="col-lg-6">
+            <div class="col-md-12">
+                <h2 class="font-weight-bold mb-2">Announcements</h2>
+            </div>
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('announcements.store') }}">
@@ -52,6 +54,7 @@
                             </div>
                             <div class="mb-0">
                                 <div class="d-flex justify-content-end align-items-baseline">
+                                    <a href="{{ route('announcements.index') }}" class="btn btn-secondary mr-2">CANCEL</a>
                                     <x-jet-button>
                                         {{ __('Create') }}
                                     </x-jet-button>

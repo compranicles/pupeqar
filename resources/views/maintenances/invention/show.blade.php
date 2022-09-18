@@ -11,13 +11,23 @@
                 @include('maintenances.navigation-bar')
             </div>
         </div>
-
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success alert-index">
-            <i class="bi bi-check-circle"></i> {{ $message }}
-        </div>
-        @endif
         <div class="row">
+            <div class="col-md-12">
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
+            </div>
+            <div class="col-md-12 d-flex">
+                <h2 class="font-weight-bold mb-2">Invention Forms > Fields</h2>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('invention-forms.index') }}">Research Forms</a></li>
+                    <li class="breadcrumb-item active">Fields</li>
+                </ol>
+                </nav>
+            </div>
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
@@ -25,7 +35,7 @@
                             <div class="col-md-12">
                                 <h4>{{ $invention_form->label }} Fields</h4>
                                 <hr>
-                            </div>
+                            </div>  
                             {{-- ADD Fields --}}
                             <div class="col-md-12">
                                 <button class="btn btn-success" data-toggle="modal" data-target="#addModal">
@@ -57,7 +67,7 @@
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('invention-forms.invention-fields.edit', [$invention_form->id, $field->id]) }}" class="btn btn-warning btn-sm">
-                                                        Update
+                                                        Edit
                                                     </a>
                                                 </td>
                                             </tr>

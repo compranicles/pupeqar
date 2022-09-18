@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Maintenances;
 use App\Models\Dean;
 use Illuminate\Http\Request;
 use App\Models\CollegeFunction;
+use App\Models\Maintenance\Quarter;
 use App\Http\Controllers\Controller;
+use App\Services\SingleAuthorizationService;
 
 class CollegeFunctionController extends Controller
 {
@@ -16,6 +18,10 @@ class CollegeFunctionController extends Controller
      */
     public function index()
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageCollegeFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $colleges = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
 
         $collegeFunctions = CollegeFunction::whereIn('college_functions.college_id', $colleges)
@@ -35,8 +41,8 @@ class CollegeFunctionController extends Controller
     {
         $colleges = Dean::where('deans.user_id', auth()->id())->join('colleges', 'colleges.id', 'deans.college_id')
                     ->select('colleges.*')->get();
-
-        return view('maintenances.college-function.create', compact('colleges'));
+        $quarter = Quarter::first();
+        return view('maintenances.college-function.create', compact('colleges', 'quarter'));
     }
 
     /**
@@ -47,14 +53,20 @@ class CollegeFunctionController extends Controller
      */
     public function store(Request $request)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageCollegeFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'activity_description' => 'required|string',
-            'college_id' => 'numeric'
+            'college_id' => 'numeric',
+            'remarks' => 'required|string'
         ]);
 
         CollegeFunction::create([
             'activity_description' => $request->input('activity_description'),
             'college_id' => $request->input('college_id'),
+            'remarks' => $request->input('remarks'),
         ]);
 
         return redirect()->route('college-function-manager.index')->with('success', 'College Function added successfully');
@@ -95,6 +107,10 @@ class CollegeFunctionController extends Controller
      */
     public function update(Request $request, CollegeFunction $college_function_manager)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageCollegeFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'activity_description' => 'required|string',
             'college_id' => 'numeric'
@@ -103,6 +119,7 @@ class CollegeFunctionController extends Controller
         $college_function_manager->update([
             'activity_description' => $request->input('activity_description'),
             'college_id' => $request->input('college_id'),
+            'remarks' => $request->input('remarks'),
         ]);
 
         return redirect()->route('college-function-manager.index')->with('success', 'College Function updated successfully');
@@ -116,6 +133,10 @@ class CollegeFunctionController extends Controller
      */
     public function destroy(Request $request, CollegeFunction $college_function_manager)
     {
+        $authorize = (new SingleAuthorizationService())->authorizeManageCollegeFunction();
+        if (!($authorize)) {
+            abort(403, 'Unauthorized action.');
+        }
         $college_function_manager->delete();
 
         return redirect()->route('college-function-manager.index')->with('success', 'College Function deleted successfully');

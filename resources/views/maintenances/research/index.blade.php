@@ -11,7 +11,9 @@
                 @include('maintenances.navigation-bar')
             </div>
         </div>
-
+        <div class="col-md-12 d-flex">
+            <h2 class="font-weight-bold mb-2">Research Forms</h2>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 @if ($message = Session::get('success'))
@@ -22,10 +24,6 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="row justify-content-center">
-                            <div class="col-md-12">
-                                <h4>Research Forms</h4>
-                                <hr>
-                            </div>
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table class="table text-center">
@@ -47,8 +45,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('research-forms.edit', $form->id) }}" class="btn btn-outline-primary btn-sm mr-2">Rename</a>
-                                                    <a href="{{ route('research-forms.show', $form->id) }}" class="btn btn-warning edit-row btn-sm">Fields</a>
+                                                    <a href="{{ route('research-forms.edit', $form->id) }}" class="btn btn-primary btn-sm mr-2">Rename</a>
+                                                    <a href="{{ route('research-forms.show', $form->id) }}" class="btn btn-warning edit-row btn-sm">Manage Fields</a>
                                                 </td>
                                             </tr>
                                             @endforeach

@@ -128,7 +128,8 @@ class InventionFieldController extends Controller
         $dropdowns = Dropdown::all();
         if ($invention_form->id == 1) {
             $descriptions = DocumentDescription::where('report_category_id', 8)->get();
-        }
+        } else
+            $descriptions = [];
         return view('maintenances.invention.edit', compact('invention_form', 'invention_field', 'fieldtypes', 'dropdowns', 'descriptions'));
     }
 
