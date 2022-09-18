@@ -19,7 +19,7 @@
     
             <option value="" selected disabled>Choose...</option>
             @foreach ($departments as $department)
-            <option value="{{ $department->id }}" {{ $department->id == old('department_id', $department_id) ? 'selected' : '' }}>{{ $department->name }} ({{ $department->code }})</option>
+            <option value="{{ $department->id }}" {{ $department->id == old('department_id', $department_id) ? 'selected' : '' }}>[{{ $department->code }}] {{ $department->name }}</option>
             @endforeach
             {{-- <option value="0"></option> --}}
         </select>

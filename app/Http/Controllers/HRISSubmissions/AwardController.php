@@ -102,6 +102,7 @@ class AwardController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -118,6 +119,7 @@ class AwardController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email
         ];
 
@@ -136,6 +138,7 @@ class AwardController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
 
@@ -185,6 +188,7 @@ class AwardController extends Controller
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
+            'mimetype' => $awardData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -254,6 +258,7 @@ class AwardController extends Controller
                 'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
                 'document' => $awardData[0]->Attachment,
                 'description' => $awardData[0]->Description,
+                'mimetype' => $awardData[0]->MimeType,
             ];
          }
 
@@ -269,6 +274,7 @@ class AwardController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -285,6 +291,7 @@ class AwardController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null, //MimeType
             $user->email
         ];
 
@@ -303,6 +310,7 @@ class AwardController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
 
@@ -356,6 +364,7 @@ class AwardController extends Controller
             'description' => $awardData[0]->Description,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
             'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
+            'mimetype' => $awardData[0]->MimeType,
         ];
 
         // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
@@ -400,7 +409,8 @@ class AwardController extends Controller
             'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
-            'department_id' => $department_id
+            'department_id' => $department_id,
+            'mimetype' => $awardData[0]->MimeType,
         ];
 
         $dropdown_options = [];
@@ -448,6 +458,7 @@ class AwardController extends Controller
 
         if($request->has('document')){
             $datastring = file_get_contents($request->file('document'));
+            $mimetype = $request->file('document')->getMimeType();
             $imagedata = unpack("H*hex", $datastring);
             $imagedata = '0x' . strtoupper($imagedata['hex']);
         }
@@ -464,6 +475,7 @@ class AwardController extends Controller
             '', //Remarks
             $request->description, //AttachmentDescription
             $imagedata ?? null, //Attachment
+            $mimetype ?? null,
             $user->email
         ];
 
@@ -482,6 +494,7 @@ class AwardController extends Controller
                     @Remarks = ?,
                     @AttachmentDescription = ?,
                     @Attachment = ?,
+                    @MimeType = ?,
                     @TransAccount = ?,
                     @NewEmployeeOutstandingAchievementID = @NewEmployeeOutstandingAchievementID OUTPUT;
 

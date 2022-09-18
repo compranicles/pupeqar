@@ -85,16 +85,16 @@ class StorageFileController extends Controller
             $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCodeAndID N'$user->emp_code',$id");
         }
 
-
         if($data['0']->Attachment == null){
-            $path = storage_path('app/public/no-document-attached.jpg');
-            $file = File::get($path);
-            $type = File::mimeType($path);
-            $headers = ['Content-Type: '.$type];
+            // $path = storage_path('app/public/no-document-attached.jpg');
+            // $file = File::get($path);
+            // $type = File::mimeType($path);
+            // $headers = ['Content-Type: image/jpeg'];
 
-            return response()->file($path, $headers);
+            // return response()->file($path, $headers);
+            return "No Document";
         }
-
+// dd($data[0]->MimeType);
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
         if(isset($data['0']->MimeType)){
             if(in_array($data['0']->MimeType, $imagejpeg)){
@@ -103,7 +103,7 @@ class StorageFileController extends Controller
                 $response->header('Content-Type', 'image/jpeg');
                 return $response;
             }
-            elseif($data['0']->MimeType == 'image/png'){
+            elseif($data['0']->MimeType == 'image/png' || $data['0']->MimeType == 'image/x-png'){
                 $image = Image::make($data['0']->Attachment);
                 $response = Response::make($image->encode('png'));
                 $response->header('Content-Type', 'image/png');
@@ -118,8 +118,8 @@ class StorageFileController extends Controller
         }
         else{
             $image = Image::make($data['0']->Attachment);
-            $response = Response::make($image->encode('jpeg'));
-            $response->header('Content-Type', 'image/jpeg');
+            $response = Response::make($image->encode('png'));
+            $response->header('Content-Type', 'image/png');
             return $response;
         }
 

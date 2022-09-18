@@ -396,7 +396,7 @@
 				$.get(newlinkdoc, function (data) {
 					data.forEach(function (item){
                         var newlink = link.replace(':filename', item);
-                        $('#data_documents').append('<a href="'+newlink+'" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
+                        $('#data_documents').append('<a href="'+newlink+'" target="_blank" class="report-content h5 m-1 btn btn-primary">'+item+'<a/>');
                     });
                 });
 

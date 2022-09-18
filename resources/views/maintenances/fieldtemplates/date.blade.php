@@ -15,7 +15,7 @@
         @endif
         <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}"
             placeholder="mm/dd/yyyy" pattern="[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}"
-            value="{{ (old($fieldInfo->name) == '') ? ($value != null ? ($value == 'present' ? 'present' : date("m/d/Y", strtotime($value))) : date("m/d/Y", strtotime($value))) : date("m/d/Y", strtotime(old($fieldInfo->name))) }}"
+            value="{{ (old($fieldInfo->name) == '') ? ($value != null ? ($value == 'present' ? 'present' : date("m/d/Y", strtotime($value))) : '') : '' }}"
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} datepicker
             form-control form-validation p-3" autocomplete="off"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}

@@ -46,9 +46,16 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <div class="img-container">
-                                    <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
-                                </div>
+                                @if ($values['mimetype'] == null && $values['document'] == null)
+                                    <h4 class="ml-3 mt-3">No Document</h4>
+                                @endif
+                                @if($values['mimetype'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_image/'.$id.'/1') }}" width="100%" height="500px"></iframe>
+                                @else   
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_image/'.$id.'/1') }}" alt="">
+                                    </div> 
+                                @endif
                             </div>
                             @if(!isset($forview))
                             <div class="row">
@@ -79,7 +86,7 @@
         var uploadField = document.getElementById("document");
 
         uploadField.onchange = function() {
-            if(this.files[0].size > 102400){
+            if(this.files[0].size > 512000){
             alert("File is too big!");
             this.value = "";
             };
@@ -90,15 +97,29 @@
             if ($(this).val() == 'Yes') {
                 $('#status').val(0);
                 $('#is_enrolled2').attr("checked", "checked");
+                $('#units_earned').removeAttr("required");
+                $('#units_enrolled').removeAttr("required");
                 $('#to').val('');
             }
             else {
                 $('#status').val('');
-                $('#is_enrolled1').attr("checked", "checked");
                 $('#to').val('Present');
             }
         });
 
+        $('input[name="is_enrolled"]').on('change', function () {
+            if ($(this).val() == 'Yes') {
+                $('#to').val('Present');
+                $('#units_enrolled').attr("required", "required");
+                $('#units_earned').attr("required", "required");
+            }
+            else {
+                $('#to').val('');
+                $('#units_earned').removeAttr("required");
+                $('#units_enrolled').removeAttr("required");
+            }
+        });
+    
         $('#to').on('blur', function () {
             if ($('#is_enrolled2').prop('checked')) {
                 if($('#to').val() < $('#from').val()) {

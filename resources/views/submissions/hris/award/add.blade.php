@@ -46,9 +46,16 @@
                             <div class="form-group mt-3">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                <div class="img-container">
-                                    <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
-                                </div>
+                                @if ($values['mimetype'] == null && $values['document'] == null)
+                                    <h4 class="ml-3 mt-3">No Document</h4>
+                                @endif
+                                @if($values['mimetype'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_image/'.$id.'/2') }}" width="100%" height="500px"></iframe>
+                                @else   
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_image/'.$id.'/2') }}" alt="">
+                                    </div> 
+                                @endif
                             </div>
                             @if(!isset($forview))
                             <div class="row">
