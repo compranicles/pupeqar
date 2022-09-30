@@ -49,17 +49,17 @@
                                     <i class="bi bi-lightbulb-fill"></i> <strong>Instructions & Reminders: </strong> <br>
                                     <div class="ml-3">
                                         &#8226; Click on the row to View/Edit/Delete/Submit Research. <br>
-                                        &#8226; Only the <strong>Lead Researcher</strong> can register the research (except for independent researchers). You must tag your co-researchers to share them the research you encode. <br>
-                                        &#8226; If you are a <strong>Lead Researcher</strong>, tag your co-researchers first before submitting. <br>
+                                        &#8226; Only the <strong>Lead Researcher</strong> can register the research. You must tag your co-researchers to share them the research you encode. <br>
+                                        &#8226; If you are a <strong>Lead Researcher</strong>, tag your co-researchers before submitting. <br>
                                         <span class="ml-3"><i class="bi bi-arrow-right ml-1"></i></i> Click "Tag Co-researchers" button after you encode and view the research.</span><br>
                                         &#8226; If you are a <strong>Co-Researcher</strong>, check your <strong>notifications</strong> or click the "Research to Add" button to <strong>confirm and add</strong> the research registered by your Lead Researcher. <br>
-                                        &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
+                                        &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the quarter period ends. <br>
+                                        &#8226; Submit your accomplishments for the <strong>Quarter {{ $currentQuarterYear->current_quarter }}</strong> on or before 
                                             <?php
                                                 $deadline = strtotime( $currentQuarterYear->deadline );
                                                 $deadline = date( 'F d, Y', $deadline);
                                                 ?>
-                                                <strong>{{ $deadline }}</strong>. <br>
-                                                &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the quarter period ends.
+                                                <strong>{{ $deadline }}</strong>.
                                     </div>
                                 </div>
                                 <div class="table-responsive">

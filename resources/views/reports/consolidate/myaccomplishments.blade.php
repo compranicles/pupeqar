@@ -35,10 +35,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8" style="padding-top: 30px;">
+                            <div class="col-md-8" style="padding-top: 25px;">
                                 <div class="form-group">
-                                    <button id="filter" class="btn btn-primary">GENERATE</button>
-                                    <button id="export" type="button" class="btn btn-primary ml-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
+                                    <button id="filter" class="btn btn-primary mr-1">GENERATE</button>
+                                    <button id="export" type="button" class="btn btn-primary" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +299,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $user, 'source_type' => 'my', 'colleges' => $collegeList, 'special_type' => '', 'roles' => $roles])
+    @include('reports.generate.index', ['data' => $user, 'level' => 'individual', 'colleges' => $collegeList, 'special_type' => '', 'roles' => $roles])
 
 
     <div class="modal fade" id="viewReport" tabindex="-1" aria-labelledby="viewReportLabel" aria-hidden="true">

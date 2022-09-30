@@ -77,24 +77,6 @@
                 };
             };
         </script>
-        {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script> --}}
-        <script>
-            // var report_category_id = 26;
-            // $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-            // var api = '{{ url("/document-upload/description/26") }}';
-            // $.get(api, function (data){
-            //     if (data != '') {
-            //         data.forEach(function (item){
-            //             $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-            //         });
-            //     }
-            // });
-
-
-            // $(function(){
-            //     $("input[name='document[]']").attr('required', true);
-            // });
-        </script>
         @if(isset($forview))
         <script>
             $('#department_id').attr('disabled', 'disabled')

@@ -22,7 +22,7 @@
                 @endif
                 @if ($research->nature_of_involvement == 11)
                 <div class="alert alert-info" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Tag your co-researchers first before submitting.
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm your shared research <strong>before submitting</strong>.
                 </div>
                 @endif
                 <div class="card">
@@ -57,11 +57,7 @@
                             </div>
                         </div>
                         <hr>
-                        <fieldset id="research">
-                            @include('show', ['formFields' => $researchFields, 'value' => $value])
-                        </fieldset>
-
-                        
+                        @include('show', ['formFields' => $researchFields, 'value' => $value])
                     </div>
                 </div>
             </div>

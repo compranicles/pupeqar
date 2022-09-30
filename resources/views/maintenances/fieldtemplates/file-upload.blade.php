@@ -3,17 +3,19 @@
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if (isset($fieldInfo->h_r_i_s_form_id))
             @if ($fieldInfo->name == 'document')
-                <span class="ml-3" role="alert">
+                <br>
+                <span role="alert">
                     @if ($fieldInfo->h_r_i_s_form_id == 4 || $fieldInfo->h_r_i_s_form_id == 5)
-                        Note: Certificate of Registration / Diploma / TOR. Attachments should be in PDF or JPEG format and less than 500kb in file size.
+                        Note: Attachments should be in <strong>JPEG/JPG, PNG, or PDF</strong> format and less than <strong>500kb</strong> in file size.
                     @else
-                        Note: Certificate of Registration / Diploma / TOR. Attachments should be in JPEG format and less than 100kb in file size.
+                        Note: Attachment should be in <strong>JPEG/JPG, PNG, or PDF</strong> format and less than <strong>100kb</strong> in file size.
                     @endif
                 </span>
+                <br>
             @endif
         @endif
         <input type="file"
-            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} mb-n1"
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} mt-2"
             name="{{ $fieldInfo->name }}"
             id="{{ $fieldInfo->name }}"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}

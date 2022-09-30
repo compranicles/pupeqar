@@ -35,10 +35,11 @@
                         <div class="form-group">
                             <form action="{{ route('report.generate.index', $user->id)}}" method="POST" id="export_level_form">
                                 @csrf
-                                <input type="hidden" name="source_generate" value="my">
-                                <input type="hidden" name="type_generate" value="department_level">
-                                <input type="hidden" id="ex_quar" name="quarter_generate" value="">
-                                <input type="hidden" id="ex_year" name="year_generate_level" value="">
+                                <input type="hidden" name="level" value="department_wide">
+                                <input type="hidden" name="type" value="chair_chief">
+                                <input type="hidden" id="dw_quarter" name="dw_quarter" value="">
+                                <input type="hidden" id="dw_year" name="dw_year" value="">
+                                <input type="hidden" id="department_id" name="department_id" value="{{ $department['id'] }}">
                                 <button id="filter" type="button" class="btn btn-primary">GENERATE</button>
                                 <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
                                 <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY CHAIRPERSON)</button>
@@ -365,7 +366,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $department, 'source_type' => 'department', 'special_type' => ''])
+    @include('reports.generate.index', ['data' => $department, 'level' => 'department', 'special_type' => ''])
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -470,8 +471,8 @@
         </script>
         <script>
             $("#exportLevel").click(function(){
-                $('#ex_quar').val($('#quarterFilter').val());
-                $('#ex_year').val($('#yearFilter').val());
+                $('#dw_quarter').val($('#quarterFilter').val());
+                $('#dw_year').val($('#yearFilter').val());
                 var form = document.getElementById('export_level_form');
                 form.submit();
             });

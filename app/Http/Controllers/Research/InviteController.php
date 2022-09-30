@@ -115,7 +115,7 @@ class InviteController extends Controller
         if(Research::where('user_id', $request->input('user_id'))->where('research_code', $research->research_code)->exists()){
             $coResearchID = Research::where('research_code', $research->research_code)->where('user_id', $request->input('user_id'))->pluck('id')->first();
             if(Report::where('report_reference_id', $coResearchID)->where('report_category_id', 1)->where('user_id', $request->input('user_id'))->exists()){
-                return redirect()->route('research.invite.index', $research_id)->with('error', 'Cannot do this action');
+                return redirect()->route('research.invite.index', $research_id)->with('error', 'Cannot do this action given that the person has already submitted the research.');
             }
             Research::where('research_code', $research->research_code)->where('user_id', $request->input('user_id'))->update([
                 'is_active_member' => 0

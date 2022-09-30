@@ -36,17 +36,16 @@
                                 <div class="alert alert-info" role="alert">
                                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminders: </strong> <br>
                                     <div class="ml-3">
-                                        &#8226; Submit your accomplishments for the Quarter {{ $currentQuarterYear->current_quarter }} on or before 
+                                    &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
+                                        quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist.
+                                        You may request them to return your accomplishment if revision is necessary. <br>
+                                        &#8226; All the added/updated records will be reflected in your <strong>Personnel Portal account</strong> and vice versa. <br>
+                                        &#8226; Submit your accomplishments for the <strong>Quarter {{ $currentQuarterYear->current_quarter }}</strong> on or before 
                                         <?php
                                                 $deadline = strtotime( $currentQuarterYear->deadline );
                                                 $deadline = date( 'F d, Y', $deadline);
                                                 ?>
                                                 <strong>{{ $deadline }}</strong>. <br>
-                                        &#8226; All the added/updated records will be reflected in your <strong>Personnel Portal account</strong> and vice versa. <br>
-                                        &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
-                                            quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist. 
-                                            Please contact them immediately if you need to edit your submitted accomplishment for them to return it to you. <br>
-                                        &#8226; You may <a class="text-primary" style="text-decoration:underline" href="{{ route('offices.create') }}" onclick="{{ session(['url' => url()->current()]) }}">add college/branch/campus/offices where you are reporting.</a>
                                     </div>
                                 </div>
                                 <div class="table-responsive">
@@ -80,7 +79,7 @@
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 1 )
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 2 )
-                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
                                                                         @endif
                                                                     @endif
                                                                 @endif
@@ -91,7 +90,7 @@
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 1)
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 2)
-                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
                                                                         @endif
                                                                     @endif
                                                                 @endif

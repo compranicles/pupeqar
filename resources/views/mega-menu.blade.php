@@ -40,7 +40,7 @@
                     <li><a class="{{ request()->routeIs('rtmmi.*') ? 'active' : '' }}" href="{{ route('rtmmi.index') }}">Reference/Textbook/Module/<br> Monographs/Instructional Materials</a></li>
                     @endcan
                 @else
-                    <li><a href="">NOT AVAILABLE FOR ADMIN REPORTING MODULE.</a></li>
+                    <li><a href="{{ route('dashboard') }}" style="pointer-events: none; cursor: default;">NOT AVAILABLE FOR ADMIN REPORTING MODULE.</a></li>
                 @endif
             </ul>
             @endnotpureadmin

@@ -12,15 +12,15 @@
                 <form action="{{ route('report.generate.index', auth()->id()) }}" method="post" id="generate_ipo_form">
                     @csrf
                     <div class="form-group">
-                        <label for="source_generate">Level</label>
-                        <select name="source_generate" id="source_generate" class="form-control" required>
+                        <label for="level">Level</label>
+                        <select name="level" id="level" class="form-control" required>
                             <option value="ipo" selected>IPO</option>
                             <option value="sector">Sector</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="type_generate">Format</label>
-                        <select name="type_generate" id="type_generate" class="form-control" required>
+                        <label for="type">Format</label>
+                        <select name="type" id="type" class="form-control" required>
                             <option value="" selected disabled>Choose...</option>
                             <option value="academic">Academic</option>
                             <option value="admin">Admin</option>
@@ -93,7 +93,7 @@
         $('#sector').removeAttr('required');
         $('#sector').attr('disabled', true);
 
-        $('#source_generate').on('change', function (){
+        $('#level').on('change', function (){
             if ($(this).val() == 'ipo') {
                 //Univ. Funded
                 $('#sector').removeAttr('required');

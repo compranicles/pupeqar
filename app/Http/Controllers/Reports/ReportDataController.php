@@ -479,7 +479,7 @@ class ReportDataController extends Controller
         elseif($report_data->report_category_id == '25'){
             $report_columns = HRISField::where('h_r_i_s_form_id', 4)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
-                if($row->name == 'document')
+                if($row->name == 'documentSO' || $row->name == 'documentCert' || $row->name == 'documentPic')
                     continue;
                 if(isset($report_details[$row->name]))
                     $new_report_details[$row->label] = $report_details[$row->name];
@@ -490,7 +490,7 @@ class ReportDataController extends Controller
         elseif($report_data->report_category_id == '26'){
             $report_columns = HRISField::where('h_r_i_s_form_id', 5)->where('is_active', 1)->orderBy('order')->get();
             foreach($report_columns as $row){
-                if($row->name == 'document')
+                if($row->name == 'documentSO' || $row->name == 'documentCert' || $row->name == 'documentPic')
                     continue;
                 if(isset($report_details[$row->name]))
                     $new_report_details[$row->label] = $report_details[$row->name];
@@ -633,6 +633,7 @@ class ReportDataController extends Controller
                 break;
             case 28:
                 $report = Report::where('id', $report_id)->first();
+                dd($report);
                 return redirect()->route('submissions.officership.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 29:

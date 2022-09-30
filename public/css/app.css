@@ -13002,7 +13002,9 @@ body {
   box-shadow: 0 4px 5px 0 rgba(0,0,0,0.2);
   border-radius: 0.25rem;
   background: linear-gradient(rgba(255,255,255,.97), rgba(255,255,255,.97)), url(/storage/PUP.png) no-repeat;
-  overflow-y: scroll;
+  /* Memu div will be dependent on the viewpoint to enable scrolling even zoomed in */
+  overflow: auto; 
+  height: 93vh;
   /* Center and scale the image nicely */
   background-position: center;
   background-size: cover;

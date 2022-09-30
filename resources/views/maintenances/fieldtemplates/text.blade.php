@@ -6,6 +6,7 @@
             Add your <strong>co-researchers from outside PUP, if any.</strong> No need to include the co-researchers you already tagged above.
         @endif
         <br>
+            
             @if ($fieldInfo->name == 'name_of_student' || $fieldInfo->name == 'collaborator' ||
                 $fieldInfo->name == 'authors_compilers' || $fieldInfo->name == 'editor_name' ||
                 $fieldInfo->name == 'researchers' || $fieldInfo->name == 'article_author' || 
@@ -24,6 +25,22 @@
                 <span class="form-notes">
                     Academic/Non-Academic honors received by the employee.
                 </span>
+                @endif
+                <!-- HRIS Description of supporting docs -->
+                @if ($fieldInfo->name == 'description')
+                    @if ($fieldInfo->h_r_i_s_form_id == 1)
+                        <span class="form-notes">
+                            Document to be uploaded: *Certificate of Registration.
+                        </span>
+                    @elseif ($fieldInfo->h_r_i_s_form_id == 2)
+                        <span class="form-notes">
+                            Document to be uploaded: *Certificate of Award.
+                        </span>
+                    @elseif ($fieldInfo->h_r_i_s_form_id == 3)
+                        <span class="form-notes">
+                            Document to be uploaded: *Certificate of Membership or ID.
+                        </span>
+                    @endif
                 @endif
             @endif
             @if($fieldInfo->dropdown_id != null)
@@ -62,7 +79,7 @@
             
             @if ($fieldInfo->name == 'researchers')
                 <span class="form-notes">
-                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Type their names here, separated by forward slash ( / ).' : '' }}
+                    <i class="bi bi-exclamation-circle-fill text-info"></i> {{ $fieldInfo->name == 'researchers' ? 'Type their names beside your name.' : '' }}
                 </span>
             @endif
             @error($fieldInfo->name)

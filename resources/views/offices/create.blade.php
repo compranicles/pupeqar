@@ -12,24 +12,28 @@
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
-                                    <strong>NOTE:</strong> Assign your designated college/branch/campus/office based on your reporting on IPCR/OPCR*. <br>
-                                    <!-- *Faculty Assistant is a faculty with admin work to an Office (Faculty with Admin Designation). -->
+                                    *Assign your role and designated college/branch/campus/office based on your reporting on IPCR/OPCR.
+                                    <hr>
                                 </div>
-                            </div>
-                            <hr>
-                            <div class="row">
                                 <div class="col-md-12">
-                                    <label for="">I am a/an <strong>{{ $role == "Faculty" ? 'Academic Personnel' : 'Non-Academic Personnel' }}</strong> of:</label>
+                                    <label for="">I am a/an <strong>{{ $role }}*</strong> of:</label>
                                     <select name="cbco[]" id="cbco" required>
                                         <option value="">Choose...</option>
                                     </select>
-                                    <br>
+                                    <span class="text-danger">This is required</span>
+                                    <hr>
                                 </div>
                                 <div class="col-md-12">
-                                    <p>Are you <strong>{{ $role == "Admin" ? 'a Non-Academic Personnel with Teaching Load' : 'an Academic Personnel with Admin Designation' }}</strong>?</p>
+                                    Please check below if this definition applies to you: <br>
+                                    @if ($role == "Admin")
+                                        <em>Admin with Teaching Load</em> refers to an admin personnel who also works as a faculty member in the university. They are reporting Admin QAR to their office AND Academic QAR to their college/branch/campus.
+                                    @else
+                                        <em>Faculty with Admin Designation</em> refers to a faculty member who holds a position as admin in an office. They are reporting Academic QAR to their college/branch/campus AND Admin QAR to their office. It also applies to the faculty assistants to office.
+                                    @endif
+                                    <br><br>
                                     <div class="form-group input-group-md">
                                         <input type="checkbox" name="yes" id="yes" {{ $existingCol2 != null ? 'checked' : '' }}>
-                                        <label for="yes">Yes</label>
+                                        <label for="yes">I am a/an <strong>{{ $role == "Admin" ? 'Admin with Teaching Load' : 'Faculty with Admin Designation' }}*</strong></label>
                                         @if ($role == "Admin")
                                             <!-- If the current role is admin, then the designee type is faculty -->
                                             <!-- Role in seeder -->
@@ -45,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 designation-div">
-                                    <label for="designee_cbco">If yes, please select the College/Branch/Campus/Office you work as <strong>{{ $role == "Admin" ? 'Faculty' : 'Admin' }}</strong>:</label>
+                                    <label for="designee_cbco">If yes, please select the College/Branch/Campus <strong>{{ $role == "Admin" ? 'you work as Faculty' : '/Office you work as Admin' }}*</strong>:</label>
                                     <select name="designee_cbco[]" id="designee_cbco">
                                         <option value="">Choose...</option>
                                     </select>

@@ -14,7 +14,7 @@
                             <tr>
                                 <th>Sender</th>
                                 <th>Code</th>
-                                {{-- <th>Title</th> --}}
+                                <th>Title</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -23,7 +23,7 @@
                             <tr>
                                 <td>{{ $row->last_name.', '.$row->first_name.' '.$row->middle_name.' '.$row->suffix }}</td>
                                 <td>{{ $row->ext_code }}</td>
-                                {{-- <td>{{ $row->title }}</td> --}}
+                                <td>{{ ($row->title_of_extension_program != null ? $row->title_of_extension_program : ($row->title_of_extension_project != null ? $row->title_of_extension_project : ($row->title_of_extension_activity != null ? $row->title_of_extension_activity : ''))) }}</td>
                                 <td>
                                     <a href="{{ route('extension.invite.confirm', [ "id" => $row->extension_service_id]) }}" class="btn btn-sm btn-primary mr-1">Confirm</a>
                                     <a href="{{ route('extension.invite.cancel', [ "id" => $row->extension_service_id]) }}" class="btn btn-sm btn-secondary ">Cancel</a>

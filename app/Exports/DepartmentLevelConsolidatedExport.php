@@ -24,58 +24,47 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 class DepartmentLevelConsolidatedExport implements FromView, WithEvents
 {
-    function __construct($source_type, $reportFormat, $source_generate, $year_generate, $quarter_generate,
-         $department, $id, $department_name) {
-        $this->source_type = $source_type;
-        $this->report_format = $reportFormat;
-        $this->source_generate = $source_generate;
-        $this->year_generate = $year_generate;
-        $this->quarter_generate = $quarter_generate;
-        $this->department = $department;
-        $this->id = $id;
+    function __construct($level, $type, $quarterGenerateLevel, $yearGenerateLevel,
+         $departmentID, $departmentName) {
+        $this->level = $level;
+        $this->type = $type;
+        $this->quarterGenerateLevel = $quarterGenerateLevel;
+        $this->yearGenerateLevel = $yearGenerateLevel;
+        $this->departmentID = $departmentID;
 
         $user = User::where('id', auth()->id())->first();
         $this->signature = $user->signature;
-        $this->arranged_name = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
-        $this->departmentName = $department_name;
+        $this->arrangedName = (new NameConcatenationService())->getConcatenatedNameByUserAndRoleName($user, " ");
+        $this->departmentName = $departmentName;
     }
 
     public function view(): View
     {
-        $source_type = $this->source_type;
-        $reportFormat = $this->report_format;
-        $source_generate = $this->source_generate;
-        $year_generate = $this->year_generate;
-        $quarter_generate = $this->quarter_generate;
-        $type_generate = "department_level"; // Department Level
-        $id = $this->id;
-        $table_format;
-        $table_columns;
-        $table_contents;
+        $tableFormat;
+        $tableColumns;
+        $tableContents;
         $data;
-        $source_type;
-        
-            if($source_generate == "my"){
-                $source_type = "individual";
-                $data = Department::where('id', $this->department)->first();
-                $table_format = GenerateTable::where('type_id', 3)->get();
-                $table_columns = [];
-                foreach ($table_format as $format){
+
+            if($this->level == "department_wide"){
+                $data = Department::where('id', $this->departmentID)->first();
+                $tableFormat = GenerateTable::where('type_id', 3)->get();
+                $tableColumns = [];
+                foreach ($tableFormat as $format){
                     if($format->is_table == "0")
-                        $table_columns[$format->id] = [];
+                        $tableColumns[$format->id] = [];
                     else
-                        $table_columns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
+                        $tableColumns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
                 }
 
-                $table_contents = [];
-                foreach ($table_format as $format){
+                $tableContents = [];
+                foreach ($tableFormat as $format){
                     if($format->is_table == "0" || $format->report_category_id == null)
-                    $table_contents[$format->id] = [];
+                    $tableContents[$format->id] = [];
                     else
-                        $table_contents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
-                            ->where('reports.department_id', $this->department)
-                            ->where('reports.report_year', $year_generate)
-                            ->where('reports.report_quarter', $quarter_generate)
+                        $tableContents[$format->id] = Report::where('reports.report_category_id', $format->report_category_id)
+                            ->where('reports.department_id', $this->departmentID)
+                            ->where('reports.report_year', $this->yearGenerateLevel)
+                            ->where('reports.report_quarter', $this->quarterGenerateLevel)
                             ->where('reports.chairperson_approval', 1)
                             ->join('users', 'users.id', 'reports.user_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
@@ -84,10 +73,15 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
 
             }
 
-        $this->table_format = $table_format;
-        $this->table_columns = $table_columns;
-        $this->table_contents = $table_contents;
-        return view('reports.generate.example', compact('table_format', 'table_columns', 'table_contents', 'source_type', 'data', 'reportFormat', 'source_generate', 'year_generate', 'quarter_generate', 'type_generate', 'id'));
+        $this->tableFormat = $tableFormat;
+        $this->tableColumns = $tableColumns;
+        $this->tableContents = $tableContents;
+        $level = $this->level;
+        $type = $this->type;
+        $yearGenerateLevel = $this->yearGenerateLevel;
+        $quarterGenerateLevel = $this->quarterGenerateLevel;
+
+        return view('reports.generate.example', compact('tableFormat', 'tableColumns', 'tableContents', 'level', 'data', 'type', 'yearGenerateLevel', 'quarterGenerateLevel'));
     }
 
     public function registerEvents(): array {
@@ -140,7 +134,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                 ]);
                 $event->sheet->getStyle('B3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->mergeCells('C3:E3');
-                $event->sheet->setCellValue('C3', $this->arranged_name);
+                $event->sheet->setCellValue('C3', $this->arrangedName);
                 $event->sheet->getStyle('C3')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getStyle('C3:E3')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
                 $event->sheet->getStyle('C3')->applyFromArray([
@@ -156,7 +150,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                     ]
                 ]);
                 $event->sheet->getStyle('B4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->setCellValue('C4', $this->quarter_generate);
+                $event->sheet->setCellValue('C4', $this->quarterGenerateLevel);
                 $event->sheet->getStyle('C4')->applyFromArray([
                     'font' => [
                         'size' => 16,
@@ -172,7 +166,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                     ]
                 ]);
                 $event->sheet->getStyle('D4')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-                $event->sheet->setCellValue('E4', $this->year_generate);
+                $event->sheet->setCellValue('E4', $this->yearGenerateLevel);
                 $event->sheet->getStyle('E4')->applyFromArray([
                     'font' => [
                         'size' => 16,
@@ -182,10 +176,10 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                 $event->sheet->getStyle('E4')->getBorders()->getBottom()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                 $count = 7;
-                $table_format = $this->table_format;
-                $table_columns = $this->table_columns;
-                $table_contents = $this->table_contents;
-                foreach($table_format as $format) {
+                $tableFormat = $this->tableFormat;
+                $tableColumns = $this->tableColumns;
+                $tableContents = $this->tableContents;
+                foreach($tableFormat as $format) {
                     if($format->is_table == '0'){
                         
                         //title
@@ -204,7 +198,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
 
                     }
                     elseif($format->is_table == '1') {
-                        $length = count($table_columns[$format->id]);
+                        $length = count($tableColumns[$format->id]);
                         if ($length == null){
                             $length = 2;
                         }
@@ -247,7 +241,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                         $count++;
 
                         //contents
-                        foreach($table_contents[$format->id] as $contents){
+                        foreach($tableContents[$format->id] as $contents){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -264,7 +258,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                             $count++;
                         }
 
-                        if($table_contents[$format->id] == null){
+                        if($tableContents[$format->id] == null){
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setWrapText(true);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK);
                             $event->sheet->getStyle('A'.$count.':'.$letter.$count)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -315,7 +309,7 @@ class DepartmentLevelConsolidatedExport implements FromView, WithEvents
                     }
                     
                     /*  */
-                    $event->sheet->setCellValue('A'.$count, $this->arranged_name);
+                    $event->sheet->setCellValue('A'.$count, $this->arrangedName);
                     $event->sheet->getStyle('A'.$count)->applyFromArray([
                         'font' => [
                             'name' => 'Arial',
