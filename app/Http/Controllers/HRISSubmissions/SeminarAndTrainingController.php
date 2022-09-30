@@ -28,6 +28,7 @@ use App\Models\{
 };
 use Carbon\Carbon;
 use Image;
+use App\Services\SavePersonalDataDocumentService;
 
 class SeminarAndTrainingController extends Controller
 {
@@ -54,7 +55,7 @@ class SeminarAndTrainingController extends Controller
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 1;
                 else
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->Attachment == null)
+                if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 2;
             }
 
@@ -64,7 +65,7 @@ class SeminarAndTrainingController extends Controller
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 1;
                 else
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->Attachment == null)
+                if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 2;
             }
         }
@@ -162,11 +163,23 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        if($request->has('documentSO')){
+            $datastringSO = file_get_contents($request->file('documentSO'));
+            $mimetypeSO = $request->file('documentSO')->getMimeType();
+            $imagedataSO = unpack("H*hex", $datastringSO);
+            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        }
+        if($request->has('documentCert')){
+            $datastringCert = file_get_contents($request->file('documentCert'));
+            $mimetypeCert = $request->file('documentCert')->getMimeType();
+            $imagedataCert = unpack("H*hex", $datastringCert);
+            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        }
+        if($request->has('documentPic')){
+            $datastringPic = file_get_contents($request->file('documentPic'));
+            $mimetypePic = $request->file('documentPic')->getMimeType();
+            $imagedataPic = unpack("H*hex", $datastringPic);
+            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
         }
 
         $value = array(
@@ -186,12 +199,19 @@ class SeminarAndTrainingController extends Controller
             $request->fund_source, //SourceOfFundID
             $request->budget, //Budget
             '', //Remarks
-            $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $imagedataSO ?? null, //AttachmentSO
+            $mimetypeSO ?? null, //MimeTypeSO
+            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $imagedataCert ?? null, //AttachmentCert
+            $mimetypeCert ?? null, //MimeTypeCert
+            "COMPILED PHOTOS", //AttachmentDescPic
+            $imagedataPic ?? null, //AttachmentPic
+            $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
         );
 
+        // dd($value);
         $id = $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
@@ -213,9 +233,15 @@ class SeminarAndTrainingController extends Controller
                     @SourceOfFundID = ?,
                     @Budget = ?,
                     @Remarks = ?,
-                    @AttachmentDescription = ?,
-                    @Attachment = ?,
-                    @MimeType = ?,
+                    @AttachmentDescSO= ?,
+                    @AttachmentSO = ?,
+                    @MimeTypeSO= ?,
+                    @AttachmentDescCert= ?,
+                    @AttachmentCert = ?,
+                    @MimeTypeCert= ?,
+                    @AttachmentDescPic= ?,
+                    @AttachmentPic = ?,
+                    @MimeTypePic= ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -341,10 +367,14 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'document' => $seminar->Attachment,
-            'description' => $seminar->Description ?? 'No Document Attached',
+            'documentSO' => $seminar->AttachmentSO,
+            'documentCert' => $seminar->AttachmentCert,
+            'documentPic' => $seminar->AttachmentPic,
+            'description' => "",
             'id' => $seminar->EmployeeTrainingProgramID,
-            'mimetype' => $seminar->MimeType,
+            'mimeTypeSO' => $seminar->MimeTypeSO,
+            'mimeTypeCert' => $seminar->MimeTypeCert,
+            'mimeTypePic' => $seminar->MimeTypePic,
         ];
 
         if(session()->get('user_type') == 'Faculty Employee')
@@ -392,10 +422,14 @@ class SeminarAndTrainingController extends Controller
                 'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
                 'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
                 'total_hours' => $seminar->NumberOfHours,
-                'document' => $seminar->Attachment,
-                'description' => $seminar->Description ?? 'No Document Attached',
+                'documentSO' => $seminar->AttachmentSO,
+                'documentCert' => $seminar->AttachmentCert,
+                'documentPic' => $seminar->AttachmentPic,
+                'description' => "",
                 'id' => $seminar->EmployeeTrainingProgramID,
-                'mimetype' => $seminar->MimeType,
+                'mimeTypeSO' => $seminar->MimeTypeSO,
+                'mimeTypeCert' => $seminar->MimeTypeCert,
+                'mimeTypePic' => $seminar->MimeTypePic,
             ];
         }
 
@@ -422,11 +456,23 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        if($request->has('documentSO')){
+            $datastring = file_get_contents($request->file('documentSO'));
+            $mimetypeSO = $request->file('documentSO')->getMimeType();
+            $imagedataSO = unpack("H*hex", $datastring);
+            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        }
+        if($request->has('documentCert')){
+            $datastring = file_get_contents($request->file('documentCert'));
+            $mimetypeCert = $request->file('documentCert')->getMimeType();
+            $imagedataCert = unpack("H*hex", $datastring);
+            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        }
+        if($request->has('documentPic')){
+            $datastring = file_get_contents($request->file('documentPic'));
+            $mimetypePic = $request->file('documentPic')->getMimeType();
+            $imagedataPic = unpack("H*hex", $datastring);
+            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
         }
 
         $value = array(
@@ -440,15 +486,21 @@ class SeminarAndTrainingController extends Controller
             $request->organizer, //Conductor
             $request->level, //LevelID
             $request->type, //TypeID
-            $request->classification, //ClassificationID
-            $request->nature, //NatureID
-            $is_paid, //IsPaid
-            $request->fund_source, //SourceOfFundID
-            $request->budget, //Budget
+            $request->classification ?? 0, //ClassificationID
+            $request->nature ?? 0, //NatureID
+            $is_paid ?? '', //IsPaid
+            $request->fund_source ?? 0, //SourceOfFundID
+            $request->budget ?? '', //Budget
             '', //Remarks
-            $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $imagedataSO ?? null, //AttachmentSO
+            $mimetypeSO ?? null, //MimeTypeSO
+            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $imagedataCert ?? null, //AttachmentCert
+            $mimetypeCert ?? null, //MimeTypeCert
+            "COMPILED PHOTOS", //AttachmentDescPic
+            $imagedataPic ?? null, //AttachmentPic
+            $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
         );
 
@@ -473,9 +525,15 @@ class SeminarAndTrainingController extends Controller
                     @SourceOfFundID = ?,
                     @Budget = ?,
                     @Remarks = ?,
-                    @AttachmentDescription = ?,
-                    @Attachment = ?,
-                    @MimeType = ?,
+                    @AttachmentDescSO= ?,
+                    @AttachmentSO = ?,
+                    @MimeTypeSO= ?,
+                    @AttachmentDescCert= ?,
+                    @AttachmentCert = ?,
+                    @MimeTypeCert= ?,
+                    @AttachmentDescPic= ?,
+                    @AttachmentPic = ?,
+                    @MimeTypePic= ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -512,11 +570,23 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        if($request->has('documentSO')){
+            $datastring = file_get_contents($request->file('documentSO'));
+            $mimetypeSO = $request->file('documentSO')->getMimeType();
+            $imagedataSO = unpack("H*hex", $datastring);
+            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        }
+        if($request->has('documentCert')){
+            $datastring = file_get_contents($request->file('documentCert'));
+            $mimetypeCert = $request->file('documentCert')->getMimeType();
+            $imagedataCert = unpack("H*hex", $datastring);
+            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        }
+        if($request->has('documentPic')){
+            $datastring = file_get_contents($request->file('documentPic'));
+            $mimetypePic = $request->file('documentPic')->getMimeType();
+            $imagedataPic = unpack("H*hex", $datastring);
+            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
         }
 
         $value = array(
@@ -530,15 +600,21 @@ class SeminarAndTrainingController extends Controller
             $request->organizer, //Conductor
             $request->level, //LevelID
             $request->type, //TypeID
-            $request->classification, //ClassificationID
-            $request->nature, //NatureID
-            $is_paid, //IsPaid
-            $request->fund_source, //SourceOfFundID
-            $request->budget, //Budget
+            $request->classification ?? 0, //ClassificationID
+            $request->nature ?? 0, //NatureID
+            $is_paid ?? '', //IsPaid
+            $request->fund_source ?? 0, //SourceOfFundID
+            $request->budget ?? '', //Budget
             '', //Remarks
-            $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $imagedataSO ?? null, //AttachmentSO
+            $mimetypeSO ?? null, //MimeTypeSO
+            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $imagedataCert ?? null, //AttachmentCert
+            $mimetypeCert ?? null, //MimeTypeCert
+            "COMPILED PHOTOS", //AttachmentDescPic
+            $imagedataPic ?? null, //AttachmentPic
+            $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
         );
 
@@ -563,9 +639,15 @@ class SeminarAndTrainingController extends Controller
                     @SourceOfFundID = ?,
                     @Budget = ?,
                     @Remarks = ?,
-                    @AttachmentDescription = ?,
-                    @Attachment = ?,
-                    @MimeType = ?,
+                    @AttachmentDescSO= ?,
+                    @AttachmentSO = ?,
+                    @MimeTypeSO= ?,
+                    @AttachmentDescCert= ?,
+                    @AttachmentCert = ?,
+                    @MimeTypeCert= ?,
+                    @AttachmentDescPic= ?,
+                    @AttachmentPic = ?,
+                    @MimeTypePic= ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -628,10 +710,14 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'document' => $seminar->Attachment,
-            'description' => $seminar->Description ?? 'No Document Attached',
+            'documentSO' => $seminar->AttachmentSO,
+            'documentCert' => $seminar->AttachmentCert,
+            'documentPic' => $seminar->AttachmentPic,
+            'description' => $seminar->DescriptionSO.', '.$seminar->DescriptionCert.', '.$seminar->DescriptionPic,
             'id' => $seminar->EmployeeTrainingProgramID,
-            'mimetype' => $seminar->MimeType,
+            'mimeTypeSO' => $seminar->MimeTypeSO,
+            'mimeTypeCert' => $seminar->MimeTypeCert,
+            'mimeTypePic' => $seminar->MimeTypePic,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
             'college_id' => College::where('id', Department::where('id', $department_id)->pluck('college_id')->first())->pluck('name')->first(),
         ];
@@ -751,10 +837,14 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'document' => $seminar->Attachment,
-            'description' => $seminar->Description ?? 'No Document Attached',
+            'documentSO' => $seminar->AttachmentSO,
+            'documentCert' => $seminar->AttachmentCert,
+            'documentPic' => $seminar->AttachmentPic,
+            'description' => "",
             'id' => $seminar->EmployeeTrainingProgramID,
-            'mimetype' => $seminar->MimeType,
+            'mimeTypeSO' => $seminar->MimeTypeSO,
+            'mimeTypeCert' => $seminar->MimeTypeCert,
+            'mimeTypePic' => $seminar->MimeTypePic,
         ];
 
         $department_id = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('department_id')->first();
@@ -779,11 +869,15 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'document' => $seminar->Attachment,
-            'description' => $seminar->Description ?? 'No Document Attached',
+            'documentSO' => $seminar->AttachmentSO,
+            'documentCert' => $seminar->AttachmentCert,
+            'documentPic' => $seminar->AttachmentPic,
+            'description' => "",
             'id' => $seminar->EmployeeTrainingProgramID,
+            'mimeTypeSO' => $seminar->MimeTypeSO,
+            'mimeTypeCert' => $seminar->MimeTypeCert,
+            'mimeTypePic' => $seminar->MimeTypePic,
             'department_id' => $department_id,
-            'mimetype' => $seminar->MimeType,
         ];
 
         if(session()->get('user_type') == 'Faculty Employee')
@@ -815,11 +909,23 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        if($request->has('documentSO')){
+            $datastringSO = file_get_contents($request->file('documentSO'));
+            $mimetypeSO = $request->file('documentSO')->getMimeType();
+            $imagedataSO = unpack("H*hex", $datastringSO);
+            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        }
+        if($request->has('documentCert')){
+            $datastringCert = file_get_contents($request->file('documentCert'));
+            $mimetypeCert = $request->file('documentCert')->getMimeType();
+            $imagedataCert = unpack("H*hex", $datastringCert);
+            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        }
+        if($request->has('documentPic')){
+            $datastringPic = file_get_contents($request->file('documentPic'));
+            $mimetypePic = $request->file('documentPic')->getMimeType();
+            $imagedataPic = unpack("H*hex", $datastringPic);
+            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
         }
 
         $value = array(
@@ -833,20 +939,25 @@ class SeminarAndTrainingController extends Controller
             $request->organizer, //Conductor
             $request->level, //LevelID
             $request->type, //TypeID
-            $request->classification, //ClassificationID
-            $request->nature, //NatureID
-            $is_paid, //IsPaid
-            $request->fund_source, //SourceOfFundID
-            $request->budget, //Budget
+            $request->classification ?? 0, //ClassificationID
+            $request->nature ?? 0, //NatureID
+            $is_paid ?? '', //IsPaid
+            $request->fund_source ?? 0, //SourceOfFundID
+            $request->budget ?? '', //Budget
             '', //Remarks
-            $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $imagedataSO ?? null, //AttachmentSO
+            $mimetypeSO ?? null, //MimeTypeSO
+            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $imagedataCert ?? null, //AttachmentCert
+            $mimetypeCert ?? null, //MimeTypeCert
+            "COMPILED PHOTOS", //AttachmentDescPic
+            $imagedataPic ?? null, //AttachmentPic
+            $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
         );
 
         // dd($value);
-
         $newID = $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
@@ -868,9 +979,15 @@ class SeminarAndTrainingController extends Controller
                     @SourceOfFundID = ?,
                     @Budget = ?,
                     @Remarks = ?,
-                    @AttachmentDescription = ?,
-                    @Attachment = ?,
-                    @MimeType = ?,
+                    @AttachmentDescSO= ?,
+                    @AttachmentSO = ?,
+                    @MimeTypeSO= ?,
+                    @AttachmentDescCert= ?,
+                    @AttachmentCert = ?,
+                    @MimeTypeCert= ?,
+                    @AttachmentDescPic= ?,
+                    @AttachmentPic = ?,
+                    @MimeTypePic= ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -918,11 +1035,23 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        if($request->has('documentSO')){
+            $datastringSO = file_get_contents($request->file('documentSO'));
+            $mimetypeSO = $request->file('documentSO')->getMimeType();
+            $imagedataSO = unpack("H*hex", $datastringSO);
+            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        }
+        if($request->has('documentCert')){
+            $datastringCert = file_get_contents($request->file('documentCert'));
+            $mimetypeCert = $request->file('documentCert')->getMimeType();
+            $imagedataCert = unpack("H*hex", $datastringCert);
+            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        }
+        if($request->has('documentPic')){
+            $datastringPic = file_get_contents($request->file('documentPic'));
+            $mimetypePic = $request->file('documentPic')->getMimeType();
+            $imagedataPic = unpack("H*hex", $datastringPic);
+            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
         }
 
         $value = array(
@@ -936,18 +1065,25 @@ class SeminarAndTrainingController extends Controller
             $request->organizer, //Conductor
             $request->level, //LevelID
             $request->type, //TypeID
-            $request->classification, //ClassificationID
-            $request->nature, //NatureID
-            $is_paid, //IsPaid
-            $request->fund_source, //SourceOfFundID
-            $request->budget, //Budget
+            $request->classification ?? 0, //ClassificationID
+            $request->nature ?? 0, //NatureID
+            $is_paid ?? '', //IsPaid
+            $request->fund_source ?? 0, //SourceOfFundID
+            $request->budget ?? '', //Budget
             '', //Remarks
-            $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $imagedataSO ?? null, //AttachmentSO
+            $mimetypeSO ?? null, //MimeTypeSO
+            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $imagedataCert ?? null, //AttachmentCert
+            $mimetypeCert ?? null, //MimeTypeCert
+            "COMPILED PHOTOS", //AttachmentDescPic
+            $imagedataPic ?? null, //AttachmentPic
+            $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
         );
 
+        // dd($value);
         $newID = $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
@@ -969,9 +1105,15 @@ class SeminarAndTrainingController extends Controller
                     @SourceOfFundID = ?,
                     @Budget = ?,
                     @Remarks = ?,
-                    @AttachmentDescription = ?,
-                    @Attachment = ?,
-                    @MimeType = ?,
+                    @AttachmentDescSO= ?,
+                    @AttachmentSO = ?,
+                    @MimeTypeSO= ?,
+                    @AttachmentDescCert= ?,
+                    @AttachmentCert = ?,
+                    @MimeTypeCert= ?,
+                    @AttachmentDescPic= ?,
+                    @AttachmentPic = ?,
+                    @MimeTypePic= ?,
                     @TransAccount = ?,
                     @NewEmployeeTrainingProgramID = @NewEmployeeTrainingProgramID OUTPUT;
 
@@ -1068,6 +1210,7 @@ class SeminarAndTrainingController extends Controller
     public function submitSeminar($development_id){
         $user = User::find(auth()->id());
         $development = HRIS::where('id', $development_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->first();
 
         $db_ext = DB::connection('mysql_external');
 
@@ -1087,36 +1230,8 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(in_array($seminar->MimeType, $imagejpeg)){
-            $file = Image::make($seminar->Attachment);
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($seminar->MimeType == 'image/png' || $data['0']->MimeType == 'image/x-png'){
-            $file = Image::make($seminar->Attachment);
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($seminar->MimeType == 'application/pdf'){
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.pdf';
-            file_put_contents(storage_path().'/app/documents/'.$fileName, $seminar->Attachment);
-            $file = true;
-        }
-        if(isset($file)){
-            HRISDocument::create([
-                'hris_form_id' => 4,
-                'reference_id' => $development_id,
-                'filename' => $fileName,
-            ]);
-            array_push($filenames, $fileName);
-        }
-        else{
-            return false;
-        }
-
+        $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal(
+            $seminar, 4, $development_id);
 
         $values = [
             'title' => $seminar->TrainingProgram,
@@ -1131,18 +1246,12 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'description' => $seminar->Description,
+            'description' => $seminar->DescriptionSO.', '.$seminar->DescriptionCert.', '.$seminar->DescriptionPic,
             'department_id' => $department_name,
             'college_id' => $college_name,
         ];
 
         $currentQuarterYear = Quarter::find(1);
-        $getUserTypeFromSession = session()->get('user_type');
-        $format_type = '';
-        if($getUserTypeFromSession == 'Faculty Employee')
-            $format_type = 'f';
-        elseif($getUserTypeFromSession == 'Admin Employee')
-            $format_type = 'a';
 
         Report::where('report_reference_id', $development_id)
             ->where('report_category_id', 25)
@@ -1150,13 +1259,16 @@ class SeminarAndTrainingController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-
+        if ($employee['type'] == 'F')
+                $type = 'f';
+        elseif ($employee['type'] == 'A')
+            $type = 'a';
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
             'college_id' => $development->college_id,
             'department_id' => $development->department_id,
-            'format' => $format_type,
+            'format' => $type,
             'report_category_id' => 25,
             'report_code' => null,
             'report_reference_id' => $development_id,
@@ -1173,6 +1285,7 @@ class SeminarAndTrainingController extends Controller
     public function submitTraining($development_id){
         $user = User::find(auth()->id());
         $development = HRIS::where('id', $development_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->first();
 
         $db_ext = DB::connection('mysql_external');
 
@@ -1192,35 +1305,8 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(in_array($training->MimeType, $imagejpeg)){
-            $file = Image::make($training->Attachment);
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.jpeg';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($training->MimeType == 'image/png'){
-            $file = Image::make($training->Attachment);
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($training->MimeType == 'application/pdf'){
-            $fileName = 'HRIS-ADP-'.now()->timestamp.uniqid().'.pdf';
-            file_put_contents(storage_path().'/app/documents/'.$fileName, $training->Attachment);
-            $file = true;
-        }
-        if(isset($file)){
-            HRISDocument::create([
-                'hris_form_id' => 5,
-                'reference_id' => $development_id,
-                'filename' => $fileName,
-            ]);
-            array_push($filenames, $fileName);
-        }
-        else{
-            return false;
-        }
+        $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal(
+            $training, 4, $development_id);
 
         $values = [
             'title' => $training->TrainingProgram,
@@ -1235,18 +1321,12 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($training->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($training->IncDateTo)),
             'total_hours' => $training->NumberOfHours,
-            'description' => $training->Description,
+            'description' => $training->DescriptionSO.', '.$training->DescriptionCert.', '.$training->DescriptionPic,
             'department_id' => $department_name,
             'college_id' => $college_name,
         ];
 
         $currentQuarterYear = Quarter::find(1);
-        $getUserTypeFromSession = session()->get('user_type');
-        $format_type = '';
-        if($getUserTypeFromSession == 'Faculty Employee')
-            $format_type = 'f';
-        elseif($getUserTypeFromSession == 'Admin Employee')
-            $format_type = 'a';
 
         Report::where('report_reference_id', $development_id)
             ->where('report_category_id', 26)
@@ -1254,13 +1334,16 @@ class SeminarAndTrainingController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-
+        if ($employee['type'] == 'F')
+            $type = 'f';
+        elseif ($employee['type'] == 'A')
+            $type = 'a';
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
             'college_id' => $development->college_id,
             'department_id' => $development->department_id,
-            'format' => $format_type,
+            'format' => $type,
             'report_category_id' => 26,
             'report_code' => null,
             'report_reference_id' => $development_id,
@@ -1273,64 +1356,6 @@ class SeminarAndTrainingController extends Controller
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // public function saveSeminar(Request $request, $id){
     //     if($request->document[0] == null){

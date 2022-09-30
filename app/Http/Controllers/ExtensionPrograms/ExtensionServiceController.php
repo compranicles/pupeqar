@@ -65,7 +65,8 @@ class ExtensionServiceController extends Controller
             ->select(
                 'users.first_name', 'users.last_name', 'users.middle_name', 'users.suffix',
                 'extension_services.ext_code', 'extension_invites.extension_service_id',
-                'extension_invites.status'
+                'extension_invites.status', 'extension_services.title_of_extension_program',
+                'extension_services.title_of_extension_project', 'extension_services.title_of_extension_activity', 
             )
             ->where('extension_invites.status', null)
             ->get();

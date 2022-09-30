@@ -12,7 +12,7 @@
                     <table class="table table-bordered text-center" id="invitations_table">
                         <thead>
                             <tr>
-                                <th>Sender</th>
+                                <th>Lead Researcher</th>
                                 <th>Code</th>
                                 <th>Title</th>
                                 <th>Action</th>

@@ -18,6 +18,7 @@ use App\Models\{
     FacultyExtensionist,
     FacultyResearcher,
     Report,
+    SectorHead,
     User,
     Maintenance\College,
     Maintenance\Department,
@@ -30,198 +31,168 @@ use Maatwebsite\Excel\Facades\Excel;
 class GenerateController extends Controller
 {
     public function index($id, Request $request){
-        $reportFormat = $request->input("type_generate");
         $data = '';
         $source_type = '';
-        if($request->input("type_generate") == "academic"){
-            if($request->input("source_generate") == "department"){
-                $source_type = "department";
-                $department_id = $id;
-                $data = Department::where('id', $department_id)->first();
-            }
-            elseif($request->input("source_generate") == "college"){
-                $source_type = "college";
-                $college_id = $id;
-                $data = College::where('id', $college_id)->first();
-            }
-            elseif($request->input("source_generate") == "my"){
-                $source_type = "individual";
+        if($request->input("type") == "academic"){
+            if($request->input("level") == "individual"){
+                // $source_type = "individual";
                 $user_id = $id;
                 $data = User::where('id', $user_id)->select('users.last_name as name')->first();
             }
-            elseif($request->input("source_generate") == "ipo"){
-                $source_type = "ipo";
-            }
-            elseif($request->input("source_generate") == "sector"){
-                $source_type = "sector";
-                $data = Sector::where('id', $request->sector)->first();
-            }
-        }
-        elseif($request->input("type_generate") == "admin"){
-            if($request->input("source_generate") == "department"){
-                $source_type = "department";
+            elseif($request->input("level") == "department"){
+                // $source_type = "department";
                 $department_id = $id;
                 $data = Department::where('id', $department_id)->first();
             }
-            elseif($request->input("source_generate") == "college"){
-                $source_type = "college";
+            elseif($request->input("level") == "college"){
+                // $source_type = "college";
                 $college_id = $id;
                 $data = College::where('id', $college_id)->first();
             }
-            elseif($request->input("source_generate") == "my"){
-                $source_type = "individual";
-                $user_id = $id;
-                $data = User::where('id', $user_id)->select('users.last_name as name')->first();
-            }
-            elseif($request->input("source_generate") == "ipo"){
-                $source_type = "ipo";
-            }
-            elseif($request->input("source_generate") == "sector"){
-                $source_type = "sector";
+            elseif($request->input("level") == "sector"){
+                // $source_type = "sector";
                 $data = Sector::where('id', $request->sector)->first();
             }
         }
-        elseif($request->input("type_generate") == "department_level"){
-            if($request->input("source_generate") == "my"){
-                $source_type = "individual";
-                $department_id = Chairperson::where('chairpeople.user_id', auth()->id())
-                        ->join('departments', 'departments.id', 'chairpeople.department_id')
-                        ->whereNull('chairpeople.deleted_at')->pluck('chairpeople.department_id')->first();
+        elseif($request->input("type") == "admin"){
+            if($request->input("level") == "individual"){
+                $user_id = $id;
+                $data = User::where('id', $user_id)->select('users.last_name as name')->first();
+            }
+            elseif($request->input("level") == "department"){
+                $department_id = $id;
                 $data = Department::where('id', $department_id)->first();
             }
+            elseif($request->input("level") == "college"){
+                $college_id = $id;
+                $data = College::where('id', $college_id)->first();
+            }
+            elseif($request->input("level") == "sector"){
+                // $source_type = "sector";
+                $data = Sector::where('id', $request->sector)->first();
+            }
         }
-        elseif($request->input("type_generate") == "college_level"){
-            if($request->input("source_generate") == "my"){
-                $source_type = "individual";
+        elseif($request->input("type") == "chair_chief"){
+            if($request->input("level") == "department_wide"){
+                // $source_type = "individual";
+                $data = Department::where('id', $request->input("department_id"))->first();
+            }
+        }
+        elseif($request->input("type") == "dean_director"){
+            if($request->input("level") == "college_wide"){
+                // $source_type = "individual";
                 $college_id = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                         ->join('colleges', 'colleges.id', 'deans.college_id')
                         ->whereNull('deans.deleted_at')->pluck('deans.college_id')->first();
-                $data = College::where('id', $college_id)->first();
+                $data = College::where('id', $request->input("college_id"))->first();
             }
         }
 
-        $source_generate = $request->input("source_generate");
-        $year_generate = $request->input('year_generate');
-        $quarter_generate = $request->input('quarter_generate');
+        $level = $request->input("level");
+        $type = $request->input('type');
+        $yearGenerate = $request->input('year_generate');
+        $quarterGenerate = $request->input('quarter_generate');
         $college = College::where('id', $request->input('cbco'))->first();
-        $file_suffix = '';
+        $fileSuffix = '';
 
-        if ($source_generate == "my") {
-            if ($request->input('type_generate') == "admin" || $request->input('type_generate') == "academic") {
+        // dd($level);
+        if ($level == "individual") {
+            if ($type == "admin" || $type == "academic") {
                 $cbco = $request->input('cbco');
-                $file_suffix = 'QARs-'.$data->name.'-'.$college->code.'-'.ucfirst($request->input("type_generate")).'-'.$quarter_generate.'-'.$year_generate;
-                $departments = Department::where('college_id', $cbco)->pluck('id')->all();
+                $fileSuffix = strtoupper($request->input("type")).'-QAR-'.$college->code.'-'.$data->name.'-Q'.$quarterGenerate.'-Y'.$yearGenerate;
+                $departmentIDs = Department::where('college_id', $cbco)->pluck('id')->all();
                 /* */
-                $director = User::join('deans', 'deans.user_id', 'users.id')->where('deans.college_id', $cbco)->whereNull('deans.deleted_at')->first('users.*');
-                $get_college = College::where('colleges.id', $cbco)->join('sectors', 'sectors.id', 'colleges.sector_id')->select('colleges.*')->first();
-                $get_sector = Sector::where('id', $get_college->sector_id)->first();
-                $sector_head = User::join('sector_heads', 'sector_heads.user_id', 'users.id')->where('sector_heads.sector_id', $get_college->sector_id)->whereNull('sector_heads.deleted_at')->first('users.*');
+                $director = Dean::join('users', 'users.id', 'deans.user_id')->where('deans.college_id', $cbco)->first('users.*');
+                $getCollege = College::where('colleges.id', $cbco)->first('colleges.*');
+                $sectorHead = SectorHead::join('users', 'users.id', 'sector_heads.user_id')->where('sector_heads.sector_id', $getCollege->sector_id)->first('users.*');
+                $getSector = Sector::where('id', $getCollege->sector_id)->first();
                 return Excel::download(new IndividualAccomplishmentReportExport(
-                    $source_type,
-                    $reportFormat,
-                    $source_generate,
-                    $year_generate,
-                    $quarter_generate,
+                    $level,
+                    $type,
+                    $yearGenerate,
+                    $quarterGenerate,
                     $cbco,
-                    $id,
-                    $get_college,
-                    $get_sector,
+                    $userID = $id,
+                    $getCollege,
+                    $getSector,
                     $director,
-                    $sector_head,
+                    $sectorHead,
                 ),
-                    $file_suffix.'.xlsx');
-            } elseif ($request->input("type_generate") == "department_level") {
-                $file_suffix = 'QARs-Dept-Level-'.$data->code.'-'.$request->input('year_generate_level').'-'.$quarter_generate.'-'.$request->input('year_generate_level');
-                return Excel::download(new DepartmentLevelConsolidatedExport(
-                    $source_type,
-                    $reportFormat,
-                    $source_generate,
-                    $year_generate_level = $request->input('year_generate_level'),
-                    $quarter_generate,
-                    $department = $data->id,
-                    $id,
-                    $departmentName = $data->name,
-                    ),
-                    $file_suffix.'.xlsx');
-            } elseif ($request->input("type_generate") == "college_level") {
-                $file_suffix = 'QARs-College-Level-'.$data->code.'-'.$quarter_generate.'-'.$request->input('year_generate_level');
-                return Excel::download(new CollegeLevelConsolidatedExport(
-                    $source_type,
-                    $reportFormat,
-                    $source_generate,
-                    $year_generate_level = $request->input('year_generate_level'),
-                    $quarter_generate,
-                    $id,
-                    $college = $data->id,
-                    $collegeName = $data->name,
-                    ),
-                    $file_suffix.'.xlsx');
+                    $fileSuffix.'.xlsx');
             }
-
-        } elseif ($source_generate == "department") {
-            $file_suffix = 'QARs-Dept-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-'.$quarter_generate.'-'.$year_generate;
-            $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.college_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first('users.*');
-            $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.college_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first('users.*');
-            return Excel::download(new DepartmentConsolidatedAccomplishmentReportExport(
-                $source_type,
-                $reportFormat,
-                $source_generate,
-                $year_generate,
-                $quarter_generate,
-                $department = $data->id,
-                $id,
-                $get_department = $data->name,
-                $faculty_researcher,
-                $faculty_extensionist,
+        } 
+        elseif ($level == "department_wide") {
+            $fileSuffix = 'DEPT-WIDE-QAR-'.$data->code.'-Q'.$request->input('dw_quarter').'-Y'.$request->input('dw_year');
+            return Excel::download(new DepartmentLevelConsolidatedExport(
+                $level,
+                $type,
+                $quarterGenerateLevel = $request->input('dw_quarter'),
+                $yearGenerateLevel = $request->input('dw_year'),
+                $departmentID = $data->id,
+                $departmentName = $data->name,
                 ),
-                $file_suffix.'.xlsx');
+                $fileSuffix.'.xlsx');
+        } elseif ($level == "college_wide") {
+            $fileSuffix = 'COLLEGE-WIDE-QAR-'.$data->code.'-Q'.$request->input('cw_quarter').'-'.$request->input('cw_year');
+            return Excel::download(new CollegeLevelConsolidatedExport(
+                $level,
+                $type,
+                $quarterGenerateLevel = $request->input('cw_quarter'),
+                $yearGenerateLevel = $request->input('cw_year'),
+                $collegeID = $data->id,
+                $collegeName = $data->name,
+                ),
+                $fileSuffix.'.xlsx');
+        }
+        elseif ($level == "department") {
+            if ($request->input("type") == "academic")
+                $fileSuffix = 'DEPT-QAR-'.$data->code.'-Q'.$quarterGenerate.'-Y'.$yearGenerate;
+            elseif ($request->input("type") == "admin")
+                $fileSuffix = 'SECTION-QAR-'.$data->code.'-Q'.$quarterGenerate.'-Y'.$yearGenerate;
+            $facultyResearcher = FacultyResearcher::join('users', 'users.id', 'faculty_researchers.user_id')->where('faculty_researchers.college_id', $data->id)->first('users.*');
+            $facultyExtensionist = FacultyExtensionist::join('users', 'users.id', 'faculty_extensionists.user_id')->where('faculty_extensionists.college_id', $data->id)->first('users.*');
+            return Excel::download(new DepartmentConsolidatedAccomplishmentReportExport(
+                $level,
+                $type,
+                $yearGenerate,
+                $quarterGenerate,
+                $departmentID = $data->id,
+                $getDepartment = $data->name,
+                $facultyResearcher,
+                $facultyExtensionist,
+                ),
+                $fileSuffix.'.xlsx');
 
         }
-        elseif ($source_generate == "college") {
-            $cbco = $data->name;
-            $file_suffix = 'QARs-College-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-'.$quarter_generate.'-'.$year_generate;
+        elseif ($level == "college") {
+            if ($request->input("type") == "academic")
+                $fileSuffix = 'COLLEGE-QAR-'.$data->code.'-Q'.$request->input('quarter_generate').'-Y'.$request->input('year_generate');
+            elseif ($request->input("type") == "admin")
+                $fileSuffix = 'OFFICE-QAR-'.$data->code.'-Q'.$request->input('quarter_generate').'-Y'.$request->input('year_generate');
             $departments = Department::where('college_id', $data->id)->pluck('id')->all();
             /* */
             return Excel::download(new CollegeConsolidatedAccomplishmentReportExport(
-                $source_type,
-                $reportFormat,
-                $source_generate,
-                $year_generate,
-                $quarter_generate,
-                $id,
-                $cbco,
-                $faculty_researcher = User::join('faculty_researchers', 'faculty_researchers.user_id', 'users.id')->where('faculty_researchers.college_id', $data->id)->whereNull('faculty_researchers.deleted_at')->first('users.*'),
-                $faculty_extensionist = User::join('faculty_extensionists', 'faculty_extensionists.user_id', 'users.id')->where('faculty_extensionists.college_id', $data->id)->whereNull('faculty_extensionists.deleted_at')->first('users.*')
-                ),
-                $file_suffix.'.xlsx');
-        }
-        elseif($source_generate == 'ipo'){
-            $source = $request->source_generate;
-            $type = $request->type_generate;
-            $q1 = $request->from_quarter_generate2;
-            $q2 = $request->to_quarter_generate2;
-            $year = $request->year_generate2;
-            $file_suffix = 'QARs-IPO-Level-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
-
-            return Excel::download(new IPOAccomplishmentReportExport(
+                $level,
                 $type,
-                $q1,
-                $q2,
-                $year,
-            ),
-            $file_suffix.'.xlsx');
+                $quarterGenerate = $request->input('quarter_generate'),
+                $yearGenerate = $request->input('year_generate'),
+                $collegeID = $data->id,
+                $collegeName = $data->name,
+                $facultyResearcher = FacultyResearcher::join('users', 'users.id', 'faculty_researchers.user_id')->where('faculty_researchers.college_id', $data->id)->first('users.*'),
+                $facultyExtensionist = FacultyExtensionist::join('users', 'users.id', 'faculty_extensionists.user_id')->where('faculty_extensionists.college_id', $data->id)->first('users.*')
+                ),
+                $fileSuffix.'.xlsx');
         }
-        elseif($source_generate == "sector"){
+        elseif($level == "sector"){
             $sector = $data;
-            $type = $request->type_generate;
+            $type = $request->type;
             $q1 = $request->from_quarter_generate;
             $q2 = $request->to_quarter_generate;
-            $year = $request->year_generate2;
-
+            $year = $request->yearGenerate;
             $asked = 'no one';
 
-            $previous_url = url()->previous();
-            $url = explode('/', $previous_url);
+            $previousUrl = url()->previous();
+            $url = explode('/', $previousUrl);
             if(in_array('sector', $url)){
                 $asked = 'sector';
             }
@@ -229,8 +200,9 @@ class GenerateController extends Controller
                 $asked = 'ipo';
                 $q1 = $request->from_quarter_generate2;
                 $q2 = $request->to_quarter_generate2;
+                $year = $request->year_generate2;
             }
-            $file_suffix = 'QARs-'.$data->code.'-'.ucfirst($request->input("type_generate")).'-Qtr-'.$q1.'-'.$q2.'-'.$year;
+            $fileSuffix = strtoupper($type).'-SECTOR-QAR-'.$data->code.'-Q-'.$q1.'-Q'.$q2.'-Y'.$year;
 
             // dd($request->_previous->url);
 
@@ -248,7 +220,22 @@ class GenerateController extends Controller
                 $sector,
                 $asked,
             ),
-            $file_suffix.'.xlsx');
+            $fileSuffix.'.xlsx');
+        }
+        elseif($level == 'ipo'){
+            $type = $request->type;
+            $q1 = $request->from_quarter_generate2;
+            $q2 = $request->to_quarter_generate2;
+            $year = $request->year_generate2;
+            $fileSuffix = 'IPO-LEVEL-QAR-'.strtoupper($type).'-Q'.$q1.'-Q'.$q2.'-Y'.$year;
+
+            return Excel::download(new IPOAccomplishmentReportExport(
+                $type,
+                $q1,
+                $q2,
+                $year,
+            ),
+            $fileSuffix.'.xlsx');
         }
     }
 

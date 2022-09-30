@@ -41,17 +41,43 @@
                             @else
                                 @include('show', ['formFields' => $seminarFields, 'value' => $values])
                             @endif
+                            <hr>
                             <div class="form-group">
                                 <label class="font-weight-bold" >Document</label>
                                 <br>
-                                @if ($values['mimetype'] == null && $values['document'] == null)
-                                    <h4 class="ml-3 mt-3">No Document</h4>
+                                <h6>Special Order (S.O)</h6>
+                                @if ($values['mimeTypeSO'] == null && $values['documentSO'] == null)
+                                    <h6 class="ml-3 mt-3">None</h6>
                                 @endif
-                                @if($values['mimetype'] == 'application/pdf')
-                                    <iframe  src="{{ url('fetch_image/'.$values['id'].'/4') }}" width="100%" height="500px"></iframe>
+                                @if($values['mimeTypeSO'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_images/'.$values['id'].'/4/1') }}" width="100%" height="500px"></iframe>
                                 @else
                                     <div class="img-container">
-                                        <img src="{{ url('fetch_image/'.$values['id'].'/4') }}" alt="">
+                                        <img src="{{ url('fetch_images/'.$values['id'].'/4/1') }}" alt="">
+                                    </div>
+                                @endif
+                                <br>
+                                <h6>Certificate of Participation/Attendance/Completion</h6>
+                                @if ($values['mimeTypeCert'] == null && $values['documentCert'] == null)
+                                    <h6 class="ml-3 mt-3">None</h6>
+                                @endif
+                                @if($values['mimeTypeCert'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_images/'.$values['id'].'/4/2') }}" width="100%" height="500px"></iframe>
+                                @else
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_images/'.$values['id'].'/4/2') }}" alt="">
+                                    </div>
+                                @endif
+                                <br>
+                                <h6>Compiled Photos in 1 PDF File</h6>
+                                @if ($values['mimeTypePic'] == null && $values['documentPic'] == null)
+                                    <h6 class="ml-3 mt-3">None</h6>
+                                @endif
+                                @if($values['mimeTypePic'] == 'application/pdf')
+                                    <iframe  src="{{ url('fetch_images/'.$values['id'].'/4/3') }}" width="100%" height="500px"></iframe>
+                                @else
+                                    <div class="img-container">
+                                        <img src="{{ url('fetch_images/'.$values['id'].'/4/3') }}" alt="">
                                     </div>
                                 @endif
                             </div>
@@ -92,24 +118,6 @@
             };
         };
     </script>
-    {{-- <script src="{{ asset('dist/selectize.min.js') }}"></script>
-    <script>
-        var report_category_id = 25;
-        $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-        var api = '{{ url("/document-upload/description/25") }}';
-		$.get(api, function (data){
-            if (data != '') {
-                data.forEach(function (item){
-                    $("#description")[0].selectize.addOption({value:item.name, text:item.name});
-                });
-            }
-        });
-
-
-        $(function(){
-            $("input[name='document[]']").attr('required', true);
-        });
-    </script> --}}
     @if(isset($forview))
     <script>
         $('#department_id').attr('disabled', 'disabled')

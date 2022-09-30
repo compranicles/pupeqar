@@ -117,7 +117,7 @@ class InviteController extends Controller
         if(ExtensionService::where('user_id', $request->input('user_id'))->where('ext_code', $extension->ext_code)->exists()){
             $coESID = ExtensionService::where('ext_code', $extension->ext_code)->where('user_id', $request->input('user_id'))->pluck('id')->first();
             if(Report::where('report_reference_id', $coESID)->where('report_category_id', 12)->where('user_id', $request->input('user_id'))->exists()){
-                return redirect()->route('extension.invite.index', $id)->with('error', 'Cannot do this action');
+                return redirect()->route('extension.invite.index', $id)->with('error', 'Cannot do this action given that the person has already submitted the extension.');
             }
 
             ExtensionService::where('user_id', $request->input('user_id'))->where('ext_code', $extension->ext_code)->delete();

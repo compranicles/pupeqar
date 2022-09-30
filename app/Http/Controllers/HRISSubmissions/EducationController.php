@@ -183,8 +183,8 @@ class EducationController extends Controller
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
             $request->degree,                   //Degree
-            $request->major,                    //Major
-            $request->minor,                    //Minor
+            $request->major ?? '',                    //Major
+            $request->minor ?? '',                    //Minor
             $request->education_discipline,     //EducationDisciplineID
             $request->school_name,              //SchoolName
             $request->program_level,            //AccreditationLevelID
@@ -199,7 +199,7 @@ class EducationController extends Controller
             $request->honors ?? '',                   //HonorsReceived
             $request->support_type,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
-            $request->amount,                   //Amount
+            $request->amount ?? 0,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment
@@ -445,8 +445,8 @@ class EducationController extends Controller
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
             $request->degree,                   //Degree
-            $request->major,                    //Major
-            $request->minor,                    //Minor
+            $request->major ?? '',                    //Major
+            $request->minor ?? '',                    //Minor
             $request->education_discipline ?? 0,     //EducationDisciplineID
             $request->school_name,              //SchoolName
             $request->program_level ?? 0,            //AccreditationLevelID
@@ -461,7 +461,7 @@ class EducationController extends Controller
             $request->honors ?? '',                   //HonorsReceived
             $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
-            $request->amount ?? null,                   //Amount
+            $request->amount ?? 0,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment
@@ -719,8 +719,8 @@ class EducationController extends Controller
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
             $request->degree,                   //Degree
-            $request->major,                    //Major
-            $request->minor,                    //Minor
+            $request->major ?? '',                    //Major
+            $request->minor ?? '',                    //Minor
             $request->education_discipline ?? 0,     //EducationDisciplineID
             $request->school_name,              //SchoolName
             $request->program_level ?? 0,            //AccreditationLevelID
@@ -735,7 +735,7 @@ class EducationController extends Controller
             $request->honors ?? '',                   //HonorsReceived
             $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
-            $request->amount ?? null,                   //Amount
+            $request->amount ?? 0,                   //Amount
             '',                                 //Remarks
             $request->description,              //AttachmentDescription
             $imagedata ?? null,                 //Attachment

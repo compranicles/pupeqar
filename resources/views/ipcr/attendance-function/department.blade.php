@@ -12,7 +12,7 @@
                     @csrf
                     <div class="d-flex">
                         <div class="col-md-9 px-0">
-                            <label for=""><strong>Tag your department/section:</strong></label>
+                            <label for=""><strong>Tag the department/section you are reporting to:</strong></label>
                             <select name="selected_department[]" id="selected_department" readonly required>
                                 <option value="">Choose...</option>
                             </select>

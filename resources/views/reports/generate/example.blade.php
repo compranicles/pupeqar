@@ -1,8 +1,8 @@
 
     @php
-      $table_columns_json = json_encode($table_columns, JSON_FORCE_OBJECT);
-      $table_contents_json = json_encode($table_contents, JSON_FORCE_OBJECT);
-      $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
+      $table_columns_json = json_encode($tableColumns, JSON_FORCE_OBJECT);
+      $table_contents_json = json_encode($tableContents, JSON_FORCE_OBJECT);
+      $table_format_json = json_encode($tableFormat, JSON_FORCE_OBJECT);
     @endphp
     
     <!-- These breaks give spaces for the heading formed in the AccomplishmentReportExport -->
@@ -14,7 +14,7 @@
     <br>
     <br>
     {{-- foreach through the format --}}
-    @foreach ($table_format as $format)
+    @foreach ($tableFormat as $format)
     {{-- if its not table(0) output only the name else output name and table--}}
     @if ($format->is_table == "0")
     <h2 class="mt-2">{{ $format->name }}</h2>
@@ -24,41 +24,41 @@
                 <table class="table table-bordered table-hover table-sm">
                     <thead> 
                         <tr>
-                            @if ($format->is_individual == "1" && $source_type != "individual")
-                                @if ($source_type == "college")
-                                    @if ($reportFormat == "academic")
+                            @if ($format->is_individual == "1" && $level != "individual")
+                                @if ($level == "college")
+                                    @if ($type == "academic")
                                         <th>Department</th>
-                                    @elseif ($reportFormat == "admin")
+                                    @elseif ($type == "admin")
                                         <th>Section</th>    
                                     @endif
                                 @endif
                             <th>Name of the Employee</th>
                             @endif
-                            @if ($source_type == "individual")
-                                @if ($reportFormat == "academic")
+                            @if ($level == "individual")
+                                @if ($type == "academic")
                                     <th>Department</th>
-                                @elseif ($reportFormat == "admin")
+                                @elseif ($type == "admin")
                                     <th>Section</th>
                                 @else
                                 @endif
                             @endif
                             {{-- load the addtl columns --}}
-                            @foreach ($table_columns[$format->id] as $column)
+                            @foreach ($tableColumns[$format->id] as $column)
                                 <th>{{ $column['name'] }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($table_contents[$format->id] as $content)
+                        @forelse ($tableContents[$format->id] as $content)
                             @php
                                 $data = json_decode($content['report_details'], true);
                                 $documents =  json_decode($content['report_documents'], true);
                             @endphp
                             <tr>
-                                @if ($format->is_individual == "1" && $source_type != "individual")
-                                    @if ($source_type == "college")
+                                @if ($format->is_individual == "1" && $level != "individual")
+                                    @if ($level == "college")
                                     <td>
-                                        @if ($source_type != "department")
+                                        @if ($level != "department")
                                             {{ $data['department_id'] }}
                                         @else
                                         @endif
@@ -68,13 +68,13 @@
                                         {{ $content['faculty_name'] }}
                                     </td>
                                 @endif
-                                @if ($source_type == "individual")
-                                    @isset ($type_generate)
+                                @if ($level == "individual")
+                                    @isset ($type)
                                     @else
                                     <td>{{ $data['department_id'] ?? ''}}</td>
                                     @endisset
                                 @endif
-                                @foreach ($table_columns[$format->id] as $column )
+                                @foreach ($tableColumns[$format->id] as $column )
                                     @if (isset($data[$column['report_column']]))
                                         <td>{{ $data[$column['report_column']] }}</td>
                                     @else
@@ -87,7 +87,7 @@
                                 
                         @empty
                         <tr>
-                            @if ($format->is_individual == "1" && $source_type != "individual")
+                            @if ($format->is_individual == "1" && $level != "individual")
                                     <td>
                                         -
                                     </td>
@@ -95,11 +95,11 @@
                                         -
                                     </td>
                                 @endif
-                                @if ($source_type == "individual")
+                                @if ($level == "individual")
                                     <td>-</td>
                                     <td>-</td>
                                 @endif
-                                @foreach ($table_columns[$format->id] as $column )
+                                @foreach ($tableColumns[$format->id] as $column )
                                     <td>-</td>
                                 @endforeach
                         </tr>
@@ -129,3 +129,5 @@
 
         
     @endforeach
+
+    <p>This report was generated using the PUP eQAR system on {{ date(' m/d/Y h:i:s a') }} </p>

@@ -17,7 +17,7 @@ class AnnouncementController extends Controller
     {
         $this->authorize('viewAny', Announcement::class);
 
-        $announcements = Announcement::orderByDesc('created_at')->get();
+        $announcements = Announcement::orderByDesc('updated_at')->get();
         return view('announcements.index', compact('announcements'));
     }
 

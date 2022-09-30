@@ -72,8 +72,14 @@ class StorageFileController extends Controller
 
         $db_ext = DB::connection('mysql_external');
 
+        $developments = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
         if($hris == '4' || $hris == '5'){
-            $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCodeAndID N'$user->emp_code', '$id'");
+            foreach($developments as $development){
+                if($development->EmployeeTrainingProgramID == $id){
+                    $data = $development;
+                    break;
+                }
+            }
         }
         elseif($hris == '3'){
             $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOfficershipMembershipByEmpCodeAndID N'$user->emp_code', '$id'");
@@ -85,44 +91,130 @@ class StorageFileController extends Controller
             $data = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCodeAndID N'$user->emp_code',$id");
         }
 
-        if($data['0']->Attachment == null){
-            // $path = storage_path('app/public/no-document-attached.jpg');
-            // $file = File::get($path);
-            // $type = File::mimeType($path);
-            // $headers = ['Content-Type: image/jpeg'];
+        // if($data['0']->Attachment == null){
+        //     $path = storage_path('app/public/no-document-attached.jpg');
+        //     $file = File::get($path);
+        //     $type = File::mimeType($path);
+        //     $headers = ['Content-Type: image/jpeg'];
 
-            // return response()->file($path, $headers);
-            return "No Document";
-        }
-// dd($data[0]->MimeType);
+        //     return response()->file($path, $headers);
+        //     return "No Document";
+        // }
+// dd($data);
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(isset($data['0']->MimeType)){
-            if(in_array($data['0']->MimeType, $imagejpeg)){
-                $image = $data['0']->Attachment;
-                $response = Response::make($image);
-                $response->header('Content-Type', 'image/jpeg');
-                return $response;
+
+        if ($hris >= 1 && $hris <= 3) {
+            if(isset($data['0']->MimeType)){
+                if(in_array($data['0']->MimeType, $imagejpeg)){
+                    $image = $data['0']->Attachment;
+                    $response = Response::make($image);
+                    $response->header('Content-Type', 'image/jpeg');
+                    return $response;
+                }
+                elseif($data['0']->MimeType == 'image/png' || $data['0']->MimeType == 'image/x-png'){
+                    $image = Image::make($data['0']->Attachment);
+                    $response = Response::make($image->encode('png'));
+                    $response->header('Content-Type', 'image/png');
+                    return $response;
+                }
+                elseif($data['0']->MimeType == 'application/pdf'){
+                    $pdfstring = $data['0']->Attachment;
+                    $response = Response::make($pdfstring);
+                    $response->header('Content-Type', 'application/pdf');
+                    return $response;
+                }
             }
-            elseif($data['0']->MimeType == 'image/png' || $data['0']->MimeType == 'image/x-png'){
-                $image = Image::make($data['0']->Attachment);
+            else{
+                $image = Image::make($data['0']->AttachmentPic);
                 $response = Response::make($image->encode('png'));
                 $response->header('Content-Type', 'image/png');
                 return $response;
             }
-            elseif($data['0']->MimeType == 'application/pdf'){
-                $pdfstring = $data['0']->Attachment;
-                $response = Response::make($pdfstring);
-                $response->header('Content-Type', 'application/pdf');
-                return $response;
+        }
+    }
+
+    public function fetch_images($id, $hris, $docNumber) {
+        $user = User::find(auth()->id());
+
+        $db_ext = DB::connection('mysql_external');
+
+        $developments = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
+        foreach($developments as $development){
+            if($development->EmployeeTrainingProgramID == $id){
+                $data = $development;
+                break;
             }
         }
-        else{
-            $image = Image::make($data['0']->Attachment);
-            $response = Response::make($image->encode('png'));
-            $response->header('Content-Type', 'image/png');
-            return $response;
+
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+
+        if($hris == '4' || $hris == '5'){
+            if ($docNumber == 1) {
+                if(isset($data->MimeTypeSO)){
+                    if(in_array($data->MimeTypeSO, $imagejpeg)){
+                        $image = $data->AttachmentSO;
+                        $response = Response::make($image);
+                        $response->header('Content-Type', 'image/jpeg');
+                        return $response;
+                    }
+                    elseif($data->MimeTypeSO == 'image/png' || $data->MimeTypeSO == 'image/x-png'){
+                        $image = Image::make($data->AttachmentSO);
+                        $response = Response::make($image->encode('png'));
+                        $response->header('Content-Type', 'image/png');
+                        return $response;
+                    }
+                    elseif($data->MimeTypeSO == 'application/pdf'){
+                        $pdfstring = $data->AttachmentSO;
+                        $response = Response::make($pdfstring);
+                        $response->header('Content-Type', 'application/pdf');
+                        return $response;
+                    }
+                }
+            }
+            elseif ($docNumber == 2) {
+                if(isset($data->MimeTypeCert)){
+                    if(in_array($data->MimeTypeCert, $imagejpeg)){
+                        $image = $data->AttachmentCert;
+                        $response = Response::make($image);
+                        $response->header('Content-Type', 'image/jpeg');
+                        return $response;
+                    }
+                    elseif($data->MimeTypeCert == 'image/png' || $data->MimeTypeCert == 'image/x-png'){
+                        $image = Image::make($data->AttachmentCert);
+                        $response = Response::make($image->encode('png'));
+                        $response->header('Content-Type', 'image/png');
+                        return $response;
+                    }
+                    elseif($data->MimeTypeCert == 'application/pdf'){
+                        $pdfstring = $data->AttachmentCert;
+                        $response = Response::make($pdfstring);
+                        $response->header('Content-Type', 'application/pdf');
+                        return $response;
+                    }
+                }
+            }
+            else {
+                if(isset($data->MimeTypePic)){
+                    if(in_array($data->MimeTypePic, $imagejpeg)){
+                        $image = $data->AttachmentPic;
+                        $response = Response::make($image);
+                        $response->header('Content-Type', 'image/jpeg');
+                        return $response;
+                    }
+                    elseif($data->MimeTypePic == 'image/png' || $data->MimeTypePic == 'image/x-png'){
+                        $image = Image::make($data->AttachmentPic);
+                        $response = Response::make($image->encode('png'));
+                        $response->header('Content-Type', 'image/png');
+                        return $response;
+                    }
+                    elseif($data->MimeTypePic == 'application/pdf'){
+                        $pdfstring = $data->AttachmentPic;
+                        $response = Response::make($pdfstring);
+                        $response->header('Content-Type', 'application/pdf');
+                        return $response;
+                    }
+                }
+            }
         }
-
-
     }
 }

@@ -1,8 +1,11 @@
 <x-app-layout>
     <div class="container">
         <div class="row">
+            <h3 class="font-weight-bold mb-2 ml-3">Extension Program/Project/Activity</h3>
+        </div>
+        <div class="row">
             <p class="ml-3">
-                <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Services</a>
+                <a class="back_link" href="{{ route('extension-service.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Extension Programs/Projects/Activities</a>
             </p>
         </div>
 
@@ -31,7 +34,7 @@
                             <p>
                                 <a class="back_link" href="{{ route('extension-service.show', $extension->id) }}"><i class="bi bi-chevron-double-left"></i>Back to the accomplishment</a>
                             </p>
-                                <h4>Co-Extensionists </h4>
+                                <h4>Tagged Extension Partners for {{ ($extension->title_of_extension_program != null ? $extension->title_of_extension_program : ($extension->title_of_extension_project != null ? $extension->title_of_extension_project : ($extension->title_of_extension_activity != null ? $extension->title_of_extension_activity : ''))) }}</h4>
                             </div>
                         </div>
                         <hr>

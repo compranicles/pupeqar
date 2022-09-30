@@ -85,7 +85,6 @@
                             {{-- @foreach ($employeeColleges['A'] as $adminOffice)
                                 <option value="{{ $adminOffice->id }}" {{ (old('adminOffice', $adminOffice) == $adminOffice->id) ? 'selected' : '' }}>{{ $adminOffice->name }}</option>
                             @endforeach --}}
-
                         </select>
                         <span class="text-danger" id="admin_error">This is required</span>
                         <x-jet-input-error for="adminOffice"></x-jet-input-error>
@@ -441,7 +440,7 @@
                   changeFacultyCollegeDisp(1);
               }
               if($('#role-3').is(':checked')){
-                  changeadminOfficeDisp(3);
+                  changeAdminOfficeDisp(3);
               }
               if($('#role-5').is(':checked')){
                   changeDeptDisp(5);

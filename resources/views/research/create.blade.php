@@ -67,6 +67,7 @@
               valueField: 'id',
               labelField: 'fullname',
               sortField: "fullname",
+              searchField: "fullname",
               options: @json($allUsers),
             //   onChange: function(value) {
             //     var selected = $("#tagged-collaborators option:selected").text();
@@ -87,6 +88,16 @@
                 $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
                 $('#nature_of_involvement').removeClass('form-validation');
             // });
+
+            $('#nature_of_involvement').on('change', function (){
+                if ($('#nature_of_involvement').val() == 224)  {
+                    // if independent researcher
+                    $('#tagged-collaborators')[0].selectize.lock(); //input for tagging will be disabled
+                    $('#tagged-collaborators')[0].selectize.clear(); // clears the value if any
+                }
+                else
+                    $('#tagged-collaborators')[0].selectize.unlock();
+            });
         </script>
         <script>
             $('#funding_type').on('change', function (){

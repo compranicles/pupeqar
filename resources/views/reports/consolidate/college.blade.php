@@ -38,10 +38,11 @@
                                 <form action="{{ route('report.generate.index', $user->id)}}" method="POST" id="export_level_form2">
                                     @csrf
                                     <div class="form-group">
-                                        <input type="hidden" name="source_generate" value="my">
-                                        <input type="hidden" name="type_generate" value="college_level">
-                                        <input type="hidden" id="ex_quar2" name="quarter_generate" value="">
-                                        <input type="hidden" id="ex_year2" name="year_generate_level" value="">
+                                        <input type="hidden" name="level" value="college_wide">
+                                        <input type="hidden" name="type" value="dean_director">
+                                        <input type="hidden" id="cw_quarter" name="cw_quarter" value="">
+                                        <input type="hidden" id="cw_year" name="cw_year" value="">
+                                        <input type="hidden" id="college_id" name="college_id" value="{{ $college['id'] }}">
                                         <button id="filter" class="btn btn-primary">GENERATE</button>
                                         <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
                                         <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY DEAN/DIRECTOR)</button>
@@ -369,7 +370,7 @@
         </div>
     </div>
 
-    @include('reports.generate.index', ['data' => $college, 'source_type' => 'college', 'special_type' => ''])
+    @include('reports.generate.index', ['data' => $college, 'level' => 'college', 'special_type' => ''])
 
     @push('scripts')
         <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js"></script>
@@ -476,8 +477,8 @@
         </script>
         <script>
             $("#exportLevel").click(function(){
-                $('#ex_quar2').val($('#quarterFilter').val());
-                $('#ex_year2').val($('#yearFilter').val());
+                $('#cw_quarter').val($('#quarterFilter').val());
+                $('#cw_year').val($('#yearFilter').val());
                 var form = document.getElementById('export_level_form2');
                 form.submit();
             });

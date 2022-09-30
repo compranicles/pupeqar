@@ -217,6 +217,7 @@ Route::group(['middleware' => ['auth', 'account']], function() {
     Route::get('download/{filename}', [\App\Http\Controllers\StorageFileController::class, 'downloadFile'])->name('document.download');
     Route::get('document-view/{filename}', [\App\Http\Controllers\StorageFileController::class, 'viewFile'])->name('document.view');
     Route::get('fetch_image/{id}/{hris}', [\App\Http\Controllers\StorageFileController::class, 'fetch_image']);
+    Route::get('fetch_images/{id}/{hris}/{doc_number}', [\App\Http\Controllers\StorageFileController::class, 'fetch_images']);
 
     /* ANALYTICS */
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics');

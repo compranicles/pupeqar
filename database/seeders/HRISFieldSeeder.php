@@ -495,14 +495,41 @@ class HRISFieldSeeder extends Seeder
             'field_type_id' => 1,
             'dropdown_id' => null,
             'required' => 0,
+            'visibility' => 2,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 4,
+            'label' => 'Special Order',
+            'name' => 'documentSO',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 9,
+            'dropdown_id' => null,
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        HRISField::insert([
+            'h_r_i_s_form_id' => 4,
+            'label' => 'Certificate of Participation/ Attendance/ Completion',
+            'name' => 'documentCert',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 9,
+            'dropdown_id' => null,
+            'required' => 0,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Document Upload',
-            'name' => 'document',
+            'label' => 'Compiled Photos in 1 PDF Document',
+            'name' => 'documentPic',
             'placeholder' => null,
             'size' => 'col-md-12',
             'field_type_id' => 9,
@@ -699,8 +726,35 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
-            'label' => 'Document Upload',
-            'name' => 'document',
+            'label' => 'Special Order',
+            'name' => 'documentSO',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 9,
+            'dropdown_id' => null,
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        HRISField::insert([
+            'h_r_i_s_form_id' => 5,
+            'label' => 'Certificate of Participation/ Attendance/ Completion',
+            'name' => 'documentCert',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 9,
+            'dropdown_id' => null,
+            'required' => 0,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        HRISField::insert([
+            'h_r_i_s_form_id' => 5,
+            'label' => 'Compiled Photos in 1 PDF Document',
+            'name' => 'documentPic',
             'placeholder' => null,
             'size' => 'col-md-12',
             'field_type_id' => 9,
