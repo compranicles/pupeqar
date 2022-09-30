@@ -104,17 +104,15 @@
                 if ("{{auth()->user()->middle_name}}" != '') {
                     middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
                 }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
+                var fullname = "{{ auth()->user()->last_name.', '.auth()->user()->first_name.' ' }}" + middle;
                 $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#researchers")[0].selectize.addItem(fullname);
                 $("#researchers")[0].selectize.lock();
             });
         </script>
         <script>
-            $('#nature_of_involvement').on('change', function (){
-                $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
-                $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
-            });
+            $('#nature_of_involvement option[value=11]').attr('disabled','disabled');
+            $('#nature_of_involvement option[value=224]').attr('disabled','disabled');
             $('.document').remove();
            
             $('#classification').attr('disabled', true); 
