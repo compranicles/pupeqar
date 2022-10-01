@@ -5,7 +5,7 @@
             @if ($fieldInfo->name == 'document')
                 <br>
                 <span role="alert">
-                    @if ($fieldInfo->h_r_i_s_form_id == 4 || $fieldInfo->h_r_i_s_form_id == 5)
+                    @if (in_array($fieldInfo->h_r_i_s_form_id, array(3,4,5)))
                         Note: Attachments should be in <strong>JPEG/JPG, PNG, or PDF</strong> format and less than <strong>500kb</strong> in file size.
                     @else
                         Note: Attachment should be in <strong>JPEG/JPG, PNG, or PDF</strong> format and less than <strong>100kb</strong> in file size.
