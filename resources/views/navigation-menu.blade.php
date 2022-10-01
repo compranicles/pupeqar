@@ -17,7 +17,6 @@
                         {{ __('Home') }}
                     </x-jet-nav-link>
                 </li>
-
                 @IsReporting
                 <li class="nav-item main-nav-item" id="accomplishmentlink">
                     <a id="accomplishment" class="nav-link @if (request()->routeIs('research.*') || request()->routeIs('invention-innovation-creative.*') ||
@@ -37,7 +36,12 @@
 
                         )
                         active @endif
-                        " role="button">Accomplishments</a>
+                        " role="button">
+                        @if(session()->get('user_type') == 'Faculty Employee')
+                             Faculty Accomplishments
+                        @elseif(session()->get('user_type') == 'Admin Employee')
+                             Admin Accomplishments
+                        @endif </a>
                     @include('mega-menu')
                 </li>
 
@@ -51,14 +55,14 @@
 
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('reports.consolidate.myaccomplishments') }}" :active="request()->routeIs('reports.*') || request()->routeIs('chairperson.*') || request()->routeIs('director.*') || request()->routeIs('sector.*') || request()->routeIs('ipo.*') || request()->routeIs('extensionist.*') || request()->routeIs('researcher.*')|| request()->routeIs('reports.*')">
-                        {{ __('Reports') }}
+                         {{ __('Reports') }}
                     </x-jet-nav-link>
                 </li>
 
                 @IsReporting
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics') ">
-                        {{ __('Analytics') }}
+                         {{ __('Analytics') }}
                     </x-jet-nav-link>
                 </li>
                 @endIsReporting
@@ -66,7 +70,7 @@
                 @can('viewAny', App\Models\User::class)
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('admin.users.index') }}" :active="request()->routeIs('admin.users.*') || request()->routeIs('admin.roles.*') || request()->routeIs('admin.permissions.*')">
-                        {{ __('Authentication') }}
+                         {{ __('Authentication') }}
                     </x-jet-nav-link>
                 </li>
                 @endcan
@@ -90,7 +94,7 @@
                                 request()->routeIs('ipcr-forms.*') ||
                                 request()->routeIs('hris-forms.*')
                             ) active @endif">
-                        {{ __('Maintenances') }}
+                             {{ __('Maintenances') }}
                     </a>
                 </li>
                 @endcan
@@ -98,7 +102,7 @@
                 @SuperAdmin
                 <li class="navbar-nav mr-auto main-nav-item">
                     <x-jet-nav-link href="{{ route('logs.all') }}" :active="request()->routeIs('logs.all') ">
-                        {{ __('Activity Log') }}
+                         {{ __('Activity Log') }}
                     </x-jet-nav-link>
                 </li>
                 @endSuperAdmin
