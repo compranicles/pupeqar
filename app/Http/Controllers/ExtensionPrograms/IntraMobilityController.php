@@ -48,6 +48,7 @@ class IntraMobilityController extends Controller
                                 ->orderBy('updated_at', 'desc')->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($intraMobilities as $intraMobility) {
             if($intraMobility->classification_of_person == '298'){
@@ -59,18 +60,19 @@ class IntraMobilityController extends Controller
                     $submissionStatus[36][$intraMobility->id] = 2;
             }
             else{
-                if (LockController::isLocked($intraMobility->id, 34))
+                if (LockController::isLocked($intraMobility->id, 34)) {
                     $submissionStatus[34][$intraMobility->id] = 1;
+                    $submitRole[$intraMobility->id] = ReportDataController::getSubmitRole($intraMobility->id, 34);
+                }
                 else
                     $submissionStatus[34][$intraMobility->id] = 0;
                 if (empty($reportdata->getDocuments(34, $intraMobility->id)))
                     $submissionStatus[34][$intraMobility->id] = 2;
             }
-
         }
 
         return view('extension-programs.intra-mobilities.index', compact('intraMobilities', 'currentQuarterYear',
-            'submissionStatus'));
+            'submissionStatus', 'submitRole'));
     }
 
     /**

@@ -72,19 +72,22 @@ class ExtensionServiceController extends Controller
             ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($extensionServices as $extension) {
-            if (LockController::isLocked($extension->id, 12))
+            if (LockController::isLocked($extension->id, 12)) {
                 $submissionStatus[12][$extension->id] = 1;
+                $submitRole[$extension->id] = ReportDataController::getSubmitRole($extension->id, 12);
+            }
             else
                 $submissionStatus[12][$extension->id] = 0;
             if (empty($reportdata->getDocuments(12, $extension->id)))
                 $submissionStatus[12][$extension->id] = 2;
-        }
+            }
 
         // dd($reportdata->getDocuments(12, $extension->id));
 
-        return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites', 'submissionStatus'));
+        return view('extension-programs.extension-services.index', compact('extensionServices', 'currentQuarterYear', 'invites', 'submissionStatus', 'submitRole'));
     }
 
     /**

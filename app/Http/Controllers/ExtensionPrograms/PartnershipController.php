@@ -52,10 +52,13 @@ class PartnershipController extends Controller
                             ->orderBy('partnerships.updated_at', 'desc')->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($partnerships as $partnership) {
-            if (LockController::isLocked($partnership->id, 13))
+            if (LockController::isLocked($partnership->id, 13)) {
                 $submissionStatus[13][$partnership->id] = 1;
+                $submitRole[$partnership->id] = ReportDataController::getSubmitRole($partnership->id, 13);
+            }
             else
                 $submissionStatus[13][$partnership->id] = 0;
             if (empty($reportdata->getDocuments(13, $partnership->id)))
@@ -63,7 +66,7 @@ class PartnershipController extends Controller
         }
 
         return view('extension-programs.partnership.index', compact('partnerships', 'currentQuarterYear',
-            'submissionStatus'));
+            'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -244,8 +247,10 @@ class PartnershipController extends Controller
 
         $values = $partnership->toArray();
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

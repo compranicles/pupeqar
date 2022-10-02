@@ -19,6 +19,7 @@ use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class OfficershipController extends Controller
 {
@@ -40,11 +41,14 @@ class OfficershipController extends Controller
         $savedReports = HRIS::where('hris_type', '3')->where('user_id', $user->id)->pluck('hris_id')->all();
 
         $submissionStatus = [];
+        $submitRole = "";
         foreach ($officershipFinal as $officership) {
             $id = HRIS::where('hris_id', $officership->EmployeeOfficershipMembershipID)->where('hris_type', 3)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
-                if (LockController::isLocked($id, 28))
+                if (LockController::isLocked($id, 28)) {
                     $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 1;
+                    $submitRole[$id] = ReportDataController::getSubmitRole($id, 28);
+                }
                 else
                     $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 0;
                 if ($officership->Attachment == null)
@@ -52,7 +56,7 @@ class OfficershipController extends Controller
             }
         }
         // dd($officershipFinal);
-        return view('submissions.hris.officership.index', compact('officershipFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
+        return view('submissions.hris.officership.index', compact('officershipFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     public function create(){
@@ -490,7 +494,10 @@ class OfficershipController extends Controller
         $classifications = collect($classifications);
         $dropdown_options['classification'] = $classifications;
 
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

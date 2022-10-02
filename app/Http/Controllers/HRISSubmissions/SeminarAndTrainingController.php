@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HRISSubmissions;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
+    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -48,11 +49,14 @@ class SeminarAndTrainingController extends Controller
         $savedTrainings = HRIS::where('hris_type', '5')->where('user_id', $user->id)->pluck('hris_id')->all();
 
         $submissionStatus = [];
+        $submitRole = "";
         foreach ($developmentFinal as $development) {
             $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 4)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
-                if (LockController::isLocked($id, 25))
+                if (LockController::isLocked($id, 25)) {
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 1;
+                    $submitRole[$id] = ReportDataController::getSubmitRole($id, 25);
+                }
                 else
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 0;
                 if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
@@ -61,8 +65,10 @@ class SeminarAndTrainingController extends Controller
 
             $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 5)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
-                if (LockController::isLocked($id, 26))
+                if (LockController::isLocked($id, 26)) {
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 1;
+                    $submitRole[$id] = ReportDataController::getSubmitRole($id, 26);
+                }
                 else
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 0;
                 if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
@@ -70,7 +76,7 @@ class SeminarAndTrainingController extends Controller
             }
         }
         // dd($submissionStatus);
-        return view('submissions.hris.development.index', compact('developmentFinal', 'savedSeminars', 'savedTrainings', 'currentQuarterYear', 'submissionStatus'));
+        return view('submissions.hris.development.index', compact('developmentFinal', 'savedSeminars', 'savedTrainings', 'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     public function create(){

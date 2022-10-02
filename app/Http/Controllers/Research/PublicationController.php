@@ -70,14 +70,17 @@ class PublicationController extends Controller
         $value = array_merge($value, $values);
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($values['id'], 3))
+            if (LockController::isLocked($values['id'], 3)) {
                 $submissionStatus[3][$values['id']] = 1;
+                $submitRole[$values['id']] = ReportDataController::getSubmitRole($values['id'], 3);
+            }
             else
                 $submissionStatus[3][$values['id']] = 0;
             if (empty($reportdata->getDocuments(3, $values['id'])))
                 $submissionStatus[3][$values['id']] = 2;
-
+        
         foreach($researchFields as $field){
             if($field->field_type_name == "dropdown"){
                 $dropdownOptions = DropdownOption::where('id', $value[$field->name])->where('is_active', 1)->pluck('name')->first();
@@ -106,7 +109,7 @@ class PublicationController extends Controller
         }
 
         return view('research.publication.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus'));
+            'value', 'researchDocuments', 'submissionStatus', 'submitRole'));
     }
 
     /**

@@ -50,17 +50,20 @@ class AdminSpecialTaskController extends Controller
             ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($adminSpecialTasks as $adminTask) {
-            if (LockController::isLocked($adminTask->id, 29))
+            if (LockController::isLocked($adminTask->id, 29)) {
                 $submissionStatus[29][$adminTask->id] = 1;
+                $submitRole[$adminTask->id] = ReportDataController::getSubmitRole($adminTask->id, 29);
+            }
             else
                 $submissionStatus[29][$adminTask->id] = 0;
             if (empty($reportdata->getDocuments(29, $adminTask->id)))
                 $submissionStatus[29][$adminTask->id] = 2;
         }
         return view('ipcr.admin-special-tasks.index', compact('currentQuarterYear', 'adminSpecialTasks',
-            'tasksInColleges', 'submissionStatus'));
+            'tasksInColleges', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -90,7 +93,7 @@ class AdminSpecialTaskController extends Controller
 
         $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
-         $departments = Department::whereIn('college_id', $colleges)->get();
+        $departments = Department::whereIn('college_id', $colleges)->get();
 
         return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments', 'dropdown_options'));
     }

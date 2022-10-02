@@ -70,9 +70,12 @@ class CompletedController extends Controller
         $value = array_merge($value, $values);
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($value['id'], 2))
+            if (LockController::isLocked($value['id'], 2)) {
                 $submissionStatus[2][$value['id']] = 1;
+                $submitRole[$value['id']] = ReportDataController::getSubmitRole($value['id'], 2);
+            }
             else
                 $submissionStatus[2][$value['id']] = 0;
             if (empty($reportdata->getDocuments(2, $value['id'])))
@@ -106,7 +109,7 @@ class CompletedController extends Controller
         }
 
         return view('research.completed.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus'));
+            'value', 'researchDocuments', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -117,10 +120,6 @@ class CompletedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
-
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
-        }
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');

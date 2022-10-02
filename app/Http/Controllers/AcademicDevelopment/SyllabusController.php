@@ -58,10 +58,13 @@ class SyllabusController extends Controller
                     ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($syllabi as $syllabus) {
-            if (LockController::isLocked($syllabus->id, 16))
+            if (LockController::isLocked($syllabus->id, 16)) {
                 $submissionStatus[16][$syllabus->id] = 1;
+                $submitRole[$syllabus->id] = ReportDataController::getSubmitRole($syllabus->id, 16);
+            }
             else
                 $submissionStatus[16][$syllabus->id] = 0;
             if (empty($reportdata->getDocuments(16, $syllabus->id)))
@@ -69,7 +72,7 @@ class SyllabusController extends Controller
         }
 
         return view('academic-development.syllabi.index', compact('syllabi', 'year',
-            'syllabiYearsFinished', 'currentQuarterYear', 'submissionStatus'));
+            'syllabiYearsFinished', 'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -95,10 +98,7 @@ class SyllabusController extends Controller
             }
         }
 
-        if(session()->get('user_type') == 'Faculty Employee')
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
-        else
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
+        $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
         return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments' , 'dropdown_options'));
@@ -245,11 +245,8 @@ class SyllabusController extends Controller
 
         $syllabusDocuments = SyllabusDocument::where('syllabus_id', $syllabu->id)->get()->toArray();
 
-        if(session()->get('user_type') == 'Faculty Employee')
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
-        else
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
-            
+        $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+
         $departments = Department::whereIn('college_id', $colleges)->get();
 
         if ($syllabu->department_id != null) {

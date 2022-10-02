@@ -80,7 +80,7 @@
                                                     @if ($submissionStatus[30][$row->id] == 0)
                                                         <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
                                                     @elseif ($submissionStatus[30][$row->id] == 1)
-                                                        <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
+                                                        <a href="{{ url('submissions/check/30/'.$row->id) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted {{ $submitRole[$row->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                                     @elseif ($submissionStatus[30][$row->id] == 2)
                                                         <a href="{{ route('special-tasks.edit', $row->id).'?v='.$v }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                                     @endif

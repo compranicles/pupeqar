@@ -41,7 +41,7 @@
                                     @if ($submissionStatus[7][$values['id']] == 0)
                                         <a href="{{ url('submissions/check/7/'.$values['id']) }}" class="btn btn-sm btn-primary mr-3">Submit Research Copyright</a>
                                     @elseif ($submissionStatus[7][$values['id']] == 1)
-                                        <a href="{{ url('submissions/check/7/'.$values['id']) }}" class="btn btn-sm btn-success mr-3">Submitted</a>
+                                        <a href="{{ url('submissions/check/7/'.$values['id']) }}" class="btn btn-sm btn-success mr-3">Submitted {{ $submitRole[$values['id']] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                     @elseif ($submissionStatus[7][$values['id']] == 2)
                                         <a href="{{ route('research.copyright', $values['id']) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                     @endif        
@@ -50,9 +50,7 @@
                             </div>
                         </div>
                         <hr>
-                        <fieldset id="research">
                             @include('show', ['formFields' => $researchFields, 'value' => $values,])
-                        </fieldset>
                     </div>
                 </div>
             </div>

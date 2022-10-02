@@ -151,6 +151,17 @@
         },
     });
 
+    $("#collaborator").selectize({
+        delimiter: "/",
+        persist: false,
+        create: function (input) {
+            return {
+            value: input,
+            text: input,
+            };
+        },
+    });
+
     $("#authors_compilers").selectize({
         delimiter: "/",
         persist: false,

@@ -351,9 +351,12 @@ class ResearchController extends Controller
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 1))
+            if (LockController::isLocked($research->id, 1)) {
                 $submissionStatus[1][$research->id] = 1;
+                $submitRole[$research->id] = ReportDataController::getSubmitRole($research->id, 1);
+            }
             else
                 $submissionStatus[1][$research->id] = 0;
             if (empty($reportdata->getDocuments(1, $research->id)))
@@ -388,7 +391,7 @@ class ResearchController extends Controller
 
         return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments',
              'colleges', 'collegeOfDepartment', 'exists',
-             'submissionStatus'));
+             'submissionStatus', 'submitRole'));
     }
 
     /**

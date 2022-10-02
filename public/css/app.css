@@ -12932,7 +12932,23 @@ body {
   border-color: #a1cbef;
 }
 
-.main-nav-item + .nav-item a.active {
+.main-nav .nav-item {
+  border: 2px solid transparent;
+}
+
+.main-nav .nav-item:hover {
+  border-bottom: 2px solid #eeb510;
+}
+
+.main-nav .nav-item a.active {
+  background-color: var(--gray-dark);
+}
+
+.main-nav .menu-sub li a.active {
+  background-color: transparent;
+}
+
+.main-nav .menu-sub li a.active {
   border-bottom: 2px solid #eeb510;
 }
 
@@ -13086,10 +13102,6 @@ body {
 
 .nav-link #accomplishment:hover {
   color: rgba(0, 0, 0, 0.7);
-}
-
-.nav-item a.active {
-  border-bottom: 2px solid #eeb510;
 }
 
 .nav-item.sub.active {

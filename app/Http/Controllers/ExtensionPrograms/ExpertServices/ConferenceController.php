@@ -51,10 +51,13 @@ class ConferenceController extends Controller
                                         ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($expertServicesConference as $conference) {
-            if (LockController::isLocked($conference->id, 10))
+            if (LockController::isLocked($conference->id, 10)) {
                 $submissionStatus[10][$conference->id] = 1;
+                $submitRole[$conference->id] = ReportDataController::getSubmitRole($conference->id, 10);
+            }
             else
                 $submissionStatus[10][$conference->id] = 0;
             if (empty($reportdata->getDocuments(10, $conference->id)))
@@ -62,7 +65,7 @@ class ConferenceController extends Controller
         }
 
         return view('extension-programs.expert-services.conference.index', compact('expertServicesConference',
-             'currentQuarterYear', 'submissionStatus'));
+             'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -87,8 +90,10 @@ class ConferenceController extends Controller
             }
         }
 
-        // $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        $colleges = Employee::where('user_id', auth()->id())->pluck('college_id')->all();
+        if(session()->get('user_type') == 'Faculty Employee')
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
+        else
+            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
