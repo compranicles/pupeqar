@@ -94,8 +94,8 @@ class IndividualAccomplishmentReportExport implements FromView, WithEvents
                 }
             }
         }
-        elseif($type == "admin"){
-            if($level == "individual"){
+        elseif($this->type == "admin"){
+            if($this->level == "individual"){
                 // $source_type = "individual";
                 $data = User::where('id', $this->userID)->select('users.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as name"))->first();
                 $tableFormat = GenerateTable::where('type_id', 1)->where('is_individual', '!=',  0)->get();

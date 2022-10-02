@@ -35,7 +35,7 @@ class AwardController extends Controller
 
         $submissionStatus = [];
         foreach ($awardFinal as $award) {
-            $id = HRIS::where('hris_id', $award->EmployeeOutstandingAchievementID)->where('hris_type', 2)->where('user_id', $user->id)->pluck('id')->first();
+            $id = HRIS::where('hris_id', $award->EmployeeOutstandingAchievementID)->where('hris_type', 2)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
                 if (LockController::isLocked($id, 27))
                     $submissionStatus[27][$award->EmployeeOutstandingAchievementID] = 1;
@@ -379,7 +379,7 @@ class AwardController extends Controller
     public function edit($id){
         $user = User::find(auth()->id());
 
-        $awardID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->pluck('id')->first();
+        $awardID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->pluck('hris_id')->first();
 
         if(LockController::isLocked($awardID, 27)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -515,7 +515,7 @@ class AwardController extends Controller
     }
 
     public function delete($id){
-        $awardID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->pluck('id')->first();
+        $awardID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->pluck('hris_id')->first();
 
         if(LockController::isLocked($awardID, 27)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -556,6 +556,7 @@ class AwardController extends Controller
     public function submit($award_id){
         $user = User::find(auth()->id());
         $award = HRIS::where('id', $award_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $award->college_id)->get();
 
         $user = User::find(auth()->id());
 
@@ -596,16 +597,21 @@ class AwardController extends Controller
             'college_id' => $college_name,
         ];
 
-        $currentQuarterYear = Quarter::find(1);
+        $type = '';
+        if (count($employee) == 2){
+            $getUserTypeFromSession = session()->get('user_type');
+            if($getUserTypeFromSession == 'Faculty Employee')
+                $type = 'f';
+            elseif($getUserTypeFromSession == 'Admin Employee')
+                $type = 'a';
+        } elseif (count($employee) == 1) {
+            if ($employee[0]['type'] == 'F')
+                $type = 'f';
+            elseif ($employee[0]['type'] == 'A')
+                $type = 'a';
+        }
 
-        $getUserTypeFromSession = session()->get('user_type');
-        $format_type = '';
-        if($getUserTypeFromSession == 'Faculty Employee')
-            $format_type = 'f';
-        elseif($getUserTypeFromSession == 'Admin Employee')
-            $format_type = 'a';
-
-        Report::where('report_reference_id', $award_id)
+        Report::where('report_reference_id', $award->hris_id)
             ->where('report_category_id', 27)
             ->where('user_id', auth()->id())
             ->where('report_quarter', $currentQuarterYear->current_quarter)
@@ -617,10 +623,10 @@ class AwardController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $award->college_id,
             'department_id' => $award->department_id,
-            'format' => $format_type,
+            'format' => $type,
             'report_category_id' => 27,
             'report_code' => null,
-            'report_reference_id' => $award_id,
+            'report_reference_id' => $award->hris_id,
             'report_details' => json_encode($values),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
@@ -630,52 +636,6 @@ class AwardController extends Controller
 
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function save(Request $request, $id){
         if($request->document[0] == null){
@@ -757,7 +717,7 @@ class AwardController extends Controller
             'department_id' => $request->department_id,
             'report_category_id' => 27,
             'report_code' => null,
-            'report_reference_id' => $educID,
+            'report_reference_id' => $id,
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),

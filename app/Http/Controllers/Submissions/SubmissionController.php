@@ -2714,12 +2714,12 @@ class SubmissionController extends Controller
             case 1: case 2: case 3: case 4: case 5: case 6: case 7:
                 if ($report_values_array[1] == 1) {
                     $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                    $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                    $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 else {
                     $collegeAndDepartment = Research::select('college_id', 'department_id')->where('research_code', $report_values_array[0])->where('user_id', auth()->id())->first();
-                    $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                    $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                     $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                 }
                 $reportColumns = collect($report_controller->getColumnDataPerReportCategory($report_values_array[1]));
@@ -2744,10 +2744,20 @@ class SubmissionController extends Controller
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->delete();
-                if ($employee['type'] == 'F')
-                    $type = 'f';
-                elseif ($employee['type'] == 'A')
-                    $type = 'a';
+                if (count($employee) == 2){
+                    $getUserTypeFromSession = session()->get('user_type');
+                    $type = '';
+                    if($getUserTypeFromSession == 'Faculty Employee')
+                        $type = 'f';
+                    elseif($getUserTypeFromSession == 'Admin Employee')
+                        $type = 'a';
+                } elseif (count($employee) == 1) {
+                    if ($employee[0]['type'] == 'F')
+                        $type = 'f';
+                    elseif ($employee[0]['type'] == 'A')
+                        $type = 'a';
+                }
+
                 Report::create([
                     'user_id' =>  $user_id,
                     'sector_id' => $sector_id,
@@ -2770,86 +2780,86 @@ class SubmissionController extends Controller
                 switch($report_values_array[1]){
                     case 8:
                         $collegeAndDepartment = Invention::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 9:
                         $collegeAndDepartment = ExpertServiceConsultant::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 10:
                         $collegeAndDepartment = ExpertServiceConference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 11:
                         $collegeAndDepartment = ExpertServiceAcademic::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 12:
                         $collegeAndDepartment = ExtensionService::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 13:
                         $collegeAndDepartment = Partnership::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 14:
                         $collegeAndDepartment = Mobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 15:
                         $collegeAndDepartment = Reference::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 16:
                         $collegeAndDepartment = Syllabus::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     case 16:
                         $collegeAndDepartment = Syllabus::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 29:
                         $collegeAndDepartment = AdminSpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 30:
                         $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 31:
                         $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 32:
                         $collegeAndDepartment = SpecialTask::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 33:
                         $collegeAndDepartment = AttendanceFunction::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 34:
                         $collegeAndDepartment = IntraMobility::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                     case 38:
                         $collegeAndDepartment = OtherAccomplishment::select('college_id', 'department_id')->where('user_id', $user_id)->where('id', $report_values_array[2])->first();
-                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->first();
+                        $employee = Employee::where('user_id', auth()->id())->where('college_id', $collegeAndDepartment['college_id'])->get();
                         $sector_id = College::where('id', $collegeAndDepartment->college_id)->pluck('sector_id')->first();
                     break;
                 }
@@ -2864,10 +2874,19 @@ class SubmissionController extends Controller
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->delete();
-                if ($employee['type'] == 'F')
-                    $type = 'f';
-                elseif ($employee['type'] == 'A')
-                    $type = 'a';
+                if (count($employee) == 2){
+                    $getUserTypeFromSession = session()->get('user_type');
+                    $type = '';
+                    if($getUserTypeFromSession == 'Faculty Employee')
+                        $type = 'f';
+                    elseif($getUserTypeFromSession == 'Admin Employee')
+                        $type = 'a';
+                } elseif (count($employee) == 1) {
+                    if ($employee[0]['type'] == 'F')
+                        $type = 'f';
+                    elseif ($employee[0]['type'] == 'A')
+                        $type = 'a';
+                }
                 Report::create([
                     'user_id' =>  $user_id,
                     'sector_id' => $sector_id,

@@ -49,7 +49,7 @@ class SeminarAndTrainingController extends Controller
 
         $submissionStatus = [];
         foreach ($developmentFinal as $development) {
-            $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 4)->where('user_id', $user->id)->pluck('id')->first();
+            $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 4)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
                 if (LockController::isLocked($id, 25))
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 1;
@@ -59,7 +59,7 @@ class SeminarAndTrainingController extends Controller
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 2;
             }
 
-            $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 5)->where('user_id', $user->id)->pluck('id')->first();
+            $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 5)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
                 if (LockController::isLocked($id, 26))
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 1;
@@ -740,9 +740,9 @@ class SeminarAndTrainingController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('id')->first();
+        $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('hris_id')->first();
         if(is_null($developmentID))
-            $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->pluck('id')->first();
+            $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->pluck('hris_id')->first();
 
         if(LockController::isLocked($developmentID, 25)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -1148,9 +1148,9 @@ class SeminarAndTrainingController extends Controller
 
     public function delete($id){
 
-        $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('id')->first();
+        $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '4')->pluck('hris_id')->first();
         if(is_null($developmentID))
-            $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->pluck('id')->first();
+            $developmentID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->pluck('hris_id')->first();
 
         if(LockController::isLocked($developmentID, 25)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -1210,7 +1210,7 @@ class SeminarAndTrainingController extends Controller
     public function submitSeminar($development_id){
         $user = User::find(auth()->id());
         $development = HRIS::where('id', $development_id)->first();
-        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->get();
 
         $db_ext = DB::connection('mysql_external');
 
@@ -1253,16 +1253,25 @@ class SeminarAndTrainingController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        Report::where('report_reference_id', $development_id)
+        Report::where('report_reference_id', $development->hris_id)
             ->where('report_category_id', 25)
             ->where('user_id', auth()->id())
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-        if ($employee['type'] == 'F')
+        $type = '';
+        if (count($employee) == 2){
+            $getUserTypeFromSession = session()->get('user_type');
+            if($getUserTypeFromSession == 'Faculty Employee')
                 $type = 'f';
-        elseif ($employee['type'] == 'A')
-            $type = 'a';
+            elseif($getUserTypeFromSession == 'Admin Employee')
+                $type = 'a';
+        } elseif (count($employee) == 1) {
+            if ($employee[0]['type'] == 'F')
+                $type = 'f';
+            elseif ($employee[0]['type'] == 'A')
+                $type = 'a';
+        }
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
@@ -1271,7 +1280,7 @@ class SeminarAndTrainingController extends Controller
             'format' => $type,
             'report_category_id' => 25,
             'report_code' => null,
-            'report_reference_id' => $development_id,
+            'report_reference_id' => $development->hris_id,
             'report_details' => json_encode($values),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
@@ -1285,7 +1294,7 @@ class SeminarAndTrainingController extends Controller
     public function submitTraining($development_id){
         $user = User::find(auth()->id());
         $development = HRIS::where('id', $development_id)->first();
-        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $development->college_id)->get();
 
         $db_ext = DB::connection('mysql_external');
 
@@ -1328,16 +1337,25 @@ class SeminarAndTrainingController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        Report::where('report_reference_id', $development_id)
+        Report::where('report_reference_id', $development->hris_id)
             ->where('report_category_id', 26)
             ->where('user_id', auth()->id())
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-        if ($employee['type'] == 'F')
-            $type = 'f';
-        elseif ($employee['type'] == 'A')
-            $type = 'a';
+        $type = '';
+        if (count($employee) == 2){
+            $getUserTypeFromSession = session()->get('user_type');
+            if($getUserTypeFromSession == 'Faculty Employee')
+                $type = 'f';
+            elseif($getUserTypeFromSession == 'Admin Employee')
+                $type = 'a';
+        } elseif (count($employee) == 1) {
+            if ($employee[0]['type'] == 'F')
+                $type = 'f';
+            elseif ($employee[0]['type'] == 'A')
+                $type = 'a';
+        }
         Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
@@ -1346,7 +1364,7 @@ class SeminarAndTrainingController extends Controller
             'format' => $type,
             'report_category_id' => 26,
             'report_code' => null,
-            'report_reference_id' => $development_id,
+            'report_reference_id' => $development->hris_id,
             'report_details' => json_encode($values),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),

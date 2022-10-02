@@ -617,23 +617,22 @@ class ReportDataController extends Controller
                 break;
             case 24:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('submissions.educ.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('submissions.educ.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 25:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('submissions.development.seminar.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('submissions.development.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 26:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('submissions.development.training.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('submissions.development.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 27:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('submissions.award.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('submissions.award.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 28:
                 $report = Report::where('id', $report_id)->first();
-                dd($report);
                 return redirect()->route('submissions.officership.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 29:
