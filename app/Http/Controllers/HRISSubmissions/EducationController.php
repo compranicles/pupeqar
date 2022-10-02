@@ -58,7 +58,7 @@ class EducationController extends Controller
 
         $submissionStatus = [];
         foreach ($educationFinal as $education) {
-            $id = HRIS::where('hris_id', $education->EmployeeEducationBackgroundID)->where('hris_type', 1)->where('user_id', $user->id)->pluck('id')->first();
+            $id = HRIS::where('hris_id', $education->EmployeeEducationBackgroundID)->where('hris_type', 1)->where('user_id', $user->id)->pluck('hris_id')->first();
             $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code', '$education->EmployeeEducationBackgroundID'");
             if($id != ''){
                 if (LockController::isLocked($id, 24))
@@ -576,7 +576,7 @@ class EducationController extends Controller
     public function edit($id){
         $user = User::find(auth()->id());
 
-        $educID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->pluck('id')->first();
+        $educID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->pluck('hris_id')->first();
 
         if(LockController::isLocked($educID, 24)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -792,7 +792,7 @@ class EducationController extends Controller
     }
 
     public function delete($id){
-        $educID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->pluck('id')->first();
+        $educID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->pluck('hris_id')->first();
 
         if(LockController::isLocked($educID, 24)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -833,6 +833,7 @@ class EducationController extends Controller
     public function submit($education_id){
         $user = User::find(auth()->id());
         $education = HRIS::where('id', $education_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $education->college_id)->get();
 
         $user = User::find(auth()->id());
 
@@ -904,16 +905,21 @@ class EducationController extends Controller
             'college_id' => $college_name,
         ];
 
-        $currentQuarterYear = Quarter::find(1);
-        $getUserTypeFromSession = session()->get('user_type');
-        $format_type = '';
-        if($getUserTypeFromSession == 'Faculty Employee')
-            $format_type = 'f';
-        elseif($getUserTypeFromSession == 'Admin Employee')
-            $format_type = 'a';
+        $type = '';
+        if (count($employee) == 2){
+            $getUserTypeFromSession = session()->get('user_type');
+            if($getUserTypeFromSession == 'Faculty Employee')
+                $type = 'f';
+            elseif($getUserTypeFromSession == 'Admin Employee')
+                $type = 'a';
+        } elseif (count($employee) == 1) {
+            if ($employee[0]['type'] == 'F')
+                $type = 'f';
+            elseif ($employee[0]['type'] == 'A')
+                $type = 'a';
+        }
 
-
-        Report::where('report_reference_id', $education_id)
+        Report::where('report_reference_id', $education->hris_id)
             ->where('report_category_id', 24)
             ->where('user_id', auth()->id())
             ->where('report_quarter', $currentQuarterYear->current_quarter)
@@ -925,10 +931,10 @@ class EducationController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $education->college_id,
             'department_id' => $education->department_id,
-            'format' => $format_type,
+            'format' => $type,
             'report_category_id' => 24,
             'report_code' => null,
-            'report_reference_id' => $education_id,
+            'report_reference_id' => $education->hris_id,
             'report_details' => json_encode($values),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),

@@ -41,7 +41,7 @@ class OfficershipController extends Controller
 
         $submissionStatus = [];
         foreach ($officershipFinal as $officership) {
-            $id = HRIS::where('hris_id', $officership->EmployeeOfficershipMembershipID)->where('hris_type', 3)->where('user_id', $user->id)->pluck('id')->first();
+            $id = HRIS::where('hris_id', $officership->EmployeeOfficershipMembershipID)->where('hris_type', 3)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
                 if (LockController::isLocked($id, 28))
                     $submissionStatus[28][$officership->EmployeeOfficershipMembershipID] = 1;
@@ -420,7 +420,7 @@ class OfficershipController extends Controller
     public function edit($id){
         $currentQuarterYear = Quarter::find(1);
 
-        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('id')->first();
+        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('hris_id')->first();
 
         if(LockController::isLocked($officershipID, 28)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -570,7 +570,7 @@ class OfficershipController extends Controller
     }
 
     public function delete($id){
-        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('id')->first();
+        $officershipID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->pluck('hris_id')->first();
 
         if(LockController::isLocked($officershipID, 28)){
             return redirect()->back()->with('error', 'The accomplishment report has already been submitted.');
@@ -611,6 +611,7 @@ class OfficershipController extends Controller
     public function submit($officership_id){
         $user = User::find(auth()->id());
         $officership = HRIS::where('id', $officership_id)->first();
+        $employee = Employee::where('user_id', auth()->id())->where('college_id', $officership->college_id)->get();
 
         $user = User::find(auth()->id());
 
@@ -681,15 +682,21 @@ class OfficershipController extends Controller
         ];
 
         $currentQuarterYear = Quarter::find(1);
-        $getUserTypeFromSession = session()->get('user_type');
-        $format_type = '';
-        if($getUserTypeFromSession == 'Faculty Employee')
-            $format_type = 'f';
-        elseif($getUserTypeFromSession == 'Admin Employee')
-            $format_type = 'a';
+        $type = '';
+        if (count($employee) == 2){
+            $getUserTypeFromSession = session()->get('user_type');
+            if($getUserTypeFromSession == 'Faculty Employee')
+                $type = 'f';
+            elseif($getUserTypeFromSession == 'Admin Employee')
+                $type = 'a';
+        } elseif (count($employee) == 1) {
+            if ($employee[0]['type'] == 'F')
+                $type = 'f';
+            elseif ($employee[0]['type'] == 'A')
+                $type = 'a';
+        }
 
-
-        Report::where('report_reference_id', $officership_id)
+        Report::where('report_reference_id', $officership->hris_id)
             ->where('report_category_id', 28)
             ->where('user_id', auth()->id())
             ->where('report_quarter', $currentQuarterYear->current_quarter)
@@ -701,10 +708,10 @@ class OfficershipController extends Controller
             'sector_id' => $sector_id,
             'college_id' => $officership->college_id,
             'department_id' => $officership->department_id,
-            'format' => $format_type,
+            'format' => $type,
             'report_category_id' => 28,
             'report_code' => null,
-            'report_reference_id' => $officership_id,
+            'report_reference_id' => $officership->hris_id,
             'report_details' => json_encode($values),
             'report_documents' => json_encode($filenames),
             'report_date' => date("Y-m-d", time()),
@@ -796,7 +803,7 @@ class OfficershipController extends Controller
             'department_id' => $request->department_id,
             'report_category_id' => 28,
             'report_code' => null,
-            'report_reference_id' => $educID,
+            'report_reference_id' => $id,
             'report_details' => json_encode($data),
             'report_documents' => json_encode(collect($filenames)),
             'report_date' => date("Y-m-d", time()),
