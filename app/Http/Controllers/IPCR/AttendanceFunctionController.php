@@ -70,24 +70,29 @@ class AttendanceFunctionController extends Controller
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($attendedFunctions as $attendedFunction) {
-            if (LockController::isLocked($attendedFunction->id, 33))
+            if (LockController::isLocked($attendedFunction->id, 33)) {
                 $submissionStatus[33][$attendedFunction->id] = 1;
+                $submitRole[$attendedFunction->id] = ReportDataController::getSubmitRole($attendedFunction->id, 33);
+            }
             else
                 $submissionStatus[33][$attendedFunction->id] = 0;
             if (empty($reportdata->getDocuments(33, $attendedFunction->id)) && $attendedFunction->status == 291) // 291 = Attended
                 $submissionStatus[33][$attendedFunction->id] = 2;
             elseif ($attendedFunction->status == 292 && LockController::isNotLocked($attendedFunction->id, 33))
                 $submissionStatus[33][$attendedFunction->id] = 0;
-            elseif (LockController::isLocked($attendedFunction->id, 33) && $attendedFunction->status == 292) //292 = Not Attended
+            elseif (LockController::isLocked($attendedFunction->id, 33) && $attendedFunction->status == 292) {
                 $submissionStatus[33][$attendedFunction->id] = 1;
+                $submitRole[$attendedFunction->id] = ReportDataController::getSubmitRole($attendedFunction->id, 33);
+            } //292 = Not Attended
         }
 
         return view('ipcr.attendance-function.index', compact('collegesID',
                                     'attendedFunctions', 'currentQuarterYear', 'roles', 
                                     'universityFunctions', 'collegeFunctions', 'submissionStatus', 
-                                    'departmentFunctions', 'departmentsID', 'departments'));
+                                    'departmentFunctions', 'departmentsID', 'departments', 'submitRole'));
     }
 
     /**

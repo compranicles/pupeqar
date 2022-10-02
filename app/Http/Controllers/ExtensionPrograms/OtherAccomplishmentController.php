@@ -53,10 +53,13 @@ class OtherAccomplishmentController extends Controller
                                 ->orderBy('updated_at', 'desc')->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($otherAccomplishments as $otherAccomplishment) {
-            if (LockController::isLocked($otherAccomplishment->id, 38))
+            if (LockController::isLocked($otherAccomplishment->id, 38)) {
                 $submissionStatus[38][$otherAccomplishment->id] = 1;
+                $submitRole[$otherAccomplishment->id] = ReportDataController::getSubmitRole($otherAccomplishment->id, 38);
+            }
             else
                 $submissionStatus[38][$otherAccomplishment->id] = 0;
             if (empty($reportdata->getDocuments(38, $otherAccomplishment->id)))
@@ -65,7 +68,7 @@ class OtherAccomplishmentController extends Controller
 
 
         return view('extension-programs.other-accomplishments.index', compact('otherAccomplishments', 'currentQuarterYear',
-            'submissionStatus'));
+            'submissionStatus', 'submitRole'));
     }
 
     /**

@@ -57,10 +57,13 @@ class InventionController extends Controller
                         ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($inventions as $invention) {
-            if (LockController::isLocked($invention->id, 8))
+            if (LockController::isLocked($invention->id, 8)) {
                 $submissionStatus[8][$invention->id] = 1;
+                $submitRole[$invention->id] = ReportDataController::getSubmitRole($invention->id, 8);
+            }
             else
                 $submissionStatus[8][$invention->id] = 0;
             if (empty($reportdata->getDocuments(8, $invention->id)))
@@ -68,7 +71,7 @@ class InventionController extends Controller
         }
 
         return view('inventions.index', compact('inventions', 'year', 'currentQuarterYear',
-            'submissionStatus'));
+            'submissionStatus', 'submitRole'));
 
     }
 

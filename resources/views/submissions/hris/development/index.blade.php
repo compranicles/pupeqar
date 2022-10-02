@@ -77,7 +77,7 @@
                                                                         @if ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 0 )
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 1 )
-                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted {{ $submitRole[$development->EmployeeTrainingProgramID] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 2 )
                                                                             <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
                                                                         @endif
@@ -88,7 +88,7 @@
                                                                         @if ( $submissionStatus[26][$development->EmployeeTrainingProgramID] == 0)
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">Submit</a>
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 1)
-                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted</a>
+                                                                            <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted {{ $submitRole[$development->EmployeeTrainingProgramID] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 2)
                                                                             <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
                                                                         @endif

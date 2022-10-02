@@ -50,10 +50,13 @@ class AcademicController extends Controller
                                         ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($expertServicesAcademic as $academic) {
-            if (LockController::isLocked($academic->id, 11))
+            if (LockController::isLocked($academic->id, 11)) {
                 $submissionStatus[11][$academic->id] = 1;
+                $submitRole[$academic->id] = ReportDataController::getSubmitRole($academic->id, 11);
+            }
             else
                 $submissionStatus[11][$academic->id] = 0;
             if (empty($reportdata->getDocuments(11, $academic->id)))
@@ -61,7 +64,7 @@ class AcademicController extends Controller
         }
 
         return view('extension-programs.expert-services.academic.index', compact('expertServicesAcademic',
-             'currentQuarterYear', 'submissionStatus'));
+             'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**

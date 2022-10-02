@@ -42,7 +42,7 @@
                 if ("{{auth()->user()->middle_name}}" != '') {
                     middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
                 }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
+                var fullname = "{{ auth()->user()->last_name.', '.auth()->user()->first_name.' ' }}" + middle;
                 $("#collaborator")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#collaborator")[0].selectize.addItem(fullname);
             });

@@ -60,10 +60,13 @@ class SpecialTaskController extends Controller
                                 ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
             foreach ($specialTasks as $task) {
-                if (LockController::isLocked($task->id, 30))
+                if (LockController::isLocked($task->id, 30)) {
                     $submissionStatus[30][$task->id] = 1;
+                    $submitRole[$task->id] = ReportDataController::getSubmitRole($task->id, 30);
+                }
                 else
                     $submissionStatus[30][$task->id] = 0;
                 if (empty($reportdata->getDocuments(30, $task->id)))
@@ -71,7 +74,7 @@ class SpecialTaskController extends Controller
             }
 
         return view('ipcr.special-tasks.index', compact('roles', 'currentQuarterYear', 'categories',
-            'specialTasks', 'tasks_in_colleges', 'submissionStatus', 'version'));
+            'specialTasks', 'tasks_in_colleges', 'submissionStatus', 'version', 'submitRole'));
     }
 
     /**

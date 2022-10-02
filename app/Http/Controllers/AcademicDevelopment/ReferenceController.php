@@ -50,17 +50,20 @@ class ReferenceController extends Controller
                                     ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($allRtmmi as $rtmmi) {
-            if (LockController::isLocked($rtmmi->id, 15))
+            if (LockController::isLocked($rtmmi->id, 15)) {
                 $submissionStatus[15][$rtmmi->id] = 1;
+                $submitRole[$rtmmi->id] = ReportDataController::getSubmitRole($rtmmi->id, 15);
+            }
             else
                 $submissionStatus[15][$rtmmi->id] = 0;
             if (empty($reportdata->getDocuments(15, $rtmmi->id)))
                 $submissionStatus[15][$rtmmi->id] = 2;
         }
 
-        return view('academic-development.references.index', compact('allRtmmi', 'currentQuarterYear', 'submissionStatus'));
+        return view('academic-development.references.index', compact('allRtmmi', 'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -85,10 +88,7 @@ class ReferenceController extends Controller
             }
         }
 
-        if(session()->get('user_type') == 'Faculty Employee')
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
-        else
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
+        $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
@@ -251,10 +251,7 @@ class ReferenceController extends Controller
 
         $category = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        if(session()->get('user_type') == 'Faculty Employee')
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
-        else
-            $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
+        $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 

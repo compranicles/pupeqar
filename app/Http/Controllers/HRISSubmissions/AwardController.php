@@ -19,6 +19,7 @@ use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
+use App\Http\Controllers\Reports\ReportDataController;
 
 class AwardController extends Controller
 {
@@ -34,18 +35,21 @@ class AwardController extends Controller
         $savedReports = HRIS::where('hris_type', '2')->where('user_id', $user->id)->pluck('hris_id')->all();
 
         $submissionStatus = [];
+        $submitRole = "";
         foreach ($awardFinal as $award) {
             $id = HRIS::where('hris_id', $award->EmployeeOutstandingAchievementID)->where('hris_type', 2)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){
-                if (LockController::isLocked($id, 27))
+                if (LockController::isLocked($id, 27)) {
                     $submissionStatus[27][$award->EmployeeOutstandingAchievementID] = 1;
+                    $submitRole[$id] = ReportDataController::getSubmitRole($id, 27);
+                }
                 else
                     $submissionStatus[27][$award->EmployeeOutstandingAchievementID] = 0;
                 if ($award->Attachment == null)
                     $submissionStatus[27][$award->EmployeeOutstandingAchievementID] = 2;
             }
         }
-        return view('submissions.hris.award.index', compact('awardFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus'));
+        return view('submissions.hris.award.index', compact('awardFinal', 'savedReports', 'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     public function create(){

@@ -48,6 +48,7 @@ class MobilityController extends Controller
                                 ->orderBy('updated_at', 'desc')->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($mobilities as $mobility) {
             if($mobility->classification_of_person == '298'){
@@ -59,8 +60,10 @@ class MobilityController extends Controller
                     $submissionStatus[35][$mobility->id] = 2;
             }
             else{
-                if (LockController::isLocked($mobility->id, 14))
+                if (LockController::isLocked($mobility->id, 14)) {
                     $submissionStatus[14][$mobility->id] = 1;
+                    $submitRole[$mobility->id] = ReportDataController::getSubmitRole($mobility->id, 14);
+                }
                 else
                     $submissionStatus[14][$mobility->id] = 0;
                 if (empty($reportdata->getDocuments(14, $mobility->id)))
@@ -69,7 +72,7 @@ class MobilityController extends Controller
         }
 
         return view('extension-programs.mobility.index', compact('mobilities', 'currentQuarterYear',
-            'submissionStatus'));
+            'submissionStatus', 'submitRole'));
     }
 
     /**

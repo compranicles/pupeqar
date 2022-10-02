@@ -51,18 +51,21 @@ class ConsultantController extends Controller
                                         ->get();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($expertServicesConsultant as $consultant) {
-            if (LockController::isLocked($consultant->id, 9))
+            if (LockController::isLocked($consultant->id, 9)) {
                 $submissionStatus[9][$consultant->id] = 1;
+                $submitRole[$consultant->id] = ReportDataController::getSubmitRole($consultant->id, 9);
+            }
             else
                 $submissionStatus[9][$consultant->id] = 0;
             if (empty($reportdata->getDocuments(9, $consultant->id)))
-                $submissionStatus[9][$consultant->id] = 2;
+                $submissionStatus[9][$consultant->id] = 2;    
         }
 
         return view('extension-programs.expert-services.consultant.index', compact('expertServicesConsultant',
-             'currentQuarterYear', 'submissionStatus'));
+             'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**

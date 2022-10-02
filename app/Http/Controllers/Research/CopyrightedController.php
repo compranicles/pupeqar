@@ -67,9 +67,12 @@ class CopyrightedController extends Controller
         $values = array_merge($research->toArray(), $values->toArray());
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
-            if (LockController::isLocked($values['id'], 7))
+            if (LockController::isLocked($values['id'], 7)) {
                 $submissionStatus[7][$values['id']] = 1;
+                $submitRole[$values['id']] = ReportDataController::getSubmitRole($values['id'], 7);
+            }
             else
                 $submissionStatus[7][$values['id']] = 0;
             if (empty($reportdata->getDocuments(7, $values['id'])))
@@ -103,7 +106,7 @@ class CopyrightedController extends Controller
         }
 
         return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
-            'researchDocuments', 'submissionStatus'));
+            'researchDocuments', 'submissionStatus', 'submitRole'));
     }
 
     /**

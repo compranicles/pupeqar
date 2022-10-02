@@ -50,17 +50,20 @@ class UtilizationController extends Controller
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
         $submissionStatus = [];
+        $submitRole = "";
         $reportdata = new ReportDataController;
         foreach ($researchutilizations as $utilization) {
-            if (LockController::isLocked($utilization->id, 6))
+            if (LockController::isLocked($utilization->id, 6)) {
                 $submissionStatus[6][$utilization->id] = 1;
+                $submitRole[$utilization->id] = ReportDataController::getSubmitRole($utilization->id, 6);
+            }
             else
                 $submissionStatus[6][$utilization->id] = 0;
             if (empty($reportdata->getDocuments(6, $utilization->id)))
                 $submissionStatus[6][$utilization->id] = 2;
         }
         return view('research.utilization.index', compact('research', 'researchutilizations',
-            'currentQuarterYear', 'submissionStatus'));
+            'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**
