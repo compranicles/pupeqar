@@ -43,7 +43,7 @@ class IpqmsoController extends Controller
             ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
             ->join('users', 'reports.user_id', 'users.id')
             ->whereIn('sector_approval', [1,2])->where('ipqmso_approval', null)
-            ->orderBy('reports.updated_at', 'DESC')
+            ->orderBy('reports.created_at', 'DESC')
             ->get();
 
         //role and department/ college id

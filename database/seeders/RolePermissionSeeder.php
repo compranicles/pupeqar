@@ -88,7 +88,7 @@ class RolePermissionSeeder extends Seeder
         RolePermission::insert(['role_id' => '6', 'permission_id' => 63]);
         RolePermission::insert(['role_id' => '6', 'permission_id' => 64]);
         RolePermission::insert(['role_id' => '6', 'permission_id' => 66]);
-        RolePermission::insert(['role_id' => '8', 'permission_id' => 68]);
+        RolePermission::insert(['role_id' => '6', 'permission_id' => 68]);
 
         /***** Sector role permissions *****/
         RolePermission::insert(['role_id' => '7', 'permission_id' => 41]);
