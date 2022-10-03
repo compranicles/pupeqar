@@ -634,7 +634,7 @@ class ReportDataController extends Controller
                 break;
             case 28:
                 $report = Report::where('id', $report_id)->first();
-                return redirect()->route('submissions.officership.add', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
+                return redirect()->route('submissions.officership.edit', $report->report_reference_id)->with('denied', DenyReason::where('report_id', $report_id)->first());
                 break;
             case 29:
                 $report = Report::where('id', $report_id)->first();
