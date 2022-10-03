@@ -546,6 +546,7 @@ class AwardController extends Controller
     }
 
     public function check($id){
+        dd($id);
         $award = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->first();
 
         if(LockController::isLocked($award->id, 27))
@@ -575,17 +576,41 @@ class AwardController extends Controller
         $college_name = College::where('id', $award->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $img = Image::make($awardData[0]->Attachment);
-        $fileName = 'HRIS-OAA-'.now()->timestamp.uniqid().'.jpeg';
-        $newPath = storage_path().'/app/documents/'.$fileName;
-        $img->save($newPath);
+        $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
+        if(in_array($awardData[0]->MimeType, $imagejpeg)){
+            $file = Image::make($awardData[0]->Attachment);
+            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.jpeg';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($awardData[0]->MimeType == 'image/png' || $awardData['0']->MimeType == 'image/x-png'){
+            $file = Image::make($awardData[0]->Attachment);
+            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
+        elseif($awardData[0]->MimeType == 'application/pdf'){
+            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.pdf';
+            file_put_contents(storage_path().'/app/documents/'.$fileName, $awardData[0]->Attachment);
+            $file = true;
+        } else {
+            $file = Image::make($awardData[0]->Attachment);
+            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
+            $newPath = storage_path().'/app/documents/'.$fileName;
+            $file->save($newPath);
+        }
 
-        HRISDocument::create([
-            'hris_form_id' => 2,
-            'reference_id' => $award_id,
-            'filename' => $fileName,
-        ]);
-        array_push($filenames, $fileName);
+        if(isset($file)){
+            HRISDocument::create([
+                'hris_form_id' => 2,
+                'reference_id' => $award_id,
+                'filename' => $fileName,
+            ]);
+            array_push($filenames, $fileName);
+        }
+        else{
+            return false;
+        }
 
         $values = [
             'award' =>  $awardData[0]->Achievement,

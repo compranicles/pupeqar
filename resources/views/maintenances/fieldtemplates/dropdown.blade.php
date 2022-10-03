@@ -9,7 +9,6 @@
                 <i class="bi bi-info-circle-fill text-primary" style="font-size: 1.10em;" role="button" data-bs-toggle="modal" data-bs-target="#typeDefinition"></i>
             </span>    
             @endif
-            <br>
             @if ($fieldInfo->h_r_i_s_form_id == 3 && $fieldInfo->name == 'level')
             <span class="form-notes">
                 Select level of the organization.

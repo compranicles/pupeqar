@@ -94,6 +94,7 @@
               valueField: 'id',
               labelField: 'fullname',
               sortField: "fullname",
+              searchField: "fullname",
               options: @json($allUsers),
           });
         </script>

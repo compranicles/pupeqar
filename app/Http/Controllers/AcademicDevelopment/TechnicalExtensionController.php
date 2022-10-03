@@ -17,7 +17,7 @@ use App\Models\{
     TechnicalExtension,
     TechnicalExtensionDocument,
     TemporaryFile,
-    FormBuilder\AcademicDevelopmentForm,
+    FormBuilder\ExtensionProgramForm,
     FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Quarter,
@@ -71,9 +71,9 @@ class TechnicalExtensionController extends Controller
     {
         $this->authorize('create', TechnicalExtension::class);
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
+        $extensionFields = DB::select("CALL get_extension_program_fields_by_form_id(12)");
 
         $dropdown_options = [];
         foreach($extensionFields as $field){
@@ -116,7 +116,7 @@ class TechnicalExtensionController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -164,9 +164,9 @@ class TechnicalExtensionController extends Controller
         if (auth()->id() !== $technical_extension->user_id)
             abort(403);
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
+        $extensionFields = DB::select("CALL get_extension_program_fields_by_form_id(12)");
 
         $documents = TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->get()->toArray();
 
@@ -219,9 +219,9 @@ class TechnicalExtensionController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
-        $extensionFields = DB::select("CALL get_academic_development_fields_by_form_id(7)");
+        $extensionFields = DB::select("CALL get_extension_program_fields_by_form_id(12)");
 
         $dropdown_options = [];
         foreach($extensionFields as $field){
@@ -265,7 +265,7 @@ class TechnicalExtensionController extends Controller
             'total_profit' => $value,
         ]);
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
@@ -315,7 +315,7 @@ class TechnicalExtensionController extends Controller
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
         }
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
         TechnicalExtensionDocument::where('technical_extension_id', $technical_extension->id)->delete();
         $technical_extension->delete();
@@ -328,7 +328,7 @@ class TechnicalExtensionController extends Controller
     public function removeDoc($filename){
         $this->authorize('delete', TechnicalExtension::class);
 
-        if(AcademicDevelopmentForm::where('id', 7)->pluck('is_active')->first() == 0)
+        if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
         TechnicalExtensionDocument::where('filename', $filename)->delete();
 

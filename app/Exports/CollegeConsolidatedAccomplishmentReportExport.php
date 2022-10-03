@@ -127,8 +127,8 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
                                     ->orWhere('reports.extensionist_approval', 1)
                                     ->orWhere('reports.dean_approval', 1);
                             })
-                            ->where('reports.report_year', $yearGenerate)
-                            ->where('reports.report_quarter', $quarterGenerate)
+                            ->where('reports.report_year', $this->yearGenerate)
+                            ->where('reports.report_quarter', $this->quarterGenerate)
                             ->join('users', 'users.id', 'reports.user_id')
                             ->join('departments', 'departments.id', 'reports.department_id')
                             ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))

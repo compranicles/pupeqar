@@ -43,7 +43,7 @@ class AcademicDevelopmentFormSeeder extends Seeder
         ]);
         AcademicDevelopmentForm::insert([
             'label' => 'Awards and Recognition Received by the College and Department',
-            'table_name' => 'college_department_awards',
+            'table_name' => 'colnsionlege_department_awards',
             'is_active' => 1
         ]);
     }
