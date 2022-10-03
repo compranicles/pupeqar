@@ -26,20 +26,26 @@ class RegistrationController extends Controller
         return view('hris-regi.check');
     }
 
+    // CollegeId 211 159 137 for october 4
     public function verify(Request $request){
-
+        
         $user = $this->db_ext->update("SET NOCOUNT ON; EXEC ValidateLogIn N'$request->email',N'$request->password' ");
-
+        
         $userLocal =  User::where('email', $request->email)->first();
-
+        
         if ($user == '-1') {
-
+            
             if (!empty($userLocal)){
                 Auth::login($userLocal);
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
+
                 session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
-                    return redirect()->route('home');
+                    if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->exists()){
+                        return redirect()->route('home');
+                        } else {
+                            return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
+                        }
                 }
                 return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
@@ -52,7 +58,11 @@ class RegistrationController extends Controller
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
                 session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
+                    if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->exists()){
                     return redirect()->route('home');
+                    } else {
+                        return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
+                    }
                 }
                 return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
