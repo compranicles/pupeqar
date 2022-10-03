@@ -121,7 +121,25 @@ class ExtensionServiceController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        $allUsers = User::select('id', DB::raw("CONCAT(last_name, ', ', first_name, ' ', SUBSTR(middle_name,1,1), '.') as fullname"))->get();
+        $allUsers = [];
+        $users = User::all();
+        $i = 0;
+        foreach($users as $user) {
+            if ($user->middle_name != null) {
+                $userFullName = $user->last_name.', '.$user->first_name.' '.substr($user->middle_name, 0, 1).'.';
+                if ($user->suffix != null) {
+                    $userFullName = $user->last_name.', '.$user->first_name.' '.substr($user->middle_name, 0, 1).'. '.$user->suffix;
+                }
+            }
+            else {
+                if ($user->suffix != null) {
+                    $userFullName = $user->last_name.', '.$user->first_name.' '.$user->suffix;
+                } else {
+                    $userFullName = $user->last_name.', '.$user->first_name;
+                }
+            }
+            $allUsers[$i++] = array("id" => $user->id, 'fullname' => $userFullName);
+        }
 
         return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options', 'allUsers'));
     }

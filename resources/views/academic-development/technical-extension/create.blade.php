@@ -15,7 +15,7 @@
                             </div> 
                             <hr>
                             @csrf
-                            @include('form', ['formFields' => $extensionFields, 'colaccomp' => 1])
+                            @include('form', ['formFields' => $extensionFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">

@@ -126,16 +126,27 @@ class InviteController extends Controller
             ->first();
             $researchersExplode = explode("/", $researchers);
 
-            $researcherToRemove = User::select('users.first_name', 'users.last_name', 'users.middle_name')
-                ->where('users.id', $request->input('user_id'))
+            $user = User::
+                where('users.id', $request->input('user_id'))
                 ->first();
-            
+
             $middle = '';
-            if ($researcherToRemove['middle_name'] != '') {
-                $middle = substr($researcherToRemove['middle_name'],0,1).'.';
+            if ($user['middle_name'] != null) {
+                $middle = substr($user['middle_name'],0,1).'.';
+                $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$middle;
+                if ($user['suffix'] != null) {
+                    $middle = substr($user['middle_name'],0,1).'.';
+                    $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$middle.' '.$user['suffix'];
+                }
             }
-            $researcherToRemove = $researcherToRemove->last_name.', '.$researcherToRemove->first_name.' '.$middle;
-            
+            else {
+                if ($user['suffix'] != null) {
+                    $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$user['suffix'];
+                } else {
+                    $researcherToRemove = $user['last_name'].', '.$user['first_name'];
+                }
+            }
+
             foreach($researchersExplode as $key => $researcher){
                 if ($researcher == $researcherToRemove) {
                         unset($researchersExplode[$key]); 
