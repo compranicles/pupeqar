@@ -2,7 +2,7 @@
 
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
-        <label class="font-weight-bold" for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span> <br>
+        <label class="font-weight-bold" for="{{ $fieldInfo->name }}" >{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if (isset($fieldInfo->h_r_i_s_form_id))
             @if ($fieldInfo->h_r_i_s_form_id == 4 && $fieldInfo->name == 'type')
             <span>
@@ -10,17 +10,20 @@
             </span>    
             @endif
             @if ($fieldInfo->h_r_i_s_form_id == 3 && $fieldInfo->name == 'level')
+            <br>
             <span class="form-notes">
                 Select level of the organization.
             </span>
             @endif
             @if ($fieldInfo->h_r_i_s_form_id == 2 && $fieldInfo->name == 'level')
+            <br>
             <span class="form-notes">
                 Select level of achievement/award.
             </span>
             @endif
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
+        <br>
         <span class="form-notes">
             Please select your designation.
         </span>
