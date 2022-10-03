@@ -80,7 +80,7 @@ class ResearcherController extends Controller
                 ->join('users', 'reports.user_id', 'users.id')
                 ->whereIn('reports.report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                 ->where('college_id', $row->college_id)->where('researcher_approval', null)
-                ->orderBy('reports.updated_at', 'DESC')
+                ->orderBy('reports.created_at', 'DESC')
                 ->get();
 
             $reportsToReview = $reportsToReview->concat($tempReports);
