@@ -33,6 +33,10 @@ class RegistrationController extends Controller
         
         $userLocal =  User::where('email', $request->email)->first();
         
+        if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->doesntExist()){
+            return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
+        }
+
         if ($user == '-1') {
             
             if (!empty($userLocal)){
@@ -41,11 +45,7 @@ class RegistrationController extends Controller
 
                 session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
-                    if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->exists()){
-                        return redirect()->route('home');
-                        } else {
-                            return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
-                        }
+                    return redirect()->route('home');
                 }
                 return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
@@ -58,11 +58,7 @@ class RegistrationController extends Controller
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
                 session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
                 if(Employee::where('user_id', $userLocal->id)->exists()){
-                    if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->exists()){
                     return redirect()->route('home');
-                    } else {
-                        return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
-                    }
                 }
                 return redirect()->route('account')->with('incomplete_account', 'incomplete_account');
             }
@@ -115,6 +111,10 @@ class RegistrationController extends Controller
 
     public function alternateLog(Request $request){
         $userLocal = User::where('user_account_id', $request->email)->first();
+        
+        if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',[211,159,137])->doesntExist()){
+            return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
+        }
 
         if($userLocal == null){
             $user = $this->db_ext->select(" EXEC GetUserAccount '$request->email' ");
