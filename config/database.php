@@ -93,6 +93,7 @@ return [
 
         'mysql_external' => [
             'driver'    => 'sqlsrv',
+            'trust_server_certificate' => true,
             'host'      => env('DB_EXT_HOST', '192.168.4.13'),
             'port'      => null,
             'database'  => env('DB_EXT_DATABASE', 'forge'),

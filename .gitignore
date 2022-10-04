@@ -1,9 +1,9 @@
 /node_modules
-/public/hot
-/public/storage
+/public/web.config
 /storage/*.key
 /vendor
 .env
+
 .env.backup
 .phpunit.result.cache
 docker-compose.override.yml
@@ -16,5 +16,3 @@ yarn-error.log
 /.vscode
 cloudflared.exe
 ngork.exe
-.env
-ngrok.exe
