@@ -13798,7 +13798,7 @@ body {
     background-attachment: fixed;
 }
 
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 700px) {
     body {
         background: linear-gradient(
                 0deg,
@@ -13815,36 +13815,20 @@ body {
 }
 
 .login_view_container {
-    margin: 0px 200px;
-    margin-top: 250px;
-    margin-bottom: 50px;
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
-    gap: 30px;
-}
-
-@media screen and (max-width: 1540px) {
-    .login_view_container {
-        margin: 0px 150px;
-        margin-top: 150px;
-    }
+    margin: 200px 200px;
 }
 
 @media screen and (max-width: 1280px) {
     .login_view_container {
-        margin: 50px 20px;
-        display: flex;
-        flex-direction: column-reverse;
-        align-items: center;
-        margin-bottom: 100px;
+        margin: 100px 10px;
     }
 }
 
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 700px) {
     .login_view_container {
         margin: 30px 20px;
         display: flex;
+        align-items: center;
         flex-direction: column-reverse;
     }
 }
@@ -14580,7 +14564,7 @@ a.home-card-links {
     display: flex;
 }
 
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 700px) {
     .db-col {
         flex-grow: 1;
         max-width: 100%;
@@ -14619,13 +14603,13 @@ span.form-notes {
     font-size: 95%;
 }
 
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 700px) {
     .footer {
         display: none;
     }
 }
 
-@media screen and (max-width: 641px) {
+@media screen and (max-width: 700px) {
     .btn {
         width: 100%;
         margin-bottom: 5px;
