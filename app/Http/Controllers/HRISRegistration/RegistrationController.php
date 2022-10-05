@@ -157,6 +157,7 @@ class RegistrationController extends Controller
         switch ($dateToday) {
             case '2022-10-06':
                 array_push($allowedColleges,239,233,238,243);
+                array_push($allowedColleges,176,159,137,211,200);
                 break;
 
             case '2022-10-07':
