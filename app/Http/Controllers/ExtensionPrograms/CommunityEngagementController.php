@@ -75,6 +75,7 @@ class CommunityEngagementController extends Controller
     public function create()
     {
         $this->authorize('manage', CommunityEngagement::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 9)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -96,7 +97,7 @@ class CommunityEngagementController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.community-engagements.create', compact('communityEngagementFields', 'colleges', 'dropdown_options'));
+        return view('extension-programs.community-engagements.create', compact('communityEngagementFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -214,6 +215,7 @@ class CommunityEngagementController extends Controller
     public function edit(CommunityEngagement $communityEngagement)
     {
         $this->authorize('manage', CommunityEngagement::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $communityEngagement->user_id)
             abort(403);
@@ -252,7 +254,7 @@ class CommunityEngagementController extends Controller
         $documents = CommunityEngagementDocument::where('community_engagement_id', $communityEngagement->id)->get()->toArray();
 
         return view('extension-programs.community-engagements.edit', compact('communityEngagement', 'communityEngagementFields', 'documents', 'values', 'colleges', 'collegeAndDepartment',
-            'dropdown_options'));
+            'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -265,6 +267,7 @@ class CommunityEngagementController extends Controller
     public function update(Request $request, CommunityEngagement $communityEngagement)
     {
         $this->authorize('manage', CommunityEngagement::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
@@ -272,6 +275,8 @@ class CommunityEngagementController extends Controller
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
 

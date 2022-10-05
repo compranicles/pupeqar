@@ -18,6 +18,7 @@
                         <form action="{{ route('invention-innovation-creative.update', $value['id']) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $inventionFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             <div class="col-md-12">
                                 <div class="mb-0">

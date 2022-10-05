@@ -120,6 +120,7 @@ class PublicationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPublication::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -152,7 +153,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
+        return view('research.publication.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -246,6 +247,7 @@ class PublicationController extends Controller
      */
     public function edit(Research $research, ResearchPublication $publication)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ResearchPublication::class);
 
         if (auth()->id() !== $research->user_id)
@@ -288,7 +290,7 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
+        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -300,6 +302,7 @@ class PublicationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPublication $publication)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchPublication::class);
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
@@ -311,6 +314,8 @@ class PublicationController extends Controller
 
         $request->merge([
             'publish_date' => $publish_date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);

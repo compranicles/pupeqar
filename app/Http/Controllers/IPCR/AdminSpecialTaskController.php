@@ -74,6 +74,7 @@ class AdminSpecialTaskController extends Controller
     public function create()
     {
         $this->authorize('manage', AdminSpecialTask::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -95,7 +96,7 @@ class AdminSpecialTaskController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('ipcr.admin-special-tasks.create', compact('specialTaskFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -219,6 +220,7 @@ class AdminSpecialTaskController extends Controller
      */
     public function edit(AdminSpecialTask $admin_special_task)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         if (auth()->id() !== $admin_special_task->user_id)
             abort(403);
 
@@ -251,7 +253,7 @@ class AdminSpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'departments', 'dropdown_options'));
+        return view('ipcr.admin-special-tasks.edit', compact('admin_special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -264,6 +266,7 @@ class AdminSpecialTaskController extends Controller
     public function update(Request $request, AdminSpecialTask $admin_special_task)
     {
         $this->authorize('manage', AdminSpecialTask::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(IPCRForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -275,6 +278,8 @@ class AdminSpecialTaskController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
         $input = $request->except(['_token', '_method', 'document']);
 

@@ -83,6 +83,7 @@ class IntraMobilityController extends Controller
     public function create()
     {
         $this->authorize('manage', IntraMobility::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 8)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -125,7 +126,7 @@ class IntraMobilityController extends Controller
             $departments = Department::whereIn('college_id', $colleges)->get();
             $colaccomp = 0;
         }
-        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options'));
+        return view('extension-programs.intra-mobilities.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -255,6 +256,7 @@ class IntraMobilityController extends Controller
     public function edit(IntraMobility $intraMobility)
     {
         $this->authorize('manage', IntraMobility::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $intraMobility->user_id)
             abort(403);
@@ -311,7 +313,7 @@ class IntraMobilityController extends Controller
 
         $documents = IntraMobilityDocument::where('intra_mobility_id', $intraMobility->id)->get()->toArray();
 
-        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options'));
+        return view('extension-programs.intra-mobilities.edit', compact('intraMobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -324,6 +326,7 @@ class IntraMobilityController extends Controller
     public function update(Request $request, IntraMobility $intraMobility)
     {
         $this->authorize('manage', IntraMobility::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
@@ -333,6 +336,8 @@ class IntraMobilityController extends Controller
             $request->merge([
                 'start_date' => $start_date,
                 'end_date' => $end_date,
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
             ]);
         }
         else{
@@ -340,6 +345,8 @@ class IntraMobilityController extends Controller
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
             ]);
         }
 

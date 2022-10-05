@@ -120,6 +120,7 @@ class CompletedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchComplete::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -145,7 +146,7 @@ class CompletedController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 28)->first();
 
-        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value', 'dropdown_options'));
+        return view('research.completed.create', compact('research', 'researchFields', 'researchStatus', 'value', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -238,6 +239,7 @@ class CompletedController extends Controller
      */
     public function edit(Research $research, ResearchComplete $completed)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ResearchComplete::class);
 
         if (auth()->id() !== $research->user_id)
@@ -276,7 +278,7 @@ class CompletedController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research['status'])->first();
 
-        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
+        return view('research.completed.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -288,6 +290,7 @@ class CompletedController extends Controller
      */
     public function update(Request $request, Research $research, ResearchComplete $completed)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchComplete::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -298,6 +301,8 @@ class CompletedController extends Controller
 
         $request->merge([
             'completion_date' => $completion_date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

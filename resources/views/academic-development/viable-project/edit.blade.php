@@ -18,6 +18,7 @@
                         <form action="{{ route('viable-project.update', $viable_project->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $projectFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">

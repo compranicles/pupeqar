@@ -82,6 +82,7 @@ class CitationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCitation::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -99,7 +100,7 @@ class CitationController extends Controller
 
         $research = collect($research);
         $research = $research->except(['description']);
-        return view('research.citation.create', compact('researchFields', 'research', 'dropdown_options'));
+        return view('research.citation.create', compact('researchFields', 'research', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -227,6 +228,7 @@ class CitationController extends Controller
      */
     public function edit(Research $research, ResearchCitation $citation)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $research->user_id)
             abort(403);
@@ -263,7 +265,7 @@ class CitationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'dropdown_options'));
+        return view('research.citation.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'dropdown_options', 'currentQuarter'));
 
     }
 
@@ -276,11 +278,17 @@ class CitationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchCitation $citation)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchCitation::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 

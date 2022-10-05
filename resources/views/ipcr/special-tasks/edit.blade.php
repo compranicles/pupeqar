@@ -33,6 +33,7 @@
                         <form action="{{ route('special-tasks.update', $special_task->id).'?v='.$v }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $specialTaskFields, 'value' => $values])
                             <div class="col-md-12">
                                 <div class="mb-0">

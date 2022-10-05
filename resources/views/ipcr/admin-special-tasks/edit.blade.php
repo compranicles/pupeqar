@@ -18,6 +18,7 @@
                         <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $specialTaskFields, 'value' => $values])
                             <div class="col-md-12">
                                 <div class="mb-0">

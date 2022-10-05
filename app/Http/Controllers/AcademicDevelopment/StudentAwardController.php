@@ -72,6 +72,7 @@ class StudentAwardController extends Controller
     public function create()
     {
         $this->authorize('create', StudentAward::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -93,7 +94,7 @@ class StudentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-awards.create', compact('studentFields', 'colleges', 'dropdown_options'));
+        return view('academic-development.student-awards.create', compact('studentFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -215,6 +216,7 @@ class StudentAwardController extends Controller
     {
 		$student_award = $stdnt_award;
         $this->authorize('update', StudentAward::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $student_award->user_id)
             abort(403);
@@ -248,7 +250,7 @@ class StudentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                 ->select('colleges.*')->get();
 
-        return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('academic-development.student-awards.edit', compact('studentFields', 'student_award', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -262,6 +264,7 @@ class StudentAwardController extends Controller
     {
 		$student_award = $stdnt_award;
         $this->authorize('update', StudentAward::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(AcademicDevelopmentForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -270,6 +273,8 @@ class StudentAwardController extends Controller
 
         $request->merge([
             'date' => $date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

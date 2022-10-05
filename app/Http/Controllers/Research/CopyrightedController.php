@@ -117,6 +117,7 @@ class CopyrightedController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchCopyright::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -140,7 +141,7 @@ class CopyrightedController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        return view('research.copyrighted.create', compact('researchFields', 'research', 'value', 'dropdown_options'));
+        return view('research.copyrighted.create', compact('researchFields', 'research', 'value', 'dropdown_options', 'current_quarter'));
     }
 
     /**
@@ -224,6 +225,7 @@ class CopyrightedController extends Controller
      */
     public function edit(Research $research, ResearchCopyright $copyrighted)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ResearchCopyright::class);
 
         if (auth()->id() !== $research->user_id)
@@ -252,7 +254,7 @@ class CopyrightedController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 7)->get()->toArray();
 
         $value = array_merge($research->toArray(), $copyrighted->toArray());
-        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'dropdown_options'));
+        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -264,6 +266,7 @@ class CopyrightedController extends Controller
      */
     public function update(Request $request, Research $research, ResearchCopyright $copyrighted)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchCopyright::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -272,6 +275,11 @@ class CopyrightedController extends Controller
 
         $date_parts = explode('-', $research->completion_date);
 
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
+        
         $request->validate([
             'copyright_year' => 'after_or_equal:'.$date_parts[0],
         ]);

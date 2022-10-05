@@ -79,6 +79,7 @@ class OtherAccomplishmentController extends Controller
     public function create()
     {
         $this->authorize('manage', OtherAccomplishment::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -99,7 +100,7 @@ class OtherAccomplishmentController extends Controller
             $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
-        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('extension-programs.other-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -219,6 +220,7 @@ class OtherAccomplishmentController extends Controller
     public function edit(OtherAccomplishment $otherAccomplishment)
     {
         $this->authorize('manage', OtherAccomplishment::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $otherAccomplishment->user_id)
             abort(403);
@@ -256,7 +258,7 @@ class OtherAccomplishmentController extends Controller
 
         $documents = OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->get()->toArray();
 
-        return view('extension-programs.other-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options'));
+        return view('extension-programs.other-accomplishments.edit', compact('otherAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -269,6 +271,7 @@ class OtherAccomplishmentController extends Controller
     public function update(Request $request, OtherAccomplishment $otherAccomplishment)
     {
         $this->authorize('manage', OtherAccomplishment::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
@@ -277,6 +280,8 @@ class OtherAccomplishmentController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

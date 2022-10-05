@@ -70,6 +70,7 @@ class TechnicalExtensionController extends Controller
     public function create()
     {
         $this->authorize('create', TechnicalExtension::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -91,7 +92,7 @@ class TechnicalExtensionController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.technical-extension.create', compact('extensionFields', 'colleges', 'dropdown_options'));
+        return view('academic-development.technical-extension.create', compact('extensionFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -214,6 +215,7 @@ class TechnicalExtensionController extends Controller
 
         if (auth()->id() !== $technical_extension->user_id)
             abort(403);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(LockController::isLocked($technical_extension->id, 23)){
             return redirect()->back()->with('cannot_access', 'Cannot be edited because you already submitted this accomplishment. You can edit it again in the next quarter.');
@@ -243,7 +245,7 @@ class TechnicalExtensionController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('academic-development.technical-extension.edit', compact('extensionFields', 'technical_extension', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -256,6 +258,7 @@ class TechnicalExtensionController extends Controller
     public function update(Request $request, TechnicalExtension $technical_extension)
     {
         $this->authorize('update', TechnicalExtension::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $value = $request->input('total_profit');
         $value = (float) str_replace(",", "", $value);
@@ -263,6 +266,8 @@ class TechnicalExtensionController extends Controller
 
         $request->merge([
             'total_profit' => $value,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         if(ExtensionProgramForm::where('id', 12)->pluck('is_active')->first() == 0)

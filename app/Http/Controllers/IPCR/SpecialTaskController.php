@@ -89,9 +89,10 @@ class SpecialTaskController extends Controller
             $version = $request->get('v');
         }
 
-
         if(IPCRForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
@@ -116,7 +117,7 @@ class SpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments', 'dropdown_options', 'version'));
+        return view('ipcr.special-tasks.create', compact('specialTaskFields', 'colleges', 'roles', 'departments', 'dropdown_options', 'version', 'currentQuarter'));
     }
 
     /**
@@ -259,6 +260,7 @@ class SpecialTaskController extends Controller
      */
     public function edit(SpecialTask $special_task, Request $request)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $version = '';
         if($request->has('v')){
             $version = $request->get('v');
@@ -300,7 +302,7 @@ class SpecialTaskController extends Controller
 
          $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments', 'dropdown_options', 'version'));
+        return view('ipcr.special-tasks.edit', compact('special_task', 'specialTaskFields', 'documents', 'values', 'colleges', 'roles', 'departments', 'dropdown_options', 'version', 'currentQuarter'));
     }
 
     /**
@@ -312,6 +314,7 @@ class SpecialTaskController extends Controller
      */
     public function update(Request $request, SpecialTask $special_task)
     {
+        $currentQuarterYear = Quarter::find(1);
         $version = '';
         if($request->has('v')){
             $version = $request->get('v');
@@ -335,6 +338,8 @@ class SpecialTaskController extends Controller
             'target_date' => $target_date,
             'actual_date' => $actual_date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
 

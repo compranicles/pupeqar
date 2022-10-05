@@ -22,6 +22,7 @@
                             <hr>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $syllabusFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             <div class="col-md-12">
                                 <div class="mb-0">

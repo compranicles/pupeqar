@@ -15,6 +15,7 @@
                             </div>
                             <hr>
                             @csrf
+                            @include('quarter-field')
                             @if($notificationID != null)
                                 <input type="hidden" name="notif_id" value="{{ $notificationID }}">
                             @endif

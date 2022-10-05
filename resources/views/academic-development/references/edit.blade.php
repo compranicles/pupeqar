@@ -18,6 +18,7 @@
                         <form action="{{ route('rtmmi.update', $value['id']) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $referenceFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             <div class="col-md-12">
                                 <div class="mb-0">

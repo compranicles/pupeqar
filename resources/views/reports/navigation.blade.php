@@ -16,7 +16,7 @@
                     <h6 style="font-weight: bold; color: #eeb510">REVIEW ACCOMPLISHMENTS</h6>
                     @endif
                     @if (in_array(5, $roles))
-                    <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">Department Level</a><br>
+                    <a href="{{ route('chairperson.index') }}" class="submission-menu {{ request()->routeIs('chairperson.index') ? 'active' : ''}}">Department/Section Level</a><br>
                     @endif
                     @if (in_array(10, $roles))
                     <a href="{{ route('researcher.index') }}" class="submission-menu {{ request()->routeIs('researcher.index') ? 'active' : ''}}">Research & Invention</a><br>
@@ -25,7 +25,7 @@
                     <a href="{{ route('extensionist.index') }}" class="submission-menu {{ request()->routeIs('extensionist.index') ? 'active' : ''}}">Extensions</a><br>
                     @endif
                     @if (in_array(6, $roles) || in_array(12, $roles))
-                    <a href="{{ route('director.index') }}" class="submission-menu {{ request()->routeIs('director.index') ? 'active' : ''}}">College Level</a><br>
+                    <a href="{{ route('director.index') }}" class="submission-menu {{ request()->routeIs('director.index') ? 'active' : ''}}">College/Office Level</a><br>
                     @endif
                     @if (in_array(7, $roles) || in_array(13, $roles))
                     <a href="{{ route('sector.index') }}" class="submission-menu {{ request()->routeIs('sector.index') ? 'active' : ''}}">Sector Level</a><br>
@@ -43,7 +43,7 @@
                     {{-- Departments' --}}
                         @forelse ( $departments as $row)
                             <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id &&  request()->routeIs('reports.consolidate.department') ? 'active' : '') : '' }}">  
-                                {{ $row->code }} Department
+                                Chair/Chief - {{ $row->code }}
                             </a><br>
                         @empty
     
@@ -54,7 +54,7 @@
                     @if (in_array(10, $roles))
                         @forelse ( $departmentsResearch as $row)
                             <a href="{{ route('reports.consolidate.research', $row->college_id) }}" class="submission-menu {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.research') ? 'active' : '') : '' }}">
-                                {{ $row->code }} Research & Invention
+                            Research & Invention - {{ $row->code }}
                             </a><br>
                         @empty
                         @endforelse
@@ -64,7 +64,7 @@
                     @if (in_array(11, $roles))
                         @forelse ( $departmentsExtension as $row)
                             <a href="{{ route('reports.consolidate.extension', $row->college_id) }}" class="submission-menu {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.extension') ? 'active' : '') : '' }}">
-                                {{ $row->code }} Extensions
+                                Extensionist - {{ $row->code }}
                             </a><br>
                         @empty
                         @endforelse
@@ -74,7 +74,7 @@
                     @if (in_array(6, $roles) || in_array(12, $roles))
                         @forelse ( $colleges as $row)
                             <a href="{{ route('reports.consolidate.college', $row->college_id) }}" class="submission-menu  {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.college') ? 'active' : '') : '' }} ">
-                                {{ $row->code }} College
+                                Dean/Director - {{ $row->Name }}
                             </a><br>
                         @empty
                         @endforelse
@@ -84,7 +84,7 @@
                     @if (in_array(7, $roles) || in_array(13, $roles))
                         @forelse ( $sectors as $row)
                             <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.sector') || request()->routeIs('reports.consolidate.sector.*') ? 'active' : ''}}">
-                                {{ $row->code }} Sector
+                                VP - {{ $row->code }}
                             </a><br>
                         @empty
                         @endforelse

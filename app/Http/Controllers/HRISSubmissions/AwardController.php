@@ -55,6 +55,7 @@ class AwardController extends Controller
     public function create(){
         $user = User::find(auth()->id());
         $db_ext = DB::connection('mysql_external');
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 2)->where('h_r_i_s_fields.is_active', 1)
@@ -94,7 +95,7 @@ class AwardController extends Controller
         $classifications = collect($classifications);
         $dropdown_options['classification'] = $classifications;
 
-        return view('submissions.hris.award.create', compact('values', 'fields', 'dropdown_options', 'departments'));
+        return view('submissions.hris.award.create', compact('values', 'fields', 'dropdown_options', 'departments', 'currentQuarter'));
     }
 
     public function savetohris(Request $request){
@@ -382,6 +383,7 @@ class AwardController extends Controller
 
     public function edit($id){
         $user = User::find(auth()->id());
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $awardID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->pluck('hris_id')->first();
 
@@ -450,7 +452,7 @@ class AwardController extends Controller
         $departments = Department::whereIn('college_id', $colleges)->get();
 
         $forview = '';
-        return view('submissions.hris.award.edit', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'departments', 'dropdown_options'));
+        return view('submissions.hris.award.edit', compact('id', 'awardData', 'awardFields', 'values', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     public function update(Request $request, $id){
@@ -511,6 +513,8 @@ class AwardController extends Controller
         HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '2')->update([
             'college_id' => $college_id,
             'department_id' => $request->input('department_id'),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         \LogActivity::addToLog('Had updated a Outstanding Achievement.');

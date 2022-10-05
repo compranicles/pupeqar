@@ -80,6 +80,7 @@ class EducationController extends Controller
     public function create(){
         $user = User::find(auth()->id());
         $db_ext = DB::connection('mysql_external');
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $fields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 1)->where('h_r_i_s_fields.is_active', 1)
@@ -148,7 +149,7 @@ class EducationController extends Controller
         $dropdown_options['support_type'] = $typeOfSupport;
 
 
-        return view('submissions.hris.education.create', compact('values', 'fields', 'dropdown_options', 'departments'));
+        return view('submissions.hris.education.create', compact('values', 'fields', 'dropdown_options', 'departments', 'currentQuarter'));
     }
 
     public function savetohris(Request $request){
@@ -579,6 +580,7 @@ class EducationController extends Controller
 
     public function edit($id){
         $user = User::find(auth()->id());
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $educID = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->pluck('hris_id')->first();
 
@@ -686,7 +688,7 @@ class EducationController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('submissions.hris.education.edit', compact('id', 'educationData', 'educFields', 'values', 'colleges','departments', 'dropdown_options'));
+        return view('submissions.hris.education.edit', compact('id', 'educationData', 'educFields', 'values', 'colleges','departments', 'dropdown_options', 'currentQuarter'));
     }
 
     public function update(Request $request, $id){
@@ -790,6 +792,8 @@ class EducationController extends Controller
         HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '1')->update([
             'college_id' => $college_id,
             'department_id' => $request->input('department_id'),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         \LogActivity::addToLog('Had updated a Ongoing/Advanced Professional Study.');

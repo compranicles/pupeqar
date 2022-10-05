@@ -18,6 +18,7 @@
                         <form action="{{ route('technical-extension.update', $technical_extension->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $extensionFields, 'value' => $values, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">

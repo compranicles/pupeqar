@@ -72,6 +72,7 @@ class OutreachProgramController extends Controller
     public function create()
     {
         $this->authorize('create', OutreachProgram::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -93,7 +94,7 @@ class OutreachProgramController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.outreach-program.create', compact('outreachFields', 'colleges', 'dropdown_options'));
+        return view('extension-programs.outreach-program.create', compact('outreachFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -211,6 +212,7 @@ class OutreachProgramController extends Controller
     public function edit(OutreachProgram $outreach_program)
     {
         $this->authorize('update', OutreachProgram::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $outreach_program->user_id)
             abort(403);
@@ -243,7 +245,7 @@ class OutreachProgramController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('extension-programs.outreach-program.edit', compact('outreach_program', 'outreachFields', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -256,6 +258,7 @@ class OutreachProgramController extends Controller
     public function update(Request $request, OutreachProgram $outreach_program)
     {
         $this->authorize('update', OutreachProgram::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(ExtensionProgramForm::where('id', 7)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -264,6 +267,8 @@ class OutreachProgramController extends Controller
 
         $request->merge([
             'date' => $date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

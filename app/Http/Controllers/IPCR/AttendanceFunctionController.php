@@ -103,6 +103,7 @@ class AttendanceFunctionController extends Controller
     public function create(Request $request)
     {
         $this->authorize('manage', AttendanceFunction::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -142,7 +143,7 @@ class AttendanceFunctionController extends Controller
 
         $classtype = $request->get('type');
 
-        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments', 'dropdown_options'));
+        return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -265,6 +266,7 @@ class AttendanceFunctionController extends Controller
      */
     public function edit(AttendanceFunction $attendance_function)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         if (auth()->id() !== $attendance_function->user_id)
             abort(403);
 
@@ -313,7 +315,7 @@ class AttendanceFunctionController extends Controller
 
         $documents = AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->get()->toArray();
 
-        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function', 'departments', 'dropdown_options'));
+        return view('ipcr.attendance-function.edit', compact('fields', 'colleges', 'values', 'classtype', 'documents', 'attendance_function', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -326,6 +328,7 @@ class AttendanceFunctionController extends Controller
     public function update(Request $request, AttendanceFunction $attendance_function)
     {
         $this->authorize('manage', AttendanceFunction::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -337,6 +340,8 @@ class AttendanceFunctionController extends Controller
             'start_date' => $start_date,
             'end_date' => $end_date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

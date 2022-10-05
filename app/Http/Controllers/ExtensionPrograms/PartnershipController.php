@@ -77,6 +77,7 @@ class PartnershipController extends Controller
     public function create()
     {
         $this->authorize('create', Partnership::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -98,7 +99,7 @@ class PartnershipController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges' , 'departments', 'dropdown_options'));
+        return view('extension-programs.partnership.create', compact('partnershipFields', 'colleges' , 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -219,6 +220,7 @@ class PartnershipController extends Controller
     public function edit(Partnership $partnership)
     {
         $this->authorize('update', Partnership::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $partnership->user_id)
             abort(403);
@@ -256,7 +258,7 @@ class PartnershipController extends Controller
 
         $documents = PartnershipDocument::where('partnership_id', $partnership->id)->get()->toArray();
 
-        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options'));
+        return view('extension-programs.partnership.edit', compact('partnership', 'partnershipFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -269,6 +271,7 @@ class PartnershipController extends Controller
     public function update(Request $request, Partnership $partnership)
     {
         $this->authorize('update', Partnership::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
@@ -277,6 +280,8 @@ class PartnershipController extends Controller
             'start_date' => $start_date,
             'end_date' => $end_date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         if(ExtensionProgramForm::where('id', 5)->pluck('is_active')->first() == 0)

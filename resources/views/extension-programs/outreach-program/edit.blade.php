@@ -20,6 +20,7 @@
                         <form action="{{ route('outreach-program.update', $outreach_program->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $outreachFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">
