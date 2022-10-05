@@ -97,7 +97,7 @@ class ExtensionServiceController extends Controller
      */
     public function create()
     {
-
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('create', ExtensionService::class);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
