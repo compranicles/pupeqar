@@ -111,7 +111,7 @@
             <div class="col-md-4">
                 <div class="row mb-4">
                     <div class="col-md-12">
-                        <x-announcement-component/>
+                        <x-announcement-component :item-count="5"/>
                     </div>
                 </div>
             </div>
