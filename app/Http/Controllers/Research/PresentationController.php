@@ -122,6 +122,7 @@ class PresentationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchPresentation::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -158,7 +159,7 @@ class PresentationController extends Controller
         }
 
 
-        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options'));
+        return view('research.presentation.create', compact('researchFields', 'research', 'researchStatus', 'value', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -253,6 +254,7 @@ class PresentationController extends Controller
      */
     public function edit( Research $research, ResearchPresentation $presentation)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ResearchPresentation::class);
 
         if (auth()->id() !== $research->user_id)
@@ -296,7 +298,7 @@ class PresentationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options'));
+        return view('research.presentation.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -308,6 +310,7 @@ class PresentationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchPresentation $presentation)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchPresentation::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -318,6 +321,8 @@ class PresentationController extends Controller
 
         $request->merge([
             'date_presented' => $date_presented,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'status', 'document']);

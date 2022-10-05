@@ -18,6 +18,7 @@
                         <form action="{{ route('attendance-function.update', $attendance_function->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $fields, 'value' => $values])
                             <div class="col-md-12">
                                 <div class="mb-0">

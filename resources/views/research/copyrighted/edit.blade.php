@@ -24,6 +24,7 @@
                         <form action="{{ route('research.copyrighted.update', [$research['id'], $value['id']]) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $researchFields, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">

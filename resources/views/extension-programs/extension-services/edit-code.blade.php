@@ -18,6 +18,7 @@
                         <form action="{{ route('extension-service.update', $value['id'] ) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('extension-programs.extension-services.form', ['formFields' => $extensionServiceFields, 'value' => $value, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             @include('extension-programs.extension-services.no-of-beneficiaries', ['value' => $value])
                             @include('extension-programs.extension-services.form2', ['formFields' => $extensionServiceFields, 'value' => $value, 'is_owner' => $is_owner ?? null])

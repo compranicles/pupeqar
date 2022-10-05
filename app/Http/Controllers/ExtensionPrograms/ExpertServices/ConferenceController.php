@@ -76,6 +76,7 @@ class ConferenceController extends Controller
     public function create()
     {
         $this->authorize('create', ExpertServiceConference::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -97,7 +98,7 @@ class ConferenceController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('extension-programs.expert-services.conference.create', compact('expertServiceConferenceFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -227,6 +228,7 @@ class ConferenceController extends Controller
     public function edit(ExpertServiceConference $expert_service_in_conference)
     {
         $this->authorize('update', ExpertServiceConference::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $expert_service_in_conference->user_id)
             abort(403);
@@ -262,7 +264,7 @@ class ConferenceController extends Controller
         $value = collect($expert_service_in_conference);
         $value = $value->toArray();
 
-        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value', 'departments', 'dropdown_options'));
+        return view('extension-programs.expert-services.conference.edit', compact('expert_service_in_conference', 'expertServiceConferenceFields', 'expertServiceConferenceDocuments', 'colleges', 'value', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -275,6 +277,7 @@ class ConferenceController extends Controller
     public function update(Request $request, ExpertServiceConference $expert_service_in_conference)
     {
         $this->authorize('update', ExpertServiceConference::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(ExtensionProgramForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -286,6 +289,8 @@ class ConferenceController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

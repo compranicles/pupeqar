@@ -18,6 +18,7 @@
                         <form action="{{ route('intra-mobility.update', $intraMobility->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $mobilityFields, 'value' => $values, 'colleges' => $colleges,  'colaccomp' => $colaccomp])
                             <div class="col-md-12">
                                 <div class="mb-0">

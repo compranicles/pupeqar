@@ -18,6 +18,7 @@
                         <form action="{{ route('expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $expertServiceConsultantFields, 'colleges' => $colleges, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">

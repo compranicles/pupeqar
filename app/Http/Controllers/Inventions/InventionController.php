@@ -85,6 +85,7 @@ class InventionController extends Controller
         $this->authorize('create', Invention::class);
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $inventionFields = DB::select("CALL get_invention_fields_by_form_id(1)");
 
@@ -104,7 +105,7 @@ class InventionController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('inventions.create', compact('inventionFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('inventions.create', compact('inventionFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -243,6 +244,7 @@ class InventionController extends Controller
     public function edit(Invention $invention_innovation_creative)
     {
         $this->authorize('update', Invention::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $invention_innovation_creative->user_id)
             abort(403);
@@ -290,7 +292,7 @@ class InventionController extends Controller
         $value = $value->toArray();
         // dd($value);
 
-        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification', 'departments', 'dropdown_options'));
+        return view('inventions.edit', compact('value', 'inventionFields', 'inventionDocuments', 'colleges', 'collegeOfDepartment', 'classification', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -303,6 +305,7 @@ class InventionController extends Controller
     public function update(Request $request, Invention $invention_innovation_creative)
     {
         $this->authorize('update', Invention::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(InventionForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -321,6 +324,8 @@ class InventionController extends Controller
             'issue_date' => $issue_date,
             'funding_amount' => $value,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

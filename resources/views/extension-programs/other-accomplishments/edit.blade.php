@@ -18,6 +18,7 @@
                         <form action="{{ route('other-accomplishment.update', $otherAccomplishment->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $otherAccomplishmentFields, 'value' => $values, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">

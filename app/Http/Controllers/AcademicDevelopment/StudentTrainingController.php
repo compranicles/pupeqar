@@ -93,7 +93,7 @@ class StudentTrainingController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-training.create', compact('studentFields', 'colleges', 'dropdown_options'));
+        return view('academic-development.student-training.create', compact('studentFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -222,6 +222,7 @@ class StudentTrainingController extends Controller
     {
 		$student_training = $stdnt_training;
         $this->authorize('update', StudentTraining::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $student_training->user_id)
             abort(403);
@@ -254,7 +255,7 @@ class StudentTrainingController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('academic-development.student-training.edit', compact('studentFields', 'student_training', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -268,6 +269,7 @@ class StudentTrainingController extends Controller
     {
 		$student_training = $stdnt_training;
         $this->authorize('update', StudentTraining::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $value = $request->input('budget');
         $value = (float) str_replace(",", "", $value);
@@ -280,6 +282,8 @@ class StudentTrainingController extends Controller
             'budget' => $value,
             'start_date' => $start_date,
             'end_date' => $end_date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)

@@ -18,6 +18,7 @@
                         <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $expertServiceConferenceFields, 'colleges' => $colleges, 'value' => $value])
                             <div class="col-md-12">
                                 <div class="mb-0">

@@ -71,6 +71,7 @@ class CollegeDepartmentAwardController extends Controller
     public function create()
     {
         $this->authorize('create', CollegeDepartmentAward::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -92,7 +93,7 @@ class CollegeDepartmentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.college-department-award.create', compact('awardFields', 'colleges', 'dropdown_options'));
+        return view('academic-development.college-department-award.create', compact('awardFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -111,7 +112,6 @@ class CollegeDepartmentAwardController extends Controller
         $date = (new DateContentService())->checkDateContent($request, "date");
 
         $currentQuarterYear = Quarter::find(1);
-
         $request->merge([
             'date' => $date,
             'report_quarter' => $currentQuarterYear->current_quarter,
@@ -119,7 +119,6 @@ class CollegeDepartmentAwardController extends Controller
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);
-
         $college_department_award = CollegeDepartmentAward::create($input);
         $college_department_award->update(['user_id' => auth()->id()]);
 
@@ -212,6 +211,7 @@ class CollegeDepartmentAwardController extends Controller
     public function edit(CollegeDepartmentAward $college_department_award)
     {
         $this->authorize('update', CollegeDepartmentAward::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $college_department_award->user_id) {
             abort(403);
@@ -246,7 +246,7 @@ class CollegeDepartmentAwardController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.college-department-award.edit', compact('awardFields', 'college_department_award', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('academic-development.college-department-award.edit', compact('awardFields', 'college_department_award', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -259,6 +259,7 @@ class CollegeDepartmentAwardController extends Controller
     public function update(Request $request, CollegeDepartmentAward $college_department_award)
     {
         $this->authorize('update', CollegeDepartmentAward::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(AcademicDevelopmentForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -267,6 +268,8 @@ class CollegeDepartmentAwardController extends Controller
 
         $request->merge([
             'date' => $date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

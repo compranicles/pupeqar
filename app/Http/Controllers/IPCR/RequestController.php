@@ -77,6 +77,7 @@ class RequestController extends Controller
     public function create()
     {
         $this->authorize('create', RequestModel::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -101,7 +102,7 @@ class RequestController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('ipcr.request.create', compact('requestFields', 'colleges', 'dropdown_options'));
+        return view('ipcr.request.create', compact('requestFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -218,6 +219,8 @@ class RequestController extends Controller
      */
     public function edit(RequestModel $request)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
+
         $this->authorize('update', RequestModel::class);
 
         if (auth()->id() !== $request->user_id)
@@ -253,7 +256,7 @@ class RequestController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('ipcr.request.edit', compact('request', 'requestFields', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -266,9 +269,15 @@ class RequestController extends Controller
     public function update(Request $requestdata, RequestModel $request)
     {
         $this->authorize('update', RequestModel::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(IPCRForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
 
         $input = $requestdata->except(['_token', '_method', 'document']);
 
