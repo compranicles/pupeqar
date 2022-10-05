@@ -18,6 +18,7 @@
                         <form action="{{ route('student-award.update', $student_award->id) }}" method="post">
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $studentFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">

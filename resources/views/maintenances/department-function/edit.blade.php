@@ -37,6 +37,11 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <x-jet-label value="{{ __('Remarks') }}" />
+                    
+                                        <input type="text" name="remarks" class="form-control" value="{{ old('remarks', $department_function_manager->remarks) }}" required/>
+                                    </div>
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <button type="submit" class="btn btn-success mb-2 mr">Update</button>

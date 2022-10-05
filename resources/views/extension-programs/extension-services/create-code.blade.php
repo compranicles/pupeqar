@@ -11,6 +11,7 @@
                     <div class="card-body">
                         <form action="{{ route('extension.code.save', $value['id'] ) }}" method="post" class="needs-validation" novalidate>
                             @csrf
+                            @include('quarter-field')
                             @if($notificationID != null)
                                 <input type="hidden" name="notif_id" value="{{ $notificationID }}">
                             @endif

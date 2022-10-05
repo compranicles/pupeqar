@@ -18,6 +18,7 @@ use App\Models\{
     Authentication\UserRole,
     Maintenance\College,
     Maintenance\Department,
+    Maintenance\Quarter,
     Maintenance\ReportCategory,
 };
 use App\Notifications\ReceiveNotification;
@@ -71,14 +72,17 @@ class ExtensionistController extends Controller
         }
 
         $reportsToReview = collect();
+        $currentQuarterYear = Quarter::find(1);
 
         foreach ($departmentsExtension as $row){
-            $tempReports = Report::select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            $tempReports = Report::where('reports.report_year', $currentQuarterYear->current_year)
+                ->where('reports.report_quarter', $currentQuarterYear->current_quarter)
+                ->whereIn('reports.report_category_id', [12, 13, 14, 22, 23, 34, 35, 36, 37])
+                ->where('college_id', $row->college_id)->where('extensionist_approval', null)
+                ->select('reports.*', 'colleges.name as college_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('colleges', 'reports.college_id', 'colleges.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->whereIn('reports.report_category_id', [9, 10, 11, 12, 13, 14, 22, 23, 34, 35, 36, 37])
-                ->where('college_id', $row->college_id)->where('extensionist_approval', null)
                 ->orderBy('reports.created_at', 'DESC')
                 ->get();
 

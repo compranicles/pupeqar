@@ -75,6 +75,7 @@ class AcademicController extends Controller
     public function create()
     {
         $this->authorize('create', ExpertServiceAcademic::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -96,7 +97,7 @@ class AcademicController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('extension-programs.expert-services.academic.create', compact('expertServiceAcademicFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -222,6 +223,7 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ExpertServiceAcademic::class);
 
         if (auth()->id() !== $expert_service_in_academic->user_id)
@@ -266,7 +268,7 @@ class AcademicController extends Controller
         $value = $value->toArray();
 
         return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments',
-            'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+            'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -279,6 +281,7 @@ class AcademicController extends Controller
     public function update(Request $request, ExpertServiceAcademic $expert_service_in_academic)
     {
         $this->authorize('update', ExpertServiceAcademic::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(ExtensionProgramForm::where('id', 3)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -290,6 +293,8 @@ class AcademicController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
 

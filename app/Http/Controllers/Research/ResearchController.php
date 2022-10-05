@@ -96,6 +96,7 @@ class ResearchController extends Controller
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $researchFields = DB::select("CALL get_research_fields_by_form_id(1)");
 
@@ -135,7 +136,7 @@ class ResearchController extends Controller
             $allUsers[$i++] = array("id" => $user->id, 'fullname' => $userFullName);
         }
 
-        return view('research.create', compact('researchFields', 'colleges', 'departments', 'dropdown_options', 'allUsers'));
+        return view('research.create', compact('researchFields', 'colleges', 'departments', 'dropdown_options', 'allUsers', 'currentQuarter'));
     }
 
     /**
@@ -420,6 +421,7 @@ class ResearchController extends Controller
      */
     public function edit(Research $research)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', Research::class);
 
         if (auth()->id() !== $research->user_id)
@@ -469,9 +471,9 @@ class ResearchController extends Controller
 
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
         if ($research->nature_of_involvement ==  11 || $research->nature_of_involvement == 224)
-            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
 
-        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
 
     }
 
@@ -484,6 +486,7 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
+        $currentQuarterYear = Quarter::find(1);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -499,6 +502,8 @@ class ResearchController extends Controller
             'start_date' => $start_date,
             'target_date' => $target_date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([
@@ -554,6 +559,7 @@ class ResearchController extends Controller
 
     public function updateNonLead (Request $request, Research $research)
     {
+        $currentQuarterYear = Quarter::find(1);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
@@ -569,6 +575,8 @@ class ResearchController extends Controller
         $request->merge([
             'start_date' => $start_date,
             'target_date' => $target_date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
         $input = $request->except(['_token', '_method', 'document']);
         Research::where('id', $research->id)->update($input);
@@ -667,6 +675,7 @@ class ResearchController extends Controller
     }
 
     public function addResearch($research_id, Request $request){
+        $currentQuarterYear = Quarter::find(1);
 
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
@@ -706,7 +715,7 @@ class ResearchController extends Controller
 
         $notificationID = $request->get('id');
 
-        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID', 'departments', 'dropdown_options'));
+        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID', 'departments', 'dropdown_options', 'current_quarter'));
     }
 
     public function saveResearch($research_id, Request $request){

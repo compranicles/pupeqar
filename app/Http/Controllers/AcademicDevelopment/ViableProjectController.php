@@ -73,6 +73,7 @@ class ViableProjectController extends Controller
     public function create()
     {
         $this->authorize('create', ViableProject::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -94,7 +95,7 @@ class ViableProjectController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.viable-project.create', compact('projectFields', 'colleges', 'dropdown_options'));
+        return view('academic-development.viable-project.create', compact('projectFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -229,6 +230,7 @@ class ViableProjectController extends Controller
     public function edit(ViableProject $viable_project)
     {
         $this->authorize('update', ViableProject::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $viable_project->user_id)
             abort(403);
@@ -261,7 +263,7 @@ class ViableProjectController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values', 'colleges', 'dropdown_options'));
+        return view('academic-development.viable-project.edit', compact('projectFields', 'viable_project', 'documents', 'values', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -274,7 +276,8 @@ class ViableProjectController extends Controller
     public function update(Request $request, ViableProject $viable_project)
     {
         $this->authorize('update', ViableProject::class);
-
+        $currentQuarterYear = Quarter::find(1);
+        
         $request->validate([
             'rate_of_return' => 'numeric'
         ]);
@@ -292,6 +295,8 @@ class ViableProjectController extends Controller
             'revenue' => $value,
             'cost' => $value2,
             'start_date' => $start_date,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         if(AcademicDevelopmentForm::where('id', 5)->pluck('is_active')->first() == 0)

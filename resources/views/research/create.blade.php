@@ -15,6 +15,7 @@
                             </div>
                             <hr>
                             @csrf
+                            @include('quarter-field')
                             <div class="form-group">
                                 <label class="font-weight-bold" for="collaborators-tagging">Tag your co-researchers (Tagging PUP employees who use the eQAR system only).</label><br>
                                 <span class="form-notes">If you are independent researcher, leave it blank.</span>

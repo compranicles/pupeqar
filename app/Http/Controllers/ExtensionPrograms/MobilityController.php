@@ -83,6 +83,7 @@ class MobilityController extends Controller
     public function create()
     {
         $this->authorize('create', Mobility::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -126,7 +127,7 @@ class MobilityController extends Controller
             $colaccomp = 0;
         }
 
-        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options'));
+        return view('extension-programs.mobility.create', compact('mobilityFields', 'colleges', 'departments', 'colaccomp', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -256,6 +257,7 @@ class MobilityController extends Controller
     public function edit(Mobility $mobility)
     {
         $this->authorize('update', Mobility::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $mobility->user_id)
             abort(403);
@@ -313,7 +315,7 @@ class MobilityController extends Controller
 
         $documents = MobilityDocument::where('mobility_id', $mobility->id)->get()->toArray();
 
-        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options'));
+        return view('extension-programs.mobility.edit', compact('mobility', 'mobilityFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'departments', 'colaccomp', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -326,6 +328,7 @@ class MobilityController extends Controller
     public function update(Request $request, Mobility $mobility)
     {
         $this->authorize('update', Mobility::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $start_date = (new DateContentService())->checkDateContent($request, "start_date");
         $end_date = (new DateContentService())->checkDateContent($request, "end_date");
@@ -335,6 +338,8 @@ class MobilityController extends Controller
             $request->merge([
                 'start_date' => $start_date,
                 'end_date' => $end_date,
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
             ]);
         }
         else{
@@ -342,6 +347,8 @@ class MobilityController extends Controller
                 'start_date' => $start_date,
                 'end_date' => $end_date,
                 'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+                'report_quarter' => $currentQuarterYear->current_quarter,
+                'report_year' => $currentQuarterYear->current_year,
             ]);
         }
 

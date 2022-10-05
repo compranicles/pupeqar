@@ -74,6 +74,7 @@ class ReferenceController extends Controller
     public function create()
     {
         $this->authorize('create', Reference::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -92,7 +93,7 @@ class ReferenceController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('academic-development.references.create', compact('referenceFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('academic-development.references.create', compact('referenceFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -153,10 +154,9 @@ class ReferenceController extends Controller
 
         $accomplished = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
-        $accomplished = collect($accomplished);
-        $accomplishment = $accomplished->pluck('name');
+        $accomplishment = $accomplished[0]->name;
 
-        \LogActivity::addToLog('Had added '.$request->input('category').' entitled "'.$request->input('title').'".');
+        \LogActivity::addToLog('Had added '.$accomplishment.' entitled "'.$request->input('title').'".');
 
 
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
@@ -225,6 +225,7 @@ class ReferenceController extends Controller
     public function edit(Reference $rtmmi)
     {
         $this->authorize('update', Reference::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $rtmmi->user_id)
             abort(403);
@@ -267,7 +268,7 @@ class ReferenceController extends Controller
         $value = collect($rtmmi);
         $value = $value->toArray();
 
-        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+        return view('academic-development.references.edit', compact('value', 'referenceFields', 'referenceDocuments', 'colleges', 'category', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -280,6 +281,7 @@ class ReferenceController extends Controller
     public function update(Request $request, Reference $rtmmi)
     {
         $this->authorize('update', Reference::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -293,6 +295,8 @@ class ReferenceController extends Controller
             'date_completed' => $date_completed,
             'date_published' => $date_published,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

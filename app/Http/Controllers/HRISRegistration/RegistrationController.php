@@ -71,7 +71,7 @@ class RegistrationController extends Controller
         $endTime = Carbon::createFromFormat('H:i a', '05:00 PM');
         $timeCheck = Carbon::now()->between($startTime,$endTime,true);
 
-        if(Employee::where('user_id', $userLocal->id)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
+        if(Employee::where('user_id', $userLocal?->id)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
             return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
         }
 

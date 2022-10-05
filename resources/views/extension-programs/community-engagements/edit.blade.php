@@ -18,6 +18,7 @@
                         <form action="{{ route('community-engagement.update', $communityEngagement->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
+                            @include('quarter-field')
                             @include('form', ['formFields' => $communityEngagementFields, 'value' => $values, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">

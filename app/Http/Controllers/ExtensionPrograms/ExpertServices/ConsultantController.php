@@ -76,6 +76,7 @@ class ConsultantController extends Controller
     public function create()
     {
         $this->authorize('create', ExpertServiceConsultant::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -97,7 +98,7 @@ class ConsultantController extends Controller
 
         $departments = Department::whereIn('college_id', $colleges)->get();
 
-        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges', 'departments', 'dropdown_options'));
+        return view('extension-programs.expert-services.consultant.create', compact('expertServiceConsultantFields', 'colleges', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -225,6 +226,7 @@ class ConsultantController extends Controller
     public function edit(ExpertServiceConsultant $expert_service_as_consultant)
     {
         $this->authorize('update', ExpertServiceConsultant::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $expert_service_as_consultant->user_id)
             abort(403);
@@ -261,7 +263,7 @@ class ConsultantController extends Controller
         $value = collect($expert_service_as_consultant);
         $value = $value->toArray();
 
-        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value', 'departments', 'dropdown_options'));
+        return view('extension-programs.expert-services.consultant.edit', compact('expert_service_as_consultant', 'expertServiceConsultantFields', 'expertServiceConsultantDocuments', 'colleges', 'value', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -274,6 +276,7 @@ class ConsultantController extends Controller
     public function update(Request $request, ExpertServiceConsultant $expert_service_as_consultant)
     {
         $this->authorize('update', ExpertServiceConsultant::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(ExtensionProgramForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -285,6 +288,8 @@ class ConsultantController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $request->validate([

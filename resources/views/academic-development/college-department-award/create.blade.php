@@ -15,6 +15,7 @@
                             </div>
                             <hr>
                             @csrf
+                            @include('quarter-field')
                             @include('form', ['formFields' => $awardFields, 'colleges' => $colleges, 'colaccomp' => 1])
                             <div class="col-md-12">
                                 <div class="mb-0">

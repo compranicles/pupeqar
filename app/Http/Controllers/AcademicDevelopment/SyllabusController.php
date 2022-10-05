@@ -83,6 +83,7 @@ class SyllabusController extends Controller
     public function create()
     {
         $this->authorize('create', Syllabus::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -101,7 +102,7 @@ class SyllabusController extends Controller
         $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
 
         $departments = Department::whereIn('college_id', $colleges)->get();
-        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments' , 'dropdown_options'));
+        return view('academic-development.syllabi.create', compact('syllabusFields', 'colleges', 'departments' , 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -220,6 +221,7 @@ class SyllabusController extends Controller
     public function edit(Syllabus $syllabu)
     {
         $this->authorize('update', Syllabus::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $syllabu->user_id) {
             abort(403);
@@ -259,7 +261,7 @@ class SyllabusController extends Controller
         $value = collect($syllabu);
         $value = $value->toArray();
 
-        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+        return view('academic-development.syllabi.edit', compact('value', 'syllabusFields', 'syllabusDocuments', 'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -272,6 +274,7 @@ class SyllabusController extends Controller
     public function update(Request $request, Syllabus $syllabu)
     {
         $this->authorize('update', Syllabus::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(AcademicDevelopmentForm::where('id', 2)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -281,6 +284,8 @@ class SyllabusController extends Controller
         $request->merge([
             'date_finished' => $date,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         $input = $request->except(['_token', '_method', 'document']);

@@ -74,6 +74,7 @@ class UtilizationController extends Controller
     public function create(Research $research)
     {
         $this->authorize('create', ResearchUtilization::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -83,7 +84,7 @@ class UtilizationController extends Controller
         $researchFields = DB::select("CALL get_research_fields_by_form_id('6')");
         $research = collect($research);
         $research = $research->except(['description']);
-        return view('research.utilization.create', compact('researchFields', 'research'));
+        return view('research.utilization.create', compact('researchFields', 'research', 'currentQuarter'));
     }
 
     /**
@@ -215,6 +216,7 @@ class UtilizationController extends Controller
      */
     public function edit(Research $research, ResearchUtilization $utilization)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ResearchUtilization::class);
 
         if (auth()->id() !== $research->user_id)
@@ -240,7 +242,7 @@ class UtilizationController extends Controller
 
         $values = array_merge($research->toArray(), $values->toArray());
 
-        return view('research.utilization.edit', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.utilization.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'currentQuarter'));
     }
 
     /**
@@ -252,11 +254,17 @@ class UtilizationController extends Controller
      */
     public function update(Request $request, Research $research, ResearchUtilization $utilization)
     {
+        $currentQuarterYear = Quarter::find(1);
         $this->authorize('update', ResearchUtilization::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
         if(ResearchForm::where('id', 6)->pluck('is_active')->first() == 0)
             return view('inactive');
+
+        $request->merge([
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
+        ]);
 
         $input = $request->except(['_token', '_method', 'document']);
 

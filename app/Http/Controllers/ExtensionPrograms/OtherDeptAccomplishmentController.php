@@ -76,6 +76,7 @@ class OtherDeptAccomplishmentController extends Controller
     public function create()
     {
         $this->authorize('manage', OtherDeptAccomplishment::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -97,7 +98,7 @@ class OtherDeptAccomplishmentController extends Controller
         $colleges = College::whereIn('id', array_values($colleges))
                     ->select('colleges.*')->get();
 
-        return view('extension-programs.other-dept-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'dropdown_options'));
+        return view('extension-programs.other-dept-accomplishments.create', compact('otherAccomplishmentFields', 'colleges', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -215,6 +216,7 @@ class OtherDeptAccomplishmentController extends Controller
     public function edit(OtherDeptAccomplishment $otherDeptAccomplishment)
     {
         $this->authorize('manage', OtherDeptAccomplishment::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $otherDeptAccomplishment->user_id)
             abort(403);
@@ -251,7 +253,7 @@ class OtherDeptAccomplishmentController extends Controller
                     ->select('colleges.*')->get();
         $documents = OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->get()->toArray();
 
-        return view('extension-programs.other-dept-accomplishments.edit', compact('otherDeptAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'dropdown_options'));
+        return view('extension-programs.other-dept-accomplishments.edit', compact('otherDeptAccomplishment', 'otherAccomplishmentFields', 'documents', 'values', 'colleges', 'collegeAndDepartment', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -264,6 +266,7 @@ class OtherDeptAccomplishmentController extends Controller
     public function update(Request $request, OtherDeptAccomplishment $otherDeptAccomplishment)
     {
         $this->authorize('manage', OtherDeptAccomplishment::class);
+        $currentQuarterYear = Quarter::find(1);
 
         $from = (new DateContentService())->checkDateContent($request, "from");
         $to = (new DateContentService())->checkDateContent($request, "to");
@@ -271,6 +274,8 @@ class OtherDeptAccomplishmentController extends Controller
         $request->merge([
             'from' => $from,
             'to' => $to,
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
 

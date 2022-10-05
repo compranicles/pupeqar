@@ -18,6 +18,7 @@ use App\Models\{
     Authentication\UserRole,
     Maintenance\College,
     Maintenance\Department,
+    Maintenance\Quarter,
     Maintenance\ReportCategory,
 };
 use App\Notifications\ReceiveNotification;
@@ -78,14 +79,17 @@ class ChairpersonController extends Controller
         }
 
         $reportsToReview = collect();
+        $currentQuarterYear = Quarter::find(1);
 
         foreach ($departments as $row){
-            $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            $tempReports = Report::where('reports.report_year', $currentQuarterYear->current_year)
+                ->where('reports.report_quarter', $currentQuarterYear->current_quarter)
+                ->where('department_id', $row->department_id)->where('chairperson_approval', null)
+                ->select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->orderBy('reports.created_at', 'DESC')
-                ->where('department_id', $row->department_id)->where('chairperson_approval', null)->get();
+                ->orderBy('reports.created_at', 'DESC')->get();
 
 
             $reportsToReview = $reportsToReview->concat($tempReports);
@@ -101,7 +105,7 @@ class ChairpersonController extends Controller
                     $tempReports = $tempReports->push($report);
                 }
             }
-            elseif(($report->report_category_id >= 9 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 37) || $report->report_category_id == 22 || $report->report_category_id == 23){
+            elseif(($report->report_category_id >= 12 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 37) || $report->report_category_id == 22 || $report->report_category_id == 23){
                 if($report->extensionist_approval === 1){
                     $tempReports = $tempReports->push($report);
                 }

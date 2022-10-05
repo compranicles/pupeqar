@@ -18,6 +18,7 @@
                             </div>    
                             <hr>
                             @csrf
+                            @include('quarter-field')
                             <div class="form-group">
                                 <label class="font-weight-bold" for="collaborators-tagging">Tag your extension partners/persons participated in the extension (Tagging PUP employees who use the eQAR system only).</label><br>
                                 <span class="form-notes">If none, leave it blank.</span>

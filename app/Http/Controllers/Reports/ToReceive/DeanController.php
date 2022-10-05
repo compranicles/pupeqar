@@ -18,6 +18,7 @@ use App\Models\{
     Authentication\UserRole,
     Maintenance\College,
     Maintenance\Department,
+    Maintenance\Quarter,
     Maintenance\ReportCategory,
 };
 use App\Notifications\ReceiveNotification;
@@ -78,14 +79,18 @@ class DeanController extends Controller
 
         $reportsToReview = collect();
         $department_list = collect();
+        $currentQuarterYear = Quarter::find(1);
 
         foreach ($colleges as $row){
-            $tempReports = Report::select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
+            $tempReports = Report::where('reports.report_year', $currentQuarterYear->current_year)
+                ->where('reports.report_quarter', $currentQuarterYear->current_quarter)
+                ->where('reports.college_id', $row->college_id)->where('chairperson_approval', 1)
+                ->where('dean_approval', null)
+                ->select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
                 ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
                 ->join('users', 'reports.user_id', 'users.id')
-                ->orderBy('reports.created_at', 'DESC')
-                ->where('reports.college_id', $row->college_id)->where('chairperson_approval', 1)->where('dean_approval', null)->get();
+                ->orderBy('reports.created_at', 'DESC')->get();
 
             $tempDepartment_list = Department::where('college_id', $row->college_id)
                 ->orderBy('departments.name')

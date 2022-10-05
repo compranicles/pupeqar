@@ -495,7 +495,7 @@ class HRISFieldSeeder extends Seeder
             'field_type_id' => 1,
             'dropdown_id' => null,
             'required' => 0,
-            'visibility' => 2,
+            'visibility' => 4,
             'order' => 1,
             'is_active' => 1,
         ]);
@@ -720,7 +720,7 @@ class HRISFieldSeeder extends Seeder
             'field_type_id' => 1,
             'dropdown_id' => null,
             'required' => 0,
-            'visibility' => 2,
+            'visibility' => 4,
             'order' => 1,
             'is_active' => 1,
         ]);

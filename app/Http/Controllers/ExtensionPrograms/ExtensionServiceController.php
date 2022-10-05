@@ -97,7 +97,7 @@ class ExtensionServiceController extends Controller
      */
     public function create()
     {
-
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('create', ExtensionService::class);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -141,7 +141,7 @@ class ExtensionServiceController extends Controller
             $allUsers[$i++] = array("id" => $user->id, 'fullname' => $userFullName);
         }
 
-        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options', 'allUsers'));
+        return view('extension-programs.extension-services.create', compact('extensionServiceFields', 'colleges', 'departments', 'dropdown_options', 'allUsers', 'currentQuarter'));
     }
 
     /**
@@ -373,6 +373,7 @@ class ExtensionServiceController extends Controller
     public function edit(ExtensionService $extension_service)
     {
         $this->authorize('update', ExtensionService::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if (auth()->id() !== $extension_service->user_id)
             abort(403);
@@ -417,10 +418,10 @@ class ExtensionServiceController extends Controller
 
         if (ExtensionInvite::where('user_id', auth()->id())->where('ext_code', $extension_service->ext_code)->pluck('is_owner')->first() == '1'){
             $is_owner = 1;
-            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options'));
+            return view('extension-programs.extension-services.edit', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options', 'currentQuarter'));
         }
         $is_owner = 0;
-        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options'));
+        return view('extension-programs.extension-services.edit-code', compact('value', 'extensionServiceFields', 'extensionServiceDocuments', 'colleges', 'collegeOfDepartment', 'is_owner', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
@@ -433,6 +434,7 @@ class ExtensionServiceController extends Controller
     public function update(Request $request, ExtensionService $extension_service)
     {
         $this->authorize('update', ExtensionService::class);
+        $currentQuarterYear = Quarter::find(1);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -449,6 +451,8 @@ class ExtensionServiceController extends Controller
             'from' => $from,
             'to' => $to,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
+            'report_quarter' => $currentQuarterYear->current_quarter,
+            'report_year' => $currentQuarterYear->current_year,
         ]);
 
         if ($request->input('total_no_of_hours') != '') {
@@ -539,6 +543,7 @@ class ExtensionServiceController extends Controller
     }
 
     public function addExtension($extension_service_id, Request $request){
+        $currentQuarterYear = Quarter::find(1);
 
         $id = $extension_service_id;
 
@@ -592,7 +597,7 @@ class ExtensionServiceController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments', 'dropdown_options'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments', 'dropdown_options', 'currentQuarter'));
     }
 
 

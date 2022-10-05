@@ -15,6 +15,7 @@
                             </div>
                             <hr>
                             @csrf
+                            @include('quarter-field')
                             @include('form', ['formFields' => $referenceFields, 'colleges' => $colleges])
                             <div class="col-md-12">
                                 <div class="mb-0">
@@ -41,7 +42,7 @@
                 if ("{{auth()->user()->middle_name}}" != '') {
                     middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
                 }
-                var fullname = "{{ ucwords(strtolower(auth()->user()->last_name.', '.auth()->user()->first_name.' ')) }}" + middle;
+                var fullname = "{{ auth()->user()->last_name.', '.auth()->user()->first_name.' ' }}" + middle;
                 $("#authors_compilers")[0].selectize.addOption({value:fullname, text:fullname});
                 $("#authors_compilers")[0].selectize.addItem(fullname);
 

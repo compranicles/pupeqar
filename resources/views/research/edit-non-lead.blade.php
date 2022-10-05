@@ -19,6 +19,7 @@
                         <form action="{{ route('research.update-non-lead', $research->id) }}" method="post" class="needs-validation" novalidate>
                             @csrf
                             {{-- @method('put') --}}
+                            @include('quarter-field')
                             @include('form', ['formFields' => $researchFields, 'value' => $values, 'colleges' => $colleges, 'collegeOfDepartment' => $collegeOfDepartment])
                             <div class="col-md-12">
                                 <div class="mb-0">
