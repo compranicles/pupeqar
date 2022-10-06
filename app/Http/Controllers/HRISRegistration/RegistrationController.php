@@ -37,9 +37,9 @@ class RegistrationController extends Controller
         if ($user == '-1') {
             
             if (!empty($userLocal)){
-                if(!$this->scheduleCheck($userLocal->id)){
+                /*if(!$this->scheduleCheck($userLocal->id)){
                     return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
-                }
+                }*/
                 Auth::login($userLocal);
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
 
