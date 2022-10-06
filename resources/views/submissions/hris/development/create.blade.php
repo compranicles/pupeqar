@@ -68,11 +68,27 @@
             });
         </script>
         <script>
-            var uploadField = document.getElementById("document");
+            var uploadFieldSO = document.getElementById("documentSO");
+            var uploadFieldCert = document.getElementById("documentCert");
+            var uploadFieldPic = document.getElementById("documentPic");
 
-            uploadField.onchange = function() {
+            uploadFieldSO.onchange = function() {
                 if(this.files[0].size > 512000){
-                alert("File is too big!");
+                alert("File is too big! File must not exceed to 500KB.");
+                this.value = "";
+                };
+            };
+
+            uploadFieldCert.onchange = function() {
+                if(this.files[0].size > 512000){
+                alert("File is too big! File must not exceed to 500KB.");
+                this.value = "";
+                };
+            };
+
+            uploadFieldPic.onchange = function() {
+                if(this.files[0].size > 512000){
+                alert("File is too big! File must not exceed to 500KB.");
                 this.value = "";
                 };
             };

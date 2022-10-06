@@ -2,7 +2,7 @@
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
         @if (isset($fieldInfo->h_r_i_s_form_id))
-            @if ($fieldInfo->name == 'document')
+            @if ($fieldInfo->name == 'document' || $fieldInfo->name == 'documentSO' || $fieldInfo->name == 'documentCert' || $fieldInfo->name == 'documentPic')
                 <br>
                 <span role="alert">
                     Note: Attachments should be in <strong>JPEG/JPG, PNG, or PDF</strong> format and less than <strong>500kb</strong> in file size.
