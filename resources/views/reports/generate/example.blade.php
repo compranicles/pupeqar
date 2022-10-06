@@ -70,8 +70,8 @@
                                 @endif
                                 @if ($level == "individual")
                                     @isset ($type)
-                                    @else
                                     <td>{{ $data['department_id'] ?? ''}}</td>
+                                    @else
                                     @endisset
                                 @endif
                                 @foreach ($tableColumns[$format->id] as $column )
