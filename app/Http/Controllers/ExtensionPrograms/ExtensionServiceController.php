@@ -544,6 +544,7 @@ class ExtensionServiceController extends Controller
 
     public function addExtension($extension_service_id, Request $request){
         $currentQuarterYear = Quarter::find(1);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $id = $extension_service_id;
 

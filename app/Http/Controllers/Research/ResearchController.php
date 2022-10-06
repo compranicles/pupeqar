@@ -676,6 +676,7 @@ class ResearchController extends Controller
 
     public function addResearch($research_id, Request $request){
         $currentQuarterYear = Quarter::find(1);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $this->authorize('create', Research::class);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
@@ -715,7 +716,7 @@ class ResearchController extends Controller
 
         $notificationID = $request->get('id');
 
-        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID', 'departments', 'dropdown_options', 'current_quarter'));
+        return view('research.code-create', compact('research', 'researchers', 'researchDocuments', 'values', 'researchFields', 'colleges', 'researchStatus', 'notificationID', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     public function saveResearch($research_id, Request $request){
