@@ -59,7 +59,7 @@ class SeminarAndTrainingController extends Controller
                 }
                 else
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
+                if ($development->AttachmentSO == null || $development->AttachmentCert == null)
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 2;
             }
 
@@ -71,7 +71,7 @@ class SeminarAndTrainingController extends Controller
                 }
                 else
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->AttachmentSO == null || $development->AttachmentCert == null || $development->AttachmentPic == null)
+                if ($development->AttachmentSO == null || $development->AttachmentCert == null)
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 2;
             }
         }
