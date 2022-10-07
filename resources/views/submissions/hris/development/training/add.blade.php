@@ -116,6 +116,7 @@
     <script>
         var uploadFieldSO = document.getElementById("documentSO");
         var uploadFieldCert = document.getElementById("documentCert");
+        var uploadFieldPic = document.getElementById("documentPic");
 
         uploadFieldSO.onchange = function() {
             if(this.files[0].size > 512000){
@@ -129,6 +130,12 @@
             alert("File is too big!");
             this.value = "";
             };
+        };
+
+        uploadFieldPic.onchange = function() {
+            if(this.files[0].size > 512000){
+            alert("File is too big! File must not exceed to 500KB.");
+            this.value = "";
         };
     </script>
     @if(isset($forview))
