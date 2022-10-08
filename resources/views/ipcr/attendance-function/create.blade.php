@@ -9,7 +9,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('attendance-function.store' ) }}" method="post" class="needs-validation" novalidate>
+                        <form id="form-attendance-function" action="{{ route('attendance-function.store' ) }}" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required.
                             </div> 
@@ -22,7 +22,7 @@
                                     <div class="mb-0">
                                         <div class="d-flex justify-content-end align-items-baseline">
                                             <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                            <button type="submit" id="submit" class="btn btn-success">Save</button>
+                                            <button type="submit" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>
@@ -37,6 +37,7 @@
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('js/spinner.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script>
          var type = "{{ $classtype }}";
             $(function() {
@@ -78,7 +79,6 @@
     <script>
         var report_category_id = 30;
         $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
-
         setTimeout(() => {
             var urlre = "{{ url('document-upload/description/33') }}";
             $.get(urlre, function (data){
@@ -91,5 +91,20 @@
         }, Math.floor(Math.random() * (2500 - 1) + 1));
 
     </script>
+    <script>
+        $("#form-attendance-function").validate({
+            ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input',
+            errorPlacement: function(error,element) {
+                if($("#description").val() === "") $(".selectize-input").removeClass("border border-success").addClass('border border-danger');                
+            },
+            success: () => {
+                if($("#description").val() !== "") $(".selectize-input").removeClass('border border-danger').addClass("border border-success");
+            }
+        });
+    </script>
     @endpush
 </x-app-layout>
+
+
+
+

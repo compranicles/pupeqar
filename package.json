@@ -29,6 +29,7 @@
     "dependencies": {
         "bootstrap-darkmode": "^0.9.1",
         "datatables.net": "^1.11.3",
-        "datatables.net-bs4": "^3.2.2"
+        "datatables.net-bs4": "^3.2.2",
+        "jquery-validation": "^1.19.5"
     }
 }
