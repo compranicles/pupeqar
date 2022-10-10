@@ -39,4 +39,6 @@
             };
         },
     });
+
+    // $(".selectize-dropdown").text("TYPE and press ENTER key to add " + value).css("padding", "3px 10px");
 </script>

@@ -550,7 +550,6 @@ class AwardController extends Controller
     }
 
     public function check($id){
-        dd($id);
         $award = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->first();
 
         if(LockController::isLocked($award->id, 27))

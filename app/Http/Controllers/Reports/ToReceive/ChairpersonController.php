@@ -80,7 +80,6 @@ class ChairpersonController extends Controller
 
         $reportsToReview = collect();
         $currentQuarterYear = Quarter::find(1);
-
         foreach ($departments as $row){
             $tempReports = Report::where('reports.report_year', $currentQuarterYear->current_year)
                 ->where('reports.report_quarter', $currentQuarterYear->current_quarter)
@@ -100,13 +99,18 @@ class ChairpersonController extends Controller
         $tempReports = collect();
 
         foreach($reportsToReview as $report){
-            if($report->report_category_id >= 1 && $report->report_category_id <= 8){
-                if($report->researcher_approval === 1){
-                    $tempReports = $tempReports->push($report);
+            if ($report->format == 'f') {
+                if($report->report_category_id >= 1 && $report->report_category_id <= 8){
+                    if($report->researcher_approval === 1){
+                        $tempReports = $tempReports->push($report);
+                    }
                 }
-            }
-            elseif(($report->report_category_id >= 12 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 37) || $report->report_category_id == 22 || $report->report_category_id == 23){
-                if($report->extensionist_approval === 1){
+                elseif(($report->report_category_id >= 12 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 37) || $report->report_category_id == 22 || $report->report_category_id == 23){
+                    if($report->extensionist_approval === 1){
+                        $tempReports = $tempReports->push($report);
+                    }
+                }
+                else{
                     $tempReports = $tempReports->push($report);
                 }
             }
@@ -115,7 +119,7 @@ class ChairpersonController extends Controller
             }
         }
         $reportsToReview = $tempReports;
-
+// dd($reportsToReview);
         $college_names = [];
         $department_names = [];
         foreach($reportsToReview as $row){

@@ -133,7 +133,11 @@
                                                 <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                     @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                                         @if ($row->researcher_approval === null)
-                                                            Receiving...
+                                                            @if ($row->format == 'f')
+                                                                Receiving...
+                                                            @else
+                                                                N/A
+                                                            @endif
                                                         @elseif ($row->researcher_approval == 0)
                                                             <span class="text-danger font-weight-bold">Returned</span>
                                                         @elseif ($row->researcher_approval == 1)
@@ -144,9 +148,13 @@
                                                     @endif
                                                 </td>
                                                 <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                    @if (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
+                                                    @if (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23
                                                         @if ($row->extensionist_approval === null)
-                                                            Receiving...
+                                                            @if ($row->format == 'f')
+                                                                Receiving...
+                                                            @else
+                                                                N/A
+                                                            @endif
                                                         @elseif ($row->extensionist_approval == 0)
                                                             <span class="text-danger font-weight-bold">Returned</span>
                                                         @elseif ($row->extensionist_approval == 1)
@@ -159,7 +167,17 @@
                                                 <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
                                                     @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                                         @if ($row->researcher_approval === null)
-                                                            -
+                                                            @if ($row->chairperson_approval === null)
+                                                                Receiving...
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @elseif ($row->chairperson_approval === 1)
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
+                                                            @endif
                                                         @elseif ($row->researcher_approval == 0)
                                                             -
                                                         @else
@@ -168,12 +186,26 @@
                                                             @elseif ($row->chairperson_approval === 0)
                                                                 <span class="text-danger font-weight-bold">Returned</span>
                                                             @elseif ($row->chairperson_approval === 1)
-                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Viewed</span>
+                                                                @endif
                                                             @endif
                                                         @endif
-                                                    @elseif (($row->report_category_id >= 9 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
+                                                    @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23
                                                         @if ($row->extensionist_approval === null)
-                                                            -
+                                                            @if ($row->chairperson_approval === null)
+                                                                Receiving...
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @elseif ($row->chairperson_approval === 1)
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
+                                                            @endif
                                                         @elseif ($row->extensionist_approval == 0)
                                                             -
                                                         @else
@@ -182,7 +214,11 @@
                                                             @elseif ($row->chairperson_approval === 0)
                                                                 <span class="text-danger font-weight-bold">Returned</span>
                                                             @elseif ($row->chairperson_approval === 1)
-                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
                                                             @endif
                                                         @endif
                                                     @else
@@ -193,7 +229,11 @@
                                                         @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
                                                             <span class="text-danger font-weight-bold">Returned</span>
                                                         @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                            <span class="text-success font-weight-bold">Reviewed</span>
+                                                            @if ($row->department_id == $row->college_id)
+                                                                N/A
+                                                            @else
+                                                                <span class="text-success font-weight-bold">Reviewed</span>
+                                                            @endif
                                                         @endif
                                                     @endif
                                                 </td>
@@ -259,7 +299,7 @@
                                                         @else
                                                             -
                                                         @endif
-                                                    @elseif ($row->report_category_id >= 9 && $row->report_category_id <= 14)
+                                                    @elseif ($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                         @if (
                                                             $row->extensionist_approval === 0 ||
                                                             $row->chairperson_approval === 0 ||

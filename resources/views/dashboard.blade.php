@@ -22,18 +22,6 @@
                             @if (in_array(1, $roles) || in_array(3, $roles))
                                 @include('dashboard.faculty-admin')
                             @endif
-                            @if (in_array(5, $roles))
-                            <div class="db-col mb-2">
-                                <div class="db-card">
-                                    <h5 class="card-header text-center">Chair/Chief</h5>
-                                    <div class="card-body d-flex justify-content-center">
-                                        @foreach ($department[5] as $value)
-                                            @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'departmentID' => $value->department_id, 'departmentCode' => $value->code])
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
                             @if (in_array(10, $roles))
                             <div class="db-col mb-2">
                                 <div class="db-card">
@@ -58,51 +46,66 @@
                                 </div>
                             </div>
                             @endif
-                            @if (in_array(6, $roles) || in_array(12, $roles))
-                            <div class="db-col mb-2">
-                                <div class="db-card">
-                                    @if (in_array(12, $roles))
-                                    <h5 class="card-header text-center">Associate/Assistant <br> Dean/Director</h5>
-                                    @else
-                                    <h5 class="card-header text-center">Dean/Director</h5>
-                                    @endif
-                                    <div class="card-body d-flex justify-content-center">
-                                        @foreach ($college[6] as $value)
-                                            @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'collegeID' => $value->college_id, 'collegeCode' => $value->code])
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                            
-                            @if (in_array(7, $roles) || in_array(13, $roles))
-                            <div class="db-col mb-2">
-                                <div class="db-card">
-                                    @if (in_array(13, $roles))
-                                    <h5 class="card-header text-center">Assistant to VP</h5>
-                                    @else
-                                    <h5 class="card-header text-center">Sector Head</h5>
-                                    @endif
-                                    <div class="card-body d-flex justify-content-center">
-                                        @foreach ($sector[7] as $value)
-                                            @include('dashboard.sector-head', ['countToReview' => $countToReview[7][$value->sector_id], 'sectorCode' => $value->code])
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                            @if (in_array(8, $roles))
+
+                            @if(session()->get('user_type') == 'Admin Employee')
+                                @if (in_array(5, $roles))
                                 <div class="db-col mb-2">
                                     <div class="db-card">
-                                        <h5 class="card-header text-center">IPO</h5>
-                                        <div class="card-body d-flex justify-content-center">@include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 
-                                            'countExpectedTotal' => $countExpectedTotal[8], 'countReceived' => $countReceived[8]])
+                                        <h5 class="card-header text-center">Chair/Chief</h5>
+                                        <div class="card-body d-flex justify-content-center">
+                                            @foreach ($department[5] as $value)
+                                                @include('dashboard.chairperson', ['countToReview' => $countToReview[5][$value->department_id], 'departmentID' => $value->department_id, 'departmentCode' => $value->code])
+                                            @endforeach
                                         </div>
                                     </div>
-                                </div>       
-                            @endif
-                            @if (in_array(9, $roles))
-                                @include('dashboard.superadmin', ['countRegisteredUsers' => $countRegisteredUsers[9]])
+                                </div>
+                                @endif
+                                @if (in_array(6, $roles) || in_array(12, $roles))
+                                <div class="db-col mb-2">
+                                    <div class="db-card">
+                                        @if (in_array(12, $roles))
+                                        <h5 class="card-header text-center">Associate/Assistant <br> Dean/Director</h5>
+                                        @else
+                                        <h5 class="card-header text-center">Dean/Director</h5>
+                                        @endif
+                                        <div class="card-body d-flex justify-content-center">
+                                            @foreach ($college[6] as $value)
+                                                @include('dashboard.director', ['countToReview' => $countToReview[6][$value->college_id], 'collegeID' => $value->college_id, 'collegeCode' => $value->code])
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                
+                                @if (in_array(7, $roles) || in_array(13, $roles))
+                                <div class="db-col mb-2">
+                                    <div class="db-card">
+                                        @if (in_array(13, $roles))
+                                        <h5 class="card-header text-center">Assistant to VP</h5>
+                                        @else
+                                        <h5 class="card-header text-center">Sector Head</h5>
+                                        @endif
+                                        <div class="card-body d-flex justify-content-center">
+                                            @foreach ($sector[7] as $value)
+                                                @include('dashboard.sector-head', ['countToReview' => $countToReview[7][$value->sector_id], 'sectorCode' => $value->code])
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if (in_array(8, $roles))
+                                    <div class="db-col mb-2">
+                                        <div class="db-card">
+                                            <h5 class="card-header text-center">IPO</h5>
+                                            <div class="card-body d-flex justify-content-center">@include('dashboard.ipqmso', ['countToReview' => $countToReview[8], 
+                                                'countExpectedTotal' => $countExpectedTotal[8], 'countReceived' => $countReceived[8]])
+                                            </div>
+                                        </div>
+                                    </div>       
+                                @endif
+                                @if (in_array(9, $roles))
+                                    @include('dashboard.superadmin', ['countRegisteredUsers' => $countRegisteredUsers[9]])
+                                @endif
                             @endif
                         </div>
                     </div>

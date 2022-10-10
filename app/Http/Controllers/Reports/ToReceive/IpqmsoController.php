@@ -258,7 +258,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPO received an accomplishment.');
 
-        return redirect()->route('ipo.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('ipo.index')->with('success', 'Report has been added in IPO consolidation of reports.');
     }
 
     public function rejectCreate($report_id){
@@ -469,7 +469,7 @@ class IpqmsoController extends Controller
 
         \LogActivity::addToLog('IPO received '.$count.' accomplishments.');
 
-        return redirect()->route('ipo.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('ipo.index')->with('success', 'Report/s added in IPO consolidation of reports.');
     }
 
     public function denySelected(Request $request){
