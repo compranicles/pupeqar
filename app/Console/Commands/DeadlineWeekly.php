@@ -53,7 +53,7 @@ class DeadlineWeekly extends Command
             $users = User::all();
             foreach ($users as $user){
                 if($user->id >= 67){
-                    $url = route('to-finalize.index');
+                    $url = route('dashboard');
 
                     $notificationData = [
                         'sender' => 'PUP eQAR',

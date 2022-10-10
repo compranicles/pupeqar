@@ -134,9 +134,8 @@
 
         uploadFieldPic.onchange = function() {
             if(this.files[0].size > 512000){
-            alert("File is too big!");
+            alert("File is too big! File must not exceed to 500KB.");
             this.value = "";
-            };
         };
     </script>
     @if(isset($forview))

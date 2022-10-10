@@ -43,16 +43,22 @@ class ExtensionInviteNotification extends Notification
     {
         if($this->notificationData['type'] == 'ext-invite')
             return (new MailMessage)
-                ->subject('PUP eQAR | Extension Invitation Notification')
+                ->subject('PUP eQAR | Extension Program/Project/Activity Tagging Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line('You are added by '.$this->notificationData['sender'].' as a part of Extension accomplishment.')
-                ->action('Open Extension Tab', route('extension-service.index'));
+                ->line('You are tagged as a partner by '.$this->notificationData['sender'].' in an Extension Program/Project/Activity.')
+                ->line('For confirmation:')
+                ->line('1. Click the button "Go to Extension Program/Project Activity" in this message.')
+                ->line('2. Click the button "Extensions to Add (Tagged by your Partner)".')
+                ->line('3. From the list, add the extension where you are tagged and save.')
+                ->action('Go to Extension Program/Project Activity', route('extension-service.index'))
+                ->line('Thank you for using our application!');
         elseif($this->notificationData['type'] == 'ext-confirm')
             return (new MailMessage)
-                ->subject('PUP eQAR | Extension Invitation Confirmation Notification')
+                ->subject('PUP eQAR | Extension Program/Project/Activity Tagging Confirmation Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line($this->notificationData['sender'].' confirmed a part of the Extension accomplishment.')
-                ->action('Open Extension', $this->notificationData['url']);
+                ->line($this->notificationData['sender'].' confirmed your tagged Extension Program/Project/Activity.')
+                ->action('Go to Extension Program/Project Activity', $this->notificationData['url'])
+                ->line('Thank you for using our application!');
     }
 
     /**

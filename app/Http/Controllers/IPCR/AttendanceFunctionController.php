@@ -113,6 +113,8 @@ class AttendanceFunctionController extends Controller
             ->join('field_types', 'field_types.id', 'i_p_c_r_fields.field_type_id')
             ->orderBy('i_p_c_r_fields.order')->get();
 
+        // return($fields);
+
         $dropdown_options = [];
         foreach($fields as $field){
             if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
@@ -122,13 +124,14 @@ class AttendanceFunctionController extends Controller
             }
         }
 
-        if(session()->get('user_type') == 'Faculty Employee')
+        if(session()->get('user_type') == 'Faculty Employee') 
             $colleges = Employee::where('user_id', auth()->id())->where('type', 'F')->pluck('college_id')->all();
         else
             $colleges = Employee::where('user_id', auth()->id())->where('type', 'A')->pluck('college_id')->all();
 
-         $departments = Department::whereIn('college_id', $colleges)->get();
+        $departments = Department::whereIn('college_id', $colleges)->get();
         $values = [];
+
         if($request->get('type') == 'uni'){
             $values = UniversityFunction::where('id', $request->get('id'))->first()->toArray();
         }
@@ -141,6 +144,7 @@ class AttendanceFunctionController extends Controller
             $departments = Department::where('id', $values['department_id'])->get();
         }
 
+        // return $dropdown_options;
         $classtype = $request->get('type');
 
         return view('ipcr.attendance-function.create', compact('fields', 'colleges', 'values', 'classtype', 'departments', 'dropdown_options', 'currentQuarter'));
@@ -154,6 +158,11 @@ class AttendanceFunctionController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'description' => 'required',
+        ]);
+
         $this->authorize('manage', AttendanceFunction::class);
 
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)

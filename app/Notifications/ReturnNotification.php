@@ -48,24 +48,38 @@ class ReturnNotification extends Notification
 
         if($this->notificationData['accomplishment_type'] == 'individual')
             return (new MailMessage)
-                    ->subject('PUP eQAR | Accomplishment Returned Notification')
+                    ->subject('PUP eQAR | Returned Accomplishment Notification')
                     ->greeting('Hello '.$this->notificationData['receiver'].'!')
                     ->line('Your accomplishment on '.$this->notificationData['category_name'].' has been returned by '.$this->notificationData['sender'].'.')
-                    ->action('View Accomplishment', $this->notificationData['url']);
-
+                    ->line('To edit:')
+                    ->line('1. Click the button "View Accomplishment" in this message.')
+                    ->line('2. Read the remarks displayed in the editing page.')
+                    ->line('2. Save and click Submit to resubmit the accomplishment.')
+                    ->action('View Accomplishment', $this->notificationData['url'])
+                    ->line('Thank you for using our application!');
         elseif($this->notificationData['accomplishment_type'] == 'department')
             return (new MailMessage)
-                    ->subject('PUP eQAR | Accomplishment Returned Notification')
+                    ->subject('PUP eQAR | Returned Department-Wide Accomplishment Notification')
                     ->greeting('Hello '.$this->notificationData['receiver'].'!')
                     ->line('The accomplishment of '.$this->notificationData['department_name'].' on '.$this->notificationData['category_name'].' has been returned by '.$this->notificationData['sender'].'.')
-                    ->action('View Accomplishment', $this->notificationData['url']);
+                    ->line('To edit:')
+                    ->line('1. Click the button "View Accomplishment" in this message.')
+                    ->line('2. Read the remarks displayed in the editing page.')
+                    ->line('2. Save and click Submit to resubmit the accomplishment.')
+                    ->action('View Accomplishment', $this->notificationData['url'])
+                    ->line('Thank you for using our application!');
 
         elseif($this->notificationData['accomplishment_type'] == 'college')
             return (new MailMessage)
-                    ->subject('PUP eQAR | Accomplishment Returned Notification')
+                    ->subject('PUP eQAR | Returned College-Wide Accomplishment Notification')
                     ->greeting('Hello '.$this->notificationData['receiver'].'!')
                     ->line('The accomplishment of '.$this->notificationData['college_name'].' on '.$this->notificationData['category_name'].' has been returned by '.$this->notificationData['sender'].'.')
-                    ->action('View Accomplishment', $this->notificationData['url']);
+                    ->line('To edit:')
+                    ->line('1. Click the button "View Accomplishment" in this message.')
+                    ->line('2. Read the remarks displayed in the editing page.')
+                    ->line('2. Save and click Submit to resubmit the accomplishment.')
+                    ->action('View Accomplishment', $this->notificationData['url'])
+                    ->line('Thank you for using our application!');
     }
 
     /**

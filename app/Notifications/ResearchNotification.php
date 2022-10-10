@@ -42,13 +42,15 @@ class ResearchNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('PUP eQAR | Research Deadline Notification')
+            ->subject('PUP eQAR | Research/Book Chapter Target Date Notification')
             ->greeting('Hello '.$this->notificationData['receiver'].'!')
             ->line('Please be informed that your research "'.
                         $this->notificationData['research_title'].'" with code "'.
                         $this->notificationData['research_code'].'" will be due on '.$this->notificationData['target_date'].'.')
             ->line('That will be '.$this->notificationData['days_remaining'].' day/s remaining.')
-            ->action('View Research', $this->notificationData['url']);
+            ->action('View Research/Book Chapter', $this->notificationData['url'])
+            ->line('Thank you for using our application!');
+
     }
 
     /**

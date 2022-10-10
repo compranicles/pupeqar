@@ -43,11 +43,13 @@ class DeadlineNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject('PUP eQAR | Submission Deadline Notification')
+            ->subject('PUP eQAR | Quarter '.$this->notificationData['quarter'].' Year '.$notificationData['year'].' Submission Deadline Notification')
             ->greeting('Hello '.$this->notificationData['receiver'].'!')
             ->line('Please be informed that the deadline of submission of eQAR is on '.$this->notificationData['deadline_date'].'.')
-            ->line('You only have '.$this->notificationData['days_remaining'].' day/s remaining to finalize.')
-            ->action('Finalize eQAR', $this->notificationData['url']);
+            ->line('You only have '.$this->notificationData['days_remaining'].' day/s remaining to finalize (including submit & review) the Quarter '.$this->notificationData['quarter'].'accomplishments')
+            ->action('Finalize eQAR', $this->notificationData['url'])
+            ->line('Thank you for using our application!');
+
     }
 
     /**
