@@ -37,9 +37,9 @@ class RegistrationController extends Controller
         if ($user == '-1') {
             
             if (!empty($userLocal)){
-                /*if(!$this->scheduleCheck($userLocal->id)){
+                if(!$this->scheduleCheck($userLocal->id)){
                     return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
-                }*/
+                }
                 Auth::login($userLocal);
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
 
@@ -67,7 +67,7 @@ class RegistrationController extends Controller
         return redirect()->back()->with('error', 'Invalid username or password');
     }
 
-    private function scheduleCheck($userId) {
+    public function scheduleCheck($userId) {
         
         $allowedColleges = array();
         $dateRange = ['2022-10-11','2022-10-12','2022-10-13','2022-10-14'];
