@@ -147,7 +147,7 @@
                                             @endif
                                         </td>
                                         <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                            @if (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23
+                                            @if (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                 @if ($row->extensionist_approval === null)
                                                     @if ($row->format == 'f')
                                                         Receiving...
@@ -192,7 +192,7 @@
                                                         @endif
                                                     @endif
                                                 @endif
-                                            @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23
+                                            @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                 @if ($row->extensionist_approval === null)
                                                     @if ($row->chairperson_approval === null)
                                                         Receiving...
@@ -298,7 +298,7 @@
                                                 @else
                                                     -
                                                 @endif
-                                            @elseif ($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
+                                            @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
                                                 @if (
                                                     $row->extensionist_approval === 0 ||
                                                     $row->chairperson_approval === 0 ||
