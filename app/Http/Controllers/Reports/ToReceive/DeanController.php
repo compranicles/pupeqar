@@ -84,7 +84,8 @@ class DeanController extends Controller
         foreach ($colleges as $row){
             $tempReports = Report::where('reports.report_year', $currentQuarterYear->current_year)
                 ->where('reports.report_quarter', $currentQuarterYear->current_quarter)
-                ->where('reports.college_id', $row->college_id)->where('chairperson_approval', 1)
+                ->where('reports.college_id', $row->college_id)
+                ->where('chairperson_approval', 1)
                 ->where('dean_approval', null)
                 ->select('reports.*', 'departments.name as department_name', 'report_categories.name as report_category', 'users.last_name', 'users.first_name','users.middle_name', 'users.suffix')
                 ->join('departments', 'reports.department_id', 'departments.id')
@@ -101,6 +102,29 @@ class DeanController extends Controller
             $reportsToReview = $reportsToReview->concat($tempReports);
             $department_list = $department_list->concat($tempDepartment_list);
         }
+        $tempReports = collect();
+
+        foreach($reportsToReview as $report){
+            if ($report->format == 'f') {
+                if($report->report_category_id >= 1 && $report->report_category_id <= 8){
+                    if($report->researcher_approval === 1){
+                        $tempReports = $tempReports->push($report);
+                    }
+                }
+                elseif(($report->report_category_id >= 12 && $report->report_category_id <= 14) || ($report->report_category_id >= 34 && $report->report_category_id <= 37) || $report->report_category_id == 22 || $report->report_category_id == 23){
+                    if($report->extensionist_approval === 1){
+                        $tempReports = $tempReports->push($report);
+                    }
+                }
+                else{
+                    $tempReports = $tempReports->push($report);
+                }
+            }
+            else{
+                $tempReports = $tempReports->push($report);
+            }
+        }
+        $reportsToReview = $tempReports;
 
         $college_names = [];
         $department_names = [];

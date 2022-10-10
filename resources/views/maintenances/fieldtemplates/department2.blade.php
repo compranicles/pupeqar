@@ -20,7 +20,7 @@
                 @endswitch
             >
     
-            <option value="" selected disabled>Choose/Search...</option>
+            <option value="" selected disabled>Choose...</option>
         </select>
        
         @error($fieldInfo->name)

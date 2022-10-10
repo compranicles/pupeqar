@@ -14220,25 +14220,25 @@ table tr .padding_left_show {
 }
 
 @media screen and (max-width: 900px) and (min-width: 1100px) {
-    .submission-menu {
-        display: inline-block;
-        margin-right: 20px;
-        font-size: 15px;
-        color: gainsboro;
-        margin-top: -20px;
-        margin-bottom: -20px;
-    }
+  .submission-menu {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 15px;
+    color: gainsboro;
+    margin-top: -20px;
+    margin-bottom: -20px;
+  }
 
     .submission-menu.active {
-        color: #212529;
-        background-color: whitesmoke;
+        /* color: #212529; */
+        background-color: var(--gray-dark);
         padding: 20px;
         font-weight: bolder;
     }
 
     .submission-menu.active:hover {
-        color: #212529;
-        background-color: whitesmoke;
+        /* color: #212529; */
+        background-color: var(--gray-dark);
         padding: 20px;
         font-weight: bolder;
     }
@@ -14246,6 +14246,7 @@ table tr .padding_left_show {
     .submission-menu:hover {
         color: white;
         text-decoration: none;
+        background-color: var(--gray-dark);
     }
 }
 
@@ -14258,8 +14259,8 @@ table tr .padding_left_show {
         margin-bottom: 5px;
     }
     .submission-menu.active {
-        color: #212529;
-        background-color: whitesmoke;
+        /* color: #212529; */
+        background-color: var(--gray-dark);
         padding: 10px;
         font-weight: bolder;
     }
@@ -14272,6 +14273,7 @@ table tr .padding_left_show {
     .submission-menu:hover {
         color: white;
         text-decoration: none;
+        background-color: var(--gray-dark);
     }
 }
 

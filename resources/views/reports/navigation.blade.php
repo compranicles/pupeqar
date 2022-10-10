@@ -83,7 +83,7 @@
                     {{-- Sectors/VPs --}}
                     @if (in_array(7, $roles) || in_array(13, $roles))
                         @forelse ( $sectors as $row)
-                            <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ request()->routeIs('reports.consolidate.sector') || request()->routeIs('reports.consolidate.sector.*') ? 'active' : ''}}">
+                            <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ isset($sector->id) ? ($row->sector_id == $sector->id && request()->routeIs('reports.consolidate.sector') ? 'active' : '') : '' }}">
                                 VP - {{ $row->code }}
                             </a><br>
                         @empty

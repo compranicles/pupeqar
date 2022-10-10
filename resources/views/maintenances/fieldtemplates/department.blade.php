@@ -1,7 +1,10 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $fieldInfo->name }}">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-    
+        <br>
+        <span class="form-notes">
+            If you have no department/section, select the name of your college/office.
+        </span>
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             @switch($fieldInfo->visibility)
                 @case(2)
@@ -23,7 +26,7 @@
             @endforeach
             {{-- <option value="0"></option> --}}
         </select>
-        @error($fieldInfo->name)o
+        @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>
             </span>

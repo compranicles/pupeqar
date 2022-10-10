@@ -38,7 +38,6 @@
                                     </div>
                                     <div class="form-group">
                                         <x-jet-label value="{{ __('Remarks') }}" />
-                    
                                         <input type="text" name="remarks" class="form-control" value="For quarter {{ $quarter->current_quarter }} of {{ $quarter->current_year }}" required/>
                                     </div>
                                     <div class="mb-0">

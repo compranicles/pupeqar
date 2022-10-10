@@ -105,7 +105,7 @@
                     <li><a class="{{ request()->routeIs('special-tasks.*') ? 'active' : ''  }}" href="{{ route('special-tasks.index').'?v=admin' }}">Accomplishments Based on OPCR</a></li>
                 @endif
                 @can('manage', \App\Models\AttendanceFunction::class)
-                <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">Attendance in College & University Functions</a></li>
+                <li><a class="{{ request()->routeIs('attendance-function.*') ? 'active' : '' }}" href="{{ route('attendance-function.index') }}">Attendance in Functions</a></li>
                 @endcan
             </ul>
             <ul>
@@ -114,6 +114,7 @@
                 <li><a class="{{ request()->routeIs('other-accomplishment.*') ? 'active' : '' }}" href="{{ route('other-accomplishment.index') }}">Other Individual Accomplishments</a></li>
                 @endcan
             </ul>
+        @if(session()->get('user_type') == 'Admin Employee')
             <hr>
             <ul>
                 @can('viewAny', \App\Models\StudentAward::class)
@@ -155,6 +156,7 @@
                 </small>
                 @endcan
             </ul>
+            @endif
         </div>
     </div>
 </div>

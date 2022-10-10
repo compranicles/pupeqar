@@ -278,7 +278,7 @@ class SectorController extends Controller
         \LogActivity::addToLog('Sector Head received an accomplishment.');
 
 
-        return redirect()->route('sector.index')->with('success', 'Report has been added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('sector.index')->with('success', 'Report has been added in sector consolidation of reports.');
     }
 
     public function rejectCreate($report_id){
@@ -538,7 +538,7 @@ class SectorController extends Controller
 
         \LogActivity::addToLog('Sector Head received '.$count.' accomplishments.');
 
-        return redirect()->route('sector.index')->with('success', 'Report/s added in college/branch/campus/office consolidation of reports.');
+        return redirect()->route('sector.index')->with('success', 'Report/s added in sector consolidation of reports.');
     }
 
     public function denySelected(Request $request){
