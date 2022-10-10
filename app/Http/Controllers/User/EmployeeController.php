@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HRISRegistration\RegistrationController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Employee;
@@ -115,10 +117,17 @@ class EmployeeController extends Controller
             }
         }
 
-        if (session('url'))
+        if (session('url')){
+            // how to logout using redirect
+            $checkSched = (new RegistrationController)->scheduleCheck(auth()->id());
+            if(!$checkSched) {
+                Auth::logout();
+                return redirect()->route('home')->with('error', 'Your role and designation has been updated. The college you are in is not scheduled to login today, Try again later.');
+            } 
             return redirect(session('url'));
-        else
+        } else {
             return redirect()->route('account')->with('success', 'Your role and designation has been updated.');
+        }
     }
 
     /**

@@ -97,7 +97,7 @@ class ExtensionServiceController extends Controller
      */
     public function create()
     {
-
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('create', ExtensionService::class);
 
         if(ExtensionProgramForm::where('id', 4)->pluck('is_active')->first() == 0)
@@ -543,6 +543,8 @@ class ExtensionServiceController extends Controller
     }
 
     public function addExtension($extension_service_id, Request $request){
+        $currentQuarterYear = Quarter::find(1);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         $id = $extension_service_id;
 
@@ -596,7 +598,7 @@ class ExtensionServiceController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments', 'dropdown_options'));
+        return view('extension-programs.extension-services.create-code', compact('value', 'extensionServiceFields', 'colleges', 'is_owner', 'notificationID', 'departments', 'collegeOfDepartment', 'extensionServiceDocuments', 'dropdown_options', 'currentQuarter'));
     }
 
 

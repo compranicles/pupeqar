@@ -12,13 +12,12 @@
                     @csrf
                     <div class="d-flex">
                         <div class="col-md-9 px-0">
-                            <label for=""><strong>Tag the department/section you are reporting to:</strong></label>
+                            <label for=""><strong>Tag the department/section you are reporting to and Click Save:</strong></label>
                             <select name="selected_department[]" id="selected_department" readonly required>
                                 <option value="">Choose...</option>
                             </select>
                         </div>
                         <div class="col-md-3 d-inline-flex mt-3 p-2">
-                            <button type="button" onclick="tagDepartment();" class="btn btn-warning w-100">Add</button>
                             <button type="submit" class="btn btn-success w-100">Save</button>
                         </div>
                     </div>
@@ -64,13 +63,6 @@
     <script src="{{ asset('dist/selectize.min.js') }}"></script>
     <script>
         $('#department_functions_table').DataTable();
-
-        $(function() {
-            $('#selected_department')[0].selectize.lock();
-        });
-        function tagDepartment() {
-            $('#selected_department')[0].selectize.unlock();
-        }
 
         $("#selected_department").selectize({
             maxItems: null,

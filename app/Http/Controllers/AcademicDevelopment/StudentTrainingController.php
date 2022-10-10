@@ -72,6 +72,7 @@ class StudentTrainingController extends Controller
     public function create()
     {
         $this->authorize('create', StudentTraining::class);
+        $currentQuarter = Quarter::find(1)->current_quarter;
 
         if(AcademicDevelopmentForm::where('id', 4)->pluck('is_active')->first() == 0)
             return view('inactive');

@@ -31,7 +31,7 @@ class ResearchInviteNotification extends Notification
     public function via($notifiable)
     {
         return ['database'];
-        //return ['mail', 'database'];
+        // return ['mail', 'database'];
     }
 
     /**
@@ -44,18 +44,22 @@ class ResearchInviteNotification extends Notification
     {
         if($this->notificationData['type'] == 'res-invite')
             return (new MailMessage)
-                ->subject('PUP eQAR | Research Invitation Notification')
+                ->subject('PUP eQAR | Research/Book Chapter Tagging Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line('You are invited by '.$this->notificationData['sender'].' to be part of their Research titled: ')
-                ->line($this->notificationData['title'])
-                ->action('Open Research Tab', route('research.index'));
+                ->line('You are tagged as a co-researcher by '.$this->notificationData['sender'].' in a research with the title: "'.$this->notificationData['title'].'."')
+                ->line('For confirmation:')
+                ->line('1. Click the button "Go to Research/Book Chapter" in this message.')
+                ->line('2. Click the button "Research to Add (Tagged by your Lead)".')
+                ->line('3. From the list, add the extension where you are tagged and save.')
+                ->action('Go to Research/Book Chapter', route('research.index'))
+                ->line('Thank you for using our application!');
         elseif($this->notificationData['type'] == 'res-confirm')
             return (new MailMessage)
-                ->subject('PUP eQAR | Research Invitation Confirmation Notification')
+                ->subject('PUP eQAR | Research/Book Chapter Tagging Confirmation Notification')
                 ->greeting('Hello '.$this->notificationData['receiver'].'!')
-                ->line($this->notificationData['sender'].' confirmed to be part of your Research titled: ')
-                ->line($this->notificationData['title'])
-                ->action('Open Research', $this->notificationData['url']);
+                ->line($this->notificationData['sender'].' confirmed your tagged Research/Book Chapter with the title: "'.$this->notificationData['title'].'."')
+                ->action('Go to Research/Book Chapter', $this->notificationData['url'])
+                ->line('Thank you for using our application!');
     }
 
     /**

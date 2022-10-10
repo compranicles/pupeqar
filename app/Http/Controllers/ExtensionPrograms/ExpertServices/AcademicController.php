@@ -223,6 +223,7 @@ class AcademicController extends Controller
      */
     public function edit(ExpertServiceAcademic $expert_service_in_academic)
     {
+        $currentQuarter = Quarter::find(1)->current_quarter;
         $this->authorize('update', ExpertServiceAcademic::class);
 
         if (auth()->id() !== $expert_service_in_academic->user_id)
@@ -267,7 +268,7 @@ class AcademicController extends Controller
         $value = $value->toArray();
 
         return view('extension-programs.expert-services.academic.edit', compact('value', 'expertServiceAcademicFields', 'expertServiceAcademicDocuments',
-            'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options'));
+            'colleges', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
     }
 
     /**
