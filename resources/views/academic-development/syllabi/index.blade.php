@@ -53,7 +53,7 @@
                                         <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->course_title }}</td>
                                         <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->assigned_task_name }}</td>
                                         <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >{{ $syllabus->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >
+                                        <td class="{{ ($syllabus->report_quarter == $currentQuarterYear->current_quarter && $syllabus->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >
                                             {{ $syllabus->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('syllabus.show', $syllabus->id) }}' " >

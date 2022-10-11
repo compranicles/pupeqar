@@ -95,15 +95,13 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if($row->research_status == "1")
                                                     <button class="remove_button btn btn-sm btn-danger"
                                                                 data-toggle="modal" data-target="#removeResModal"
                                                                 data-user-id="{{ $row->id }}" >
-                                                        @if ($row->research_status == null)
-                                                            Cancel
-                                                        @elseif($row->research_status == "1")
                                                             Remove
-                                                        @endif
                                                     </button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach

@@ -97,7 +97,7 @@
                                             ?>
                                             {{ $end_date }}
                                         </td>
-                                        <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >
+                                        <td class="{{ ($row->report_quarter == $currentQuarterYear->current_quarter && $row->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('attendance-function.show', $row->id) }}' " >

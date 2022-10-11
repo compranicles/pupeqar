@@ -68,7 +68,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('research.citation.show', [$research->id, $citation->id]) }}" class="link text-dark">{{ $citation->article_title }}</a></td>
                                                     <td>{{ $citation->article_author }}</td>
-                                                    <td>
+                                                    <td class="{{ ($citation->report_quarter == $currentQuarterYear->current_quarter && $citation->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
                                                         {{ $citation->report_quarter }}
                                                     </td>
                                                     <td>

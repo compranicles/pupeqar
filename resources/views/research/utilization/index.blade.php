@@ -65,7 +65,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
                                                     <td>{{ $utilization->utilization_description }}</td>
-                                                    <td>
+                                                    <td class="{{ ($utilization->report_quarter == $currentQuarterYear->current_quarter && $utilization->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
                                                         {{ $utilization->report_quarter}}
                                                     </td>
                                                     <td>

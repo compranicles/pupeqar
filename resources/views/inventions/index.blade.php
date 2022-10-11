@@ -53,7 +53,7 @@
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->title }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->status_name }}</td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">{{ $invention->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">
+                                        <td class="{{ ($invention->report_quarter == $currentQuarterYear->current_quarter && $invention->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">
                                             {{ $invention->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('invention-innovation-creative.show', $invention->id) }}' ">

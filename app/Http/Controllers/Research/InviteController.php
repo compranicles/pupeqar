@@ -63,6 +63,19 @@ class InviteController extends Controller
             $url_accept = route('research.invite.confirm', $research_id);
             $url_deny = route('research.invite.cancel', $research_id);
 
+            $researcher = Research::find($research_id)->researchers;
+            $researcherExploded = explode("/", $researcher);
+            $user = User::find($row);
+            if ($user->middle_name != '') {
+                array_push($researcherExploded, $user->last_name.', '.$user->first_name.' '.substr($user->middle_name,0,1).'.');
+            } else {
+                array_push($researcherExploded, $user->last_name.', '.$user->first_name);
+            }
+
+            Research::where('id', $research_id)->update([
+                'researchers' => implode("/", $researcherExploded),
+            ]);
+            
             $notificationData = [
                 'receiver' => $user->first_name,
                 'title' => $research_title,
@@ -78,7 +91,7 @@ class InviteController extends Controller
         }
         \LogActivity::addToLog('Had added '.$count.' co-researcher/s in the research "'.$research_title.'".');
 
-        return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people invited as co-researcher/s.');
+        return redirect()->route('research.invite.index', $research_id)->with('success', count($request->input('employees')).' people tagged as co-researcher/s.');
     }
 
     public function confirm($research_id, Request $request){
@@ -111,7 +124,6 @@ class InviteController extends Controller
 
     public function remove($research_id, Request $request){
         $research = Research::find($research_id);
-
         if(Research::where('user_id', $request->input('user_id'))->where('research_code', $research->research_code)->exists()){
             $coResearchID = Research::where('research_code', $research->research_code)->where('user_id', $request->input('user_id'))->pluck('id')->first();
             if(Report::where('report_reference_id', $coResearchID)->where('report_category_id', 1)->where('user_id', $request->input('user_id'))->exists()){
@@ -134,17 +146,9 @@ class InviteController extends Controller
             if ($user['middle_name'] != null) {
                 $middle = substr($user['middle_name'],0,1).'.';
                 $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$middle;
-                if ($user['suffix'] != null) {
-                    $middle = substr($user['middle_name'],0,1).'.';
-                    $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$middle.' '.$user['suffix'];
-                }
             }
             else {
-                if ($user['suffix'] != null) {
-                    $researcherToRemove = $user['last_name'].', '.$user['first_name'].' '.$user['suffix'];
-                } else {
-                    $researcherToRemove = $user['last_name'].', '.$user['first_name'];
-                }
+                $researcherToRemove = $user['last_name'].', '.$user['first_name'];
             }
 
             foreach($researchersExplode as $key => $researcher){
@@ -152,7 +156,6 @@ class InviteController extends Controller
                         unset($researchersExplode[$key]); 
                 }
             }
-            // dd($researchersExplode);
 
             Research::where('research_code', $research->research_code)->update([
                 'researchers' => implode("/", $researchersExplode)

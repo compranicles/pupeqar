@@ -101,13 +101,6 @@
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
         $(function () {
-                var middle = '';
-                if ("{{auth()->user()->middle_name}}" != '') {
-                    middle = "{{ substr(auth()->user()->middle_name,0,1).'.' }}";
-                }
-                var fullname = "{{ auth()->user()->last_name.', '.auth()->user()->first_name.' ' }}" + middle;
-                $("#researchers")[0].selectize.addOption({value:fullname, text:fullname});
-                $("#researchers")[0].selectize.addItem(fullname);
                 $("#researchers")[0].selectize.lock();
             });
         </script>

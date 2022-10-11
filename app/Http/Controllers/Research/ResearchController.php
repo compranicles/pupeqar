@@ -296,7 +296,15 @@ class ResearchController extends Controller
                         'research_id' => $research->id
                     ]);
 
+                    $researcher = Research::find($research->id)->researchers;
+                    $researcherExploded = explode("/", $researcher);
                     $user = User::find($collab);
+                    if ($user->middle_name != '') {
+                        array_push($researcherExploded, $user->last_name.', '.$user->first_name.' '.substr($user->middle_name,0,1).'.');
+                    } else {
+                        array_push($researcherExploded, $user->last_name.', '.$user->first_name);
+                    }
+                    
                     $research_title = Research::where('id', $research->id)->pluck('title')->first();
                     $sender = User::join('research', 'research.user_id', 'users.id')
                                     ->where('research.user_id', auth()->id())
@@ -318,6 +326,9 @@ class ResearchController extends Controller
                     Notification::send($user, new ResearchInviteNotification($notificationData));
                 }
                 $count++;
+                Research::where('id', $research->id)->update([
+                    'researchers' => implode("/", $researcherExploded),
+                ]);
             }
             \LogActivity::addToLog('Had added a co-researcher in the research "'.$research_title.'".'); 
         }           
@@ -349,6 +360,7 @@ class ResearchController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
         //$values = Research::where('research_code', $research->research_code)->first()->toArray();
 
         if ($research->department_id != null) {
@@ -410,7 +422,7 @@ class ResearchController extends Controller
 
         return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments',
              'colleges', 'collegeOfDepartment', 'exists',
-             'submissionStatus', 'submitRole'));
+             'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
@@ -693,7 +705,7 @@ class ResearchController extends Controller
             }
         }
 
-        $research = Research::where('research.id', $research_id)->where('nature_of_involvement', 11)->join('dropdown_options', 'dropdown_options.id', 'research.status')
+        $research = Research::where('research.id', $research_id)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
                 ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount')
                 ->first()->toArray();

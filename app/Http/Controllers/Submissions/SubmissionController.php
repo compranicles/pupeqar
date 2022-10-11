@@ -2592,11 +2592,11 @@ class SubmissionController extends Controller
             $research_nature_of_involvement = Research::find($accomplishment_id)->nature_of_involvement;
             // dd($research_nature_of_involvement);
             
-            if($research_nature_of_involvement != 11 && $research_nature_of_involvement != 224){
+            // if($research_nature_of_involvement != 11 && $research_nature_of_involvement != 224){
                 if($report_category_id == 1){
                     $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                    if($leadsResearch != $accomplishment_id)
+                    if($leadsResearch != $accomplishment_id && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $leadsResearch)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 1)
@@ -2609,7 +2609,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 2)
@@ -2622,7 +2622,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 3)
@@ -2635,7 +2635,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 4)
@@ -2648,7 +2648,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 5)
@@ -2661,7 +2661,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 6)
@@ -2675,7 +2675,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 7)
@@ -2683,36 +2683,36 @@ class SubmissionController extends Controller
                         ->where('report_year', $currentQuarterYear->current_year)->exists()))
                         return redirect()->back()->with('cannot_access', 'Wait for your lead researcher to submit the research.');
                 }
-            } else {
-                if($report_category_id == 1){
-                    $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 2){
-                    $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 3){
-                    $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 4){
-                    $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 5){
-                    $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 6){
-                    $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
+            // } else {
+            //     if($report_category_id == 1){
+            //         $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 2){
+            //         $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 3){
+            //         $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 4){
+            //         $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 5){
+            //         $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 6){
+            //         $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
 
-                if($report_category_id == 7){
-                    $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-            }
+            //     if($report_category_id == 7){
+            //         $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            // }
         }
         if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
