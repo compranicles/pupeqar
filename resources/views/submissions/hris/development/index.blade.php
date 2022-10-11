@@ -36,6 +36,7 @@
                                 <div class="alert alert-info" role="alert">
                                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminders: </strong> <br>
                                     <div class="ml-3">
+                                    &#8226; Certificate is required. <br>
                                     &#8226; Once you <strong>submit</strong> an accomplishment, you are <strong>not allowed to edit</strong> until the 
                                         quarter ends, except that it was returned to you by the Chairperson, Researcher, or Extensionist.
                                         You may request them to return your accomplishment if revision is necessary. <br>
@@ -79,7 +80,7 @@
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 1 )
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted {{ $submitRole[$development->EmployeeTrainingProgramID] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                                                         @elseif ($submissionStatus[25][$development->EmployeeTrainingProgramID] == 2 )
-                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Certificate is Required</a>
                                                                         @endif
                                                                     @endif
                                                                 @endif
@@ -90,7 +91,7 @@
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 1)
                                                                             <a href="{{ route('submissions.development.check', $development->EmployeeTrainingProgramID) }}" class="btn btn-sm btn-success d-inline-flex align-items-center">Submitted {{ $submitRole[$development->EmployeeTrainingProgramID] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
                                                                         @elseif ($submissionStatus[26][$development->EmployeeTrainingProgramID] == 2)
-                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Has Missing Document/s</a>
+                                                                            <a href="{{ route('submissions.development.edit', $development->EmployeeTrainingProgramID ) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> Certificate is Required</a>
                                                                         @endif
                                                                     @endif
                                                                 @endif

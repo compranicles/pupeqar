@@ -59,7 +59,7 @@ class SeminarAndTrainingController extends Controller
                 }
                 else
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->AttachmentSO == null || $development->AttachmentCert == null)
+                if ($development->AttachmentCert == null)
                     $submissionStatus[25][$development->EmployeeTrainingProgramID] = 2;
             }
 
@@ -71,7 +71,7 @@ class SeminarAndTrainingController extends Controller
                 }
                 else
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 0;
-                if ($development->AttachmentSO == null || $development->AttachmentCert == null)
+                if ($development->AttachmentCert == null)
                     $submissionStatus[26][$development->EmployeeTrainingProgramID] = 2;
             }
         }
@@ -175,18 +175,21 @@ class SeminarAndTrainingController extends Controller
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastringSO);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
             $datastringCert = file_get_contents($request->file('documentCert'));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastringCert);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
             $datastringPic = file_get_contents($request->file('documentPic'));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastringPic);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+            $descriptionPic = "COMPILED PHOTOS";
         }
 
         $value = array(
@@ -206,13 +209,13 @@ class SeminarAndTrainingController extends Controller
             $request->fund_source, //SourceOfFundID
             $request->budget, //Budget
             '', //Remarks
-            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $descriptionSO ?? null, //AttachmentDescSO
             $imagedataSO ?? null, //AttachmentSO
             $mimetypeSO ?? null, //MimeTypeSO
-            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $descriptionCert ?? null, //AttachmentDescCert
             $imagedataCert ?? null, //AttachmentCert
             $mimetypeCert ?? null, //MimeTypeCert
-            "COMPILED PHOTOS", //AttachmentDescPic
+            $descriptionPic ?? null, //AttachmentDescPic
             $imagedataPic ?? null, //AttachmentPic
             $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
@@ -468,18 +471,21 @@ class SeminarAndTrainingController extends Controller
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastring);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
             $datastring = file_get_contents($request->file('documentCert'));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastring);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
             $datastring = file_get_contents($request->file('documentPic'));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastring);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+            $descriptionPic = "COMPILED PHOTOS";
         }
 
         $value = array(
@@ -499,13 +505,13 @@ class SeminarAndTrainingController extends Controller
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
             '', //Remarks
-            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $descriptionSO ?? null, //AttachmentDescSO
             $imagedataSO ?? null, //AttachmentSO
             $mimetypeSO ?? null, //MimeTypeSO
-            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $descriptionCert ?? null, //AttachmentDescCert
             $imagedataCert ?? null, //AttachmentCert
             $mimetypeCert ?? null, //MimeTypeCert
-            "COMPILED PHOTOS", //AttachmentDescPic
+            $descriptionPic ?? null, //AttachmentDescPic
             $imagedataPic ?? null, //AttachmentPic
             $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
@@ -582,18 +588,21 @@ class SeminarAndTrainingController extends Controller
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastring);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
             $datastring = file_get_contents($request->file('documentCert'));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastring);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
             $datastring = file_get_contents($request->file('documentPic'));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastring);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+            $descriptionPic = "COMPILED PHOTOS";
         }
 
         $value = array(
@@ -613,13 +622,13 @@ class SeminarAndTrainingController extends Controller
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
             '', //Remarks
-            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+            $descriptionSO ?? null, //AttachmentDescSO
             $imagedataSO ?? null, //AttachmentSO
             $mimetypeSO ?? null, //MimeTypeSO
-            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+            $descriptionCert ?? null, //AttachmentDescCert
             $imagedataCert ?? null, //AttachmentCert
             $mimetypeCert ?? null, //MimeTypeCert
-            "COMPILED PHOTOS", //AttachmentDescPic
+            $descriptionPic ?? null, //AttachmentDescPic
             $imagedataPic ?? null, //AttachmentPic
             $mimetypePic ?? null, //MimeTypePic
             $user->email //TransAccount
@@ -1245,6 +1254,11 @@ class SeminarAndTrainingController extends Controller
         $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal(
             $seminar, 4, $development_id);
 
+        $description = [];
+        array_push($description, $seminar->DescriptionSO);
+        array_push($description, $seminar->DescriptionCert);
+        array_push($description, $seminar->DescriptionPic);
+
         $values = [
             'title' => $seminar->TrainingProgram,
             'classification' => $seminar->Classification,
@@ -1258,7 +1272,7 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($seminar->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($seminar->IncDateTo)),
             'total_hours' => $seminar->NumberOfHours,
-            'description' => $seminar->DescriptionSO.', '.$seminar->DescriptionCert.', '.$seminar->DescriptionPic,
+            'description' => implode(", ", array_filter($description)),
             'department_id' => $department_name,
             'college_id' => $college_name,
         ];
@@ -1329,6 +1343,11 @@ class SeminarAndTrainingController extends Controller
         $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal(
             $training, 4, $development_id);
 
+        $description = [];
+        array_push($description, $training->DescriptionSO);
+        array_push($description, $training->DescriptionCert);
+        array_push($description, $training->DescriptionPic);
+
         $values = [
             'title' => $training->TrainingProgram,
             'classification' => $training->Classification,
@@ -1342,7 +1361,7 @@ class SeminarAndTrainingController extends Controller
             'from' => date('m/d/Y', strtotime($training->IncDateFrom)),
             'to' => date('m/d/Y', strtotime($training->IncDateTo)),
             'total_hours' => $training->NumberOfHours,
-            'description' => $training->DescriptionSO.', '.$training->DescriptionCert.', '.$training->DescriptionPic,
+            'description' => implode(", ", array_filter($description)),
             'department_id' => $department_name,
             'college_id' => $college_name,
         ];
