@@ -38,9 +38,9 @@ class RegistrationController extends Controller
             
             if (!empty($userLocal)){
                 $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
-                // if(!$this->scheduleCheck($userLocal->id) && is_null($user_role)){
-                //     return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
-                // }
+                if(!$this->scheduleCheck($userLocal->id) && is_null($user_role)){
+                    return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
+                }
                 Auth::login($userLocal);
 
                 session(['user_type' => Role::where('id', $user_role->role_id)->first()->name]);
