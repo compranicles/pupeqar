@@ -78,7 +78,11 @@
                                     @if (isset($data[$column['report_column']]))
                                         <td>{{ $data[$column['report_column']] }}</td>
                                     @else
-                                        <td>-</td>
+                                        @if ($data['fund_source'] == 0)
+                                            <td>Not Paid</td>
+                                        @else
+                                            <td>-</td>
+                                        @endif
                                     @endif
                                 @endforeach
                                 <td><a href="{{ route('report.generate.document-view', $content['id']) }}" target="_blank">View Documents</a></td>
