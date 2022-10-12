@@ -2786,7 +2786,7 @@ class SubmissionController extends Controller
                     elseif ($employee[0]['type'] == 'A')
                         $type = 'a';
                 }
-                if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                if (($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) && (!($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248))) {
                     Report::create([
                         'user_id' =>  $user_id,
                         'sector_id' => $sector_id,
@@ -2934,7 +2934,7 @@ class SubmissionController extends Controller
                     elseif ($employee[0]['type'] == 'A')
                         $type = 'a';
                 }
-                if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                if (($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) && (!($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248))) {
                     Report::create([
                         'user_id' =>  $user_id,
                         'sector_id' => $sector_id,

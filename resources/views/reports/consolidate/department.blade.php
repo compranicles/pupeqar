@@ -171,7 +171,7 @@
                                                     @elseif ($row->chairperson_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->chairperson_approval === 1)
-                                                        @if ($row->department_id == $row->college_id)
+                                                        @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
                                                             N/A
                                                         @else
                                                             <span class="text-success font-weight-bold">Reviewed</span>
@@ -185,7 +185,7 @@
                                                     @elseif ($row->chairperson_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->chairperson_approval === 1)
-                                                        @if ($row->department_id == $row->college_id)
+                                                        @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
                                                             N/A
                                                         @else
                                                             <span class="text-success font-weight-bold">Viewed</span>
@@ -199,7 +199,7 @@
                                                     @elseif ($row->chairperson_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->chairperson_approval === 1)
-                                                        @if ($row->department_id == $row->college_id)
+                                                        @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
                                                             N/A
                                                         @else
                                                             <span class="text-success font-weight-bold">Reviewed</span>
@@ -213,7 +213,7 @@
                                                     @elseif ($row->chairperson_approval === 0)
                                                         <span class="text-danger font-weight-bold">Returned</span>
                                                     @elseif ($row->chairperson_approval === 1)
-                                                        @if ($row->department_id == $row->college_id)
+                                                        @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
                                                             N/A
                                                         @else
                                                             <span class="text-success font-weight-bold">Reviewed</span>
@@ -228,7 +228,7 @@
                                                 @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
                                                     <span class="text-danger font-weight-bold">Returned</span>
                                                 @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                    @if ($row->department_id == $row->college_id)
+                                                    @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
                                                         N/A
                                                     @else
                                                         <span class="text-success font-weight-bold">Reviewed</span>

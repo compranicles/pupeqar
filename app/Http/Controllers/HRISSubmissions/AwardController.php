@@ -118,7 +118,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -137,7 +138,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -189,8 +191,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'mimetype' => $awardData[0]->MimeType,
@@ -259,8 +261,8 @@ class AwardController extends Controller
                 'awarded_by' => $awardData[0]->AwardedBy,
                 'level' => $awardData[0]->Level,
                 'venue' => $awardData[0]->Venue,
-                'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-                'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+                'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+                'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
                 'document' => $awardData[0]->Attachment,
                 'description' => $awardData[0]->Description,
                 'mimetype' => $awardData[0]->MimeType,
@@ -290,7 +292,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -309,7 +312,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -363,8 +367,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->Level,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
@@ -411,8 +415,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => $department_id,
@@ -475,7 +479,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -494,7 +499,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -621,8 +627,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->Level,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             // 'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => $department_name,

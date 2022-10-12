@@ -141,7 +141,7 @@ class CopyrightedController extends Controller
         $value = $value->except(['description', 'status']);
         $value = $value->toArray();
 
-        return view('research.copyrighted.create', compact('researchFields', 'research', 'value', 'dropdown_options', 'current_quarter'));
+        return view('research.copyrighted.create', compact('researchFields', 'research', 'value', 'dropdown_options', 'currentQuarter'));
     }
 
     /**

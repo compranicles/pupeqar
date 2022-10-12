@@ -65,7 +65,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $development->TrainingProgram }}</td>
-                                                    <td>{{ $development->IncDate }}</td>
+                                                    <td>{{ date( 'F d, Y', strtotime($development->IncDateFrom)) }} - {{ date( 'F d, Y', strtotime($development->IncDateTo)) }}</td>
                                                     <td>{{ $development->Level }}</td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="button-group">

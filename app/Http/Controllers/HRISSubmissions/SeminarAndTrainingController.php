@@ -171,27 +171,27 @@ class SeminarAndTrainingController extends Controller
         }
 
         if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file('documentSO'));
+            $datastringSO = file_get_contents($request->file(['documentSO']));
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastringSO);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
             $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file('documentCert'));
+            $datastringCert = file_get_contents($request->file(['documentCert']));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastringCert);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
             $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file('documentPic'));
+            $datastringPic = file_get_contents($request->file(['documentPic']));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastringPic);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
             $descriptionPic = "COMPILED PHOTOS";
         }
-
+        // dd($datastringSO);
         $value = array(
             0, //EmployeeTrainingProgramID
             $emp_code, //EmpCode
@@ -467,21 +467,21 @@ class SeminarAndTrainingController extends Controller
         }
 
         if($request->has('documentSO')){
-            $datastring = file_get_contents($request->file('documentSO'));
+            $datastring = file_get_contents($request->file(['documentSO']));
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastring);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
             $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
-            $datastring = file_get_contents($request->file('documentCert'));
+            $datastring = file_get_contents($request->file(['documentCert']));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastring);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
             $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
-            $datastring = file_get_contents($request->file('documentPic'));
+            $datastring = file_get_contents($request->file(['documentPic']));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastring);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
@@ -584,21 +584,21 @@ class SeminarAndTrainingController extends Controller
         }
 
         if($request->has('documentSO')){
-            $datastring = file_get_contents($request->file('documentSO'));
+            $datastring = file_get_contents($request->file(['documentSO']));
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastring);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
             $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
         }
         if($request->has('documentCert')){
-            $datastring = file_get_contents($request->file('documentCert'));
+            $datastring = file_get_contents($request->file(['documentCert']));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastring);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
             $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
         }
         if($request->has('documentPic')){
-            $datastring = file_get_contents($request->file('documentPic'));
+            $datastring = file_get_contents($request->file(['documentPic']));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastring);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
@@ -927,19 +927,19 @@ class SeminarAndTrainingController extends Controller
         }
 
         if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file('documentSO'));
+            $datastringSO = file_get_contents($request->file(['documentSO']));
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastringSO);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
         }
         if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file('documentCert'));
+            $datastringCert = file_get_contents($request->file(['documentCert']));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastringCert);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
         }
         if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file('documentPic'));
+            $datastringPic = file_get_contents($request->file(['documentPic']));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastringPic);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
@@ -1055,19 +1055,19 @@ class SeminarAndTrainingController extends Controller
         }
 
         if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file('documentSO'));
+            $datastringSO = file_get_contents($request->file(['documentSO']));
             $mimetypeSO = $request->file('documentSO')->getMimeType();
             $imagedataSO = unpack("H*hex", $datastringSO);
             $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
         }
         if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file('documentCert'));
+            $datastringCert = file_get_contents($request->file(['documentCert']));
             $mimetypeCert = $request->file('documentCert')->getMimeType();
             $imagedataCert = unpack("H*hex", $datastringCert);
             $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
         }
         if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file('documentPic'));
+            $datastringPic = file_get_contents($request->file(['documentPic']));
             $mimetypePic = $request->file('documentPic')->getMimeType();
             $imagedataPic = unpack("H*hex", $datastringPic);
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
