@@ -74,24 +74,15 @@ class RegistrationController extends Controller
         $dateToday = Carbon::today()->toDateString();
         
         switch ($dateToday) {
-            case '2022-10-06':
+            /*case '2022-10-06':
                 array_push($allowedColleges,239,233,238,243);
                 array_push($allowedColleges,176,159,137,211,200);
-                break;
-
-            case '2022-10-07':
-                array_push($allowedColleges,274,42,40,36);
-                array_push($allowedColleges,61,66,76,83,12,25,8);
-                break;
-
-            case '2022-10-10':
-                array_push($allowedColleges,290,263,96,107,452,112);
-                array_push($allowedColleges,99,103,115,451,114);
-                break;
-
+                break;*/
+        
             case in_array($dateToday,$dateRange):
-                array_push($allowedColleges,120,226,94);
-                array_push($allowedColleges,59,75,18,2);
+                /*array_push($allowedColleges,120,226,94);
+                array_push($allowedColleges,59,75,18,2);*/
+                array_push($allowedColleges,61);
                 break;
             
             default:
@@ -99,8 +90,8 @@ class RegistrationController extends Controller
                 break;
         }
         
-        $startTime = Carbon::createFromFormat('H:i a', '08:00 AM');
-        $endTime = Carbon::createFromFormat('H:i a', '05:00 PM');
+        $startTime = Carbon::createFromFormat('H:i a', '04:01 PM');
+        $endTime = Carbon::createFromFormat('H:i a', '05:30 PM');
         $timeCheck = Carbon::now()->between($startTime,$endTime,true);
 
         if(Employee::where('user_id', $userId)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
