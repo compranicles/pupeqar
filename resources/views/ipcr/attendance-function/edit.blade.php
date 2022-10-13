@@ -24,7 +24,7 @@
                                 <div class="mb-0">
                                     <div class="d-flex justify-content-end align-items-baseline">
                                         <a href="{{ url()->previous() }}" class="btn btn-secondary mr-2">Cancel</a>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                        <button type="submit" id="submit" class="btn btn-success">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +192,7 @@
                 });
             }, 2000);
         </script>
-        <script>
+        <!-- <script>
             $("#form-attendance-function").validate({
                 ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input',
                 errorPlacement: function(error,element) {
@@ -203,6 +203,6 @@
                     if($("#description").val() !== "") $(".selectize-input").removeClass('border border-danger').addClass("border border-success");
                 }
             });
-        </script>
+        </script> -->
     @endpush
 </x-app-layout>

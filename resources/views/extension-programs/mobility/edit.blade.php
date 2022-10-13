@@ -146,7 +146,16 @@
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $(function() {
-                $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                if("{{session()->get('user_type')}}" == 'Faculty Employee') {
+                    $('#classification_of_person option[value=297]').attr('disabled','disabled');
+                } else if ("{{session()->get('user_type')}}" == 'Admin Employee') {
+                    $('#classification_of_person option[value=296]').attr('disabled','disabled');
+                }
+                $('#classification_of_person').on('change', function (){
+                    if("{{ $colaccomp }}" == 0){
+                        $('#classification_of_person option[value=298]').attr('disabled','disabled');
+                    }
+                });
             });
         </script>
         

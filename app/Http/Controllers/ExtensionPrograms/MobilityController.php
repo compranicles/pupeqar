@@ -106,6 +106,7 @@ class MobilityController extends Controller
             $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
             $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
             $colleges = array_merge($deans, $chairpersons);
+            $colleges = array_merge($deans, Employee::where('user_id', auth()->id())->pluck('college_id')->all());
             $colleges = College::whereIn('id', array_values($colleges))
                         ->select('colleges.*')->get();
             $departments = [];
@@ -116,6 +117,7 @@ class MobilityController extends Controller
             $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
             $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
             $colleges = array_merge($deans, $chairpersons);
+            $colleges = array_merge($deans, Employee::where('user_id', auth()->id())->pluck('college_id')->all());
             $colleges = College::whereIn('id', array_values($colleges))
                         ->select('colleges.*')->get();
             $departments = [];
@@ -302,6 +304,7 @@ class MobilityController extends Controller
             $deans = Dean::where('user_id', auth()->id())->pluck('college_id')->all();
             $chairpersons = Chairperson::where('user_id', auth()->id())->join('departments', 'departments.id', 'chairpeople.department_id')->pluck('departments.college_id')->all();
             $colleges = array_merge($deans, $chairpersons);
+            $colleges = array_merge($deans, Employee::where('user_id', auth()->id())->pluck('college_id')->all());
             $colleges = College::whereIn('id', array_values($colleges))
                         ->select('colleges.*')->get();
             $departments = [];
