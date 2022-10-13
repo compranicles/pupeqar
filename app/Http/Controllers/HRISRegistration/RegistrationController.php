@@ -82,7 +82,7 @@ class RegistrationController extends Controller
             case in_array($dateToday,$dateRange):
                 /*array_push($allowedColleges,120,226,94);
                 array_push($allowedColleges,59,75,18,2);*/
-                array_push($allowedColleges,61);
+                array_push($allowedColleges,36);
                 break;
             
             default:
@@ -90,8 +90,8 @@ class RegistrationController extends Controller
                 break;
         }
         
-        $startTime = Carbon::createFromFormat('H:i a', '04:01 PM');
-        $endTime = Carbon::createFromFormat('H:i a', '05:30 PM');
+        $startTime = Carbon::createFromFormat('H:i a', '08:00 AM');
+        $endTime = Carbon::createFromFormat('H:i a', '05:00 PM');
         $timeCheck = Carbon::now()->between($startTime,$endTime,true);
 
         if(Employee::where('user_id', $userId)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
