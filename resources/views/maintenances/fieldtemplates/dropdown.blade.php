@@ -24,8 +24,8 @@
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
         <br>
-        <span class="form-notes">
-            Please select your designation.
+        <<span class="form-notes">
+            <p>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
         </span>
         @endif
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
@@ -73,7 +73,7 @@
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
         <span class="form-notes">
-            <p>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
+            <p>This is auto-generated based on your reporting module.</p>
         </span>
         @endif
 

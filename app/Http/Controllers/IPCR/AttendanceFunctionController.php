@@ -158,11 +158,6 @@ class AttendanceFunctionController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-            'description' => 'required',
-        ]);
-
         $this->authorize('manage', AttendanceFunction::class);
 
         if(IPCRForm::where('id', 4)->pluck('is_active')->first() == 0)

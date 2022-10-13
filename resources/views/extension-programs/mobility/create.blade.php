@@ -40,6 +40,14 @@
         <script src="{{ asset('js/spinner.js') }}"></script>
         <script>
             $(function () {
+                if("{{session()->get('user_type')}}" == 'Faculty Employee') {
+                    $('#classification_of_person option[value=297]').attr('disabled','disabled');
+                    $('#classification_of_person').val(296); // select faculty as classification
+                } else if ("{{session()->get('user_type')}}" == 'Admin Employee') {
+                    $('#classification_of_person option[value=296]').attr('disabled','disabled');
+                    $('#classification_of_person').val(297); // select admin as classification
+                }
+                
                 if("{{ $colaccomp }}" == 0){
                     $('#classification_of_person option[value=298]').attr('disabled','disabled');
                 }
