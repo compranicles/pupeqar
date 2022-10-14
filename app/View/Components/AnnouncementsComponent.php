@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\Announcement;
 use Illuminate\View\Component;
 
-class AnnouncementComponent extends Component
+class AnnouncementsComponent extends Component
 {
     public $itemCount;
     /**

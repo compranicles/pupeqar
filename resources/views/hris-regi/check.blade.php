@@ -1,7 +1,7 @@
 <x-guest-layout>
         <div class="login_view_container row align-items-end justify-content-around">
             <div class="col-sm-6">
-                <x-announcement-component :item-count="3"/>
+                <x-announcements-component :item-count="3"/>
             </div>
             <div class="col-sm-5">
                 <x-jet-authentication-card>
