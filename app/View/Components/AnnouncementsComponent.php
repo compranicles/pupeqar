@@ -26,6 +26,6 @@ class AnnouncementsComponent extends Component
     public function render()
     {
         $announcements = Announcement::where('status', 1)->orderBy('updated_at', 'DESC')->paginate($this->itemCount);
-        return view('components.announcement-component', compact('announcements'));
+        return view('components.announcements-component', compact('announcements'));
     }
 }
