@@ -19,6 +19,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use Exception;
 
 class AdminSpecialTaskController extends Controller
 {
@@ -132,25 +133,31 @@ class AdminSpecialTaskController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'ST-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    AdminSpecialTaskDocument::create([
-                        'special_task_id' => $taskdata->id,
-                        'filename' => $fileName,
-                    ]);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'ST-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+    
+                        AdminSpecialTaskDocument::create([
+                            'special_task_id' => $taskdata->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+
+           
         }
 
         \LogActivity::addToLog('Had added a Special Task (Admin).');
@@ -289,24 +296,30 @@ class AdminSpecialTaskController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'ST-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-                    AdminSpecialTaskDocument::create([
-                        'special_task_id' => $admin_special_task->id,
-                        'filename' => $fileName,
-                    ]);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'ST-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+                        AdminSpecialTaskDocument::create([
+                            'special_task_id' => $admin_special_task->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+
+            
         }
 
         \LogActivity::addToLog('Had updated a Special Task (Admin).');

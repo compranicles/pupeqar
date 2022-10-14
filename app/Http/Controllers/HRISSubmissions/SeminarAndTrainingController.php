@@ -30,6 +30,8 @@ use App\Models\{
 use Carbon\Carbon;
 use Image;
 use App\Services\SavePersonalDataDocumentService;
+use Exception;
+use PhpParser\Node\Expr\Throw_;
 
 class SeminarAndTrainingController extends Controller
 {
@@ -926,24 +928,30 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file(['documentSO']));
-            $mimetypeSO = $request->file('documentSO')->getMimeType();
-            $imagedataSO = unpack("H*hex", $datastringSO);
-            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        try {
+            if($request->has('documentSO')){
+                $datastringSO = file_get_contents($request->file(['documentSO']));
+                $mimetypeSO = $request->file('documentSO')->getMimeType();
+                $imagedataSO = unpack("H*hex", $datastringSO);
+                $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+            }
+            if($request->has('documentCert')){
+                $datastringCert = file_get_contents($request->file(['documentCert']));
+                $mimetypeCert = $request->file('documentCert')->getMimeType();
+                $imagedataCert = unpack("H*hex", $datastringCert);
+                $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+            }
+            if($request->has('documentPic')){
+                $datastringPic = file_get_contents($request->file(['documentPic']));
+                $mimetypePic = $request->file('documentPic')->getMimeType();
+                $imagedataPic = unpack("H*hex", $datastringPic);
+                $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
-        if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file(['documentCert']));
-            $mimetypeCert = $request->file('documentCert')->getMimeType();
-            $imagedataCert = unpack("H*hex", $datastringCert);
-            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-        }
-        if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file(['documentPic']));
-            $mimetypePic = $request->file('documentPic')->getMimeType();
-            $imagedataPic = unpack("H*hex", $datastringPic);
-            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-        }
+
+
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -1054,24 +1062,30 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file(['documentSO']));
-            $mimetypeSO = $request->file('documentSO')->getMimeType();
-            $imagedataSO = unpack("H*hex", $datastringSO);
-            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        try {
+            if($request->has('documentSO')){
+                $datastringSO = file_get_contents($request->file(['documentSO']));
+                $mimetypeSO = $request->file('documentSO')->getMimeType();
+                $imagedataSO = unpack("H*hex", $datastringSO);
+                $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+            }
+            if($request->has('documentCert')){
+                $datastringCert = file_get_contents($request->file(['documentCert']));
+                $mimetypeCert = $request->file('documentCert')->getMimeType();
+                $imagedataCert = unpack("H*hex", $datastringCert);
+                $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+            }
+            if($request->has('documentPic')){
+                $datastringPic = file_get_contents($request->file(['documentPic']));
+                $mimetypePic = $request->file('documentPic')->getMimeType();
+                $imagedataPic = unpack("H*hex", $datastringPic);
+                $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
-        if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file(['documentCert']));
-            $mimetypeCert = $request->file('documentCert')->getMimeType();
-            $imagedataCert = unpack("H*hex", $datastringCert);
-            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-        }
-        if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file(['documentPic']));
-            $mimetypePic = $request->file('documentPic')->getMimeType();
-            $imagedataPic = unpack("H*hex", $datastringPic);
-            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-        }
+
+
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -1251,8 +1265,7 @@ class SeminarAndTrainingController extends Controller
         $college_name = College::where('id', $development->college_id)->pluck('name')->first();
 
         $filenames = [];
-        $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal(
-            $seminar, 4, $development_id);
+        $filenames = (new SavePersonalDataDocumentService())->saveFilesFromPersonnelPortal($seminar, 4, $development_id);
 
         $description = [];
         array_push($description, $seminar->DescriptionSO);

@@ -24,6 +24,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use Exception;
 
 class AttendanceFunctionController extends Controller
 {
@@ -182,25 +183,31 @@ class AttendanceFunctionController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
 
-                    AttendanceFunctionDocument::create([
-                        'attendance_function_id' => $attendance->id,
-                        'filename' => $fileName,
-                    ]);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+
+                        AttendanceFunctionDocument::create([
+                            'attendance_function_id' => $attendance->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+            
         }
 
         \LogActivity::addToLog('Had added a Attendance in University and College Function.');
@@ -356,24 +363,29 @@ class AttendanceFunctionController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
 
-                    AttendanceFunctionDocument::create([
-                        'attendance_function_id' => $attendance_function->id,
-                        'filename' => $fileName,
-                    ]);
+                        AttendanceFunctionDocument::create([
+                            'attendance_function_id' => $attendance_function->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 

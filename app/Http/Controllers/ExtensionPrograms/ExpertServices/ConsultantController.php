@@ -23,6 +23,7 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use Exception;
 
 class ConsultantController extends Controller
 {
@@ -139,24 +140,28 @@ class ConsultantController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
 
-                    ExpertServiceConsultantDocument::create([
-                        'expert_service_consultant_id' => $esConsultant->id,
-                        'filename' => $fileName,
-                    ]);
+                        ExpertServiceConsultantDocument::create([
+                            'expert_service_consultant_id' => $esConsultant->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 
@@ -306,24 +311,29 @@ class ConsultantController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
 
-                    ExpertServiceConsultantDocument::create([
-                        'expert_service_consultant_id' => $expert_service_as_consultant->id,
-                        'filename' => $fileName,
-                    ]);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+    
+                        ExpertServiceConsultantDocument::create([
+                            'expert_service_consultant_id' => $expert_service_as_consultant->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 

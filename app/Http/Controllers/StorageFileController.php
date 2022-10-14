@@ -104,7 +104,7 @@ class StorageFileController extends Controller
         //     return response()->file($path, $headers);
         //     return "No Document";
         // }
-// dd($data);
+        // dd($data);
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
 
         if ($hris >= 1 && $hris <= 3) {
