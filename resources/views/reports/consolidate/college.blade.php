@@ -43,8 +43,8 @@
                                         <input type="hidden" id="cw_quarter" name="cw_quarter" value="">
                                         <input type="hidden" id="cw_year" name="cw_year" value="">
                                         <input type="hidden" id="college_id" name="college_id" value="{{ $college['id'] }}">
-                                        <button id="filter" class="btn btn-primary">GENERATE</button>
-                                        <button id="export" type="button" class="btn btn-primary ml-2 mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
+                                        <button id="filter" class="btn btn-primary mr-2">GENERATE</button>
+                                        <button id="export" type="button" class="btn btn-primary mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
                                         <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY DEAN/DIRECTOR)</button>
                                     </div>
                                 </form>
@@ -165,74 +165,88 @@
                                                     @endif
                                                 </td>
                                                 <td class="report-view button-view text-center" data-toggle="modal" data-target="#viewReport" data-url="{{ route('document.view', ':filename') }}" data-id="{{ $row->id }}" data-report-category="{{ $row->report_category }}">
-                                                    @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
-                                                        @if ($row->researcher_approval === null)
+                                                @if ($row->format == 'a')
+                                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
                                                             @if ($row->chairperson_approval === null)
-                                                                Receiving...
-                                                            @elseif ($row->chairperson_approval === 0)
-                                                                <span class="text-danger font-weight-bold">Returned</span>
-                                                            @elseif ($row->chairperson_approval === 1)
-                                                                @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
+                                                                @if ($row->department_id == $row->college_id)
                                                                     N/A
                                                                 @else
-                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                    Receiving...
                                                                 @endif
-                                                            @endif
-                                                        @elseif ($row->researcher_approval == 0)
-                                                            -
-                                                        @else
-                                                            @if ($row->chairperson_approval === null)
-                                                                Receiving...
                                                             @elseif ($row->chairperson_approval === 0)
                                                                 <span class="text-danger font-weight-bold">Returned</span>
-                                                            @elseif ($row->chairperson_approval === 1)
-                                                                @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
-                                                                    N/A
-                                                                @else
-                                                                    <span class="text-success font-weight-bold">Viewed</span>
-                                                                @endif
-                                                            @endif
-                                                        @endif
-                                                    @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
-                                                        @if ($row->extensionist_approval === null)
-                                                            @if ($row->chairperson_approval === null)
-                                                                Receiving...
-                                                            @elseif ($row->chairperson_approval === 0)
-                                                                <span class="text-danger font-weight-bold">Returned</span>
-                                                            @elseif ($row->chairperson_approval === 1)
-                                                                @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
-                                                                    N/A
-                                                                @else
-                                                                    <span class="text-success font-weight-bold">Reviewed</span>
-                                                                @endif
-                                                            @endif
-                                                        @elseif ($row->extensionist_approval == 0)
-                                                            -
-                                                        @else
-                                                            @if ($row->chairperson_approval === null)
-                                                                Receiving...
-                                                            @elseif ($row->chairperson_approval === 0)
-                                                                <span class="text-danger font-weight-bold">Returned</span>
-                                                            @elseif ($row->chairperson_approval === 1)
-                                                                @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
-                                                                    N/A
-                                                                @else
-                                                                    <span class="text-success font-weight-bold">Reviewed</span>
-                                                                @endif
-                                                            @endif
-                                                        @endif
-                                                    @else
-                                                        @if ($row->chairperson_approval === null && $department_names[$row->id] != '-')
-                                                            Receiving...
-                                                        @elseif($department_names[$row->id] == '-')
-                                                            N/A
-                                                        @elseif ($row->chairperson_approval === 0 && $department_names[$row->id] != '-')
-                                                            <span class="text-danger font-weight-bold">Returned</span>
-                                                        @elseif ($row->chairperson_approval === 1 && $department_names[$row->id] != '-')
-                                                            @if (($row->department_id == $row->college_id) && (!($row->department_id >= 227 && $row->department_id <= 248)))
-                                                                N/A
                                                             @else
-                                                                <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    <span class="text-success font-weight-bold">Viewed</span>
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
+                                                            @endif
+                                                        @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
+                                                            @if ($row->chairperson_approval === null)
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    Receiving...
+                                                                @endif
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @else
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    <span class="text-success font-weight-bold">Viewed</span>
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
+                                                            @endif
+                                                        @else
+                                                            @if ($row->chairperson_approval === null)
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    N/A
+                                                                @else
+                                                                    Receiving...
+                                                                @endif
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @else
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    <span class="text-success font-weight-bold">Viewed</span>
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
+                                                            @endif
+                                                        @endif
+                                                    @elseif ($row->format == 'f')
+                                                        @if ($row->report_category_id >= 1 && $row->report_category_id <= 8)
+                                                            @if ($row->chairperson_approval === null)
+                                                                N/A
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @else
+                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                            @endif
+                                                        @elseif (($row->report_category_id >= 12 && $row->report_category_id <= 14) || ($row->report_category_id >= 34 && $row->report_category_id <= 37) || $row->report_category_id == 22 || $row->report_category_id == 23)
+                                                            @if ($row->chairperson_approval === null)
+                                                                N/A
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @else
+                                                                <span class="text-success font-weight-bold">Viewed</span>
+                                                            @endif
+                                                        @else
+                                                            @if ($row->chairperson_approval === null)
+                                                                Receiving...
+                                                            @elseif ($row->chairperson_approval === 0)
+                                                                <span class="text-danger font-weight-bold">Returned</span>
+                                                            @else
+                                                                @if ($row->department_id == $row->college_id)
+                                                                    @if ($row->department_id >= 227 && $row->department_id <= 248)
+                                                                        <span class="text-success font-weight-bold">Reviewed</span>
+                                                                    @else
+                                                                        <span class="text-success font-weight-bold">Viewed</span>
+                                                                    @endif
+                                                                @else
+                                                                    <span class="text-success font-weight-bold">Reviewed</span>
+                                                                @endif
                                                             @endif
                                                         @endif
                                                     @endif

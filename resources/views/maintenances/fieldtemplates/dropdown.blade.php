@@ -24,8 +24,8 @@
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
         <br>
-        <<span class="form-notes">
-            <p>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
+        <span class="form-notes">
+            Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.
         </span>
         @endif
 
