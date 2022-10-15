@@ -34,6 +34,12 @@
                     <i class="bi bi-check-circle"></i> {{ $message }}
                 </div>
                 @endif
+
+                @if ($message = Session::get('error-message'))
+                <div class="alert alert-danger temp-alert">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
             </div>
         </div>
         <div class="card mb-3">

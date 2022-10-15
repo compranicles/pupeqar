@@ -21,6 +21,8 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Models\TemporaryFile;
+use Exception;
 
 class OfficershipController extends Controller
 {
@@ -113,11 +115,15 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
 
         if ($request->current_member == 1)
@@ -303,12 +309,21 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+
+
+
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
+
+        
 
         if ($request->current_member == 1)
             $to = "present";
@@ -637,40 +652,47 @@ class OfficershipController extends Controller
 
         $filenames = [];
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(in_array($officeData[0]->MimeType, $imagejpeg)){
-            $file = Image::make($officeData[0]->Attachment);
-            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($officeData[0]->MimeType == 'image/png' || $officeData['0']->MimeType == 'image/x-png'){
-            $file = Image::make($officeData[0]->Attachment);
-            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($officeData[0]->MimeType == 'application/pdf'){
-            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.pdf';
-            file_put_contents(storage_path().'/app/documents/'.$fileName, $officeData[0]->Attachment);
-            $file = true;
-        } else {
-            $file = Image::make($officeData[0]->Attachment);
-            $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
 
-        if(isset($file)){
-            HRISDocument::create([
-                'hris_form_id' => 3,
-                'reference_id' => $officership_id,
-                'filename' => $fileName,
-            ]);
-            array_push($filenames, $fileName);
+        try {
+            if(in_array($officeData[0]->MimeType, $imagejpeg)){
+                $file = Image::make($officeData[0]->Attachment);
+                $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.jpeg';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($officeData[0]->MimeType == 'image/png' || $officeData['0']->MimeType == 'image/x-png'){
+                $file = Image::make($officeData[0]->Attachment);
+                $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($officeData[0]->MimeType == 'application/pdf'){
+                $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.pdf';
+                file_put_contents(storage_path().'/app/documents/'.$fileName, $officeData[0]->Attachment);
+                $file = true;
+            } else {
+                $file = Image::make($officeData[0]->Attachment);
+                $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+    
+            if(isset($file)){
+                HRISDocument::create([
+                    'hris_form_id' => 3,
+                    'reference_id' => $officership_id,
+                    'filename' => $fileName,
+                ]);
+                array_push($filenames, $fileName);
+            }
+            else{
+                return false;
+            }
+
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
-        else{
-            return false;
-        }
+       
 
         if ($officeData[0]->IncDateTo == "present")
             $to = $officeData[0]->IncDateTo;
@@ -866,26 +888,31 @@ class OfficershipController extends Controller
         $filenames = [];
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
 
-                    HRISDocument::create([
-                        'hris_form_id' => 3,
-                        'reference_id' => $id,
-                        'filename' => $fileName,
-                    ]);
-                    array_push($filenames, $fileName);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+
+                        HRISDocument::create([
+                            'hris_form_id' => 3,
+                            'reference_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                        array_push($filenames, $fileName);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 
