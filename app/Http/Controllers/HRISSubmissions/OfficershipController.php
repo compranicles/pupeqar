@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
+use App\Models\Research;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
@@ -711,7 +712,7 @@ class OfficershipController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-
+            $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
         if ($type == 'a') {
             if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
                 Report::create([
