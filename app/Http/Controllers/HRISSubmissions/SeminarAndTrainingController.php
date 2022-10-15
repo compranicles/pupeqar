@@ -193,7 +193,9 @@ class SeminarAndTrainingController extends Controller
             $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
             $descriptionPic = "COMPILED PHOTOS";
         }
+        
         // dd($datastringSO);
+
         $value = array(
             0, //EmployeeTrainingProgramID
             $emp_code, //EmpCode
