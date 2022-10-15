@@ -53,7 +53,7 @@
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->title }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->category_name }}</td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >{{ $rtmmi->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
+                                        <td class="{{ ($rtmmi->report_quarter == $currentQuarterYear->current_quarter && $rtmmi->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >
                                             {{ $rtmmi->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('rtmmi.show', $rtmmi->id) }}' " >

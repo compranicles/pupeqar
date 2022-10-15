@@ -94,7 +94,6 @@ class ChairpersonController extends Controller
             $reportsToReview = $reportsToReview->concat($tempReports);
         }
 
-
         //filternotyetreceived by researcher and/or extensionist
         $tempReports = collect();
 

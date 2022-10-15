@@ -24,8 +24,15 @@
         @endif
         @if ($fieldInfo->name == 'classification_of_person')
         <br>
-        <<span class="form-notes">
-            <p>Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.</p>
+        <span class="form-notes">
+            Chair/Chief/Dean/Director will encode for <strong>student</strong> mobility.
+        </span>
+        @endif
+
+        @if ($fieldInfo->name == 'nature_of_involvement')
+        <br>
+        <span class="form-notes">
+            Lead/Independent researcher can only register the research, except that if your lead researcher is not an eQAR user.
         </span>
         @endif
         <select name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control custom-select form-validation {{ $fieldInfo->name }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}

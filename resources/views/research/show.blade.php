@@ -20,7 +20,7 @@
                         {{ $message }}
                     </div>
                 @endif
-                @if ($research->nature_of_involvement == 11)
+                @if ($research->nature_of_involvement != 224)
                 <div class="alert alert-info" role="alert">
                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm their involvement <strong>before submitting</strong>.
                 </div>
@@ -48,7 +48,7 @@
                                             <a href="{{ route('research.edit', $research->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
                                         @endif 
 
-                                        @if ($research->nature_of_involvement == 11)
+                                        @if ($research->nature_of_involvement != 224 && $research->id == $firstResearch['id'])
                                             <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-3"><i class="bi bi-person-plus-fill mr-1"></i> Tag Co-Researchers</a>
                                         @endif
                                         @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])

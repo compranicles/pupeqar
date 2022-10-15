@@ -66,7 +66,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $award->Achievement }}</td>
                                                     <td>{{ $award->AwardedBy }}</td>
-                                                    <td>{{ $award->Date }}</td>
+                                                    <td>{{ date( 'F d, Y', strtotime($award->IncDateFrom)) }} - {{ date( 'F d, Y', strtotime($award->IncDateTo)) }}</td>
                                                     <td>{{ $award->Level }}</td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="button-group">

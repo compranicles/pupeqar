@@ -93,15 +93,13 @@
                                                 </td>
                                                 <td>
                                                     @if ($row->is_owner == false)
-                                                    <button class="remove_button btn btn-sm btn-danger"
-                                                                data-toggle="modal" data-target="#removeResModal"
-                                                                data-user-id="{{ $row->id }}" >
-                                                            @if ($row->extension_status == null )
-                                                                Cancel
-                                                            @elseif($row->extension_status == "1")
-                                                                Remove
-                                                            @endif
-                                                    </button>
+                                                        @if($row->extension_status == "1")
+                                                        <button class="remove_button btn btn-sm btn-danger"
+                                                                    data-toggle="modal" data-target="#removeResModal"
+                                                                    data-user-id="{{ $row->id }}" >
+                                                                    Remove
+                                                                </button>
+                                                        @endif
                                                     @endif
                                                 </td>
                                             </tr>

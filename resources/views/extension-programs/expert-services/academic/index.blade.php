@@ -53,7 +53,7 @@
                                         <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->publication_or_audio_visual }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->classification }}</td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">{{ $expertServiceAcademic->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">
+                                        <td class="{{ ($expertServiceAcademic->report_quarter == $currentQuarterYear->current_quarter && $expertServiceAcademic->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">
                                             {{ $expertServiceAcademic->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('expert-service-in-academic.show', $expertServiceAcademic->id) }}' ">

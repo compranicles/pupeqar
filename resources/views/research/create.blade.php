@@ -70,25 +70,14 @@
               sortField: "fullname",
               searchField: "fullname",
               options: @json($allUsers),
-            //   onChange: function(value) {
-            //     var selected = $("#tagged-collaborators option:selected").text();
-            //     const arraySelected = selected.replaceAll(".", "./");
-            //     if($("#tagged-collaborators option:selected").length > 1) {
-            //         $('#researchers').val(arraySelected);
-            //     } else {
-            //         $('#researchers').val(selected);
-            //     }
-            //   }
           });
 
         
         </script>
         <script>
-            // $('#nature_of_involvement').on('load', function (){
-                $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
-                $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
-                $('#nature_of_involvement').removeClass('form-validation');
-            // });
+            // $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
+            // $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
+            $('#nature_of_involvement').removeClass('form-validation');
 
             $('#nature_of_involvement').on('change', function (){
                 if ($('#nature_of_involvement').val() == 224)  {

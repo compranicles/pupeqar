@@ -501,7 +501,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Special Order',
+            'label' => 'Special Order (if applicable)',
             'name' => 'documentSO',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -528,7 +528,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 4,
-            'label' => 'Compiled Photos in 1 PDF Document',
+            'label' => 'Compiled Photos in 1 PDF Document (optional - can include proof of registration/invitation/programme/etc.)',
             'name' => 'documentPic',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -726,7 +726,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
-            'label' => 'Special Order',
+            'label' => 'Special Order (if applicable)',
             'name' => 'documentSO',
             'placeholder' => null,
             'size' => 'col-md-12',
@@ -753,7 +753,7 @@ class HRISFieldSeeder extends Seeder
         ]);
         HRISField::insert([
             'h_r_i_s_form_id' => 5,
-            'label' => 'Compiled Photos in 1 PDF Document',
+            'label' => 'Compiled Photos in 1 PDF Document (optional - can include proof of registration/invitation/programme/etc.)',
             'name' => 'documentPic',
             'placeholder' => null,
             'size' => 'col-md-12',

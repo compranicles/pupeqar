@@ -20,6 +20,9 @@ use App\Models\Maintenance\Department;
 use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Models\TemporaryFile;
+use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class AwardController extends Controller
 {
@@ -105,11 +108,15 @@ class AwardController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
 
         $value = [
@@ -118,7 +125,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -137,7 +145,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -189,8 +198,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'mimetype' => $awardData[0]->MimeType,
@@ -259,8 +268,8 @@ class AwardController extends Controller
                 'awarded_by' => $awardData[0]->AwardedBy,
                 'level' => $awardData[0]->Level,
                 'venue' => $awardData[0]->Venue,
-                'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-                'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+                'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+                'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
                 'document' => $awardData[0]->Attachment,
                 'description' => $awardData[0]->Description,
                 'mimetype' => $awardData[0]->MimeType,
@@ -277,12 +286,19 @@ class AwardController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
+
+        
 
         $value = [
             $id, //EmployeeOutstandingAchievementID
@@ -290,7 +306,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -309,7 +326,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -363,8 +381,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->Level,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => Department::where('id', $department_id)->pluck('name')->first(),
@@ -411,8 +429,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->LevelID,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => $department_id,
@@ -462,11 +480,17 @@ class AwardController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        
+
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
 
         $value = [
@@ -475,7 +499,8 @@ class AwardController extends Controller
             $request->award, //Achievement
             $request->awarded_by, //AwardedBy
             $request->venue, //Venue
-            Carbon::parse($request->from)->format('Y-m-d'), //Date
+            Carbon::parse($request->from)->format('Y-m-d'), //From
+            Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
             '', //Remarks
@@ -494,7 +519,8 @@ class AwardController extends Controller
                     @Achievement = ?,
                     @AwardedBy = ?,
                     @Venue = ?,
-                    @Date = ?,
+                    @IncDateFrom = ?,
+                    @IncDateTo = ?,
                     @LevelID = ?,
                     @ClassificationID = ?,
                     @Remarks = ?,
@@ -580,40 +606,48 @@ class AwardController extends Controller
 
         $filenames = [];
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(in_array($awardData[0]->MimeType, $imagejpeg)){
-            $file = Image::make($awardData[0]->Attachment);
-            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.jpeg';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($awardData[0]->MimeType == 'image/png' || $awardData['0']->MimeType == 'image/x-png'){
-            $file = Image::make($awardData[0]->Attachment);
-            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($awardData[0]->MimeType == 'application/pdf'){
-            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.pdf';
-            file_put_contents(storage_path().'/app/documents/'.$fileName, $awardData[0]->Attachment);
-            $file = true;
-        } else {
-            $file = Image::make($awardData[0]->Attachment);
-            $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
 
-        if(isset($file)){
-            HRISDocument::create([
-                'hris_form_id' => 2,
-                'reference_id' => $award_id,
-                'filename' => $fileName,
-            ]);
-            array_push($filenames, $fileName);
+
+
+        try {
+            if(in_array($awardData[0]->MimeType, $imagejpeg)){
+                $file = Image::make($awardData[0]->Attachment);
+                $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.jpeg';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($awardData[0]->MimeType == 'image/png' || $awardData['0']->MimeType == 'image/x-png'){
+                $file = Image::make($awardData[0]->Attachment);
+                $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($awardData[0]->MimeType == 'application/pdf'){
+                $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.pdf';
+                file_put_contents(storage_path().'/app/documents/'.$fileName, $awardData[0]->Attachment);
+                $file = true;
+            } else {
+                $file = Image::make($awardData[0]->Attachment);
+                $fileName = 'HRIS-OA-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+    
+            if(isset($file)){
+                HRISDocument::create([
+                    'hris_form_id' => 2,
+                    'reference_id' => $award_id,
+                    'filename' => $fileName,
+                ]);
+                array_push($filenames, $fileName);
+            }
+            else{
+                return false;
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
-        else{
-            return false;
-        }
+       
 
         $values = [
             'award' =>  $awardData[0]->Achievement,
@@ -621,8 +655,8 @@ class AwardController extends Controller
             'awarded_by' => $awardData[0]->AwardedBy,
             'level' => $awardData[0]->Level,
             'venue' => $awardData[0]->Venue,
-            'from' => date('m/d/Y', strtotime($awardData[0]->Date)),
-            'to' => date('m/d/Y', strtotime($awardData[0]->Date)),
+            'from' => date('m/d/Y', strtotime($awardData[0]->IncDateFrom)),
+            'to' => date('m/d/Y', strtotime($awardData[0]->IncDateTo)),
             // 'document' => $awardData[0]->Attachment,
             'description' => $awardData[0]->Description,
             'department_id' => $department_name,
@@ -650,21 +684,113 @@ class AwardController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        Report::create([
-            'user_id' =>  auth()->id(),
-            'sector_id' => $sector_id,
-            'college_id' => $award->college_id,
-            'department_id' => $award->department_id,
-            'format' => $type,
-            'report_category_id' => 27,
-            'report_code' => null,
-            'report_reference_id' => $award->hris_id,
-            'report_details' => json_encode($values),
-            'report_documents' => json_encode($filenames),
-            'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->current_quarter,
-            'report_year' => $currentQuarterYear->current_year,
-        ]);
+        if ($type == 'a') {
+            if ($award->department_id == $award->college_id) {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $award->college_id,
+                    'department_id' => $award->department_id,
+                    'format' => $type,
+                    'report_category_id' => 27,
+                    'report_code' => null,
+                    'report_reference_id' => $award->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'chairperson_approval' => 1,
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            } else {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $award->college_id,
+                    'department_id' => $award->department_id,
+                    'format' => $type,
+                    'report_category_id' => 27,
+                    'report_code' => null,
+                    'report_reference_id' => $award->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            }
+        } elseif ($type == 'f') {
+            if ($award->department_id == $award->college_id) {
+                if ($award->department_id >= 227 && $award->department_id <= 248) { // If branch
+                    Report::create([
+                        'user_id' =>  auth()->id(),
+                        'sector_id' => $sector_id,
+                        'college_id' => $award->college_id,
+                        'department_id' => $award->department_id,
+                        'format' => $type,
+                        'report_category_id' => 27,
+                        'report_code' => null,
+                        'report_reference_id' => $award->hris_id,
+                        'report_details' => json_encode($values),
+                        'report_documents' => json_encode($filenames),
+                        'report_date' => date("Y-m-d", time()),
+                        'report_quarter' => $currentQuarterYear->current_quarter,
+                        'report_year' => $currentQuarterYear->current_year,
+                    ]);
+                } else {
+                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) {
+                        Report::create([
+                            'user_id' =>  auth()->id(),
+                            'sector_id' => $sector_id,
+                            'college_id' => $award->college_id,
+                            'department_id' => $award->department_id,
+                            'format' => $type,
+                            'report_category_id' => 27,
+                            'report_code' => null,
+                            'report_reference_id' => $award->hris_id,
+                            'report_details' => json_encode($values),
+                            'report_documents' => json_encode($filenames),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  auth()->id(),
+                            'sector_id' => $sector_id,
+                            'college_id' => $award->college_id,
+                            'department_id' => $award->department_id,
+                            'format' => $type,
+                            'report_category_id' => 27,
+                            'report_code' => null,
+                            'report_reference_id' => $award->hris_id,
+                            'report_details' => json_encode($values),
+                            'report_documents' => json_encode($filenames),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
+                }
+            } else {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $award->college_id,
+                    'department_id' => $award->department_id,
+                    'format' => $type,
+                    'report_category_id' => 27,
+                    'report_code' => null,
+                    'report_reference_id' => $award->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            }
+        }
 
         return true;
     }
@@ -710,26 +836,30 @@ class AwardController extends Controller
         $filenames = [];
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'HRIS-OAA-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    HRISDocument::create([
-                        'hris_form_id' => 2,
-                        'reference_id' => $id,
-                        'filename' => $fileName,
-                    ]);
-                    array_push($filenames, $fileName);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'HRIS-OAA-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+    
+                        HRISDocument::create([
+                            'hris_form_id' => 2,
+                            'reference_id' => $id,
+                            'filename' => $fileName,
+                        ]);
+                        array_push($filenames, $fileName);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 

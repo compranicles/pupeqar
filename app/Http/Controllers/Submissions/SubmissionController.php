@@ -80,7 +80,7 @@ use App\Models\{
     SpecialTask,
     SpecialTaskDocument,
 };
-
+use Exception;
 
 class SubmissionController extends Controller
 {
@@ -1236,117 +1236,123 @@ class SubmissionController extends Controller
     }
     public function saveDocument(Request $request,$id, $report_category_id){
         if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'DOC-'.$id.'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
 
-                    if($report_category_id == 8){
-                        InventionDocument::create([
-                            'invention_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 9){
-                        ExpertServiceConsultantDocument::create([
-                            'expert_service_consultant_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 10){
-                        ExpertServiceConferenceDocument::create([
-                            'expert_service_conference_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 11){
-                        ExpertServiceAcademicDocument::create([
-                            'expert_service_academic_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 12){
-                        ExtensionServiceDocument::create([
-                            'extension_service_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 13){
-                        PartnershipDocument::create([
-                            'partnership_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 14){
-                        MobilityDocument::create([
-                            'mobility_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 15){
-                        ReferenceDocument::create([
-                            'reference_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 16){
-                        SyllabusDocument::create([
-                            'syllabus_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 17){
-                        RequestDocument::create([
-                            'request_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 18){
-                        StudentAwardDocument::create([
-                            'student_award_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 19){
-                        StudentTrainingDocument::create([
-                            'student_training_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 20){
-                        ViableProjectDocument::create([
-                            'viable_project_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 21){
-                        CollegeDepartmentAwardDocument::create([
-                            'college_department_award_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 22){
-                        OutreachProgramDocument::create([
-                            'outreach_program_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    elseif($report_category_id == 23){
-                        TechnicalExtensionDocument::create([
-                            'technical_extension_id' => $id,
-                            'filename' => $fileName,
-                        ]);
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'DOC-'.$id.'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
+
+                        if($report_category_id == 8){
+                            InventionDocument::create([
+                                'invention_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 9){
+                            ExpertServiceConsultantDocument::create([
+                                'expert_service_consultant_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 10){
+                            ExpertServiceConferenceDocument::create([
+                                'expert_service_conference_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 11){
+                            ExpertServiceAcademicDocument::create([
+                                'expert_service_academic_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 12){
+                            ExtensionServiceDocument::create([
+                                'extension_service_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 13){
+                            PartnershipDocument::create([
+                                'partnership_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 14){
+                            MobilityDocument::create([
+                                'mobility_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 15){
+                            ReferenceDocument::create([
+                                'reference_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 16){
+                            SyllabusDocument::create([
+                                'syllabus_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 17){
+                            RequestDocument::create([
+                                'request_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 18){
+                            StudentAwardDocument::create([
+                                'student_award_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 19){
+                            StudentTrainingDocument::create([
+                                'student_training_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 20){
+                            ViableProjectDocument::create([
+                                'viable_project_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 21){
+                            CollegeDepartmentAwardDocument::create([
+                                'college_department_award_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 22){
+                            OutreachProgramDocument::create([
+                                'outreach_program_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
+                        elseif($report_category_id == 23){
+                            TechnicalExtensionDocument::create([
+                                'technical_extension_id' => $id,
+                                'filename' => $fileName,
+                            ]);
+                        }
                     }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+            
         }
 
         return redirect()->route('to-finalize.index')->with('success', 'Document/s have been added');
@@ -2592,11 +2598,11 @@ class SubmissionController extends Controller
             $research_nature_of_involvement = Research::find($accomplishment_id)->nature_of_involvement;
             // dd($research_nature_of_involvement);
             
-            if($research_nature_of_involvement != 11 && $research_nature_of_involvement != 224){
+            // if($research_nature_of_involvement != 11 && $research_nature_of_involvement != 224){
                 if($report_category_id == 1){
                     $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
-                    if($leadsResearch != $accomplishment_id)
+                    if($leadsResearch != $accomplishment_id && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $leadsResearch)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 1)
@@ -2609,7 +2615,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 2)
@@ -2622,7 +2628,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 3)
@@ -2635,7 +2641,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 4)
@@ -2648,7 +2654,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 5)
@@ -2661,7 +2667,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 6)
@@ -2675,7 +2681,7 @@ class SubmissionController extends Controller
                     $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
                     $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
-                    if($leadsResearch != $ownResearch)
+                    if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
                         ->where('report_code', $research_code)
                         ->where('report_category_id', 7)
@@ -2683,36 +2689,36 @@ class SubmissionController extends Controller
                         ->where('report_year', $currentQuarterYear->current_year)->exists()))
                         return redirect()->back()->with('cannot_access', 'Wait for your lead researcher to submit the research.');
                 }
-            } else {
-                if($report_category_id == 1){
-                    $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 2){
-                    $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 3){
-                    $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 4){
-                    $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 5){
-                    $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-                if($report_category_id == 6){
-                    $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
+            // } else {
+            //     if($report_category_id == 1){
+            //         $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 2){
+            //         $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 3){
+            //         $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 4){
+            //         $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 5){
+            //         $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            //     if($report_category_id == 6){
+            //         $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
 
-                if($report_category_id == 7){
-                    $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
-                    $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
-                }
-            }
+            //     if($report_category_id == 7){
+            //         $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
+            //         $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
+            //     }
+            // }
         }
         if($this->submitAlternate($report_category_id, $accomplishment_id, $research_code, $research_id) == 1)
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
@@ -2786,39 +2792,112 @@ class SubmissionController extends Controller
                     elseif ($employee[0]['type'] == 'A')
                         $type = 'a';
                 }
-                if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id,
-                        'college_id' => $collegeAndDepartment->college_id,
-                        'department_id' => $collegeAndDepartment->department_id,
-                        'format' => $type,
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents),
-                        'report_date' => date("Y-m-d", time()),
-                        'chairperson_approval' => 1,
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
-                } else {
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id,
-                        'college_id' => $collegeAndDepartment->college_id,
-                        'department_id' => $collegeAndDepartment->department_id,
-                        'format' => $type,
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents),
-                        'report_date' => date("Y-m-d", time()),
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
+                if ($type == 'a') {
+                    if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
+                } elseif ($type == 'f') {
+                    if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                        if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'sector_id' => $sector_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'format' => $type,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'report_quarter' => $currentQuarterYear->current_quarter,
+                                'report_year' => $currentQuarterYear->current_year,
+                            ]);
+                        } else {
+                            if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) {
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'sector_id' => $sector_id,
+                                    'college_id' => $collegeAndDepartment->college_id,
+                                    'department_id' => $collegeAndDepartment->department_id,
+                                    'format' => $type,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'report_quarter' => $currentQuarterYear->current_quarter,
+                                    'report_year' => $currentQuarterYear->current_year,
+                                ]);
+                            } else {
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'sector_id' => $sector_id,
+                                    'college_id' => $collegeAndDepartment->college_id,
+                                    'department_id' => $collegeAndDepartment->department_id,
+                                    'format' => $type,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1,
+                                    'report_quarter' => $currentQuarterYear->current_quarter,
+                                    'report_year' => $currentQuarterYear->current_year,
+                                ]);
+                            }
+                        }
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
                 }
                 $successToSubmit++;
                 return 1;
@@ -2934,39 +3013,112 @@ class SubmissionController extends Controller
                     elseif ($employee[0]['type'] == 'A')
                         $type = 'a';
                 }
-                if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id,
-                        'college_id' => $collegeAndDepartment->college_id,
-                        'department_id' => $collegeAndDepartment->department_id,
-                        'format' => $type,
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents) ?? null,
-                        'report_date' => date("Y-m-d", time()),
-                        'chairperson_approval' => 1,
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
-                } else {
-                    Report::create([
-                        'user_id' =>  $user_id,
-                        'sector_id' => $sector_id,
-                        'college_id' => $collegeAndDepartment->college_id,
-                        'department_id' => $collegeAndDepartment->department_id,
-                        'format' => $type,
-                        'report_category_id' => $report_values_array[1],
-                        'report_code' => $report_values_array[0] ?? null,
-                        'report_reference_id' => $report_values_array[2] ?? null,
-                        'report_details' => json_encode($report_details),
-                        'report_documents' => json_encode($report_documents) ?? null,
-                        'report_date' => date("Y-m-d", time()),
-                        'report_quarter' => $currentQuarterYear->current_quarter,
-                        'report_year' => $currentQuarterYear->current_year,
-                    ]);
+                if ($type == 'a') {
+                    if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
+                } elseif ($type == 'f') {
+                    if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+                        if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+                            Report::create([
+                                'user_id' =>  $user_id,
+                                'sector_id' => $sector_id,
+                                'college_id' => $collegeAndDepartment->college_id,
+                                'department_id' => $collegeAndDepartment->department_id,
+                                'format' => $type,
+                                'report_category_id' => $report_values_array[1],
+                                'report_code' => $report_values_array[0] ?? null,
+                                'report_reference_id' => $report_values_array[2] ?? null,
+                                'report_details' => json_encode($report_details),
+                                'report_documents' => json_encode($report_documents),
+                                'report_date' => date("Y-m-d", time()),
+                                'report_quarter' => $currentQuarterYear->current_quarter,
+                                'report_year' => $currentQuarterYear->current_year,
+                            ]);
+                        } else {
+                            if (($report_values_array[1] >= 1 && $report_values_array[1] <= 8) || ($report_values_array[1] >= 12 && $report_values_array[1] <= 14) || ($report_values_array[1] >= 34 && $report_values_array[1] <= 37) || $report_values_array[1] == 22 || $report_values_array[1] == 23) {
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'sector_id' => $sector_id,
+                                    'college_id' => $collegeAndDepartment->college_id,
+                                    'department_id' => $collegeAndDepartment->department_id,
+                                    'format' => $type,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'report_quarter' => $currentQuarterYear->current_quarter,
+                                    'report_year' => $currentQuarterYear->current_year,
+                                ]);
+                            } else {
+                                Report::create([
+                                    'user_id' =>  $user_id,
+                                    'sector_id' => $sector_id,
+                                    'college_id' => $collegeAndDepartment->college_id,
+                                    'department_id' => $collegeAndDepartment->department_id,
+                                    'format' => $type,
+                                    'report_category_id' => $report_values_array[1],
+                                    'report_code' => $report_values_array[0] ?? null,
+                                    'report_reference_id' => $report_values_array[2] ?? null,
+                                    'report_details' => json_encode($report_details),
+                                    'report_documents' => json_encode($report_documents),
+                                    'report_date' => date("Y-m-d", time()),
+                                    'chairperson_approval' => 1,
+                                    'report_quarter' => $currentQuarterYear->current_quarter,
+                                    'report_year' => $currentQuarterYear->current_year,
+                                ]);
+                            }
+                        }
+                    } else {
+                        Report::create([
+                            'user_id' =>  $user_id,
+                            'sector_id' => $sector_id,
+                            'college_id' => $collegeAndDepartment->college_id,
+                            'department_id' => $collegeAndDepartment->department_id,
+                            'format' => $type,
+                            'report_category_id' => $report_values_array[1],
+                            'report_code' => $report_values_array[0] ?? null,
+                            'report_reference_id' => $report_values_array[2] ?? null,
+                            'report_details' => json_encode($report_details),
+                            'report_documents' => json_encode($report_documents),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
                 }
                 $successToSubmit++;
                 return 1;

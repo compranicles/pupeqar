@@ -47,9 +47,13 @@ class StorageFileController extends Controller
         $path = storage_path('app/documents/'.$filename);
         $file = File::get($path);
         $type = File::mimeType($path);
-        $headers = ['Content-Type: '.$type];
+        // $headers = ['Content-Type: '.$type];
 
-        return response()->file($path, $headers);
+        $response = Response::make($file, 200);
+
+        $response->header("Content-Type", $type);
+
+        return $response;
     }
 
     public function abbrev($string){
@@ -100,7 +104,7 @@ class StorageFileController extends Controller
         //     return response()->file($path, $headers);
         //     return "No Document";
         // }
-// dd($data);
+        // dd($data);
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
 
         if ($hris >= 1 && $hris <= 3) {

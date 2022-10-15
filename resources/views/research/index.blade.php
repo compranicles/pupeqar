@@ -89,7 +89,7 @@
                                                             $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
                                                         {{ $updated_at }}
                                                     </td>
-                                                    <td>{{ $research->report_quarter }}</td>
+                                                    <td class="{{ ($research->report_quarter == $currentQuarterYear->current_quarter && $research->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">{{ $research->report_quarter }}</td>
                                                     <td>{{ $research->report_year }}</td>
                                                 </tr>
                                             @endforeach

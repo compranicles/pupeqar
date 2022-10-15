@@ -69,7 +69,7 @@
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ ($extensionService->title_of_extension_program != null ? $extensionService->title_of_extension_program : ($extensionService->title_of_extension_project != null ? $extensionService->title_of_extension_project : ($extensionService->title_of_extension_activity != null ? $extensionService->title_of_extension_activity : ''))) }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ $extensionService->status }}</td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">{{ $extensionService->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
+                                        <td class="{{ ($extensionService->report_quarter == $currentQuarterYear->current_quarter && $extensionService->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">
                                             {{ $extensionService->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('extension-service.show', $extensionService->id) }}' ">

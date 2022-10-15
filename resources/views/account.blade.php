@@ -115,8 +115,8 @@
                                         class="{{ $errors->has('document') ? 'is-invalid' : '' }} filepond mb-n1"
                                         name="document[]"
                                         id="document"
-                                        data-max-file-size="50MB"
-                                        data-max-files="50"
+                                        data-max-file-size="10MB"
+                                        data-max-files="10"
                                         required/>
                                         <p class="mt-1"><small>Accepts JPEG, and PNG file formats.</small></p>
                                         <button type="submit" id="submit" class="btn btn-success float-right">Save Signature</button>

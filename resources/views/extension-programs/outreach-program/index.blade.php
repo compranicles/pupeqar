@@ -49,7 +49,7 @@
                                     <tr class="tr-hover" role="button">
                                         <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >{{ $row->title_of_the_program }}</td>
-                                        <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >
+                                        <td class="{{ ($row->report_quarter == $currentQuarterYear->current_quarter && $row->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('outreach-program.show', $row->id) }}' " >

@@ -21,6 +21,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use Exception;
 
 class EducationController extends Controller
 {
@@ -159,12 +160,18 @@ class EducationController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
+
 
         //is_graduated
         $is_graduated = 'Y';
@@ -699,12 +706,18 @@ class EducationController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
+        try {
+            if($request->has('document')){
+                $datastring = file_get_contents($request->file('document'));
+                $mimetype = $request->file('document')->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+            }
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
+
+
         //is_graduated
         $is_graduated = 'Y';
         if($request->is_graduated == 'No'){
@@ -859,29 +872,37 @@ class EducationController extends Controller
 
         $filenames = [];
         $imagejpeg = ['image/jpeg', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'];
-        if(in_array($educationData[0]->MimeType, $imagejpeg)){
-            $file = Image::make($educationData[0]->Attachment);
-            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.jpeg';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($educationData[0]->MimeType == 'image/png' || $educationData['0']->MimeType == 'image/x-png'){
-            $file = Image::make($educationData[0]->Attachment);
-            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
-        }
-        elseif($educationData[0]->MimeType == 'application/pdf'){
-            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.pdf';
-            file_put_contents(storage_path().'/app/documents/'.$fileName, $educationData[0]->Attachment);
-            $file = true;
-        } else {
-            $file = Image::make($educationData[0]->Attachment);
-            $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
-            $newPath = storage_path().'/app/documents/'.$fileName;
-            $file->save($newPath);
+
+
+        try {
+            if(in_array($educationData[0]->MimeType, $imagejpeg)){
+                $file = Image::make($educationData[0]->Attachment);
+                $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.jpeg';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($educationData[0]->MimeType == 'image/png' || $educationData['0']->MimeType == 'image/x-png'){
+                $file = Image::make($educationData[0]->Attachment);
+                $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+            elseif($educationData[0]->MimeType == 'application/pdf'){
+                $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.pdf';
+                file_put_contents(storage_path().'/app/documents/'.$fileName, $educationData[0]->Attachment);
+                $file = true;
+            } else {
+                $file = Image::make($educationData[0]->Attachment);
+                $fileName = 'HRIS-OPS-'.now()->timestamp.uniqid().'.png';
+                $newPath = storage_path().'/app/documents/'.$fileName;
+                $file->save($newPath);
+            }
+    
+        } catch (Exception $th) {
+            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         }
 
+        
 
         HRISDocument::create([
             'hris_form_id' => 1,
@@ -936,21 +957,113 @@ class EducationController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        Report::create([
-            'user_id' =>  auth()->id(),
-            'sector_id' => $sector_id,
-            'college_id' => $education->college_id,
-            'department_id' => $education->department_id,
-            'format' => $type,
-            'report_category_id' => 24,
-            'report_code' => null,
-            'report_reference_id' => $education->hris_id,
-            'report_details' => json_encode($values),
-            'report_documents' => json_encode($filenames),
-            'report_date' => date("Y-m-d", time()),
-            'report_quarter' => $currentQuarterYear->current_quarter,
-            'report_year' => $currentQuarterYear->current_year,
-        ]);
+        if ($type == 'a') {
+            if ($education->department_id == $education->college_id) {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $education->college_id,
+                    'department_id' => $education->department_id,
+                    'format' => $type,
+                    'report_category_id' => 24,
+                    'report_code' => null,
+                    'report_reference_id' => $education->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'chairperson_approval' => 1,
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            } else {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $education->college_id,
+                    'department_id' => $education->department_id,
+                    'format' => $type,
+                    'report_category_id' => 24,
+                    'report_code' => null,
+                    'report_reference_id' => $education->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            }
+        } elseif ($type == 'f') {
+            if ($education->department_id == $education->college_id) {
+                if ($education->department_id >= 227 && $education->department_id <= 248) { // If branch
+                    Report::create([
+                        'user_id' =>  auth()->id(),
+                        'sector_id' => $sector_id,
+                        'college_id' => $education->college_id,
+                        'department_id' => $education->department_id,
+                        'format' => $type,
+                        'report_category_id' => 24,
+                        'report_code' => null,
+                        'report_reference_id' => $education->hris_id,
+                        'report_details' => json_encode($values),
+                        'report_documents' => json_encode($filenames),
+                        'report_date' => date("Y-m-d", time()),
+                        'report_quarter' => $currentQuarterYear->current_quarter,
+                        'report_year' => $currentQuarterYear->current_year,
+                    ]);
+                } else {
+                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) {
+                        Report::create([
+                            'user_id' =>  auth()->id(),
+                            'sector_id' => $sector_id,
+                            'college_id' => $education->college_id,
+                            'department_id' => $education->department_id,
+                            'format' => $type,
+                            'report_category_id' => 24,
+                            'report_code' => null,
+                            'report_reference_id' => $education->hris_id,
+                            'report_details' => json_encode($values),
+                            'report_documents' => json_encode($filenames),
+                            'report_date' => date("Y-m-d", time()),
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    } else {
+                        Report::create([
+                            'user_id' =>  auth()->id(),
+                            'sector_id' => $sector_id,
+                            'college_id' => $education->college_id,
+                            'department_id' => $education->department_id,
+                            'format' => $type,
+                            'report_category_id' => 24,
+                            'report_code' => null,
+                            'report_reference_id' => $education->hris_id,
+                            'report_details' => json_encode($values),
+                            'report_documents' => json_encode($filenames),
+                            'report_date' => date("Y-m-d", time()),
+                            'chairperson_approval' => 1,
+                            'report_quarter' => $currentQuarterYear->current_quarter,
+                            'report_year' => $currentQuarterYear->current_year,
+                        ]);
+                    }
+                }
+            } else {
+                Report::create([
+                    'user_id' =>  auth()->id(),
+                    'sector_id' => $sector_id,
+                    'college_id' => $education->college_id,
+                    'department_id' => $education->department_id,
+                    'format' => $type,
+                    'report_category_id' => 24,
+                    'report_code' => null,
+                    'report_reference_id' => $education->hris_id,
+                    'report_details' => json_encode($values),
+                    'report_documents' => json_encode($filenames),
+                    'report_date' => date("Y-m-d", time()),
+                    'report_quarter' => $currentQuarterYear->current_quarter,
+                    'report_year' => $currentQuarterYear->current_year,
+                ]);
+            }
+        }
 
         return true;
     }
@@ -996,27 +1109,30 @@ class EducationController extends Controller
 
         $filenames = [];
         if($request->has('document')){
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'HRIS-OAPS-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'HRIS-OAPS-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    HRISDocument::create([
-                        'hris_form_id' => 1,
-                        'reference_id' => $educID,
-                        'filename' => $fileName,
-                    ]);
-                    array_push($filenames, $fileName);
+                        HRISDocument::create([
+                            'hris_form_id' => 1,
+                            'reference_id' => $educID,
+                            'filename' => $fileName,
+                        ]);
+                        array_push($filenames, $fileName);
+                    }
                 }
+            } catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 

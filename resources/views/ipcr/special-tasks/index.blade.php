@@ -58,7 +58,7 @@
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->commitment_measure }}</td>
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->final_output }}</td>
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >{{ $row->college_name }}</td>
-                                        <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >
+                                        <td class="{{ ($row->report_quarter == $currentQuarterYear->current_quarter && $row->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('special-tasks.show', $row->id).'?v='.$v }}' " >

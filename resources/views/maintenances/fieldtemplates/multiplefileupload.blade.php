@@ -10,8 +10,8 @@
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
             multiple
-            data-max-file-size="50MB"
-            data-max-files="20"
+            data-max-file-size="10MB"
+            data-max-files="5"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
             >
 
@@ -20,7 +20,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        <p class="mt-1"><small>Maximum size per file: 50MB. Maximum number of files: 50.</small></p>
+        <p class="mt-1"><small>Maximum size per file: 10MB. Maximum number of files: 5.</small></p>
         <p class="mt-n4"><small>Accepts PDF, JPEG, and PNG file formats.</small></p>
 
     </div>
@@ -48,9 +48,9 @@
         // Create a FilePond instance
         const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'));
         pondDocument.setOptions({
-            acceptedFileTypes: ['application/pdf', 'image/jpeg', 'image/png'],
-
+            acceptedFileTypes: ['application/pdf', 'image/jpeg', 'image/png', 'image/x-png', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'],
             server: {
+                timeout: 20000,
                 process: {
                     url: url,
                     headers: {

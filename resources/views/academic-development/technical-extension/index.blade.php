@@ -50,7 +50,7 @@
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $loop->iteration }}</td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ ($row->program_title != null ? $row->program_title : ($row->project_title != null ? $row->project_title : ($row->activity_title != null ? $row->activity_title : ''))) }}</td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >{{ $row->name_of_adoptor }}</td>
-                                        <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >
+                                        <td class="{{ ($row->report_quarter == $currentQuarterYear->current_quarter && $row->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}" onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >
                                             {{ $row->report_quarter }}
                                         </td>
                                         <td onclick="window.location.href = '{{ route('technical-extension.show', $row->id) }}' " >

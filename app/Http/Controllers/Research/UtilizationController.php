@@ -29,6 +29,7 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\College,
 };
+use Exception;
 
 class UtilizationController extends Controller
 {
@@ -117,29 +118,34 @@ class UtilizationController extends Controller
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
         if($request->has('document')){
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    ResearchDocument::create([
-                        'research_code' => $request->input('research_code'),
-                        'research_id' => $research->id,
-                        'research_form_id' => 6,
-                        'research_utilization_id' => $utilization->id,
-                        'filename' => $fileName,
-                    ]);
+                        ResearchDocument::create([
+                            'research_code' => $request->input('research_code'),
+                            'research_id' => $research->id,
+                            'research_form_id' => 6,
+                            'research_utilization_id' => $utilization->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            }  catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+    
+            
         }
 
         \LogActivity::addToLog('Had added a research utilization for "'.$research->title.'".');
@@ -277,28 +283,34 @@ class UtilizationController extends Controller
 
         if($request->has('document')){
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
+            try {
+                $documents = $request->input('document');
+                foreach($documents as $document){
+                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    if($temporaryFile){
+                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+                        $ext = $info['extension'];
+                        $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
+                        $newPath = "documents/".$fileName;
+                        Storage::move($temporaryPath, $newPath);
+                        Storage::deleteDirectory("documents/tmp/".$document);
+                        $temporaryFile->delete();
 
-                    ResearchDocument::create([
-                        'research_code' => $request->input('research_code'),
-                        'research_id' => $research->id,
-                        'research_form_id' => 6,
-                        'research_utilization_id' => $utilization->id,
-                        'filename' => $fileName,
-                    ]);
+                        ResearchDocument::create([
+                            'research_code' => $request->input('research_code'),
+                            'research_id' => $research->id,
+                            'research_form_id' => 6,
+                            'research_utilization_id' => $utilization->id,
+                            'filename' => $fileName,
+                        ]);
+                    }
                 }
+            }  catch (Exception $th) {
+                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
+
+            
         }
 
         \LogActivity::addToLog('Had updated a research utilization of "'.$research->title.'".');
