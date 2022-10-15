@@ -957,6 +957,11 @@ class EducationController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
+        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
+        if ($collegeAndDepartment == null) {
+            return false;
+        }
+
         if ($type == 'a') {
             if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
                 Report::create([

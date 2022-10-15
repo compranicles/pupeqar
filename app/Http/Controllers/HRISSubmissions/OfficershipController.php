@@ -629,6 +629,7 @@ class OfficershipController extends Controller
 
         if($this->submit($officership->id))
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
+        //check first if there is record in research table
 
         return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment.');
     }
@@ -735,6 +736,9 @@ class OfficershipController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
             $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
+            if ($collegeAndDepartment == null) {
+                return false;
+            }
         if ($type == 'a') {
             if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
                 Report::create([
