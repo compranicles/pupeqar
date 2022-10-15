@@ -8,6 +8,7 @@ use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
 use App\Models\Employee;
+use App\Models\Research;
 use App\Models\HRISDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

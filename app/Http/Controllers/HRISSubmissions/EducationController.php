@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Employee;
 use App\Models\HRISDocument;
+use App\Models\Research;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;

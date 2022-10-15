@@ -20,6 +20,7 @@ use App\Models\{
     TemporaryFile,
     User,
     HRIS,
+    Research,
     FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Currency,
