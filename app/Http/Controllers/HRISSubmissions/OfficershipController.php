@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
-use App\Models\Research;
 use App\Http\Controllers\Controller;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
@@ -629,7 +628,6 @@ class OfficershipController extends Controller
 
         if($this->submit($officership->id))
             return redirect()->back()->with('success', 'Accomplishment submitted succesfully.');
-        //check first if there is record in research table
 
         return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment.');
     }
@@ -735,12 +733,9 @@ class OfficershipController extends Controller
             ->where('report_quarter', $currentQuarterYear->current_quarter)
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
-            $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
-            if ($collegeAndDepartment == null) {
-                return false;
-            }
+
         if ($type == 'a') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+            if ($officership->department_id == $officership->college_id) {
                 Report::create([
                     'user_id' =>  auth()->id(),
                     'sector_id' => $sector_id,
@@ -775,8 +770,8 @@ class OfficershipController extends Controller
                 ]);
             }
         } elseif ($type == 'f') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+            if ($officership->department_id == $officership->college_id) {
+                if ($officership->department_id >= 227 && $officership->department_id <= 248) { // If branch
                     Report::create([
                         'user_id' =>  auth()->id(),
                         'sector_id' => $sector_id,

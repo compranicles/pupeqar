@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Models\Report;
 use App\Models\Employee;
 use App\Models\HRISDocument;
-use App\Models\Research;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
@@ -958,13 +957,8 @@ class EducationController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
-        if ($collegeAndDepartment == null) {
-            return false;
-        }
-
         if ($type == 'a') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+            if ($education->department_id == $education->college_id) {
                 Report::create([
                     'user_id' =>  auth()->id(),
                     'sector_id' => $sector_id,
@@ -999,8 +993,8 @@ class EducationController extends Controller
                 ]);
             }
         } elseif ($type == 'f') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+            if ($education->department_id == $education->college_id) {
+                if ($education->department_id >= 227 && $education->department_id <= 248) { // If branch
                     Report::create([
                         'user_id' =>  auth()->id(),
                         'sector_id' => $sector_id,

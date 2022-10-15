@@ -20,7 +20,6 @@ use App\Models\{
     TemporaryFile,
     User,
     HRIS,
-    Research,
     FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Currency,
@@ -1313,13 +1312,8 @@ class SeminarAndTrainingController extends Controller
                 $type = 'a';
         }
 
-        $collegeAndDepartment = Research::select('college_id', 'department_id')->where('user_id', auth()->id())->first();
-        if ($collegeAndDepartment == null) {
-            return false;
-        }
-
         if ($type == 'a') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+            if ($development->department_id == $development->college_id) {
                 Report::create([
                     'user_id' =>  auth()->id(),
                     'sector_id' => $sector_id,
@@ -1354,8 +1348,8 @@ class SeminarAndTrainingController extends Controller
                 ]);
             }
         } elseif ($type == 'f') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+            if ($development->department_id == $development->college_id) {
+                if ($development->department_id >= 227 && $development->department_id <= 248) { // If branch
                     Report::create([
                         'user_id' =>  auth()->id(),
                         'sector_id' => $sector_id,
@@ -1500,7 +1494,7 @@ class SeminarAndTrainingController extends Controller
                 $type = 'a';
         }
         if ($type == 'a') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
+            if ($development->department_id == $development->college_id) {
                 Report::create([
                     'user_id' =>  auth()->id(),
                     'sector_id' => $sector_id,
@@ -1535,8 +1529,8 @@ class SeminarAndTrainingController extends Controller
                 ]);
             }
         } elseif ($type == 'f') {
-            if ($collegeAndDepartment->department_id == $collegeAndDepartment->college_id) {
-                if ($collegeAndDepartment->department_id >= 227 && $collegeAndDepartment->department_id <= 248) { // If branch
+            if ($development->department_id == $development->college_id) {
+                if ($development->department_id >= 227 && $development->department_id <= 248) { // If branch
                     Report::create([
                         'user_id' =>  auth()->id(),
                         'sector_id' => $sector_id,
