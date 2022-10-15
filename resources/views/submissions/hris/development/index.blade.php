@@ -22,6 +22,7 @@
                 <div class="alert alert-success">
                     {{ session()->get('error-message') }}
                 </div>
+                @endif
                 @if ($message = Session::get('cannot_access'))
                     <div class="alert alert-danger alert-index">
                         {{ $message }}
