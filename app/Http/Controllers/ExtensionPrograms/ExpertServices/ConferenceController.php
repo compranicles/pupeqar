@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -23,14 +24,17 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use Exception;
 
 class ConferenceController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -134,42 +138,21 @@ class ConferenceController extends Controller
             'department_id' => 'required'
         ]);
 
-
         $input = $request->except(['_token', '_method', 'document']);
 
         $esConference = ExpertServiceConference::create($input);
         $esConference->update(['user_id' => auth()->id()]);
 
+        LogActivity::addToLog('Had added an expert service rendered in conference "'.$request->input('title').'".');
+
         if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESCF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ExpertServiceConferenceDocument::create([
-                            'expert_service_conference_id' => $esConference->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+                if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $esConference->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-           
         }
-
-        \LogActivity::addToLog('Had added an expert service rendered in conference "'.$request->input('title').'".');
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been added.');
     }
@@ -313,37 +296,37 @@ class ConferenceController extends Controller
 
         $expert_service_in_conference->update($input);
 
+        LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
+
         if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESCF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ExpertServiceConferenceDocument::create([
-                            'expert_service_conference_id' => $expert_service_in_conference->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+                if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-            
         }
 
-        \LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
-
-
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'ESCF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
+        //             ExpertServiceConferenceDocument::create([
+        //                 'expert_service_conference_id' => $expert_service_in_conference->id,
+        //                 'filename' => $fileName,
+        //             ]);
+        //         }
+        //     }
+        // }
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
     }
 
@@ -367,7 +350,7 @@ class ConferenceController extends Controller
         $expert_service_in_conference->delete();
         ExpertServiceConferenceDocument::where('expert_service_conference_id', $expert_service_in_conference->id)->delete();
 
-        \LogActivity::addToLog('Had deleted the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
+        LogActivity::addToLog('Had deleted the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
 
         return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been deleted.');
     }
@@ -379,7 +362,7 @@ class ConferenceController extends Controller
             return view('inactive');
         ExpertServiceConferenceDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of an expert service rendered in conference.');
+        LogActivity::addToLog('Had deleted a document of an expert service rendered in conference.');
 
         // Storage::delete('documents/'.$filename);
         return true;

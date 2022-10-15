@@ -4,6 +4,12 @@
         <div class="row">
             <div class="col-md-12">
                 <h3 class="font-weight-bold mr-2">Expert Service Rendered as Consultant</h3>
+                {{-- ========= ALERT DETAILS ========= --}}
+                @if ($errorMsg = Session::get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-circle"></i> <strong>Action Denied</strong> : {{$errorMsg}}
+                    </div>
+                @endif
                 <div class="mb-3">
                     <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
                 </div>

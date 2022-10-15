@@ -8,21 +8,29 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+
+                {{-- ========= ALERT DETAILS ========= --}}
                 @if ($message = Session::get('edit_esconsultant_success'))
-                <div class="alert alert-success alert-index">
-                    <i class="bi bi-check-circle"></i> {{ $message }}
-                </div>
+                    <div class="alert alert-success alert-index">
+                        <i class="bi bi-check-circle"></i> {{ $message }}
+                    </div>
                 @endif
                 @if ($message = Session::get('cannot_access'))
-                <div class="alert alert-danger alert-index">
-                    {{ $message }}
-                </div>
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
                 @endif
                 @if ($message = Session::get('success'))
-                <div class="alert alert-success alert-index">
-                    {{ $message }}
-                </div>
+                    <div class="alert alert-success alert-index">
+                        {{ $message }}
+                    </div>
                 @endif
+                @if ($message = Session::get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-circle"></i> {{ $message }}
+                    </div>
+                @endif
+                
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-3 ml-1">

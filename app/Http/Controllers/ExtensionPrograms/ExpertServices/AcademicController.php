@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -23,14 +24,17 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use Exception;
 
 class AcademicController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
     /**
      * Display a listing of the resource.
@@ -133,37 +137,39 @@ class AcademicController extends Controller
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
-        if($request->has('document')){
+        $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
+        LogActivity::addToLog('Had added an expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ExpertServiceAcademicDocument::create([
-                            'expert_service_academic_id' => $esAcademic->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if($request->has('document')){
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
+                if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $esAcademic->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
-        $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
 
-        \LogActivity::addToLog('Had added an expert service rendered in academic '.strtolower($classification[0]->name).'.');
-
+        //             ExpertServiceAcademicDocument::create([
+        //                 'expert_service_academic_id' => $esAcademic->id,
+        //                 'filename' => $fileName,
+        //             ]);
+        //         }
+        //     }
+        // }
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
     }
@@ -302,48 +308,42 @@ class AcademicController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-
         $input = $request->except(['_token', '_method', 'document']);
-
         $expert_service_in_academic->update(['description' => '-clear']);
-
         $expert_service_in_academic->update($input);
 
+        $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
+        LogActivity::addToLog('Had updated the expert service rendered in academic '.strtolower($classification[0]->name).'.');
+
         if($request->has('document')){
-
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ExpertServiceAcademicDocument::create([
-                            'expert_service_academic_id' => $expert_service_in_academic->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
+                if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $expert_service_in_academic->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-           
         }
 
-        $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
-
-        \LogActivity::addToLog('Had updated the expert service rendered in academic '.strtolower($classification[0]->name).'.');
-
-
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'ESA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
+        //             ExpertServiceAcademicDocument::create([
+        //                 'expert_service_academic_id' => $expert_service_in_academic->id,
+        //                 'filename' => $fileName,
+        //             ]);
+        //         }
+        //     }
+        // }
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
     }
 
@@ -367,7 +367,7 @@ class AcademicController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
         ExpertServiceAcademicDocument::where('expert_service_academic_id', $expert_service_in_academic->id)->delete();
 
-        \LogActivity::addToLog('Had deleted the expert service rendered in academic '.strtolower($classification[0]->name).'.');
+        LogActivity::addToLog('Had deleted the expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
         return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been deleted.');
     }
@@ -380,7 +380,7 @@ class AcademicController extends Controller
         ExpertServiceAcademicDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Had deleted a document of an expert service rendered in academic.');
+        LogActivity::addToLog('Had deleted a document of an expert service rendered in academic.');
 
         return true;
     }

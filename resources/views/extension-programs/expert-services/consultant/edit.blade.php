@@ -7,12 +7,19 @@
                 <div class="mb-3">
                     <a class="back_link" href="{{ route('expert-service-as-consultant.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Expert Services as Consultant</a>
                 </div>
-                {{-- Denied Details --}}
+
+                {{-- ========= ALERT DETAILS ========= --}}
                 @if ($deniedDetails = Session::get('denied'))
-                <div class="alert alert-info" role="alert">
-                    <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
-                </div>
+                    <div class="alert alert-info" role="alert">
+                        <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
+                    </div>
                 @endif
+                @if ($errorMsg = Session::get('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-circle"></i> <strong>Action Denied</strong> : {{$errorMsg}}
+                    </div>
+                @endif
+
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" method="post">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms\ExpertServices;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -23,14 +24,17 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use Exception;
 
 class ConsultantController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -138,34 +142,16 @@ class ConsultantController extends Controller
         $esConsultant = ExpertServiceConsultant::create($input);
         $esConsultant->update(['user_id' => auth()->id()]);
 
+        LogActivity::addToLog('Had added an expert service rendered as consultant "'.$request->input('title').'".');
+
         if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ExpertServiceConsultantDocument::create([
-                            'expert_service_consultant_id' => $esConsultant->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
+                if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $esConsultant->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-
-        \LogActivity::addToLog('Had added an expert service rendered as consultant "'.$request->input('title').'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
     }
@@ -309,36 +295,16 @@ class ConsultantController extends Controller
 
         $expert_service_as_consultant->update($input);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had updated the xpert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'ESCS-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ExpertServiceConsultantDocument::create([
-                            'expert_service_consultant_id' => $expert_service_as_consultant->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if($request->has('document')){      
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
+                if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $expert_service_as_consultant->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-
-
-        \LogActivity::addToLog('Had updated the xpert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been updated.');
     }
@@ -362,7 +328,7 @@ class ConsultantController extends Controller
         $expert_service_as_consultant->delete();
         ExpertServiceConsultantDocument::where('expert_service_consultant_id', $expert_service_as_consultant->id)->delete();
 
-        \LogActivity::addToLog('Had deleted the expert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
+        LogActivity::addToLog('Had deleted the expert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been deleted.');
     }
@@ -374,7 +340,7 @@ class ConsultantController extends Controller
             return view('inactive');
         ExpertServiceConsultantDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
-        \LogActivity::addToLog('Had deleted a document of an expert service rendered as consultant.');
+        LogActivity::addToLog('Had deleted a document of an expert service rendered as consultant.');
 
         return true;
     }
