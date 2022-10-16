@@ -45,7 +45,7 @@ $table_format_json = json_encode($table_format, JSON_FORCE_OBJECT);
                                 @if (isset($data[$column['report_column']]))
                                     <td>{{ $data[$column['report_column']] }}</td>
                                 @else
-                                    @if ($data['fund_source'] == 0)
+                                    @if ($column == 'fund_source' && $data[$column['report_column']] == 0)
                                         <td>Not Paid</td>
                                     @else
                                         <td>-</td>

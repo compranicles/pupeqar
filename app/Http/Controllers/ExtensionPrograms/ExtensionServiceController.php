@@ -532,6 +532,7 @@ class ExtensionServiceController extends Controller
 
         if(ExtensionInvite::where('ext_code', $extension_service->ext_code)->where('user_id', auth()->id())->pluck('is_owner')->first() == '1'){
             $extension_service->delete();
+            ExtensionInvite::where('extension_service_id', $extension_service->id)->delete();
             ExtensionServiceDocument::where('extension_service_id', $extension_service->id)->delete();
         }
         else{
@@ -621,6 +622,10 @@ class ExtensionServiceController extends Controller
             return view('inactive');
 
         $extensionService = ExtensionService::where('id', $id)->first();
+
+        if ($extensionService == null)
+            return redirect()->route('extension-service.index')->with('cannot_access', 'Extension program/project/activity not found in the system.');
+
         $extensionService = collect($extensionService);
         $extensionService = $extensionService->except(['id']);
         $extensionService = $extensionService->toArray();
