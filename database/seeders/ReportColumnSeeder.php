@@ -49,6 +49,14 @@ class ReportColumnSeeder extends Seeder
         ]);
         ReportColumn::insert([
             'report_category_id' => 1,
+            'name' => 'Discipline',
+            'table' => 'research',
+            'column' => 'discipline',
+            'is_active' => 1,
+            'order' => 1,
+        ]);
+        ReportColumn::insert([
+            'report_category_id' => 1,
             'name' => 'Title of Research',
             'table' => 'research',
             'column' => 'title',

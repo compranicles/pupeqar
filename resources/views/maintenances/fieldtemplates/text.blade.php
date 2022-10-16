@@ -61,8 +61,11 @@
                 @endforelse
             </span>
             @endif
+            <span class="form-notes">
+                {{ $fieldInfo->placeholder }}
+            </span>
             <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" value="{{ (old($fieldInfo->name) == '') ?  $value : old($fieldInfo->name) }}" class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control form-validation"
-                placeholder="{{ $fieldInfo->placeholder }}" {{ ($fieldInfo->required == 1) ? 'required' : '' }}
+                {{ ($fieldInfo->required == 1) ? 'required' : '' }}
                 @switch($fieldInfo->visibility)
                     @case(2)
                         {{ 'readonly' }}

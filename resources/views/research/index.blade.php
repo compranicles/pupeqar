@@ -34,7 +34,7 @@
                                      Use Research Code
                                 </button> --}}
                                 <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
-                                    Research to Register (Tagged by your Lead) @if (count($invites) != 0)
+                                    Research to Add (Tagged by your Lead) @if (count($invites) != 0)
                                                 <span class="badge badge-secondary">{{ count($invites) }}</span>
                                             @else
                                                 <span class="badge badge-secondary">0</span>

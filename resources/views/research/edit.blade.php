@@ -235,12 +235,6 @@
             });
         </script>
         <script>
-            // $('#nature_of_involvement').on('change', function (){
-                $('#nature_of_involvement option[value=12]').attr('disabled','disabled');
-                $('#nature_of_involvement option[value=13]').attr('disabled','disabled');
-            // });
-        </script>
-        <script>
              var report_category_id = 1;
             $('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
             var apinb = '{{ url("/document-upload/description/1") }}';

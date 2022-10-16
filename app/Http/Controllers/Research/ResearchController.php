@@ -628,6 +628,7 @@ class ResearchController extends Controller
         return view('inactive');
 
         $research->delete();
+        ResearchInvite::where('research_id', $research->id)->delete();
         ResearchDocument::where('research_id', $research->id)->delete();
 
         \LogActivity::addToLog('Had deleted the research entitled "'.$research->title.'".');
@@ -721,7 +722,10 @@ class ResearchController extends Controller
         $research = Research::where('research.id', $research_id)->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
                 ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount')
-                ->first()->toArray();
+                ->first();
+
+        if ($research == null)
+            return redirect()->route('research.index')->with('code-missing', 'The research not found in the system.');
 
         $research = collect($research);
         $research = $research->except(['nature_of_involvement', 'college_id', 'department_id']);

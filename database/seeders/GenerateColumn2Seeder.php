@@ -36,46 +36,53 @@ class GenerateColumn2Seeder extends Seeder
             'order' => 3,
         ]);
         GenerateColumn::insert([
+            'name' => 'Discipline****',
+            'table_id' => 49,
+            'report_column' => 'discipline',
+            'is_active' => 1,
+            'order' => 4,
+        ]);
+        GenerateColumn::insert([
             'name' => 'Title of Research',
             'table_id' => 49,
             'report_column' => 'title',
             'is_active' => 1,
-            'order' => 4,
+            'order' => 5,
         ]);
         GenerateColumn::insert([
             'name' => 'Researcher/s (Surname,First Name,M.I.)',
             'table_id' => 49,
             'report_column' => 'researchers',
             'is_active' => 1,
-            'order' => 5,
+            'order' => 6,
         ]);
         GenerateColumn::insert([
             'name' => 'Nature of Involvement****',
             'table_id' => 49,
             'report_column' => 'nature_of_involvement',
             'is_active' => 1,
-            'order' => 6,
+            'order' => 7,
         ]);
         GenerateColumn::insert([
             'name' => 'Type of Research*****',
             'table_id' => 49,
             'report_column' => 'research_type',
             'is_active' => 1,
-            'order' => 7,
+            'order' => 8,
         ]);
         GenerateColumn::insert([
             'name' => 'Keywords (at least five (5) keywords)',
             'table_id' => 49,
             'report_column' => 'keywords',
             'is_active' => 1,
-            'order' => 8,
+            'order' => 9,
         ]);
         GenerateColumn::insert([
             'name' => 'Type of Funding******',
             'table_id' => 49,
             'report_column' => 'funding_type',
             'is_active' => 1,
-            'order' => 9,
+            'order' => 10,
         ]);
         GenerateColumn::insert([
             'name' => 'Amount of Funding',
