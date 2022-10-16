@@ -16,6 +16,35 @@ class ResearchRegistrationFormSeeder extends Seeder
     {
 
         ResearchField::truncate();
+
+        ResearchField::insert([
+            'research_form_id' => 1,
+            'label' => 'Researcher/s',
+            'name' => 'researchers',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+        
+        ResearchField::insert([
+            'research_form_id' => 1,
+            'label' => 'Title',
+            'name' => 'title',
+            'placeholder' => null,
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
+            'dropdown_id' => null, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
         ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'Classification',
@@ -42,40 +71,29 @@ class ResearchRegistrationFormSeeder extends Seeder
             'order' => 1,
             'is_active' => 1,
         ]);
+        
         ResearchField::insert([
             'research_form_id' => 1,
             'label' => 'University Research Agenda',
             'name' => 'agenda',
-            'placeholder' => null,
-            'size' => 'col-md-8',
-            'field_type_id' => 5,
+            'placeholder' => "If others, please specify.",
+            'size' => 'col-md-12',
+            'field_type_id' => 1,
             'dropdown_id' => 3, 
             'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,
         ]);
+
         ResearchField::insert([
             'research_form_id' => 1,
-            'label' => 'Title',
-            'name' => 'title',
+            'label' => 'Nature of Involvement',
+            'name' => 'nature_of_involvement',
             'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
-            'required' => 1,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-        ResearchField::insert([
-            'research_form_id' => 1,
-            'label' => 'Researcher/s',
-            'name' => 'researchers',
-            'placeholder' => null,
-            'size' => 'col-md-12',
-            'field_type_id' => 1,
-            'dropdown_id' => null, 
+            'size' => 'col-md-6',
+            'field_type_id' => 5,
+            'dropdown_id' => 4, 
             'required' => 1,
             'visibility' => 1,
             'order' => 1,
@@ -91,20 +109,6 @@ class ResearchRegistrationFormSeeder extends Seeder
             'field_type_id' => 1,
             'dropdown_id' => null, 
             'required' => 0,
-            'visibility' => 1,
-            'order' => 1,
-            'is_active' => 1,
-        ]);
-
-        ResearchField::insert([
-            'research_form_id' => 1,
-            'label' => 'Nature of Involvement',
-            'name' => 'nature_of_involvement',
-            'placeholder' => null,
-            'size' => 'col-md-6',
-            'field_type_id' => 5,
-            'dropdown_id' => 4, 
-            'required' => 1,
             'visibility' => 1,
             'order' => 1,
             'is_active' => 1,

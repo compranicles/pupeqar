@@ -28,13 +28,13 @@
                             <div class="col-md-12">
                                 {{-- ADD Fields --}}
                                 <a href="{{ route('research.create') }}" class="btn btn-success mr-2">
-                                    <i class="fas fa-plus"></i> Add Research
+                                    <i class="fas fa-plus"></i> Register Research
                                 </a>
                                 {{-- <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#addModal">
                                      Use Research Code
                                 </button> --}}
                                 <button class="btn btn-primary mr-1" data-toggle="modal" data-target="#invitesModal">
-                                    Research to Add (Tagged by your Lead) @if (count($invites) != 0)
+                                    Research to Register (Tagged by your Lead) @if (count($invites) != 0)
                                                 <span class="badge badge-secondary">{{ count($invites) }}</span>
                                             @else
                                                 <span class="badge badge-secondary">0</span>

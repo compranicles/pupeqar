@@ -24,6 +24,9 @@
                 <div class="alert alert-info" role="alert">
                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm their involvement <strong>before submitting</strong>.
                 </div>
+                <div class="alert alert-info" role="alert">
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Options</strong> to proceed research completion, presentation, publication, copyright, utilization, citation.
+                </div>
                 @endif
                 <div class="card">
                     <div class="card-body">

@@ -1473,40 +1473,22 @@ class SeminarAndTrainingController extends Controller
                         'report_year' => $currentQuarterYear->current_year,
                     ]);
                 } else {
-                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) { // TODO: Please define or delcare $repost_values_array
-                        Report::create([
-                            'user_id' =>  auth()->id(),
-                            'sector_id' => $sector_id,
-                            'college_id' => $development->college_id,
-                            'department_id' => $development->department_id,
-                            'format' => $type,
-                            'report_category_id' => 25,
-                            'report_code' => null,
-                            'report_reference_id' => $development->hris_id,
-                            'report_details' => json_encode($values),
-                            'report_documents' => json_encode($filenames),
-                            'report_date' => date("Y-m-d", time()),
-                            'report_quarter' => $currentQuarterYear->current_quarter,
-                            'report_year' => $currentQuarterYear->current_year,
-                        ]);
-                    } else {
-                        Report::create([
-                            'user_id' =>  auth()->id(),
-                            'sector_id' => $sector_id,
-                            'college_id' => $development->college_id,
-                            'department_id' => $development->department_id,
-                            'format' => $type,
-                            'report_category_id' => 25,
-                            'report_code' => null,
-                            'report_reference_id' => $development->hris_id,
-                            'report_details' => json_encode($values),
-                            'report_documents' => json_encode($filenames),
-                            'report_date' => date("Y-m-d", time()),
-                            'chairperson_approval' => 1,
-                            'report_quarter' => $currentQuarterYear->current_quarter,
-                            'report_year' => $currentQuarterYear->current_year,
-                        ]);
-                    }
+                    Report::create([
+                        'user_id' =>  auth()->id(),
+                        'sector_id' => $sector_id,
+                        'college_id' => $development->college_id,
+                        'department_id' => $development->department_id,
+                        'format' => $type,
+                        'report_category_id' => 25,
+                        'report_code' => null,
+                        'report_reference_id' => $development->hris_id,
+                        'report_details' => json_encode($values),
+                        'report_documents' => json_encode($filenames),
+                        'report_date' => date("Y-m-d", time()),
+                        'chairperson_approval' => 1,
+                        'report_quarter' => $currentQuarterYear->current_quarter,
+                        'report_year' => $currentQuarterYear->current_year,
+                    ]);
                 }
             } else {
                 Report::create([
@@ -1654,40 +1636,22 @@ class SeminarAndTrainingController extends Controller
                         'report_year' => $currentQuarterYear->current_year,
                     ]);
                 } else {
-                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) { // TODO: Please define or delcare $repost_values_array
-                        Report::create([
-                            'user_id' =>  auth()->id(),
-                            'sector_id' => $sector_id,
-                            'college_id' => $development->college_id,
-                            'department_id' => $development->department_id,
-                            'format' => $type,
-                            'report_category_id' => 26,
-                            'report_code' => null,
-                            'report_reference_id' => $development->hris_id,
-                            'report_details' => json_encode($values),
-                            'report_documents' => json_encode($filenames),
-                            'report_date' => date("Y-m-d", time()),
-                            'report_quarter' => $currentQuarterYear->current_quarter,
-                            'report_year' => $currentQuarterYear->current_year,
-                        ]);
-                    } else {
-                        Report::create([
-                            'user_id' =>  auth()->id(),
-                            'sector_id' => $sector_id,
-                            'college_id' => $development->college_id,
-                            'department_id' => $development->department_id,
-                            'format' => $type,
-                            'report_category_id' => 26,
-                            'report_code' => null,
-                            'report_reference_id' => $development->hris_id,
-                            'report_details' => json_encode($values),
-                            'report_documents' => json_encode($filenames),
-                            'report_date' => date("Y-m-d", time()),
-                            'chairperson_approval' => 1,
-                            'report_quarter' => $currentQuarterYear->current_quarter,
-                            'report_year' => $currentQuarterYear->current_year,
-                        ]);
-                    }
+                    Report::create([
+                        'user_id' =>  auth()->id(),
+                        'sector_id' => $sector_id,
+                        'college_id' => $development->college_id,
+                        'department_id' => $development->department_id,
+                        'format' => $type,
+                        'report_category_id' => 26,
+                        'report_code' => null,
+                        'report_reference_id' => $development->hris_id,
+                        'report_details' => json_encode($values),
+                        'report_documents' => json_encode($filenames),
+                        'report_date' => date("Y-m-d", time()),
+                        'chairperson_approval' => 1,
+                        'report_quarter' => $currentQuarterYear->current_quarter,
+                        'report_year' => $currentQuarterYear->current_year,
+                    ]);
                 }
             } else {
                 Report::create([
