@@ -123,7 +123,7 @@ class ExtensionServiceController extends Controller
         $departments = Department::whereIn('college_id', $colleges)->get();
 
         $allUsers = [];
-        $users = User::all();
+        $users = User::all()->except(auth()->id());
         $i = 0;
         foreach($users as $user) {
             if ($user->middle_name != null) {
