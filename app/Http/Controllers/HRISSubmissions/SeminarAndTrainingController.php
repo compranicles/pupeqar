@@ -2,39 +2,41 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
     Reports\ReportDataController,
-    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
     DB,
-    Storage,
 };
 use App\Models\{
     Employee,
     HRISDocument,
     Report,
-    TemporaryFile,
     User,
     HRIS,
-    FormBuilder\DropdownOption,
     Maintenance\College,
-    Maintenance\Currency,
     Maintenance\Department,
     Maintenance\HRISField,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use Carbon\Carbon;
-use Image;
 use App\Services\SavePersonalDataDocumentService;
 use Exception;
-use PhpParser\Node\Expr\Throw_;
+use stdClass;
 
 class SeminarAndTrainingController extends Controller
 {
+    private $commonService = null;
+
+    public function __construct(CommonService $commonService) {
+        $this->commonService = $commonService;
+    }
+
     public function index(){
         $currentQuarterYear = Quarter::find(1);
 
@@ -172,29 +174,44 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('documentSO')){
-            $datastringSO = file_get_contents($request->file(['documentSO']));
-            $mimetypeSO = $request->file('documentSO')->getMimeType();
-            $imagedataSO = unpack("H*hex", $datastringSO);
-            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
-            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
-        }
-        if($request->has('documentCert')){
-            $datastringCert = file_get_contents($request->file(['documentCert']));
-            $mimetypeCert = $request->file('documentCert')->getMimeType();
-            $imagedataCert = unpack("H*hex", $datastringCert);
-            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
-        }
-        if($request->has('documentPic')){
-            $datastringPic = file_get_contents($request->file(['documentPic']));
-            $mimetypePic = $request->file('documentPic')->getMimeType();
-            $imagedataPic = unpack("H*hex", $datastringPic);
-            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-            $descriptionPic = "COMPILED PHOTOS";
-        }
+        // if($request->has('documentSO')){
+        //     $datastringSO = file_get_contents($request->file(['documentSO']));
+        //     $mimetypeSO = $request->file('documentSO')->getMimeType();
+        //     $imagedataSO = unpack("H*hex", $datastringSO);
+        //     $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        //     $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
+        // }
+        // if($request->has('documentCert')){
+        //     $datastringCert = file_get_contents($request->file(['documentCert']));
+        //     $mimetypeCert = $request->file('documentCert')->getMimeType();
+        //     $imagedataCert = unpack("H*hex", $datastringCert);
+        //     $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        //     $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
+        // }
+        // if($request->has('documentPic')){
+        //     $datastringPic = file_get_contents($request->file(['documentPic']));
+        //     $mimetypePic = $request->file('documentPic')->getMimeType();
+        //     $imagedataPic = unpack("H*hex", $datastringPic);
+        //     $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+        //     $descriptionPic = "COMPILED PHOTOS";
+        // }
+
+        // '', //Remarks
+        // $descriptionSO ?? null, //AttachmentDescSO
+        // $imagedataSO ?? null, //AttachmentSO
+        // $mimetypeSO ?? null, //MimeTypeSO
+        // $descriptionCert ?? null, //AttachmentDescCert
+        // $imagedataCert ?? null, //AttachmentCert
+        // $mimetypeCert ?? null, //MimeTypeCert
+        // $descriptionPic ?? null, //AttachmentDescPic
+        // $imagedataPic ?? null, //AttachmentPic
+        // $mimetypePic ?? null, //MimeTypePic
         
         // dd($datastringSO);
+
+        $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
+        $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
+        $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
 
         $value = array(
             0, //EmployeeTrainingProgramID
@@ -212,16 +229,20 @@ class SeminarAndTrainingController extends Controller
             $is_paid, //IsPaid
             $request->fund_source, //SourceOfFundID
             $request->budget, //Budget
-            '', //Remarks
-            $descriptionSO ?? null, //AttachmentDescSO
-            $imagedataSO ?? null, //AttachmentSO
-            $mimetypeSO ?? null, //MimeTypeSO
-            $descriptionCert ?? null, //AttachmentDescCert
-            $imagedataCert ?? null, //AttachmentCert
-            $mimetypeCert ?? null, //MimeTypeCert
-            $descriptionPic ?? null, //AttachmentDescPic
-            $imagedataPic ?? null, //AttachmentPic
-            $mimetypePic ?? null, //MimeTypePic
+            'image/pdf/files', //Remarks
+
+            $documentSO['description'], //AttachmentDescSO
+            $documentSO['image'], //AttachmentSO
+            $documentSO['mimetype'], //MimeTypeSO
+
+            $documentCert['description'], //AttachmentDescCert
+            $documentCert['image'], //AttachmentCert
+            $documentCert['mimetype'], //MimeTypeCert
+
+            $documentPic['description'], //AttachmentDescPic
+            $documentPic['image'], //AttachmentPic
+            $documentPic['mimetype'], //MimeTypePic
+
             $user->email //TransAccount
         );
 
@@ -264,8 +285,6 @@ class SeminarAndTrainingController extends Controller
             ", $value
         );
 
-        // dd($id);
-
         $hris_type = 4;
         if($request->classification >= 5) //>= 5 is for training
             $hris_type = 5;
@@ -282,9 +301,15 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Seminar/Webinar.');
+        LogActivity::addToLog('Had saved a Seminar/Webinar.');
 
-        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
+            return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
+        // return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
     }
 
     public function add($id){
@@ -296,7 +321,7 @@ class SeminarAndTrainingController extends Controller
 
         $developments = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
 
-        $seminar;
+        $seminar = new stdClass();
 
         $seminarFields = HRISField::select('h_r_i_s_fields.*', 'field_types.name as field_type_name')
                 ->where('h_r_i_s_fields.h_r_i_s_form_id', 4)->where('h_r_i_s_fields.is_active', 1)
@@ -409,7 +434,7 @@ class SeminarAndTrainingController extends Controller
             $hrisDocuments = HRISDocument::where('hris_form_id', 4)->where('reference_id', $id)->get()->toArray();
             $report = Report::where('report_reference_id',$id)->where('report_category_id', 25)->first();
             $report_details = json_decode($report->report_details, true);
-            $description;
+            $description = "";
 
             foreach($seminarFields as $row){
                 if($row->name == 'description')
@@ -470,27 +495,41 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('documentSO')){
-            $datastring = file_get_contents($request->file(['documentSO']));
-            $mimetypeSO = $request->file('documentSO')->getMimeType();
-            $imagedataSO = unpack("H*hex", $datastring);
-            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
-            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
-        }
-        if($request->has('documentCert')){
-            $datastring = file_get_contents($request->file(['documentCert']));
-            $mimetypeCert = $request->file('documentCert')->getMimeType();
-            $imagedataCert = unpack("H*hex", $datastring);
-            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
-        }
-        if($request->has('documentPic')){
-            $datastring = file_get_contents($request->file(['documentPic']));
-            $mimetypePic = $request->file('documentPic')->getMimeType();
-            $imagedataPic = unpack("H*hex", $datastring);
-            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-            $descriptionPic = "COMPILED PHOTOS";
-        }
+        $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
+        $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
+        $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
+
+        // if($request->has('documentSO')){
+        //     $datastring = file_get_contents($request->file(['documentSO']));
+        //     $mimetypeSO = $request->file('documentSO')->getMimeType();
+        //     $imagedataSO = unpack("H*hex", $datastring);
+        //     $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        //     $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
+        // }
+        // if($request->has('documentCert')){
+        //     $datastring = file_get_contents($request->file(['documentCert']));
+        //     $mimetypeCert = $request->file('documentCert')->getMimeType();
+        //     $imagedataCert = unpack("H*hex", $datastring);
+        //     $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        //     $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
+        // }
+        // if($request->has('documentPic')){
+        //     $datastring = file_get_contents($request->file(['documentPic']));
+        //     $mimetypePic = $request->file('documentPic')->getMimeType();
+        //     $imagedataPic = unpack("H*hex", $datastring);
+        //     $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+        //     $descriptionPic = "COMPILED PHOTOS";
+        // }
+
+        // $descriptionSO ?? null, //AttachmentDescSO
+        // $imagedataSO ?? null, //AttachmentSO
+        // $mimetypeSO ?? null, //MimeTypeSO
+        // $descriptionCert ?? null, //AttachmentDescCert
+        // $imagedataCert ?? null, //AttachmentCert
+        // $mimetypeCert ?? null, //MimeTypeCert
+        // $descriptionPic ?? null, //AttachmentDescPic
+        // $imagedataPic ?? null, //AttachmentPic
+        // $mimetypePic ?? null, //MimeTypePic
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -508,20 +547,24 @@ class SeminarAndTrainingController extends Controller
             $is_paid ?? '', //IsPaid
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
-            '', //Remarks
-            $descriptionSO ?? null, //AttachmentDescSO
-            $imagedataSO ?? null, //AttachmentSO
-            $mimetypeSO ?? null, //MimeTypeSO
-            $descriptionCert ?? null, //AttachmentDescCert
-            $imagedataCert ?? null, //AttachmentCert
-            $mimetypeCert ?? null, //MimeTypeCert
-            $descriptionPic ?? null, //AttachmentDescPic
-            $imagedataPic ?? null, //AttachmentPic
-            $mimetypePic ?? null, //MimeTypePic
+            'image/pdf/files', //Remarks
+
+            $documentSO['description'], //AttachmentDescSO
+            $documentSO['image'], //AttachmentSO
+            $documentSO['mimetype'], //MimeTypeSO
+
+            $documentCert['description'], //AttachmentDescCert
+            $documentCert['image'], //AttachmentCert
+            $documentCert['mimetype'], //MimeTypeCert
+
+            $documentPic['description'], //AttachmentDescPic
+            $documentPic['image'], //AttachmentPic
+            $documentPic['mimetype'], //MimeTypePic
+
             $user->email //TransAccount
         );
 
-        $newID = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
 
@@ -569,9 +612,13 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Seminar/Webinar.');
+        LogActivity::addToLog('Had saved a Seminar/Webinar.');
 
-        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
+            return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function storeTraining(Request $request, $id){
@@ -587,27 +634,9 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        if($request->has('documentSO')){
-            $datastring = file_get_contents($request->file(['documentSO']));
-            $mimetypeSO = $request->file('documentSO')->getMimeType();
-            $imagedataSO = unpack("H*hex", $datastring);
-            $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
-            $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
-        }
-        if($request->has('documentCert')){
-            $datastring = file_get_contents($request->file(['documentCert']));
-            $mimetypeCert = $request->file('documentCert')->getMimeType();
-            $imagedataCert = unpack("H*hex", $datastring);
-            $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-            $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
-        }
-        if($request->has('documentPic')){
-            $datastring = file_get_contents($request->file(['documentPic']));
-            $mimetypePic = $request->file('documentPic')->getMimeType();
-            $imagedataPic = unpack("H*hex", $datastring);
-            $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-            $descriptionPic = "COMPILED PHOTOS";
-        }
+        $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
+        $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
+        $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -625,20 +654,56 @@ class SeminarAndTrainingController extends Controller
             $is_paid ?? '', //IsPaid
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
-            '', //Remarks
-            $descriptionSO ?? null, //AttachmentDescSO
-            $imagedataSO ?? null, //AttachmentSO
-            $mimetypeSO ?? null, //MimeTypeSO
-            $descriptionCert ?? null, //AttachmentDescCert
-            $imagedataCert ?? null, //AttachmentCert
-            $mimetypeCert ?? null, //MimeTypeCert
-            $descriptionPic ?? null, //AttachmentDescPic
-            $imagedataPic ?? null, //AttachmentPic
-            $mimetypePic ?? null, //MimeTypePic
+            'image/pdf/files', //Remarks
+
+            $documentSO['description'], //AttachmentDescSO
+            $documentSO['image'], //AttachmentSO
+            $documentSO['mimetype'], //MimeTypeSO
+
+            $documentCert['description'], //AttachmentDescCert
+            $documentCert['image'], //AttachmentCert
+            $documentCert['mimetype'], //MimeTypeCert
+
+            $documentPic['description'], //AttachmentDescPic
+            $documentPic['image'], //AttachmentPic
+            $documentPic['mimetype'], //MimeTypePic
+
             $user->email //TransAccount
         );
 
-        $newID = $db_ext->select(
+        // if($request->has('documentSO')){
+        //     $datastring = file_get_contents($request->file(['documentSO']));
+        //     $mimetypeSO = $request->file('documentSO')->getMimeType();
+        //     $imagedataSO = unpack("H*hex", $datastring);
+        //     $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        //     $descriptionSO = "SPECIAL ORDER (S.O.) DOCUMENT";
+        // }
+        // if($request->has('documentCert')){
+        //     $datastring = file_get_contents($request->file(['documentCert']));
+        //     $mimetypeCert = $request->file('documentCert')->getMimeType();
+        //     $imagedataCert = unpack("H*hex", $datastring);
+        //     $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        //     $descriptionCert = "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION";
+        // }
+        // if($request->has('documentPic')){
+        //     $datastring = file_get_contents($request->file(['documentPic']));
+        //     $mimetypePic = $request->file('documentPic')->getMimeType();
+        //     $imagedataPic = unpack("H*hex", $datastring);
+        //     $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+        //     $descriptionPic = "COMPILED PHOTOS";
+        // }
+
+        // $descriptionSO ?? null, //AttachmentDescSO
+        // $imagedataSO ?? null, //AttachmentSO
+        // $mimetypeSO ?? null, //MimeTypeSO
+        // $descriptionCert ?? null, //AttachmentDescCert
+        // $imagedataCert ?? null, //AttachmentCert
+        // $mimetypeCert ?? null, //MimeTypeCert
+        // $descriptionPic ?? null, //AttachmentDescPic
+        // $imagedataPic ?? null, //AttachmentPic
+        // $mimetypePic ?? null, //MimeTypePic
+
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
 
@@ -676,7 +741,6 @@ class SeminarAndTrainingController extends Controller
             ", $value
         );
 
-
         HRIS::create([
             'hris_id' => $id,
             'hris_type' => '5',
@@ -687,9 +751,15 @@ class SeminarAndTrainingController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Training.');
+        LogActivity::addToLog('Had saved a Training.');
 
-        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
+            return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
+        
     }
 
     public function show($id){
@@ -700,7 +770,7 @@ class SeminarAndTrainingController extends Controller
         $db_ext = DB::connection('mysql_external');
 
         $developments = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
-        $seminar;
+        $seminar = new stdClass();
         foreach($developments as $development){
             if($development->EmployeeTrainingProgramID == $id){
                 $seminar = $development;
@@ -779,7 +849,7 @@ class SeminarAndTrainingController extends Controller
         $db_ext = DB::connection('mysql_external');
 
         $developments = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
-        $seminar;
+        $seminar = new stdClass();;
         foreach($developments as $development){
             if($development->EmployeeTrainingProgramID == $id){
                 $seminar = $development;
@@ -930,30 +1000,39 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        try {
-            if($request->has('documentSO')){
-                $datastringSO = file_get_contents($request->file(['documentSO']));
-                $mimetypeSO = $request->file('documentSO')->getMimeType();
-                $imagedataSO = unpack("H*hex", $datastringSO);
-                $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
-            }
-            if($request->has('documentCert')){
-                $datastringCert = file_get_contents($request->file(['documentCert']));
-                $mimetypeCert = $request->file('documentCert')->getMimeType();
-                $imagedataCert = unpack("H*hex", $datastringCert);
-                $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-            }
-            if($request->has('documentPic')){
-                $datastringPic = file_get_contents($request->file(['documentPic']));
-                $mimetypePic = $request->file('documentPic')->getMimeType();
-                $imagedataPic = unpack("H*hex", $datastringPic);
-                $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        // if($request->has('documentSO')){
+        //     $datastringSO = file_get_contents($request->file(['documentSO']));
+        //     $mimetypeSO = $request->file('documentSO')->getMimeType();
+        //     $imagedataSO = unpack("H*hex", $datastringSO);
+        //     $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        // }
+        // if($request->has('documentCert')){
+        //     $datastringCert = file_get_contents($request->file(['documentCert']));
+        //     $mimetypeCert = $request->file('documentCert')->getMimeType();
+        //     $imagedataCert = unpack("H*hex", $datastringCert);
+        //     $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        // }
+        // if($request->has('documentPic')){
+        //     $datastringPic = file_get_contents($request->file(['documentPic']));
+        //     $mimetypePic = $request->file('documentPic')->getMimeType();
+        //     $imagedataPic = unpack("H*hex", $datastringPic);
+        //     $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+        // }
 
+        // '', //Remarks
+        // "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+        // $imagedataSO ?? null, //AttachmentSO
+        // $mimetypeSO ?? null, //MimeTypeSO
+        // "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+        // $imagedataCert ?? null, //AttachmentCert
+        // $mimetypeCert ?? null, //MimeTypeCert
+        // "COMPILED PHOTOS", //AttachmentDescPic
+        // $imagedataPic ?? null, //AttachmentPic
+        // $mimetypePic ?? null, //MimeTypePic
 
+        $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
+        $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
+        $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -971,21 +1050,25 @@ class SeminarAndTrainingController extends Controller
             $is_paid ?? '', //IsPaid
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
-            '', //Remarks
-            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
-            $imagedataSO ?? null, //AttachmentSO
-            $mimetypeSO ?? null, //MimeTypeSO
-            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
-            $imagedataCert ?? null, //AttachmentCert
-            $mimetypeCert ?? null, //MimeTypeCert
-            "COMPILED PHOTOS", //AttachmentDescPic
-            $imagedataPic ?? null, //AttachmentPic
-            $mimetypePic ?? null, //MimeTypePic
+            'image/pdf/files', //Remarks
+
+            $documentSO['description'], //AttachmentDescSO
+            $documentSO['image'], //AttachmentSO
+            $documentSO['mimetype'], //MimeTypeSO
+
+            $documentCert['description'], //AttachmentDescCert
+            $documentCert['image'], //AttachmentCert
+            $documentCert['mimetype'], //MimeTypeCert
+
+            $documentPic['description'], //AttachmentDescPic
+            $documentPic['image'], //AttachmentPic
+            $documentPic['mimetype'], //MimeTypePic
+
             $user->email //TransAccount
         );
 
         // dd($value);
-        $newID = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
 
@@ -1023,8 +1106,6 @@ class SeminarAndTrainingController extends Controller
             ", $value
         );
 
-        // dd($newID)
-
         if(HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->exists()){
             HRIS::where('user_id', auth()->id())->where('hris_id', $id)->where('hris_type', '5')->delete();
             HRIS::create([
@@ -1046,9 +1127,13 @@ class SeminarAndTrainingController extends Controller
             ]);
         }
 
-        \LogActivity::addToLog('Had updated a Seminar/Webinar.');
+        LogActivity::addToLog('Had updated a Seminar/Webinar.');
 
-        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been updated.');
+        if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
+            return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function updateTraining(Request $request, $id){
@@ -1064,30 +1149,43 @@ class SeminarAndTrainingController extends Controller
             $is_paid = 'N';
         }
 
-        try {
-            if($request->has('documentSO')){
-                $datastringSO = file_get_contents($request->file(['documentSO']));
-                $mimetypeSO = $request->file('documentSO')->getMimeType();
-                $imagedataSO = unpack("H*hex", $datastringSO);
-                $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
-            }
-            if($request->has('documentCert')){
-                $datastringCert = file_get_contents($request->file(['documentCert']));
-                $mimetypeCert = $request->file('documentCert')->getMimeType();
-                $imagedataCert = unpack("H*hex", $datastringCert);
-                $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
-            }
-            if($request->has('documentPic')){
-                $datastringPic = file_get_contents($request->file(['documentPic']));
-                $mimetypePic = $request->file('documentPic')->getMimeType();
-                $imagedataPic = unpack("H*hex", $datastringPic);
-                $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        // try {
+        //     if($request->has('documentSO')){
+        //         $datastringSO = file_get_contents($request->file(['documentSO']));
+        //         $mimetypeSO = $request->file('documentSO')->getMimeType();
+        //         $imagedataSO = unpack("H*hex", $datastringSO);
+        //         $imagedataSO = '0x' . strtoupper($imagedataSO['hex']);
+        //     }
+        //     if($request->has('documentCert')){
+        //         $datastringCert = file_get_contents($request->file(['documentCert']));
+        //         $mimetypeCert = $request->file('documentCert')->getMimeType();
+        //         $imagedataCert = unpack("H*hex", $datastringCert);
+        //         $imagedataCert = '0x' . strtoupper($imagedataCert['hex']);
+        //     }
+        //     if($request->has('documentPic')){
+        //         $datastringPic = file_get_contents($request->file(['documentPic']));
+        //         $mimetypePic = $request->file('documentPic')->getMimeType();
+        //         $imagedataPic = unpack("H*hex", $datastringPic);
+        //         $imagedataPic = '0x' . strtoupper($imagedataPic['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
+        // '', //Remarks
+        // "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
+        // $imagedataSO ?? null, //AttachmentSO
+        // $mimetypeSO ?? null, //MimeTypeSO
+        // "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
+        // $imagedataCert ?? null, //AttachmentCert
+        // $mimetypeCert ?? null, //MimeTypeCert
+        // "COMPILED PHOTOS", //AttachmentDescPic
+        // $imagedataPic ?? null, //AttachmentPic
+        // $mimetypePic ?? null, //MimeTypePic
 
+        $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
+        $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
+        $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
 
         $value = array(
             $id, //EmployeeTrainingProgramID
@@ -1105,21 +1203,25 @@ class SeminarAndTrainingController extends Controller
             $is_paid ?? '', //IsPaid
             $request->fund_source ?? 0, //SourceOfFundID
             $request->budget ?? '', //Budget
-            '', //Remarks
-            "SPECIAL ORDER (S.O.) DOCUMENT", //AttachmentDescSO
-            $imagedataSO ?? null, //AttachmentSO
-            $mimetypeSO ?? null, //MimeTypeSO
-            "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION", //AttachmentDescCert
-            $imagedataCert ?? null, //AttachmentCert
-            $mimetypeCert ?? null, //MimeTypeCert
-            "COMPILED PHOTOS", //AttachmentDescPic
-            $imagedataPic ?? null, //AttachmentPic
-            $mimetypePic ?? null, //MimeTypePic
+            'image/pdf/files', //Remarks
+
+            $documentSO['description'], //AttachmentDescSO
+            $documentSO['image'], //AttachmentSO
+            $documentSO['mimetype'], //MimeTypeSO
+
+            $documentCert['description'], //AttachmentDescCert
+            $documentCert['image'], //AttachmentCert
+            $documentCert['mimetype'], //MimeTypeCert
+
+            $documentPic['description'], //AttachmentDescPic
+            $documentPic['image'], //AttachmentPic
+            $documentPic['mimetype'], //MimeTypePic
+
             $user->email //TransAccount
         );
 
         // dd($value);
-        $newID = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeTrainingProgramID int;
 
@@ -1178,9 +1280,13 @@ class SeminarAndTrainingController extends Controller
             ]);
         }
 
-        \LogActivity::addToLog('Had saved a Training.');
+        LogActivity::addToLog('Had saved a Training.');
 
-        return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
+            return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function delete($id){
@@ -1212,7 +1318,7 @@ class SeminarAndTrainingController extends Controller
         }
 
 
-        \LogActivity::addToLog('Had deleted a Seminar/Webinar or Training.');
+        LogActivity::addToLog('Had deleted a Seminar/Webinar or Training.');
 
         return redirect()->route('submissions.development.index')->with('success','The accomplishment has been deleted.');
     }
@@ -1243,7 +1349,6 @@ class SeminarAndTrainingController extends Controller
         return redirect()->back()->with('cannot_access', 'Failed to submit the accomplishment.');
     }
 
-
     public function submitSeminar($development_id){
         $user = User::find(auth()->id());
         $development = HRIS::where('id', $development_id)->first();
@@ -1253,7 +1358,7 @@ class SeminarAndTrainingController extends Controller
 
         $seminars = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
 
-        $seminar;
+        $seminar = new stdClass();
 
         foreach($seminars as $row){
             if($row->EmployeeTrainingProgramID == $development->hris_id){
@@ -1368,7 +1473,7 @@ class SeminarAndTrainingController extends Controller
                         'report_year' => $currentQuarterYear->current_year,
                     ]);
                 } else {
-                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) {
+                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) { // TODO: Please define or delcare $repost_values_array
                         Report::create([
                             'user_id' =>  auth()->id(),
                             'sector_id' => $sector_id,
@@ -1434,7 +1539,7 @@ class SeminarAndTrainingController extends Controller
 
         $trainings = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeTrainingProgramByEmpCode N'$user->emp_code'");
 
-        $training;
+        $training = new stdClass();;
 
         foreach($trainings as $row){
             if($row->EmployeeTrainingProgramID == $development->hris_id){
@@ -1549,7 +1654,7 @@ class SeminarAndTrainingController extends Controller
                         'report_year' => $currentQuarterYear->current_year,
                     ]);
                 } else {
-                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) {
+                    if ($report_values_array[1] >= 1 && $report_values_array[1] <= 8) { // TODO: Please define or delcare $repost_values_array
                         Report::create([
                             'user_id' =>  auth()->id(),
                             'sector_id' => $sector_id,

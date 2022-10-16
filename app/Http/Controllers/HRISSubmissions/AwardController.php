@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use App\Helpers\LogActivity;
 use Image;
 use Carbon\Carbon;
 use App\Models\HRIS;
@@ -108,16 +109,18 @@ class AwardController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
+
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
 
         $value = [
             0, //EmployeeOutstandingAchievementID
@@ -129,10 +132,10 @@ class AwardController extends Controller
             Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
@@ -172,9 +175,15 @@ class AwardController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved an Outstanding Achievement.');
+        LogActivity::addToLog('Had saved an Outstanding Achievement.');
 
-        return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.award.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
+        // return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
     }
 
     public function add(Request $request, $id){
@@ -286,19 +295,18 @@ class AwardController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
-
-        
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
 
         $value = [
             $id, //EmployeeOutstandingAchievementID
@@ -310,14 +318,14 @@ class AwardController extends Controller
             Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
-        $newid = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeOutstandingAchievementID int;
                 EXEC SaveEmployeeOutstandingAchievement
@@ -353,9 +361,14 @@ class AwardController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved an Outstanding Achievement.');
+        LogActivity::addToLog('Had saved an Outstanding Achievement.');
 
-        return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.award.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
     }
 
     public function show($id){
@@ -479,19 +492,18 @@ class AwardController extends Controller
 
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
-        
-
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
 
         $value = [
             $id, //EmployeeOutstandingAchievementID
@@ -503,14 +515,14 @@ class AwardController extends Controller
             Carbon::parse($request->to)->format('Y-m-d'), //To
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null,
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
-        $newid = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeOutstandingAchievementID int;
                 EXEC SaveEmployeeOutstandingAchievement
@@ -543,9 +555,15 @@ class AwardController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had updated a Outstanding Achievement.');
+        LogActivity::addToLog('Had updated a Outstanding Achievement.');
 
-        return redirect()->route('submissions.award.index')->with('success','The accomplishment has been updated.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.award.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.award.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
+        // return redirect()->route('submissions.award.index')->with('success','The accomplishment has been updated.');
     }
 
     public function delete($id){
@@ -834,34 +852,6 @@ class AwardController extends Controller
         $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
         $filenames = [];
-        if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'HRIS-OAA-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        HRISDocument::create([
-                            'hris_form_id' => 2,
-                            'reference_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                        array_push($filenames, $fileName);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-            }
-        }
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -872,7 +862,7 @@ class AwardController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        Report::create([
+        $FORFILESTORE = Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
@@ -887,8 +877,51 @@ class AwardController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
+        LogActivity::addToLog('Had submitted an Oustanding Award/Achievement.');
 
-        \LogActivity::addToLog('Had submitted an Oustanding Award/Achievement.');
+        if($request->has('document')){
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OAA', 'submissions.award.index');
+                if(is_string($fileName)) {
+                    HRISDocument::create(['hris_form_id' => 2, 'reference_id' => $id,'filename' => $fileName]);
+                    array_push($filenames, $fileName);
+                } else {
+                    HRISDocument::where('reference_id', $id)->delete();
+                    return $fileName;
+                }
+            }
+        }
+
+        $FORFILESTORE->report_documents =  json_encode(collect($filenames));
+        $FORFILESTORE->save();
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'HRIS-OAA-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+    
+        //                 HRISDocument::create([
+        //                     'hris_form_id' => 2,
+        //                     'reference_id' => $id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //                 array_push($filenames, $fileName);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
 
         return redirect()->route('submissions.award.index')->with('success','The accomplishment has been submitted.');
     }

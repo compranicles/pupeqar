@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use App\Helpers\LogActivity;
 use Image;
 use Carbon\Carbon;
 use App\Models\HRIS;
@@ -21,14 +22,17 @@ use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
 use App\Models\TemporaryFile;
+use App\Services\CommonService;
 use Exception;
 
 class OfficershipController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
     
     public function index(){
@@ -114,22 +118,21 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        if ($request->current_member == 1) $to = "present";
+        else $to = Carbon::parse($request->to)->format('Y-m-d');
 
-        if ($request->current_member == 1)
-            $to = "present";
-        else
-            $to = Carbon::parse($request->to)->format('Y-m-d');
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
         $value = [
             0, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -140,10 +143,10 @@ class OfficershipController extends Controller
             $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
@@ -184,9 +187,15 @@ class OfficershipController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Officership/Membership.');
+        LogActivity::addToLog('Had saved a Officership/Membership.');
 
-        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.officership.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
+
+        // return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
     }
 
     public function add(Request $request, $id){
@@ -308,27 +317,10 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
+        if ($request->current_member == 1) $to = "present";
+        else $to = Carbon::parse($request->to)->format('Y-m-d');
 
-
-
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
-
-        
-
-        if ($request->current_member == 1)
-            $to = "present";
-        else
-            $to = Carbon::parse($request->to)->format('Y-m-d');
-
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
         $value = [
             $id, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -339,14 +331,14 @@ class OfficershipController extends Controller
             $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null, //MimeType
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
-        $newid = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeOfficershipMembershipID int;
                 EXEC SaveEmployeeOfficershipMembership
@@ -382,9 +374,13 @@ class OfficershipController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Officership/Membership.');
+        LogActivity::addToLog('Had saved a Officership/Membership.');
 
-        return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.officership.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function show($id){
@@ -526,18 +522,10 @@ class OfficershipController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
-        }
+        if ($request->current_member == 1) $to = "present";
+        else $to = Carbon::parse($request->to)->format('Y-m-d');
 
-        if ($request->current_member == 1)
-            $to = "present";
-        else
-            $to = Carbon::parse($request->to)->format('Y-m-d');
-            
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');    
         $value = [
             $id, //EmployeeOfficershipMembershipID
             $emp_code, //EmpCode
@@ -548,14 +536,14 @@ class OfficershipController extends Controller
             $to, //IncDateTo
             $request->level, //LevelID
             $request->classification, //ClassificationID
-            '', //Remarks
+            'image/pdf/files', //Remarks
             $request->description, //AttachmentDescription
-            $imagedata ?? null, //Attachment
-            $mimetype ?? null,
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email
         ];
 
-        $newid = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeOfficershipMembershipID int;
                 EXEC SaveEmployeeOfficershipMembership
@@ -588,9 +576,14 @@ class OfficershipController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had updated a Officership/Membership.');
+        LogActivity::addToLog('Had updated a Officership/Membership.');
 
         return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been updated.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.officership.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function delete($id){
@@ -615,7 +608,7 @@ class OfficershipController extends Controller
             HRIS::where('id', $officershipID)->delete();
         }
 
-        \LogActivity::addToLog('Had deleted a Officership/Membership.');
+        LogActivity::addToLog('Had deleted a Officership/Membership.');
 
         return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been deleted.');
     }
@@ -689,14 +682,12 @@ class OfficershipController extends Controller
             }
 
         } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+            return redirect()->back()->with('error', 'Request timeout, Unable to transfer files, Please try again!' );
         }
        
 
-        if ($officeData[0]->IncDateTo == "present")
-            $to = $officeData[0]->IncDateTo;
-        else
-            $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
+        if ($officeData[0]->IncDateTo == "present") $to = $officeData[0]->IncDateTo;
+        else $to = date('m/d/Y', strtotime($officeData[0]->IncDateTo));
 
         $values = [
             'organization' =>  $officeData[0]->Organization,
@@ -884,36 +875,25 @@ class OfficershipController extends Controller
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
         $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
 
-        $filenames = [];
-        if($request->has('document')){
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
 
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'HRIS-OM-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        HRISDocument::create([
-                            'hris_form_id' => 3,
-                            'reference_id' => $id,
-                            'filename' => $fileName,
-                        ]);
-                        array_push($filenames, $fileName);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-            }
-        }
+        //             HRISDocument::create(['hris_form_id' => 3, 'reference_id' => $id, 'filename' => $fileName]);
+        //             array_push($filenames, $fileName);
+        //         }
+        //     }
+        // }
 
         $currentQuarterYear = Quarter::find(1);
 
@@ -924,7 +904,7 @@ class OfficershipController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        Report::create([
+        $FORFILESTORE = Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
@@ -933,14 +913,33 @@ class OfficershipController extends Controller
             'report_code' => null,
             'report_reference_id' => $id,
             'report_details' => json_encode($data),
-            'report_documents' => json_encode(collect($filenames)),
+            'report_documents' => json_encode(collect([])),
             'report_date' => date("Y-m-d", time()),
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had submitted an Officership/Membership.');
+        LogActivity::addToLog('Had submitted an Officership/Membership.');
 
+        $filenames = [];
+
+        if($request->has('document')){
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OM', 'submissions.officership.index');
+                if(is_string($fileName)) {
+                    HRISDocument::create(['hris_form_id' => 3, 'reference_id' => $id, 'filename' => $fileName]);
+                    array_push($filenames, $fileName);
+                } else {
+                    HRISDocument::where('reference_id', $id)->delete();
+                    return $fileName;
+                }
+            }
+        }
+
+        $FORFILESTORE->report_documents = json_encode(collect($filenames));
+        $FORFILESTORE->save();
+        
         return redirect()->route('submissions.officership.index')->with('success','The accomplishment has been submitted.');
     }
 }

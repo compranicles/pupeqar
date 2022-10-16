@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
+use App\Helpers\LogActivity;
 use Image;
 use App\Models\HRIS;
 use App\Models\User;
@@ -21,14 +22,17 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\CommonService;
 use Exception;
 
 class EducationController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     public function index(){
@@ -45,9 +49,7 @@ class EducationController extends Controller
         $educationFinal = [];
 
         foreach($educationLevel as $level){
-
             $educationTemp = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndEducationLevelID N'$user->emp_code',$level->EducationLevelID");
-
             $educationList = array_merge($educationList, $educationTemp);
         }
 
@@ -160,18 +162,16 @@ class EducationController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
-
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
         //is_graduated
         $is_graduated = 'Y';
@@ -190,6 +190,7 @@ class EducationController extends Controller
             $year_graduated = $request->to;
         }
 
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
         $value = [
             0,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
@@ -212,10 +213,10 @@ class EducationController extends Controller
             $request->support_type,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
-            '',                                 //Remarks
-            $request->description,              //AttachmentDescription
-            $imagedata ?? null,                 //Attachment
-            $mimetype ?? null, //MimeType
+            'image/pdf/files', //Remarks
+            $request->description, //AttachmentDescription
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email                        //TransAccount
         ];
 
@@ -267,9 +268,13 @@ class EducationController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Ongoing Studies Accomplishment.');
+        LogActivity::addToLog('Had saved a Ongoing Studies Accomplishment.');
 
-        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function add(Request $request, $id){
@@ -429,12 +434,12 @@ class EducationController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        if($request->has('document')){
-            $datastring = file_get_contents($request->file('document'));
-            $mimetype = $request->file('document')->getMimeType();
-            $imagedata = unpack("H*hex", $datastring);
-            $imagedata = '0x' . strtoupper($imagedata['hex']);
-        }
+        // if($request->has('document')){
+        //     $datastring = file_get_contents($request->file('document'));
+        //     $mimetype = $request->file('document')->getMimeType();
+        //     $imagedata = unpack("H*hex", $datastring);
+        //     $imagedata = '0x' . strtoupper($imagedata['hex']);
+        // }
 
         //is_graduated
         $is_graduated = 'Yes';
@@ -452,6 +457,9 @@ class EducationController extends Controller
         if(!ctype_alpha($request->to)){
             $year_graduated = $request->to;
         }
+
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
+
         $value = [
             $id,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
@@ -474,14 +482,14 @@ class EducationController extends Controller
             $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
-            '',                                 //Remarks
-            $request->description,              //AttachmentDescription
-            $imagedata ?? null,                 //Attachment
-            $mimetype ?? null,                 //Attachment
+            'image/pdf/files', //Remarks
+            $request->description, //AttachmentDescription
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email                        //TransAccount
         ];
 
-        $newid = $db_ext->select(
+        $db_ext->select(
             "
                 DECLARE @NewEmployeeEducationBackgroundID int;
                 EXEC SaveEmployeeEducationBackground
@@ -527,9 +535,13 @@ class EducationController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had saved a Ongoing Studies Accomplishment.');
+        LogActivity::addToLog('Had saved a Ongoing Studies Accomplishment.');
 
-        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function show($id){
@@ -706,16 +718,16 @@ class EducationController extends Controller
         $db_ext = DB::connection('mysql_external');
         $currentQuarterYear = Quarter::find(1);
 
-        try {
-            if($request->has('document')){
-                $datastring = file_get_contents($request->file('document'));
-                $mimetype = $request->file('document')->getMimeType();
-                $imagedata = unpack("H*hex", $datastring);
-                $imagedata = '0x' . strtoupper($imagedata['hex']);
-            }
-        } catch (Exception $th) {
-            return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        }
+        // try {
+        //     if($request->has('document')){
+        //         $datastring = file_get_contents($request->file('document'));
+        //         $mimetype = $request->file('document')->getMimeType();
+        //         $imagedata = unpack("H*hex", $datastring);
+        //         $imagedata = '0x' . strtoupper($imagedata['hex']);
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
 
 
         //is_graduated
@@ -735,6 +747,7 @@ class EducationController extends Controller
             $year_graduated = $request->to;
         }
 
+        $document = $this->commonService->fileUploadHandlerForExternal($request, 'document');
         $value = [
             $id,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
@@ -757,10 +770,10 @@ class EducationController extends Controller
             $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
-            '',                                 //Remarks
-            $request->description,              //AttachmentDescription
-            $imagedata ?? null,                 //Attachment
-            $mimetype ?? null, //MimeType
+            'image/pdf/files', //Remarks
+            $request->description, //AttachmentDescription
+            $document["image"], //Attachment
+            $document['mimetype'], //MimeType
             $user->email                        //TransAccount
         ];
 
@@ -809,9 +822,13 @@ class EducationController extends Controller
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had updated a Ongoing/Advanced Professional Study.');
+        LogActivity::addToLog('Had updated a Ongoing/Advanced Professional Study.');
 
-        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been updated.');
+        if($document['isError'] == false){
+            return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
+        } else {
+            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+        }
     }
 
     public function delete($id){
@@ -836,7 +853,7 @@ class EducationController extends Controller
             HRIS::where('id', $educID)->delete();
         }
 
-        \LogActivity::addToLog('Had deleted a Ongoing Studies.');
+        LogActivity::addToLog('Had deleted a Ongoing Studies.');
 
         return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been deleted.');
     }
@@ -1106,36 +1123,6 @@ class EducationController extends Controller
 
         $college_id = Department::where('id', $request->input('department_id'))->pluck('college_id')->first();
         $sector_id = College::where('id', $college_id)->pluck('sector_id')->first();
-
-        $filenames = [];
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'HRIS-OAPS-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        HRISDocument::create([
-                            'hris_form_id' => 1,
-                            'reference_id' => $educID,
-                            'filename' => $fileName,
-                        ]);
-                        array_push($filenames, $fileName);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-            }
-        }
-
         $currentQuarterYear = Quarter::find(1);
 
         Report::where('report_reference_id', $educID)
@@ -1145,7 +1132,7 @@ class EducationController extends Controller
             ->where('report_year', $currentQuarterYear->current_year)
             ->delete();
 
-        Report::create([
+        $FORFILESTORE = Report::create([
             'user_id' =>  auth()->id(),
             'sector_id' => $sector_id,
             'college_id' => Department::where('id', $request->input('department_id'))->pluck('college_id')->first(),
@@ -1154,14 +1141,57 @@ class EducationController extends Controller
             'report_code' => null,
             'report_reference_id' => $educID,
             'report_details' => json_encode($data),
-            'report_documents' => json_encode(collect($filenames)),
+            'report_documents' => json_encode(collect([])),
             'report_date' => date("Y-m-d", time()),
             'report_quarter' => $currentQuarterYear->current_quarter,
             'report_year' => $currentQuarterYear->current_year,
         ]);
 
-        \LogActivity::addToLog('Had submitted an Ongoing Advanced/Professional Study.');
+        LogActivity::addToLog('Had submitted an Ongoing Advanced/Professional Study.');
 
+        $filenames = [];
+
+        if($request->has('document')){
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OAPS', 'submissions.educ.index');
+                if(is_string($fileName)) {
+                    HRISDocument::create(['hris_form_id' => 1, 'reference_id' => $educID, 'filename' => $fileName]);
+                    array_push($filenames, $fileName);
+                } else {
+                    HRISDocument::where('reference_id', $educID)->delete();
+                    return $fileName;
+                }
+            }
+        }
+        
+        $FORFILESTORE->report_documents = json_encode(collect($filenames));
+        $FORFILESTORE->save();
+
+    
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'HRIS-OAPS-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+                        // HRISDocument::create(['hris_form_id' => 1, 'reference_id' => $educID, 'filename' => $fileName]);
+                        // array_push($filenames, $fileName);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
 
         return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been submitted.');
     }

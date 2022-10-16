@@ -26,19 +26,20 @@ class CommonService {
      * 
      * File upload handler function that returns a string
      * 
-     * @param file $file this paramenter is the file itself or input request
+     * @param File $file this paramenter is the file itself or input request
      * 
-     * @param input $description this parameter is the description input request.
+     * @param Input $description this parameter is the description input request.
      * 
-     * @param string $additiveName this parameter is added to the filename and is user define.
+     * @param String $additiveName this parameter is added to the filename and is user define.
      * 
-     * @param string $route this parameter is used to redirect in other page with an error message.
+     * @param String $route this parameter is used to redirect in other page with an error message.
      * 
-     * @return string the file name of the uploaded file.
+     * @return String the file name of the uploaded file.
      * 
      * =============================================================================================
      */
     public function fileUploadHandler($file, $description, $additiveName, $route){
+        $fileDesc = $description == "" ? "" : $this->storageFileController->abbrev($description);
         $fileName = "";
         try {
             $tempFile = TemporaryFile::where('folder', $file)->first();
@@ -46,7 +47,7 @@ class CommonService {
                 $temporaryPath = "documents/tmp/".$file."/".$tempFile->filename;
                 $info = pathinfo(storage_path().'/documents/tmp/'.$file."/".$tempFile->filename);
                 $ext = $info['extension'];
-                $fileName = $additiveName.$this->storageFileController->abbrev($description).'-'.now()->timestamp.uniqid().'.'.$ext;
+                $fileName = $additiveName . $fileDesc . '-' . now()->timestamp.uniqid() . '.' . $ext;
                 Storage::move($temporaryPath, "documents/".$fileName);
                 Storage::deleteDirectory("documents/tmp/".$file);
                 $tempFile->delete();
@@ -55,8 +56,57 @@ class CommonService {
             throw new Exception("1");
         } catch (Exception $error) {
             return redirect()->route($route)->with( 'error', 
-                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again!'
+                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later!'
             );
+        }
+    }
+
+    /**
+     * =============================================================================================
+     * 
+     * File upload handler for external database function that returns an object or an associative array. 
+     * 
+     * @param Request $request this paramenter is the whole request input.
+     * 
+     * @param String $requestName this parameter is the request name.
+     * 
+     * @param String $description this parameter is the description of file.
+     * 
+     * @return Object with key value pair; $isError, $imagedata, $memeType, $description and $message.
+     * 
+     * =============================================================================================
+     */
+    public function fileUploadHandlerForExternal($request, $requestName, $description = null){
+        try {
+            if($request->has($requestName)){
+                $datastring = file_get_contents($request->file([$requestName]));
+                $mimetype = $request->file($requestName)->getMimeType();
+                $imagedata = unpack("H*hex", $datastring);
+                $imagedata = '0x' . strtoupper($imagedata['hex']);
+                return [
+                    'isError' => false,
+                    'image' => $imagedata,
+                    'description' => $description,
+                    'mimetype' => $mimetype,
+                ];
+            } else {
+                return [
+                    'isError' => false,
+                    'image' => null,
+                    'description' => null,
+                    'mimetype' => null,
+                ];
+            }
+
+            throw new Exception("1");
+            
+        } catch (\Throwable $error) {
+            return [
+                'isError' => true,
+                'image' => null,
+                'description' => null,
+                'mimetype' => null,
+            ];
         }
     }
 }
