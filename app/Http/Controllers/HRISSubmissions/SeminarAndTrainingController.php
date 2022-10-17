@@ -26,12 +26,11 @@ use App\Models\{
 use App\Services\CommonService;
 use Carbon\Carbon;
 use App\Services\SavePersonalDataDocumentService;
-use Exception;
 use stdClass;
 
 class SeminarAndTrainingController extends Controller
 {
-    private $commonService = null;
+    private $commonService;
 
     public function __construct(CommonService $commonService) {
         $this->commonService = $commonService;
@@ -208,7 +207,6 @@ class SeminarAndTrainingController extends Controller
         // $mimetypePic ?? null, //MimeTypePic
         
         // dd($datastringSO);
-
         $documentSO = $this->commonService->fileUploadHandlerForExternal($request, 'documentSO', "SPECIAL ORDER (S.O.) DOCUMENT");
         $documentCert = $this->commonService->fileUploadHandlerForExternal($request, 'documentCert', "CERTIFICATE OF PARTICIPATION/ATTENDANCE/COMPLETION");
         $documentPic = $this->commonService->fileUploadHandlerForExternal($request, 'documentPic', "COMPILED PHOTOS");
@@ -306,7 +304,11 @@ class SeminarAndTrainingController extends Controller
         if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
             return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.development.index')->with('error', 
+                $documentSO['message'] . " | " . 
+                $documentCert['message'] . " | " . 
+                $documentPic['message']
+            );
         }
 
         // return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
@@ -617,7 +619,12 @@ class SeminarAndTrainingController extends Controller
         if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
             return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.development.index')->with('error', 
+                $documentSO['message'] . " | " . 
+                $documentCert['message'] . " | " . 
+                $documentPic['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 
@@ -756,7 +763,12 @@ class SeminarAndTrainingController extends Controller
         if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
             return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.development.index')->with('error', 
+                $documentSO['message'] . " | " . 
+                $documentCert['message'] . " | " . 
+                $documentPic['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
 
         
@@ -1132,7 +1144,12 @@ class SeminarAndTrainingController extends Controller
         if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
             return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.development.index')->with('error', 
+                $documentSO['message'] . " | " . 
+                $documentCert['message'] . " | " . 
+                $documentPic['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 
@@ -1285,7 +1302,12 @@ class SeminarAndTrainingController extends Controller
         if($documentSO['isError'] == false && $documentCert['isError'] == false && $documentPic['isError'] == false){
             return redirect()->route('submissions.development.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.development.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.development.index')->with('error', 
+                $documentSO['message'] . " | " . 
+                $documentCert['message'] . " | " . 
+                $documentPic['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 
