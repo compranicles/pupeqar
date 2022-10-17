@@ -56,7 +56,7 @@ class CommonService {
             throw new Exception("1");
         } catch (Exception $error) {
             return redirect()->route($route)->with( 'error', 
-                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later!'
+                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later! : '. $error->getMessage()
             );
         }
     }

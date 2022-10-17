@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\IPCR;
 
+use App\Helpers\LogActivity;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -24,13 +25,16 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\CommonService;
 use Exception;
 
 class AttendanceFunctionController extends Controller
 {
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -182,35 +186,38 @@ class AttendanceFunctionController extends Controller
         $attendance = AttendanceFunction::create($input);
 
         if($request->has('document')){
-
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        AttendanceFunctionDocument::create([
-                            'attendance_function_id' => $attendance->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'AF-', 'attendance-function.index');
+                if(is_string($fileName)) {
+                    AttendanceFunctionDocument::create(['attendance_function_id' => $attendance->id, 'filename' => $fileName]);
+                } else {
+                    return $fileName;
                 }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
-            
         }
-
-        \LogActivity::addToLog('Had added a Attendance in University and College Function.');
+    
+        // try {
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
+        //             AttendanceFunctionDocument::create(['attendance_function_id' => $attendance->id, 'filename' => $fileName]);
+        //         }
+        //     }
+        // } catch (Exception $th) {
+        //     return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        // }
+            
+        LogActivity::addToLog('Had added a Attendance in University and College Function.');
 
         return redirect()->route('attendance-function.index')->with('success', 'Your Accomplishment in Attendance in University and College Functions has been saved.');
     }
@@ -362,34 +369,45 @@ class AttendanceFunctionController extends Controller
         $attendance_function->update($input);
 
         if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        AttendanceFunctionDocument::create([
-                            'attendance_function_id' => $attendance_function->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
+            $documents = $request->input('document');
+            foreach($documents as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'AF-', 'attendance-function.index');
+                if(is_string($fileName)) {
+                    AttendanceFunctionDocument::create(['attendance_function_id' => $attendance_function->id, 'filename' => $fileName]);
+                } else {
+                    return $fileName;
                 }
-            
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
             }
         }
 
-        \LogActivity::addToLog('Had updated a Attendance in University and College Function).');
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'AF-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 AttendanceFunctionDocument::create([
+        //                     'attendance_function_id' => $attendance_function->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+            
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
+
+        LogActivity::addToLog('Had updated a Attendance in University and College Function).');
 
         return redirect()->route('attendance-function.index')->with('success', 'Your Accomplishment in Attendance in University and College Functions has been updated.');
     }
@@ -412,7 +430,7 @@ class AttendanceFunctionController extends Controller
         AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->delete();
         $attendance_function->delete();
 
-        \LogActivity::addToLog('Had deleted a Special Task (Admin).');
+        LogActivity::addToLog('Had deleted a Special Task (Admin).');
 
         return redirect()->route('attendance-function.index')->with('success', 'Your accomplishment in Attendance in University and College Function has been deleted.');
     }
@@ -423,7 +441,7 @@ class AttendanceFunctionController extends Controller
             return view('inactive');
         AttendanceFunctionDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Attendance Function document deleted.');
+        LogActivity::addToLog('Attendance Function document deleted.');
 
         return true;
     }
