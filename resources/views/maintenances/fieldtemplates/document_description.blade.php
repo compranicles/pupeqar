@@ -9,7 +9,7 @@
                 Recommended file/s to upload (any of the ff.): {{ $fieldInfo->placeholder }}
             </span>
         @endif
-        <textarea name="{{ $fieldInfo->name }}" placeholder="Add/Edit/Select that may apply..." id="{{ $fieldInfo->name }}" 
+        <input type="text" name="{{ $fieldInfo->name }}" id="{{ $fieldInfo->name }}" 
             class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} form-control" 
             {{ ($fieldInfo->required == 1) ? 'required' : '' }} 
             @switch($fieldInfo->visibility) 
@@ -34,28 +34,3 @@
     </div>
 </div>
 
-<script src="{{ asset('dist/selectize.min.js') }}"></script>
-
-<script>
-    $('#description').keypress(function(e){
-        if (e.keyCode == 13)  $('textarea').val($('textarea').val() + ', '); // alert($('textarea').val());   
-    });
-</script>
-<script>
-
-    let value = "";
-    $("#description").selectize({
-        plugins: ["restore_on_backspace"],
-        delimiter: ",",
-        persist: true,
-        create: function (input) {
-            value = input;
-            return {
-                value: input,
-                text: input,
-            };
-        },
-    });
-
-    // $(".selectize-dropdown").text("TYPE and press ENTER key to add " + value).css("padding", "3px 10px");
-</script>
