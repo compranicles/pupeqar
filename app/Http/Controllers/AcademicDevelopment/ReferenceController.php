@@ -22,6 +22,7 @@ use App\Models\{
     Maintenance\Quarter,
     Maintenance\Department,
 };
+use App\Services\DateContentService;
 use Exception;
 
 class ReferenceController extends Controller
@@ -110,10 +111,9 @@ class ReferenceController extends Controller
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date_started = date("Y-m-d", strtotime($request->input('date_started')));
-        $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
-        $date_published = date("Y-m-d", strtotime($request->input('date_published')));
-
+        $date_started = (new DateContentService())->checkDateContent($request, "date_started");
+        $date_completed = (new DateContentService())->checkDateContent($request, "date_completed");
+        $date_published = (new DateContentService())->checkDateContent($request, "date_published");
         $currentQuarterYear = Quarter::find(1);
 
         $request->merge([
@@ -291,9 +291,9 @@ class ReferenceController extends Controller
         if(AcademicDevelopmentForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
 
-        $date_started = date("Y-m-d", strtotime($request->input('date_started')));
-        $date_completed = date("Y-m-d", strtotime($request->input('date_completed')));
-        $date_published = date("Y-m-d", strtotime($request->input('date_published')));
+        $date_started = (new DateContentService())->checkDateContent($request, "date_started");
+        $date_completed = (new DateContentService())->checkDateContent($request, "date_completed");
+        $date_published = (new DateContentService())->checkDateContent($request, "date_published");
 
         $request->merge([
             'date_started' => $date_started,

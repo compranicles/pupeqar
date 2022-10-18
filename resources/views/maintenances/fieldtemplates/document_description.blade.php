@@ -24,7 +24,6 @@
              @if (isset($fieldInfo->h_r_i_s_form_id)) 
                 placeholder="Certificate of Registration / Diploma / TOR"
              @endif>
-        </textarea>
         @error($fieldInfo->name)
             <span class='invalid-feedback' role="alert">
                 <strong>{{ $message }}</strong>
