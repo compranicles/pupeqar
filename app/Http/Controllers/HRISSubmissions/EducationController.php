@@ -273,7 +273,10 @@ class EducationController extends Controller
         if($document['isError'] == false){
             return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.educ.index')->with('error', 
+                $document['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 
@@ -540,7 +543,10 @@ class EducationController extends Controller
         if($document['isError'] == false){
             return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.educ.index')->with('error', 
+                $document['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 
@@ -827,7 +833,10 @@ class EducationController extends Controller
         if($document['isError'] == false){
             return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been saved.');
         } else {
-            return redirect()->route('submissions.educ.index')->with('error', "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!");
+            return redirect()->route('submissions.educ.index')->with('error',
+                $document['message']
+                // "Entry was saved but unable to upload some document/s, Please try reuploading the document/s!"
+            );
         }
     }
 

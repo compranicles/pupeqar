@@ -192,6 +192,7 @@ class AttendanceFunctionController extends Controller
                 if(is_string($fileName)) {
                     AttendanceFunctionDocument::create(['attendance_function_id' => $attendance->id, 'filename' => $fileName]);
                 } else {
+                    AttendanceFunctionDocument::where('attendance_function_id', $attendance->id)->delete();
                     return $fileName;
                 }
             }
@@ -375,6 +376,7 @@ class AttendanceFunctionController extends Controller
                 if(is_string($fileName)) {
                     AttendanceFunctionDocument::create(['attendance_function_id' => $attendance_function->id, 'filename' => $fileName]);
                 } else {
+                    AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->delete();
                     return $fileName;
                 }
             }

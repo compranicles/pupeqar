@@ -1238,18 +1238,9 @@ class SubmissionController extends Controller
         if($request->has('document')){
             $documents = $request->input('document');
             foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'DOC-'.$id.'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    if($report_category_id == 8) InventionDocument::create(['invention_id' => $id,'filename' => $fileName]);
+                $fileName = $this->commonService->fileUploadHandler($document, "", 'DOC-'.$id , 'to-finalize.index');
+                if(is_string($fileName)) {
+                    if($report_category_id == 8) InventionDocument::create(['invention _id' => $id,'filename' => $fileName]);
                     elseif($report_category_id == 9) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $id,'filename' => $fileName]);
                     elseif($report_category_id == 10) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $id, 'filename' => $fileName]);
                     elseif($report_category_id == 11) ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $id,'filename' => $fileName]);
@@ -1264,11 +1255,45 @@ class SubmissionController extends Controller
                     elseif($report_category_id == 20) ViableProjectDocument::create(['viable_project_id' => $id,'filename' => $fileName]);
                     elseif($report_category_id == 21) CollegeDepartmentAwardDocument::create(['college_department_award_id' => $id, 'filename' => $fileName]);
                     elseif($report_category_id == 22) OutreachProgramDocument::create(['outreach_program_id' => $id,'filename' => $fileName]);
-                    elseif($report_category_id == 23) TechnicalExtensionDocument::create(['technical_extension_id' => $id,'filename' => $fileName]);
+                    elseif($report_category_id == 23) TechnicalExtensionDocument::create(['technical_extension_id' => $id,'filename' => $fileName]); 
+                } else {
+                    return $fileName;
                 }
-            }            
+            }
         }
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'DOC-'.$id.'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
 
+        //             if($report_category_id == 8) InventionDocument::create(['invention_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 9) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 10) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $id, 'filename' => $fileName]);
+        //             elseif($report_category_id == 11) ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 12) ExtensionServiceDocument::create(['extension_service_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 13) PartnershipDocument::create(['partnership_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 14) MobilityDocument::create(['mobility_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 15) ReferenceDocument::create(['reference_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 16) SyllabusDocument::create(['syllabus_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 17) RequestDocument::create(['request_id' => $id, 'filename' => $fileName]);
+        //             elseif($report_category_id == 18) StudentAwardDocument::create(['student_award_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 19) StudentTrainingDocument::create(['student_training_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 20) ViableProjectDocument::create(['viable_project_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 21) CollegeDepartmentAwardDocument::create(['college_department_award_id' => $id, 'filename' => $fileName]);
+        //             elseif($report_category_id == 22) OutreachProgramDocument::create(['outreach_program_id' => $id,'filename' => $fileName]);
+        //             elseif($report_category_id == 23) TechnicalExtensionDocument::create(['technical_extension_id' => $id,'filename' => $fileName]);
+        //         }
+        //     }            
+        // }
         return redirect()->route('to-finalize.index')->with('success', 'Document/s have been added');
     }
 
