@@ -68,37 +68,132 @@ class RegistrationController extends Controller
     }
 
     public function scheduleCheck($userId) {
-        
-        $allowedColleges = array();
-        $dateRange = ['2022-10-11','2022-10-12','2022-10-13','2022-10-14'];
-        $dateToday = Carbon::today()->toDateString();
-        
-        switch ($dateToday) {
-            /*case '2022-10-06':
-                array_push($allowedColleges,239,233,238,243);
-                array_push($allowedColleges,176,159,137,211,200);
-                break;*/
-        
-            case in_array($dateToday,$dateRange):
-                /*array_push($allowedColleges,120,226,94);
-                array_push($allowedColleges,59,75,18,2);*/
-                array_push($allowedColleges,36);
-                break;
-            
-            default:
-                # code...
-                break;
-        }
-        
-        $startTime = Carbon::createFromFormat('H:i a', '08:00 AM');
-        $endTime = Carbon::createFromFormat('H:i a', '05:00 PM');
-        $timeCheck = Carbon::now()->between($startTime,$endTime,true);
+        // Sched name, start_date, end_date,start_time,end_time
+        /*$loginSchedulesTable = array(
+            array(
+                "schedule_id" => 1,
+                "schedule_name" => "Oct 19 sched1",
+                "start_date" => "2022-10-19",
+                "end_date" => "2022-10-19",
+                "start_time" => "07:00 AM",
+                "end_time" => "01:00 PM"
+            ),
+            array(
+                "schedule_id" => 2,
+                "schedule_name" => "Oct 19 sched2",
+                "start_date" => "2022-10-19",
+                "end_date" => "2022-10-19",
+                "start_time" => "01:00 PM",
+                "end_time" => "07:00 PM"
+            ),
+            array(
+                "schedule_id" => 3,
+                "schedule_name" => "Oct 20 sched1",
+                "start_date" => "2022-10-20",
+                "end_date" => "2022-10-20",
+                "start_time" => "07:00 AM",
+                "end_time" => "01:00 PM"
+            ),
+            array(
+                "schedule_id" => 4,
+                "schedule_name" => "Oct 20 sched2",
+                "start_date" => "2022-10-20",
+                "end_date" => "2022-10-20",
+                "start_time" => "01:00 PM",
+                "end_time" => "07:00 PM"
+            )
+        );
+        //sector_id, college_id, login_schedule_id
+        $scheduledLoginsTable = array(
+            array("sector_id" => null, "college_id" => 61, "role_id" => null, "login_schedule_id" => 1),
+            array("sector_id" => null, "college_id" => 66, "role_id" => null, "login_schedule_id" => 1),
+            array("sector_id" => null, "college_id" => 8, "role_id" => null, "login_schedule_id" => 1),
+            array("sector_id" => null, "college_id" => 159, "role_id" => null, "login_schedule_id" => 1),
+            array("sector_id" => null, "college_id" => 137, "role_id" => null, "login_schedule_id" => 1),
+            array("sector_id" => null, "college_id" => 176, "role_id" => null, "login_schedule_id" => 2),
+            array("sector_id" => null, "college_id" => 137, "role_id" => null, "login_schedule_id" => 2),
+            array("sector_id" => null, "college_id" => 211, "role_id" => null, "login_schedule_id" => 2),
+            array("sector_id" => null, "college_id" => 200, "role_id" => null, "login_schedule_id" => 2),
 
-        if(Employee::where('user_id', $userId)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
-            return false;
-        } else {
+            array("sector_id" => null, "college_id" => 238, "role_id" => null, "login_schedule_id" => 3),
+            array("sector_id" => null, "college_id" => 243, "role_id" => null, "login_schedule_id" => 3),
+            array("sector_id" => null, "college_id" => 233, "role_id" => null, "login_schedule_id" => 3),
+            array("sector_id" => null, "college_id" => 239, "role_id" => null, "login_schedule_id" => 3),
+            array("sector_id" => null, "college_id" => 25, "role_id" => null, "login_schedule_id" => 4),
+            array("sector_id" => null, "college_id" => 36, "role_id" => null, "login_schedule_id" => 4),
+            array("sector_id" => null, "college_id" => 40, "role_id" => null, "login_schedule_id" => 4),
+            array("sector_id" => null, "college_id" => 274, "role_id" => null, "login_schedule_id" => 4),
+        );*/
+        // query this userid, roleid, sectorid, collegeid, department, office
+        $schedSummary = array(
+            array("role","2022-10-18","04:00 PM","11:59 PM",array(5,6)),
+            array("role","2022-10-19","12:00 AM","06:00 PM",array(5,6)),
+            array("college","2022-10-18","04:00 PM","11:59 PM",array(94,19,137)),
+            array("college","2022-10-19","12:00 AM","06:00 PM",array(94,19,137)),
+            array("college","2022-10-19","07:00 AM","01:00 PM",array(61,66,8,159,137)),
+            array("college","2022-10-19","01:00 PM","07:00 PM",array(176,137,211,200)),
+            array("college","2022-10-20","07:00 AM","01:00 PM",array(238,243,233,239)),
+            array("college","2022-10-20","01:00 PM","07:00 PM",array(25,36,40,274))
+        );
+
+        $dateToday = Carbon::today()->toDateString();
+        $selectedScheds = array();
+        foreach ($schedSummary as $key => $value) {
+            $schedDate = $value[1];
+            $schedStart = $value[2];
+            $schedStop = $value[3];
+            if(($dateToday == $schedDate) && (Carbon::now()->between($schedStart,$schedStop,true))){
+                array_push($selectedScheds, $key);
+            }
+        }
+
+        if (count($selectedScheds) == 0) {
             return true;
         }
+
+        foreach ($selectedScheds as $sched) {
+            if ($schedSummary[$sched][0]=="role" && UserRole::where('user_id', $userId)->whereIn('role_id',$schedSummary[$sched][4])->exists()){
+                return true;
+            } elseif ($schedSummary[$sched][0]=="college" && Employee::where('user_id', $userId)->whereIn('college_id',$schedSummary[$sched][4])->exists()){
+                return true;
+            }
+        }
+
+        return false;
+
+
+
+
+        // $allowedColleges = array();
+        // $dateRange = ['2022-10-11','2022-10-12','2022-10-13','2022-10-14'];
+        // $dateToday = Carbon::today()->toDateString();
+        
+        // switch ($dateToday) {
+        //     /*case '2022-10-06':
+        //         array_push($allowedColleges,239,233,238,243);
+        //         array_push($allowedColleges,176,159,137,211,200);
+        //         break;*/
+        
+        //     case in_array($dateToday,$dateRange):
+        //         /*array_push($allowedColleges,120,226,94);
+        //         array_push($allowedColleges,59,75,18,2);*/
+        //         array_push($allowedColleges,36);
+        //         break;
+            
+        //     default:
+        //         # code...
+        //         break;
+        // }
+        
+        // $startTime = Carbon::createFromFormat('H:i a', '08:00 AM');
+        // $endTime = Carbon::createFromFormat('H:i a', '05:00 PM');
+        // $timeCheck = Carbon::now()->between($startTime,$endTime,true);
+
+        // if(Employee::where('user_id', $userId)->whereIn('college_id',$allowedColleges)->doesntExist() && $timeCheck && sizeof($allowedColleges)>0){
+        //     return false;
+        // } else {
+        //     return true;
+        // }
     }
 
     public function create(Request $request, $key){
