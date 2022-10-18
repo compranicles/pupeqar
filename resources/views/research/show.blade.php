@@ -20,12 +20,18 @@
                         {{ $message }}
                     </div>
                 @endif
-                @if ($research->nature_of_involvement != 224)
+                @if ($research->id == $firstResearch['id'])
+                    @if ($research->nature_of_involvement != 224 )
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm their involvement <strong>before submitting</strong>.
+                        </div>
+                    @endif
+                    <div class="alert alert-info" role="alert">
+                        <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Options</strong> to proceed research completion, presentation, publication, copyright, utilization, citation.
+                    </div>
+                @else
                 <div class="alert alert-info" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm their involvement <strong>before submitting</strong>.
-                </div>
-                <div class="alert alert-info" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Options</strong> to proceed research completion, presentation, publication, copyright, utilization, citation.
+                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: Wait your lead to submit the research before you submit</strong>.
                 </div>
                 @endif
                 <div class="card">

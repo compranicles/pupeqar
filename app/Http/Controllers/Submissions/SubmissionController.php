@@ -2515,7 +2515,7 @@ class SubmissionController extends Controller
             // if($research_nature_of_involvement != 11 && $research_nature_of_involvement != 224){
                 if($report_category_id == 1){
                     $research_code = Research::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     if($leadsResearch != $accomplishment_id && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $leadsResearch)
                         ->where('report_code', $research_code)
@@ -2527,7 +2527,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 2){
                     $research_id = ResearchComplete::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchComplete::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
@@ -2540,7 +2540,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 3){
                     $research_id = ResearchPublication::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchPublication::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
@@ -2553,7 +2553,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 4){
                     $research_id = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchPresentation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
@@ -2566,7 +2566,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 5){
                     $research_id = ResearchCitation::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchCitation::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
@@ -2579,7 +2579,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 6){
                     $research_id = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchUtilization::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)
@@ -2593,7 +2593,7 @@ class SubmissionController extends Controller
                 if($report_category_id == 7){
                     $research_id = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_id')->first();
                     $research_code = ResearchCopyright::where('id', $accomplishment_id)->pluck('research_code')->first();
-                    $leadsResearch = Research::where('research_code', $research_code)->where('nature_of_involvement', 11)->pluck('id')->first();
+                    $leadsResearch = Research::where('research_code', $research_code)->pluck('id')->first();
                     $ownResearch = Research::where('research_code', $research_code)->where('user_id', auth()->id())->pluck('id')->first();
                     if($leadsResearch != $ownResearch && $leadsResearch != null)
                         if(!(Report::where('report_reference_id', $accomplishment_id)

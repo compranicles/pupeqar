@@ -489,8 +489,9 @@ class ResearchController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        if ($research->nature_of_involvement ==  11 || $research->nature_of_involvement == 224)
+        if ($research->id == $firstResearch['id'])
             return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
 
         return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));

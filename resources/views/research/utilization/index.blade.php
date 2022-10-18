@@ -5,11 +5,12 @@
                 @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
             </div>
         </div>
-        @if ($research->nature_of_involvement == 11)
+        @if ($research->id == $firstResearch['id'])
         <div class="alert alert-info" role="alert-reminder">
             <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong><strong>Before you submit, click Tag Co-Researchers</strong> button to check if the co-researchers already confirm your shared research.
         </div>
         @endif
+        <h4>Research Utilizations</h4>
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -28,7 +29,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 {{-- ADD Fields --}}
-                                @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
+                                @if ($research->id == $firstResearch['id'])
                                 <a href="{{ route('research.utilization.create', $research->id) }}" class="btn btn-success">
                                     <i class="fas fa-plus"></i> Add Utilization
                                 </a>

@@ -63,8 +63,10 @@ class UtilizationController extends Controller
             if (empty($reportdata->getDocuments(6, $utilization->id)))
                 $submissionStatus[6][$utilization->id] = 2;
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
+
         return view('research.utilization.index', compact('research', 'researchutilizations',
-            'currentQuarterYear', 'submissionStatus', 'submitRole'));
+            'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
@@ -210,8 +212,9 @@ class UtilizationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
-        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'firstResearch'));
     }
 
     /**

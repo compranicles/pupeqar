@@ -19,6 +19,7 @@
                         {{ $message }}
                     </div>
                 @endif
+                <h4>Research Citations</h4>
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -27,7 +28,7 @@
                                     <p>
                                         <a class="back_link" href="{{ route('research.citation.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Citations</a>
                                     </p>
-                                    @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
+                                    @if ($research->id == $firstResearch['id'])
                                     <p class="ml-auto">
                                         <a href="{{ route('research.citation.edit', [$research->id, $values['id']]) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
                                     </p>

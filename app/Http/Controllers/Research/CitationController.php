@@ -70,9 +70,10 @@ class CitationController extends Controller
             if (empty($reportdata->getDocuments(5, $citation->id)))
                 $submissionStatus[5][$citation->id] = 2;
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
         return view('research.citation.index', compact('research', 'researchcitations',
-            'currentQuarterYear', 'submissionStatus', 'submitRole'));
+            'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
@@ -221,8 +222,9 @@ class CitationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
         
-        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'firstResearch'));
     }
 
     /**

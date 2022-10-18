@@ -49,6 +49,7 @@ class CopyrightedController extends Controller
     {
         $this->authorize('viewAny', ResearchCopyright::class);
 
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
         
         $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
@@ -59,7 +60,7 @@ class CopyrightedController extends Controller
 
 
         $values = ResearchCopyright::where('research_code', $research->research_code)->first();
-        if (($research->nature_of_involvement == 12 || $research->nature_of_involvement == 13) && $values == null) {
+        if (($research->id != $firstResearch['id']) && $values == null) {
             return redirect()->route('research.show', $research->id)->with('cannot_access', 'Not yet added by the lead researcher.');
         }
         if($values == null){
@@ -107,7 +108,7 @@ class CopyrightedController extends Controller
         }
 
         return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
-            'researchDocuments', 'submissionStatus', 'submitRole'));
+            'researchDocuments', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**

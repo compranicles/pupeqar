@@ -19,7 +19,7 @@
                         {{ $message }}
                     </div>
                 @endif
-                @if ($research->nature_of_involvement == 11)
+                @if ($research->id == $firstResearch['id'])
                 <div class="alert alert-info" role="alert-reminder">
                     <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm your shared research <strong>before submitting</strong>.
                 </div>

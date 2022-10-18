@@ -110,9 +110,10 @@ class PresentationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
         return view('research.presentation.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus', 'submitRole'));
+            'value', 'researchDocuments', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
