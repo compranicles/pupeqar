@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\HRISSubmissions;
 
-use App\Helpers\LogActivity;
 use Image;
+use Exception;
 use Carbon\Carbon;
 use App\Models\HRIS;
 use App\Models\User;
 use App\Models\Report;
 use App\Models\Employee;
+use App\Helpers\LogActivity;
 use App\Models\HRISDocument;
 use Illuminate\Http\Request;
+use App\Models\TemporaryFile;
+use App\Services\CommonService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Maintenance\College;
 use App\Models\Maintenance\Quarter;
@@ -18,15 +21,20 @@ use App\Http\Controllers\Controller;
 use App\Models\Maintenance\Currency;
 use App\Models\Maintenance\HRISField;
 use App\Models\Maintenance\Department;
+use Illuminate\Support\Facades\Storage;
 use App\Models\FormBuilder\DropdownOption;
+use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
-use App\Models\TemporaryFile;
-use Exception;
-use Illuminate\Support\Facades\Storage;
 
 class AwardController extends Controller
 {
+    private $commonService = null;
+
+    public function __construct(CommonService $commonService) {
+        $this->commonService = $commonService;
+    }
+
     public function index(){
 
         $currentQuarterYear = Quarter::find(1);
