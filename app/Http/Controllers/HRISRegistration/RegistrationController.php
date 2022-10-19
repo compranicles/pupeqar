@@ -37,8 +37,8 @@ class RegistrationController extends Controller
         if ($user == '-1') {
             
             if (!empty($userLocal)){
-                $user_role = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [1,3])->first();
-                if(!$this->scheduleCheck($userLocal->id) && is_null($user_role)){
+                $isAdmin = UserRole::where('user_id', $userLocal->id)->whereIn('role_id', [9])->exists();
+                if(!$this->scheduleCheck($userLocal->id) && !$isAdmin){
                     return redirect()->back()->with('error', 'The college you are in is not scheduled to login today');
                 }
                 Auth::login($userLocal);
@@ -146,15 +146,16 @@ class RegistrationController extends Controller
                 array_push($selectedScheds, $key);
             }
         }
-
         if (count($selectedScheds) == 0) {
             return true;
         }
-
+        error_log('Some message here.');
         foreach ($selectedScheds as $sched) {
             if ($schedSummary[$sched][0]=="role" && UserRole::where('user_id', $userId)->whereIn('role_id',$schedSummary[$sched][4])->exists()){
+                error_log('Some message here. ROLE');
                 return true;
             } elseif ($schedSummary[$sched][0]=="college" && Employee::where('user_id', $userId)->whereIn('college_id',$schedSummary[$sched][4])->exists()){
+                error_log('Some message here. COLLEGE');
                 return true;
             }
         }
